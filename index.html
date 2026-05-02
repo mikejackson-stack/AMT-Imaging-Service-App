@@ -556,12 +556,12 @@ const SCOPES      = 'https://www.googleapis.com/auth/spreadsheets https://www.go
 // Example: https://drive.google.com/drive/folders/1ABC123XYZ  → folder ID is 1ABC123XYZ
 const DRIVE_FOLDER_ID = '13TfQ5fLoncarLoVAaB5VwMXGim9rOcVl';
 
-// ─── SECURE PIN STORAGE (hashed, never shown) ─────────────────
-// SHA-256 hashes of "1234" — change these by running: hashPin('newpin')
-const PIN_HASHES = {
-  michael:    'b8c00fd7c21a3c46e50fdb97d4e8d5e6c16c14e93bae7e2b7cd2a8ca42e3d7a3',
-  antonio:    'b8c00fd7c21a3c46e50fdb97d4e8d5e6c16c14e93bae7e2b7cd2a8ca42e3d7a3',
-  candelario: 'b8c00fd7c21a3c46e50fdb97d4e8d5e6c16c14e93bae7e2b7cd2a8ca42e3d7a3'
+// ─── PIN CONFIGURATION ────────────────────────────────────────
+// To change a PIN just replace the number below — no hashing needed
+const PINS = {
+  michael:    '7591',
+  antonio:    '0325',
+  candelario: '0216'
 };
 const USER_COLORS = { michael:'#1a3a5c', antonio:'#28a745', candelario:'#6f42c1' };
 const USER_NAMES  = { michael:'Michael Jackson', antonio:'Antonio Jackson', candelario:'Candelario Juarez' };
@@ -573,12 +573,7 @@ let JOBS=[], KB=[], INV=[], DRIVE_FILES=[];
 let jf='all', kbf='all', inf='all', manTab='all';
 let failedAttempts=0, lockedUntil=0;
 
-// ─── SECURITY: PIN HASHING ────────────────────────────────────
-async function hashPin(pin) {
-  const enc = new TextEncoder().encode(pin);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
+// ─── PIN HELPERS ──────────────────────────────────────────────
 
 function togglePIN() {
   const inp = document.getElementById('lp');
@@ -631,7 +626,7 @@ function signInGoogle() {
 }
 
 // ─── PIN LOGIN ────────────────────────────────────────────────
-async function pinLogin() {
+function pinLogin() {
   if (checkLockout()) return;
   const uid = document.getElementById('lu').value;
   const pin = document.getElementById('lp').value.trim();
@@ -639,16 +634,13 @@ async function pinLogin() {
   const msg = document.getElementById('attempts-msg');
 
   if (!uid) { err.style.display='block'; err.textContent='Please select your name.'; return; }
-  if (!pin) { err.style.display='block'; err.textContent='Please enter your PIN.'; return; }
+  if (!pin)  { err.style.display='block'; err.textContent='Please enter your PIN.'; return; }
 
-  const hashed = await hashPin(pin);
-
-  if (hashed !== PIN_HASHES[uid]) {
+  if (pin !== PINS[uid]) {
     failedAttempts++;
     const remaining = 5 - failedAttempts;
     err.style.display = 'block';
     err.textContent = 'Incorrect PIN.';
-
     if (failedAttempts >= 5) {
       lockedUntil = Date.now() + 30000;
       failedAttempts = 0;
@@ -733,73 +725,109 @@ async function loadDriveFiles(showSpinner=true) {
 
   if (!ACCESS_TOKEN) {
     status.style.display='block';
-    status.innerHTML='⚠️ Sign in with Google to access your Drive folder and view manuals, HTM files, and images.';
-    el.innerHTML='<div class="empty"><div class="ei">📁</div><p>Google sign-in required to search your Drive folder</p></div>';
+    status.innerHTML='<strong>Sign in with Google</strong> to access your Drive folder.';
+    el.innerHTML='<div class="empty"><div class="ei">🔒</div><p>Google sign-in required to view your manuals and files</p></div>';
     return;
   }
 
-  if (DRIVE_FOLDER_ID === 'YOUR_FOLDER_ID_HERE') {
-    status.style.display='block';
-    status.innerHTML='⚠️ Drive folder not configured yet. Drive folder ID is configured. Check that your Google account has access to the folder.';
-    el.innerHTML='<div class="empty"><div class="ei">📁</div><p>Drive folder ID needed — see message above</p></div>';
-    return;
-  }
-
-  if (showSpinner) el.innerHTML='<div class="spin-wrap"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Loading your Drive folder...</p></div>';
+  if (showSpinner) el.innerHTML='<div class="spin-wrap"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Connecting to Google Drive...</p></div>';
   status.style.display='none';
+  DRIVE_FILES = [];
 
   try {
-    // Fetch all file types from the folder
-    const types = [
-      "application/pdf",
-      "text/html",
-      "image/jpeg",
-      "image/png",
-      "image/gif",
-      "application/vnd.google-apps.folder"
-    ];
-    const q = encodeURIComponent(`'${DRIVE_FOLDER_ID}' in parents and trashed=false`);
-    const fields = encodeURIComponent('files(id,name,mimeType,webViewLink,webContentLink,thumbnailLink,size,modifiedTime)');
-    const url = `https://www.googleapis.com/drive/v3/files?q=${q}&fields=${fields}&pageSize=200&orderBy=name`;
+    // Search with supportsAllDrives for shared/team drives
+    const q = encodeURIComponent("'" + DRIVE_FOLDER_ID + "' in parents and trashed=false");
+    const fields = encodeURIComponent('files(id,name,mimeType,webViewLink,webContentLink)');
+    const url = 'https://www.googleapis.com/drive/v3/files?q=' + q +
+                '&fields=' + fields +
+                '&pageSize=200&orderBy=name' +
+                '&includeItemsFromAllDrives=true&supportsAllDrives=true';
 
-    const r = await fetch(url, {
-      headers: { Authorization: 'Bearer ' + ACCESS_TOKEN }
-    });
+    const r = await fetch(url, { headers: { Authorization: 'Bearer ' + ACCESS_TOKEN } });
 
     if (!r.ok) {
-      const e = await r.json();
-      throw new Error(e.error?.message || 'Drive access failed');
+      const errData = await r.json().catch(() => ({}));
+      const msg = (errData.error && errData.error.message) || ('HTTP ' + r.status);
+
+      if (msg.includes('drive.googleapis.com') || msg.includes('disabled')) {
+        status.style.display='block';
+        status.innerHTML='❌ Google Drive API is not enabled. ' +
+          '<a href="https://console.developers.google.com/apis/api/drive.googleapis.com/overview?project=272717311807" ' +
+          'target="_blank" style="color:#0d6efd;font-weight:600">Tap here to enable it</a> ' +
+          '— wait 2 minutes then tap ↻ refresh above.';
+        el.innerHTML='<div class="empty"><div class="ei">⚙️</div><p>Drive API needs to be enabled first</p></div>';
+        return;
+      }
+
+      if (r.status === 401) {
+        status.style.display='block';
+        status.innerHTML='❌ Session expired. Sign out and sign back in with Google.';
+        el.innerHTML='<div class="empty"><div class="ei">🔒</div><p>Sign out and back in to refresh</p></div>';
+        return;
+      }
+
+      status.style.display='block';
+      status.innerHTML='❌ Drive error: ' + msg;
+      el.innerHTML='<div class="empty"><div class="ei">⚠️</div><p>' + msg + '</p></div>';
+      return;
     }
 
     const data = await r.json();
-    DRIVE_FILES = data.files || [];
+    const allItems = data.files || [];
+    const subFolders = allItems.filter(function(f){ return f.mimeType === 'application/vnd.google-apps.folder'; });
+    const files = allItems.filter(function(f){ return f.mimeType !== 'application/vnd.google-apps.folder'; });
+    DRIVE_FILES = files;
 
-    // Also search subfolders one level deep
-    const folders = DRIVE_FILES.filter(f => f.mimeType === 'application/vnd.google-apps.folder');
-    if (folders.length > 0) {
-      const subPromises = folders.slice(0,5).map(async folder => {
-        const sq = encodeURIComponent(`'${folder.id}' in parents and trashed=false`);
-        const sr = await fetch(`https://www.googleapis.com/drive/v3/files?q=${sq}&fields=${fields}&pageSize=100`, {
-          headers: { Authorization: 'Bearer ' + ACCESS_TOKEN }
-        });
-        if (sr.ok) {
+    // Load subfolders
+    if (subFolders.length > 0) {
+      const subPromises = subFolders.slice(0,8).map(async function(folder) {
+        try {
+          const sq = encodeURIComponent("'" + folder.id + "' in parents and trashed=false");
+          const sr = await fetch(
+            'https://www.googleapis.com/drive/v3/files?q=' + sq +
+            '&fields=' + fields + '&pageSize=100&includeItemsFromAllDrives=true&supportsAllDrives=true',
+            { headers: { Authorization: 'Bearer ' + ACCESS_TOKEN } }
+          );
+          if (!sr.ok) return [];
           const sd = await sr.json();
-          return sd.files || [];
-        }
-        return [];
+          return (sd.files || []).filter(function(f){ return f.mimeType !== 'application/vnd.google-apps.folder'; });
+        } catch(e) { return []; }
       });
       const subResults = await Promise.all(subPromises);
-      subResults.forEach(files => { DRIVE_FILES = DRIVE_FILES.concat(files); });
+      subResults.forEach(function(sf){ DRIVE_FILES = DRIVE_FILES.concat(sf); });
     }
 
-    // Remove folder entries from display list
-    DRIVE_FILES = DRIVE_FILES.filter(f => f.mimeType !== 'application/vnd.google-apps.folder');
+    // If still nothing, search all of Drive for PDFs and HTM files
+    if (DRIVE_FILES.length === 0) {
+      status.style.display='block';
+      status.innerHTML='📂 No files found in that folder. Searching all of your Drive for manuals...';
+      try {
+        const aq = encodeURIComponent("(mimeType='application/pdf' or mimeType='text/html' or name contains '.htm') and trashed=false");
+        const ar = await fetch(
+          'https://www.googleapis.com/drive/v3/files?q=' + aq +
+          '&fields=' + fields + '&pageSize=100&orderBy=name&includeItemsFromAllDrives=true&supportsAllDrives=true',
+          { headers: { Authorization: 'Bearer ' + ACCESS_TOKEN } }
+        );
+        if (ar.ok) {
+          const ad = await ar.json();
+          DRIVE_FILES = ad.files || [];
+          if (DRIVE_FILES.length > 0) {
+            status.innerHTML='📂 Showing all manuals found across your Drive (' + DRIVE_FILES.length + ' files)';
+          } else {
+            status.innerHTML='📂 No PDF or HTM manuals found in your Drive yet. Upload them to your manuals folder.';
+          }
+        }
+      } catch(e) {}
+    } else {
+      status.style.display='none';
+    }
 
     renderMans();
+
   } catch(e) {
     status.style.display='block';
-    status.innerHTML='❌ Could not load Drive folder: ' + e.message + '. Make sure the folder is shared and your Google account has access.';
-    el.innerHTML='<div class="empty"><div class="ei">📁</div><p>Drive folder could not be loaded</p></div>';
+    status.innerHTML='❌ Connection error: ' + e.message + '. Check your internet connection.';
+    el.innerHTML='<div class="empty"><div class="ei">📡</div><p>Connection error — check internet and try again</p></div>';
   }
 }
 
