@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AMT Imaging">
+<title>AMT Imaging Solutions</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --navy:#1a3a5c;--green:#28a745;--orange:#fd7e14;--blue:#0d6efd;
+  --purple:#6f42c1;--red:#dc3545;--bg:#f4f6f9;--card:#fff;
+  --border:#e0e4ea;--text:#1a1a2e;--muted:#6b7280
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text)}
+#root{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;
+  display:flex;flex-direction:column;gap:12px;padding-bottom:84px}
+
+/* AUTH */
+#auth-screen{display:flex;flex-direction:column;background:var(--navy);height:100%}
+.auth-top{padding:52px 28px 24px;text-align:center}
+.auth-top h1{color:#fff;font-size:24px;font-weight:700;line-height:1.2}
+.auth-top p{color:rgba(255,255,255,.6);font-size:13px;margin-top:6px}
+.auth-box{background:#fff;border-radius:24px 24px 0 0;flex:1;padding:28px 22px 40px;overflow-y:auto}
+.auth-box h2{font-size:20px;font-weight:600;margin-bottom:4px}
+.auth-box .sub{color:var(--muted);font-size:13px;margin-bottom:22px}
+
+/* FIELDS */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--muted);
+  margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.field input,.field select,.field textarea{
+  width:100%;padding:13px 14px;border:1.5px solid var(--border);border-radius:12px;
+  font-size:15px;background:#fff;color:var(--text);outline:none;
+  appearance:none;-webkit-appearance:none;font-family:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy)}
+.field textarea{min-height:76px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sec-lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.5px;padding:6px 0 8px;border-bottom:1px solid var(--border);margin-bottom:2px}
+
+/* BUTTONS */
+.btn{width:100%;padding:14px;border:none;border-radius:12px;
+  font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.btn:active{opacity:.82}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-ghost{background:#f0f4f8;color:var(--navy);border:none}
+.err-msg{color:var(--red);font-size:13px;text-align:center;margin-top:10px;display:none}
+.hint{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+
+/* TOPBAR */
+.topbar{background:var(--navy);color:#fff;padding:12px 14px;display:flex;
+  align-items:center;gap:10px;flex-shrink:0;
+  padding-top:max(12px,env(safe-area-inset-top,12px))}
+.topbar-title{font-size:17px;font-weight:600;flex:1}
+.topbar-sub{font-size:11px;opacity:.7}
+.back-btn{background:rgba(255,255,255,.18);border:none;color:#fff;
+  width:36px;height:36px;border-radius:10px;font-size:20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topbar-end{margin-left:auto;display:flex;gap:8px}
+
+/* BOTTOM NAV */
+.bnav{background:#fff;border-top:1px solid var(--border);display:flex;flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom,0)}
+.nb{flex:1;border:none;background:none;padding:9px 4px 8px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  color:var(--muted);font-size:10px;font-weight:500}
+.nb.on{color:var(--navy)}
+.ni{font-size:22px;line-height:1.1}
+
+/* CARDS */
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+.card-hd{padding:12px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between}
+.card-hd h3{font-size:14px;font-weight:600}
+.card-bd{padding:14px;display:flex;flex-direction:column;gap:12px}
+.see-all{font-size:12px;color:var(--blue);cursor:pointer;border:none;background:none;font-weight:500}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:#fff;border-radius:12px;border:1px solid var(--border);padding:12px}
+.stat-lbl{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.stat-val{font-size:24px;font-weight:700;color:var(--navy);margin-top:3px;line-height:1}
+.stat-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* ACTION GRID */
+.act-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.act{border:none;border-radius:14px;padding:16px 10px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  font-size:13px;font-weight:600;color:#fff;transition:opacity .15s}
+.act:active{opacity:.82}
+.act-icon{font-size:26px}
+
+/* LIST ITEMS */
+.li{padding:13px 14px;border-bottom:1px solid var(--border);cursor:pointer;
+  display:flex;gap:10px;align-items:flex-start}
+.li:last-child{border-bottom:none}
+.li:active{background:#f8f9fa}
+.li-main{flex:1;min-width:0}
+.li-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-meta{font-size:12px;color:var(--muted);margin-top:3px}
+.li-right{flex-shrink:0;text-align:right}
+.li-amt{font-size:14px;font-weight:700;color:var(--navy)}
+
+/* BADGES */
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.b-open{background:#fff3cd;color:#856404}
+.b-prog{background:#d1ecf1;color:#0c5460}
+.b-done{background:#d4edda;color:#155724}
+.b-inv{background:#cce5ff;color:#004085}
+.b-can{background:#f8d7da;color:#721c24}
+.b-paid{background:#d4edda;color:#155724}
+.b-unpaid{background:#fff3cd;color:#856404}
+.b-over{background:#f8d7da;color:#721c24}
+.b-crit{background:#f8d7da;color:#721c24}
+.b-high{background:#fff3cd;color:#856404}
+.b-med{background:#d1ecf1;color:#0c5460}
+.b-low{background:#d4edda;color:#155724}
+
+/* CHIPS */
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:5px 12px;border-radius:20px;font-size:12px;background:#fff;
+  border:1px solid var(--border);color:var(--muted);cursor:pointer}
+.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* SEARCH */
+.srch{position:relative}
+.srch input{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--border);
+  border-radius:12px;font-size:15px;background:#fff;outline:none}
+.srch input:focus{border-color:var(--navy)}
+.srch-ico{position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted)}
+
+/* KB */
+.kb-card{background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:10px}
+.kb-hd{background:var(--navy);color:#fff;padding:12px 14px;
+  display:flex;justify-content:space-between;align-items:center}
+.kb-code{font-size:16px;font-weight:700}
+.kb-mdl{font-size:11px;opacity:.75;margin-top:1px}
+.kb-sec{padding:11px 14px;border-bottom:1px solid var(--border)}
+.kb-sec:last-child{border-bottom:none}
+.kb-lbl{font-size:10px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kb-val{font-size:14px;line-height:1.5}
+.kb-fix{background:#f0fff4}
+.kb-link{display:flex;align-items:center;gap:10px;padding:12px 14px;
+  color:var(--blue);font-size:14px;font-weight:500;
+  border-bottom:1px solid var(--border);text-decoration:none}
+.kb-link:last-child{border-bottom:none}
+
+/* OWNER CARDS */
+.ow-card{background:#fff;border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:10px}
+.ow-hd{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.ow-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.ow-rows{padding:0 14px 12px}
+.ow-row{display:flex;justify-content:space-between;padding:7px 0;
+  border-bottom:1px solid var(--border);font-size:13px}
+.ow-row:last-child{border-bottom:none}
+.ow-rl{color:var(--muted)}
+.ow-rv{font-weight:600}
+.tax-pill{background:#fff3cd;color:#856404;font-size:10px;font-weight:600;
+  padding:2px 6px;border-radius:20px;margin-left:4px}
+
+/* MANUAL */
+.man-item{padding:13px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.man-item:last-child{border-bottom:none}
+.man-item:active{background:#f8f9fa}
+.man-ico{width:40px;height:40px;border-radius:10px;background:#e7f3ff;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+
+/* CALC BOX */
+.calc-box{background:#f0f7ff;border-radius:10px;padding:12px 14px;font-size:14px}
+
+/* SUMMARY */
+.sum-row{display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid var(--border);font-size:14px}
+.sum-row:last-child{border-bottom:none;font-weight:700;font-size:15px}
+
+/* EMPTY / LOADING */
+.empty{text-align:center;padding:36px 20px;color:var(--muted)}
+.empty .ei{font-size:36px;margin-bottom:10px}
+.empty p{font-size:13px;line-height:1.5}
+.spin-wrap{text-align:center;padding:32px}
+.spinner{width:26px;height:26px;border:3px solid var(--border);
+  border-top-color:var(--navy);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:50px;
+  font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s;
+  pointer-events:none;max-width:92%;text-align:center}
+.toast.show{opacity:1}
+
+/* SAVING OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;
+  display:none;align-items:center;justify-content:center}
+.overlay.show{display:flex}
+.overlay-box{background:#fff;border-radius:18px;padding:28px 24px;
+  text-align:center;width:260px}
+.overlay-box p{font-size:14px;color:var(--muted);margin-top:8px}
+
+/* INFO BOX */
+.info-box{background:#e7f3ff;border-radius:12px;padding:13px;
+  font-size:13px;color:#003d82;line-height:1.6}
+
+/* GOOGLE BTN */
+.g-btn{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:13px;border:1.5px solid var(--border);border-radius:12px;
+  background:#fff;color:var(--text);font-size:15px;font-weight:500;cursor:pointer;
+  transition:background .15s}
+.g-btn:active{background:#f4f4f4}
+.g-logo{width:20px;height:20px}
+
+.c-g{color:var(--green);font-weight:700}
+.c-r{color:var(--red);font-weight:700}
+.divider{text-align:center;color:var(--muted);font-size:13px;margin:6px 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
+.divider::before{left:0}.divider::after{right:0}
+
+.user-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);
+  border-radius:20px;padding:4px 10px;font-size:12px;color:#fff}
+</style>
+</head>
+<body>
+<div id="root">
+
+<!-- AUTH SCREEN -->
+<div id="auth-screen">
+  <div class="auth-top">
+    <div style="font-size:42px;margin-bottom:10px">🏥</div>
+    <h1>AMT Imaging Solutions</h1>
+    <p>Field Operations App</p>
+  </div>
+  <div class="auth-box">
+    <h2>Sign In</h2>
+    <p class="sub">Connect with Google to access your live sheet data and save jobs directly</p>
+
+    <button class="g-btn" onclick="signInGoogle()">
+      <svg class="g-logo" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="divider" style="margin:16px 0">or</div>
+
+    <div class="field">
+      <label>Your Name</label>
+      <select id="lu">
+        <option value="">Select your name...</option>
+        <option value="michael">Michael Jackson</option>
+        <option value="antonio">Antonio Jackson</option>
+        <option value="candelario">Candelario Juarez</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>PIN</label>
+      <input type="password" id="lp" placeholder="Enter PIN" maxlength="6" inputmode="numeric">
+    </div>
+    <button class="btn btn-navy" onclick="pinLogin()">Sign In with PIN</button>
+    <p class="err-msg" id="lerr">Incorrect name or PIN</p>
+    <p class="hint">Default PIN: <strong>1234</strong> · Google sign-in syncs automatically</p>
+  </div>
+</div>
+
+<!-- SAVING OVERLAY -->
+<div class="overlay" id="saving-overlay">
+  <div class="overlay-box">
+    <div class="spinner" style="margin:0 auto 12px"></div>
+    <strong id="saving-msg">Saving to Google Sheets...</strong>
+    <p>Please wait</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+
+<!-- DASHBOARD -->
+<div id="s-dash" class="screen active">
+  <div class="topbar">
+    <div style="flex:1">
+      <div class="topbar-title">AMT Imaging</div>
+      <div class="topbar-sub" id="greet">Dashboard</div>
+    </div>
+    <div class="topbar-end">
+      <div id="auth-indicator" class="user-tag" style="display:none">
+        <span>🔗</span><span id="auth-name-tag">Connected</span>
+      </div>
+      <button class="back-btn" onclick="signOut()" style="font-size:13px;width:auto;padding:0 10px">Sign Out</button>
+    </div>
+  </div>
+  <div class="scroll">
+    <div class="stat-grid" id="d-stats">
+      <div class="stat"><div class="stat-lbl">This Month</div><div class="stat-val" id="s-rev">—</div><div class="stat-sub">Revenue</div></div>
+      <div class="stat"><div class="stat-lbl">Open Jobs</div><div class="stat-val" id="s-open">—</div><div class="stat-sub">Active</div></div>
+      <div class="stat"><div class="stat-lbl">Net Profit</div><div class="stat-val" id="s-profit">—</div><div class="stat-sub">This month</div></div>
+      <div class="stat"><div class="stat-lbl">Completed</div><div class="stat-val" id="s-done">—</div><div class="stat-sub">This month</div></div>
+    </div>
+    <div class="act-grid">
+      <button class="act" style="background:var(--green)" onclick="go('newjob')"><span class="act-icon">➕</span>New Job</button>
+      <button class="act" style="background:var(--blue)" onclick="go('kb')"><span class="act-icon">🔍</span>Error Codes</button>
+      <button class="act" style="background:var(--orange)" onclick="go('expense')"><span class="act-icon">💸</span>Add Expense</button>
+      <button class="act" style="background:var(--purple)" onclick="go('manuals')"><span class="act-icon">📄</span>Manuals</button>
+    </div>
+    <div class="card">
+      <div class="card-hd"><h3>Recent Jobs</h3><button class="see-all" onclick="go('jobs')">See all →</button></div>
+      <div id="recent-list"><div class="spin-wrap"><div class="spinner"></div><p style="font-size:13px;color:var(--muted)">Loading live data...</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW JOB -->
+<div id="s-newjob" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">New Job</div><div class="topbar-sub">Saves directly to your sheet</div></div>
+  </div>
+  <div class="scroll">
+    <div class="card"><div class="card-bd">
+      <div class="sec-lbl">Customer & Equipment</div>
+      <div class="field"><label>Customer / Facility Name</label><input type="text" id="nj-cust" placeholder="e.g. Miami General Hospital"></div>
+      <div class="form-row">
+        <div class="field"><label>Scanner Model</label><input type="text" id="nj-scan" placeholder="e.g. Signa HDxt"></div>
+        <div class="field"><label>Manufacturer</label>
+          <select id="nj-mfr"><option value="">Select...</option><option>Siemens</option><option>GE Healthcare</option><option>Philips</option><option>Canon</option><option>Hitachi</option><option>Toshiba</option><option>Bruker</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="sec-lbl">Service Details</div>
+      <div class="form-row">
+        <div class="field"><label>Service Type</label>
+          <select id="nj-svc"><option value="">Select...</option><option>MRI PM</option><option>MRI Repair</option><option>MRI Calibration</option><option>CT PM</option><option>CT Repair</option><option>Emergency Call</option><option>Consultation</option></select>
+        </div>
+        <div class="field"><label>Error Code</label><input type="text" id="nj-err" placeholder="e.g. E-001"></div>
+      </div>
+      <div class="field"><label>Symptom / Problem</label><textarea id="nj-sym" placeholder="Describe what you observed..."></textarea></div>
+      <div class="sec-lbl">Time & Rate</div>
+      <div class="form-row">
+        <div class="field"><label>Hours Worked</label><input type="number" id="nj-hrs" placeholder="2.5" step="0.5" min="0" oninput="calcJob()"></div>
+        <div class="field"><label>Rate Type</label>
+          <select id="nj-rate" onchange="calcJob()">
+            <option value="Standard">Standard ($295/hr)</option>
+            <option value="After-Hours">After-Hours ($395/hr)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label>Status</label>
+          <select id="nj-stat"><option value="Open">Open</option><option value="In Progress">In Progress</option><option value="Completed">Completed</option></select>
+        </div>
+        <div class="field"><label>Technician</label>
+          <select id="nj-tech"><option>Michael Jackson</option><option>Antonio Jackson</option><option>Candelario Juarez</option><option>Subcontractor</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Fix Applied (if completed)</label><textarea id="nj-fix" placeholder="Describe what you did to fix it..."></textarea></div>
+      <div class="calc-box" id="nj-calc" style="display:none">
+        <span style="color:var(--muted)">Estimated labor: </span>
+        <strong id="nj-tot" style="font-size:18px;color:var(--navy)"></strong>
+      </div>
+      <button class="btn btn-green" onclick="saveJob()">✅ Save Job to Sheet</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- KNOWLEDGE BASE -->
+<div id="s-kb" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Error Code Search</div><div class="topbar-sub">Knowledge Base</div></div>
+  </div>
+  <div class="scroll">
+    <div class="srch"><span class="srch-ico">🔍</span><input type="text" id="kb-q" placeholder="Error code, model, or symptom..." oninput="searchKB(this.value)"></div>
+    <div class="chips" id="kb-chips">
+      <span class="chip on" onclick="setKBF('all',this)">All</span>
+      <span class="chip" onclick="setKBF('Siemens',this)">Siemens</span>
+      <span class="chip" onclick="setKBF('GE Healthcare',this)">GE</span>
+      <span class="chip" onclick="setKBF('Philips',this)">Philips</span>
+      <span class="chip" onclick="setKBF('Critical',this)">🔴 Critical</span>
+    </div>
+    <div id="kb-res"><div class="empty"><div class="ei">🔍</div><p>Type an error code, model name, or symptom keyword above</p></div></div>
+    <div class="info-box">
+      <strong>Not in KB?</strong> Go to <a href="https://claude.ai" target="_blank" style="color:var(--blue)">claude.ai</a> and type:<br>
+      <em>"MRI tech. Error [CODE] on [MANUFACTURER] [MODEL]. Causes and fix steps?"</em>
+    </div>
+  </div>
+</div>
+
+<!-- ADD EXPENSE -->
+<div id="s-expense" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Add Expense</div><div class="topbar-sub">Saves directly to your sheet</div></div>
+  </div>
+  <div class="scroll">
+    <div class="card"><div class="card-bd">
+      <div class="field"><label>What was it?</label><input type="text" id="ex-desc" placeholder="e.g. Cooling fan for Signa HDxt"></div>
+      <div class="form-row">
+        <div class="field"><label>Category</label>
+          <select id="ex-cat"><option>Parts & Components</option><option>Travel & Mileage</option><option>Tools & Equipment</option><option>Software</option><option>Training</option><option>Insurance</option><option>Office & Admin</option><option>Subcontractor</option><option>Vehicle</option><option>Other</option></select>
+        </div>
+        <div class="field"><label>Amount ($)</label><input type="number" id="ex-amt" placeholder="0.00" step="0.01" min="0"></div>
+      </div>
+      <div class="field"><label>Paid By</label>
+        <select id="ex-paid"><option>Michael Jackson</option><option>Antonio Jackson</option><option>Candelario Juarez</option><option>Company Account</option></select>
+      </div>
+      <div class="field"><label>Job # (if related to a job)</label><input type="text" id="ex-job" placeholder="e.g. JOB-0001"></div>
+      <div class="field"><label>Notes</label><textarea id="ex-notes" placeholder="Any extra details..."></textarea></div>
+      <button class="btn btn-navy" onclick="saveExpense()">💾 Save Expense to Sheet</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- JOBS LIST -->
+<div id="s-jobs" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Jobs Log</div><div class="topbar-sub" id="jcount">All jobs</div></div>
+    <button class="back-btn topbar-end" onclick="loadAll()" style="font-size:14px" title="Refresh">↻</button>
+  </div>
+  <div class="scroll">
+    <div class="srch"><span class="srch-ico">🔍</span><input type="text" id="j-q" placeholder="Search jobs..." oninput="renderJobs()"></div>
+    <div class="chips" id="j-chips">
+      <span class="chip on" onclick="setJF('all',this)">All</span>
+      <span class="chip" onclick="setJF('Open',this)">Open</span>
+      <span class="chip" onclick="setJF('In Progress',this)">In Progress</span>
+      <span class="chip" onclick="setJF('Completed',this)">Completed</span>
+      <span class="chip" onclick="setJF('Invoiced',this)">Invoiced</span>
+    </div>
+    <div class="card" id="j-list"><div class="spin-wrap"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- INVOICES -->
+<div id="s-invoices" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Invoices</div><div class="topbar-sub" id="inv-lbl">—</div></div>
+    <button class="back-btn topbar-end" onclick="loadAll()" style="font-size:14px" title="Refresh">↻</button>
+  </div>
+  <div class="scroll">
+    <div class="chips">
+      <span class="chip on" onclick="setIF('all',this)">All</span>
+      <span class="chip" onclick="setIF('Unpaid',this)">Unpaid</span>
+      <span class="chip" onclick="setIF('Paid',this)">Paid</span>
+      <span class="chip" onclick="setIF('Overdue',this)">Overdue</span>
+    </div>
+    <div class="card" id="inv-list"><div class="spin-wrap"><div class="spinner"></div></div></div>
+  </div>
+</div>
+
+<!-- MANUALS -->
+<div id="s-manuals" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Manuals & Docs</div><div class="topbar-sub">Tap to open</div></div>
+  </div>
+  <div class="scroll">
+    <div class="srch"><span class="srch-ico">🔍</span><input type="text" id="m-q" placeholder="Search manuals..." oninput="renderMans()"></div>
+    <div class="card" id="man-list"><div class="spin-wrap"><div class="spinner"></div></div></div>
+    <div class="info-box">
+      <strong>Adding manuals:</strong> In your Google Sheet Knowledge Base tab, paste any Google Drive link or PDF URL into column L (Manual Link) for each error code. It appears here automatically.
+    </div>
+  </div>
+</div>
+
+<!-- DISTRIBUTIONS -->
+<div id="s-dist" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('dash')">←</button>
+    <div><div class="topbar-title">Distributions</div><div class="topbar-sub">Profit splits & tax reserves</div></div>
+  </div>
+  <div class="scroll">
+    <div class="card">
+      <div class="card-hd"><h3>Financial Summary — All Time</h3></div>
+      <div style="padding:14px" id="dist-sum"><div class="spin-wrap"><div class="spinner"></div></div></div>
+    </div>
+    <div id="ow-cards"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <button class="nb on" id="n-dash" onclick="go('dash')"><span class="ni">🏠</span>Home</button>
+  <button class="nb" id="n-jobs" onclick="go('jobs')"><span class="ni">🔧</span>Jobs</button>
+  <button class="nb" id="n-kb" onclick="go('kb')"><span class="ni">🔍</span>Search</button>
+  <button class="nb" id="n-invoices" onclick="go('invoices')"><span class="ni">🧾</span>Invoices</button>
+  <button class="nb" id="n-dist" onclick="go('dist')"><span class="ni">💰</span>Money</button>
+</div>
+
+</div><!-- #app -->
+</div><!-- #root -->
+
+<div class="toast" id="toast"></div>
+
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async></script>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────
+const CLIENT_ID = '272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com';
+const SHEET_ID  = '1bqZODp61jGoliV0Wq2A_EBbslamB_kOa47VZ77sDvOU';
+const SCOPES    = 'https://www.googleapis.com/auth/spreadsheets';
+const USERS = {
+  michael:    { name:'Michael Jackson',    pin:'1234', color:'#1a3a5c' },
+  antonio:    { name:'Antonio Jackson',    pin:'1234', color:'#28a745' },
+  candelario: { name:'Candelario Juarez',  pin:'1234', color:'#6f42c1' }
+};
+
+// ─── STATE ────────────────────────────────────────────────────
+let ACCESS_TOKEN = null;
+let CU = null;
+let JOBS = [], KB = [], INV = [];
+let jf = 'all', kbf = 'all', inf = 'all';
+
+// ─── GOOGLE OAUTH ─────────────────────────────────────────────
+function signInGoogle() {
+  const client = google.accounts.oauth2.initTokenClient({
+    client_id: CLIENT_ID,
+    scope: SCOPES,
+    callback: (resp) => {
+      if (resp.error) { showToast('Google sign-in failed: ' + resp.error); return; }
+      ACCESS_TOKEN = resp.access_token;
+      fetchGoogleProfile();
+    }
+  });
+  client.requestAccessToken();
+}
+
+async function fetchGoogleProfile() {
+  try {
+    const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: 'Bearer ' + ACCESS_TOKEN }
+    });
+    const p = await r.json();
+    const firstName = (p.given_name || p.name || 'User').split(' ')[0];
+    CU = { name: p.name || firstName, email: p.email, id: 'google', color: '#0d6efd' };
+    enterApp();
+  } catch(e) {
+    showToast('Could not fetch profile. Using Google account.');
+    CU = { name: 'Google User', id: 'google', color: '#0d6efd' };
+    enterApp();
+  }
+}
+
+// ─── PIN LOGIN ────────────────────────────────────────────────
+function pinLogin() {
+  const uid = document.getElementById('lu').value;
+  const pin = document.getElementById('lp').value;
+  const err = document.getElementById('lerr');
+  if (!uid || !USERS[uid]) { err.style.display='block'; err.textContent='Please select your name.'; return; }
+  if (pin !== USERS[uid].pin) { err.style.display='block'; err.textContent='Incorrect PIN. Try again.'; return; }
+  CU = { ...USERS[uid], id: uid };
+  enterApp();
+}
+
+function enterApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  const h = new Date().getHours();
+  const name = CU.name.split(' ')[0];
+  document.getElementById('greet').textContent =
+    (h<12?'Good morning, ':h<17?'Good afternoon, ':'Good evening, ') + name;
+  if (CU.id !== 'google') {
+    try { document.getElementById('nj-tech').value = CU.name; } catch(e){}
+  }
+  if (ACCESS_TOKEN) {
+    const tag = document.getElementById('auth-indicator');
+    tag.style.display = 'inline-flex';
+    document.getElementById('auth-name-tag').textContent = 'Google Connected';
+  }
+  loadAll();
+}
+
+function signOut() {
+  if (!confirm('Sign out?')) return;
+  ACCESS_TOKEN = null; CU = null;
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('lp').value = '';
+  document.getElementById('lerr').style.display = 'none';
+  document.getElementById('auth-indicator').style.display = 'none';
+}
+
+// ─── SHEETS API HELPERS ───────────────────────────────────────
+const API = 'https://sheets.googleapis.com/v4/spreadsheets';
+
+async function sheetsGet(range) {
+  const url = `${API}/${SHEET_ID}/values/${encodeURIComponent(range)}`;
+  const headers = ACCESS_TOKEN
+    ? { Authorization: 'Bearer ' + ACCESS_TOKEN }
+    : {};
+  const r = await fetch(url, { headers });
+  if (!r.ok) throw new Error('Sheets read failed: ' + r.status);
+  return r.json();
+}
+
+async function sheetsAppend(sheetName, values) {
+  if (!ACCESS_TOKEN) throw new Error('NOT_AUTHED');
+  const range = encodeURIComponent(sheetName + '!A1');
+  const url = `${API}/${SHEET_ID}/values/${range}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + ACCESS_TOKEN,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ values: [values] })
+  });
+  if (!r.ok) {
+    const e = await r.json();
+    throw new Error(e.error?.message || 'Sheets write failed');
+  }
+  return r.json();
+}
+
+// ─── READ DATA (public GViz for read, API for write) ──────────
+async function fetchTab(tab) {
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(tab)}&headers=1`;
+    const r = await fetch(url);
+    const t = await r.text();
+    const clean = t.replace(/^[^\[{]*/, '').replace(/[^\]}]*$/, '').replace(/^[^{]*/, '');
+    const j = JSON.parse(clean);
+    const cols = j.table.cols.map(c => c.label);
+    return (j.table.rows || [])
+      .map(row => Object.fromEntries(cols.map((c,i) => [c, row.c&&row.c[i] ? (row.c[i].f||row.c[i].v||'') : ''])))
+      .filter(r => Object.values(r).some(v => v !== ''));
+  } catch(e) { return []; }
+}
+
+async function loadAll() {
+  const [jobs, kb, inv] = await Promise.all([
+    fetchTab('New Job'),
+    fetchTab('Knowledge Base'),
+    fetchTab('Invoices')
+  ]);
+  JOBS = jobs; KB = kb; INV = inv;
+  renderDash(); renderRecent(); renderJobs();
+  renderInv(); renderMans(); renderDist();
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────
+const $v = id => (document.getElementById(id)||{}).value||'';
+const fmt$ = n => n===0 ? '$0' : '$' + Math.abs(Math.round(n)).toLocaleString();
+function col(obj, ...keys) { for(const k of keys){const v=obj[k];if(v!==undefined&&v!=='')return String(v);} return ''; }
+function numCol(obj, ...keys) { return parseFloat(col(obj,...keys).replace(/[$,]/g,''))||0; }
+function today() { return new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}); }
+function nextJobNum() { return 'JOB-' + String(JOBS.length + 1).padStart(4,'0'); }
+function nextInvNum() { return 'INV-' + String(INV.length + 1).padStart(4,'0'); }
+function dueDateStr() { const d=new Date(); d.setDate(d.getDate()+30); return d.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}); }
+
+function statusBadge(s) {
+  s=(s||'Open').trim();
+  const m={'Open':'b-open','In Progress':'b-prog','Completed':'b-done','Invoiced':'b-inv','Cancelled':'b-can'};
+  return `<span class="badge ${m[s]||'b-open'}">${s}</span>`;
+}
+function invBadge(s) {
+  const m={'Paid':'b-paid','Unpaid':'b-unpaid','Overdue':'b-over'};
+  return `<span class="badge ${m[s]||'b-unpaid'}">${s||'Unpaid'}</span>`;
+}
+function sevBadge(s) {
+  s=(s||'').trim();
+  const m={'Critical':'b-crit','High':'b-high','Medium':'b-med','Low':'b-low'};
+  return s ? `<span class="badge ${m[s]||'b-med'}">${s}</span>` : '';
+}
+
+function showSaving(msg='Saving to Google Sheets...') {
+  document.getElementById('saving-msg').textContent = msg;
+  document.getElementById('saving-overlay').classList.add('show');
+}
+function hideSaving() { document.getElementById('saving-overlay').classList.remove('show'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────
+function renderDash() {
+  const now=new Date(), m=now.getMonth(), y=now.getFullYear();
+  const rev = INV.filter(i=>{
+    try{const d=new Date(col(i,'📅 INVOICE DATE','Invoice Date'));return d.getMonth()===m&&d.getFullYear()===y;}catch(e){return false;}
+  }).reduce((s,i)=>s+numCol(i,'💰 TOTAL','Total'),0);
+  const open = JOBS.filter(j=>col(j,'✅ STATUS','Status').trim()==='Open').length;
+  const done = JOBS.filter(j=>{
+    const s=col(j,'✅ STATUS','Status').trim();
+    if(s!=='Completed')return false;
+    try{const d=new Date(col(j,'📅 DATE','Date'));return d.getMonth()===m&&d.getFullYear()===y;}catch(e){return false;}
+  }).length;
+  document.getElementById('s-rev').textContent=fmt$(rev);
+  document.getElementById('s-open').textContent=open;
+  document.getElementById('s-open').style.color=open>5?'var(--red)':'var(--navy)';
+  document.getElementById('s-profit').textContent=fmt$(rev);
+  document.getElementById('s-profit').style.color=rev>=0?'var(--green)':'var(--red)';
+  document.getElementById('s-done').textContent=done;
+}
+
+function renderRecent() {
+  const el = document.getElementById('recent-list');
+  const list = [...JOBS].reverse().slice(0,5);
+  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🔧</div><p>No jobs yet. Tap ➕ New Job to start.</p></div>';return;}
+  el.innerHTML = list.map(j=>{
+    const c=col(j,'🏥 CUSTOMER NAME','Customer Name','Customer')||'Unknown';
+    const m=col(j,'🖥️ SCANNER MODEL','Scanner Model','Scanner');
+    const s=col(j,'✅ STATUS','Status')||'Open';
+    const a=numCol(j,'💰 LABOR $','Labor $','Labor');
+    return`<div class="li"><div class="li-main"><div class="li-title">${c}</div><div class="li-meta">${m}</div><div style="margin-top:5px">${statusBadge(s)}</div></div><div class="li-right">${a?`<div class="li-amt">${fmt$(a)}</div>`:''}</div></div>`;
+  }).join('');
+}
+
+// ─── JOBS ─────────────────────────────────────────────────────
+function renderJobs() {
+  const el=document.getElementById('j-list');
+  const q=($v('j-q')||'').toLowerCase();
+  let list=[...JOBS].reverse();
+  if(jf!=='all') list=list.filter(j=>col(j,'✅ STATUS','Status').trim()===jf);
+  if(q) list=list.filter(j=>JSON.stringify(j).toLowerCase().includes(q));
+  document.getElementById('jcount').textContent=list.length+' job'+(list.length!==1?'s':'');
+  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🔧</div><p>No jobs found</p></div>';return;}
+  el.innerHTML=list.map(j=>{
+    const c=col(j,'🏥 CUSTOMER NAME','Customer Name','Customer')||'Unknown';
+    const m=col(j,'🖥️ SCANNER MODEL','Scanner Model','Scanner');
+    const mfr=col(j,'🏭 MANUFACTURER','Manufacturer');
+    const s=col(j,'✅ STATUS','Status')||'Open';
+    const err=col(j,'⚠️ ERROR CODE','Error Code');
+    const a=numCol(j,'💰 LABOR $','Labor $','Labor');
+    const d=col(j,'📅 DATE','Date');
+    return`<div class="li"><div class="li-main">
+      <div class="li-title">${c}</div>
+      <div class="li-meta">${[mfr,m].filter(Boolean).join(' ')}${err?` · <code style="font-size:11px;background:#f0f0f0;padding:1px 4px;border-radius:3px">${err}</code>`:''}</div>
+      ${d?`<div class="li-meta">${d}</div>`:''}
+      <div style="margin-top:5px">${statusBadge(s)}</div>
+    </div><div class="li-right">${a?`<div class="li-amt">${fmt$(a)}</div>`:''}</div></div>`;
+  }).join('');
+}
+function setJF(f,el){jf=f;document.querySelectorAll('#j-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderJobs();}
+
+// ─── SAVE JOB ─────────────────────────────────────────────────
+function calcJob(){
+  const hrs=parseFloat(document.getElementById('nj-hrs').value)||0;
+  const rate=document.getElementById('nj-rate').value;
+  if(hrs>0){
+    document.getElementById('nj-calc').style.display='block';
+    document.getElementById('nj-tot').textContent='$'+(hrs*(rate==='After-Hours'?395:295)).toFixed(2);
+  } else document.getElementById('nj-calc').style.display='none';
+}
+
+async function saveJob(){
+  const cust=$v('nj-cust').trim();
+  const svc=$v('nj-svc');
+  if(!cust){showToast('⚠️ Enter a customer name');return;}
+  if(!svc){showToast('⚠️ Select a service type');return;}
+
+  const hrs=parseFloat($v('nj-hrs'))||0;
+  const rate=$v('nj-rate');
+  const labor=hrs*(rate==='After-Hours'?395:295);
+  const jobId=nextJobNum();
+  const tech=$v('nj-tech')||CU.name;
+
+  const row=[
+    today(),                    // A DATE
+    cust,                       // B CUSTOMER NAME
+    $v('nj-scan'),              // C SCANNER MODEL
+    $v('nj-mfr'),              // D MANUFACTURER
+    svc,                        // E SERVICE TYPE
+    $v('nj-err'),              // F ERROR CODE
+    $v('nj-sym'),              // G SYMPTOM
+    tech,                       // H TECHNICIAN
+    hrs||'',                    // I HOURS
+    rate,                       // J RATE TYPE
+    $v('nj-stat')||'Open',     // K STATUS
+    $v('nj-fix'),              // L FIX APPLIED
+    labor||'',                  // M LABOR $
+    jobId                       // N JOB ID
+  ];
+
+  if (!ACCESS_TOKEN) {
+    showToast('⚠️ Sign in with Google to save directly. PIN login is read-only.');
+    return;
+  }
+
+  showSaving('Saving job to Google Sheets...');
+  try {
+    await sheetsAppend('New Job', row);
+    hideSaving();
+    showToast('✅ Job ' + jobId + ' saved to your sheet!');
+    // clear form
+    ['nj-cust','nj-scan','nj-err','nj-sym','nj-hrs','nj-fix'].forEach(id=>document.getElementById(id).value='');
+    ['nj-mfr','nj-svc','nj-stat'].forEach(id=>document.getElementById(id).selectedIndex=0);
+    document.getElementById('nj-calc').style.display='none';
+    await loadAll();
+    go('jobs');
+  } catch(e) {
+    hideSaving();
+    if(e.message==='NOT_AUTHED') {
+      showToast('⚠️ Sign in with Google to save directly');
+    } else {
+      showToast('❌ Save failed: ' + e.message);
+    }
+  }
+}
+
+// ─── SAVE EXPENSE ─────────────────────────────────────────────
+async function saveExpense(){
+  const desc=$v('ex-desc').trim();
+  const amt=parseFloat($v('ex-amt'));
+  if(!desc){showToast('⚠️ Enter expense description');return;}
+  if(!amt||amt<=0){showToast('⚠️ Enter a valid amount');return;}
+
+  const row=[
+    today(),          // A DATE
+    desc,             // B DESCRIPTION
+    $v('ex-cat'),    // C CATEGORY
+    $v('ex-paid'),   // D PAID BY
+    amt,              // E AMOUNT
+    '',               // F RECEIPT LINK
+    $v('ex-job'),    // G JOB #
+    $v('ex-notes')   // H NOTES
+  ];
+
+  if (!ACCESS_TOKEN) {
+    showToast('⚠️ Sign in with Google to save directly');
+    return;
+  }
+
+  showSaving('Saving expense...');
+  try {
+    await sheetsAppend('New Expense', row);
+    hideSaving();
+    showToast('✅ Expense saved — $' + amt.toFixed(2));
+    ['ex-desc','ex-amt','ex-job','ex-notes'].forEach(id=>document.getElementById(id).value='');
+    ['ex-cat','ex-paid'].forEach(id=>document.getElementById(id).selectedIndex=0);
+    go('dash');
+  } catch(e) {
+    hideSaving();
+    showToast('❌ Save failed: ' + e.message);
+  }
+}
+
+// ─── KNOWLEDGE BASE ───────────────────────────────────────────
+function searchKB(q){
+  const el=document.getElementById('kb-res');
+  if(!q||q.length<2){el.innerHTML='<div class="empty"><div class="ei">🔍</div><p>Type an error code, model name, or symptom keyword above</p></div>';return;}
+  const ql=q.toLowerCase();
+  let res=KB.filter(r=>{
+    if(!JSON.stringify(r).toLowerCase().includes(ql))return false;
+    if(kbf==='all')return true;
+    if(kbf==='Critical')return col(r,'🚨 SEVERITY','Severity').includes('Critical');
+    return col(r,'🏭 MANUFACTURER','Manufacturer').includes(kbf);
+  });
+  if(!res.length){el.innerHTML='<div class="empty"><div class="ei">🤔</div><p>Not found in Knowledge Base.<br>Use Claude AI to troubleshoot, then add the fix to your KB sheet.</p></div>';return;}
+  el.innerHTML=res.slice(0,8).map(r=>{
+    const code=col(r,'⚠️ ERROR CODE','Error Code')||'?';
+    const model=col(r,'🖥️ SCANNER MODEL','Scanner Model','Scanner');
+    const mfr=col(r,'🏭 MANUFACTURER','Manufacturer');
+    const sev=col(r,'🚨 SEVERITY','Severity');
+    const sym=col(r,'📋 SYMPTOM','Symptom');
+    const fix=col(r,'✅ FIX DESCRIPTION','Fix Description','Fix');
+    const root=col(r,'🔍 ROOT CAUSE','Root Cause');
+    const parts=col(r,'🔩 PARTS NEEDED','Parts Needed');
+    const hrs=col(r,'⏱️ EST HRS','Est. Time (hrs)');
+    const img=col(r,'📷 IMAGE LINK','Image Link');
+    const man=col(r,'📄 MANUAL LINK','Manual Link');
+    return`<div class="kb-card">
+      <div class="kb-hd"><div><div class="kb-code">${code}</div><div class="kb-mdl">${mfr} ${model}</div></div>${sevBadge(sev)}</div>
+      ${sym?`<div class="kb-sec"><div class="kb-lbl">Symptom</div><div class="kb-val">${sym}</div></div>`:''}
+      ${fix?`<div class="kb-sec kb-fix"><div class="kb-lbl" style="color:#155724">✅ Fix</div><div class="kb-val" style="font-weight:600">${fix}</div></div>`:''}
+      ${root?`<div class="kb-sec"><div class="kb-lbl">Root Cause</div><div class="kb-val">${root}</div></div>`:''}
+      ${parts?`<div class="kb-sec"><div class="kb-lbl">Parts Needed</div><div class="kb-val">${parts}</div></div>`:''}
+      ${hrs?`<div class="kb-sec"><div class="kb-lbl">Est. Time</div><div class="kb-val">${hrs} hrs</div></div>`:''}
+      ${img?`<a class="kb-link" href="${img}" target="_blank">📷 View Image / Photo</a>`:''}
+      ${man?`<a class="kb-link" href="${man}" target="_blank">📄 Open Service Manual</a>`:''}
+    </div>`;
+  }).join('');
+}
+function setKBF(f,el){kbf=f;document.querySelectorAll('#kb-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');searchKB(document.getElementById('kb-q').value);}
+
+// ─── MANUALS ──────────────────────────────────────────────────
+function renderMans(){
+  const el=document.getElementById('man-list');
+  const q=($v('m-q')||'').toLowerCase();
+  let list=KB.filter(r=>col(r,'📄 MANUAL LINK','Manual Link').length>5);
+  if(q)list=list.filter(r=>JSON.stringify(r).toLowerCase().includes(q));
+  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">📄</div><p>No manuals linked yet.<br>Add manual URLs to column L in your Knowledge Base sheet.</p></div>';return;}
+  el.innerHTML=list.map(r=>{
+    const code=col(r,'⚠️ ERROR CODE','Error Code');
+    const model=col(r,'🖥️ SCANNER MODEL','Scanner Model','Scanner');
+    const mfr=col(r,'🏭 MANUFACTURER','Manufacturer');
+    const man=col(r,'📄 MANUAL LINK','Manual Link');
+    const isPDF=man.toLowerCase().includes('.pdf');
+    return`<a class="man-item" href="${man}" target="_blank">
+      <div class="man-ico">${isPDF?'📕':'🔗'}</div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:500">${mfr} ${model}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${isPDF?'PDF Manual':'Service Link'} · ${code}</div></div>
+      <span style="color:var(--blue);font-size:20px">›</span>
+    </a>`;
+  }).join('');
+}
+
+// ─── INVOICES ─────────────────────────────────────────────────
+function renderInv(){
+  const el=document.getElementById('inv-list');
+  let list=[...INV].reverse();
+  if(inf!=='all')list=list.filter(i=>col(i,'✅ STATUS','Status').trim()===inf);
+  const tot=list.reduce((s,i)=>s+numCol(i,'💰 TOTAL','Total'),0);
+  document.getElementById('inv-lbl').textContent=fmt$(tot)+' total';
+  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🧾</div><p>No invoices found</p></div>';return;}
+  el.innerHTML=list.map(i=>{
+    const num=col(i,'🧾 INVOICE #','Invoice #');
+    const c=col(i,'🏥 CUSTOMER','Customer');
+    const s=col(i,'✅ STATUS','Status')||'Unpaid';
+    const t=numCol(i,'💰 TOTAL','Total');
+    const due=col(i,'📆 DUE DATE','Due Date');
+    return`<div class="li"><div class="li-main"><div class="li-title">${num||'Invoice'}</div><div class="li-meta">${c}${due?' · Due '+due:''}</div><div style="margin-top:5px">${invBadge(s)}</div></div><div class="li-right"><div class="li-amt">${fmt$(t)}</div></div></div>`;
+  }).join('');
+}
+function setIF(f,el){inf=f;document.querySelectorAll('#s-invoices .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');renderInv();}
+
+// ─── DISTRIBUTIONS ────────────────────────────────────────────
+function renderDist(){
+  const totRev=INV.reduce((s,i)=>s+numCol(i,'💰 TOTAL','Total'),0);
+  document.getElementById('dist-sum').innerHTML=`
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="color:var(--muted)">Total Revenue</span><span class="c-g">${fmt$(totRev)}</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:14px"><span style="color:var(--muted)">Total Expenses</span><span>See sheet</span></div>
+    <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:15px;font-weight:700"><span>Revenue Total</span><span class="c-g">${fmt$(totRev)}</span></div>`;
+  const owners=[
+    {name:'Michael Jackson',  pct:.51,  label:'51% · Veteran', color:'#1a3a5c'},
+    {name:'Antonio Jackson',  pct:.245, label:'24.5%',          color:'#28a745'},
+    {name:'Candelario Juarez',pct:.245, label:'24.5%',          color:'#6f42c1'},
+  ];
+  document.getElementById('ow-cards').innerHTML=owners.map(o=>{
+    const share=totRev*o.pct, tax=share*.30, take=share-tax;
+    const ini=o.name.split(' ').map(n=>n[0]).join('').slice(0,2);
+    return`<div class="ow-card">
+      <div class="ow-hd"><div class="ow-av" style="background:${o.color}">${ini}</div><div><div style="font-size:14px;font-weight:600">${o.name}</div><div style="font-size:12px;color:var(--muted)">${o.label}</div></div></div>
+      <div class="ow-rows">
+        <div class="ow-row"><span class="ow-rl">Profit Share</span><span class="ow-rv">${fmt$(share)}</span></div>
+        <div class="ow-row"><span class="ow-rl">Tax Reserve 30%<span class="tax-pill">Set aside</span></span><span class="ow-rv c-r">${fmt$(tax)}</span></div>
+        <div class="ow-row"><span class="ow-rl">Take-Home</span><span class="ow-rv c-g">${fmt$(take)}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────
+function go(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const sc=document.getElementById('s-'+name);
+  if(sc)sc.classList.add('active');
+  const nb=document.getElementById('n-'+name);
+  if(nb)nb.classList.add('on');
+  if(name==='jobs')renderJobs();
+  if(name==='kb'){document.getElementById('kb-q').value='';document.getElementById('kb-res').innerHTML='<div class="empty"><div class="ei">🔍</div><p>Type an error code, model name, or symptom to search</p></div>';}
+  if(name==='invoices')renderInv();
+  if(name==='dist')renderDist();
+  if(name==='manuals')renderMans();
+  if(name==='dash'){renderDash();renderRecent();}
+}
+</script>
+</body>
+</html>
