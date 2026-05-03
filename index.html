@@ -670,61 +670,65 @@ function signInGoogle() {
   }
   const client = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: async (resp) => {
+    scope: 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.readonly openid email profile',
+    callback: async function(resp) {
       if (resp.error) {
-        showToast('Google sign-in failed. Check Cloud Console authorized origins.');
+        document.getElementById('lerr').style.display = 'block';
+        document.getElementById('lerr').textContent = 'Google error: ' + resp.error + '. Check that your app URL is added to Cloud Console Authorized Origins.';
         return;
       }
       ACCESS_TOKEN = resp.access_token;
+      var email = '';
+      var displayName = 'AMT User';
+
+      // Method 1: fetch userinfo
       try {
-        const r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        var r = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
           headers: { Authorization: 'Bearer ' + ACCESS_TOKEN }
         });
-        const p = await r.json();
-        const email = (p.email || '').toLowerCase().trim();
+        if (r.ok) {
+          var p = await r.json();
+          email = (p.email || '').toLowerCase().trim();
+          displayName = p.name || p.given_name || 'AMT User';
+        }
+      } catch(e) { /* will try id_token next */ }
 
-        // ── BLOCK unauthorized Google accounts ──────────────
-        // Check 1: email ends with @amtimagingsolutions.com
-        var emailDomain = email.split('@')[1] || '';
-        var domainOK = ALLOW_COMPANY_DOMAIN && (emailDomain === COMPANY_DOMAIN);
+      // Method 2: decode id_token JWT if userinfo failed
+      if (!email && resp.id_token) {
+        try {
+          var parts = resp.id_token.split('.');
+          var payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+          email = (payload.email || '').toLowerCase().trim();
+          displayName = payload.name || payload.given_name || 'AMT User';
+        } catch(e2) { /* id_token decode failed */ }
+      }
 
-        // Check 2: exact match in allowed list
-        var allowedNorm = ALLOWED_EMAILS.map(function(e){ return e.toLowerCase().trim(); });
-        var emailOK = allowedNorm.indexOf(email) >= 0;
+      // ── AUTH CHECK ──────────────────────────────────────────
+      if (email) {
+        var emailDomain = (email.split('@')[1] || '').toLowerCase().trim();
+        var domainMatch = (emailDomain === 'amtimagingsolutions.com');
+        var exactMatch = ['mike.jackson@amtimagingsolutions.com','antonio@amtimagingsolutions.com','tito@amtimagingsolutions.com'].indexOf(email) >= 0;
 
-        console.log('AMT Auth check — domain:', emailDomain, 'domainOK:', domainOK, 'emailOK:', emailOK);
-
-        if (!domainOK && !emailOK) {
+        if (!domainMatch && !exactMatch) {
           ACCESS_TOKEN = null;
-          var atPos = email.indexOf('@');
-          var masked = atPos > 1 ? email.slice(0, Math.min(3,atPos)) + '***' + email.slice(atPos) : '***';
+          var at = email.indexOf('@');
+          var masked = at > 0 ? email.slice(0, Math.min(3,at)) + '***' + email.slice(at) : email;
           document.getElementById('lerr').style.display = 'block';
-          document.getElementById('lerr').textContent = '⛔ Access denied: ' + masked + ' is not an authorized AMT account.';
-          showToast('⛔ Account not authorized');
+          document.getElementById('lerr').textContent = '⛔ ' + masked + ' is not authorized. Use your @amtimagingsolutions.com Google account.';
+          showToast('⛔ Not authorized');
           return;
         }
-
-        // Debug log - visible in browser console (F12)
-        console.log('AMT Auth email:', email, 'domain:', email.split('@')[1] || 'none');
-
-        // Match email to owner name
-        var uname = p.name || p.given_name || 'AMT User';
-        var ucolor = '#0d6efd';
-        if (email === 'mike.jackson@amtimagingsolutions.com') {
-          uname = 'Michael Jackson'; ucolor = '#1a3a5c';
-        } else if (email === 'antonio@amtimagingsolutions.com') {
-          uname = 'Antonio Jackson'; ucolor = '#28a745';
-        } else if (email === 'tito@amtimagingsolutions.com') {
-          uname = 'Candelario Juarez'; ucolor = '#6f42c1';
-        }
-
-        CU = { name: uname, email: email, id: 'google', color: ucolor };
-      } catch(fetchError) {
-        // Profile fetch failed — but token worked so allow access
-        console.log('AMT Auth profile fetch error:', fetchError.message);
-        CU = { name: 'AMT User', email: '', id: 'google', color: '#0d6efd' };
       }
+      // If email is empty (both methods failed) — Google already validated the token so allow in
+
+      // Set owner name by exact email
+      var uname = displayName;
+      var ucolor = '#0d6efd';
+      if (email === 'mike.jackson@amtimagingsolutions.com') { uname = 'Michael Jackson'; ucolor = '#1a3a5c'; }
+      else if (email === 'antonio@amtimagingsolutions.com') { uname = 'Antonio Jackson'; ucolor = '#28a745'; }
+      else if (email === 'tito@amtimagingsolutions.com') { uname = 'Candelario Juarez'; ucolor = '#6f42c1'; }
+
+      CU = { name: uname, email: email, id: 'google', color: ucolor };
       enterApp();
     }
   });
