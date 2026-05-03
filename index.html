@@ -1007,13 +1007,21 @@ function renderMans() {
   el.innerHTML = allFiles.map(f => {
     const icon = fileIcon(f.type);
     const label = fileLabel(f.type);
+    const isHtm = f.type === 'htm';
+    // HTM files from Drive open as raw code — force download instead
+    const openUrl = isHtm && f.url && f.url.includes('drive.google.com')
+      ? f.url.replace('/view?usp=drivesdk','').replace('/view','') + (f.url.includes('?') ? '&' : '?') + 'export=download'
+      : f.url;
+    const htmBadge = isHtm
+      ? ' <span style="font-size:10px;background:#fff3cd;color:#856404;padding:1px 5px;border-radius:8px;font-weight:600">⬇ Tap to Download</span>'
+      : '';
     const sourceBadge = f.source === 'drive'
       ? '<span style="font-size:10px;background:#e7f3ff;color:#0d6efd;padding:1px 5px;border-radius:10px;font-weight:600">Drive</span>'
       : '<span style="font-size:10px;background:#f0f4f8;color:#6b7280;padding:1px 5px;border-radius:10px;font-weight:600">KB Link</span>';
-    return `<a class="drive-item" href="${f.url}" target="_blank">
+    return `<a class="drive-item" href="${openUrl}" target="_blank">
       <div class="drive-ico ${f.type}">${icon}</div>
       <div style="flex:1;min-width:0">
-        <div class="drive-name">${f.name}</div>
+        <div class="drive-name">${f.name}${htmBadge}</div>
         <div class="drive-type">${label} ${sourceBadge}</div>
       </div>
       <span style="color:var(--blue);font-size:20px;flex-shrink:0">›</span>
@@ -1089,9 +1097,12 @@ function searchAll(q) {
     html += `<div class="card">` + driveResults.slice(0,8).map(f => {
       const type = getFileType(f.mimeType, f.name);
       const url = f.webViewLink || f.webContentLink || '';
-      return `<a class="drive-item" href="${url}" target="_blank">
+      const isHtmFile = type === 'htm';
+      const openUrl = isHtmFile ? (url || '').replace('/view','') + '&export=download' : url;
+      const htmBadge = isHtmFile ? ' <span style="font-size:10px;background:#fff3cd;color:#856404;padding:1px 5px;border-radius:8px">⬇ Download</span>' : '';
+      return `<a class="drive-item" href="${openUrl}" target="_blank">
         <div class="drive-ico ${type}">${fileIcon(type)}</div>
-        <div style="flex:1;min-width:0"><div class="drive-name">${f.name}</div><div class="drive-type">${fileLabel(type)}</div></div>
+        <div style="flex:1;min-width:0"><div class="drive-name">${f.name}${htmBadge}</div><div class="drive-type">${fileLabel(type)}</div></div>
         <span style="color:var(--blue);font-size:20px">›</span>
       </a>`;
     }).join('') + `</div>`;
@@ -1197,6 +1208,9 @@ function searchAll(q) {
       '</div>';
     }).join('') + '</div>';
   }
+
+  // Search GE Error Code database (14,313 codes)
+  const geResults = searchGEErrors(q);
 
   // Add GE Error Tool results if any
   if (geResults.length > 0) {
