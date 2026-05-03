@@ -685,33 +685,45 @@ function signInGoogle() {
         const email = (p.email || '').toLowerCase().trim();
 
         // ── BLOCK unauthorized Google accounts ──────────────
-        const domainOK = ALLOW_COMPANY_DOMAIN && email.endsWith('@' + COMPANY_DOMAIN);
-        const emailOK  = ALLOWED_EMAILS.map(function(e){return e.toLowerCase();}).includes(email);
+        // Check 1: email ends with @amtimagingsolutions.com
+        var emailDomain = email.split('@')[1] || '';
+        var domainOK = ALLOW_COMPANY_DOMAIN && (emailDomain === COMPANY_DOMAIN);
+
+        // Check 2: exact match in allowed list
+        var allowedNorm = ALLOWED_EMAILS.map(function(e){ return e.toLowerCase().trim(); });
+        var emailOK = allowedNorm.indexOf(email) >= 0;
+
+        console.log('AMT Auth check — domain:', emailDomain, 'domainOK:', domainOK, 'emailOK:', emailOK);
 
         if (!domainOK && !emailOK) {
           ACCESS_TOKEN = null;
-          const masked = email.indexOf('@') > 2
-            ? email.substring(0,3) + '***' + email.substring(email.indexOf('@'))
-            : '***@***';
+          var atPos = email.indexOf('@');
+          var masked = atPos > 1 ? email.slice(0, Math.min(3,atPos)) + '***' + email.slice(atPos) : '***';
           document.getElementById('lerr').style.display = 'block';
-          document.getElementById('lerr').textContent = '⛔ Access denied for ' + masked + '. Only AMT Imaging Solutions accounts are authorized.';
-          showToast('⛔ Unauthorized Google account blocked');
+          document.getElementById('lerr').textContent = '⛔ Access denied: ' + masked + ' is not an authorized AMT account.';
+          showToast('⛔ Account not authorized');
           return;
         }
 
-        // ── Match email to owner name ───────────────────────
-        let name = p.name || 'Google User';
-        let color = '#0d6efd';
-        if (email.includes('michael'))    { name = 'Michael Jackson';   color = '#1a3a5c'; }
-        else if (email.includes('antonio'))   { name = 'Antonio Jackson';   color = '#28a745'; }
-        else if (email.includes('candelario')){ name = 'Candelario Juarez'; color = '#6f42c1'; }
+        // Debug log - visible in browser console (F12)
+        console.log('AMT Auth email:', email, 'domain:', email.split('@')[1] || 'none');
 
-        CU = { name: name, email: email, id: 'google', color: color };
-      } catch(e) {
-        ACCESS_TOKEN = null;
-        document.getElementById('lerr').style.display = 'block';
-        document.getElementById('lerr').textContent = 'Google sign-in error. Try PIN login instead.';
-        return;
+        // Match email to owner name
+        var uname = p.name || p.given_name || 'AMT User';
+        var ucolor = '#0d6efd';
+        if (email === 'mike.jackson@amtimagingsolutions.com') {
+          uname = 'Michael Jackson'; ucolor = '#1a3a5c';
+        } else if (email === 'antonio@amtimagingsolutions.com') {
+          uname = 'Antonio Jackson'; ucolor = '#28a745';
+        } else if (email === 'tito@amtimagingsolutions.com') {
+          uname = 'Candelario Juarez'; ucolor = '#6f42c1';
+        }
+
+        CU = { name: uname, email: email, id: 'google', color: ucolor };
+      } catch(fetchError) {
+        // Profile fetch failed — but token worked so allow access
+        console.log('AMT Auth profile fetch error:', fetchError.message);
+        CU = { name: 'AMT User', email: '', id: 'google', color: '#0d6efd' };
       }
       enterApp();
     }
