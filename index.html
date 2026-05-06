@@ -328,7 +328,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
       <div class="sec-lbl">Service Details</div>
       <div class="form-row">
         <div class="field"><label>Service Type</label>
-          <select id="nj-svc"><option value="">Select...</option><option>MRI PM</option><option>MRI Repair</option><option>MRI Calibration</option><option>MRI Injector PM</option><option>MRI Injector Repair</option><option>CT PM</option><option>CT Repair</option><option>Emergency Call</option><option>Consultation</option></select>
+          <select id="nj-svc" onchange="checkPMBanner()"><option value="">Select...</option><option>MRI PM</option><option>MRI Repair</option><option>MRI Calibration</option><option>MRI Injector PM</option><option>MRI Injector Repair</option><option>CT PM</option><option>CT Repair</option><option>Emergency Call</option><option>Consultation</option></select>
         </div>
         <div class="field"><label>Error Code</label><input type="text" id="nj-err" placeholder="e.g. E-001"></div>
       </div>
@@ -352,6 +352,10 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
       <div class="calc-box" id="nj-calc" style="display:none">
         <span style="color:var(--muted)">Estimated labor: </span>
         <strong id="nj-tot" style="font-size:18px;color:var(--navy)"></strong>
+      </div>
+      <div id="nj-pm-banner" style="display:none;background:#e8f4ff;border-radius:10px;padding:11px 14px;border:1.5px solid #0d6efd;margin-top:8px">
+        <div style="font-size:13px;font-weight:600;color:#1a3a5c;margin-bottom:6px">📋 PM job detected — open checklist now?</div>
+        <button onclick="launchPMFromJob()" style="width:100%;padding:10px;background:#0d6efd;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Open PM Checklist →</button>
       </div>
     </div></div>
   </div>
@@ -1430,6 +1434,8 @@ function searchAll(q) {
     html += '<div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;padding:8px 2px 6px">GE MRI Error Database (' + geResults.length + ' match' + (geResults.length!==1?'es':'') + ')</div>';
     html += geResults.map(function(r) {
       const isExact = r.exact;
+      // Build relevant manual links based on code range / name keywords
+      const manualLinks = getGEManualLinks(r.code, r.name);
       return '<div class="kb-card">' +
         '<div class="kb-hd" style="background:' + (isExact?'#1a3a5c':'#2c5282') + '">' +
           '<div><div class="kb-code">GE #' + r.code + '</div>' +
@@ -1437,7 +1443,9 @@ function searchAll(q) {
           (isExact ? '<span class="badge b-done">Exact Match</span>' : '') +
         '</div>' +
         '<div class="kb-sec"><div class="kb-lbl">Description</div><div class="kb-val">' + (r.desc||'No description available') + '</div></div>' +
-        (GE_TOOL_DRIVE_URL !== 'PASTE_GE_TOOL_DRIVE_LINK_HERE' ? '<a class="kb-link" href="' + GE_TOOL_DRIVE_URL + '" target="_blank">📄 Open Full GE Error Tool (all details)</a>' : '<div class="kb-sec" style="background:#fff3cd"><div class="kb-lbl" style="color:#856404">To open full tool</div><div class="kb-val" style="color:#856404;font-size:12px">Get shareable Drive link for Error_Message_Tool.html and paste into app code</div></div>') +
+        (r.fix ? '<div class="kb-sec kb-fix"><div class="kb-lbl" style="color:#155724">Extended Info</div><div class="kb-val">' + r.fix + '</div></div>' : '') +
+        (manualLinks.length ? '<div class="kb-sec" style="background:#f0f7ff"><div class="kb-lbl" style="color:#0d6efd">📚 Relevant Manuals</div>' + manualLinks.map(function(m){return '<a class="kb-link" href="'+m.url+'" target="_blank">'+m.icon+' '+m.label+'</a>';}).join('') + '</div>' : '') +
+        (GE_TOOL_DRIVE_URL !== 'PASTE_GE_TOOL_DRIVE_LINK_HERE' ? '<a class="kb-link" href="' + GE_TOOL_DRIVE_URL + '" target="_blank">📄 Open Full GE Error Tool</a>' : '') +
       '</div>';
     }).join('');
   }
@@ -1446,6 +1454,37 @@ function searchAll(q) {
 }
 
 function setKBF(f,el){kbf=f;document.querySelectorAll('#kb-chips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');searchAll(document.getElementById('kb-q').value);}
+
+// ─── MANUAL LINKS FROM ERROR CODE ─────────────────────────────
+// Maps GE error code keywords/ranges to GitHub Pages manual URLs
+const GE_MANUAL_MAP = [
+  {match:/hdxt|excite|15x/i,  label:'Signa EXCITE HDxt 15x',  path:'Manuals/GE/Signa Excite HDxt 15x'},
+  {match:/excite.*1\.5|1\.5.*excite|signa.*1\.5|12x.*1/i, label:'Signa EXCITE 1.5T 12x', path:'Manuals/GE/Signa Excite 1.5T 12x'},
+  {match:/excite.*3t|3t.*excite|12x.*3/i, label:'Signa EXCITE 3T 12x', path:'Manuals/GE/Signa Excite 3T 12x'},
+  {match:/discovery.*750w|750w/i, label:'Discovery 750w', path:'Manuals/GE/Discovery 750w'},
+  {match:/discovery.*750[^w]|750[^w]/i, label:'Discovery 750', path:'Manuals/GE/Discovery 750'},
+  {match:/discovery.*450|optima.*450/i, label:'Discovery / Optima 450', path:'Manuals/GE/Discovery 450'},
+  {match:/optima.*450w/i, label:'Optima 450w', path:'Manuals/GE/Optima 450w'},
+  {match:/lx|9x|platform/i, label:'LX 9X Platform', path:'Manuals/GE/LX 9X Platform'},
+  {match:/artist.*evo|evo/i, label:'Artist EVO', path:'Manuals/GE/Artist EVO'},
+  {match:/creator|explorer|star|aviator/i, label:'Signa Creator/Explorer/Star/Aviator', path:'Manuals/GE/Sign Creator,Explorer,Star,Aviator'},
+];
+
+function getGEManualLinks(code, name) {
+  const links = [];
+  const combined = (code + ' ' + name).toLowerCase();
+  GE_MANUAL_MAP.forEach(function(entry){
+    if(entry.match.test(combined)){
+      const url = GH_PAGES + '/' + entry.path;
+      links.push({url: url, label: entry.label, icon: '📖'});
+    }
+  });
+  // Always add a "Browse all GE manuals" fallback link
+  if(links.length === 0){
+    links.push({url: GH_PAGES + '/Manuals/GE', label: 'Browse all GE Manuals', icon: '📁'});
+  }
+  return links;
+}
 
 // ─── DASHBOARD ────────────────────────────────────────────────
 function renderDash() {
@@ -1507,6 +1546,39 @@ function calcJob(){
   const rate=document.getElementById('nj-rate').value;
   if(hrs>0){document.getElementById('nj-calc').style.display='block';document.getElementById('nj-tot').textContent='$'+(hrs*(rate==='After-Hours'?395:295)).toFixed(2);}
   else document.getElementById('nj-calc').style.display='none';
+}
+
+function checkPMBanner(){
+  const svc=$v('nj-svc');
+  const isPM = svc.toUpperCase().includes('PM');
+  document.getElementById('nj-pm-banner').style.display = isPM ? 'block' : 'none';
+}
+
+function launchPMFromJob(){
+  const svc   = $v('nj-svc');
+  const mfr   = $v('nj-mfr');
+  const cust  = $v('nj-cust');
+  const scan  = $v('nj-scan');
+  const eng   = $v('nj-tech') || (CU ? CU.name : '');
+  const wo    = '';
+  // Route to correct checklist
+  var clId = 'geMRI'; // default
+  const svcUp = svc.toUpperCase();
+  if(svcUp.includes('CT PM')) clId = (mfr.toLowerCase().includes('siemens') ? 'siemensCT' : 'geCT');
+  else if(svcUp.includes('INJECTOR PM')) clId = 'stellant';
+  else if(svcUp.includes('MRI PM')) clId = (mfr.toLowerCase().includes('siemens') ? 'siemensMRI' : 'geMRI');
+  // Pre-fill header fields
+  pmActiveChecklist = clId;
+  pmActiveQ = 0;
+  if(!pmStateData[clId]) pmStateData[clId]={hdr:{},tasks:{},meas:{},aging:{},notes:'',followup:'',sig:'',sigdate:''};
+  pmStateData[clId].hdr.date   = new Date().toISOString().split('T')[0];
+  pmStateData[clId].hdr.site   = pmStateData[clId].hdr.site || cust;
+  pmStateData[clId].hdr.eng    = pmStateData[clId].hdr.eng || eng;
+  pmStateData[clId].hdr.customer = pmStateData[clId].hdr.customer || cust;
+  // Also set common field names used across checklists
+  ['facility','site'].forEach(f=>{ if(!pmStateData[clId].hdr[f]) pmStateData[clId].hdr[f] = cust; });
+  pmInList = false;
+  go('pmhub');
 }
 
 async function saveJob(){
@@ -2411,9 +2483,13 @@ var PM_CL = {
 };
 
 function renderPMHub() {
-  pmInList = true;
   document.getElementById('pmhub-title').textContent = 'PM Checklists';
   document.getElementById('pmhub-back').onclick = function(){ go('dash'); };
+  if(!pmInList && pmActiveChecklist){
+    renderPMCLPage();
+    return;
+  }
+  pmInList = true;
   document.getElementById('pmhub-body').innerHTML = `
     <div style="font-size:13px;color:#888;margin-bottom:14px">Select a checklist to begin your PM.</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
