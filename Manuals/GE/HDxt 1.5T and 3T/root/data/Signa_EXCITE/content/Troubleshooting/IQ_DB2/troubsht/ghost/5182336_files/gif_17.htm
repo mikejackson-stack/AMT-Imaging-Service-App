@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+5182336
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="gif_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+	if(parent.isUpLevel)
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+
+<script type="text/jscript" language="jscript">
+
+var pageID = 23;
+
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = 0.290434;
+	viewMgr.visBBoxRight = 10.817500;
+	viewMgr.visBBoxBottom = 0.261107;
+	viewMgr.visBBoxTop = 8.291666;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF">
+
+<div id=arrowdiv style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+<DIV id=RasterDiv>
+
+
+<center>
+  <IMG id="ConvertedImage" SRC="gif_17.gif" ALT="Appendix-SPT" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="Check out the “SPT Rules of Thumb”  Click here for Stability..." origTitle="Check out the “SPT Rules of Thumb”  Click here for Stability..." TITLE="Check out the “SPT Rules of Thumb”  Click here for Stability..." HREF="..%5C..%5Cshading%5CStabilityRules.pdf" target="_top" COORDS=" 236,518 343,518 343,404 236,404 236,518" onmouseover="UpdateTooltip(this,23,10)" onfocus="UpdateTooltip(this,23,10)" onclick="return OnShapeClick(23,10);" onkeyup="OnShapeKey(23,10);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Run first pass of SPT on both HEAD and BODY Coils" origTitle="Run first pass of SPT on both HEAD and BODY Coils" TITLE="Run first pass of SPT on both HEAD and BODY Coils" HREF="..%5C..%5C..%5C..%5C..%5C496818.htm" target="_top" COORDS=" 155,208 131,208 37,208 37,209 34,209 34,242 203,242 203,225 204,225 204,208 155,208" onmouseover="UpdateTooltip(this,23,4)" onfocus="UpdateTooltip(this,23,4)" onclick="return OnShapeClick(23,4);" onkeyup="OnShapeKey(23,4);">
+  <AREA shape="POLYGON" tabindex="1" ALT="SPT Check (page 3)" origTitle="SPT Check (page 3)" TITLE="SPT Check (page 3)" HREF="gif_3.htm" target="frmDrawing" COORDS=" 6,69 39,52 72,69 72,3 6,3 6,69" onmouseover="UpdateTooltip(this,23,3)" onfocus="UpdateTooltip(this,23,3)" onclick="return OnShapeClick(23,3);" onkeyup="OnShapeKey(23,3);">
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>
+

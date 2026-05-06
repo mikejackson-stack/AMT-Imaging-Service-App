@@ -1,0 +1,65 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VRE Troubleshooting Tips </TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;8/19/08</P></td></tr></table><H1 ID="top">VRE Troubleshooting Tips  </H1><P CLASS="descriptive">The sections below document helpful troubleshooting information
+for the following areas:</P><UL><LI CLASS="bulletlist"><P>ICN On/Off Procedure (see <A HREF="1060950.htm#SL1982736-1060950">Section&nbsp;1</A>)</P></LI><LI CLASS="bulletlist"><P>ICN Connections (see <A HREF="1060950.htm#SL1982771-1060950">Section&nbsp;2</A>)</P></LI><LI CLASS="bulletlist"><P>ICN Software (see <A HREF="1060950.htm#SL1982758-1060950">Section&nbsp;3</A>)</P></LI><LI CLASS="bulletlist"><P>Power Failure (see <A HREF="1060950.htm#SL1982793-1060950">Section&nbsp;4</A>)</P></LI><LI CLASS="bulletlist"><P>IP Address Changes and VRE ICN Reconfiguration (see <A HREF="1060950.htm#SL1982798-1060950">Section&nbsp;5</A>)</P></LI></UL><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1982736-1060950">1&nbsp;&nbsp;ICN On/Off Procedure:<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Assuming that all the Ethernet connections
+on the ICNs and GOC are correctly wired, the ICNs switch <B>ON</B> automatically when the HP GOC is switched <B>ON</B>.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e63"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The ICNs do not turn <B>ON</B> until the
+system reaches the login prompt. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Assuming that all the Ethernet connections
+on the ICNs and GOC are correctly wired, the ICNs switch <B>OFF</B> automatically when the HP computer is switched <B>OFF</B> in a orderly fashion via the software. </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e78"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Turning <B>OFF</B> the HP computer by
+just switching <B>OFF</B> power to the HP computer
+or GOC will not shut down the ICNs. The software running on the HP
+computer must be brought down orderly in order to effect the ICNs.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e87"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">There is a steady green light on the front of the ICNs
+that indicates power <B>ON</B> when the light is shinning,
+and power <B>OFF</B> if the light is blinking. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P><DIV CLASS="ILLUSTRATION" id="SL1982747-1060950"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Front of ICNs - Power On Light</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1060950-1061341.jpg" BORDER="0" usemap="#SL1982727-1060950"></P></DIV></P></LI><LI CLASS="numlist"><P>If the HP GOC is locked up or dead,
+and you want to power off the ICNs, you can bring the ICNs down manually
+as follows:</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e105"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This is not the recommended solution. Please perform this
+step only if no other option is available.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><UL><LI CLASS="bulletlist"><P>A <B>MOMENTARY</B> press
+of the power button on the ICNs will bring the ICN OS down cleanly
+and shut off power to the ICN. There is a delay of 30 seconds after
+pushing the power button before the shutdown begins.  Wait for 3 minutes
+to see if the ICNs shut off after closing all of its files. </P></LI><LI CLASS="bulletlist"><P>If after 3 minutes the ICN has not
+shut down, hold the power button down on the ICNs until it powers
+down. This overrides the ICN OS and forces a shut down. </P></LI></UL><P>When you bring up a working GOC, the ICNs should
+then turn back on.</P></LI></OL><P CLASS="sect1">Please go to <SPAN CLASS="MODULEREF"><A HREF="1054787.htm#SL636156-1054787"><I>ICN Power On/Off Procedure</I></A></SPAN> for more information.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1982771-1060950">2&nbsp;&nbsp; ICN Connections:<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Each ICN must have three connections to the Ethernet switch.
+If viewed from the top, two connections are on the right hand side
+and one on the left. The left connection is to the diagnostics port.
+Through this port the Firmware gets loaded into the ICN. </P><DIV CLASS="ILLUSTRATION" id="SL1982787-1060950"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Rear View of ICN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1060950-1061037.jpg" BORDER="0" usemap="#SL2199251-1060950"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1982758-1060950">3&nbsp;&nbsp;ICN Software<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>When loading software, after the FE
+selects the number of ICNs, the system detects the number of ICNs
+it sees and throws an error if the number of ICNs detected DO NOT
+match the numbber of ICNs selected. The FE  must physically check
+the number of ICNs present in the PGR cabinet to ensure the number
+matches the number the system detects.</P><OL TYPE="a"><LI CLASS="numlist"><P>If the system sees more ICNs than what
+is selected by the FE, we need to switch off the CAM Chassis, load
+the OS, and switch it &#8220;ON&#8221;. The number of ICNs will then
+match and the FE can continue with the software load. </P></LI><LI CLASS="numlist"><P>If the system sees less ICNs than what
+is selected by the FE, check the power to the ICNs by looking at all
+of the ICNs&#8217; IPMI cables (leftmost Ethernet connection when
+facing the back of the ICN). Make sure it is properly seated on both
+ends. Try swapping Ethernet cables or try another port on the Ethernet
+switch before checking for a defective ICN. </P></LI></OL></LI><LI CLASS="numlist"><P>After the OS loads onto the ICNs, the
+system displays the number of ICNs loaded. For example, in a 2 ICN
+system, the system will mention that 2 ICNs are loaded.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e153"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">After the ICN OS load, a connection error reported from
+the Infiniband Board is normal. Software will prompt FE to acknowledge.
+ </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Even though the OS on the ICNs is loaded
+successfully, the green LED on the ICN will blink until the TPS reset
+is complete. </P></LI><LI CLASS="numlist"><P>During boot up, if the CAM Chassis
+has boot problems (hardware or software), you will get a host communication
+time out error. It will not specify CAM issues. </P><P>The first thing to do is to try and ping the APS, AGP, SCP ["ping
+APS", "ping AGP", "ping SCP"], and the term server. If successful,
+do the mgd_term to watch boot errors when the CAM chassis is recycled.</P></LI><LI CLASS="numlist"><P>When the ICN/s are not recognized and
+the green LED is "OFF&#8221;, do NOT pull out the ICN, take out the
+cables, or tamper with the hardware. </P><P>Instead, note the MAC address of the ICNs that does NOT have
+the LEDs ON, and switch them OFF. Refer to the <SPAN CLASS="MODULEREF"><A HREF="1054787.htm#SL636156-1054787"><I>ICN On/Off
+Procedure</I></A></SPAN>.</P><P>Another good source of ICN replacement information is found
+in the <SPAN CLASS="MODULEREF"><A HREF="1057478.htm#SL507373-1057478"><I>ICN Replacements</I></A></SPAN> procedure.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1982793-1060950">4&nbsp;&nbsp;Power Failure<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"> In the event of a power outage, go through the normal power
+up procedure from the GOC. If one of the ICNs does not power on, follow
+the following steps:</P><UL><LI CLASS="bulletlist"><P>Try to reload the ICN OS using the
+normal procedure from the Service Desktop.</P></LI><LI CLASS="bulletlist"><P>If there are discrepancies in the number
+of ICNs configured and the numbers detected, follow <A HREF="1060950.htm#SL1982736-1060950">Section&nbsp;1</A>. </P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1982798-1060950">5&nbsp;&nbsp;IP Address Changes and VRE ICN Reconfiguration<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">It is important during new installations and upgrades to ensure
+that your IP addresses are up-to-date (both Host IP and CAM IP). If
+any changes have been made to an IP address, you <SPAN CLASS="GUILABEL"><I>must </I></SPAN><SPAN CLASS="MODULEREF"><A HREF="1060952.htm#SL637027-1060952"><I>Reconfigure the ICN</I></A></SPAN>.</P><P CLASS="sect1">Problems that can occur: </P><UL><LI CLASS="bulletlist"><P>During application startup, an ICN
+may not successfully initiate and TPS Reset failures will occur if
+the ICN has not been reconfigured since the last IP address change.</P></LI><LI CLASS="bulletlist"><P>Changing the host's IP address or the
+CAM's IP address without performing the <SPAN CLASS="MODULEREF"><A HREF="1060952.htm#SL637027-1060952"><I>ICN Reconfiguration</I></A></SPAN> procedure leaves the VRE
+configuration files with information pertaining to the old IP addresses.</P></LI></UL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -1,0 +1,193 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" 
+ xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>5182010 revC</title>
+<style type="text/css">
+	 v\:* { behavior: url(#default#VML); }
+</style>
+
+<script src="vml_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+
+	var pageID = 6;
+	var viewMgr = null;
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+	function getPNZ()
+	{
+		var rawHTML = VMLDiv.innerHTML;
+		var strReturn = ""
+		
+		strReturn = rawHTML.slice( rawHTML.indexOf( '<v:group' ), rawHTML.indexOf( "</v:shape>" ) );
+		strReturn += "</v:shape></v:group>\n";
+				
+		return strReturn;
+	}
+	
+	function load()
+	{
+		viewMgr = new parent.CViewMgr("ConvertedImage", "arrowDiv");
+
+		viewMgr.put_Location = ViewMgrSetVMLLocation;
+
+
+		viewMgr.visBBoxLeft = 0.248333;
+		viewMgr.visBBoxRight = 10.751667;
+		viewMgr.visBBoxBottom = 0.202081;
+		viewMgr.visBBoxTop = 8.229166;
+
+		viewMgr.Zoom = VMLZoomChange;
+		viewMgr.setView= VMLSetView;
+
+		viewMgr.SupportsDetails = true;
+		viewMgr.SupportsSearch = true;
+
+		parent.viewMgr = viewMgr;
+
+		fit();
+	}
+
+	function unload()
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+
+	function fit()
+	{
+		if(parent.frmToolbar)
+		{
+			if (parent.g_WidgetsLoaded)
+			{
+				var zoom100 = parent.frmToolbar.document.all('a100');
+				if (zoom100)
+				{
+					parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+					zoom100.click();
+				}
+				else
+				{
+					parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+					viewMgr.Zoom(100);
+				}
+			}
+			else
+			{
+				window.setTimeout("fit()", 500);
+			}
+		}	
+		else
+		{
+			parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+			viewMgr.Zoom(100);
+		}
+	}
+
+	function PostZoomProcessing (newZoomLevel)
+	{
+		parent.viewMgr.PostZoomProcessing = null;
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.viewMgr.getPNZ = getPNZ;
+		parent.CurPageUpdate (pageIndex);
+	}
+
+
+	
+	var isUpLevel = parent.isUpLevel;
+	var OnShapeClick = parent.OnShapeClick;
+	var OnShapeKey = parent.OnShapeKey;
+	var UpdateTooltip = parent.UpdateTooltip;
+	var clickMenu = parent.clickMenu;
+	var toggleMenuDiv = parent.toggleMenuDiv;
+	var toggleMenuLink = parent.toggleMenuLink;
+	var GoToPage = parent.GoToPage;
+
+	window.onload = load;
+	window.onunload = unload;
+	document.onclick = clickMenu;
+
+
+
+
+</script>
+
+</head>
+
+<body style="MARGIN:10px" onresize="VMLOnResize();" onscroll="VMLOnScroll();">
+
+<div id="arrowdiv" style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+
+
+
+<div id="VMLDiv" >
+
+
+<v:group  id="ConvertedImage" style="width:5.233946in;height:4.000000in;position:absolute;visibility=hidden;" coordSize="2617,2000" coordOrigin="-1000,-1000" >
+
+<v:shapetype 
+  id="VISSHAPE"
+  target="_parent"
+  coordsize="2617,2000"
+  coordorigin="-1000,-1000"
+  stroked="f"
+  strokecolor="red"
+  filled="t"
+>
+<v:fill opacity="0.0"/>
+</v:shapetype>
+
+
+<v:shape style="top:-1000.0;left:-1000.0;width:2617.0;height:2000.0;position:absolute" coordSize="2617,2000" coordOrigin="-1000,-1000" >
+<v:imagedata src="vml_1.emz"/>
+</v:shape>
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Room    Noise?  (Page 14)" origTitle="Room    Noise?  (Page 14)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 776,441 l 858,379 l 752,300 l 752,299 l 751,299 l 685,250 l 512,379 l 594,441 l 594,454 l 608,454 l 611,454 l 685,509 l 759,454 l 762,454 l 776,454 l 776,441xe" onmouseover="UpdateTooltip(this,6,2)" onclick="OnShapeClick(6,2)" onfocus="UpdateTooltip(this,6,2);" onkeyup="OnShapeKey(6,2)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Spikes  w/o Rcv. Coil?  (Page 13)" origTitle="Spikes  w/o Rcv. Coil?  (Page 13)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 275,441 l 325,404 l 328,404 l 328,402 l 351,385 l 328,368 l 328,348 l 302,348 l 258,315 l 258,299 l 236,299 l 186,261 l 136,299 l 122,299 l 122,309 l 70,348 l 52,348 l 52,361 l 21,385 l 93,439 l 93,454 l 107,454 l 113,454 l 186,508 l 259,454 l 261,454 l 275,454 l 275,441xe" onmouseover="UpdateTooltip(this,6,22)" onclick="OnShapeClick(6,22)" onfocus="UpdateTooltip(this,6,22);" onkeyup="OnShapeKey(6,22)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Tear  Down? (Page 12)" origTitle="Tear  Down? (Page 12)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 1260,-201 l 1340,-260 l 1169,-385 l 998,-260 l 1078,-201 l 1078,-185 l 1092,-185 l 1100,-185 l 1169,-134 l 1238,-185 l 1246,-185 l 1260,-185 l 1260,-201xe" onmouseover="UpdateTooltip(this,6,23)" onclick="OnShapeClick(6,23)" onfocus="UpdateTooltip(this,6,23);" onkeyup="OnShapeKey(6,23)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Spikes w/  No Gradients? (Page 4)" origTitle="Spikes w/  No Gradients? (Page 4)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m -246,116 l -249,116 l -323,62 l -396,116 l -411,116 l -411,128 l -504,197 l -323,333 l -142,197 l -223,136 l -223,116 l -246,116xe" onmouseover="UpdateTooltip(this,6,24)" onclick="OnShapeClick(6,24)" onfocus="UpdateTooltip(this,6,24);" onkeyup="OnShapeKey(6,24)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Noise  from Outside the Bore? (Page 9)" origTitle="Noise  from Outside the Bore? (Page 9)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 757,-185 l 853,-257 l 813,-287 l 813,-313 l 778,-313 l 730,-349 l 730,-362 l 712,-362 l 677,-388 l 643,-362 l 624,-362 l 624,-349 l 576,-313 l 553,-313 l 553,-295 l 502,-257 l 598,-185 l 598,-157 l 612,-157 l 634,-157 l 677,-125 l 720,-157 l 743,-157 l 757,-157 l 757,-185xe" onmouseover="UpdateTooltip(this,6,25)" onclick="OnShapeClick(6,25)" onfocus="UpdateTooltip(this,6,25);" onkeyup="OnShapeKey(6,25)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="* If epiwp test begins passing at any time in the flow chart,..." origTitle="* If epiwp test begins passing at any time in the flow chart,..."  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 383,927 l 1225,927 l 1225,814 l -552,814 l -552,799 l -577,799 l -577,814 l -577,877 l -577,883 l -577,927 l -577,933 l 372,933 l 383,933 l 383,927xe" onmouseover="UpdateTooltip(this,6,33)" onclick="OnShapeClick(6,33)" onfocus="UpdateTooltip(this,6,33);" onkeyup="OnShapeKey(6,33)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Axis Dependant?  (Page 5)" origTitle="Axis Dependant?  (Page 5)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 265,-193 l 351,-257 l 310,-288 l 310,-288 l 309,-288 l 186,-381 l 21,-257 l 107,-193 l 107,-183 l 120,-183 l 120,-183 l 186,-134 l 251,-183 l 252,-183 l 265,-183 l 265,-193xe" onmouseover="UpdateTooltip(this,6,7)" onclick="OnShapeClick(6,7)" onfocus="UpdateTooltip(this,6,7);" onkeyup="OnShapeKey(6,7)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Procedure and Theory  for Troubleshooting  using EPIWP..." origTitle="Procedure and Theory  for Troubleshooting  using EPIWP..."  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m -533,-455 l -533,-456 l -534,-458 l -534,-459 l -535,-460 l -536,-461 l -537,-462 l -537,-463 l -538,-464 l -539,-465 l -540,-466 l -541,-467 l -542,-468 l -543,-468 l -545,-469 l -546,-470 l -547,-470 l -548,-471 l -549,-472 l -551,-472 l -552,-472 l -553,-473 l -554,-473 l -556,-473 l -557,-474 l -558,-474 l -560,-474 l -561,-474 l -934,-474 l -935,-474 l -936,-474 l -938,-474 l -939,-473 l -940,-473 l -942,-473 l -943,-472 l -944,-472 l -945,-472 l -947,-471 l -948,-470 l -949,-470 l -950,-469 l -951,-468 l -953,-467 l -954,-467 l -955,-466 l -956,-465 l -956,-464 l -957,-463 l -958,-462 l -959,-461 l -960,-460 l -960,-458 l -961,-457 l -962,-456 l -962,-455 l -963,-453 l -963,-452 l -964,-451 l -964,-450 l -964,-448 l -964,-447 l -965,-446 l -965,-444 l -965,-443 l -965,-257 l -965,-255 l -965,-254 l -964,-253 l -964,-251 l -964,-250 l -964,-249 l -963,-247 l -963,-246 l -962,-245 l -962,-244 l -961,-242 l -960,-241 l -960,-240 l -959,-239 l -958,-238 l -957,-237 l -956,-236 l -956,-235 l -955,-234 l -954,-233 l -953,-232 l -951,-231 l -950,-231 l -949,-230 l -948,-229 l -947,-229 l -945,-228 l -944,-228 l -943,-227 l -942,-227 l -940,-226 l -939,-226 l -938,-226 l -936,-226 l -935,-226 l -934,-226 l -561,-226 l -560,-226 l -558,-226 l -557,-226 l -556,-226 l -554,-226 l -553,-227 l -552,-227 l -550,-228 l -549,-228 l -548,-229 l -547,-229 l -545,-230 l -544,-231 l -543,-231 l -542,-232 l -541,-233 l -540,-234 l -539,-235 l -538,-236 l -537,-237 l -536,-238 l -536,-239 l -535,-240 l -534,-241 l -533,-242 l -533,-244 l -532,-245 l -532,-246 l -531,-247 l -531,-249 l -531,-250 l -530,-251 l -530,-253 l -530,-254 l -530,-255 l -530,-257 l -530,-399 l -530,-399 l -530,-455 l -533,-455xe" onmouseover="UpdateTooltip(this,6,37)" onclick="OnShapeClick(6,37)" onfocus="UpdateTooltip(this,6,37);" onkeyup="OnShapeKey(6,37)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Other Hardware? (Page 15)" origTitle="Other Hardware? (Page 15)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m 1257,441 l 1340,379 l 1166,250 l 993,379 l 1076,441 l 1076,454 l 1089,454 l 1093,454 l 1166,509 l 1240,454 l 1244,454 l 1257,454 l 1257,441xe" onmouseover="UpdateTooltip(this,6,3)" onclick="OnShapeClick(6,3)" onfocus="UpdateTooltip(this,6,3);" onkeyup="OnShapeKey(6,3)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Fails  epiwp Mode 1? (Page 3)" origTitle="Fails  epiwp Mode 1? (Page 3)"  style="top:-1000;left:-1000;width:2617;height:2000;position:absolute" path=" m -608,-24 l -747,-129 l -887,-24 l -888,-24 l -888,-23 l -928,7 l -747,143 l -566,7 l -607,-23 l -607,-24 l -608,-24xe" onmouseover="UpdateTooltip(this,6,27)" onclick="OnShapeClick(6,27)" onfocus="UpdateTooltip(this,6,27);" onkeyup="OnShapeKey(6,27)"/> 
+
+</v:group>
+
+
+
+</div>
+
+
+
+</body>
+</html>
+

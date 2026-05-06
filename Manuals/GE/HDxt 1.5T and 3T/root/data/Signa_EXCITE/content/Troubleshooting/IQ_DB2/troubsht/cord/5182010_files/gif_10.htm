@@ -1,0 +1,135 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+5182010 revC
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="gif_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+	if(parent.isUpLevel)
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+
+<script type="text/jscript" language="jscript">
+
+var pageID = 12;
+
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = 0.248333;
+	viewMgr.visBBoxRight = 10.751667;
+	viewMgr.visBBoxBottom = 0.202081;
+	viewMgr.visBBoxTop = 8.454792;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF">
+
+<div id=arrowdiv style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+<DIV id=RasterDiv>
+
+
+<center>
+  <IMG id="ConvertedImage" SRC="gif_10.gif" ALT="Page-6" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="Detail" origTitle="Detail" TITLE="Detail" HREF="gif_11.htm" target="frmDrawing" COORDS=" 630,399 609,399 609,399 609,399 608,399 608,399 608,399 608,399 607,399 607,399 607,399 607,399 607,400 606,400 606,400 606,400 606,400 606,401 605,401 605,401 605,401 605,402 605,402 605,402 605,402 605,403 605,403 605,403 605,410 605,410 605,410 605,410 605,411 605,411 605,411 605,411 605,412 605,412 606,412 606,412 606,413 606,413 606,413 607,413 607,413 607,413 607,414 607,414 608,414 608,414 608,414 608,414 609,414 609,414 609,414 633,414 659,414 660,414 660,414 660,414 660,414 661,414 661,414 661,415 661,415 662,415 662,415 662,415 662,415 662,415 663,416 663,416 663,416 663,416 663,417 663,417 664,417 664,417 664,418 664,418 664,418 664,418 664,419 664,419 664,419 664,419 664,420 664,420 664,420 664,421 664,421 664,421 665,421 665,421 665,422 665,422 665,422 666,422 666,422 666,422 666,423 667,423 667,423 667,423 667,423 668,423 668,423 668,423 668,423 669,423 669,423 669,423 669,423 670,423 670,423 670,423 670,422 671,422 671,422 671,422 671,422 671,422 679,414 683,410 684,409 684,409 684,409 684,409 684,408 684,408 684,408 685,408 685,407 685,407 685,407 685,407 685,406 685,406 685,406 685,406 685,405 685,405 684,405 684,404 684,404 684,404 684,404 684,404 684,403 683,403 669,389 669,389 669,389 669,388 668,388 668,388 668,388 668,388 668,388 667,388 667,388 667,388 667,388 666,388 666,388 666,388 666,388 666,388 665,388 665,389 665,389 665,389 665,389 664,389 664,389 664,390 664,390 664,390 664,390 664,390 664,391 664,391 664,391 664,394 664,394 664,395 664,395 664,395 664,395 664,396 663,396 663,396 663,396 663,397 663,397 663,397 662,397 662,397 662,398 662,398 662,398 661,398 661,398 661,397 630,397 630,399" onmouseover="UpdateTooltip(this,12,7)" onfocus="UpdateTooltip(this,12,7)" onclick="return OnShapeClick(12,7);" onkeyup="OnShapeKey(12,7);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Gradient Cabinets (Page 7)" origTitle="Gradient Cabinets (Page 7)" TITLE="Gradient Cabinets (Page 7)" HREF="gif_12.htm" target="frmDrawing" COORDS=" 289,484 289,525 330,566 371,525 371,484 289,484" onmouseover="UpdateTooltip(this,12,6)" onfocus="UpdateTooltip(this,12,6)" onclick="return OnShapeClick(12,6);" onkeyup="OnShapeKey(12,6);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Return previously swapped cables to normal and then swap the..." origTitle="Return previously swapped cables to normal and then swap the..." TITLE="Return previously swapped cables to normal and then swap the..." HREF="..%5C..%5C..%5C..%5C..%5C496308.htm" target="_top" COORDS=" 36,232 195,232 195,91 36,91 36,232" onmouseover="UpdateTooltip(this,12,22)" onfocus="UpdateTooltip(this,12,22)" onclick="return OnShapeClick(12,22);" onkeyup="OnShapeKey(12,22);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Full Retest (Page 16)" origTitle="Full Retest (Page 16)" TITLE="Full Retest (Page 16)" HREF="gif_30.htm" target="frmDrawing" COORDS=" 490,485 490,526 531,567 572,526 572,485 490,485" onmouseover="UpdateTooltip(this,12,29)" onfocus="UpdateTooltip(this,12,29)" onclick="return OnShapeClick(12,29);" onkeyup="OnShapeKey(12,29);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Return fibers to normal.  Now swap the same two axes cables on..." origTitle="Return fibers to normal.  Now swap the same two axes cables on..." TITLE="Return fibers to normal.  Now swap the same two axes cables on..." HREF="..%5C..%5C..%5C..%5C..%5C496308.htm" target="_top" COORDS=" 233,324 427,324 427,223 233,223 233,324" onmouseover="UpdateTooltip(this,12,3)" onfocus="UpdateTooltip(this,12,3)" onclick="return OnShapeClick(12,3);" onkeyup="OnShapeKey(12,3);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From Axis Dependent (Page 5)" origTitle="From Axis Dependent (Page 5)" TITLE="From Axis Dependent (Page 5)" HREF="gif_7.htm" target="frmDrawing" COORDS=" 9,75 47,56 84,75 84,0 9,0 9,75" onmouseover="UpdateTooltip(this,12,1)" onfocus="UpdateTooltip(this,12,1)" onclick="return OnShapeClick(12,1);" onkeyup="OnShapeKey(12,1);">
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>
+

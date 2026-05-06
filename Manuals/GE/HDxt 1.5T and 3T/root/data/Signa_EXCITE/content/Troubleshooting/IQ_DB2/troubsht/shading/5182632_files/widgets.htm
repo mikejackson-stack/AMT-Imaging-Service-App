@@ -1,0 +1,201 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>5182632</title>
+<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5"/>
+<link href="visio.css" rel="stylesheet">
+<script src="keys.js" type="text/jscript" language="jscript"></script>
+<script src="find.js" type="text/jscript" language="jscript"></script>
+<script type="text/jscript" language="jscript">
+	
+	var imgMin = new Image();
+	imgMin.src = "minimize.gif";
+	
+	var imgMax = new Image();
+	imgMax.src = "maximize.gif";
+
+	var fileList = parent.g_FileList;
+	
+	function Widgets()
+	{
+		this.GoTo = null;
+		this.Search = null;
+		this.Details = null;
+		this.PNZ = null;
+
+		this.divCount = 0;
+		
+		this.OpenText = "Collapse all";
+		this.OpenAlt = "Collapse all";
+		this.ClosedText = "Expand all";
+		this.ClosedAlt = "Expand all";
+
+		this.Display = "";
+		this.Img = imgMin;
+		this.Text = this.OpenText;
+		this.Alt = this.OpenAlt;
+		
+		this.ToggleAll = ToggleAll;
+		this.ToggleWidget = ToggleWidget;
+		this.Add = Add;
+	}		
+
+	function Add(div, name)
+	{
+		tmpStr = "this." + name + " = new Widget(div);"
+		eval(tmpStr);
+		var thisWidget = eval("this." + name);
+	}
+
+	function Widget(div)
+	{
+		return div;
+	}	
+
+	function ToggleAll()
+	{
+		var OpenCloseFunc = Widget;
+
+		if(this.Display == "")
+		{
+			this.Display = "none";
+			this.Img = imgMax;
+			this.Text = this.ClosedText;
+			this.Alt = this.ClosedAlt;
+			expparent00.title = this.ClosedAlt;
+			OpenCloseFunc = CloseWidget;
+		}
+		else
+		{
+			this.Display = "";
+			this.Img = imgMin;
+			this.Text = this.OpenText;
+			this.Alt = this.OpenAlt;
+			expparent00.title = this.OpenAlt;
+			OpenCloseFunc = OpenWidget;
+		}
+		exp00.src = this.Img.src;	
+		textExp.innerText = this.Text;
+		exp00.alt = this.Alt;
+	
+		if(this.GoTo)
+		{
+			OpenCloseFunc(this.GoTo)
+		}
+		if(this.Search)
+		{
+			OpenCloseFunc(this.Search)
+		}
+		if(this.Details)
+		{
+			OpenCloseFunc(this.Details)
+		}
+		if(this.PNZ)
+		{
+			OpenCloseFunc(this.PNZ)
+		}
+	}
+
+	function ToggleNav()
+	{
+		if(divCollapsedNav.style.display == "none")
+		{
+			divCollapsedNav.style.display = "";
+			divOpenNav.style.display = "none";
+			parent.frmstOuter.cols = "20,*"
+			parent.document.all ('frmToolbar').noResize = true;
+		}
+		else
+		{
+			divOpenNav.style.display = "";
+			divCollapsedNav.style.display = "none";
+			parent.frmstOuter.cols = "237,*"
+			parent.document.all ('frmToolbar').noResize = false;
+		}
+	}
+	
+	function ToggleWidget(div)
+	{
+		if(div.style.display == "none")
+		{
+			OpenWidget(div);
+		}
+		else
+		{
+			CloseWidget(div);
+		}
+	}
+
+	function OpenWidget(div)
+	{
+		document.all(div.img).src = imgMin.src;
+		div.style.display = "";
+		document.all(div.img).alt = div.openAlt;
+		document.all(div.img + "1").title = div.openAlt;
+		document.all(div.img + "2").title = div.openAlt;
+	}
+
+	function CloseWidget(div)
+	{
+		document.all(div.img).src = imgMax.src;
+		div.style.display = "none";
+		document.all(div.img).alt = div.closedAlt;
+		document.all(div.img + "1").title = div.closedAlt;
+		document.all(div.img + "2").title = div.closedAlt;
+	}
+
+	function load()
+	{
+		parent.g_WidgetsLoaded = true;
+
+		if (parent.g_LoadingWidgets)
+		{
+			parent.g_LoadingWidgets = false;
+			parent.location.reload();
+		}
+	}
+
+	function unload()
+	{
+		parent.g_LoadingWidgets = true;
+	}
+	
+		
+	var widgets = new Widgets();
+
+</script>
+
+</head>
+<body onload="load();" onunload="unload();">
+<div id="divOpenNav" class="nav">
+
+	<table id="tabToc" width="100%" class="navTocColor" style="margin-bottom:1px;" cellspacing="0" cellpadding="0" border="0" height="20">
+	<tr>
+	<td width="2"><a href="javascript:ToggleNav();" title="Collapse navigation frame" id="linkNavOpen"><img src="toc.gif" alt="Collapse navigation frame" width="22" height="17" border="0"></a></td>
+	<td align="left"><p class="p1"><a href="javascript:ToggleNav();" title="Collapse navigation frame" class="a1">Hide</a></p></td>
+	<td align="right"><p class="p1"><a href="javascript:widgets.ToggleAll()" id="textExp" class="a1">Collapse all</a></p></td>
+	<td width="2">
+		<div style="padding:2pt,1.5pt,0pt,0pt"><a href="javascript:widgets.ToggleAll()" title="Collapse all" id="expparent00"><img id="exp00" alt="Collapse all" src="minimize.gif" width="15" height="15" border="0"></a></div>
+	</td>
+	</tr>
+	</table>
+	
+	
+
+	
+
+	
+
+	
+
+
+</div>
+
+<div id="divCollapsedNav" class="navTocColor" style="display:none;width:100%;height:100%;">
+	<a href="javascript:ToggleNav();" title="Expand navigation frame" id="linkNavClosed"><img src="toc2.gif" alt="Expand navigation frame" border="0"></a>
+</div>	
+
+
+</body>
+</html>
+

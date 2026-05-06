@@ -1,0 +1,137 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+5182010 revC
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="gif_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+	if(parent.isUpLevel)
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+
+<script type="text/jscript" language="jscript">
+
+var pageID = 32;
+
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = -0.001667;
+	viewMgr.visBBoxRight = 10.880000;
+	viewMgr.visBBoxBottom = 0.202081;
+	viewMgr.visBBoxTop = 8.501667;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF">
+
+<div id=arrowdiv style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+<DIV id=RasterDiv>
+
+
+<center>
+  <IMG id="ConvertedImage" SRC="gif_23.gif" ALT="Page-12b" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="No Detail" origTitle="No Detail" TITLE="No Detail" HREF="gif_21.htm" target="frmDrawing" COORDS=" 309,405 316,404 316,404 316,404 317,404 317,404 317,404 317,404 318,404 318,404 317,404 317,404 317,407 316,407 316,407 316,407 316,408 316,408 316,408 315,408 315,408 315,408 315,408 315,408 315,408 315,408 315,409 315,409 315,409 315,409 315,409 315,409 315,409 315,409 315,409 316,409 316,409 316,409 316,409 316,409 316,411 316,411 315,411 315,411 315,412 315,412 315,412 315,412 315,412 314,413 314,413 314,413 314,413 314,413 313,413 313,413 313,414 312,414 312,414 312,414 312,414 311,414 311,414 311,414 311,414 310,414 310,414 292,409 292,408 293,408 293,408 293,408 307,412 309,405" onmouseover="UpdateTooltip(this,32,2)" onfocus="UpdateTooltip(this,32,2)" onclick="return OnShapeClick(32,2);" onkeyup="OnShapeKey(32,2);">
+  <AREA shape="POLYGON" tabindex="1" ALT="No Detail" origTitle="No Detail" TITLE="No Detail" HREF="gif_21.htm" target="frmDrawing" COORDS=" 279,387 279,387 279,387 278,386 278,386 278,386 278,386 278,385 278,385 278,385 278,385 278,384 278,384 278,384 278,384 279,383 279,383 279,383 279,382 279,382 279,382 278,382 278,381 278,381 278,381 278,381 278,380 278,380 278,380 278,380 277,380 277,379 277,379 277,379 276,379 276,379 276,379 276,379 276,378 275,378 275,378 275,378 274,378 274,378 274,378 274,378 273,378 273,378 273,379 273,379 272,379 272,379 264,383 264,383 263,384 257,387 257,387 257,387 257,388 256,388 256,388 256,388 256,388 256,389 255,389 255,389 255,389 255,390 255,390 255,390 255,390 255,391 255,391 255,391 255,391 255,392 255,392 255,392 255,393 255,393 255,393 255,393 265,411 265,411 265,411 266,411 266,412 266,412 266,412 266,412 266,412 267,412 267,412 267,412 267,412 268,412 268,412 268,412 268,412 268,412 269,412 269,412 269,412 269,412 270,412 270,412 270,412 270,412 270,411 270,411 271,411 271,411 271,411 271,410 271,410 272,407 272,407 272,407 272,407 272,406 272,406 272,406 273,406 273,405 273,405 273,405 273,405 274,405 274,405 274,405 274,404 275,404 275,404 275,404 275,404 276,404 276,404 276,404 276,404 277,404 277,404 277,404 292,409 292,409 292,409 291,409 291,409 291,409 290,409 290,409 290,409 290,409 289,409 289,410 289,410 289,410 288,410 288,410 288,410 288,410 288,410 287,411 287,411 287,411 287,411 287,411 287,411 287,411 287,411 281,420 281,420 281,420 281,420 281,420 281,420 281,421 281,421 281,421 281,421 281,421 282,421 282,421 282,421 282,421 282,421 282,421 283,421 283,421 283,421 283,421 283,421 284,421 284,421 284,421 284,421 285,421 285,421 285,420 285,420 286,420 286,420 286,420 286,420 287,420 287,420 287,420 287,420 291,418 291,418 291,418 291,418 292,418 292,418 292,418 293,418 293,417 293,417 294,417 294,417 294,417 295,417 295,417 295,417 295,417 296,417 296,417 296,417 297,417 297,417 297,417 297,417 298,417 298,417 298,417 298,417 299,417 299,417 299,417 324,421 324,421 324,421 324,422 324,422 325,422 325,422 325,422 325,422 326,421 326,421 326,421 326,421 327,421 327,421 327,421 328,421 328,421 328,421 329,421 329,421 329,421 330,421 330,421 330,421 330,420 331,420 331,420 331,420 332,420 332,420 339,417 339,417 339,417 340,416 340,416 340,416 340,416 341,416 341,416 341,416 341,416 341,416 341,415 341,415 341,415 342,415 342,415 342,415 342,415 342,415 342,415 342,415 342,414 342,414 341,414 341,414 341,414 341,414 341,414 341,414 341,414 316,409 317,407 317,407 317,407 317,407 317,407 318,407 318,406 318,406 318,406 319,406 319,406 319,406 319,406 319,406 320,406 320,405 320,405 320,405 320,405 320,405 320,405 320,405 320,405 320,405 320,404 320,404 320,404 320,404 320,404 320,404 320,404 320,404 320,404 320,404 319,404 319,404 319,404 319,404 319,404 319,404 318,404 318,404 318,404 318,404 318,404 318,403 318,403 318,403 318,402 317,402 317,402 317,402 317,401 317,401 317,401 317,401 317,400 317,400 316,400 316,400 316,400 316,400 316,399 315,399 315,399 315,399 315,399 314,399 311,398 311,397 279,387" onmouseover="UpdateTooltip(this,32,2)" onfocus="UpdateTooltip(this,32,2)" onclick="return OnShapeClick(32,2);" onkeyup="OnShapeKey(32,2);">
+  <AREA shape="POLYGON" tabindex="1" ALT="The spike noise is coming from inside or very near the magnet..." origTitle="The spike noise is coming from inside or very near the magnet..." TITLE="The spike noise is coming from inside or very near the magnet..." HREF="..%5C..%5C..%5C..%5C..%5C496308.htm" target="_top" COORDS=" 91,308 759,308 759,86 91,86 91,308" onmouseover="UpdateTooltip(this,32,23)" onfocus="UpdateTooltip(this,32,23)" onclick="return OnShapeClick(32,23);" onkeyup="OnShapeKey(32,23);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Full Retest (Page 16)" origTitle="Full Retest (Page 16)" TITLE="Full Retest (Page 16)" HREF="gif_30.htm" target="frmDrawing" COORDS=" 634,505 634,540 670,576 705,540 705,505 634,505" onmouseover="UpdateTooltip(this,32,10)" onfocus="UpdateTooltip(this,32,10)" onclick="return OnShapeClick(32,10);" onkeyup="OnShapeKey(32,10);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Detail" origTitle="Detail" TITLE="Detail" HREF="gif_22.htm" target="frmDrawing" COORDS=" 33,141 25,139 24,139 24,139 24,139 24,139 23,139 23,139 23,139 22,139 22,139 22,139 22,139 21,139 21,139 21,139 21,139 21,140 20,140 20,140 20,140 20,140 20,141 19,141 19,141 19,141 19,142 19,142 17,148 17,148 17,149 17,149 17,149 17,149 17,150 17,150 17,150 17,150 17,151 18,151 18,151 18,151 18,152 18,152 18,152 18,152 19,153 19,153 19,153 19,153 20,153 20,153 20,153 20,154 21,154 45,160 45,160 45,160 45,161 46,161 46,161 46,161 46,161 46,161 47,161 47,162 47,162 47,162 47,162 47,163 48,163 48,163 48,163 48,164 48,164 48,164 48,164 47,165 46,165 46,165 46,165 46,165 45,166 45,166 45,166 45,166 45,166 45,166 44,166 44,166 44,166 44,167 44,167 44,167 44,167 44,167 44,167 44,167 44,167 44,167 44,167 44,167 44,168 44,168 45,168 45,168 45,168 45,168 48,168 48,169 48,169 48,169 48,169 48,169 49,170 49,170 49,170 49,170 49,170 50,171 50,171 50,171 50,171 50,171 51,171 51,171 51,171 52,171 52,171 52,171 52,171 53,171 53,171 53,171 53,171 54,171 54,171 54,171 56,170 63,171 64,171 64,171 64,171 64,171 64,171 64,171 64,171 64,172 64,172 64,172 64,172 64,172 64,172 64,172 64,172 64,172 64,172 64,172 64,173 64,173 64,173 63,173 63,173 63,173 63,173 63,173 62,174 62,174 62,174 62,174 61,174 61,174 61,174 61,174 61,174 60,175 60,175 60,175 60,175 60,175 60,175 59,175 59,175 59,175 59,176 59,176 59,176 59,176 59,176 59,176 59,176 59,176 59,176 59,176 60,176 60,176 60,176 60,176 60,177 60,177 60,177 61,177 61,177 61,177 61,177 62,177 62,177 62,177 62,177 63,177 63,176 63,176 63,176 64,176 86,172 86,172 87,172 87,172 87,172 87,172 88,172 88,172 88,171 89,171 89,171 89,171 90,171 90,171 90,171 90,171 91,171 91,170 91,170 91,170 92,170 92,170 92,170 92,170 92,170 92,170 93,169 93,169 93,169 93,169 93,169 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 98,160 97,160 97,160 97,159 97,159 97,159 97,159 96,160 96,160 96,160 96,160 95,160 95,160 95,160 95,160 94,160 94,160 94,160 94,160 93,160 93,160 93,160 93,160 92,160 92,161 92,161 89,162 88,162 88,162 88,162 87,162 87,163 87,163 87,163 86,163 86,163 86,163 85,163 85,163 85,163 84,163 84,163 84,163 84,164 83,164 83,164 83,164 82,164 82,164 82,164 82,164 81,164 81,164 81,164 81,164 80,164 80,164 70,162 70,162 70,161 70,161 70,161 71,161 71,160 71,160 71,160 71,160 71,159 71,159 71,159 71,159 71,158 71,158 71,158 71,157 71,157 71,157 71,157 71,156 71,156 61,139 61,138 60,138 60,138 60,138 60,138 60,138 60,138 59,137 59,137 59,137 59,137 59,137 58,137 58,137 58,137 58,137 57,137 57,137 57,137 57,137 57,137 56,138 56,138 56,138 56,138 56,138 56,138 55,139 55,139 55,139 55,139 55,139 54,142 54,142 54,143 54,143 54,143 54,143 54,144 53,144 53,144 53,144 53,144 53,145 52,145 52,145 33,140 33,141" onmouseover="UpdateTooltip(this,32,6)" onfocus="UpdateTooltip(this,32,6)" onclick="return OnShapeClick(32,6);" onkeyup="OnShapeKey(32,6);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Detail" origTitle="Detail" TITLE="Detail" HREF="gif_22.htm" target="frmDrawing" COORDS=" 59,160 60,160 60,160 60,160 60,160 61,160 61,160 61,160 61,160 62,160 62,160 62,160 70,162 70,162 69,162 69,162 69,162 56,170 48,168 48,168 48,168 48,168 48,167 48,167 48,167 48,167 48,166 48,166 48,166 48,166 48,165 48,165 48,165 48,164 53,162 58,164 59,160" onmouseover="UpdateTooltip(this,32,6)" onfocus="UpdateTooltip(this,32,6)" onclick="return OnShapeClick(32,6);" onkeyup="OnShapeKey(32,6);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From Decision: In/Out of bore  (Page 9)" origTitle="From Decision: In/Out of bore  (Page 9)" TITLE="From Decision: In/Out of bore  (Page 9)" HREF="gif_15.htm" target="frmDrawing" COORDS=" 134,69 168,86 168,12 149,12 149,9 117,9 117,12 95,12 95,86 129,69 134,69" onmouseover="UpdateTooltip(this,32,4)" onfocus="UpdateTooltip(this,32,4)" onclick="return OnShapeClick(32,4);" onkeyup="OnShapeKey(32,4);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From Introduction (Page 1)" origTitle="From Introduction (Page 1)" TITLE="From Introduction (Page 1)" HREF="gif_1.htm" target="frmDrawing" COORDS=" 10,82 46,64 83,82 83,9 10,9 10,82" onmouseover="UpdateTooltip(this,32,3)" onfocus="UpdateTooltip(this,32,3)" onclick="return OnShapeClick(32,3);" onkeyup="OnShapeKey(32,3);">
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>
+
