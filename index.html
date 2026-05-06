@@ -1941,9 +1941,9 @@ const GH_PAGES = 'https://mikejackson-stack.github.io/AMT-Imaging-Service-App';
 const GH_API   = 'https://api.github.com/repos/' + GH_REPO + '/contents/';
 
 const MAN_SECTIONS = [
-  {id:'ge',    label:'GE Manuals',                   icon:'🟢', color:'#28a745', path:'Manuals/GE'},
-  {id:'sie',   label:'Siemens Manuals',               icon:'🔵', color:'#17a2b8', path:'Manuals/Siemens'},
-  {id:'err',   label:'Error Codes & Troubleshooting', icon:'🔴', color:'#dc3545', path:'Manuals/Error codes and Troubleshooting'},
+  {id:'ge',    label:'GE Manuals',                   icon:'🟢', color:'#28a745', path:'Manuals/GE',      hasPDF:false},
+  {id:'sie',   label:'Siemens Manuals',               icon:'🔵', color:'#17a2b8', path:'Manuals/Siemens', hasPDF:true},
+  {id:'err',   label:'Error Codes & Troubleshooting', icon:'🔴', color:'#dc3545', path:'Manuals/Error codes and Troubleshooting', hasPDF:true},
 ];
 
 let manNavStack = [];
@@ -1985,14 +1985,15 @@ async function openManSection(secId) {
   const items = await ghFetch(sec.path);
   if(!items){document.getElementById('man-body').innerHTML=manError();return;}
   const folders = items.filter(i=>i.type==='dir');
-  const files   = items.filter(i=>i.type==='file'&&isHtm(i.name));
+  const files   = items.filter(i=>i.type==='file'&&isManualFile(i.name,sec.hasPDF));
   let html = `<div style="font-size:12px;color:#888;margin-bottom:12px">${folders.length} folder${folders.length!==1?'s':''} found${files.length?` · ${files.length} file${files.length!==1?'s':''}`:''}</div>`;
-  folders.forEach(f=>{html+=manFolderCard(f.name,sec.color,`openManFolder('${esc(sec.path)}','${esc(f.name)}','${sec.color}')`)});
-  if(files.length){html+=manSecHeader('📄 Files in root',sec.color);files.forEach(f=>{html+=manFileCard(f,sec.color)});}
+  folders.forEach(f=>{html+=manFolderCard(f.name,sec.color,`openManFolder('${esc(sec.path)}','${esc(f.name)}','${sec.color}',${sec.hasPDF})`)});
+  if(files.length){html+=manSecHeader('📄 Files',sec.color);files.forEach(f=>{html+=manFileCard(f,sec.color)});}
   document.getElementById('man-body').innerHTML = html;
 }
 
-async function openManFolder(encPath, encName, color) {
+async function openManFolder(encPath, encName, color, hasPDF) {
+  hasPDF = hasPDF || false;
   const base = decodeURIComponent(encPath), name = decodeURIComponent(encName);
   const full = base+'/'+name;
   setManUI(name, true);
@@ -2001,12 +2002,12 @@ async function openManFolder(encPath, encName, color) {
   if(!items){document.getElementById('man-body').innerHTML=manError();return;}
   const rootF   = items.find(i=>i.type==='dir'&&i.name.toLowerCase()==='root');
   const otherF  = items.filter(i=>i.type==='dir'&&i.name.toLowerCase()!=='root');
-  const direct  = items.filter(i=>i.type==='file'&&isHtm(i.name));
+  const direct  = items.filter(i=>i.type==='file'&&isManualFile(i.name,hasPDF));
   let rootHtm   = [];
   if(rootF){
     document.getElementById('man-body').innerHTML=manSpinner(color,'Scanning root/…');
     const ri = await ghFetch(full+'/root');
-    if(ri) rootHtm = await deepScan(full+'/root',ri);
+    if(ri) rootHtm = await deepScan(full+'/root',ri,hasPDF);
   }
   const sec = MAN_SECTIONS.find(s=>base.startsWith('Manuals/'+(s.id==='ge'?'GE':s.id==='sie'?'Siemens':'Error')));
   setManBreadcrumb([
@@ -2016,22 +2017,22 @@ async function openManFolder(encPath, encName, color) {
   ]);
   const total = direct.length + rootHtm.length;
   let html = '';
-  if(!total&&!otherF.length){html=manEmpty('No HTM files found in this folder.');}
+  if(!total&&!otherF.length){html=manEmpty('No manual files found in this folder.');}
   else{
     html=`<div style="font-size:12px;color:#888;margin-bottom:12px">${total} manual file${total!==1?'s':''}${otherF.length?` · ${otherF.length} subfolder${otherF.length!==1?'s':''}`:''}</div>`;
-    otherF.forEach(s=>{html+=manFolderCard(s.name,color,`openManFolder('${esc(full)}','${esc(s.name)}','${color}')`)});
+    otherF.forEach(s=>{html+=manFolderCard(s.name,color,`openManFolder('${esc(full)}','${esc(s.name)}','${color}',${hasPDF})`)});
     if(direct.length){html+=manSecHeader('📄 Manual Files',color);direct.forEach(f=>{html+=manFileCard(f,color)});}
     if(rootHtm.length){html+=manSecHeader('📄 Files from root/',color);rootHtm.forEach(f=>{html+=manFileCard(f,color)});}
   }
   document.getElementById('man-body').innerHTML = html;
 }
 
-async function deepScan(base, items) {
+async function deepScan(base, items, hasPDF) {
   const res = [];
-  items.filter(i=>i.type==='file'&&isHtm(i.name)).forEach(f=>res.push(f));
+  items.filter(i=>i.type==='file'&&isManualFile(i.name,hasPDF)).forEach(f=>res.push(f));
   for(const d of items.filter(i=>i.type==='dir')){
     const sub = await ghFetch(base+'/'+d.name);
-    if(sub){const deeper=await deepScan(base+'/'+d.name,sub);res.push(...deeper);}
+    if(sub){const deeper=await deepScan(base+'/'+d.name,sub,hasPDF);res.push(...deeper);}
   }
   return res;
 }
@@ -2083,10 +2084,23 @@ function setManBreadcrumb(crumbs){
   }).join('');
 }
 function isHtm(n){return/\.(htm|html)$/i.test(n);}
+function isPDF(n){return/\.pdf$/i.test(n);}
+function isManualFile(n,inclPDF){return isHtm(n)||(inclPDF&&isPDF(n));}
 function esc(s){return encodeURIComponent(s);}
 function manSecHeader(t,c){return `<div style="font-size:11px;font-weight:700;color:${c};margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px">${t}</div>`;}
 function manFolderCard(name,color,onclick){return `<div onclick="${onclick}" style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border:1.5px solid #f0f0f0"><span style="font-size:22px">📁</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#1a1a2e">${name}</div><div style="font-size:11px;color:#888;margin-top:1px">Tap to browse</div></div><span style="font-size:18px;color:#ccc">›</span></div>`;}
-function manFileCard(file,color){const ghPath=file.path;return `<div onclick="openHtmFile('${ghPath.replace(/'/g,"\\'")}','${color}')" style="background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">📄</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">›</span></div>`;}
+function manFileCard(file,color){
+  const ghPath=file.path;
+  const isPdf=isPDF(file.name);
+  const icon=isPdf?'📕':'📄';
+  const label=isPdf?'PDF Manual':'HTM Manual';
+  if(isPdf){
+    // PDFs open directly via GitHub Pages URL in new tab
+    const url=GH_PAGES+'/'+ghPath;
+    return `<a href="${url}" target="_blank" style="display:flex;background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);text-decoration:none;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">${icon}</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${label} · ${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">↗</span></a>`;
+  }
+  return `<div onclick="openHtmFile('${ghPath.replace(/'/g,"\\'")}','${color}')" style="background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">${icon}</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${label} · ${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">›</span></div>`;
+}
 function manSpinner(c,msg){return `<div style="text-align:center;padding:50px 20px"><div style="width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid ${c};border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite"></div><div style="font-size:14px;color:#888">${msg}</div></div>`;}
 function manError(){return `<div style="background:#fff3f3;border-radius:12px;padding:20px;text-align:center;border:1px solid #fcc"><div style="font-size:28px;margin-bottom:8px">⚠️</div><div style="font-size:14px;font-weight:600;color:#dc3545">Could Not Load Files</div><div style="font-size:12px;color:#888;margin-top:6px">Check connection or GitHub API rate limit (60/hr).<br><br><button onclick="manGoHome()" style="padding:8px 16px;background:#dc3545;color:#fff;border:none;border-radius:8px;cursor:pointer">Go Back</button></div></div>`;}
 function manEmpty(msg){return `<div style="background:#f9f9f9;border-radius:12px;padding:30px 20px;text-align:center;border:1px solid #eee"><div style="font-size:28px;margin-bottom:8px">📭</div><div style="font-size:14px;color:#888">${msg}</div><div style="font-size:11px;color:#bbb;margin-top:6px">Upload .htm files to GitHub to see them here.</div></div>`;}
@@ -2301,6 +2315,99 @@ var PM_CL = {
       {n:'24',id:'p24',text:'Backup Site specific data, Master backup and customer protocols'},
       {n:'25',id:'p25',text:'Perform full system software backup to external drive. Leave a copy on-site and take a copy with you. (Acronis, every 6 months)'},
     ]}],hasNotes:true,hasFU:true,sigLabel:'Service Engineer Signature and Date'},
+
+  geMRI:{id:'geMRI',title:'GE MRI System PM Checklist',form:'F70-59',rev:'Rev. F',color:'#1a3a5c',icon:'🧲',
+    hdr:[{id:'site',l:'Site',t:'text'},{id:'date',l:'Date',t:'date'},{id:'sysid',l:'System ID - MXR #',t:'text'},{id:'wo',l:'Work Order #',t:'text'},{id:'hostid',l:'Host ID',t:'text'},{id:'eng',l:'Service Engineer',t:'text'}],
+    sections:[
+      {id:'g_safety',title:'Safety and Regulatory',pfna:true,tasks:[
+        {id:'sr1',text:'Check Pneumatic Patient Alert System'},
+        {id:'sr2',text:'Check Emergency Release of Cradle and Patient Transport'},
+        {id:'sr3',text:'Check Patient Arm Board Set Screws and Bumper Strips'},
+        {id:'sr4',text:'Check Patient Transport Caster Locks and Rotation'},
+        {id:'sr5',text:'Check Cradle Longitudinal Drive Clutch'},
+        {id:'sr6',text:'Verify that Cradle must be at Home for Table to Lower'},
+        {id:'sr7',text:'Test All Emergency Stop and Off Buttons'},
+        {id:'sr8',text:'Perform Emergency Rundown Unit (MRU/ERU) Four Step Test'},
+        {id:'sr8a',text:'&nbsp;&nbsp;&nbsp;↳ Batteries Good'},
+        {id:'sr8b',text:'&nbsp;&nbsp;&nbsp;↳ Heater LED Good'},
+        {id:'sr8c',text:'&nbsp;&nbsp;&nbsp;↳ A or B Circuit Has Continuity'},
+      ]},
+      {id:'g_magnet',title:'Record Magnet Data',meas:[
+        {id:'m_he',l:'Helium Level',u:'%',spec:'>50%'},
+        {id:'m_pres',l:'Pressure',u:'psi',spec:'setpoint ±0.1 psi'},
+        {id:'m_shield',l:'Shield_S410',u:'K'},
+        {id:'m_rconruo',l:'Recon_Ruo',u:'K'},
+        {id:'m_recons410',l:'Recon_S410',u:'K'},
+        {id:'m_chead',l:'ColdHead_Ruo',u:'K'},
+        {id:'m_wtemp',l:'Water Temp',u:'°F or °C',spec:'<82°F / 28°C (<60°F / 16°C preferred)'},
+        {id:'m_wflow',l:'Water Flow',u:'GPM or LPM',spec:'>1.5 GPM / 5.7 LPM'},
+      ]},
+      {id:'g_press',title:'Check Compressor',pfna:true,tasks:[
+        {id:'cp1',text:'Check Analog Pressure Gauge'},
+      ]},
+      {id:'g_comppres',title:'Check Compressor Pressure',meas:[
+        {id:'m_cstatic',l:'Static Pressure',u:'MPa',spec:'1.65 ±0.05 MPa'},
+        {id:'m_cdyn',l:'Dynamic Pressure',u:'MPa',spec:'2.2–2.4 MPa'},
+      ]},
+      {id:'g_comphrs',title:'Record Compressor Run Hours',meas:[
+        {id:'m_curr_hrs',l:'Current Hours',u:'hrs'},
+        {id:'m_curr_date',l:'Current Date',u:''},
+        {id:'m_curr_time',l:'Current Time (24hr)',u:''},
+        {id:'m_pm_hrs',l:'Last PM Hours',u:'hrs'},
+        {id:'m_pm_date',l:'Last PM Date',u:''},
+        {id:'m_pm_time',l:'Last PM Time (24hr)',u:''},
+        {id:'m_lost_hrs',l:'Lost Hours Since Last PM',u:'hrs',spec:'<12 hours = Pass'},
+      ]},
+      {id:'g_iq',title:'Image Quality',pfna:true,tasks:[
+        {id:'iq1',text:'Check Laser Light Alignment (use a Plumb Bob)'},
+      ]},
+      {id:'g_dcoff',title:'Run DC Offset and Record Data',meas:[
+        {id:'m_dcx',l:'DC Offset X',u:''},{id:'m_dcy',l:'DC Offset Y',u:''},{id:'m_dcz',l:'DC Offset Z',u:''},
+      ]},
+      {id:'g_lvshim',title:'Run LVshim Calibration',meas:[
+        {id:'m_cf',l:'Center Frequency',u:'Hz',spec:'64,864,000 ±50k Hz'},
+        {id:'m_inhom',l:'Overall Inhomogeneity',u:'Hz',spec:'<80 Hz'},
+        {id:'m_xshim',l:'X Grad Shim',u:'X'},
+        {id:'m_yshim',l:'Y Grad Shim',u:'Y'},
+        {id:'m_zshim',l:'Z Grad Shim',u:'Z'},
+      ]},
+      {id:'g_dqa',title:'DQA Calibration',meas:[
+        {id:'m_iso',l:'ISO Center',u:'mm'},
+        {id:'m_xgcal',l:'X Gradcal',u:'mm',spec:'100 ±0.5 mm'},{id:'m_cfxfull',l:'cfxfull',u:''},
+        {id:'m_ygcal',l:'Y Gradcal',u:'mm',spec:'100 ±0.5 mm'},{id:'m_cfyfull',l:'cfyfull',u:''},
+        {id:'m_zgcal',l:'Z Gradcal',u:'mm',spec:'100 ±0.5 mm'},{id:'m_cfzfull',l:'cfzfull',u:''},
+      ]},
+      {id:'g_snr',title:'Head SNR, TG, and Noise — Axial',note:'Use head TLT phantom and loader',meas:[
+        {id:'m_hsig',l:'Signal',u:''},{id:'m_hnoise',l:'Noise',u:''},{id:'m_hsnr',l:'SNR',u:''},
+      ]},
+      {id:'g_bodysnr',title:'Body SNR, TG, and Noise — Axial',note:'Use body TLT phantom and loader',meas:[
+        {id:'m_bsig',l:'Signal',u:''},{id:'m_bnoise',l:'Noise',u:''},{id:'m_bsnr',l:'SNR',u:''},
+      ]},
+      {id:'g_mcqa',title:'Coil Quality',pfna:true,tasks:[
+        {id:'iq2',text:'Run MCQA On a Commonly Used Customer Coil',data:true,du:'Coil Name'},
+        {id:'iq3',text:'Check Image Quality of Other Customer Used Coils'},
+        {id:'iq4',text:'Tighten Coil Screws'},
+      ]},
+      {id:'g_checks',title:'Checks and Cleaning',pfna:true,tasks:[
+        {id:'cc1',text:'Check/Adjust Date and Time (base off cell phone time)'},
+        {id:'cc2',text:'Check/Clean RF Door Seal'},
+        {id:'cc3',text:'Check Magnet Bore for Metal Objects (Remove) Clean Bore'},
+        {id:'cc4',text:'Check/Clean Cradle and Wheels'},
+        {id:'cc5',text:'Check Table Functionality (alignment, and dock/undock)'},
+        {id:'cc6',text:'Clean All Cabinet Filters and Air Intakes on Cabinet Components'},
+        {id:'cc7',text:'Run APS, AGP, and SCP Diagnostics'},
+        {id:'cc8',text:'Clean Host Computer Air Intakes'},
+        {id:'cc9',text:'Clean GOC Air Intakes'},
+        {id:'cc10',text:'Check/Clean Patient Blower Filter'},
+        {id:'cc11',text:'Check Gradient Filters and PHPS Voltages (Pass/Fail)'},
+        {id:'cc12',text:'Check Temp and Fluid Level Gradient Chiller/Heat Exchanger',data:true,du:'°F or °C (spec ≤68°F / 20°C)'},
+        {id:'cc13',text:'Clean Console Area (keyboard, monitor, mouse)'},
+        {id:'cc14',text:'Check and Delete Error/Message Log (prune or storelog)'},
+        {id:'cc15',text:'Check That System Reboots Without Error'},
+        {id:'cc16',text:'Create 2x SaveInfo Backup Disks (including save GUI)'},
+        {id:'cc17',text:'Perform CheckInfo on Both New SaveInfo Backups'},
+      ]},
+    ],hasNotes:true,hasFU:true,sigLabel:'Service Engineer Signature and Date'},
 };
 
 function renderPMHub() {
