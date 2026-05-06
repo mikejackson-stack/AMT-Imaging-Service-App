@@ -300,6 +300,7 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
       <button class="act" style="background:var(--blue)" onclick="go('kb')"><span class="act-icon">🔍</span>Error Codes</button>
       <button class="act" style="background:var(--orange)" onclick="go('expense')"><span class="act-icon">💸</span>Add Expense</button>
       <button class="act" style="background:var(--purple)" onclick="go('manuals')"><span class="act-icon">📄</span>Manuals</button>
+      <button class="act" style="background:#e53e3e" onclick="go('pmhub')"><span class="act-icon">📋</span>PM Checklists</button>
     </div>
     <div class="card">
       <div class="card-hd"><h3>Recent Jobs</h3><button class="see-all" onclick="go('jobs')">See all →</button></div>
@@ -589,28 +590,27 @@ html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSys
   </div>
 </div>
 
-<!-- MANUALS / DRIVE -->
+<!-- MANUALS — Dynamic GitHub Browser -->
 <div id="s-manuals" class="screen">
   <div class="topbar">
-    <button class="back-btn" onclick="go('dash')">←</button>
-    <div><div class="topbar-title">Manuals & Files</div><div class="topbar-sub">Drive folder + KB links</div></div>
-    <button class="back-btn topbar-end" onclick="loadDriveFiles(true)" style="font-size:16px">↻</button>
+    <button class="back-btn" onclick="manNavBack()" id="man-back-btn" style="display:none">←</button>
+    <button class="back-btn" onclick="go('dash')" id="man-home-btn">←</button>
+    <div style="flex:1"><div class="topbar-title" id="man-topbar-title">Manual Library</div><div class="topbar-sub">GE · Siemens · Error Codes</div></div>
   </div>
-  <div class="scroll">
-    <div class="srch"><span class="srch-ico">🔍</span><input type="text" id="m-q" placeholder="Search manuals, error codes, models..." oninput="renderMans()"></div>
-    <div class="tab-bar">
-      <button class="on" onclick="setManTab('all',this)">All Files</button>
-      <button onclick="setManTab('pdf',this)">PDF</button>
-      <button onclick="setManTab('htm',this)">HTM</button>
-      <button onclick="setManTab('img',this)">Images</button>
-    </div>
-    <div id="drive-status" class="warn-box" style="display:none"></div>
-    <div class="card" id="man-list"><div class="spin-wrap"><div class="spinner"></div><p style="font-size:13px;color:var(--muted);margin-top:4px">Loading your Drive folder...</p></div></div>
-    <div class="info-box">
-      <strong>Your Drive folder is searched automatically.</strong><br>
-      Sign in with Google to see all your manuals, HTM files, images, and PDFs in one place. Tap any file to open it.
-    </div>
+  <!-- Breadcrumb -->
+  <div id="man-breadcrumb" style="background:#1a3a5c;padding:5px 14px 9px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:12px;color:rgba(255,255,255,.7)">
+    <span onclick="manGoHome()" style="cursor:pointer;text-decoration:underline">📚 Library</span>
   </div>
+  <div class="scroll" id="man-body" style="padding-bottom:100px"></div>
+</div>
+
+<!-- PM CHECKLISTS screen (new multi-checklist hub) -->
+<div id="s-pmhub" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="pmHubBack()" id="pmhub-back">←</button>
+    <div style="flex:1"><div class="topbar-title" id="pmhub-title">PM Checklists</div></div>
+  </div>
+  <div class="scroll" id="pmhub-body" style="padding-bottom:100px"></div>
 </div>
 
 <!-- DISTRIBUTIONS -->
@@ -1645,7 +1645,8 @@ function go(name){
   if(name==='kb'){document.getElementById('kb-q').value='';document.getElementById('kb-res').innerHTML='<div class="empty"><div class="ei">🔍</div><p>Type an error code, model name, or symptom to search your Knowledge Base and Drive files</p></div>';}
   if(name==='invoices')renderInv();
   if(name==='dist')renderDist();
-  if(name==='manuals'){renderMans();if(ACCESS_TOKEN&&DRIVE_FILES.length===0)loadDriveFiles(true);}
+  if(name==='manuals'){initManualBrowser();}
+  if(name==='pmhub'){renderPMHub();}
   if(name==='pm'){renderPMChecklist();}
   if(name==='dash'){renderDash();renderRecent();}
 }
@@ -1932,7 +1933,167 @@ function searchGEErrors(query) {
 }
 
 
-// PM CHECKLIST DATA
+// ╔═══════════════════════════════════════════════════════════════╗
+// ║   DYNAMIC MANUAL BROWSER — GitHub Pages API  (v23)           ║
+// ╚═══════════════════════════════════════════════════════════════╝
+const GH_REPO  = 'mikejackson-stack/AMT-Imaging-Service-App';
+const GH_PAGES = 'https://mikejackson-stack.github.io/AMT-Imaging-Service-App';
+const GH_API   = 'https://api.github.com/repos/' + GH_REPO + '/contents/';
+
+const MAN_SECTIONS = [
+  {id:'ge',    label:'GE Manuals',                   icon:'🟢', color:'#28a745', path:'Manuals/GE'},
+  {id:'sie',   label:'Siemens Manuals',               icon:'🔵', color:'#17a2b8', path:'Manuals/Siemens'},
+  {id:'err',   label:'Error Codes & Troubleshooting', icon:'🔴', color:'#dc3545', path:'Manuals/Error codes and Troubleshooting'},
+];
+
+let manNavStack = [];
+let manCache    = {};
+
+function initManualBrowser() {
+  document.getElementById('man-home-btn').style.display = 'flex';
+  document.getElementById('man-back-btn').style.display = 'none';
+  document.getElementById('s-manuals').classList.add('active');
+  manNavStack = [];
+  renderManHome();
+}
+
+function renderManHome() {
+  setManUI('Manual Library', false);
+  setManBreadcrumb([{label:'📚 Library',fn:'manGoHome()'}]);
+  document.getElementById('man-body').innerHTML = `
+    <div style="font-size:13px;color:#888;margin-bottom:14px">
+      Tap a section to browse. New folders added to GitHub appear automatically.
+    </div>
+    ${MAN_SECTIONS.map(s=>`
+      <div onclick="openManSection('${s.id}')" style="background:#fff;border-radius:14px;padding:18px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;border-left:5px solid ${s.color};display:flex;align-items:center;gap:14px">
+        <span style="font-size:28px">${s.icon}</span>
+        <div style="flex:1"><div style="font-size:16px;font-weight:700;color:#1a1a2e">${s.label}</div><div style="font-size:12px;color:#888;margin-top:2px">Tap to browse folders</div></div>
+        <span style="font-size:20px;color:#ccc">›</span>
+      </div>`).join('')}
+    <div style="background:#fff8e1;border-radius:12px;padding:12px 14px;font-size:12px;color:#795548;border:1px solid #ffe0b2;margin-top:8px">
+      📡 <strong>Live from GitHub</strong> — add a folder to GitHub and it shows up here automatically.
+    </div>`;
+}
+
+async function openManSection(secId) {
+  const sec = MAN_SECTIONS.find(s=>s.id===secId);
+  if(!sec) return;
+  manNavStack = [{type:'section',secId}];
+  setManUI(sec.label, true);
+  setManBreadcrumb([{label:'📚 Library',fn:'manGoHome()'},{label:sec.label,fn:`openManSection('${sec.id}')`}]);
+  document.getElementById('man-body').innerHTML = manSpinner(sec.color,'Scanning folders…');
+  const items = await ghFetch(sec.path);
+  if(!items){document.getElementById('man-body').innerHTML=manError();return;}
+  const folders = items.filter(i=>i.type==='dir');
+  const files   = items.filter(i=>i.type==='file'&&isHtm(i.name));
+  let html = `<div style="font-size:12px;color:#888;margin-bottom:12px">${folders.length} folder${folders.length!==1?'s':''} found${files.length?` · ${files.length} file${files.length!==1?'s':''}`:''}</div>`;
+  folders.forEach(f=>{html+=manFolderCard(f.name,sec.color,`openManFolder('${esc(sec.path)}','${esc(f.name)}','${sec.color}')`)});
+  if(files.length){html+=manSecHeader('📄 Files in root',sec.color);files.forEach(f=>{html+=manFileCard(f,sec.color)});}
+  document.getElementById('man-body').innerHTML = html;
+}
+
+async function openManFolder(encPath, encName, color) {
+  const base = decodeURIComponent(encPath), name = decodeURIComponent(encName);
+  const full = base+'/'+name;
+  setManUI(name, true);
+  document.getElementById('man-body').innerHTML = manSpinner(color,'Loading files…');
+  const items = await ghFetch(full);
+  if(!items){document.getElementById('man-body').innerHTML=manError();return;}
+  const rootF   = items.find(i=>i.type==='dir'&&i.name.toLowerCase()==='root');
+  const otherF  = items.filter(i=>i.type==='dir'&&i.name.toLowerCase()!=='root');
+  const direct  = items.filter(i=>i.type==='file'&&isHtm(i.name));
+  let rootHtm   = [];
+  if(rootF){
+    document.getElementById('man-body').innerHTML=manSpinner(color,'Scanning root/…');
+    const ri = await ghFetch(full+'/root');
+    if(ri) rootHtm = await deepScan(full+'/root',ri);
+  }
+  const sec = MAN_SECTIONS.find(s=>base.startsWith('Manuals/'+(s.id==='ge'?'GE':s.id==='sie'?'Siemens':'Error')));
+  setManBreadcrumb([
+    {label:'📚 Library',fn:'manGoHome()'},
+    {label:sec?sec.label:'Manuals',fn:sec?`openManSection('${sec.id}')`:'' },
+    {label:name,fn:''}
+  ]);
+  const total = direct.length + rootHtm.length;
+  let html = '';
+  if(!total&&!otherF.length){html=manEmpty('No HTM files found in this folder.');}
+  else{
+    html=`<div style="font-size:12px;color:#888;margin-bottom:12px">${total} manual file${total!==1?'s':''}${otherF.length?` · ${otherF.length} subfolder${otherF.length!==1?'s':''}`:''}</div>`;
+    otherF.forEach(s=>{html+=manFolderCard(s.name,color,`openManFolder('${esc(full)}','${esc(s.name)}','${color}')`)});
+    if(direct.length){html+=manSecHeader('📄 Manual Files',color);direct.forEach(f=>{html+=manFileCard(f,color)});}
+    if(rootHtm.length){html+=manSecHeader('📄 Files from root/',color);rootHtm.forEach(f=>{html+=manFileCard(f,color)});}
+  }
+  document.getElementById('man-body').innerHTML = html;
+}
+
+async function deepScan(base, items) {
+  const res = [];
+  items.filter(i=>i.type==='file'&&isHtm(i.name)).forEach(f=>res.push(f));
+  for(const d of items.filter(i=>i.type==='dir')){
+    const sub = await ghFetch(base+'/'+d.name);
+    if(sub){const deeper=await deepScan(base+'/'+d.name,sub);res.push(...deeper);}
+  }
+  return res;
+}
+
+async function ghFetch(path) {
+  if(manCache[path]) return manCache[path];
+  try{
+    const r = await fetch(GH_API + encodeURIComponent(path).replace(/%2F/g,'/'));
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d = await r.json();
+    manCache[path] = Array.isArray(d)?d:null;
+    return manCache[path];
+  }catch(e){console.warn('GH API',path,e.message);return null;}
+}
+
+function openHtmFile(ghPath,color) {
+  const url = GH_PAGES+'/'+ghPath;
+  document.getElementById('man-body').innerHTML = `
+    <div style="margin-bottom:12px">
+      <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px">📄 ${ghPath.split('/').pop()}</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <button onclick="window.open('${url}','_blank')" style="flex:1;padding:11px;background:${color};color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer">🔗 Open in Browser</button>
+        <button onclick="history.back()" style="padding:11px 16px;background:#f0f0f0;color:#333;border:none;border-radius:10px;font-size:13px;cursor:pointer">← Back</button>
+      </div>
+      <div style="font-size:11px;color:#888;margin-bottom:10px">If the frame doesn't load, tap "Open in Browser" above.</div>
+    </div>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid #ddd">
+      <iframe src="${url}" style="width:100%;height:70vh;border:none;display:block"></iframe>
+    </div>`;
+}
+
+function manNavBack() {
+  if(manNavStack.length>0) manNavStack.pop();
+  if(manNavStack.length===0){renderManHome();}
+  else{const t=manNavStack[manNavStack.length-1];if(t.type==='section')openManSection(t.secId);}
+}
+function manGoHome(){manNavStack=[];renderManHome();}
+function setManUI(title,showBack){
+  document.getElementById('man-topbar-title').textContent=title;
+  document.getElementById('man-back-btn').style.display=showBack?'flex':'none';
+  document.getElementById('man-home-btn').style.display=showBack?'none':'flex';
+}
+function setManBreadcrumb(crumbs){
+  const el=document.getElementById('man-breadcrumb');
+  if(!el)return;
+  el.innerHTML=crumbs.map((c,i)=>{
+    const last=i===crumbs.length-1;
+    return (last?`<span style="color:#fff;font-weight:600">${c.label}</span>`:`<span onclick="${c.fn}" style="cursor:pointer;text-decoration:underline;color:rgba(255,255,255,.7)">${c.label}</span>`)+(last?'':'<span style="color:rgba(255,255,255,.4)"> › </span>');
+  }).join('');
+}
+function isHtm(n){return/\.(htm|html)$/i.test(n);}
+function esc(s){return encodeURIComponent(s);}
+function manSecHeader(t,c){return `<div style="font-size:11px;font-weight:700;color:${c};margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px">${t}</div>`;}
+function manFolderCard(name,color,onclick){return `<div onclick="${onclick}" style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border:1.5px solid #f0f0f0"><span style="font-size:22px">📁</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#1a1a2e">${name}</div><div style="font-size:11px;color:#888;margin-top:1px">Tap to browse</div></div><span style="font-size:18px;color:#ccc">›</span></div>`;}
+function manFileCard(file,color){const ghPath=file.path;return `<div onclick="openHtmFile('${ghPath.replace(/'/g,"\\'")}','${color}')" style="background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">📄</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">›</span></div>`;}
+function manSpinner(c,msg){return `<div style="text-align:center;padding:50px 20px"><div style="width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid ${c};border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite"></div><div style="font-size:14px;color:#888">${msg}</div></div>`;}
+function manError(){return `<div style="background:#fff3f3;border-radius:12px;padding:20px;text-align:center;border:1px solid #fcc"><div style="font-size:28px;margin-bottom:8px">⚠️</div><div style="font-size:14px;font-weight:600;color:#dc3545">Could Not Load Files</div><div style="font-size:12px;color:#888;margin-top:6px">Check connection or GitHub API rate limit (60/hr).<br><br><button onclick="manGoHome()" style="padding:8px 16px;background:#dc3545;color:#fff;border:none;border-radius:8px;cursor:pointer">Go Back</button></div></div>`;}
+function manEmpty(msg){return `<div style="background:#f9f9f9;border-radius:12px;padding:30px 20px;text-align:center;border:1px solid #eee"><div style="font-size:28px;margin-bottom:8px">📭</div><div style="font-size:14px;color:#888">${msg}</div><div style="font-size:11px;color:#bbb;margin-top:6px">Upload .htm files to GitHub to see them here.</div></div>`;}
+
+// ╔═══════════════════════════════════════════════════════════════╗
+// ║   PM CHECKLISTS ENGINE (v23) — 5 modality-specific forms     ║
+// ╚═══════════════════════════════════════════════════════════════╝
 var PM_ITEMS = [
   {s:"1. Pre-PM Safety", t:["Review site safety and magnetic field boundaries","Verify LOTO procedures","Confirm 5 Gauss line marked and signage in place","Record system errors from event log","Document original scan protocol"]},
   {s:"2. Magnet & Cryogenics", t:["Check helium level - record on arrival","Verify cryocooler running - listen for cycling","Check magnet room vent exhaust fan operational","Check compressor status - no errors","Verify vessel pressure within spec","Check 1st stage temperature (40-58K nominal)","Check 2nd stage temperature (7-17K nominal)","Inspect quench pipe - clear, no obstructions","Check helium lines for kinks or ice","Inspect cold head connections"]},
@@ -1990,6 +2151,296 @@ function savePMJob() {
   showToast('PM saved' + (result ? ' - ' + result : ''));
   go('jobs');
 }
+
+// ── PM HUB (checklist picker) ────────────────────────────────────
+var pmActiveChecklist = null;
+var pmActiveQ = 0;
+var pmInList = true;
+var pmStateData = {};
+
+var PM_CL = {
+  stellant:{id:'stellant',title:'Stellant CT Injector PM Checklist',form:'F71-24',rev:'Rev. A',color:'#0d6efd',icon:'💉',
+    hdr:[{id:'date',l:'Date',t:'date'},{id:'facility',l:'Facility',t:'text'},{id:'wo',l:'WO#',t:'text'},{id:'ecn',l:'ECN',t:'text'},{id:'dept',l:'Department',t:'text'},{id:'room',l:'Room#',t:'text'},{id:'eng',l:'Service Engineer',t:'text'},{id:'evtype',l:'Event Type',t:'text'},{id:'headser',l:'Head Serial#',t:'text'},{id:'dispser',l:'Display Serial#',t:'text'},{id:'sw',l:'SW Version',t:'text'},{id:'notes',l:'Notes',t:'ta'},{id:'testeq',l:'Test Equipment Used',t:'ta'}],
+    sections:[
+      {id:'s1',step:'1',title:'Operational Checkout #1',pf:true,tasks:[{id:'t1',text:'Enter Selected Protocol and Verify'}]},
+      {id:'s2',step:'2',title:'Inspect Power Control Module',note:'Do Not disconnect cables before shutting system down',pf:true,tasks:[{id:'t2',text:'Inspect cables and connections on Power Control Box'}]},
+      {id:'s3',step:'3',title:'Inspect Display Panel',pf:true,tasks:[{id:'t3a',text:'Turn unit on / Annotate SW version'},{id:'t3b',text:'Inspect Display Panel'},{id:'t3c',text:'Coiled Hand Switch'},{id:'t3d',text:'Integrity of buttons'},{id:'t3e',text:'Panel properly mounted'},{id:'t3f',text:'Set date / time if needed'}]},
+      {id:'s4',step:'4',title:'Auto Functions',pf:true,tasks:[{id:'t4a',text:'Verify Auto Load'},{id:'t4b',text:'Verify Auto Advance'}]},
+      {id:'s5',step:'5',title:'Inspect Injector Head',pf:true,tasks:[{id:'t5a',text:'Inspect Outside of Injector Head'},{id:'t5b',text:'Inspect Head Cable'},{id:'t5c',text:'Clean Outside head, Dried contrast'},{id:'t5d',text:'Inspect Contrast Warmer'},{id:'t5e',text:'Integrity of Keypad / Buttons'},{id:'t5f',text:'Plunger Movement'},{id:'t5g',text:'Inspect / Clean / Replace Manual Knobs'},{id:'t5h',text:'Inspect / Replace Lens Cap and Gasket'},{id:'t5i',text:'Remove Bottom and Top Cover / Inspect / Clean'},{id:'t5j',text:'Replace Top Cover Gaskets'},{id:'t5k',text:'Inspect Internal Wiring / Routing / Condition'},{id:'t5l',text:'Inspect / Replace LED board and gasket'},{id:'t5m',text:'Inspect / Clean Display Board'},{id:'t5n',text:'Inspect / Replace Dual Overlay Gasket'},{id:'t5o',text:'Inspect / Replace / Lubricate Plunger Tip Boot'},{id:'t5p',text:'Inspect / Clean Syringe Wells and Cap Seals'},{id:'t5q',text:'Inspect / Clean / Replace Front End gasket'},{id:'t5r',text:'Inspect Head Cable and Extension cable'},{id:'t5s',text:'Inspect / Clean Optic Sensors and Seals'},{id:'t5t',text:'Inspect / Replace Knuckle and Gasket'}]},
+      {id:'s6',step:'6',title:'Injector Mounting Device',pf:true,tasks:[{id:'t6a',text:'Inspect Counterpoise Mounting Bolts 42 ft/lbs'},{id:'t6b',text:'Head swings freely on mount'},{id:'t6c',text:'Pedestal moves freely, casters operate properly'},{id:'t6d',text:'Head Mounting Device and base'}]},
+      {id:'s7',step:'7',title:'ISI 700 — Cables',pf:true,tasks:[{id:'t7',text:'Inspect all cables and connectors'}]},
+      {id:'s8',step:'8',title:'Re-assembly',pf:true,tasks:[{id:'t8',text:'Re-assemble unit, connect all cables, proceed to Calibration Verification'}]},
+      {id:'s9',step:'9',title:'Syringe Position Verification',note:'0 ml ± 1ml',meas:[{id:'m9a',l:'A Side Volume',u:'ml',spec:'0 ± 1'},{id:'m9b',l:'B Side Volume',u:'ml',spec:'0 ± 1'}]},
+      {id:'s10',step:'10',title:'Volume and Flow Rates',note:'5 ml/sec | 50 ml',meas:[{id:'m10a',l:'A Flow Rate',u:'secs',spec:'10 ± 1'},{id:'m10b',l:'A Volume',u:'ml',spec:'50 ± 1'},{id:'m10c',l:'B Flow Rate',u:'secs',spec:'10 ± 1'},{id:'m10d',l:'B Volume',u:'ml',spec:'50 ± 1'}]},
+      {id:'s11',step:'11',title:'Motor Speed Checks',note:'FF 23s±5 | FR 23s±5 | SF 115s±10 | SR 115s±10',meas:[{id:'m11a',l:'A — Fast Forward',u:'s',spec:'23±5'},{id:'m11b',l:'A — Fast Reverse',u:'s',spec:'23±5'},{id:'m11c',l:'A — Slow Forward',u:'s',spec:'115±10'},{id:'m11d',l:'A — Slow Reverse',u:'s',spec:'115±10'},{id:'m11e',l:'B — Fast Forward',u:'s',spec:'23±5'},{id:'m11f',l:'B — Fast Reverse',u:'s',spec:'23±5'},{id:'m11g',l:'B — Slow Forward',u:'s',spec:'115±10'},{id:'m11h',l:'B — Slow Reverse',u:'s',spec:'115±10'}]},
+      {id:'s12',step:'12',title:'Pressure Limit Cal Verification',note:'8 ml/sec 100 ml',meas:[{id:'m12a',l:'A-Side Pressure',u:'psi',spec:'300±50'},{id:'m12b',l:'B-Side Pressure',u:'psi',spec:'300±50'}]},
+      {id:'s13',step:'13',title:'Electrical Safety',pf:true,tasks:[{id:'t13',text:'Follow Local Guidelines'}]},
+      {id:'s14',step:'14',title:'Final Inspection',pf:true,tasks:[{id:'t14',text:'Perform operations check, leave unit with original protocol'}]},
+    ],sigLabel:'Calibration Verification Performed By'},
+  solaris:{id:'solaris',title:'Solaris / Spectris CT Injector PM Checklist',form:'F71-23',rev:'Rev. A',color:'#6f42c1',icon:'💉',
+    hdr:[{id:'date',l:'Date',t:'date'},{id:'facility',l:'Facility',t:'text'},{id:'wo',l:'WO#',t:'text'},{id:'ecn',l:'ECN',t:'text'},{id:'dept',l:'Department',t:'text'},{id:'room',l:'Room#',t:'text'},{id:'eng',l:'Service Engineer',t:'text'},{id:'evtype',l:'Event Type',t:'text'},{id:'headser',l:'Head Serial#',t:'text'},{id:'dispser',l:'Display Serial#',t:'text'},{id:'sw',l:'SW Version',t:'text'},{id:'notes',l:'Notes',t:'ta'}],
+    sections:[
+      {id:'s1',step:'1',title:'Operational Checkout #1',pf:true,tasks:[{id:'t1',text:'Enter Selected Protocol and Verify'}]},
+      {id:'s2',step:'2',title:'Operational Checkout #2',pf:true,tasks:[{id:'t2',text:'Enter Selected Protocol and Verify'}]},
+      {id:'s3',step:'3',title:'Move Injector Base to Control Room',pf:true,tasks:[{id:'t3',text:'Remove Base covers, dis-connect Fiber Optics, Move Injector to Control Room, connect jumper Fiber optic cables, inspect charger and Power box'}]},
+      {id:'s4',step:'4',title:'Inspect Display Panel',pf:true,tasks:[{id:'t4a',text:'Turn unit on / Record SW version'},{id:'t4b',text:'Inspect Display Panel'},{id:'t4c',text:'Coiled Hand Switch'},{id:'t4d',text:'Fiber optic cables / Power cable'},{id:'t4e',text:'Panel properly mounted'},{id:'t4f',text:'Inspect Charging System / battery, cables'}]},
+      {id:'s5',step:'5',title:'Inspect Injector Head',pf:true,tasks:[{id:'t5a',text:'Integrity of buttons'},{id:'t5b',text:'Plunger Movement'},{id:'t5c',text:'Pivot Knuckle'},{id:'t5d',text:'Remove Top Cover / Inspect'},{id:'t5e',text:'Replace Top Cover Gaskets'},{id:'t5f',text:'Inspect Internal Wiring / Routing / Condition'},{id:'t5g',text:'Integrity of Syringe Wells'},{id:'t5h',text:'Inspect / Replace syringe well "O" Rings'},{id:'t5i',text:'Grease Plastic Gears'},{id:'t5j',text:'Lightly Grease Guide Rails'},{id:'t5k',text:'Grease plunger ball screws'}]},
+      {id:'s6',step:'6',title:'Injector Mounting Device',pf:true,tasks:[{id:'t6a',text:'Head swings freely on mount'},{id:'t6b',text:'Pedestal moves freely, casters operate properly'}]},
+      {id:'s7',step:'7',title:'Cleaning',pf:true,tasks:[{id:'t7a',text:'Head covers'},{id:'t7b',text:'Manual plunger knobs'},{id:'t7c',text:'Plungers'},{id:'t7d',text:'Lens cap'},{id:'t7e',text:'Injector assembly'}]},
+      {id:'s8',step:'8',title:'Reassemble Injector Head',pf:true,tasks:[{id:'t8',text:'Reassembly Head / Verify Guide Runners Aligned / Plungers Aligned'}]},
+      {id:'s9',step:'9',title:'Base Maintenance',pf:true,tasks:[{id:'t9a',text:'Inspect all cables and connectors'},{id:'t9b',text:'Pedestal Base'},{id:'t9c',text:'Battery'},{id:'t9d',text:'Base Covers'},{id:'t9e',text:'Drive Cables'},{id:'t9f',text:'Data Cable Connector'},{id:'t9g',text:'Remove Brass Housing and Inspect'},{id:'t9h',text:'Inspect Front Plate'},{id:'t9i',text:'Inspect Rear Plate'},{id:'t9j',text:'Inspect Battery Back Plate'}]},
+      {id:'s10',step:'10',title:'Reassembly',pf:true,tasks:[{id:'t10',text:'Reassemble base, connect all cables, do not put covers on base, leave in Control Room for Calibration Verification'}]},
+      {id:'s11',step:'11',title:'Syringe Position Verification',note:'40 ml ± 1ml',meas:[{id:'m11a',l:'A Side Volume',u:'ml',spec:'40±1'},{id:'m11b',l:'B Side Volume',u:'ml',spec:'40±1'}]},
+      {id:'s12',step:'12',title:'Volume and Flow Rates',note:'5ml/sec | 50ml | 300psi — A: Start 60±.5, End 10±.5 | B: Start 110±.5, End 60±.5',meas:[{id:'m12a',l:'A Start Position',u:'ml',spec:'60±0.5'},{id:'m12b',l:'A Flow Rate',u:'s',spec:'10±0.5'},{id:'m12c',l:'A End Position',u:'ml',spec:'10±0.5'},{id:'m12d',l:'B Start Position',u:'ml',spec:'110±0.5'},{id:'m12e',l:'B Flow Rate',u:'s',spec:'10±0.5'},{id:'m12f',l:'B End Position',u:'ml',spec:'60±0.5'}]},
+      {id:'s13',step:'13',title:'Motor Speed Checks',note:'A: FF 7±2s FR 7±2s SF 25±2s SR 25±2s | B: FF 12±2s FR 12±2s SF 46±4s SR 46±4s',meas:[{id:'m13a',l:'A — Fast Forward',u:'s',spec:'7±2'},{id:'m13b',l:'A — Fast Reverse',u:'s',spec:'7±2'},{id:'m13c',l:'A — Slow Forward',u:'s',spec:'25±2'},{id:'m13d',l:'A — Slow Reverse',u:'s',spec:'25±2'},{id:'m13e',l:'B — Fast Forward',u:'s',spec:'12±2'},{id:'m13f',l:'B — Fast Reverse',u:'s',spec:'12±2'},{id:'m13g',l:'B — Slow Forward',u:'s',spec:'46±4'},{id:'m13h',l:'B — Slow Reverse',u:'s',spec:'46±4'}]},
+      {id:'s14',step:'14',title:'Electrical Safety',pf:true,tasks:[{id:'t14',text:'Follow Local requirements'}]},
+      {id:'s15',step:'15',title:'A-Side Pressure Limit (6.5 ml/sec)',meas:[{id:'m15',l:'A-Side Pressure',u:'PSI',spec:'250±41'}]},
+      {id:'s16',step:'16',title:'B-Side Pressure Limit (8 ml/sec)',meas:[{id:'m16',l:'B-Side Pressure',u:'PSI',spec:'300±50'}]},
+      {id:'s17',step:'17',title:'Final Inspection',pf:true,tasks:[{id:'t17',text:'Final Operational Check Complete'}]},
+    ],sigLabel:'Calibration Verification Performed By'},
+  siemensCT:{id:'siemensCT',title:'Siemens CT System PM Checklist',form:'F70-60S',rev:'Rev. F',color:'#17a2b8',icon:'🖥️',
+    hdr:[{id:'site',l:'Site',t:'text'},{id:'ser',l:'Serial #',t:'text'},{id:'date',l:'Date',t:'date'},{id:'sysid',l:'System ID - MXR #',t:'text'},{id:'wo',l:'Work Order #',t:'text'},{id:'fl',l:'FL#',t:'text'},{id:'dongle',l:'Dongle',t:'text'}],
+    sections:[
+      {id:'g1',title:'Computer / Scan Room',pfna:true,int:true,tasks:[
+        {id:'c1',text:'ICS/IRS check fans & clean/vacuum all inlets/outlets',int:'Every PM'},
+        {id:'c2',text:'Check door switch and x-ray light',int:'Every PM'},
+        {id:'c3',text:'Verify proper date and time',int:'Every PM'},
+        {id:'c4',text:'Verify Emergency Stop',int:'Every PM'},
+        {id:'c5',text:'Review error logs and tube history',int:'Every PM'},
+        {id:'c6',text:'Record current system scan and tube scan seconds',int:'Every PM',data:true,dunit:'secs'},
+        {id:'c7',text:'General cleaning of all covers and couch',int:'Every PM'},
+        {id:'c8',text:'Inspect phantom and phantom holders',int:'Every PM'},
+        {id:'c9',text:'Make a site-specific backup',int:'Every PM'},
+        {id:'c10',text:'Perform Acronis backup',int:'Annually'},
+      ]},
+      {id:'g2',title:'System',pfna:true,int:true,tasks:[
+        {id:'s1',text:'Verify tilt operation',int:'Every PM'},
+        {id:'s2',text:'UHR / detector window inspect/clean',int:'Every PM'},
+        {id:'s3',text:'Inspect/clean all fans and filters',int:'Every PM'},
+        {id:'s4',text:'Slip rings inspect/clean',int:'Every 6 Mo'},
+        {id:'s5',text:'Power/Voltage/Signal brushes inspect/clean',int:'Every 6 Mo'},
+        {id:'s6',text:'Inspect tube cooling hoses',int:'Every PM'},
+        {id:'s7',text:'Listen for tube rotor noise / air in HV tank',int:'Every PM'},
+        {id:'s8',text:'Lube main bearing/table with OEM approved grease',int:'Annually'},
+        {id:'s9',text:'Inspect mylar window',int:'Every PM'},
+        {id:'s10',text:'Grease vertical drive',int:'Annually'},
+        {id:'s11',text:'Inspect belt and check tension',int:'Every 6 Mo'},
+        {id:'s12',text:'Check all gantry displays and buttons for operation',int:'Every PM'},
+        {id:'s13',text:'Dehumidifier filter: check clean/replace',int:'Every PM'},
+        {id:'s14',text:'WCS cabinet inspect/pressure check – refill if needed',int:'Every PM'},
+        {id:'s15',text:'Inspect PDC protection',int:'Every PM'},
+        {id:'s16',text:'Inspect PDC cabinet/varistor',int:'Every PM'},
+        {id:'s17',text:'Perform Quality Constancy',int:'Every PM'},
+      ]},
+    ],hasNotes:true,hasFU:true,sigLabel:'Service Engineer Signature and Date'},
+  geCT:{id:'geCT',title:'GE CT Quarterly PM Checklist',form:'F70-60',rev:'Rev. F',color:'#28a745',icon:'🖥️',
+    hdr:[{id:'customer',l:'Customer',t:'text'},{id:'location',l:'Location',t:'text'},{id:'eng',l:'Engineer',t:'text'},{id:'date',l:'Date',t:'date'},{id:'wo',l:'Work Order',t:'text'},{id:'model',l:'GE Model',t:'text'},{id:'sysid',l:'System ID #',t:'text'},{id:'sw',l:'Software Version',t:'text'},{id:'siteid',l:'Site ID #',t:'text'},{id:'code16',l:'16 Digit Code',t:'text'},{id:'oprep',l:'Operator Reported Problems',t:'ta'}],
+    quarters:['Q1 (Jan–Mar)','Q2 (Apr–Jun)','Q3 (Jul–Sep)','Q4 (Oct–Dec)'],
+    qsec:{
+      0:[
+        {id:'q1g',title:'Gantry',pfna:true,tasks:[{id:'q1g1',text:'Slip Ring Cleaning'},{id:'q1g2',text:'Slip Ring Brush Block (Inspect/Clean/Debris Removal)'},{id:'q1g3',text:'Grease Main Bearing (Every 2M Gantry Revolutions)'},{id:'q1g4',text:'Inspect Hydraulic Tilt Cylinder & Fittings for Leaks'},{id:'q1g5',text:'Clean/Inspect Gantry Interior'},{id:'q1g6',text:'Clean/Inspect all Fans and Filters'},{id:'q1g7',text:'Verify Gantry Balance'},{id:'q1g8',text:'Inspect all Control Panel Buttons and Display Lights'},{id:'q1g9',text:'Clean/Inspect Detector Face Plate'},{id:'q1g10',text:'Clean/Inspect Mylar Window'},{id:'q1g11',text:'Clean/Inspect Gantry Heater Filter (when applicable)'},{id:'q1g12',text:'Verify X-Ray Indicator Lights'},{id:'q1g13',text:'Inspect Cable/Hose Zip Ties'},{id:'q1g14',text:'Inspect Rotational Path Components and Cable Clearances'},{id:'q1g15',text:'Clean/Inspect Axial Encoder Wheel'},{id:'q1g16',text:'Seismic Anchor Bolt Check'},{id:'q1g17',text:'PDU- Clean/Inspect (Electronics Discoloration/Arcing)'}]},
+        {id:'q1t',title:'Table/Couch',pfna:true,tasks:[{id:'q1t1',text:'Clean/Inspect Operation of Cradle Drive Assy.'},{id:'q1t2',text:'General Cleaning of Covers, Cradle, Table Pan & Interior'},{id:'q1t3',text:'Clean/Inspect Tape Switches'},{id:'q1t4',text:'Clean/Inspect Rollers and Rails'},{id:'q1t5',text:'Check Limit Mechanisms for Couch Vertical and Horizontal'},{id:'q1t6',text:'Clean/Inspect QA Phantom for Damages'},{id:'q1t7',text:'Tighten Motor Coupling Screws (when applicable)'}]},
+        {id:'q1x',title:'X-Ray System',pfna:true,tasks:[{id:'q1x1',text:'Inspect all High Voltage Connections'},{id:'q1x2',text:'Operational Checks for Heat Exchanger Fans and Pump'},{id:'q1x3',text:'High Voltage Checks/Testing (when applicable)'}]},
+        {id:'q1d',title:'Data Acquisition',pfna:true,tasks:[{id:'q1d1',text:'Verify DAS Tools Auto Test Passes'},{id:'q1d2',text:'Verify Recon Data Path Passes'}]},
+        {id:'q1c',title:'Console',pfna:true,tasks:[{id:'q1c1',text:'Clean/Inspect Fans, Filters & Grills'},{id:'q1c2',text:'Clean/Inspect Keyboard, Mouse & Monitor'},{id:'q1c3',text:'Check Operation of Final Scan Abort Pushbuttons'},{id:'q1c4',text:'Verify Console Network, Archive, & Filming Queues are Empty'},{id:'q1c5',text:'Verify Console Date & Time'},{id:'q1c6',text:'Clean/Inspect SCSI Tower Fan, Filter & Cables'}]},
+        {id:'q1e',title:'Entire System',pfna:true,tasks:[{id:'q1e1',text:'Inspect Error Logs'},{id:'q1e2',text:'Perform Quality Assurance Scans'},{id:'q1e3',text:'Create System State Backup'}]},
+      ],
+      1:[
+        {id:'q2g',title:'Gantry',pfna:true,tasks:[{id:'q2g1',text:'Slip Ring Cleaning'},{id:'q2g2',text:'Slip Ring Brush Block (Inspect/Clean/Debris Removal)'},{id:'q2g3',text:'Verify Tilt Operation & Zero Check'},{id:'q2g4',text:'Clean/Inspect Gantry Interior'},{id:'q2g5',text:'Clean/Inspect all Fans and Filters'},{id:'q2g6',text:'Inspect all Control Panel Buttons and Display Lights'},{id:'q2g7',text:'Verify Collimator Functional Tests'},{id:'q2g8',text:'Clean/Inspect Gantry Heater Filter (when applicable)'},{id:'q2g9',text:'Verify X-Ray Indicator Lights'},{id:'q2g10',text:'Inspect Cable/Hose Zip Ties'},{id:'q2g11',text:'Inspect Rotational Path Components and Cable Clearances'},{id:'q2g12',text:'Clean/Inspect Axial Encoder Wheel'},{id:'q2g13',text:'Clean/Inspect Mylar Window'},{id:'q2g14',text:'Clean/Inspect Detector Face Plate'}]},
+        {id:'q2t',title:'Table/Couch',pfna:true,tasks:[{id:'q2t1',text:'Clean/Inspect Operation of Cradle Drive Assy.'},{id:'q2t2',text:'Clean/Inspect Tape Switches'},{id:'q2t3',text:'Check of Accessories (Phantom Holder, Cradle Extender, etc.)'},{id:'q2t4',text:'Check Limit Mechanisms for Couch Vertical and Horizontal'},{id:'q2t5',text:'Verify Laser Light Alignments'},{id:'q2t6',text:'General Cleaning of Covers, Table Pan, and Interior'},{id:'q2t7',text:'Inspect Cradle Drive Belts (Cracks/Fraying)'},{id:'q2t8',text:'Seismic Anchor Bolt Check'}]},
+        {id:'q2x',title:'X-Ray System',pfna:true,tasks:[{id:'q2x1',text:'X-Ray Tube Well / HV Tank Well Inspections'},{id:'q2x2',text:'HV Cable Candle Stick Inspections (Cracks/Arcing)'},{id:'q2x3',text:'Inspect all High Voltage Connections'},{id:'q2x4',text:'Operational Checks for the Heat Exchanger Fans & Pump'}]},
+        {id:'q2d',title:'Data Acquisition',pfna:true,tasks:[{id:'q2d1',text:'Verify DAS Tools Auto Test Passes'},{id:'q2d2',text:'Verify Recon Data Path Passes'},{id:'q2d3',text:'Clean/Inspect DAS Duct Fans & Filters'},{id:'q2d4',text:'Inspect/Adjust DAS Power Supplies (when applicable)'}]},
+        {id:'q2c',title:'Console',pfna:true,tasks:[{id:'q2c1',text:'Clean/Inspect Fans, Filters & Grills'},{id:'q2c2',text:'Vacuum all Exhaust Vents and Console Interior'},{id:'q2c3',text:'Clean/Inspect Keyboard, Mouse & Monitor'},{id:'q2c4',text:'Verify Emergency Off Buttons (Console/Table/Gantry/Wall)'},{id:'q2c5',text:'Verify Console Network, Archive, & Filming Queues are Empty'},{id:'q2c6',text:'Verify Console Date & Time'}]},
+        {id:'q2e',title:'Entire System',pfna:true,tasks:[{id:'q2e1',text:'Inspect Error Logs'},{id:'q2e2',text:'Perform Quality Assurance Scans'},{id:'q2e3',text:'Create System State Backup'}]},
+      ],
+      2:[
+        {id:'q3g',title:'Gantry',pfna:true,tasks:[{id:'q3g1',text:'Slip Ring Cleaning'},{id:'q3g2',text:'Slip Ring Brush Block (Clean/Inspect/Debris Removal)'},{id:'q3g3',text:'Clean/Inspect Gantry Interior'},{id:'q3g4',text:'Clean/Inspect all Fans & Filters'},{id:'q3g5',text:'Verify Gantry Balance'},{id:'q3g6',text:'Inspect all Control Panel Buttons and Display Lights'},{id:'q3g7',text:'Clean/Inspect Mylar Window'},{id:'q3g8',text:'Clean/Inspect Detector Face Plate'},{id:'q3g9',text:'Clean/Inspect Gantry Heater Filter (when applicable)'},{id:'q3g10',text:'Verify X-Ray Indicator Lights'},{id:'q3g11',text:'Inspect Cable/Hose Zip Ties'},{id:'q3g12',text:'Inspect Rotational Path Components and Cable Clearances'},{id:'q3g13',text:'Clean/Inspect Axial Encoder Wheel'}]},
+        {id:'q3t',title:'Table/Couch',pfna:true,tasks:[{id:'q3t1',text:'Clean/Inspect Operation of Cradle Drive Assy.'},{id:'q3t2',text:'Clean/Inspect Tape Switches'},{id:'q3t3',text:'Clean/Inspect Rollers and Rails'},{id:'q3t4',text:'Check Limit Mechanisms for Couch Vertical and Horizontal'},{id:'q3t5',text:'Clean/Inspect QA Phantom for Damages'},{id:'q3t6',text:'General Cleaning of Covers, Cradle, Table Pan and Interior'}]},
+        {id:'q3x',title:'X-Ray System',pfna:true,tasks:[{id:'q3x1',text:'Inspect all High Voltage Connections'},{id:'q3x2',text:'Operational Checks for the Heat Exchanger Fans & Pump'},{id:'q3x3',text:'High Voltage Checks/Testing (when applicable)'}]},
+        {id:'q3d',title:'Data Acquisition',pfna:true,tasks:[{id:'q3d1',text:'Verify DAS Tools Auto Test Passes'},{id:'q3d2',text:'Verify Recon Data Path Passes'}]},
+        {id:'q3c',title:'Console',pfna:true,tasks:[{id:'q3c1',text:'Clean/Inspect Fans, Filters & Grills'},{id:'q3c2',text:'Clean/Inspect Keyboard, Mouse, & Monitor'},{id:'q3c3',text:'Check Operation of Final Scan Abort Pushbuttons'},{id:'q3c4',text:'Verify Console Network, Archive, & Filming Queues are Empty'},{id:'q3c5',text:'Verify Console Date & Time'},{id:'q3c6',text:'Clean/Inspect SCSI Tower Fan, Filter, and Cables'}]},
+        {id:'q3e',title:'Entire System',pfna:true,tasks:[{id:'q3e1',text:'Inspect Error Logs'},{id:'q3e2',text:'Perform Quality Assurance Scans'},{id:'q3e3',text:'Create System State Backup'}]},
+      ],
+      3:[
+        {id:'q4g',title:'Gantry',pfna:true,tasks:[{id:'q4g1',text:'Slip Ring Cleaning'},{id:'q4g2',text:'Slip Ring Brush Block (Inspect/Clean/Debris Removal)'},{id:'q4g3',text:'Clean/Inspect Gantry Interior'},{id:'q4g4',text:'Clean/Inspect all Fans & Filters'},{id:'q4g5',text:'Inspect all Control Panel Buttons and Display Lights'},{id:'q4g6',text:'Verify Collimator Functional Tests'},{id:'q4g7',text:'Clean/Inspect Gantry Heater Filter (when applicable)'},{id:'q4g8',text:'Verify X-Ray Indicator Lights'},{id:'q4g9',text:'Inspect Cable/Hose Zip Ties'},{id:'q4g10',text:'Inspect Rotational Path Components and Cable Clearances'},{id:'q4g11',text:'Inspect Axial Encoder Wheel'},{id:'q4g12',text:'Clean/Inspect Mylar Window'},{id:'q4g13',text:'Clean/Inspect Detector Face Plate'}]},
+        {id:'q4t',title:'Table/Couch',pfna:true,tasks:[{id:'q4t1',text:'Clean/Inspect Operation of Cradle Drive Assy.'},{id:'q4t2',text:'Clean/Inspect Tape Switches'},{id:'q4t3',text:'Check of Accessories (Phantom Holder, Cradle Extender, etc.)'},{id:'q4t4',text:'Check Limit Mechanisms for Couch Vertical and Horizontal'},{id:'q4t5',text:'Verify Laser Light Alignments'},{id:'q4t6',text:'General Cleaning of Covers, Cradle, Table Pan and Interior'},{id:'q4t7',text:'Inspect Cradle Drive Belts (Cracks/Fraying)'}]},
+        {id:'q4x',title:'X-Ray System',pfna:true,tasks:[{id:'q4x1',text:'X-Ray Tube Well / HV Tank Well Inspections'},{id:'q4x2',text:'HV Cable Candle Stick Inspections (Cracks/Arcing)'},{id:'q4x3',text:'Inspect all High Voltage Connections'},{id:'q4x4',text:'Operational Checks for the Heat Exchanger Fans & Pump'}]},
+        {id:'q4d',title:'Data Acquisition',pfna:true,tasks:[{id:'q4d1',text:'Verify DAS Tools Auto Test Passes'},{id:'q4d2',text:'Verify Recon Data Path Passes'}]},
+        {id:'q4c',title:'Console',pfna:true,tasks:[{id:'q4c1',text:'Clean/Inspect Fans, Filters & Grills'},{id:'q4c2',text:'Vacuum all Exhaust Vents and Console Interior'},{id:'q4c3',text:'Clean/Inspect Keyboard, Mouse & Monitor'},{id:'q4c4',text:'Verify Emergency Off Buttons (Console/Table/Gantry/Wall)'},{id:'q4c5',text:'Verify Console Network, Archive, & Filming Queues are Empty'},{id:'q4c6',text:'Verify Console Date & Time'}]},
+        {id:'q4e',title:'Entire System',pfna:true,tasks:[{id:'q4e1',text:'Inspect Error Logs'},{id:'q4e2',text:'Perform Quality Assurance Scans'},{id:'q4e3',text:'Create System State Backup'}]},
+      ]
+    },
+    aging:[{id:'grot',l:'Gantry Rotation Count'},{id:'tmas',l:'Tube mAs Count'},{id:'pex',l:'Patient Exams Count'},{id:'stemp',l:'Scan Room Temperature'},{id:'fuwo',l:'Follow-up Work Order # (for any FAIL)'},{id:'cmts',l:'Comments & Notes',t:'ta'}],
+    hasFU:true,sigLabel:'Service Engineer Signature and Date'},
+  siemensMRI:{id:'siemensMRI',title:'Siemens MRI System PM Checklist',form:'F70-59S',rev:'Rev. D',color:'#fd7e14',icon:'🧲',
+    hdr:[{id:'site',l:'Site',t:'text'},{id:'date',l:'Date',t:'date'},{id:'sysid',l:'System ID - MXR #',t:'text'},{id:'wo',l:'Work Order #',t:'text'},{id:'eng',l:'Service Engineer',t:'text'},{id:'sn',l:'SN',t:'text'},{id:'fl',l:'Functional Location',t:'text'},{id:'dongle',l:'Dongle',t:'text'}],
+    sections:[{id:'main',title:'Procedures',numbered:true,tasks:[
+      {n:'1',id:'p1',text:'Verify emergency power off switches'},
+      {n:'2',id:'p2',text:'Helium Compressor – Static Pressure',data:true,du:'bar'},
+      {n:'3',id:'p3',text:'Computer(s): vacuum inlets and outlets & graphics card'},
+      {n:'4',id:'p4',text:'Check phantoms for cracks. Refill if necessary (distilled water only)'},
+      {n:'5',id:'p5',text:'Annual grease cartridge replacement (Symphony only)',dl:true,dlabel:'Date of last cartridge installation'},
+      {n:'6',id:'p6',text:'Clean RF air filters (3T)'},
+      {n:'7',id:'p7',text:'Gradient Supervision check & verify temp indicators NOT activated (Annual)',dl:true,dlabel:'Date of last test'},
+      {n:'8',id:'p8',text:'Table collision switch and stop button checks'},
+      {n:'9',id:'p9',text:'Check patient trolley frame, wheels, brake & hydraulic'},
+      {n:'10',id:'p10',text:'Record magnet pressure',data:true,du:'psi'},
+      {n:'11',id:'p11',text:'Record helium level',data:true,du:'%'},
+      {n:'12',id:'p12',text:'Check patient blower'},
+      {n:'13',id:'p13',text:'Check & clean patient blower air filter'},
+      {n:'14',id:'p14',text:'Cooling: check entire water system for leaks and condensation'},
+      {n:'15',id:'p15',text:'Cooling: check cooling status under Magnet & Cooling in service'},
+      {n:'16',id:'p16',text:'Cooling: check gradient filter fans'},
+      {n:'17',id:'p17',text:'Record compressor hours',data:true,du:'hrs'},
+      {n:'18',id:'p18',text:'Measure center frequency',data:true,du:'MHz'},
+      {n:'19',id:'p19',text:'Checking the shield temperatures'},
+      {n:'20',id:'p20',text:'Record ERDU battery voltage',data:true,du:'VDC'},
+      {n:'21',id:'p21',text:'Quality Assurance test complete'},
+      {n:'22',id:'p22',text:'QC run on all coils (annual)'},
+      {n:'23',id:'p23',text:'Cleaning up directories – c:\\MedCom\\MriDiagnostic – delete all'},
+      {n:'24',id:'p24',text:'Backup Site specific data, Master backup and customer protocols'},
+      {n:'25',id:'p25',text:'Perform full system software backup to external drive. Leave a copy on-site and take a copy with you. (Acronis, every 6 months)'},
+    ]}],hasNotes:true,hasFU:true,sigLabel:'Service Engineer Signature and Date'},
+};
+
+function renderPMHub() {
+  pmInList = true;
+  document.getElementById('pmhub-title').textContent = 'PM Checklists';
+  document.getElementById('pmhub-back').onclick = function(){ go('dash'); };
+  document.getElementById('pmhub-body').innerHTML = `
+    <div style="font-size:13px;color:#888;margin-bottom:14px">Select a checklist to begin your PM.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      ${Object.values(PM_CL).map(cl=>`
+        <div onclick="openPMCL('${cl.id}')" style="background:#fff;border-radius:14px;padding:16px 12px;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;border-top:4px solid ${cl.color}">
+          <div style="font-size:26px;margin-bottom:8px">${cl.icon}</div>
+          <div style="font-size:12px;font-weight:700;color:${cl.color};line-height:1.3">${cl.title}</div>
+          <div style="font-size:10px;color:#aaa;margin-top:4px">${cl.form} · ${cl.rev}</div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function pmHubBack() {
+  if(pmInList){ go('dash'); }
+  else{ pmInList=true; renderPMHub(); }
+}
+
+function openPMCL(clId) {
+  pmInList = false;
+  pmActiveChecklist = clId;
+  pmActiveQ = 0;
+  if(!pmStateData[clId]) pmStateData[clId]={hdr:{},tasks:{},meas:{},aging:{},notes:'',followup:'',sig:'',sigdate:''};
+  renderPMCLPage();
+}
+
+function renderPMCLPage() {
+  var cl = PM_CL[pmActiveChecklist];
+  var d  = pmStateData[pmActiveChecklist];
+  document.getElementById('pmhub-title').textContent = cl.title;
+  document.getElementById('pmhub-back').onclick = function(){ pmInList=true; renderPMHub(); };
+  var html = `<div style="background:${cl.color};color:#fff;border-radius:12px;padding:14px 16px;margin-bottom:14px"><div style="font-size:11px;opacity:.7">${cl.form} · ${cl.rev}</div><div style="font-size:16px;font-weight:700;margin-top:3px">${cl.icon} ${cl.title}</div></div>`;
+
+  // Header
+  html += `<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px"><div style="padding:12px 14px;border-bottom:1px solid #e0e4ea;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">System / Job Info</div><div style="padding:14px;display:flex;flex-direction:column;gap:10px">`;
+  cl.hdr.forEach(function(f){
+    var v=d.hdr[f.id]||'';
+    if(f.t==='ta'){html+=`<div><label style="display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${f.l}</label><textarea rows="2" style="width:100%;padding:10px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmSetH('${cl.id}','${f.id}',this.value)">${v}</textarea></div>`;}
+    else{html+=`<div><label style="display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${f.l}</label><input type="${f.t||'text'}" value="${v}" style="width:100%;padding:10px 12px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmSetH('${cl.id}','${f.id}',this.value)"></div>`;}
+  });
+  html += `</div></div>`;
+
+  // Quarter tabs (GE CT only)
+  if(cl.quarters){
+    html += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">`;
+    cl.quarters.forEach(function(q,i){
+      var act=pmActiveQ===i;
+      html+=`<button onclick="pmSetQ(${i})" style="padding:8px 12px;border-radius:10px;border:2px solid ${act?cl.color:'#ddd'};background:${act?cl.color:'#fff'};color:${act?'#fff':'#555'};font-size:12px;font-weight:${act?700:400};cursor:pointer">${q}</button>`;
+    });
+    html += `</div>`;
+    cl.qsec[pmActiveQ].forEach(function(sec){html+=pmRenderSec(cl,sec,d);});
+    // Aging
+    html += `<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px"><div style="padding:12px 14px;border-bottom:1px solid #e0e4ea;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">📊 System Aging & Other Info</div><div style="padding:14px;display:flex;flex-direction:column;gap:10px">`;
+    cl.aging.forEach(function(f){
+      var v=d.aging[f.id]||'';
+      if(f.t==='ta'){html+=`<div><label style="display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${f.l}</label><textarea rows="3" style="width:100%;padding:10px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmSetAging('${cl.id}','${f.id}',this.value)">${v}</textarea></div>`;}
+      else{html+=`<div><label style="display:block;font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">${f.l}</label><input type="text" value="${v}" style="width:100%;padding:10px 12px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmSetAging('${cl.id}','${f.id}',this.value)"></div>`;}
+    });
+    html += `</div></div>`;
+  } else {
+    cl.sections.forEach(function(sec){html+=pmRenderSec(cl,sec,d);});
+  }
+
+  // Notes
+  if(cl.hasNotes){html+=`<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px"><div style="padding:12px 14px;border-bottom:1px solid #e0e4ea;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">📝 Notes</div><div style="padding:14px"><textarea rows="4" style="width:100%;padding:10px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmStateData['${cl.id}'].notes=this.value">${d.notes||''}</textarea></div></div>`;}
+  if(cl.hasFU){html+=`<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px"><div style="padding:12px 14px;border-bottom:1px solid #dc3545;font-size:11px;font-weight:700;color:#dc3545;text-transform:uppercase">⚠️ Follow-Up Work Order</div><div style="padding:14px"><div style="font-size:12px;color:#666;margin-bottom:8px">Required if any items marked "Fail"</div><input type="text" value="${d.followup||''}" style="width:100%;padding:10px 12px;border:1.5px solid #dc3545;border-radius:10px;font-size:14px" placeholder="Follow-up WO #" onchange="pmStateData['${cl.id}'].followup=this.value"></div></div>`;}
+
+  // Signature
+  html+=`<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px"><div style="padding:12px 14px;border-bottom:1px solid #e0e4ea;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">✍️ ${cl.sigLabel}</div><div style="padding:14px;display:flex;flex-direction:column;gap:8px"><input type="text" value="${d.sig||''}" style="width:100%;padding:10px 12px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" placeholder="Signature" onchange="pmStateData['${cl.id}'].sig=this.value"><input type="date" value="${d.sigdate||''}" style="width:100%;padding:10px 12px;border:1.5px solid #e0e4ea;border-radius:10px;font-size:14px" onchange="pmStateData['${cl.id}'].sigdate=this.value"></div></div>`;
+  html+=`<button onclick="window.print()" style="width:100%;padding:14px;background:${cl.color};color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;margin-bottom:20px">🖨️ Print / Save PDF</button>`;
+
+  document.getElementById('pmhub-body').innerHTML = html;
+}
+
+function pmRenderSec(cl,sec,d){
+  var h=`<div style="background:#fff;border-radius:14px;border:1px solid #e0e4ea;overflow:hidden;margin-bottom:12px">`;
+  h+=`<div style="padding:12px 14px;border-bottom:1px solid #e0e4ea;font-size:13px;font-weight:600;color:#1a1a2e">`;
+  if(sec.step) h+=`<span style="background:${cl.color};color:#fff;border-radius:6px;padding:2px 8px;font-size:11px;margin-right:8px">Step ${sec.step}</span>`;
+  h+=`${sec.title}</div>`;
+  if(sec.note) h+=`<div style="font-size:12px;color:#666;background:#f8f9fa;padding:8px 14px;line-height:1.5">${sec.note}</div>`;
+  h+=`<div style="padding:8px 14px">`;
+
+  if(sec.pf){ // Pass/Fail only
+    sec.tasks.forEach(function(t){
+      var v=d.tasks[t.id]||'';
+      h+=`<div style="display:flex;align-items:center;padding:9px 0;border-bottom:1px solid #f5f5f5"><div style="flex:1;font-size:13px">${t.text}</div><div style="display:flex;gap:8px;margin-left:10px">`;
+      h+=`<label style="display:flex;align-items:center;gap:3px;cursor:pointer"><input type="radio" name="pmc_${sec.id}_${t.id}" value="pass" ${v==='pass'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','pass')" style="accent-color:#28a745"><span style="font-size:11px;font-weight:700;color:#28a745">PASS</span></label>`;
+      h+=`<label style="display:flex;align-items:center;gap:3px;cursor:pointer"><input type="radio" name="pmc_${sec.id}_${t.id}" value="fail" ${v==='fail'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','fail')" style="accent-color:#dc3545"><span style="font-size:11px;font-weight:700;color:#dc3545">FAIL</span></label>`;
+      h+=`</div></div>`;
+    });
+  }
+  else if(sec.pfna||sec.int){ // Pass/Fail/NA (with optional interval)
+    sec.tasks.forEach(function(t){
+      var v=d.tasks[t.id]||'';
+      h+=`<div style="display:flex;align-items:start;padding:8px 0;border-bottom:1px solid #f5f5f5;gap:8px"><div style="flex:1">`;
+      h+=`<div style="font-size:13px">${t.text}</div>`;
+      if(t.int) h+=`<div style="font-size:10px;color:#888;margin-top:2px">${t.int}</div>`;
+      if(t.data) h+=`<div style="display:flex;align-items:center;gap:5px;margin-top:5px"><input type="text" placeholder="" style="width:80px;padding:5px 8px;border:1px solid #ddd;border-radius:8px;font-size:12px" onchange="pmSetT('${cl.id}','${t.id}_d',this.value)" value="${d.tasks[t.id+'_d']||''}"><span style="font-size:11px;color:#888">${t.dunit||''}</span></div>`;
+      h+=`</div><div style="display:flex;gap:8px;align-items:center;padding-top:2px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="pass" ${v==='pass'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','pass')" style="accent-color:#28a745;width:16px;height:16px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="fail" ${v==='fail'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','fail')" style="accent-color:#dc3545;width:16px;height:16px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="na" ${v==='na'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','na')" style="accent-color:#aaa;width:16px;height:16px">`;
+      h+=`</div></div>`;
+    });
+  }
+  else if(sec.numbered){ // Numbered Pass/Fail/NA
+    sec.tasks.forEach(function(t){
+      var v=d.tasks[t.id]||'';
+      h+=`<div style="display:grid;grid-template-columns:24px 1fr auto;align-items:start;padding:8px 0;border-bottom:1px solid #f5f5f5;gap:6px"><div style="font-size:12px;font-weight:700;color:${cl.color};padding-top:2px">${t.n}</div><div>`;
+      h+=`<div style="font-size:13px;line-height:1.4">${t.text}</div>`;
+      if(t.data) h+=`<div style="display:flex;align-items:center;gap:5px;margin-top:5px"><input type="text" placeholder="" style="width:80px;padding:5px 8px;border:1px solid #ddd;border-radius:8px;font-size:12px" onchange="pmSetT('${cl.id}','${t.id}_d',this.value)" value="${d.tasks[t.id+'_d']||''}"><span style="font-size:11px;color:#888">${t.du||''}</span></div>`;
+      if(t.dl) h+=`<input type="text" placeholder="${t.dlabel}" style="margin-top:5px;width:100%;padding:5px 8px;border:1px solid #ddd;border-radius:8px;font-size:12px" onchange="pmSetT('${cl.id}','${t.id}_d',this.value)" value="${d.tasks[t.id+'_d']||''}">`;
+      h+=`</div><div style="display:flex;gap:7px;align-items:center;padding-top:2px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="pass" ${v==='pass'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','pass')" style="accent-color:#28a745;width:16px;height:16px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="fail" ${v==='fail'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','fail')" style="accent-color:#dc3545;width:16px;height:16px">`;
+      h+=`<input type="radio" name="pmc_${sec.id}_${t.id}" value="na" ${v==='na'?'checked':''} onchange="pmSetT('${cl.id}','${t.id}','na')" style="accent-color:#aaa;width:16px;height:16px">`;
+      h+=`</div></div>`;
+    });
+  }
+  else if(sec.meas){ // Measurements
+    sec.meas.forEach(function(m){
+      var v=d.meas[m.id]||'';
+      h+=`<div style="padding:9px 0;border-bottom:1px solid #f5f5f5"><div style="font-size:13px;margin-bottom:3px">${m.l}</div><div style="font-size:11px;color:#888;margin-bottom:6px">Spec: ${m.spec} ${m.u}</div><div style="display:flex;align-items:center;gap:8px"><input type="number" value="${v}" placeholder="Value" style="width:100px;padding:8px 10px;border:1.5px solid ${cl.color}55;border-radius:8px;font-size:14px;font-weight:600" onchange="pmSetM('${cl.id}','${m.id}',this.value)"><span style="font-size:13px;font-weight:600;color:#555">${m.u}</span></div></div>`;
+    });
+  }
+
+  h+=`</div></div>`;
+  return h;
+}
+
+function pmSetH(id,f,v){pmStateData[id].hdr[f]=v;}
+function pmSetT(id,f,v){pmStateData[id].tasks[f]=v;}
+function pmSetM(id,f,v){pmStateData[id].meas[f]=v;}
+function pmSetAging(id,f,v){pmStateData[id].aging[f]=v;}
+function pmSetQ(q){pmActiveQ=q;renderPMCLPage();document.getElementById('pmhub-body').scrollTop=0;}
 
 </script>
 </body>
