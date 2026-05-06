@@ -1,0 +1,46 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>SRI Real-Time Data</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670006,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Discovery MR750w GEM Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;6.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/12/11</P></td></tr></table><H1 ID="top">SRI Real-Time Data </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1907542-1058356_2">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; Patient Handling
+&gt;&gt; SRI Functional Diagnostics</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; Magnet Room &gt;&gt;
+SRI Functional Diagnostics</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1907595-1058356_2"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SRI Real-Time Data</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1058200-1132414.jpg" BORDER="0" usemap="#SL4020109-1058356_2"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1907543-1058356_2">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The purpose of this diagnostic is to display the current state
+of the SRI&#8217;s sensors, ADCs, encoders, motor controller data,
+and cable detects. </P><P CLASS="sect1">The diagnostic will display the current motor and position encoder
+counts.  The value can be positive or negative and the zero location
+will be the location of the LPCA when the last SRI reset was performed.
+ The position and motor encoder data can be used to determine if the
+encoder values are changing. For example, if the cradle won&#8217;t
+move with push buttons moving the cradle by hand should cause the
+position encoder value to change.  Also, motion requests, even when
+faulted, will likely have motor encoder count changes.  If the move
+is failing and the motor encoder isn&#8217;t changing then motor encoder
+may be faulty or the gearbox may be bound.  (Assuming power levels
+are appropriate to the motor.)</P><P CLASS="sect1">The current motor controller feedback data will also be displayed:
+Motor amplifier temperature, high voltage reference, and winding current.</P><P CLASS="sect1">The diagnostic will display all of the currently disconnected
+cables.  The following cables have cable detect logic:</P><UL><LI CLASS="bulletlist"><P>Position encoder</P></LI><LI CLASS="bulletlist"><P>Motor encoder</P></LI><LI CLASS="bulletlist"><P>Table interface box</P></LI><LI CLASS="bulletlist"><P>Longitudinal drive cable at the SRI</P></LI><LI CLASS="bulletlist"><P>Longitudinal drive cable at the PHPS</P></LI><LI CLASS="bulletlist"><P>MCPDB cable</P></LI><LI CLASS="bulletlist"><P>Touch and go strip (only expected to
+be present for tables with touch and go)</P></LI><LI CLASS="bulletlist"><P>Gradient coil temperature</P></LI><LI CLASS="bulletlist"><P>Bore/scan room temperature</P></LI><LI CLASS="bulletlist"><P>Airflow sensor</P></LI><LI CLASS="bulletlist"><P>Bore light</P></LI><LI CLASS="bulletlist"><P>Patient alignment light</P></LI><LI CLASS="bulletlist"><P>Dock power cable at the PHPS</P></LI><LI CLASS="bulletlist"><P>Dock cable at the SRI</P></LI><LI CLASS="bulletlist"><P>Home/End of Travel/Cradle attached
+switches</P></LI><LI CLASS="bulletlist"><P>Motor commutation feedback cable</P></LI></UL><P CLASS="sect1">In some cases there are multiple cable detect signal lines in
+the same physical connection at the SRI.  For example, when the table
+interface box is disconnected it is expected that the motor and position
+encoders not be detected.</P><P CLASS="sect1">This diagnostic will also display the current cradle/dock related
+information:  table up/down, table docked/not docked, and cradle at
+home or not.</P><P CLASS="sect1">The temperature and sensor values are also displayed (along
+with fault information):</P><UL><LI CLASS="bulletlist"><P>Maximum gradient coil temperature (the
+highest value of the four gradient coil temperature sensors).</P></LI><LI CLASS="bulletlist"><P>Average gradient coil temperature (the
+average value of the four gradient coil temperature sensors).</P></LI><LI CLASS="bulletlist"><P>The delta temperature across the four
+gradient coil Inner-Bore Coolant (IBC) temperature sensors (maximum
+value - minimum value).</P></LI><LI CLASS="bulletlist"><P>Bore temperature</P></LI><LI CLASS="bulletlist"><P>Scan room ambient air temperature</P></LI><LI CLASS="bulletlist"><P>The delta airflow from the airflow
+sensors (difference between the 2 airflow sensors).</P></LI></UL><P CLASS="sect1">The final piece of information displayed by the real-time diagnostic
+is the raw Analog to Digital Converter (ADC) values for the ADCs on
+the SRI.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1907544-1058356_2">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>SRI</P></LI><LI CLASS="bulletlist"><P>Bore and scan room air temperature
+sensor</P></LI><LI CLASS="bulletlist"><P>Gradient coil temperature sensors</P></LI><LI CLASS="bulletlist"><P>Airflow sensors</P></LI><LI CLASS="bulletlist"><P>Motor controller interface</P></LI><LI CLASS="bulletlist"><P>Cable connections: position encoder,
+motor encoder, table interface box, longitudinal drive cable at the
+SRI, longitudinal drive cable at the PHPS, PHPS to SRI cable, gradient
+coil temperature, airflow sensor, bore/scan room temperature, bore
+light, alignment light, dock power cable, dock cable, home/end of
+travel/cradle attached switch, and motor commutation feedback</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1907554-1058356_2">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic is available from the Common Service Desktop
+when required system components are available.  A complete system
+is required.  No special hardware or configurations are necessary.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1941924-1058356_2">5&nbsp;&nbsp;Block Diagrams<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to the <SPAN CLASS="MODULEREF"><A HREF="1089523.htm#SL1935629-1089523"><I>Interactive Block Diagrams</I></A></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2104518-1058356_2">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Select <SPAN CLASS="GUILABEL"><I>SRI Real-Time Data</I></SPAN> from the <SPAN CLASS="GUILABEL"><I>SRI Functional Diagnostics</I></SPAN> screen.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI><LI CLASS="numlist"><P>Review the <SPAN CLASS="GUILABEL"><I>Test Results</I></SPAN> to see real-time output or to see the pass/fail status of any diagnostics.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1907558-1058356_2">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Real-time output values are displayed for comparison.  Diagnostic
+output values are judged pass or fail. Review the error log and corresponding
+extended error messages for subsequent actions for diagnostic failures.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

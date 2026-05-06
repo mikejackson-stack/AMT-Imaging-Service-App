@@ -1,0 +1,243 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>T/R and DD Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670006,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Discovery MR750w GEM Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/12/11</P></td></tr></table><H1 ID="top">T/R and DD Troubleshooting </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4154501-1136814">1&nbsp;&nbsp;Dynamic Disable Fault Troubleshooting<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Dynamic Disable (DD) switching bias is used to tune and detune
+the RF body coil. Dual and separate DD bias levels are generated inside
+the Driver Module and then routed through special high voltage coaxial
+lines to the DTRSW. </P><P CLASS="sect1">Inside the DTRSW module each DD bias level is introduced onto
+its respective RF transmission line and then routed to the RF body
+coil channel 1 and 2 tuning circuits. DD bias must be applied to both
+ports of the RF body coil prior to pulsing either with RF energy from
+the RF amplifier. </P><P CLASS="sect1">Use the illustration and steps below to troubleshoot DD bias
+faults.</P><DIV CLASS="ILLUSTRATION" id="SL4172793-1136814"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Transmit/Receive and DD Signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1136814-1137132.jpg" BORDER="0" usemap="#SL4172548-1136814"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4172809-1136814">1.1&nbsp;&nbsp;DD Short-Circuit Fault - Body Drive 1 (BD1)<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm that the
+results indicate a BD1 short-circuit fault.</P></LI><LI CLASS="numlist"><P>Remove the <B>RF Channel 1</B> transmission line cable from <B>J2</B> at the bottom
+of DTRSW module located on the right side of the magnet inside the
+RF screen room.</P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit Fault present</I></SPAN>: The fault condition is between the DTRSW and the Driver Module.
+See <A HREF="javascript:winopen('1136814illd0e36.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. Starting at the DTRSW and working your way back to the Driver
+Module, remove the DD bias connection at each point in the circuit
+and repeat the diagnostic until an open-circuit fault instead of a
+short-circuit fault condition is reported.  If you get all the way
+back to the Driver Module and the short-circuit fault remains, then
+replace the Driver Module.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault present</I></SPAN>: Reconnect the <B>RF Channel 1</B> transmission
+line cable at bottom of DTRSW module at <B>J2</B> and
+disconnect the other end at the RF body coil</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault present</I></SPAN>: There is a short-circuit inside the RF body coil. Please repair
+or replace the coil</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit fault present</I></SPAN>: There is a short-circuit inside the transmission line. Please repair
+or replace the line.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect the cables to their normal
+configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>.  If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>. </P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4172822-1136814">1.2&nbsp;&nbsp;DD Short-Circuit Fault - Body Drive 2 (BD2)<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm that the
+results indicate a BD2 short-circuit fault.</P></LI><LI CLASS="numlist"><P>Remove the <B>RF Channel 2</B> transmission line cable from <B>J3</B> at the bottom
+of DTRSW module located on the right side of the magnet inside the
+RF screen room.</P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit fault present</I></SPAN>: The fault condition is between the DTRSW and the Driver Module.
+See <A HREF="javascript:winopen('1136814illd0e36.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. Starting at the DTRSW and working your way back to the Driver
+Module, remove the DD bias connection at each point in the circuit
+and repeat the diagnostic until an open-circuit fault instead of a
+short-circuit fault condition is reported.  If you get all the way
+back to the Driver Module and the short-circuit fault remains, then
+replace the Driver Module.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault present</I></SPAN>: Reconnect the <B>RF Channel 2</B> transmission
+line cable at bottom of DTRSW module at <B>J3</B> and
+disconnect the other end at the RF body coil</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault present</I></SPAN>: There is a short-circuit inside the RF body coil. Please repair
+or replace the coil.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit Fault present</I></SPAN>: There is a short-circuit inside the transmission line. Please repair
+or replace the line.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect the cables to their normal
+configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>.  If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4172835-1136814">1.3&nbsp;&nbsp;DD Open-Circuit Fault - Body Drive 1 (BD1)<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm that the
+results indicate a BD1 open-circuit fault.</P></LI><LI CLASS="numlist"><P>Swap the <B>RF Channel 1</B> and <B>RF Channel 2</B> transmission line cables
+at the bottom of DTRSW module located on the right side of the magnet
+inside the RF screen room.</P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault remains
+on BD1</I></SPAN>: The fault condition is between the DTRSW and the
+Driver Module. See <A HREF="javascript:winopen('1136814illd0e36.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. Starting at the DTRSW and working your way
+back to the Driver Module, swap the DD bias connections at each point
+in the circuit and repeat the diagnostic until the open-circuit fault
+moves from BD1 to BD4. If you get all the way back to the driver module
+and the fault remains on BD1, replace the Driver Module.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault reported
+on BD4</I></SPAN>: Swap the RF Channel 1 and RF Channel 2 transmission
+line cables at the RF body coil connectors and repeat the diagnostic.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault remains
+on BD4</I></SPAN>: The RF Channel 1 transmission line appears faulty.
+Please repair or replace the line.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault moves
+to BD1</I></SPAN>: The RF body coil appears faulty. Please repair
+or replace the coil.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect cables to their normal configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>. If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4172848-1136814">1.4&nbsp;&nbsp;DD Open-Circuit Fault - Body Drive 2 (BD2)<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm that the
+results indicate a BD2 open-circuit fault.</P></LI><LI CLASS="numlist"><P>Swap the <B>RF Channel 1</B> and <B>RF Channel 2</B> transmission line cables
+at the bottom of DTRSW module located on the right side of the magnet
+inside the RF screen room.</P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault remains
+on BD4</I></SPAN>: The fault condition is between the DTRSW and the
+Driver Module. See <A HREF="javascript:winopen('1136814illd0e36.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. Starting at the DTRSW and working your way
+back to the Driver Module, swap the DD bias connections at each point
+in the circuit and repeat the diagnostic until the open-circuit fault
+moves from BD1 to BD4. If you get all the way back to the driver module
+and the fault remains on BD4, replace the Driver Module.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault reported
+on BD1</I></SPAN>: Swap the RF Channel 1 and RF Channel 2 transmission
+line cables at the RF body coil connectors and repeat the diagnostic.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault remains
+on BD1</I></SPAN>: The RF Channel 1 transmission line appears faulty.
+Please repair or replace the line.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit Fault moves
+to BD2</I></SPAN>: The RF body coil appears faulty. Please repair
+or replace the coil.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect cables to their normal configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>. If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4154502-1136814">2&nbsp;&nbsp;TR Fault Troubleshooting<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Body and head TR bias is always applied to the respective circuits
+irrespective of whether those circuits are in use. A fault condition
+on an unused head or body circuit can inhibit scanning. While the
+RF body coil is in use (system in body mode) the head TR bias is not
+monitored for open circuit conditions. Body and head TR switching
+bias is applied during transmit and receive modes to ensure the RF
+transmit and receive signal is directed through the proper body and
+head RF circuit paths. See <A HREF="javascript:winopen('1136814tbld0e402.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> for summary of various biasing levels.</P><DIV CLASS="ILLUSTRATION" id="SL4172861-1136814"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Transmit/Receive and DD Signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1136814-1137132.jpg" BORDER="0" usemap="#SL4172552-1136814"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL4173138-1136814"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">TR and DD Bias Levels</SPAN> </P><table summary="TR and DD Bias Levels" border="1"><colgroup><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"></colgroup><tbody valign=""><tr valign="top"><td bgcolor="#999999" style="Font:bold" colspan="3" valign="bottom">RF Amp Input Bias (Loaded)</td><td bgcolor="#999999" style="Font:bold" colspan="3" valign="bottom">Dynamic Disable Bias</td></tr><tr valign="top"><td bgcolor="#CCCCCC" rowspan="2" valign="bottom">TR Bias</td><td bgcolor="#CCCCCC" colspan="2" align="center" valign="bottom">Mode</td><td bgcolor="#CCCCCC" rowspan="2" valign="bottom">DD Bias</td><td bgcolor="#CCCCCC" colspan="2" align="center" valign="bottom">Mode</td></tr><tr valign="top"><td align="center" valign="bottom">Transmit</td><td align="center" valign="bottom">Receive</td><td align="center" valign="bottom">BD1</td><td align="center" valign="bottom">BD2</td></tr><tr valign="top"><td valign="bottom">Head</td><td align="center" valign="bottom">+8.2 V</td><td align="center" valign="bottom">-14.4 V</td><td valign="bottom">Head</td><td align="center" valign="bottom">+150.0 V</td><td align="center" valign="bottom">+150.0 V</td></tr><tr valign="top"><td valign="bottom">Body</td><td align="center" valign="bottom">+2.9V</td><td align="center" valign="bottom">-14.4 V</td><td valign="bottom">Body</td><td align="center" valign="bottom">-15.0 V</td><td align="center" valign="bottom">-15.0 V</td></tr><tr valign="top"><td bgcolor="#999999" style="Font:bold" colspan="3" valign="bottom">Driver Module Output Bias (Loaded)</td><td bgcolor="#999999" style="Font:bold" colspan="3" valign="bottom">Driver Module Output Bias (Unloaded)</td></tr><tr valign="top"><td bgcolor="#CCCCCC" rowspan="2" valign="bottom">TR Bias</td><td bgcolor="#CCCCCC" colspan="2" align="center" valign="bottom">Mode</td><td bgcolor="#CCCCCC" rowspan="2" valign="bottom">TR Bias</td><td bgcolor="#CCCCCC" colspan="2" align="center" valign="bottom">Mode</td></tr><tr valign="top"><td align="center" valign="bottom">Transmit</td><td align="center" valign="bottom">Receive</td><td align="center" valign="bottom">Transmit</td><td align="center" valign="bottom">Receive</td></tr><tr valign="top"><td valign="bottom">Head</td><td align="center" valign="bottom">+8.3 V</td><td align="center" valign="bottom">-14.4 V</td><td valign="bottom">Head</td><td align="center" valign="bottom">+8.4 V</td><td align="center" valign="bottom">-14.4 V</td></tr><tr valign="top"><td valign="bottom">Body</td><td align="center" valign="bottom">+4.3V</td><td align="center" valign="bottom">-14.4 V</td><td valign="bottom">Body</td><td align="center" valign="bottom">+5.0V</td><td align="center" valign="bottom">-14.4 V</td></tr></tbody></table></div></DIV><P CLASS="sect1">Head TR bias is supplied by the Driver Module to the XRFD amplifier
+where it is introduced, along with the head RF transmit signal, onto
+the head RF transmission line. At the Secondary Pen Wall (SPW), the
+Head RF Transmit switch routes the TR bias and RF signals down transmission
+lines to either connectors P1 or A (located inside the LPCA). This
+bias is not used and is not monitored for open circuit conditions
+(but is monitored for short-circuit conditions) until a transmit/receive
+coil is attached to one of these connectors. As explained earlier,
+the head TR bias is then used by circuitry inside the coils to insure
+proper routing of transmit and receive RF signals.</P><P CLASS="sect1">Body TR bias is supplied by the Driver Module to the XRFD amplifier
+where it is split and then introduced, along with the channel 1 &amp;
+2 RF transmit signals, onto the channel 1 and 2 RF transmission lines.
+The body TR bias and channel 1 &amp; 2 RF signals are routed down
+the channel 1 &amp; 2 transmission lines to the DTRSW module. As explained
+earlier the body TR bias is then used by channel 1 and 2 circuitry
+inside the DTRSW module to insure proper routing of transmit and receive
+RF signals. The body TR bias does not exit the DTRSW module and is
+not applied to the RF body coil. </P><P CLASS="sect1">Because the TR bias is split and shared between channels 1 &amp;
+2 inside the XRFD amplifier, the system cannot isolate a fault to
+either channel 1 or 2. It can report only that a body TR fault occurred.
+If the location of the fault is between the XRFD amplifier and RF
+body coil then you must use the processes described in following sections
+to determine on which transmission channel the fault is located. </P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4173596-1136814">2.1&nbsp;&nbsp;TR Short-Circuit Fault - Head<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</P></LI><LI CLASS="numlist"><P>Remove all coils from the LPCA <B>P1</B> and <B>A</B> connectors.  </P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>No fault present</I></SPAN>: The removed coil appears faulty. Please repair or replace the coil.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit Fault present</I></SPAN>: The fault condition is between the LPCA and the Driver Module.
+Refer to <A HREF="javascript:winopen('1136814illd0e397.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>. Starting at the LPCA and working your way back to the Driver Module,
+remove the head transmission line connections at each point in the
+circuit and repeat the diagnostic until the fault condition stops.
+If you get all the way back to the Driver Module and the fault remains,
+replace the Driver Module.</P></LI></OL></LI><LI CLASS="numlist"><P>Reconnect all cables to their normal
+configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced any components in the
+body transmit circuit, perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4173606-1136814">2.2&nbsp;&nbsp;TR Open-Circuit Fault - Head<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</P></LI><LI CLASS="numlist"><P>Connect a transmit/receive coil (such
+as Split-top Head Coil or Knee TR PA Coil) to the LPCA <B>P1</B> or <B>A</B> connector. Do not connect
+coils to both connectors at same time. Troubleshoot one connector
+at a time.</P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>No fault present</I></SPAN>:</P><OL TYPE="i"><LI CLASS="numlist"><P>Confirm the attached coil is one that
+was reported faulting. Review the error log for past messages indicating
+faults and the coil in use when faults were reported.</P></LI><LI CLASS="numlist"><P>Intermittent faults like this may be
+due to a faulty coil. Please repair or replace the coil.  </P></LI></OL></LI><LI CLASS="numlist"><P>Fault is present on the LPCA A connector:</P><OL TYPE="i"><LI CLASS="numlist"><P>Bypass the RF Transmit Switch at the
+SPW by relocating <B>J122</B> cable at RF Transmit
+Switch to <B>J128</B> on SPW.  </P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault not present</I></SPAN>: Confirm that all of the RF cabling is correctly routed at the RF
+Transmit Switch. Confirm the control cable connections between the
+RF Transmit Switch, magnet IF panel <B>J15</B>, and
+RF Hub RFCB <B>J9</B>.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault present</I></SPAN>:</P><OL TYPE="i"><LI CLASS="numlist"><P>Remove the right rear pedestal cover.
+To left of the rear of the RF Hub, confirm that the RF transmission
+line cables are properly routed to the <B>J1</B> (P
+connector) and <B>J2</B> (A connector) rear pedestal
+IF connections.</P></LI><LI CLASS="numlist"><P>At the rear of the Driver Module, relocate
+the <B>J6</B> head TR cable to the <B>J7</B> body TR port at the rear of the Driver Module.  <B>LEAVE
+BODY J7 CABLE OPEN AND UNCONNECTED</B>.  Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the reported failing current value.</P></LI><LI CLASS="numlist"><P>If the failing current value is less
+than or equal to <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN> and the Driver Module body
+TR circuit has been functional up to this point, then it appears that
+an open condition exists somewhere in the head A connector transmit
+circuit between the Driver Module and the A connector inside LPCA.
+ Check all cable connections until the poor connection is found and
+repaired.</P></LI><LI CLASS="numlist"><P>If the failing current value is greater
+than <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN> then power cycle the Driver Module
+and try again. If the problem remains then replace the Driver Module.</P></LI></OL></LI></OL></LI></OL></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault present on LPCA P connector</I></SPAN>:</P><OL TYPE="i"><LI CLASS="numlist"><P>Bypass the RF Transmit Switch at the
+SPW by relocating the <B>J120</B> cable at RF Transmit
+Switch to <B>J128</B> on SPW.</P></LI><LI CLASS="numlist"><P>Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the results.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault not present</I></SPAN>: Confirm that all RF cabling is correctly routed at the RF Transmit
+Switch. Confirm the control cable connections between the RF Transmit
+Switch, magnet IF panel <B>J15</B>, and RF Hub RFCB <B>J9</B>.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault present</I></SPAN>:</P><OL TYPE="i"><LI CLASS="numlist"><P>Remove the right rear pedestal cover.
+To the left of the rear of the RF Hub, confirm that the RF transmission
+line cables are properly routed to the <B>J1</B> (P
+connector) and <B>J2</B> (A connector) rear pedestal
+IF connections.</P></LI><LI CLASS="numlist"><P>At the rear of the Driver Module relocate <B>J6</B> head TR cable to <B>J7</B> body TR
+port at the rear of the Driver Module. <B>LEAVE BODY J7 CABLE
+OPEN AND UNCONNECTED</B>. Repeat the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and carefully review
+the reported failing current value.</P></LI><LI CLASS="numlist"><P>If the failing current value is less
+than <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN> and the Driver Module body TR circuit
+has been functional up to this point,  then it appears that an open
+condition exists somewhere in the head A connector transmit circuit
+between the Driver Module and the A connector inside the LPCA. Check
+all the cable connections until the poor connection is found and repaired.</P></LI><LI CLASS="numlist"><P>If the failing current value is greater
+than <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN> then power cycle the Driver Module
+and try again. If the problem remains then replace the Driver Module.</P></LI></OL></LI></OL></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect cables to their normal configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced any components in the
+body transmit circuit, perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4173635-1136814">2.3&nbsp;&nbsp;TR Short-Circuit Fault - Body<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</P></LI><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm the report
+of a short-circuit fault.</P></LI><LI CLASS="numlist"><P>Disconnect both of the Channel 1 &amp;
+2 RF transmission line cables at <B>J4</B> and <B>J22</B> from the front of the RF amplifier and repeat the
+diagnostic.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault seen but
+no short-circuit fault present</I></SPAN>: Reconnect each RF transmission
+line alone, one at a time, and repeat the diagnostic until the short-circuit
+fault appears. Using the cable diagram (<A HREF="javascript:winopen('1136814illd0e397.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>), advance to
+the next interconnection on the failing line, disconnect, and repeat
+diagnostic.  Repeat this process until short-circuit fault is isolated
+to the faulty cable or component.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit fault present</I></SPAN>: Disconnect the body TR input cable from <B>J10</B> on the front of RF amplifier and repeat the diagnostic.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Short-circuit fault remains</I></SPAN>: Check the condition of the cable between RF amplifier <B>J10</B> and Driver Module <B>J7</B> and all
+interconnections in between. Next check Driver Module. Repair or replace
+as necessary.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Open-circuit fault reported</I></SPAN>: Check the condition of the cable connection at RF amplifier <B>J10</B>, then check RF amplifier. Please repair or replace.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect cables to their normal configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>. If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL4173647-1136814">2.4&nbsp;&nbsp;TR Open-Circuit Fault - Body<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Perform the <SPAN CLASS="MODULEREF"><A HREF="1052847.htm#SL1857243-1052847"><I>TR DD System Path Check</I></A></SPAN> and confirm the report
+of an open-circuit fault.</P><OL TYPE="a"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault not present or only
+happens during certain scans</I></SPAN>: Perform testing and to see
+if the fault still happens with no RF and no gradient energy present.
+Contact OLC and discuss conditions under which the fault happens and
+work with them to plan out the next troubleshooting steps.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Fault present</I></SPAN>:
+Note and record the reported failing current value. Proceed with the
+next steps.</P></LI></OL></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.  </P></LI><LI CLASS="numlist"><P>If the reported failing current value
+is <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN> or less, an open condition appears to
+exist between the Driver Module and the RF amplifier. Check the cable
+connection at RF amplifier <B>J10</B> and all interconnections
+back to Driver Module <B>J7</B>. Power cycle the Driver
+Module and check its operation.</P></LI><LI CLASS="numlist"><P>If the failing current value is greater
+than <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">100 mA</FONT></SPAN>:  </P><OL TYPE="a"><LI CLASS="numlist"><P>Disconnect the channel 1 cable from <B>J4</B> on the front of the RF amplifier and perform the diagnostic.
+Record the reported channel 2 failing current value.</P></LI><LI CLASS="numlist"><P>Reconnect the channel 1 cable to <B>J4</B> on front of the RF amplifier.</P></LI><LI CLASS="numlist"><P>Disconnect the channel 2 cable from <B>J22</B> on the front of the RF amplifier and perform the
+diagnostic. Record the reported channel 1 failing current value.</P></LI><LI CLASS="numlist"><P>Compare the reported current values.
+The channel with the smaller value is the one that has the failure.
+Note the failing channel.</P></LI><LI CLASS="numlist"><P>Relocate the cable for the failing
+channel to the opposite RF channel port on the front of the RF amplifier
+and perform the diagnostic.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Reported current value increases
+by more than 10%</I></SPAN>: Re-check 7/16 RF connection between the
+failing channel transmission line cable and the failing channel port
+on the front of the RF amplifier. If these are o.k., then the RF amplifier
+may be faulty. Please consult with OLC FE Support before ordering
+a FRU RF amplifier.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Reported current value does
+not change by more than 10%</I></SPAN>:  Return all cables to their
+normal locations and proceed with next steps.</P></LI></OL></LI><LI CLASS="numlist"><P>At the top of the DTRSW module on the
+right side of the magnet, move the failing transmission line at <B>J1</B> or <B>J4</B> to the opposite channel.
+Leave the other line open and disconnected so that the failing channel
+on DTRSW module is also open and unconnected. Perform the diagnostic.</P><OL TYPE="i"><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Reported current value increases
+by more than 10%</I></SPAN>: Re-check the 7/16 RF connection between
+the failing channel transmission line cable and the failing channel
+port on the DTRSW Module. If these are o.k., then replace the DTRSW
+Module.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="GUILABEL"><I>Reported current value does
+not change by more than 10%</I></SPAN>: The failing channel transmission
+line appears to have a faulty connection.  Please inspect the 7/16
+connector connections at both ends and repair or replace.</P></LI></OL></LI></OL></LI><LI CLASS="numlist"><P>Reconnect cables to their normal configuration.</P></LI><LI CLASS="numlist"><P>Set the <B>RF ENB</B> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</P></LI><LI CLASS="numlist"><P>If you replaced the RF body coil then
+run the <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Dual Drive Quadrature Tool</I></A></SPAN>. If any other components in the transmit circuit replaced
+then perform the <SPAN CLASS="MODULEREF"><A HREF="1051011.htm#SL1798704-1051011"><I>Forward Reverse Quadrature Check</I></A></SPAN>.</P></LI><LI CLASS="numlist"><P>Run the <SPAN CLASS="MODULEREF"><A HREF="1050936.htm#SL1798169-1050936"><I>DQA II Tool and Troubleshooting</I></A></SPAN> procedure to
+confirm the system is in normal working order.</P></LI></OL></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
