@@ -1,0 +1,382 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>LVShim Calibration File Generation Details</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133330-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">LVShim Calibration File Generation Details </H1><P CLASS="descriptive">LVshim calibration files contain coil characterization data used by
+the LVshim analysis tool to calculate the new currents needed to correct for
+magnetic field inhomogeneity. Generic shim calibration files are supplied
+with the system software for all gradient coils and for GE S/C shim coils.
+Shim calibration files must be created at the site for Oxford and GE resistive
+shim coils.  The generic gradient and S/C shim calibration files should work
+well at all sites, so it should not be necessary to create them. Creating
+a S/C shim calibration file is time-consuming and prone to errors. The procedures
+for creating a gradient or S/C shim calibration file on-site have not been
+supplied. Before creating a gradient or S/C shim calibration file at a site,
+contact your MAC Team Leader, or the OLC Magnet Support Group for assistance. </P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e29"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the resistive shim coil assembly is replaced, or is moved within
+the magnet bore, then a new cal file may need to be created. Also, changes
+to system software may require the creation of a new cal file</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332684698">1&nbsp;&nbsp;Creating a Shim Calibration File<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e35"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Creating a resistive shim calibration file can take two to four
+hours, and can be error-prone. Be sure there is adequate time to perform the
+task, and be careful during coil characterization to enter the correct perturbation
+currents. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The procedure in this section describes the creation of a 45-cm DSV
+Oxford Resistive Shim calibration file. The process of creating a GE Resistive
+Shim calibration file is similar. If you cannot collect image data to build
+a 45-cm DSV calibration file (due to phase wrap issues), then build a 32-cm
+DSV calibration file instead. Shim the magnet using the 32-cm DSV calibration
+file, but check the shim on a 45-cm DSV. You should be able to meet the 45-cm
+DSV shim specifications with the 32-cm DSV calibration file. If you cannot
+meet the 45-cm DSV shim specification, contact your local Zone Engineer or
+Support Center - Magnet Support Team for assistance.</P><P CLASS="sect1">A shim calibration file can be created in either of two ways:</P><UL><LI CLASS="bulletlist"><P>Collect coil characterization scan data for all the coils
+in a coil set, then run the shim calibration processing on all the data to
+create the calibration matrix.</P></LI><LI CLASS="bulletlist"><P>Collect coil characterization scan data for one coil in a
+coil set, then run the shim calibration processing on the data for that coil.
+This process is repeated until all the coils in the set have been characterized;
+then the calibration matrix is created.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332684699-dup.2">2&nbsp;&nbsp;Three Generation Options<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There are three generation options: Create, Resume, and Modify. <A HREF="javascript:winopen('36930tbld0e56.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> shows all options.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL36999-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">CAL FILE GENERATION OPTIONS</SPAN> </P><table summary="CAL FILE GENERATION OPTIONS" border="1"><colgroup><col width="144"><col width="432"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle">OPTION</td><td align="center" valign="middle">CAL FILE TYPE</td></tr><tr valign="top"><td valign="middle">CREATE</td><td valign="">When this option is used, a new calibration file is created for the
+image data being analyzed. The new file contains the calibration file name
+token specified in menu item 4. </td></tr><tr valign="top"><td valign="middle">RESUME</td><td valign="">This option allows the user to resume a previously started shim calibration
+process. The software automatically displays the calibration file name token
+and sampling diameter of the latest partial shim file associated with the
+selected cal file type.</td></tr><tr valign="top"><td valign="middle">MODIFY</td><td valign="">This option allows the modification of the data in an existing shim
+calibration file. The data is modified one coil at a time by re-scanning and
+reprocessing the baseline and perturbed states for a coil. The process is
+repeated for each coil to be re-characterized. The software automatically
+displays the calibration file name and sampling diameter of the latest shim
+file associated with the selected cal file type. To get a list of other shim
+calibration files associated with the selected cal file type, enter 4 at the
+Modify menu.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL37088-36930">3&nbsp;&nbsp;Suggested Perturb Currents and Series Descriptions<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Perturbation Current</P><P CLASS="sect1">The Perturbation Current is the amount that the coil was perturbed during
+the collection of the selected image data set. If the perturbation value is
+set to 0 (zero), the selected image data set is treated as the baseline scan
+for the named coil.</P><P CLASS="sect1">This section contains the suggested perturb currents and series descriptions
+to be used during shim calibration file generation. The information in <A HREF="javascript:winopen('36930tbld0e96.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A> to 9-coil gradient/resistive
+magnets. <A HREF="javascript:winopen('36930tbld0e265.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A> applies to 12-coil
+resistive magnets.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL37003-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">NINE-COIL GRADIENT/RESISTIVE (GE S-I, S-II, S-III)</SPAN> </P><table summary="NINE-COIL GRADIENT/RESISTIVE (GE S-I, S-II, S-III)" border="1"><colgroup><col width="144"><col width="144"><col width="192"><col width="192"></colgroup><tbody valign=""><tr valign="top"><td valign="">&nbsp;</td><td colspan="3" align="center" valign="middle">SCAN INFORMATION</td></tr><tr valign="middle"><td align="center" valign="middle">COIL NAME</td><td align="center" valign="middle">SCAN TYPE</td><td align="center" valign="middle">SUGGESTED  PERTURB CURRENT</td><td align="center" valign="middle">SERIES DESCRIPTION (SEE NOTE)</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">GRAD_X</td><td valign="">Baseline</td><td valign="">-</td><td valign="">XGRAD baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">50</td><td valign="">XGRAD 50</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">GRAD_Y</td><td valign="">Baseline</td><td valign="">-</td><td valign="">YGRAD baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">50</td><td valign="">YGRAD 50</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">GRAD_Z</td><td valign="">Baseline</td><td valign="">-</td><td valign="">ZGRAD baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">50</td><td valign="">ZGRAD 50</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z2</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z2 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">2.0</td><td valign="">Z2 2.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z3</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z3 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">Z3 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">ZX</td><td valign="">Baseline</td><td valign="">-</td><td valign="">ZX baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">ZX 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">ZY</td><td valign="">Baseline</td><td valign="">-</td><td valign="">ZY baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">ZY 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">X2-Y2</td><td valign="">Baseline</td><td valign="">-</td><td valign="">X2-Y2 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">5.0</td><td valign="">X2-Y2 5.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">XY</td><td valign="">Baseline</td><td valign="">-</td><td valign="">XY baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">5.0</td><td valign="">XY 5.0</td></tr><tr valign="top"><td colspan="4" valign="">Note:  0 (zero) can be used in place of
+baseline for baseline scans. For example, XGRAD baseline is the same as XGRAD
+0.</td></tr></tbody></table></div></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL37024-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">TWELVE-COIL RESISTIVE (OXFORD)</SPAN> </P><table summary="TWELVE-COIL RESISTIVE (OXFORD)" border="1"><colgroup><col width="144"><col width="144"><col width="192"><col width="192"></colgroup><tbody valign=""><tr valign="top"><td valign="">&nbsp;</td><td colspan="3" align="center" valign="middle">SCAN INFORMATION</td></tr><tr valign="middle"><td align="center" valign="middle">COIL NAME</td><td align="center" valign="middle">SCAN TYPE</td><td align="center" valign="middle">SUGGESTED  PERTURB CURRENT</td><td align="center" valign="middle">SERIES DESCRIPTION (SEE NOTE)</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z1</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z1 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">0.1</td><td valign="">Z1 0.1</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z2</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z2 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">0.5</td><td valign="">Z2 0.5</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z3</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z3 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">2.0</td><td valign="">Z3 2.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z4</td><td valign="">Baseline</td><td valign="">&nbsp;</td><td valign="">Z4 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">2.0</td><td valign="">Z4 2.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">X</td><td valign="">Baseline</td><td valign="">-</td><td valign="">X baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">0.1</td><td valign="">X 0.1</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Y</td><td valign="">Baseline</td><td valign="">&nbsp;</td><td valign="">Y baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">0.</td><td valign="">Y 0.1</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">ZX</td><td valign="">Baseline</td><td valign="">-</td><td valign="">ZX baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">ZX 0.1</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">ZY</td><td valign="">Baseline</td><td valign="">-</td><td valign="">ZY baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">ZY 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">XY</td><td valign="">Baseline</td><td valign="">-</td><td valign="">XY baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">XY 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">X2-Y2</td><td valign="">Baseline</td><td valign="">-</td><td valign="">X2-Y2 baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">1.0</td><td valign="">X2-Y2 1.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z2X</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z2X baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">2.0</td><td valign="">Z2X 2.0</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Z2Y</td><td valign="">Baseline</td><td valign="">-</td><td valign="">Z2Y baseline</td></tr><tr valign="top"><td valign="">Perturbation</td><td valign="">2.0</td><td valign="">Z2Y 2.0</td></tr><tr valign="top"><td colspan="4" valign="">Note: 0 (zero) can be used in place of
+baseline for baseline scans. For example, Z1 baseline is the same as Z1 0</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332685162">4&nbsp;&nbsp;Enter Baseline Currents<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Before starting data collection, enter the baseline currents for the
+coil set into the system. These are the final mechanical shim currents, or
+the currents used to get the best shim to date. </P><OL><LI CLASS="numlist"><P>At the operator workspace, select the tools icon in the desktop
+control panel.</P></LI><LI CLASS="numlist"><P>To run the LVShim tool from the Service Browser, follow the
+instructions on <A HREF="javascript:winopen('36930illd0e494.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>, below:</P></LI></OL><DIV CLASS="ILLUSTRATION" id="SL37036-36930"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">STARTING THE LVSHIM TOOL FROM THE SERVICE BROWSER</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/35753-34520.jpg" BORDER="0" usemap="#SL37033-36930"></P></DIV><P CLASS="sect1">For TwinSpeed, highlight the GradMode, then click on <SPAN CLASS="GUIBUTTON">[OK]</SPAN>.
+Continue as shown in <A HREF="javascript:winopen('36930tbld0e506.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;4</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL37068-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE"></SPAN> </P><table summary="" border="1"><colgroup><col width="720"><col width="460"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle">Output/Prompts</td><td align="center" valign="middle">INPUTS/COMMENTS</td></tr><tr valign="top"><td colspan="2" valign=""><PRE>&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+
+1. Shim Type (Gradient, Oxf-12,TEST): Gradient
+2. Image Data (Ex, Se, Im Number)      : None Selected
+3. Operation Mode (Service or Research): Service
+4. Display Mag and Phase Diff Images   : No
+5. Calibration File Name : lv_15t_3gc_22dsv.8645
+6. Existing Current in Each Coil
+
+XGRAD:  0.000   YGRAD:  0.000   ZGRAD: 0.000 
+
+Accept (q or s to quit).
+Enter the Index Number to Change Default (0..6)[0]: ... 1 [Enter] To change Shim Type to 
+                                                         Resistive.</PRE></td></tr><tr valign="top"><td colspan="2" valign=""><PRE>&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;
+     (Magnet Type : Oxford (12 coil))
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12
+2. Image Data (Ex, Se, Im Number)      : [None Selected]
+3. Operation Mode (Service or Research): Service
+4. Display Mag and Phase Diff Images   : No
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*
+6. 	Existing Current in Each Coil.
+
+    Z1:  0.000     X:  0.000      XY:  0.000
+    Z2:  0.000     Y:  0.000   X2-Y2:  0.000
+    Z3:  0.000    ZX:  0.000     Z2X:  0.000
+    Z4:  0.000    ZY:  0.000     Z2Y:  0.000
+0. Accept (q or s to quit).
+Enter the Index Number to Change Default (0..6)[0]: ...	        6 [Enter]
+
+Coil 1 [ Z1 ] (-20.00..20.00) [0.0]: ..............   Enter baseline current for Coil 1 (Z1)
+      &lt;-------------------------------------          Enter baseline currents for Coils 2&#8211;11
+Coil 12 [ Z2Y ] (-10.00..10.00) [0.0]: ............   Enter baseline current for Coil 12 (Z2Y)
+&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12
+2. Image Data (Ex, Se, Im Number)      : [None Selected]
+3. Operation Mode (Service or Research): Service
+4. Display Mag and Phase Diff Images   : No
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*
+6. Existing Current in Each Coil.
+
+    Z1:  0.853     X: -3.407      XY:  0.310    
+    Z2: -1.716     Y: -1.292   X2-Y2:  0.280    
+    Z3:  1.489    ZX:  0.557     Z2X: -1.042    
+    Z4:  4.112    ZY:  0.387     Z2Y:  0.641
+
+0. Accept (q or s to quit).
+Enter the Index Number to Change Default (0..6)[0]: ...	6 [Enter]
+Coil 1 [ Z1 ] (-20.00..20.00) [0.0]: ..............      Enter baseline current for Coil 1 (Z1)
+      &lt;-------------------------------------             Enter baseline currents for Coils 2&#8211;11
+Coil 12 [ Z2Y ] (-10.00..10.00) [0.0]: ............      Enter baseline current for Coil 12 (Z2Y)
+&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12
+2. Image Data (Ex, Se, Im Number)      : [None Selected]
+3. Operation Mode (Service or Research): Service
+4. Display Mag and Phase Diff Images   : No
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*
+6. Existing Current in Each Coil.
+
+    Z1:  0.853     X: -3.407      XY:  0.310
+    Z2: -1.716     Y: -1.292   X2-Y2:  0.280
+    Z3:  1.489    ZX:  0.557     Z2X: -1.042
+    Z4:  4.112    ZY:  0.387     Z2Y:  0.641
+
+0. Accept (q or s to quit). ............... Make sure the correct currents are displayed, then:
+Enter the Index Number to Change Default (0..6)[0]: ...	  q [Enter] (To quit.)
+Exit LVshim? (Y,N) [N] : ..............................	  y [Enter]  (Exit LVshim.)
+Press any key to quit --&gt; .............................	  Press any key</PRE></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332685667">5&nbsp;&nbsp;Get Hard Copy of Perturbation Currents (Optional)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">If a printer is available, and you wish to get a hard copy of the perturbation
+currents:</P><OL><LI CLASS="numlist"><P>At the operator workspace, select the tools icon in the desktop
+control panel.</P></LI><LI CLASS="numlist"><P>To run the LVShim tool from the Service Browser, follow the
+instructions on <A HREF="javascript:winopen('36930illd0e494.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A></P></LI><LI CLASS="numlist"><P>For TwinSpeed, highlight the GradMode and click on <SPAN CLASS="GUIBUTTON">[OK]</SPAN>.
+Continue as shown in <A HREF="javascript:winopen('36930tbld0e548.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL37074-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">GETTING HARD COPY OF PERTURBATION CURRENTS (OPTIONAL)</SPAN> </P><table summary="GETTING HARD COPY OF PERTURBATION CURRENTS (OPTIONAL)" border="1"><colgroup><col width="720"><col width="460"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle">Output/Prompts</td><td align="center" valign="middle">INPUTS/COMMENTS</td></tr><tr valign="top"><td colspan="2" valign=""><PRE>&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+
+1. Cal File Type (Gradient, Oxf-12 )    : Gradient
+2. Generation (Create, Resume or Modify): Create
+3. Operation Mode (Service or Research) : Service
+4. Calibration File Name Token          : NEW
+5. Sampling Diameter in Centimeters     : 45
+6. Display Phase Diff Images            : No
+7. Display Calibration Matrix           : Yes
+8. Control Gradient Shim Coil Current   : Yes
+
+0. Accept (q or s to quit).
+
+Enter the index number to change default (0..9) [0]: ..	 1 [Enter] to change Cal File Type
+                                                           to Resistive
+
+&lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;
+    (Magnet Type : Oxford (12 coil))
+1. Cal File Type (Gradient, Oxf-12 ) : Oxf-12 
+2. Generation (Create, Resume or Modify): Create
+3. Operation Mode (Service or Research) : Service
+4. Calibration File Name Token          : NEW
+5. Sampling Diameter in Centimeters     : 45
+6. Display Phase Diff Images            : No
+7. Display Calibration Matrix           : Yes
+8. Show Suggested Perturb Current       : Yes
+9. Suggested Perturb Current.
+
+     Z1: 0.1       X: 0.1       XY: 1.0
+     Z2: 0.5       Y: 0.1    X2-Y2: 1.0
+     Z3: 2.0      ZX: 1.0      Z2X: 2.0
+     Z4: 2.0      ZY: 1.0      Z2Y: 2.0
+
+0. Accept (q or s to quit).
+
+Enter the index number to change default (0..10)[0]: ..	   [Enter]
+Displaying Suggested Perturb Current</PRE></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332685959">6&nbsp;&nbsp;Data Collection<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332685959-dup.1">6.1&nbsp;&nbsp;Control Gradient Shim Coil Currents<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e571"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Option availability I is available only when the Cal File Type
+is "Gradient."</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">When this option is set to yes, the gradient shim coil perturb currents
+are automatically set by the software. When the option is set to no, the gradient
+shim coil perturb currents must be manually set.</P><P CLASS="sect2">To manually set the gradient shim coil currents:</P><OL><LI CLASS="numlist"><P>At the operator workspace, select <SPAN CLASS="GUIBUTTON">[Manual Prescan]</SPAN>.</P></LI><LI CLASS="numlist"><P>Set x, y, and z to the desired values, then select <SPAN CLASS="GUIBUTTON">[Files]</SPAN>,
+then <SPAN CLASS="GUIBUTTON">[Save Shim File]</SPAN>.  Select <SPAN CLASS="GUIBUTTON">[Done]</SPAN> to
+save the file.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Done]</SPAN> to exit Manual Prescan.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332685961-dup.1">6.2&nbsp;&nbsp;Suggested Perturb Current<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e606"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Option availability II is available only when the Cal File Type
+is not "Gradient."</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">When this option is set to yes, the suggested perturb currents for the
+coil set being calibrated are displayed, allowing you to get a hard copy of
+the currents. This option allows you to change the perturb currents to be
+used for the coil set being calibrated. When selected, the software prompts
+for the new currents, one at a time. Illustration 5-2A shows a typical suggested
+perturb currents display (shown in Genesis format; the Lx display is different).</P><DIV CLASS="ILLUSTRATION" id="ov-1294332685962"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SUGGESTED PERTURB CURRENTS (OXFORD RESISTIVE SHIM COIL)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/36930-34516.jpg" BORDER="0" usemap="#SL37075-36930"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686114">6.3&nbsp;&nbsp;Storage<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There are two types of storage: Accumulate and Replace. Accumulate is
+used when you wish to average multiple scans for a given coil type/perturbation
+(such as taking three Z1 baseline scans to average the data). Replace is used
+when you wish to throw out the old data and replace them with data from a
+different scan. If you choose Replace mode, all previous data collected for
+the coil are lost.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686114-dup.1">6.4&nbsp;&nbsp;Data Collection<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P><SPAN CLASS="MODULEREF"><A HREF="34603.htm#SL35834-34603"><I>Perform a Phantom Setup</I></A></SPAN>, if you haven&#8217;t
+already done so.</P></LI><LI CLASS="numlist"><P>At the operator workspace, select the Scan icon in the desktop
+control panel and set up LVshim scan as follows:</P><OL TYPE="a"><LI CLASS="numlist"><P>In RX Manager, click <SPAN CLASS="GUIBUTTON">[New Series]</SPAN>.</P></LI><LI CLASS="numlist"><P>At the operator
+workspace, prepare the system for LVshim scanusing the "Service Protocols"
+procedure located on the service methods CD-ROM, or, for the alternate proprietary
+procedure, see below.</P></LI><LI CLASS="numlist"><P>In Additional Parameters, click <SPAN CLASS="GUIBUTTON">[User CVs Screen]</SPAN>.</P></LI><LI CLASS="numlist"><P>In the User Control Variables window enter the following:</P><UL><LI CLASS="bulletlist"><P>No. of Scan Planes: 6</P></LI><LI CLASS="bulletlist"><P>Bandwidth: 2000</P></LI></UL></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Accept]</SPAN> and then <SPAN CLASS="GUIBUTTON">[Save
+Series]</SPAN>. </P></LI><LI CLASS="numlist"><P>In RX Manager, click <SPAN CLASS="GUIBUTTON">[Prepare to Scan]</SPAN>.</P></LI></OL></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Manual Prescan]</SPAN>. While in the<SPAN CLASS="GUIBUTTON">[ Center
+Freq Coarse (CFC)]</SPAN> mode, verify the frequency peak is centered
+in the display. Adjust the center frequency peak as necessary. After locating
+the best signal, open the [Frequency] menu at the top of Manual Prescan window
+and select <SPAN CLASS="GUIBUTTON">[Save Frequency]</SPAN> to save the new center frequency.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Scan TR (R1/R2)]</SPAN>. Verify that
+R1 and R2 are not over ranged. Adjust R1 and R2 for approximately 50%. </P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Done]</SPAN> to exit manual prescan.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Scan]</SPAN>.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e706"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">A Resistive Shim Calibration file can be created by using one
+baseline scan and one perturbation scan for each coil in a coil set. However,
+if time allows, three scans should be taken for each baseline and perturbation
+to insure accuracy of the calibration matrix (by averaging the data).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>If more than one scan is desired, when the first scan is finished,
+press <SPAN CLASS="GUIBUTTON">[Scan]</SPAN> again to collect a second set of scan data.
+Then, when the second scan is finished, press <SPAN CLASS="GUIBUTTON">[Scan]</SPAN> again
+to collect a third set of scan data.</P></LI><LI CLASS="numlist"><P>When the baseline scan(s) is finished, in RX Manager, copy
+and paste the present series, then select <SPAN CLASS="GUIBUTTON">[View Edit]</SPAN>.
+Change the Series Description to Z1 0.1, then click <SPAN CLASS="GUIBUTTON">[Save Series]</SPAN>,
+followed by <SPAN CLASS="GUIBUTTON">[Prepare to Scan]</SPAN>. Perturb the Z1 coil baseline
+current by 0.1 amps as described in <A HREF="36930.htm#SL37088-36930">Section&nbsp;3</A>,
+then repeat steps 3 through 8 to collect the Z1 perturbation scan(s). After
+the Z1 perturbation scan(s) have been collected, set the Z1 coil current back
+to its baseline value.</P></LI><LI CLASS="numlist"><P>To collect scan data for all of the coils in a coil set before
+processing, follow these steps:</P><OL TYPE="a"><LI CLASS="numlist"><P>In RX Manager, copy and paste the present series, then select <SPAN CLASS="GUIBUTTON">[View
+Edit]</SPAN>. </P></LI><LI CLASS="numlist"><P>Change the Series Description to Z2 baseline, then click <SPAN CLASS="GUIBUTTON">[Save
+Series]</SPAN>, followed by <SPAN CLASS="GUIBUTTON">[Prepare to Scan]</SPAN>.</P></LI><LI CLASS="numlist"><P>Perform steps 3 through 9 to collect baseline and perturbation
+scans for the Z2 coil (use Z2 0.5 as the Series Description name for the Z2
+perturbation scans).</P></LI><LI CLASS="numlist"><P>Repeat steps a through c for the remaining coils in the coil
+set.</P></LI><LI CLASS="numlist"><P>When scan data for all coils have been collected, perform
+Shim Calibration Processing (Silent Mode = Yes).</P></LI></OL></LI><LI CLASS="numlist"><P>To collect and process scan data for each coil, one at a time</P><OL TYPE="a"><LI CLASS="numlist"><P>Perform Shim Calibration Processing on the Z1 coil scans (baseline
+and perturbation) (Silent Mode = No).</P></LI><LI CLASS="numlist"><P>When the processing is done, in RX Manager, copy and paste
+the present series, then select <SPAN CLASS="GUIBUTTON">[View Edit]</SPAN>. Change the
+Series Description to Z2 baseline, then click <SPAN CLASS="GUIBUTTON">[Save Series]</SPAN>,
+followed by <SPAN CLASS="GUIBUTTON">[Prepare to Scan]</SPAN>.</P></LI><LI CLASS="numlist"><P>Perform steps 3 through 9 to collect baseline and perturbation
+scans for the Z2 coil.</P></LI><LI CLASS="numlist"><P>Repeat steps a through c for the remaining coils in the coil
+set.</P></LI></OL></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686418">6.5&nbsp;&nbsp;Existing Current in Each Coil<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Existing current values are displayed for all the coils in the coil
+set being shimmed. This option allows you to change the existing values. When
+the gradient current values are changed, the new values are automatically
+sent to the gradient amplifiers by the software.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686418-dup.1">6.6&nbsp;&nbsp;Shim Calibration Processing<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>In the Service Browser, select the Calibration tab, then in
+the menu options on the left side of the browser, click LVShim.  On the right
+side, click the link Click here to start this tool. See <A HREF="javascript:winopen('36930illd0e494.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. </P></LI><LI CLASS="numlist"><P>For TwinSpeed, highlight the GradMode and click on OK. Continue
+as shown in <A HREF="javascript:winopen('36930tbld0e804.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;6</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL37151-36930"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SHIM CALIBRATION PROCESSING</SPAN> </P><table summary="SHIM CALIBRATION PROCESSING" border="1"><colgroup><col width="528"><col width="192"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle">OUTPUT/PROMPTS</td><td align="center" valign="middle">INPUTS/COMMENTS</td></tr><tr valign="top"><td valign=""><PRE>&lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+
+1. Cal File Type (Gradient, Oxf-12 )    : Gradient
+2. Generation (Create, Resume or Modify): Create
+3. Operation Mode (Service or Research) : Service
+4. Calibration File Name Token          : NEW
+5. Sampling Diameter in Centimeters     : 45
+6. Display Phase Diff Images            : No
+7. Display Calibration Matrix           : Yes
+8. Control Gradient Shim Coil Current   : Yes
+
+0. Accept (q or s to quit).
+
+Enter the index number to change default (0..9) [0] :</PRE></td><td valign="bottom"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>1</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+change Cal File Type to Oxf-12</td></tr><tr valign="top"><td valign=""><PRE>&lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;
+(Magnet Type : Oxford (12 coil))
+1. Cal File Type (Gradient, Oxf-12 )    : Oxf-12:  
+(Additional menu selections displayed)
+9. Suggested Perturb Current.
+
+Z1: 0.1       X: 0.1       XY: 1.0        
+Z2: 0.5       Y: 0.1    X2-Y2: 1.0        
+Z3: 2.0      ZX: 1.0      Z2X: 2.0        
+Z4: 2.0      ZY: 1.0      Z2Y: 2.0 
+
+  0. Accept (q or s to quit).
+Enter the index number to change default (0..10) [0]:</PRE></td><td valign="bottom"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> when
+all menu items are acceptable. </td></tr><tr valign="top"><td valign=""><PRE>&lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;
+   
+Z1:         X:          XY:         
+Z2:         Y:       X2-Y2:         
+Z3:        ZX:         Z2X:         
+Z4:        ZY:         Z2Y:      
+Common Baseline: Pending
+1. Image Data (Ex, Se, Im Number) : 50008, 1, 1   
+(Series Description: Z1 baseline)
+2. Storage (Accumulate or Replace): Accumulate
+3. Display Phase Diff Images      : No
+4. Processing in Silent Mode      : No
+5. Coil Name (To be Characterized): [None Selected]
+
+0. Accept (q or s to Return).
+
+Enter the Index Number to Change Default (0..6) [0]: ...</PRE></td><td valign="bottom"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>5</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (To
+select coil to be characterized.)</td></tr><tr valign="top"><td valign=""><PRE>1.   Z1   0.100 [Z1]  
+2.   Z2   0.500 [Z2]  
+3.   Z3   2.000 [Z3]  
+4.   Z4   2.000 [Z4]  
+5.    X   0.100 [X]  
+6.    Y   0.100 [Y]  
+7.   ZX   1.000 [ZX]  
+8.   ZY   1.000 [ZY]  
+9.   XY   1.000 [XY] 
+10. X2-Y2  1.000 [X2_Y2] 
+11.   Z2X  2.000 [Z2X] 
+12.   Z2Y  2.000 [Z2Y]  
+0.  Common Baseline.
+
+Enter the Index Number (0..12) [6] : ..................</PRE></td><td valign="bottom"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>1</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+select Z1 coil</td></tr><tr valign="top"><td valign=""><PRE>&lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;
+   
+Z1:         X:          XY:         
+Z2:         Y:       X2-Y2:         
+Z3:        ZX:         Z2X:         
+Z4:        ZY:         Z2Y:      </PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>Common Baseline: Pending
+1. Image Data (Ex, Se, Im Number):50008, 1, 1 &lt;-------</PRE></td><td valign="">Be sure this is the correct (Series Description: Z1 baseline) image
+data set for the Z1 baseline scan</td></tr><tr valign="top"><td valign=""><PRE>(Series Description: Z1 baseline)
+2. Storage (Accumulate or Replace): Accumulate
+3. Display Phase Diff Images     : N
+5. Coil Name (To be Characterized): Z1</PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">6.Perturbation Current        : 0.100 &lt;---------------</td><td valign=""><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to change Perturbation
+Current to Baseline</td></tr><tr valign="top"><td valign="">0. Accept (q or s to Return).</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Enter the Index Number to Change Default (0..7)[0]: ..</td><td valign=""><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> when all of the menu
+items are acceptable.</td></tr><tr valign="top"><td valign=""><PRE>If Silent Mode was set to Yes, the following is displayed:
+Processing ... plane  1 of 6.</PRE></td><td valign="middle">Image data are processed (planes 1 - 6)</td></tr><tr valign="top"><td valign="">Processing ... done.  6 of 6</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">When all the coils have been characterized, the following is displayed
+(if Yes was entered for Display Calibration Matrix):</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Displaying Calibration Matrix</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Cal File Generation Complete. Run Again? (Y,N)[N]: ...</td><td valign="">Enter y or n as appropriate</td></tr><tr valign="top"><td valign="">If Silent Mode was set to No, the following is displayed:</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Processing plane 1 of 6         &lt;---------------------</td><td valign="">Image data is processed     (planes 1 - 6).</td></tr><tr valign="top"><td valign="">Processing ... done.  6 of 6</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">If image phase wrap is detected, the following message appears:</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>Excessive phase wrapping
+....Please re-scan at Wider Bandwidth or smaller test diameter</PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Exit Cal File Generator? (Y,N) [N]: ..................</td><td valign="">Select <SPAN CLASS="GUIBUTTON">[Research Operations ]</SPAN>and <SPAN CLASS="GUIBUTTON">[Modify
+CVs]</SPAN>. Type opuser2 and enter a higher bandwidth. Valid bandwidth
+entries are: 200, 500, 1000, and 5000. Select <SPAN CLASS="GUIBUTTON">[Research Operations]</SPAN><SPAN CLASS="GUIBUTTON">[Download]</SPAN>,
+and restart the calibration file process using the higher bandwidth.</td></tr><tr valign="top"><td valign="">If Yes was entered for Display Phase Diff Images, the following appears:</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>The Following Are the Image Display Options.
+1. Image Plane 1
+2. Image Plane 2
+3. Image Plane 3
+4. Image Plane 4
+5. Image Plane 5
+6. Image Plane 6
+7. Image With Sampling Pixels.
+8. Save Phase Difference Image Into Database. 
+0. Return</PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Enter Index (0..8) [1] : .............................</td><td valign="">Enter appropriate choice for more option information, or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0 </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+continue.</td></tr><tr valign="top"><td valign=""><PRE>Coil Name (To be Characterized)  : Z1 &lt;---------------
+Perturbation Current             : 0.100</PRE></td><td valign="">When processing is done, the next image data set is displayed and processed.
+Each image data set is displayed and processed until all have been processed.
+If all the data sets have been processed, but not all the coils have not been
+characterized, the Characterizing Shimming Coils screen is displayed.</td></tr><tr valign="top"><td valign="">More Coils to Process (Y,N) [Y] : ....................</td><td valign=""><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>y</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to process the Z1
+perturbation scan (or a second Z1 baseline scan).</td></tr><tr valign="top"><td valign="">If Yes was entered at More Coils to Process prompt, the following appears:</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>&lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;
+Z1: (B 1, C 0)	X:	XY:	&lt;---------
+Z2:	   Y:	   X2-Y2:
+Z3:	   ZX:	   Z2X:
+Z4:	   ZY:	   Z2Y:
+Common Baseline: Pending</PRE></td><td valign="">The software automatically shows the current status of the coil characterization
+process. In this example, B 1 means that one baseline scan has been performed,
+and C 0 means that zero perturbation scans have been performed.</td></tr><tr valign="top"><td valign=""><PRE>1. Image Data (Ex, Se, Im Number): 50008, 2, 1 &lt;-----   
+(Series Description: Z1 0.100)
+2. Storage (Accumulate or Replace): Accumulate
+3. Display Phase Diff Images      : No
+4. Processing in Silent Mode      : No
+</PRE></td><td valign="">The software automatically increments to the next image data set. If
+there are no more LVshim images, it displays [None Selected]. Be sure that
+these are the correct data before accepting.</td></tr><tr valign="top"><td valign=""><PRE>5. Coil Name (To be Characterized): Z1  &lt;----
+6. Perturbation Current           : 0.100  &lt;-------
+
+0. Accept (q or s to Return).</PRE></td><td valign="">The software automatically increments to the next logical coil name
+and perturbation current. Be sure this information is correct before accepting</td></tr><tr valign="top"><td valign="">Enter the Index Number to Change Default (0..7)[0]: ..</td><td valign=""><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> when all menu items
+are acceptable.</td></tr><tr valign="top"><td valign="">Processing plane 1 of 6         &lt;---------------------</td><td valign="">Image data are processed (planes 1 - 6).</td></tr><tr valign="top"><td valign="">Processing ... done.  6 of 6</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">More Coils to Process (Y,N) [Y] : ....................</td><td valign="">Repeat scanning and processing until all coils in the coil set have
+been characterized, then <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>n</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+continue.</td></tr><tr valign="top"><td valign=""><PRE>When No is entered at the More Coils to Process prompt, this happens:	
+If some coils have not been characterized, the following appears:</PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>Coil Characterization Is Incomplete.
+Not Enough Data To Create Calibration Matrix
+Build Partial Matrix? (Y,N) [Y] : ....................</PRE></td><td valign="">Since not all of the coils have been characterized, the software may
+not able to create a calibration file. Generally, you should enter <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>n</B></FONT></SPAN> at
+this prompt.</td></tr><tr valign="top"><td valign="">If No is entered at Build Partial Matrix prompt, the following appears:</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>Process Will Be Saved and Can Be Resumed Later.
+Exit Cal File Generator? (Y,N) [N] : .................</PRE></td><td valign="">Enter <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>y</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>n</B></FONT></SPAN> as appropriate.
+The processed calibration data are saved. The calibration generation process
+can be resumed later by selecting Resume for menu item 2 (Generation).</td></tr><tr valign="top"><td valign=""><PRE>Coil Characterization Is Incomplete.
+Matrix Is Not Invertable.
+Process Will Be Saved and Can Be Resumed Later.
+Exit Cal File Generator? (Y,N) [N]: ..................</PRE></td><td valign="">Enter <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>y</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>n</B></FONT></SPAN> as appropriate.
+The software was not able to generate a calibration matrix because some of
+the coils have not been characterized. The processed calibration data are
+saved. The calibration generation process can be resumed later by selecting
+Resume for menu item 2 (Generation).</td></tr><tr valign="top"><td valign=""><PRE>If all the coils have been characterized, the following appears
+(if Yes was entered for Display Calibration Matrix):</PRE></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><PRE>Displaying Calibration Matrix
+Displaying Calibration Matrix
+Please Get the Hardcopy if Desired.
+Press Enter to Continue. [ ] : .....................</PRE></td><td valign="">The Calibration Matrix is displayed. See Section 6-9 for details. If
+a hard copy of the matrix is desired, print it now. Then, press Enter to continue.</td></tr><tr valign="top"><td valign="">Cal File Generation Complete. Run Again? (Y,N) [N]: ..</td><td valign="">Enter <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>y</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>n</B></FONT></SPAN> as appropriate.</td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1123"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Signa 1.0T Mobiles may have a Z2 Resistive Shim Coil installed
+on the Passive Shim Drum. Make sure that the Z2 Resistive Shim Power Supply
+(mounted on the operator workspace table) is powered off when performing this
+procedure.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332686722">7&nbsp;&nbsp;Sampling Diameter in Centimeters<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The sampling diameter is the size of the diameter spherical volume (DSV)
+to be used during processing. Only data within this specified volume are processed.
+This value is editable during creation of the shim calibration file, but is
+fixed during normal shimming.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332686723">8&nbsp;&nbsp;Details of Characterizing Shimming Coils<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section provides detailed information about the items in the Characterizing
+Shimming Coils menu. When selected, some of the items toggle to another value
+(available choices are shown in parentheses), some toggle between Yes and
+No, and some prompt for additional input.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686723-dup.1">8.1&nbsp;&nbsp;Coil Characterization Status<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The coil characterization status is located in the area under the menu
+title line. It consists of the following information for each of the coils
+in the coil set: </P><UL><LI CLASS="bulletlist"><P>Coil name</P></LI><LI CLASS="bulletlist"><P>Number of Baseline scans for the coil (designated with a B)</P></LI><LI CLASS="bulletlist"><P>Number of Perturbation scans for the coil (designated with
+a C)</P></LI></UL><P CLASS="sect2">The following is an example of the coil characterization status for
+a typical coil (with three baseline scans and three perturbation scans):</P><P CLASS="sect2">AX_1: ( B 3, C 3 )</P><P CLASS="sect2">The coil characterization status area also shows whether a common baseline
+has been processed for the coil set. A common baseline is a baseline scan
+used during characterization of all the coils in a coil set. A common baseline
+is not necessary if a new baseline scan is performed before each coil perturbation. </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294332686724-dup.2">8.2&nbsp;&nbsp;Coil Name<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This is the name of the coil to be characterized by the selected image
+data set. If the selected image data set is being used as the baseline scan
+for all the coils, use the name common baseline.</P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

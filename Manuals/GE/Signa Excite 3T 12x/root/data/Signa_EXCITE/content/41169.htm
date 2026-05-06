@@ -1,0 +1,111 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>High Order Shim Supply Functional Check</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133330-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;6/4/09</P></td></tr></table><H1 ID="top">High Order Shim Supply Functional Check </H1><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e27"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This document applies to the new style or Plexus High
+Order Shim Supply.  The old style RRI High Order Shim Supply does
+not have this function.  The Plexus supply can be identified by looking
+at the Rating plate which is on the rear of the supply.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="descriptive">The Shim Supply Diagnostics are comprised of a series of tests
+that verify &amp; display various Shim Supply values by communicating
+from the SCP to the Shim Supply via the CAN link.  The tests are as follows:</P><UL><LI CLASS="bulletlist"><P>Set Current Test</P></LI><LI CLASS="bulletlist"><P>Read Current/Voltage</P></LI><LI CLASS="bulletlist"><P>Shim Circuit Continuity Check </P></LI><LI CLASS="bulletlist"><P>Read Channel Set Point</P></LI><LI CLASS="bulletlist"><P>RTD Data</P></LI><LI CLASS="bulletlist"><P>Analog Data</P></LI></UL><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL131305-41169">1&nbsp;&nbsp;Starting the High Order Shim Supply Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Start the Shim Supply diagnostics from the Service Desktop.
+See <A HREF="javascript:winopen('41169illd0e68.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P><DIV CLASS="ILLUSTRATION" id="SL131232-41169"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Starting High Order Shim Supply Diagnostics.</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/41169-131200.jpg" BORDER="0" usemap="#SL131229-41169"></P></DIV><P CLASS="sect1">Once started, refer to <A HREF="javascript:winopen('41169illd0e81.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> for the following
+tests.</P><DIV CLASS="ILLUSTRATION" id="SL131236-41169"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Shim Supply Diagnostics GUI </SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/41169-131222.jpg" BORDER="0" usemap="#SL131233-41169"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2765974-41169">2&nbsp;&nbsp;Set Current Test<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test takes any input current designated by the Operator
+between &#8211;4.000 amps and +4.000 amps, programs the Shim Supply to output
+the assigned current on each channel, and then queries the supply
+for the output and then displays this back to the user. The output
+current should match whatever the Operator designated for that channel.
+ </P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e93"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">There is a 12 amp upper limit on the total amount of current
+that this supply can provide. If the power supply limit is reached,
+you may see an error code. Make sure the total current does not exceed
+12 amps.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Start the diags if not already started. See <A HREF="41169.htm#SL131305-41169">Section&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>Input a current for each of the channels 1-6.  (-4.000
+amps to 4.000 amps).</P></LI><LI CLASS="numlist"><P>After currents entered then select the &#8220;<SPAN CLASS="GUILABEL"><I>Set Current Test</I></SPAN>&#8221; radio button and press <SPAN CLASS="GUIBUTTON">[Run]</SPAN> button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that sends the non-zero current
+values to the Shim Supply.</P></LI><LI CLASS="numlist"><P>Diag waits, allowing the command to set the channels
+current.</P></LI><LI CLASS="numlist"><P>Diag issues a command that instructs the Shim Supply
+to return the present voltage and current for each coil channel.</P></LI><LI CLASS="numlist"><P>See <A HREF="javascript:winopen('41169tbld0e132.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> for an example
+of Diag displays the results.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL131239-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Set Current
+Test Example Iteration Output</SPAN> </P><table summary="Set Current&#xA;Test Example Iteration Output" border="1"><colgroup><col width="190"><col width="190"><col width="290"></colgroup><tbody valign=""><tr valign="top"><td rowspan="7" colspan="3" valign=""><PRE>Setting Current on Shim Supply
+          Waiting for Current Setting to stabilize.....
+Shim Coil             Current(A)            Voltage(V)
+Channel 1              0.1015                2.8149
+Channel 2             -0.0003              -28.3381
+Channel 3             -0.0100               -0.4873
+Channel 4             -0.0113                0.3387
+ Channel 5             -0.0097                0.0048
+Channel 6             -0.0097                0.0820</PRE></td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2765982-41169">3&nbsp;&nbsp;Read Current/Voltage<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Start the diags if not already started. See <A HREF="41169.htm#SL131305-41169">Section&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>Operator selects the <SPAN CLASS="GUIBUTTON">[Read Current/Voltage]</SPAN> radio button, then presses the [Run] button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that instructs the Shim Supply
+to return the present voltage and current for each coil channel. </P></LI><LI CLASS="numlist"><P>Diag displays the results. See <A HREF="javascript:winopen('41169tbld0e186.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL131326-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Read Current/Voltage
+Example Iteration Output</SPAN> </P><table summary="Read Current/Voltage&#xA;Example Iteration Output" border="1"><colgroup><col width="672"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>Shim Coil             Current(A)            Voltage(V)
+Channel 1               0.1015               2.8149
+Channel 2              -0.0003             -28.3381
+Channel 3              -0.0100              -0.4873
+Channel 4              -0.0113               0.3387
+Channel 5              -0.0097               0.0048
+Channel 6              -0.0097               0.0820</PRE></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2765987-41169">4&nbsp;&nbsp;Shim Circuit Continuity Check<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test ensures each channel can be set to the preset current
+(100mA) and that the channel (a) has the desired current; (b) has
+the proper polarity; and (c) is isolated (i.e. no crosstalk) from
+the other channels.</P><OL><LI CLASS="numlist"><P>Start the diags if not already started. See <A HREF="41169.htm#SL131305-41169">Section&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>Operator selects the <SPAN CLASS="GUIBUTTON">[Shim Circuit Continuity
+Check]</SPAN> radio button, then presses the [Run] button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that turns the Shim Supply&#8217;s
+fault monitoring off.</P></LI><LI CLASS="numlist"><P>Diag loops through each channel, setting a single
+channel to 100mA and all others to 0.0mA.</P></LI><LI CLASS="numlist"><P>Diag reads currents from each channel and stores results. </P></LI><LI CLASS="numlist"><P>Diag repeats this process for all the other channels. </P></LI><LI CLASS="numlist"><P>Diag programs original currents back into Shim Supply.</P></LI><LI CLASS="numlist"><P>Diag displays the results of test and identifies any
+failing channels. See <A HREF="javascript:winopen('41169tbld0e240.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL131329-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Shim Circuit
+Continuity Check Example Iteration Output</SPAN> </P><table summary="Shim Circuit&#xA;Continuity Check Example Iteration Output" border="1"><colgroup><col width="674"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>Shim Supply Diagnostic
+          Initializing Shim Supply
+Setting 0.1 Amps on Channel 1 
+Setting 0.1 Amps on Channel 2 
+Setting 0.1 Amps on Channel 3 
+Setting 0.1 Amps on Channel 4 
+Setting 0.1 Amps on Channel 5 
+Setting 0.1 Amps on Channel 6
+
+       Actual Current on Channel (Amps)
+            Channel Set     1         2          3         4         5         6  
+               1           0.083    -0.004     -0.010    -0.011    -0.010    -0.010  
+               2          -0.010     0.000     -0.010    -0.011    -0.010    -0.010  
+               3          -0.010    -0.004      0.084    -0.011    -0.010    -0.010  
+               4          -0.010    -0.006     -0.010     0.082    -0.010    -0.010  
+               5          -0.010    -0.006     -0.010    -0.011     0.084    -0.010  
+               6          -0.010    -0.004     -0.010    -0.011    -0.010     0.080  
+Channel 1 is Functional and is Isolated from All other Channels   
+Channel 2 is OPEN and is Isolated from other Channels  &lt;- Failure here
+Channel 3 is Functional and is Isolated from All other Channels   
+Channel 4 is Functional and is Isolated from All other Channels   
+ Channel 5 is Functional and is Isolated from All other Channels   
+Channel 6 is Functional and is Isolated from All other Channels   
+</PRE></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2765996-41169">5&nbsp;&nbsp;Read Channel Set Point<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test simply queries the Shim Supply for the currents currently
+output on each channel and then it displays the results.</P><OL><LI CLASS="numlist"><P>Operator selects the <SPAN CLASS="GUIBUTTON">[Read Channel Set]</SPAN> Point radio button, then presses the [Run] button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that instructs the Shim Supply
+to return the present current for each coil channel. </P></LI><LI CLASS="numlist"><P>Diag displays the results.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2766000-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Read Channel Set Point Read Channel Set Point</SPAN> </P><table summary="Read Channel Set Point Read Channel Set Point" border="1"><colgroup><col width="573"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>Shim Supply Diagnostic       
+           
+Shim Coil           Current(mA)
+Channel 1                   0
+Channel 2                   0
+Channel 3                   0
+Channel 4                   0
+Channel 5                   0
+Channel 6                   0 
+</PRE></td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e282"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Note: In this example all supplies outputting zero current. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2766001-41169">6&nbsp;&nbsp;RTD Data<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test provides a read back of the present temperature on
+the RTD channels.  </P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e290"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Note: the RTD channels must be present.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Start the diags if not already started. See <A HREF="41169.htm#SL131305-41169">Section&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>Operator selects the <SPAN CLASS="GUIBUTTON">[RTD Data]</SPAN> radio button, then presses the [Run] button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that instructs the Shim Supply
+to return the present temperatures on each of the RTD channels. </P></LI><LI CLASS="numlist"><P>Diag displays the results. See <A HREF="javascript:winopen('41169tbld0e318.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL131334-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Rtd Data Example
+Iteration Output</SPAN> </P><table summary="Rtd Data Example&#xA;Iteration Output" border="1"><colgroup><col width="574"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>RTD Input                  Degrees(C)
+RTD 1                     0.000
+RTD 2                     0.000
+RTD 3                     0.000
+RTD 4                     0.000
+RTD 5                     0.000
+RTD 6                     0.000
+RTD 7                     0.000
+RTD 8                     0.000
+</PRE></td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e331"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This example is intended to only show output format. 
+Temperature values are not typical if RTD channels are present.  
+                </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2766006-41169">7&nbsp;&nbsp;Analog Data<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Provides a read back of the present power supply and board temperature
+sensor values.</P><OL><LI CLASS="numlist"><P>Start the diags if not already started. See <A HREF="41169.htm#SL131305-41169">Section&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>Operator selects the<SPAN CLASS="GUIBUTTON">[Analog Data]</SPAN> radio button, then presses the <SPAN CLASS="GUIBUTTON">[Run]</SPAN> button.</P></LI><LI CLASS="numlist"><P>Diag issues a command that instructs the Shim Supply
+to return the present power supply and board temperature sensor values. </P></LI><LI CLASS="numlist"><P>Diag displays the results. See <A HREF="javascript:winopen('41169tbld0e366.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;6</A>.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL131338-41169"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Analog Data
+Example Iteration Output</SPAN> </P><table summary="Analog Data&#xA;Example Iteration Output" border="1"><colgroup><col width="680"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>Analog Input                  Value                          
+Board 5.0 Vcc                 5.050
+Board Temp (power)             28.0
+Board Temp (RTD)               29.6
+Heatsink Temp (inlet)          23.5
+Heatsink Temp (outlet)         37.6
+Board AGND Ref                0.000
+Board 2.5 Vcc                 2.493
+</PRE></td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e379"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The Heatsink Temp (inlet) may show a value of 0.0. The
+inlet sensor has been removed from some systems. Therefore, a value
+of 0.0 is valid in test results for these systems.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

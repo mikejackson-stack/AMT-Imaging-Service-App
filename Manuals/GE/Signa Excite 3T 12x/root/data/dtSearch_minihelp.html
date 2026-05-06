@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<TITLE>Search Form Help</TITLE>
+
+<style>
+p	 {
+	font-family: Verdana; font-size: x-small;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	 }
+
+h3 {
+ 	margin-top: 1em;
+ 	margin-bottom: .5em;
+	padding: 0 0 0 0;
+	font-family: Verdana; font-size: small; color: navy; }
+h4 {
+ 	margin-top: .5em;
+ 	margin-bottom: 0;
+	padding: 0 0 0 0;
+	font-family: Verdana; font-size: x-small; font-weight: bold; color: navy; }
+ul {
+ 	margin-top: 0;
+ 	margin-bottom: 0;
+ 	padding: 0 0 0 0;
+	list-style: disc outside;
+	font-family: Verdana; font-size: x-small;
+	}
+ul li {
+	font-family: Verdana; font-size: x-small;
+	list-style-type: disc;
+	}
+
+code {
+	font-family: Courier New, Courier, mono; font-size: small;
+	}
+
+.example {
+	font-family: Courier New, Courier, mono; font-size: x-small;
+	}
+
+p.indent {
+	margin-left: 1em;
+	margin-top: 0;
+	margin-bottom: 0;
+	}
+	
+body {
+	margin-left: 10px;
+}	
+</style>
+</HEAD>
+<BODY>
+
+<h3>Search Type</h3>
+<h4>any of the words or all of the words</h4>
+<p class="indent">Finds a list of words or phases</p>
+<ul>
+	<li>use "quotation marks" around phrases</li>
+	<li>add + in front of any word or phrase to require it</li>
+	<li>add - in front of any word or phrase or to exclude it</li>
+	<li>examples:<br>
+		<code>
+		banana pear "apple pie"<br>
+		"apple pie" -salad +"ice cream"
+		<code></li>
+</ul>
+
+<h4>exact phrase</h4>
+<p class="indent">Finds a single phrase (quotation marks are optional)</p>
+
+<h4>boolean</h4>
+<p class="indent">Finds a structured group of words or phrases linked by
+	<i>and, or not, w/.</i></p>
+<ul>
+	<li>examples:<br>
+		<code>tart apple pie</code> – the entire phrase must be present<br>
+        <code>apple pie and pear tart</code> – both phrases must be present<br>
+		<code>apple pie or pear tart</code> – either phrase must be present<br>
+		<code>apple pie and not pear tart</code> - only <i>apple pie</i> must be present<br>
+		<code>apple w/5 pear</code> – <i>apple</i> must occur within 5 words of <i>pear</i><br>
+		<code>apple not w/27 pear</code> - <i>apple</i> must not occur within 27 words of pear<br>
+		<code>subject contains apple pie</code>
+			– finds <i>apple pie</i> in a <i>subject</i> field</li>
+    <li>use ( ) when a search includes two or more connectors:<br>
+    	<code>apple and pear or orange juice</code>
+              could mean <i>(apple and pear)</i> or <i>orange</i>,
+              or it could mean <i>apple and (pear or orange)</i>
+</ul>
+
+<h3>Search Features</h3>
+
+<h4>stemming</h4>
+<p class="indent">Finds grammatical variations on endings, like <i>applies, applied,
+      applying</i> in a search for <i>apply</i>
+
+<h4>fuzzy searching</h4>
+<p class="indent">Finds words even if they are misspelled.&nbsp; A search for <i>alphabet</i> with a fuzziness of 1 would also find <i>alphaqet.</i>&nbsp; With a fuzziness of 4, the same search would find both <i>alphaqet</i> and <i>alpkaqet </i></p>
+
+<h4>phonic searching</h4>
+<p class="indent">Finds words that sound alike, like <i>Smythe</i> in a search for
+      <i>Smith</i></p>
+
+<h4>synonym expansion</h4>
+<p class="indent">Finds word synonyms using a comprehensive English language
+      thesaurus (dtSearch Web can also support custom thesaurus
+      terms)
+
+<h3>Special Characters</h3>
+<p>? matches any single character
+<p class="indent"><i>appl?</i> matches <i>apply</i> or <i>apple</i>
+<p>* matches any number of characters</p>
+<p class="indent"><i>appl*ion</i> matches <i>application</i></p>
+<p>~~ indicates numeric range<br>
+<p class="indent"><i>14~~18</i> looks for <i>14, 15, 16, 17 or
+  18</i>
+<p>= matches any single digit</p>
+<p class="indent"><i>p12==</i> matches p1234</p>
+<h4>variable term weights</h4>
+<p class="indent"> A number after a
+word assigns a specific positive or negative weight when ranking retrieved
+documents.  Example: </p>
+<p class="indent">apple:5 salad:-2</p>
+
+<h3>Fields in XML and Other Documents</h3>
+<ul>
+  <li>dtSearch automatically detects fields in supported file types:<br>
+  <code>(author contains John Smith) and
+            (subject contains turbine generators)</code></li>
+
+  <li>A query can combine a full-text component with a fielded data components: <br>
+  <code>(author contains John Smith) and turbine generators</li>
+
+  <li>dtSearch field searching fully supports the hierarchical nature of
+    XML data</li>
+  <li>dtSearch supports searches limited to precise combinations of fields and subfields</li>
+  <li>Examples:<br>
+  	<code>persona contains Henry </code> - finds <i>Henry</i> in a <i>persona</i>
+                  field<br>
+	<code>scene/stagedir contains exeunt citizens</code> - finds a <i>stagedir</i> field containing <i>exeunt citizens</i>, directly nested in a field called <i>scene</i>) <br>
+	<code> scene/speech/line contains publius</code> - finds a <i>scene/speech/line</i> field sequence that contained <i>publius</i>)<br>
+	<code>/play/title contains Henry the Fifth</code> - finds a <i>play</i> field at the top of the
+    hierarchy, with a <i>title</i> field just beneath it containing <i>Henry the Fifth</i>)<br>
+	<code>scene//line contains publius</code> - finds a <i>line</i> field containing
+                  <i>publius</i> from anwhere beneath the
+                  <i>scene</i> field) <br>
+	<code>Henry the Fifth and (scene//line contains publius)</code> - same as above, with a full-text search for <i>Henry the
+                  Fifth</i>)
+  </li>
+  </ul>
+</BODY>
+</HTML>

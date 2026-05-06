@@ -1,0 +1,59 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>HFD Power-Up Diagnostics</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133330-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">HFD Power-Up Diagnostics </H1><P CLASS="descriptive">Gradient Power-up tests are contained in both GP3 boot code and application
+code. The Power-up tests are run during boot sequence to verify the integrity
+of hardware components in the gradient subsystem. The boot sequence occurs
+every time the system is rebooted, every time there is a TPS Reset. The following
+sections describe the basic processing involved with each test.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332157236">1&nbsp;&nbsp;GP3 Board Status LEDs<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The GP3 board has two status LEDs located on the front panel. One, labeled
+POWER, is always on when the GP board has power. The second one labeled HEARTBEAT
+LED flashes on and off with a period of five seconds and a 50 percent duty
+cycle, to indicate that the GP3 is executing application code. During boot
+mode, when there is a checksum failure (that is when the checksum in the flash
+for DSP1 application code does not match the checksum in the header), the
+HEARTBEAT LED flashes ON and OFF rapidly three times in a row.  The boot code
+does not use any other blink code other than three blinks for checksum failure.
+See <A HREF="javascript:winopen('321736tbld0e36.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL321740-321736-dup.1"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">GP3 Board Status LED Flash Sequence</SPAN> </P><table summary="GP3 Board Status LED Flash Sequence" border="1"><colgroup><col width="87"><col width="106"><col width="315"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">LED</td><td align="center" valign="">System Status</td><td align="center" valign="">Flash Sequence</td></tr><tr valign="middle"><td align="center" valign="middle">Heartbeat</td><td align="center" valign="middle">System is OK</td><td align="center" valign="middle">Single Flash On/Single flash Off with a period of 5
+seconds and a 50% duty cycle</td></tr><tr valign="middle"><td align="center" valign="middle">Heartbeat</td><td align="center" valign="middle">DSP1 Application code checksum failure</td><td align="center" valign="middle">3 Blinks</td></tr><tr valign="middle"><td align="center" valign="middle">Power</td><td align="center" valign="middle">+5V Indicator</td><td align="center" valign="middle">When lit, this indicates that +5V is present. If it
+is not lit, +5V is not getting to the GP3.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332157414">2&nbsp;&nbsp;GP3 Board CAN LEDs<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The CAN Status LED will indicate the CANOpen software state. The CAN
+status LED will blink two times during normal DSP1 application code execution.
+During boot mode when the boot code is downloading application code through
+CAN the CAN status LED will blink only once since the CAN will be in Pre-operational
+state. See <A HREF="javascript:winopen('321736tbld0e79.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL321743-321736-dup.1"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">CAN Status LED Blink Codes</SPAN> </P><table summary="CAN Status LED Blink Codes" border="1"><colgroup><col width="182"><col width="293"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">CONDITION</td><td align="center" valign="">LED FLASH SEQUENCE</td></tr><tr valign="top"><td valign="">Pre-Operational State</td><td valign="">1 Blink</td></tr><tr valign="top"><td valign="">Operational State</td><td valign="">2 Blinks</td></tr><tr valign="top"><td valign="">Stopped State</td><td valign="">3 Blinks</td></tr><tr valign="top"><td valign="">Boot State</td><td valign="">4 Blinks</td></tr></tbody></table></div></DIV><P CLASS="sect1">The CAN Error LED will indicate any CAN network or hardware error. 
+CAN Power Off error is a special case.  CAN Power Off will not be indicated
+if CAN power was never detected since the last reset.  More information on
+CAN States can be found in the USSS Communication Core SDD. See <A HREF="javascript:winopen('321736tbld0e115.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL321746-321736-dup.1"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">CAN Network or Hardware Error</SPAN> </P><table summary="CAN Network or Hardware Error" border="1"><colgroup><col width="119"><col width="251"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">CONDITION</td><td align="center" valign="">LED FLASH SEQUENCE</td></tr><tr valign="middle"><td valign="middle">No Error</td><td valign="middle">OFF; No Flashing sequence</td></tr><tr valign="middle"><td valign="middle">CAN Bus Off Detected</td><td valign="middle">1 Blink</td></tr><tr valign="middle"><td valign="middle">CAN Warning State Detected</td><td valign="middle">2 Blinks</td></tr><tr valign="middle"><td valign="middle">CAN Receive Message Lost</td><td valign="middle">3 Blinks</td></tr><tr valign="middle"><td valign="middle">CAN Node Guard Timeout</td><td valign="middle">4 Blinks</td></tr><tr valign="middle"><td valign="middle">CAN Power Off</td><td valign="middle">5 Blinks</td></tr><tr valign="middle"><td valign="middle">CAN Self Test Error</td><td valign="middle">6 Blinks</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332157789">3&nbsp;&nbsp;Boot Code Flash Memory Checksum Test<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test performs the checksum test of the DSP1 application code present
+in flash memory. The checksum is computed for the DSP1 application code and
+is compared with the checksum field present in the header. If the checksum
+test passes the application code is started, otherwise the HEARTBEAT LED starts
+flashing three times and the boot code starts downloading DSP1 application
+code through CAN. It should take about a minute to complete the downloading.
+After the download the GP3 board gets reset and the HEARTBEAT LED should flash
+on and off with a period of five seconds and a 50 percent duty cycle, to indicate
+that the GP3 is executing application code.</P><P CLASS="sect1">If the HEARTBEAT LED continues to have three blinks for more than a
+minute then the boot code flashing failed. In that case, verify that the CAN
+cabling is in place including the terminators and the CAN Power supply on
+the Drive Module is ON. If it keeps blinking three times even after verifying
+that the cables are in place, make sure the SCP is up in running and that
+the rest of the CAN link diagnostics pass. If none of these solve the issue,
+replace the GP3 board. </P><P CLASS="sect1">The CAN Error LED should remain OFF during the flash download.  If it
+blinks with any of the above-mentioned sequence wait for at least a minute
+and then power cycle the GP3. This will force another download. If the CAN
+Error LED still remains ON for a minute even after the power cycle check that
+the CAN cable is connected including the terminator and make sure the CAN
+Power supply in the driver module is ON. Also verify that the rest of the
+CAN link diagnostics pass. Else, replace the GP3 board.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332157790">4&nbsp;&nbsp;Power-up FPGA Test<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">At power-up DSP1 application code checks if the FPGA has valid code
+in it. If it does not have valid code an error message is reported to the
+message log and the application code does not go to ready.  In this case replace
+the GP3.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294332157790-dup.1">5&nbsp;&nbsp;Power-up Register Test <SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Power-up Register Test checks several registers on the GP3 board.
+At the start of the register test, the contents of all registers used during
+the test are saved. Likewise, these registers are restored at the conclusion
+of the test. The register test begins with a rigorous pattern test. Each register
+is tested with all possible patterns in a counting sequence:0000,0001, &#8230; 1111.
+Because some registers on each board have bits that are read only, only read/write
+registers are tested. Bits that are read only or should not be altered are
+not changed via this test. Errors discovered through this test are logged
+to the message log. If any error is found, the Power-up Tests will abort and
+the application code will not go to ready.  If an error message is logged,
+power cycle the GP3 once and if the problem persists replace the GP3.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
