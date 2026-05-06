@@ -1,0 +1,33 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Troubleshooting RF Receive Chain by Symptom</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="ov-1243535399702-dup.1"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Troubleshooting RF Receive Chain by Symptom</SPAN> </P><table summary="Troubleshooting RF Receive Chain by Symptom" border="1"><colgroup><col width="25%"><col width="25%"><col width="25%"><col width="25%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>SYMPTOM</B></td><td align="center" valign="middle"><B>PROBABLE CAUSE</B></td><td align="center" valign="middle"><B>GE FIELD ACTION</B></td><td align="center" valign="middle"><B>RELATED REPLACEMENTS</B></td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">Channel select</td><td valign="">Verify that the field labeled Multicoil Channel Select in the P31_Flex
+Coil Config file is set to 128.  If changed, save changes and reboot system.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">Switch Select</td><td valign="">Verify that the field labeled Multicoil Switch Select in the P31_Flex
+Coil Config file is set to 0.  If changed, save changes and reboot system.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">8 Channel Switch Cabling</td><td valign="">MNS receive line must be plugged into AUX CH 8. (Bottom of switch module.)<P CLASS="entry">(Not
+applicable to 16-channel switch)</P></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">8 Channel Switch Cabling</td><td valign="">The green LED for CH 8 on the switch module should be switched to the
+AUX input.  Diagnose switch problems if it is not. (Not applicable to 16-channel
+switch)</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">8 Channel Switch Cabling</td><td valign="">Verify +15VDC on the AUX CH 8 Input connector.  Replace switch if not
+detected. (Not applicable to 16-channel switch)</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">FUNC Test runs without errors, but there is no signal.</td><td valign="">TX signal out of specification.</td><td valign="">Verify the amplitude of the rf TX pulse at the input of the rf amplifier.
+ Disconnect the cable at the RF IN port on the amplifier and connect to the
+50 Ohm DC input of an oscilloscope.  When the scan is running, the amplitude
+of the square pulse should be &gt;0.5 Volts peak-to-peak at a TG setting of 200.
+ If not, run Slave Exciter diagnostics.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">T/R Bias fault</td><td valign="">Cables</td><td valign="">Verify that the T/R bias path is complete from the bias driver module
+in the system cabinet to the TRswitch on the LPCA cover.  Check connections
+in the TX path at the RFPA, pen-wall and rear pedestal.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Reflected power on RF amplifier high (&gt;50% of Forward power</td><td valign="">The RF amplifier is not making connection to MNS coil.</td><td valign="">FOR CPC AMP: push the button on the front of the CPC amplifier to read
+the reflected power ((see <A HREF="javascript:winopen('214144illd0e186.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>)).
+ Reflected power should be less than 50W.  If it is anywhere near as high
+as transmit power, check connections between amp and coilFOR AMT 8kW AMP:There
+is no diagnostic tool to test this at this point in time.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Reflected power on RF amplifier high (&gt;50% of Forward power)</td><td valign="">The RF amplifier is not making connection to MNS coil.</td><td valign="">FOR CPC 4kW AMP: push the button on the front of the CPC amplifier
+to read the reflected power (see Ill 4-2).  Reflected power should be less
+than 50W.  If it is anywhere near as high as transmit power, check connections
+between amp and coilFOR AMT 8kW AMP:There is no diagnostic tool to test this
+at this point in time.</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">UPM Sense fault</td><td valign="">UPM is in open circuit, not connected to 50 Ohm load</td><td valign="">Check power coupler cables to UPM and be sure that the 50 ohm terminators
+are connected</td><td valign="">50 Ohm TerminatorsUPM Boards</td></tr><tr valign="top"><td valign="">UPM Sense light and/or inhibit light constantly illuminated</td><td valign="">Sense light should only light when there is RF power present and it
+is being gated (during unblank signal).  Some hardware (circuit board or amplifier)
+is causing the signal to be present all the time</td><td valign="">1)	Systematically swap the circuit boards inside the ASC chassis taking
+note of if the error follows one particular board.  If so, try replacing that
+board.<P CLASS="entry">2)	Systematically swap the connections from the amplifier to the
+boards in the ASC to see if this indicates a problem coming from the amplifier</P></td><td valign="">UPM RF detector boards<P CLASS="entry">UPM processor boards</P><P CLASS="entry">RF Amplifier</P></td></tr><tr valign="top"><td valign="">Getting UPM errors at GOC &#8220;spectro amp not ready&#8221;</td><td valign="">50 ohm terminators may be connected</td><td valign="">Check that 50 ohm 10ads (BNC male snap-on) are applied tot all 6 power
+monitor inputs on the SSM. (Head A, B; Body A,B Spectro A,B thee are ports
+j101, j102, j106, j107, j108 and j110</td><td valign="">&nbsp;</td></tr></tbody></table></CENTER></DIV></BODY></HTML>

@@ -1,0 +1,204 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Dummy Load and Cables Calibration</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Optima MR450w 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;9/15/09</P></td></tr></table><H1 ID="top">Dummy Load and Cables Calibration </H1><CENTER><P>(<A HREF="47238summ.htm"><FONT>Click here for Summary Version</FONT></A>)</P></CENTER><DIV CLASS="PROCTIMTING"><H2>1&nbsp;&nbsp;Personnel Requirements</H2><TABLE CLASS="TIMINGTABLE" CELLSPACING="5%" CELLPADDING="5%"><THEAD CLASS="TIMINGTABLE" VALIGN="BOTTOM"><TR CLASS="TIMINGTABLE"><TH CLASS="TIMINGTABLE">Required Persons</TH><TH CLASS="TIMINGTABLE">Preliminary Reqs</TH><TH CLASS="TIMINGTABLE">Procedure</TH><TH CLASS="TIMINGTABLE">Finalization</TH></TR></THEAD><TBODY><TR><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER"></TD><TD ALIGN="CENTER"></TD><TD ALIGN="CENTER"></TD></TR></TBODY></TABLE></DIV><H2>2&nbsp;&nbsp;Overview</H2><P CLASS="procover">This procedure provides directions for determining the true
+loss attributable to the dummy load and cables used when measuring
+the RF output power with a wattmeter or oscilloscope of 100 MHz bandwidth
+or greater.  It is necessary to know and account for the actual loss
+these components contribute in order to accurately measure RF power.
+ This procedure is not needed if using the RF Power Measurement Kit.
+ The RF Power Measurement Kit has already been calibrated so that
+this loss is known and accounted for.  </P><TABLE CLASS="ADMONprocover" CELLSPACING="0%" CELLPADDING="0%" ID="d0e36"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">WHEN MEASURING HIGH FREQUENCY (IN THIS CASE, 42 OR 64
+MHZ ) ON ANY 100 MHZ SCOPE, THERE MAY BE AN ERROR DUE TO THE BANDWIDTH
+LIMITATIONS OF THE SCOPE.   (IF NECESSARY, READ <A HREF="47238.htm#SL47376-47238">
+Step&nbsp;7</A> AT
+THE END OF THIS PROCEDURE.)</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><H2>3&nbsp;&nbsp;Preliminary Requirements</H2><DIV CLASS="TOOLSTEST"><H3>3.1&nbsp;&nbsp;Tools and Test Equipment</H3><TABLE CLASS="ITEMTABLE" CELLSPACING="5%" CELLPADDING="3%"><THEAD CLASS="ITEMTABLE" ALIGN="CENTER"><TR CLASS="ITEMABLE"><TH CLASS="ITEMTABLE" COLSPAN="2">Item</TH><TH CLASS="ITEMTABLE">Qty</TH><TH CLASS="ITEMTABLE">Effectivity</TH><TH CLASS="ITEMTABLE">Part#</TH><TH CLASS="ITEMTABLE">Manufacturer</TH></TR></THEAD><TBODY CLASS="ITEMTABLE" VALIGN="TOP"><TR><TD COLSPAN="2">50-ohm dummy load,
+200 watt, 30 dB attenuator - Bird Model 8322 (or equivalent).</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD>46-317724P14</TD><TD ALIGN="CENTER">-</TD></TR><TR><TD COLSPAN="2">RF Test Cables
+Kit</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD>46-255816G1</TD><TD ALIGN="CENTER">-</TD></TR></TBODY></TABLE></DIV><DIV CLASS="PROCBODY"><H2>4&nbsp;&nbsp;Procedure</H2><OL START="1" CLASS="STEP1" ID="SL2923364-47238"><LI CLASS="STEP1"><P>Overview</P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">Test cables long enough to reach the cables, connectors and
+dummy load to be tested are connected between the Exciter RF Output
+(System Cabinet J1) and Receiver Body Input (System Cabinet J2). Receiver
+gains (R1 &amp; R2) and transmit gain (TG) are set for near full scale
+reading on the power spectrum during prescan calibration.  A reference
+scan is taken and stored in a raw file.  The Attenuation Test Tool
+is used to calculate the baseline factor from the reference scan for
+the test cables (i.e., there is some loss from the test cables). </P><P CLASS="stepdetails">The dummy load and/or cable(s) to be tested are next inserted
+in series with the test cables and another scan is taken. Again, the
+Attenuation Test Tool is used to determine the &#8220;Magnitude Squared
+Attenuation Factor&#8221; (i.e., how much has the test signal been
+attenuated?).  This attenuation factor is used in the RF power calibration
+process to accurately calculate the RF power level. </P><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e70"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If any problems are encountered during the following procedure,
+always start over at the beginning and re-do the reference scan. 
+Then you may add, as directed in this procedure, any type of attenuation
+hardware you might have reason to test. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="SL2923365-47238"><LI CLASS="STEP1"><P>Initial Setup</P><OL START="1" TYPE="a" CLASS="STEP2" ID="SL2923366-47238"><LI CLASS="STEP2"><P>Disable the (U)TNS.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="SL2923367-47238"><LI CLASS="STEP3"><P>If system is equipped with a TNS then bypass the body TNS module
+with a female-BNC to female-BNC adapter:</P><DIV CLASS="STEPDETAILS"><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e83"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Failure to bypass the body TNS out of the circuit may
+result no signal being received by the system.  Merely disabling the
+TNS by moving the Enable/Disable toggle switch down to the Disable
+position instead of bypassing it out of the circuit may work, however,
+the TNS processor can override the switch.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Locate the body TNS on the TNS module.
+ This is one of the two shiny metal TNS boxes affixed to the main
+TNS module assembly that is mounted farthest from the rear of the
+cabinet.  Multicoil systems have an additional piggyback board affixed
+with 3 extra TNS boxes that mounts over the top of the main TNS module
+assembly.  </P></LI><LI CLASS="numlist"><P>Bypass the body TNS (A24 A1 A1) from
+the circuit by disconnecting the small coax cables A24 A1 A1 J12 (signal
+output) and A24 A1 A1 J2 (signal input) from the TNS and connecting
+both together using a female-BNC to female-BNC adapter (also known
+as a bullet adapter 46-220427P3).</P></LI></OL></DIV></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="SL2923370-47238"><LI CLASS="STEP3"><P>If the system is equipped with a UTNS: It is not currently necessary
+to disable the UTNS.  No action is required.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="SL2923371-47238"><LI CLASS="STEP2"><P>Reconfigure test hardware as shown in <A HREF="javascript:winopen('47238illd0e102.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL47379-47238"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">CONNECTIONS FOR INITIAL AMPLITUDE SCAN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/47238-47247.jpg" BORDER="0" usemap="#SL47251-47238"></P></DIV><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e107"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Adapters not shown in <A HREF="javascript:winopen('47238illd0e102.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A> can
+be added, if necessary, from the RF Cables Kit.  Usage of the inline
+DC Block as shown in <A HREF="javascript:winopen('47238illd0e102.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A> is mandatory.    </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="SL2923372-47238"><LI CLASS="STEP2"><P>Disconnect the existing cables at the Systems cabinet  I/F panel
+J1 (RF Out) and J2 (Receiver Body Input) and set them aside.</P></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="SL2923373-47238"><LI CLASS="STEP2"><P>Connect the assembled test cables and adapters between J1 (RF
+Out) and J2 (Receiver Body Input) on the System Cabinet interface.</P></LI></OL><OL START="5" TYPE="a" CLASS="STEP2" ID="SL2923374-47238"><LI CLASS="STEP2"><P>At the operator workspace, prepare the system for a Dummy Load
+scan using the procedure, see below. </P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>Click on <SPAN CLASS="GUIBUTTON">[New Pt]</SPAN></P><P>Id: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>geservice</B></FONT></SPAN></P><P>Name: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dummy load</B></FONT></SPAN></P><P>Weight (Lb): <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>111</B></FONT></SPAN></P><P>Set Patient Protocols to <SPAN CLASS="GUIBUTTON">[Service]</SPAN>.</P></LI><LI CLASS="numlist"><P>In the Protocol field, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>o.18.1</B></FONT></SPAN> (o=Other, 1=series number) to load the protocol.</P></LI><LI CLASS="numlist"><P>Set a landmark if necessary, then <SPAN CLASS="GUIBUTTON">[Save Series]</SPAN>.</P></LI><LI CLASS="numlist"><P>With the right mouse key, select <SPAN CLASS="GUIBUTTON">[Research Operations]</SPAN>, then select <SPAN CLASS="GUIBUTTON">[Display CVs]</SPAN>.</P><P>Set value of CV calmode to <SPAN CLASS="GUIBUTTON">[2]</SPAN> (trapezoid
+pulse).</P><P>(Caution here.  Make sure the previous CV has been cleared before
+entering the next one. Look at the screen!)</P><P>Set value of CV p2_ramp to <SPAN CLASS="GUIBUTTON">[1]</SPAN> (1 &micro;sec
+ramp time).</P><P>Set value of CV t2 to <SPAN CLASS="GUIBUTTON">[50000]</SPAN> (50 msec
+tr).</P><P>Set value of CV pismode to <SPAN CLASS="GUIBUTTON">[1]</SPAN> (exc service).</P><P>Set value of CV pmode to <SPAN CLASS="GUIBUTTON">[1]</SPAN> (data collection).</P><P>Set value of CV daqm to <SPAN CLASS="GUIBUTTON">[1]</SPAN> (data in window).</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Accept]</SPAN> and then select <SPAN CLASS="GUIBUTTON">[Research Operations]</SPAN>, then
+select <SPAN CLASS="GUIBUTTON">[Download]</SPAN> then select <SPAN CLASS="GUIBUTTON">[Manual
+Prescan]</SPAN>.</P></LI></OL></DIV></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="SL2923380-47238"><LI CLASS="STEP1"><P>Data Collection</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>When in  <SPAN CLASS="GUIBUTTON">[Manual Prescan]</SPAN>, set R1 to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>7</B></FONT></SPAN>, and R2 to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>14</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Adjust transmit gain (TG) to achieve
+an R1 or R2 (on IP display) of approximately 98%, without going over.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Done]</SPAN>.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Scan]</SPAN> (Ignore
+the message: MR signal too large, reduce receiver gain.)  (Note: on
+the LX systems tested, the scan time starts at 13 seconds, counts
+down to 7 seconds, then ends.  This is normal and is not cause for
+alarm.)</P></LI><LI CLASS="numlist"><P>From the MR Tools desktop, select <SPAN CLASS="GUIBUTTON">[Cals/checks]</SPAN> and then <SPAN CLASS="GUIBUTTON">[Attenuation Test]</SPAN>.</P></LI><LI CLASS="numlist"><P>Use <SPAN CLASS="GUIBUTTON">[Atten Test]</SPAN> tool selection to analyze data, as shown in <A HREF="javascript:winopen('47238tbld0e303.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>The next step will involve removing
+only the center male N to male N adapter from the test cables, setting
+it aside, and adding in the dummy load and cables that need to be
+characterized.  </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e267"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This assumes that the item to be characterized has N female
+connectors at it&#8217;s input and output.  If it has an N connector
+at the input and a BNC at the output or BNC connectors at both the
+input and output then an additional adapter(s) will be needed in order
+to connect it to the test cables.  Adding in one or two uncharacterized
+adapters should not appreciably change the baseline attenuation factor.
+  In this case, if the wattmeter is not being used, the 2.5 ft. cable
+(RG214, 46-255595G4) can be eliminated from the circuit.  It is not
+needed.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Connect your test cables to the opposite
+ends of either:</P><UL><LI CLASS="bulletlist"><P><A HREF="javascript:winopen('47238illd0e372.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> -
+Dummy Load and Cables</P></LI><LI CLASS="bulletlist"><P><A HREF="javascript:winopen('47238illd0e377.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A> -
+Amplifier to Wattmeter Cable.</P></LI></UL><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e282"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">"Bullet" RF connector referred to in <A HREF="javascript:winopen('47238illd0e372.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> and <A HREF="javascript:winopen('47238illd0e377.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A> is
+a female BNC/female BNC adapter, 46-220427P3.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Select the scanning icon again to activate
+the scanning screen.  </P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Scan]</SPAN>. </P></LI><LI CLASS="numlist"><P>When the scan is completed, re-select
+the tools icon again and begin the Analysis in <A HREF="47238.htm#SL47784-47238">
+Step&nbsp;4</A>.
+ It will be necessary to toggle between the Scan and Toolbelt icons
+if multiple passes are done.  </P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL47255-47238"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DATA COLLECTION</SPAN> </P><table summary="DATA COLLECTION" border="1"><colgroup><col width="334"><col width="334"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">Output/Prompts</td><td align="center" valign="">Input/Comments</td></tr><tr valign="top"><td valign="">Last run number used was:  XXXX</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Please enter runfile number (XXXX): .....................</td><td valign=""><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></td></tr><tr valign="top"><td valign="">Please select Locked / Unlocked file (L,U) (U):..........</td><td valign="">Choose L <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> if system has MGD chassis
+and U<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> if system has ISE chassis.</td></tr><tr valign="top"><td valign="">|*****************************************|</td><td valign="">(working)</td></tr><tr valign="top"><td valign="">***********************************************</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average Max. magnitude Across All Views = aaaaa</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average Max. magnitude Squared          = bbbbb</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average RMS Across All Views               = ccccc</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">***********************************************</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Do you want to make this run the reference(Y,N)(N):......</td><td valign="">Y<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></td></tr><tr valign="top"><td valign="">STOP! Do not answer the next question at this point.  Continue
+with step 7 below.  </td><td valign="">&nbsp;</td></tr></tbody></table></div></DIV><DIV CLASS="ILLUSTRATION" id="SL47268-47238"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">CONNECTIONS FOR DUMMY LOAD + CABLES  SCAN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/47238-47260.jpg" BORDER="0" usemap="#SL47264-47238"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL47271-47238"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">AMP TO WATTMETER CABLE  SCAN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/47238-47262.jpg" BORDER="0" usemap="#SL47265-47238"></P></DIV></DIV></LI></OL><OL START="4" CLASS="STEP1" ID="SL47784-47238"><LI CLASS="STEP1"><P>Analysis</P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">See <A HREF="javascript:winopen('47238tbld0e390.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL47278-47238"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">ANALYSIS</SPAN> </P><table summary="ANALYSIS" border="1"><colgroup><col width="334"><col width="334"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">Output/Prompts</td><td align="center" valign=""> Input/Comments</td></tr><tr valign="top"><td valign="">Do you want to compute Gain or Attenuation Ratio(G,A)[G]:</td><td valign="">A<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN><P CLASS="entry">IMPORTANT:Answer after the
+scan is done.</P></td></tr><tr valign="top"><td valign="">Please do the next scan&#8230;</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> key to continue, s or q to
+quit [ ]:</td><td valign=""><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></td></tr><tr valign="top"><td valign="">Last run number used was: XXXX</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Please enter runfile number [XXXX]:.......................</td><td valign=""><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></td></tr><tr valign="top"><td valign="">Please select Locked / Unlocked file (L,U) [U]:...........</td><td valign="">Choose L<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> if system has MGD chassis
+and U<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> if system has ISE chassis. </td></tr><tr valign="top"><td valign="">|*************************************|</td><td valign="">(Working)</td></tr><tr valign="top"><td valign="">************************************************</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average Max. Magnitude Across All Views =  aaaaa</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average Max. Magnitude Squared =  bbbbb</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Average RMS Across All Views =  ccccc</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Magnitude Attenuation Factor =  xxxxx</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Magnitude Squared Attenuation Factor =  yyyyy </td><td valign="">&lt;======Record in &#8220;Value&#8221; column in Table E5-2.</td></tr><tr valign="top"><td valign="">RMS Attenuation Factor =  zzzzz</td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Do you want to make this run the reference(Y,N)(N):......</td><td valign="">N<SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></td></tr><tr valign="top"><td valign="">************************************************</td><td valign="">&nbsp;</td></tr></tbody></table></div></DIV><P CLASS="stepdetails">Record the &#8220;Magnitude Squared Attenuation Factor&#8221;
+number and record it in the appropriate Value box in <A HREF="javascript:winopen('47238tbld0e494.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL47282-47238"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">ATTENUATION FACTORS</SPAN> </P><table summary="ATTENUATION FACTORS" border="1"><colgroup><col width="133"><col width="133"><col width="133"><col width="133"><col width="133"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">MODE</td><td align="center" valign="">CALIBRATED HARDWARE</td><td align="center" valign=""> PART NUMBER(S)</td><td align="center" valign=""> VALUE</td><td align="center" valign=""> NOMINAL VALUES</td></tr><tr valign="top"><td valign="">BODY OR HEAD</td><td valign="">DUMMY LOAD + CABLES ATTEN FACTOR</td><td valign="">46-255595G3 <P CLASS="entry">46-317724P14 </P><P CLASS="entry">46-255595G4</P></td><td valign="">&nbsp;</td><td valign="">1000 TO 1200</td></tr><tr valign="top"><td valign="">HEAD</td><td valign="">AMP TO WATTMETER ATTEN FACTOR</td><td valign="">46-255595G3</td><td valign="">&nbsp;</td><td valign="">1.0 TO 1.2</td></tr></tbody></table></div></DIV></DIV></LI></OL><OL START="5" CLASS="STEP1" ID="SL2923394-47238"><LI CLASS="STEP1"><P>Calculation of RF power </P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">Peak voltage should be used in the calculation in order to get
+an accurate result.  It can be converted to power using the following
+formula as long as certain factors are known and accounted for.  The
+scope correction factor MUST be known.  So must the actual total loss
+attributed to anything that connects the measuring device to the source.
+ This often includes the accumulated loss associated with the dummy
+load and any interconnecting cables.  <A HREF="javascript:winopen('47238tbld0e556.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;4</A> shows
+the calculation of power if all the attenuating devices in the measurement
+circuit exhibited perfect loss; that is, the devices added no more
+or less loss than what they were designed to provide.  <A HREF="javascript:winopen('47238tbld0e585.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A> shows
+the same calculation of power but accounts for the measurement-circuit
+loss values in deriving the true power.  Note that the loss has a
+significant impact on the calculated power.  </P><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e549"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">THE SCOPE CORRECTION FACTOR MUST BE KNOWN FOR THE FORMULAE
+SHOWN IN <A HREF="javascript:winopen('47238tbld0e556.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;4</A> AND <A HREF="javascript:winopen('47238tbld0e585.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A>.  IF IT IS NOT KNOWN, DO NOT USE
+THIS METHOD.  GROSSLY INACCURATE MEASUREMENTS AND POSSIBLE SYSTEM
+DAMAGE WILL RESULT.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL47387-47238"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RF POWER CALCULATION WITH NO LOSS </SPAN> </P><table summary="RF POWER CALCULATION WITH NO LOSS " border="1"><colgroup><col width="669"></colgroup><tbody valign=""><tr valign="top"><td valign=""><SPAN CLASS="GUIicon"><IMG SRC="../media/47238-47284.jpg" BORDER="0"></SPAN> X  dummy load and cables attenuation
+=  RF Power <P CLASS="entry"></P><P CLASS="entry">where &#8220;X&#8221; and &#8220;X&#8221;
+in the above formula signifies multiplication</P><P CLASS="entry"></P><P CLASS="entry">Assume Z = 50 &#937;, Vpeak = 40.0, scope correction factor
+= 1.00 (no loss), dummy load and cables atten. = 1000, (dummy load
+and cables are all ideal)</P><P CLASS="entry"></P><P CLASS="entry"><SPAN CLASS="GUIicon"><IMG SRC="../media/47238-47286.jpg" BORDER="0"></SPAN> X 1000  =  16000
+Watts = 16 kW  </P><P CLASS="entry"></P><P CLASS="entry">This result assumes a theoretically
+perfect situation in which there is no loss.  These situations, in
+common practice, rarely exist! </P></td></tr></tbody></table></div></DIV><P CLASS="stepdetails">Now, consider the "real life" type situation in <A HREF="javascript:winopen('47238tbld0e585.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A> in
+which the loss is considered:</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL47390-47238"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RF POWER CALCULATION WITH LOSS CONSIDERED</SPAN> </P><table summary="RF POWER CALCULATION WITH LOSS CONSIDERED" border="1"><colgroup><col width="669"></colgroup><tbody valign=""><tr valign="top"><td valign=""><SPAN CLASS="GUIicon"><IMG SRC="../media/47238-47284.jpg" BORDER="0"></SPAN> X  dummy load and cables attenuation
+=  RF Power<P CLASS="entry"></P><P CLASS="entry">where &#8220;X&#8221; and &#8220;X&#8221;
+in the above formula signifies multiplication</P><P CLASS="entry"></P><P CLASS="entry">Assume Z = 50 &#937;, Vpeak = 34.61, scope correction factor
+= 0.88, dummy load and cables atten. = 1028 </P><P CLASS="entry"></P><P CLASS="entry"><SPAN CLASS="GUIicon"><IMG SRC="../media/47238-47290.jpg" BORDER="0"></SPAN> X  1028  =  15901 Watts  (very close
+to 16kW.) </P><P CLASS="entry"></P><P CLASS="entry">Accounting for the loss resulted
+in an accurate answer.  15899 Watts is as close as we can hope to
+get to 16000 Watts without using the RF Power Measurement Kit.  Note
+that if none of the loss had been accounted for the error could have
+been 3587 Watts or 22.6%.  As a result, the observer would attempt
+to adjust the RF power far above the 16000 Watt limit! </P></td></tr></tbody></table></div></DIV></DIV></LI></OL><OL START="6" CLASS="STEP1" ID="SL2923395-47238"><LI CLASS="STEP1"><P>Wattmeter Trivia</P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">Why are measurements between a oscilloscope and a Bird Wattmeter
+found to be different? Repeated GEMS Education Center lab groups that
+performed the Dummy Load and Cables attenuation process correctly,
+and obtained an accurate attenuation value, were able to accurately
+measure RF power as well as with a 400 MHZ scope!  Remember, for wattmeter
+measurements however, the meter reading must be multiplied by the
+atten factor.  Leaving this little factor out is the reason why the
+above &#8216;note&#8217; was made.  In body mode the wattmeter is
+placed after the dummy load.  Its atten value must be used to calculate
+the correct RF value.  If it is NOT used, then it should be expected
+there will be an error of 10% or more!</P><P CLASS="stepdetails">In head mode, the wattmeter is placed before the dummy load.
+ In this case only the &#8216;cable&#8217; factor is used to correct
+the wattmeter reading.  The &#8216;cable&#8217; factor is the other
+atten test you did for the 10 foot cable only.  Typically that value
+is between 1.0 to 1.2.  Doesn&#8217;t sound like much????  Take your
+calculator out for a moment.  Take 2,000 watts (displayed reading)
+and multiply by an atten factor of 1.0 ; the results are obvious,
+2,000 watts.  Now take the same displayed 2,000 and multiply it by
+an atten factor of 1.2 =  2,400 watts!  Hopefully this example will
+show the importance of the attenuation values.  You just calculated
+a 20% error if you were wrong because you didn&#8217;t do atten test
+on the 10 foot cable!</P></DIV></LI></OL><OL START="7" CLASS="STEP1" ID="SL47376-47238"><LI CLASS="STEP1"><P>Scope Trivia</P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">A basic &#8216;rule of thumb&#8217; in the scope industry is
+that &#8216;to accurately measure a high frequency signal, the bandwidth
+of the scope should be at least 5X the frequency being measured&#8217;.
+ That means that for a 64 MHZ signal the scope bandwidth would have
+to be at least 320 MHZ.  Along the same line, a 42 MHZ signal would
+require a bandwidth of at least 210 MHZ.  This is why the 400 MHZ
+scope was chosen several years ago for MR use.  Knowing this should
+alert you as to what might have to be done in order to get correct
+scope readings from whatever scope you carry today.  Who knows what
+bandwidth scope you&#8217;ll be working with tomorrow?  Will it be
+of sufficient bandwidth to give accurate measurements?  What can you
+do if it is not covered by the rule of thumb?  Read on!</P><P CLASS="stepdetails">Experimentation with multiple scopes have shown that an error
+is typically somewhere between 0 and 16%.  That&#8217;s right, some
+100 MHZ scopes have no loss!  Others may have as much as 15 or 16%.
+ Additionally, it has been found that it is not necessarily the whole
+scope that has this loss, but the individual channels typically exhibit
+differences.  In other words, channel one might have a 3% loss when
+channel two could lose 15%.  There is no fixed number for all 100
+MHZ scopes!   </P><P CLASS="stepdetails">How do you get around these losses?  Well, there are two ways.
+ First you could compare a RF waveform on your scope, side by side,
+with a 400 MHZ scope. Use the same cables etc. and just move the cables
+from scope to scope.  You can then calculate the loss for each channel
+of the 100 MHZ scope vs. the 400 MHZ scope.  Keep the scope intensity
+low for best accuracy.  If and when possible, determine the losses
+for a 1.5T and 1.0T system.  That&#8217;s for 64 and 42 MHZ.  Point
+of note: there are various losses at 42 MHZ as well as with 64 MHZ.
+ And, typically they differ!  Your scope may have a 0 to 15% rolloff
+at 64 MHZ and 0 to 12% at 42 MHZ.  All scopes differ!</P><P CLASS="stepdetails">Secondly, the next time you have your scope calibrated, just
+attach a tag asking for the % loss of signal at 42 and 64 MHZ for
+each channel.  You should also state that you want this to be done
+at the 5 and 2 volts/div setting.  This will cover both body and head
+measurements.  At two different re-calibration vendors we use, there
+are no extra charges incurred for this request.</P><P CLASS="stepdetails">As mentioned above, the 100 MHZ scope has been shown to be as
+accurate as a 400 MHZ scopes if the scope rolloff factor is known.
+ Additionally, each channel has it&#8217;s own unique loss factor.</P><P CLASS="stepdetails">The biggest error found in GEMS Education Center labs when measuring
+RF power has proven to be the FE using &#8220;typical&#8221; dummy
+load and cables attenuation factors.  Basically there are no &#8220;typical&#8221;
+factors!  All loads and cables are somewhat different.  Several may
+appear to be close in value, but in most cases they are different.
+ If you use a &#8220;typical&#8221; atten factor in your calculations,
+then &#8221;typically&#8221; you will be in error. </P><P CLASS="stepdetails">Through experimentation at the GEMS Education Center, it has
+been determined that if you know the attenuation factor for a particular
+dummy load and cables, those values hold over several years.  They
+do NOT tend to change.  This means that if you could do atten test
+on a dummy load and cables, and keep them as a kit, you don&#8217;t
+have to recalibrate them every time you use them.  Wow!  And possibly
+a little cheaper than the Power Measurement kit.</P><P CLASS="stepdetails">If you must, or intend to use a scope to measure body RF power,
+use atten test on the dummy load and cables.  </P><P CLASS="stepdetails">Knowing the correct attenuation values and the correct scope
+rolloff values will provide you with measurements as accurate as a
+400 MHZ scope and / or the GE Power Measurements kit.</P></DIV></LI></OL></DIV><H2>5&nbsp;&nbsp;Finalization</H2><OL START="1" CLASS="STEP1" ID="SL2923396-47238"><LI CLASS="STEP1"><P>Reconnect original cables to the System Cabinet I/F J1 and J2.</P></LI></OL><OL START="2" CLASS="STEP1" ID="SL2923397-47238"><LI CLASS="STEP1"><P>Enable the (U)TNS.</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>If system is equipped with a TNS then
+remove the female-BNC to female-BNC adapter and reconnect RF cable
+A24 A1 A1 J12 (signal output) to the bottom of the body TNS module
+and RF cable A24 A1 A1 J2 (signal input) to the top of the body TNS
+module.</P></LI><LI CLASS="numlist"><P>If the system is equipped with a UTNS:
+It is not currently necessary to disable the UTNS.  No action is required.</P></LI></OL><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e656"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">10.0 SOFTWARE ONLY: WHENEVER THE &#8220;CALMODE&#8221;
+CV IS CHANGED A TPS RESET MUST BE DONE BEFORE ATTEMPTING TO SCAN.
+THIS IS NECESSARY IN ORDER TO SET THE MGD BACK INTO IMAGING MODE.
+FAILURE TO DO THIS WILL RESULT IN THE LOSS OF RECEIVE SIGNAL AND AUTOPRESCAN
+FAILURES.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></LI></OL><OL START="3" CLASS="STEP1" ID="SL2923400-47238"><LI CLASS="STEP1"><P>10.0 Software only: Perform a TPS Reset to set the MGD back
+to imaging mode so that the system will be able to scan. Failure to
+do this will result in Autoprescan failures due to a loss of receive
+signal.</P></LI></OL><OL START="4" CLASS="STEP1" ID="SL2923401-47238"><LI CLASS="STEP1"><P>Perform one satisfactory head or body scan.</P></LI></OL><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
