@@ -1,0 +1,446 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml"
+xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=Word.Document>
+<meta name=Generator content="Microsoft Word 9">
+<meta name=Originator content="Microsoft Word 9">
+<link rel=File-List href="./transient_noise_filter_files/filelist.xml">
+<link rel=Edit-Time-Data href="./transient_noise_filter_files/editdata.mso">
+<!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+<title>Non</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:Author>212012917</o:Author>
+  <o:LastAuthor>212012917</o:LastAuthor>
+  <o:Revision>3</o:Revision>
+  <o:TotalTime>1</o:TotalTime>
+  <o:Created>2006-06-29T03:28:00Z</o:Created>
+  <o:LastSaved>2006-06-29T03:30:00Z</o:LastSaved>
+  <o:Pages>3</o:Pages>
+  <o:Words>1340</o:Words>
+  <o:Characters>7641</o:Characters>
+  <o:Company>GE Healthcare</o:Company>
+  <o:Lines>63</o:Lines>
+  <o:Paragraphs>15</o:Paragraphs>
+  <o:CharactersWithSpaces>9383</o:CharactersWithSpaces>
+  <o:Version>9.6926</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--
+ /* Font Definitions */
+@font-face
+	{font-family:Batang;
+	panose-1:2 3 6 0 0 1 1 1 1 1;
+	mso-font-alt:\BC14\D0D5;
+	mso-font-charset:129;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+@font-face
+	{font-family:"Palatino Linotype";
+	panose-1:2 4 5 2 5 5 5 3 3 4;
+	mso-font-charset:0;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870009 1073741843 0 0 415 0;}
+@font-face
+	{font-family:"\@Batang";
+	panose-1:2 3 6 0 0 1 1 1 1 1;
+	mso-font-charset:129;
+	mso-generic-font-family:roman;
+	mso-font-pitch:variable;
+	mso-font-signature:-1342176593 1775729915 48 0 524447 0;}
+ /* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoBodyTextIndent, li.MsoBodyTextIndent, div.MsoBodyTextIndent
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+p
+	{margin-right:0in;
+	mso-margin-top-alt:auto;
+	mso-margin-bottom-alt:auto;
+	margin-left:0in;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+</head>
+
+<body lang=EN-US link=blue vlink=blue style='tab-interval:.5in'>
+
+<div class=Section1>
+
+<p class=MsoNormal align=center style='text-align:center;mso-layout-grid-align:
+none'><b><span style='font-family:Arial;background:yellow'>White Pixel Theory</span></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'>&nbsp;</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><b><span
+style='font-family:Arial'>Transient Noise Filter Theory</span></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>Considering how common spike noise is, and how easy it is to
+inadvertently create&nbsp;it, even in the controlled environment of&nbsp;an RF
+screen room; GE design engineers&nbsp;searched for a means to make the Signa
+MRI system less sensitive and&nbsp;reduce the vulnerability to their inevitable
+occurrence.<span style="mso-spacerun: yes">  </span>A few different schemes
+were considered, but eventually it was decided that their approach would be a
+hardware solution that would detect and &quot;blank out&quot; spikes before
+they even reached the MR receiver.<span style="mso-spacerun: yes">  </span>The
+name of this device was originally the Transient Noise Suppressor (TNS) but
+that was later changed to Transient Noise Filter (TNF).<span
+style="mso-spacerun: yes">  </span>It is&nbsp;actually the exact same
+device.&nbsp; <u1:p></u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:maroon'>&nbsp;<u1:p></span><span style='font-family:Arial;
+mso-fareast-font-family:Batang;mso-bidi-font-family:"Times New Roman";
+color:maroon'> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>New Excite 2A (11.0 M3a) and later systems have a completely
+redesigned TNF, called the Universal TNS (UTNS3).&nbsp; Since this is not yet
+fully functional, we can't really say much about it yet, except that the
+concept is very promising in that the UTNS will have a separate antenna in the
+scan room and it's own &quot;receiver&quot; just for detecting broadband
+events.&nbsp; For the remainder of this discussion we will be referring to the
+old &quot;tried and true&quot; TNF that we have come to know and love, which is
+currently installed in the vast majority of the installed base.</span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;</span></p>
+
+
+<div class=MsoNormal align=center style='text-align:center'><span
+style='font-family:"Palatino Linotype";mso-bidi-font-family:Arial;color:black'>
+
+<hr size=2 width="100%" align=center>
+
+</span></div>
+
+
+<p class=MsoNormal><span style='font-family:Arial;color:black'>Below is a
+simplified block diagram of a&nbsp;single TNF channel.<br style='mso-special-character:
+line-break'>
+<![if !supportLineBreakNewLine]><br style='mso-special-character:line-break'>
+<![endif]></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>Physically, the TNFs are located in the Systems
+cabinet.<span style="mso-spacerun: yes">  </span>Functionally, they are located
+between the preamplifiers and receivers in each receive channel.<span
+style="mso-spacerun: yes">  </span>There will normally be one TNF Assembly with
+multiple TNF channels, one for each receive channel.<span style="mso-spacerun:
+yes">  </span>Multi-coil systems will have a 3-channel TNF expansion module,
+which piggybacks to the original 2-channel TNF assembly.<u1:p></span><span
+style='font-family:Arial;color:maroon'> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:maroon'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>First, the input signal is split.<span style="mso-spacerun:
+yes">  </span>Part of it goes through a notch filter, which is centered on the
+nominal magnet frequency.<span style="mso-spacerun: yes">  </span>This filter
+will reject signals a set bandwidth above and below the nominal magnet
+frequency, but pass any other received signals.<span style="mso-spacerun:
+yes">  </span>This is what prevents the TNF from detecting and blanking the <i>desired</i>
+NMR signal.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoBodyText2 style='margin:0in;margin-bottom:.0001pt'><span
+style='font-family:Arial;color:black'>An Enable / Disable switch is provided in
+the TNF Assembly to control the detection and blanking of all channels.<span
+style="mso-spacerun: yes">  </span>When enabled, the filtered signal goes to
+the Spike Detection circuit of the TNF channel.<span style="mso-spacerun:
+yes">  </span>Any signal that gets past the Notch Filter, since we have
+established that it is not an NMR signal, must be broadband noise and will
+therefore be detected.<span style="mso-spacerun: yes">  </span>Spikes thusly
+detected will trigger actuation of&nbsp;the Transient Blanker Switch.<span
+style="mso-spacerun: yes">  </span>When the blanker switch is actuated it
+interrupts the normal signal path and places a nominal impedance on the receive
+line.<span style="mso-spacerun: yes">  </span>This is so&nbsp;the receive
+signal does not drop to zero when blanked, which would itself cause problems in
+the reconstructed images, but will instead go to some&nbsp;nominal noise value
+for the duration.</span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>The Spike Detector also sends a signal to the&nbsp;TNF event
+counter.<span style="mso-spacerun: yes">  </span>There is only one counter for
+all TNF channels in the assembly.<span style="mso-spacerun: yes">  </span>The
+counter will only increment once for any simultaneously detected spike on the
+multiple TNF channels.<span style="mso-spacerun: yes">  </span>However, keep in
+mind that each TNF channel is capable of detecting and blanking
+independently.<span style="mso-spacerun: yes">  </span>The event counter will
+also only increment if the &quot;Data in Window&quot; and &quot;Receiver
+Unblank&quot; signals are both true (high).<span style="mso-spacerun: yes"> 
+</span>Note that these control signals have the effect of <u>only gating the
+counter</u>.<span style="mso-spacerun: yes">  </span>A detected spike event
+will still actuate the Transient Blanker Switch regardless of the state of the
+&quot;Data in Window&quot; and &quot;Receiver Unblank&quot; signals.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-layout-grid-align:
+none'><span style='font-family:Arial'><img width=567 height=468
+id="_x0000_i1026"
+src="..\..\..\..\..\..\..\MR_LSI\G3\IQ_TroubleshootingWebsite\White_Pixel\non_excite_epi_wp_theory\transi1.jpg"
+border=0></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>The&nbsp;split input signal&nbsp;path from the
+preamplifiers&nbsp;that does not go thru the notch filter is the
+normal&nbsp;receive signal path. <span style="mso-spacerun: yes"> </span>This
+signal is amplified in a Gain Stage to compensate for the insertion losses of
+the rest of the circuitry.<span style="mso-spacerun: yes">  </span>The net
+overall gain&nbsp;of the circuit should still be 1:1.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>By the time the Spike Detector&nbsp;is able to sense a noise
+impulse and the Transient&nbsp;Blanker Switch is&nbsp;actuated, the spike would
+likely already be halfway to the receiver.<span style="mso-spacerun: yes"> 
+</span>To combat this, a delay function is added to the normal signal
+path.&nbsp;&nbsp;This aligns the blanking relative to the spike noise for
+complete suppression.<u1:p></span><span style='font-family:Arial;color:maroon'>
+</u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:maroon'>&nbsp;<u1:p></span><span style='font-family:Arial;
+mso-fareast-font-family:Batang;mso-bidi-font-family:"Times New Roman";
+color:maroon'> </u1:p></span></p>
+
+<p class=MsoBodyTextIndent style='margin:0in;margin-bottom:.0001pt'><span
+style='font-family:Arial;color:black'>A 15-volt preamplifier bias is output on
+the RF input cable of each channel, at all times.&nbsp; There is also a DC
+block on the RF Output circuit&nbsp;of each channel to prevent
+loading&nbsp;down the preamplifier bias supply circuit of the transceiver. <u1:p></u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'>&nbsp;</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><b><span
+style='font-family:Arial'>TNF Troubleshooting</span></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>There are many things that can go wrong with the TNF that
+will cause problems with the imaging system.<span style="mso-spacerun: yes"> 
+</span>Since there are many active components in the design, it is entirely
+possible for the TNS to negatively effect the receive signal even when there is
+no spike noise present, or the switch is placed in the &quot;Disable&quot;
+position.<span style="mso-spacerun: yes">  </span>Either low gain or a noisy
+TNF channel can negatively impact image quality through reduced SNR.<span
+style="mso-spacerun: yes">  </span>A channel with excessive gain has been seen
+to be the cause &quot;Over-ranged Receiver&quot; images as the below example:<u1:p>
+</u1:p></span></p>
+
+<p class=MsoNormal align=center style='text-align:center;mso-layout-grid-align:
+none'><span style='font-family:Arial'><img width=269 height=304
+id="_x0000_i1027"
+src="..\..\..\..\..\..\..\MR_LSI\G3\IQ_TroubleshootingWebsite\White_Pixel\non_excite_epi_wp_theory\transi2.gif"
+border=0></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>The first logical step in troubleshooting a suspected bad
+TNS is to bypass the questionable channel (or channels) by connecting the TNS
+Input cable to the TNS Output cable using a BNC bullet connector.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>If the symptoms change, you will know that you are on the
+right track.<span style="mso-spacerun: yes">  </span>However, this does not
+necessarily prove that the TNF is faulty.<span style="mso-spacerun: yes"> 
+</span>You need to be aware that it is possible for the TNF to sense an
+&quot;out of band&quot; signal, which it would interpret to be broadband noise,
+but which is actually some other discrete (correlated) noise that happens in
+that frequency range.<span style="mso-spacerun: yes">  </span>You should use
+the SPT correlated noise test (with the TNS bypassed) to be sure.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>You should also be aware that excessive spike noise in the
+scan room can, and will, cause ghosting in images due to an excess of the
+desired NMR signal being blanked.<span style="mso-spacerun: yes">  </span>This
+may be mistaken as a faulty TNS when, in reality, the TNS is functioning
+exactly as designed to.<span style="mso-spacerun: yes">  </span>The simple test
+to rule this out is to place the TNS in the &quot;Disable&quot; position and
+scan.<span style="mso-spacerun: yes">  </span>If the problem is due to
+excessive blanking the images will go from being ghosted to having corduroy or
+other image noise problems, at which point you could begin chasing white pixels.<u1:p>
+</u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>Of course, a TNF could also malfunction such that it no
+longer blanks when it should, when spike noise does occur.<span
+style="mso-spacerun: yes">  </span>This would be evident as corduroy artifact
+in images even when the TNF is in circuit and enabled.<span
+style="mso-spacerun: yes">  </span>The TNF assembly has a built-in spike
+generator, and a Functional test procedure has been developed and documented on
+the MR Service Methods CD ROM to functionally test each TNF channel.</span><o:p></o:p></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial'><u1:p></u1:p>&nbsp;</span></p>
+
+
+<div class=MsoNormal align=center style='text-align:center'><u><span
+style='font-family:"Palatino Linotype";mso-bidi-font-family:Arial;color:black'>
+
+<hr size=2 width="100%" align=center>
+
+</span></u></div>
+
+<u1:p></u1:p>
+
+<p>&nbsp;</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><b><span
+style='font-family:Arial;color:black'>TNF Philosophy<u1:p> </u1:p></span></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>The overall design goal of the TNF was to eliminate any
+intermittently occurring spike transients, but to be otherwise invisible to the
+data acquisition.<span style="mso-spacerun: yes">  </span>By eliminating the
+&quot;once in a while&quot; spikes that inevitable occur in any scan room the
+MR operator will not become sensitized to their occurrence.<span
+style="mso-spacerun: yes">  </span>However, if excessive numbers of spikes
+occur, the TNF will continue to blank them along with meaningful NMR data,
+which would negatively impact the final image.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>This was why a counter circuit was included in the
+design.<span style="mso-spacerun: yes">  </span>The idea was that if too many
+events were counted we would know that it was time to go in and troubleshoot a
+severe spike noise problem.<span style="mso-spacerun: yes">  </span>The counter
+was even intended to be remotely accessible via a serial connection so that
+proactive notification of an impending white pixel problem could occur.<span
+style="mso-spacerun: yes">  </span>Unfortunately, the TNF counter has always
+been unreliable as an indicator, primarily because the gating signals we use do
+not accurately describe the actual sampling time of the receiver.<span
+style="mso-spacerun: yes">  </span>Additionally, the software hooks to support
+remotely querying the TNF counter were never fully developed.<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>Through the years there have been differing opinions as to
+the utility and application of the TNF. <span style="mso-spacerun:
+yes"> </span>Many Field Engineers have adopted the stance that the TNF is only
+a &quot;band-aid&quot; and should only be enabled after a customer has already
+complained of corduroy artifacts, which as we know is caused by spike
+noise.<span style="mso-spacerun: yes">  </span>Isn't that a bit like closing
+the barn door after the cow has already got out?<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>&nbsp;<u1:p> </u1:p></span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial;color:black'>On the other hand, by leaving the TNF enabled and active at
+all times as it was designed, any intermittent occurrences of spike noise will
+be eliminated, masking them from the operators.<span style="mso-spacerun:
+yes">  </span>This could help to improve their perception of the system and
+preclude them from overly scrutinizing the IQ.<span style="mso-spacerun: yes"> 
+</span>The hazard here is that we may not become aware of an impending problem
+until it becomes so severe that the images become blurry and ghosted due to the
+excessive blanking.</span></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'>&nbsp;</p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'><span style='font-family:
+Arial'>------------------<br>
+</span><span style='mso-bidi-font-size:10.0pt;font-family:Arial;color:black'>Jump
+to:</span></p>
+
+<p class=MsoNormal style='margin-top:18.75pt;margin-right:.5in;margin-bottom:
+0in;margin-left:.5in;margin-bottom:.0001pt;mso-layout-grid-align:none'><b><span
+style='font-family:Arial'><a href="white_pixel_theory.htm">White Pixel Theory
+Home</a></span></b></p>
+
+<p style='margin-right:.5in;margin-left:.5in'><span style='font-family:Arial'><a
+href="what_is_white_pixel.htm"><b>What is White Pixel?</b></a></span></p>
+
+<p style='margin-right:.5in;margin-left:.5in'><b><span style='font-family:Arial'><a
+href="white_pixels_raw_data.htm">White Pixels in Raw Data and Images</a></span></b></p>
+
+<p style='margin-right:.5in;margin-left:.5in'><b><span style='font-family:Arial'><a
+href="scan_induced_noise.htm">Ambient Noise/Scan Induced Noise</a></span></b></p>
+
+<p style='margin-right:.5in;margin-left:.5in'><b><span style='font-family:Arial'><a
+href="one_more_trick.htm">Sniffing Out White Pixels</a></span></b></p>
+
+<p class=MsoNormal style='mso-layout-grid-align:none'>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
