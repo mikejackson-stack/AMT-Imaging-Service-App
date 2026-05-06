@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Setting up HIS and RIS","shortdesc":"<p class=\"shortdesc\">Directions on configuring HIS\/RIS, checking connectivity, and setting information retrieval preferences.<\/p>","href":"t_SettingUpHISAndRIS_2.html","attributes":{"data-id":"id_2004084"},"menu":{"hasChildren":true},"tocID":"id_2004084-d46e24928","next":"id_2004084-d46e24928"}]});

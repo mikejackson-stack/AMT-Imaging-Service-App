@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Identifying Cooling Cabinet Type","shortdesc":"<p class=\"shortdesc\">Identify the ICC type.<\/p>","href":"t_IdentifyingICCType.html","attributes":{"data-id":"id_2038852"},"menu":{"hasChildren":false},"tocID":"id_2038852-d46e34295","topics":[]}]});
