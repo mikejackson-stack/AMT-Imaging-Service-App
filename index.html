@@ -13,10 +13,27 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--navy:#1a3a5c;--green:#28a745;--orange:#fd7e14;--blue:#0d6efd;--purple:#6f42c1;--red:#dc3545;--bg:#f4f6f9;--card:#fff;--border:#e0e4ea;--text:#1a1a2e;--muted:#6b7280}
 html,body{height:100%;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text)}
-#root{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
+#root{height:100%;display:flex;flex-direction:column;max-width:900px;margin:0 auto;background:var(--bg);box-shadow:0 0 40px rgba(0,0,0,.08)}
 .screen{display:none;flex-direction:column}
 .screen.active{display:flex;flex-direction:column;min-height:100vh}
-.scroll{flex:1;overflow-y:scroll;-webkit-overflow-scrolling:touch;padding:14px 14px 120px 14px;display:flex;flex-direction:column;gap:12px;min-height:0}
+.scroll{flex:1;overflow-y:scroll;-webkit-overflow-scrolling:touch;padding:16px 16px 120px 16px;display:flex;flex-direction:column;gap:14px;min-height:0}
+/* Desktop two-column for stat grid and action grid */
+@media(min-width:640px){
+  .stat-grid{grid-template-columns:repeat(4,1fr)!important}
+  .act-grid{grid-template-columns:repeat(4,1fr)!important}
+  .form-row{grid-template-columns:1fr 1fr}
+  .topbar{padding:14px 20px}
+  .topbar-title{font-size:19px}
+  .scroll{padding:20px 24px 100px 24px;gap:16px}
+  .li{padding:15px 18px}
+  .card-bd{padding:18px}
+  .btn{font-size:15px;padding:15px}
+  .field input,.field select,.field textarea{font-size:15px;padding:14px 16px}
+  #root{min-height:100vh}
+}
+@media(min-width:900px){
+  body{background:#e8ecf0}
+}
 
 /* AUTH */
 #auth-screen{display:flex;flex-direction:column;background:var(--navy);min-height:100vh}
@@ -1444,7 +1461,10 @@ function searchAll(q) {
         '</div>' +
         '<div class="kb-sec"><div class="kb-lbl">Description</div><div class="kb-val">' + (r.desc||'No description available') + '</div></div>' +
         (r.fix ? '<div class="kb-sec kb-fix"><div class="kb-lbl" style="color:#155724">Extended Info</div><div class="kb-val">' + r.fix + '</div></div>' : '') +
-        (manualLinks.length ? '<div class="kb-sec" style="background:#f0f7ff"><div class="kb-lbl" style="color:#0d6efd">📚 Relevant Manuals</div>' + manualLinks.map(function(m){return '<a class="kb-link" href="'+m.url+'" target="_blank">'+m.icon+' '+m.label+'</a>';}).join('') + '</div>' : '') +
+        (manualLinks.length ? '<div class="kb-sec" style="background:#f0f7ff"><div class="kb-lbl" style="color:#0d6efd">📚 Relevant Manuals</div>' + manualLinks.map(function(m){
+          if(m.inApp) return '<span class="kb-link" onclick="openGEManualBrowser()" style="cursor:pointer">'+m.icon+' '+m.label+'</span>';
+          return '<a class="kb-link" href="'+m.url+'" target="_blank" rel="noopener">'+m.icon+' '+m.label+'</a>';
+        }).join('') + '</div>' : '') +
         (GE_TOOL_DRIVE_URL !== 'PASTE_GE_TOOL_DRIVE_LINK_HERE' ? '<a class="kb-link" href="' + GE_TOOL_DRIVE_URL + '" target="_blank">📄 Open Full GE Error Tool</a>' : '') +
       '</div>';
     }).join('');
@@ -1479,11 +1499,17 @@ function getGEManualLinks(code, name) {
       links.push({url: url, label: entry.label, icon: '📖'});
     }
   });
-  // Always add a "Browse all GE manuals" fallback link
+  // Always add a "Browse all GE manuals" fallback that opens the in-app manual browser
   if(links.length === 0){
-    links.push({url: GH_PAGES + '/Manuals/GE', label: 'Browse all GE Manuals', icon: '📁'});
+    links.push({url:'#', label: 'Browse GE Manuals in app', icon:'📁', inApp:true});
   }
   return links;
+}
+
+// Called from error search manual link when inApp:true
+function openGEManualBrowser(){
+  go('manuals');
+  setTimeout(()=>openManSection('ge'), 300);
 }
 
 // ─── DASHBOARD ────────────────────────────────────────────────
@@ -2074,12 +2100,20 @@ async function openManFolder(encPath, encName, color, hasPDF) {
   if(!items){document.getElementById('man-body').innerHTML=manError();return;}
   const rootF   = items.find(i=>i.type==='dir'&&i.name.toLowerCase()==='root');
   const otherF  = items.filter(i=>i.type==='dir'&&i.name.toLowerCase()!=='root');
-  const direct  = items.filter(i=>i.type==='file'&&isManualFile(i.name,hasPDF));
+  // Sort: index.htm always first
+  const sortFiles = arr => {
+    const idx = arr.filter(f=>/^index\.htm/i.test(f.name));
+    const rest = arr.filter(f=>!/^index\.htm/i.test(f.name));
+    return [...idx,...rest];
+  };
+  const direct  = sortFiles(items.filter(i=>i.type==='file'&&isManualFile(i.name,hasPDF)));
   let rootHtm   = [];
   if(rootF){
     document.getElementById('man-body').innerHTML=manSpinner(color,'Scanning root/…');
     const ri = await ghFetch(full+'/root');
     if(ri) rootHtm = await deepScan(full+'/root',ri,hasPDF);
+    // Sort: index.htm first
+    rootHtm.sort((a,b)=>(/^index\.htm/i.test(a.name)?-1:/^index\.htm/i.test(b.name)?1:0));
   }
   const sec = MAN_SECTIONS.find(s=>base.startsWith('Manuals/'+(s.id==='ge'?'GE':s.id==='sie'?'Siemens':'Error')));
   setManBreadcrumb([
@@ -2121,19 +2155,8 @@ async function ghFetch(path) {
 }
 
 function openHtmFile(ghPath,color) {
-  const url = GH_PAGES+'/'+ghPath;
-  document.getElementById('man-body').innerHTML = `
-    <div style="margin-bottom:12px">
-      <div style="font-size:13px;font-weight:600;color:#333;margin-bottom:8px">📄 ${ghPath.split('/').pop()}</div>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <button onclick="window.open('${url}','_blank')" style="flex:1;padding:11px;background:${color};color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer">🔗 Open in Browser</button>
-        <button onclick="history.back()" style="padding:11px 16px;background:#f0f0f0;color:#333;border:none;border-radius:10px;font-size:13px;cursor:pointer">← Back</button>
-      </div>
-      <div style="font-size:11px;color:#888;margin-bottom:10px">If the frame doesn't load, tap "Open in Browser" above.</div>
-    </div>
-    <div style="border-radius:12px;overflow:hidden;border:1px solid #ddd">
-      <iframe src="${url}" style="width:100%;height:70vh;border:none;display:block"></iframe>
-    </div>`;
+  // All HTM files open directly in new tab
+  window.open(GH_PAGES+'/'+ghPath, '_blank', 'noopener');
 }
 
 function manNavBack() {
@@ -2160,18 +2183,38 @@ function isPDF(n){return/\.pdf$/i.test(n);}
 function isManualFile(n,inclPDF){return isHtm(n)||(inclPDF&&isPDF(n));}
 function esc(s){return encodeURIComponent(s);}
 function manSecHeader(t,c){return `<div style="font-size:11px;font-weight:700;color:${c};margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px">${t}</div>`;}
-function manFolderCard(name,color,onclick){return `<div onclick="${onclick}" style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border:1.5px solid #f0f0f0"><span style="font-size:22px">📁</span><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#1a1a2e">${name}</div><div style="font-size:11px;color:#888;margin-top:1px">Tap to browse</div></div><span style="font-size:18px;color:#ccc">›</span></div>`;}
+function manFolderCard(name,color,onclick){return `<div onclick="${onclick}" style="background:#fff;border-radius:12px;padding:16px 18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:14px;border:1.5px solid #f0f0f0"><span style="font-size:24px">📁</span><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a2e">${name}</div><div style="font-size:12px;color:#888;margin-top:2px">Tap to browse files</div></div><span style="font-size:20px;color:#ccc">›</span></div>`;}
+
 function manFileCard(file,color){
-  const ghPath=file.path;
-  const isPdf=isPDF(file.name);
-  const icon=isPdf?'📕':'📄';
-  const label=isPdf?'PDF Manual':'HTM Manual';
-  if(isPdf){
-    // PDFs open directly via GitHub Pages URL in new tab
-    const url=GH_PAGES+'/'+ghPath;
-    return `<a href="${url}" target="_blank" style="display:flex;background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);text-decoration:none;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">${icon}</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${label} · ${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">↗</span></a>`;
+  const ghPath = file.path;
+  const isPdf  = isPDF(file.name);
+  const isIdx  = /^index\.htm/i.test(file.name);
+  const url    = GH_PAGES + '/' + ghPath;
+  const icon   = isPdf ? '📕' : (isIdx ? '🏠' : '📄');
+  const label  = isPdf ? 'PDF Manual' : (isIdx ? 'Manual Index — Start here' : 'HTM Manual');
+  const size   = (file.size/1024).toFixed(1) + ' KB';
+
+  if(isIdx){
+    // index.htm — prominent "Start Here" card, opens new tab
+    return `<a href="${url}" target="_blank" rel="noopener" style="display:flex;background:#e8f4ff;border-radius:12px;padding:16px 18px;margin-bottom:10px;box-shadow:0 2px 8px rgba(13,110,253,.15);text-decoration:none;align-items:center;gap:14px;border:2px solid #0d6efd">
+      <span style="font-size:26px">${icon}</span>
+      <div style="flex:1">
+        <div style="font-size:15px;font-weight:700;color:#0d6efd">${file.name}</div>
+        <div style="font-size:12px;color:#1a3a5c;font-weight:600;margin-top:2px">⭐ Start here — opens full manual</div>
+        <div style="font-size:11px;color:#888;margin-top:1px">${size}</div>
+      </div>
+      <span style="font-size:20px;color:#0d6efd">↗</span>
+    </a>`;
   }
-  return `<div onclick="openHtmFile('${ghPath.replace(/'/g,"\\'")}','${color}')" style="background:#fff;border-radius:12px;padding:13px 16px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);cursor:pointer;display:flex;align-items:center;gap:12px;border-left:4px solid ${color}"><span style="font-size:20px">${icon}</span><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div><div style="font-size:10px;color:#aaa;margin-top:2px">${label} · ${(file.size/1024).toFixed(1)} KB</div></div><span style="font-size:16px;color:#ccc">›</span></div>`;
+  // All other files — open in new tab
+  return `<a href="${url}" target="_blank" rel="noopener" style="display:flex;background:#fff;border-radius:12px;padding:14px 18px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);text-decoration:none;align-items:center;gap:14px;border-left:4px solid ${color}">
+    <span style="font-size:22px">${icon}</span>
+    <div style="flex:1">
+      <div style="font-size:14px;font-weight:600;color:#1a1a2e;word-break:break-word">${file.name}</div>
+      <div style="font-size:11px;color:#888;margin-top:2px">${label} · ${size}</div>
+    </div>
+    <span style="font-size:16px;color:#aaa">↗</span>
+  </a>`;
 }
 function manSpinner(c,msg){return `<div style="text-align:center;padding:50px 20px"><div style="width:40px;height:40px;border:4px solid #f0f0f0;border-top:4px solid ${c};border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite"></div><div style="font-size:14px;color:#888">${msg}</div></div>`;}
 function manError(){return `<div style="background:#fff3f3;border-radius:12px;padding:20px;text-align:center;border:1px solid #fcc"><div style="font-size:28px;margin-bottom:8px">⚠️</div><div style="font-size:14px;font-weight:600;color:#dc3545">Could Not Load Files</div><div style="font-size:12px;color:#888;margin-top:6px">Check connection or GitHub API rate limit (60/hr).<br><br><button onclick="manGoHome()" style="padding:8px 16px;background:#dc3545;color:#fff;border:none;border-radius:8px;cursor:pointer">Go Back</button></div></div>`;}
