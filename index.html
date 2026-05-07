@@ -465,7 +465,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="nj_phone" type="tel" placeholder="(555) 000-0000"></div>
-      <div class="form-group"><label class="form-label">City / State</label><input class="form-control" id="nj_location" placeholder="Miami, FL"></div>
+      <div class="form-group"><label class="form-label">City / State</label><input class="form-control" id="nj_location" placeholder="Miami, FL" oninput="calcMileage()"></div>
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Modality *</label>
@@ -506,10 +506,14 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     </div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Hours Worked</label><input class="form-control" id="nj_hours" type="number" step="0.5" min="0" placeholder="0.0"></div>
-      <div class="form-group"><label class="form-label">Miles Traveled</label><input class="form-control" id="nj_miles" type="number" min="0" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Miles Traveled</label><input class="form-control" id="nj_miles" type="number" min="0" placeholder="0" oninput="calcMileage()"></div>
     </div>
     <div class="form-group"><label class="form-label">Work Performed / Notes</label><textarea class="form-control" id="nj_notes" placeholder="Describe work performed…"></textarea></div>
     <div class="form-group"><label class="form-label">Parts / Materials Used</label><textarea class="form-control" id="nj_parts" style="min-height:70px" placeholder="Part name, part #, qty…"></textarea></div>
+    <div id="mileageDisplay" style="display:none;background:linear-gradient(135deg,#e8f5e9,#f0fdf4);border:1.5px solid var(--green);border-radius:var(--r2);padding:12px 14px">
+      <div style="font-weight:700;font-size:.82rem;color:var(--green);margin-bottom:4px">🚗 Mileage Reimbursement</div>
+      <div id="mileageBreakdown" style="font-size:.84rem;color:var(--text2);line-height:1.8"></div>
+    </div>
   </div></div>
   <div id="pmAlert" style="display:none" class="alert alert-pm">⚠️ <strong>PM Job detected!</strong> After saving, go to PM Checklists tab.</div>
   <div class="btn-row">
@@ -696,14 +700,64 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 <!-- ══ MANUALS ══ -->
 <div id="panel-manuals" class="panel">
-  <div class="sec-title">📚 Manuals &amp; Error Codes</div>
-  <div class="search-box"><span class="search-ic">🔍</span><input type="text" id="errSearch" placeholder="Search error codes: E305, Quench, RF Amp…" oninput="searchErrors(this.value)"></div>
+  <div class="sec-title">📚 Knowledge Base &amp; Manuals</div>
+
+  <!-- Search -->
+  <div class="search-box"><span class="search-ic">🔍</span>
+    <input type="text" id="errSearch" placeholder="Search error codes, symptoms, fixes, model…" oninput="kbSearch(this.value)">
+  </div>
   <div id="errResults" style="margin-bottom:12px"></div>
-  <div class="card"><div class="card-header">📁 Manual Library</div><div class="card-body">
-    <div class="alert alert-info" style="margin-bottom:12px">📌 Select a folder. Files open in a new tab. Start with <strong>index.htm</strong> when present.</div>
-    <div id="folderGrid" class="folder-grid"></div>
-    <div id="fileListArea"></div>
-  </div></div>
+
+  <!-- Sub-tabs -->
+  <div style="display:flex;overflow-x:auto;scrollbar-width:none;background:var(--gray);border-radius:var(--r) var(--r) 0 0;border-bottom:2px solid var(--gray2);margin-bottom:0">
+    <button class="mst-btn active" id="kb-tab-files" onclick="setKBTab('files')" style="font-size:.76rem;padding:10px 14px">📁 File Explorer</button>
+    <button class="mst-btn" id="kb-tab-kb" onclick="setKBTab('kb')" style="font-size:.76rem;padding:10px 14px">🧠 Knowledge Base</button>
+    <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.76rem;padding:10px 14px">⚠️ Error Codes</button>
+  </div>
+
+  <!-- FILE EXPLORER -->
+  <div id="kbp-files" class="card" style="border-radius:0 0 var(--r) var(--r);margin-bottom:14px">
+    <div class="card-header" id="explorerHeader" style="display:flex;align-items:center;justify-content:space-between">
+      <span id="explorerTitle">📁 AMT Manuals Library</span>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span id="explorerLoading" style="font-size:.72rem;color:rgba(255,255,255,.6);display:none">⏳ Loading…</span>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:5px 10px;min-height:0;font-size:.72rem" onclick="refreshExplorer()">🔄 Refresh</button>
+      </div>
+    </div>
+    <!-- Breadcrumb -->
+    <div id="explorerBreadcrumb" style="padding:8px 14px;background:#f8fafc;border-bottom:1px solid var(--gray2);font-size:.78rem;display:none">
+      <span style="color:var(--blue2);cursor:pointer" onclick="navToRoot()">📁 Manuals</span>
+      <span id="breadcrumbTrail"></span>
+    </div>
+    <div class="card-body" style="padding:12px">
+      <div id="explorerGrid"></div>
+      <div id="fileListArea"></div>
+    </div>
+  </div>
+
+  <!-- KNOWLEDGE BASE -->
+  <div id="kbp-kb" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+      <strong style="font-size:.88rem">🧠 Saved Knowledge Entries</strong>
+      <button class="btn btn-success btn-sm" onclick="openKBEntryModal()">+ Add Entry</button>
+    </div>
+    <div class="filter-bar" id="kbCatFilter">
+      <div class="filter-chip active" onclick="setKBCatFilter('')" data-kbcat="">All</div>
+      <div class="filter-chip" onclick="setKBCatFilter('GE')" data-kbcat="GE">GE</div>
+      <div class="filter-chip" onclick="setKBCatFilter('Siemens')" data-kbcat="Siemens">Siemens</div>
+      <div class="filter-chip" onclick="setKBCatFilter('Philips')" data-kbcat="Philips">Philips</div>
+      <div class="filter-chip" onclick="setKBCatFilter('Injector')" data-kbcat="Injector">Injector</div>
+      <div class="filter-chip" onclick="setKBCatFilter('CT')" data-kbcat="CT">CT</div>
+      <div class="filter-chip" onclick="setKBCatFilter('Error Code')" data-kbcat="Error Code">Error Codes</div>
+    </div>
+    <div id="kbEntryList"></div>
+  </div>
+
+  <!-- ERROR CODE DB -->
+  <div id="kbp-errcodes" style="display:none">
+    <div class="alert alert-info" style="margin-bottom:10px">📋 Built-in error code reference. Entries from completed jobs are added automatically.</div>
+    <div id="errCodeList"></div>
+  </div>
 </div>
 
 </div><!-- /contentArea -->
@@ -1033,7 +1087,11 @@ function showTab(t){
   if(t==='jobs')renderJobs();
   if(t==='money'){renderMoney();renderInvoiceList();renderExpenseList();renderDistList();}
   if(t==='pm'){populatePMDropdown();setPMDate();}
-  if(t==='manuals')initManuals();
+  if(t==='manuals'){
+    initManuals();
+    // Default to file explorer tab
+    setKBTab('files');
+  }
   // Populate job dropdowns when money tab opens
   if(t==='money')populateMoneyJobDropdowns();
 }
@@ -1432,7 +1490,13 @@ function createInvoiceFromJob(id){
     document.getElementById('inv_client').value=j.site||'';
     document.getElementById('inv_job').value=id;
     document.getElementById('inv_desc').value=`${j.type||'Service'} — ${j.modality||''} ${j.model||''}`.trim();
-    if(j.hours)document.getElementById('inv_amount').value=(parseFloat(j.hours)*295).toFixed(2);
+    const laborAmt = j.hours ? parseFloat(j.hours)*295 : 0;
+    const mileAmt = getMileageCharge(j.miles||0);
+    if(laborAmt||mileAmt){
+      document.getElementById('inv_amount').value=(laborAmt+mileAmt).toFixed(2);
+      const mileNote = mileAmt>0 ? ` + $${mileAmt.toFixed(2)} mileage (${j.miles} mi)` : '';
+      document.getElementById('inv_notes').value = `Labor: ${j.hours||0} hrs × $295/hr = $${laborAmt.toFixed(2)}${mileNote}`;
+    }
   },200);
 }
 
@@ -1450,8 +1514,12 @@ function saveJob(){
     parts:document.getElementById('nj_parts').value,createdBy:currentUser?currentUser.name:'',created:new Date().toISOString()};
   jobs.unshift(j);saveJobs();clearJobForm();
   alert('✅ Job saved!');
-  if(j.type==='PM'&&confirm('Open PM Checklist for this job now?')){loadPMForJob(j.id);showTab('pm');}
-  else if(confirm('Create an invoice for this job now?')){createInvoiceFromJob(j.id);}
+  if(j.type==='PM'&&confirm('Open PM Checklist for this job now?')){ loadPMForJob(j.id);showTab('pm');return; }
+  if(j.status==='Completed'&&j.notes&&j.notes.length>20){
+    if(confirm('Create an invoice for this job?')){ createInvoiceFromJob(j.id); }
+    // Suggest KB entry for completed jobs with notes
+    setTimeout(()=>suggestKBFromJob(j), 800);
+  } else if(confirm('Create an invoice for this job now?')){ createInvoiceFromJob(j.id); }
   else showTab('jobs');
 }
 
@@ -1459,6 +1527,7 @@ function clearJobForm(){
   ['nj_site','nj_contact','nj_phone','nj_location','nj_modality','nj_model','nj_serial','nj_field','nj_type','nj_status','nj_po','nj_hours','nj_miles','nj_notes','nj_parts'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('nj_date').value=new Date().toISOString().slice(0,10);
   document.getElementById('pmAlert').style.display='none';
+  const md=document.getElementById('mileageDisplay');if(md)md.style.display='none';
 }
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -1470,7 +1539,7 @@ function viewJob(id){
     dr('🏥 Site',j.site)+dr('👤 Contact',[j.contact,j.phone].filter(Boolean).join(' · '))+
     dr('📍 Location',j.location)+dr('🔧 Modality',j.modality)+dr('📟 Model',j.model)+dr('🔢 Serial',j.serial)+
     dr('⚡ Field',j.field)+dr('📋 Type',j.type)+dr('🔄 Status',j.status)+dr('📅 Date',j.date)+
-    dr('📄 PO/WO',j.po)+dr('⏱ Hours',j.hours?j.hours+' hrs':'—')+dr('🚗 Miles',j.miles?j.miles+' mi':'—')+
+    dr('📄 PO/WO',j.po)+dr('⏱ Hours',j.hours?j.hours+' hrs':'—')+dr('🚗 Miles',j.miles ? j.miles+' mi'+(getMileageCharge(j.miles)>0?' → <strong style="color:var(--green)">$'+getMileageCharge(j.miles).toFixed(2)+' billable</strong>':'') : '—')+
     dr('👤 Logged by',j.createdBy)+
     (j.notes?`<div style="margin-top:10px"><strong>📝 Notes:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem;line-height:1.5">${j.notes}</div></div>`:'')+
     (j.parts?`<div style="margin-top:8px"><strong>🔩 Parts:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem">${j.parts}</div></div>`:'');
@@ -1505,7 +1574,9 @@ function saveEdit(){
   if(!document.getElementById('ej_site').value.trim()){alert('Site name required.');return;}
   ['site','contact','phone','location','modality','model','serial','field','type','status','date','po','hours','miles','notes','parts'].forEach(f=>{j[f]=document.getElementById('ej_'+f).value;});
   j.updated=new Date().toISOString();j.updatedBy=currentUser?currentUser.name:'';
-  saveJobs();closeModal('editModal');renderJobs();renderDashboard();alert('✅ Job updated!');
+  saveJobs();closeModal('editModal');renderJobs();renderDashboard();
+  alert('✅ Job updated!');
+  if(j.status==='Completed'&&j.notes&&j.notes.length>20)setTimeout(()=>suggestKBFromJob(j),600);
 }
 
 function promptDelete(id){const j=jobs.find(x=>x.id===id);if(!j)return;deleteTarget=id;document.getElementById('deleteJobInfo').textContent=`${j.site} — ${j.type} — ${j.date||'No date'}`;openModal('deleteModal');}
@@ -1574,26 +1645,535 @@ function savePMChecklist(){
 }
 
 // ═══ MANUALS ═══
-const GH={org:'amtimagingsolutions',repo:'manuals'};
-const FOLDERS=[{name:'GE MRI',icon:'🟦',path:'GE_MRI'},{name:'Siemens MRI',icon:'🟧',path:'Siemens_MRI'},{name:'Philips MRI',icon:'🟪',path:'Philips_MRI'},{name:'Error Codes',icon:'⚠️',path:'Error_Codes'},{name:'Svc Guides',icon:'📖',path:'Service_Guides'},{name:'Injector',icon:'💉',path:'Injector'}];
-function initManuals(){const g=document.getElementById('folderGrid');if(g.innerHTML)return;g.innerHTML=FOLDERS.map(f=>`<div class="folder-btn" onclick="loadFolder('${f.path}','${f.name}')"><span class="folder-icon">${f.icon}</span><span>${f.name}</span></div>`).join('');}
-async function loadFolder(path,label){
-  const area=document.getElementById('fileListArea');area.innerHTML=`<p style="padding:12px">⏳ Loading…</p>`;
-  try{const r=await fetch(`https://api.github.com/repos/${GH.org}/${GH.repo}/contents/${path}`,{headers:{Accept:'application/vnd.github.v3+json'}});if(!r.ok)throw new Error('HTTP '+r.status);const files=await r.json();if(!Array.isArray(files))throw new Error('Unexpected response');
-  const sorted=files.sort((a,b)=>a.name.toLowerCase().startsWith('index')?-1:b.name.toLowerCase().startsWith('index')?1:a.name.localeCompare(b.name));
-  const hasIdx=files.some(f=>f.name.toLowerCase().startsWith('index.htm'));
-  area.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px"><strong>${label} — ${files.length} file${files.length!==1?'s':''}</strong><button class="btn btn-sm btn-outline" onclick="document.getElementById('fileListArea').innerHTML=''">← Back</button></div>`+(hasIdx?'<div class="file-notice">📌 <strong>Start here:</strong> Click <strong>index.htm</strong> first.</div>':'')+'<ul class="file-list">'+sorted.map(f=>{const ext=f.name.split('.').pop().toLowerCase();const icon=ext==='pdf'?'📕':(ext==='htm'||ext==='html')?'🌐':'📄';return`<li><a class="file-item" href="${f.download_url||f.html_url}" target="_blank" rel="noopener"><span style="font-size:1.1rem">${icon}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</span><span style="font-size:.7rem;color:var(--gray4);flex-shrink:0">.${ext} ↗</span></a></li>`;}).join('')+'</ul>';
-  }catch(e){area.innerHTML=`<div class="alert alert-warning">⚠️ Could not load: ${e.message}<br><a href="https://github.com/${GH.org}/${GH.repo}/tree/main/${path}" target="_blank" style="color:var(--blue2)">Open on GitHub ↗</a></div>`;}
+const GH={org:'mikejackson-stack',repo:'AMT-Imaging-Service-App',branch:'main',manualsRoot:'Manuals'};
+// Folders auto-loaded dynamically from GitHub. Fallbacks shown if API unavailable.
+const FALLBACK_FOLDERS=[
+  {name:'GE',icon:'🟦',path:'GE'},{name:'Siemens',icon:'🟧',path:'Siemens'},
+  {name:'Philips',icon:'🟪',path:'Philips'},{name:'Injectors',icon:'💉',path:'Injectors'},
+  {name:'Error Codes',icon:'⚠️',path:'Error Codes and Troubleshooting'},
+  {name:'CT Systems',icon:'🔵',path:'CT'},{name:'Service Guides',icon:'📖',path:'Service Guides'},
+];
+function initManuals(){
+  // Load file explorer on first open
+  const grid = document.getElementById('explorerGrid');
+  if(grid && !grid.innerHTML) loadExplorer('');
 }
-const ERROR_DB=[{code:'E305',brand:'GE',desc:'RF Amp fault — check RF amp cooling, connections, power supply',manual:'GE_MRI/RF_Amp_Service.htm'},{code:'E410',brand:'GE',desc:'Gradient overheat — verify gradient cooling water flow and temperature',manual:'GE_MRI/Gradient_Service.htm'},{code:'Quench',brand:'GE/All',desc:'Magnet quench — immediate evacuation, contact OEM, notify site',manual:'GE_MRI/Cryo_Service.htm'},{code:'E112',brand:'GE',desc:'Patient table drive fault — inspect table drive motor and encoder',manual:'GE_MRI/Table_Service.htm'},{code:'E501',brand:'GE',desc:'Cold head fault — check cold head compressor, He level and power',manual:'GE_MRI/Cryo_Service.htm'},{code:'FREQ',brand:'GE',desc:'Frequency calibration failure — run shim/freq calibration sequence',manual:'GE_MRI/Calibration.htm'},{code:'F001',brand:'Siemens',desc:'Gradient amplifier fault — check GRADS cabinet and cooling lines',manual:'Siemens_MRI/Gradient.htm'},{code:'T200',brand:'All',desc:'Temperature warning — check HVAC, chiller, and cooling systems',manual:''},{code:'RF Shield',brand:'All',desc:'RF shielding breach — inspect door gaskets and penetrations',manual:''},{code:'He Level',brand:'All',desc:'Low helium level — schedule fill immediately if below 60%',manual:'GE_MRI/Cryo_Service.htm'}];
+// loadFolder replaced by explorer
+
+const ERROR_DB = FULL_ERROR_DB; // alias
 function searchErrors(q){const res=document.getElementById('errResults');if(!q||q.length<2){res.innerHTML='';return;}const m=ERROR_DB.filter(e=>e.code.toLowerCase().includes(q.toLowerCase())||e.desc.toLowerCase().includes(q.toLowerCase())||e.brand.toLowerCase().includes(q.toLowerCase()));if(!m.length){res.innerHTML=`<div class="alert alert-info">No error codes found for "${q}".</div>`;return;}res.innerHTML='<div class="card"><div class="card-header">🔍 Error Code Results ('+m.length+')</div>'+m.map(e=>`<div style="padding:11px 14px;border-bottom:1px solid var(--gray2)"><strong style="color:var(--red)">${e.code}</strong> <span class="badge bc" style="font-size:.64rem">${e.brand}</span><div style="font-size:.83rem;color:var(--text2);margin-top:3px">${e.desc}</div>${e.manual?`<a href="https://raw.githubusercontent.com/${GH.org}/${GH.repo}/main/${e.manual}" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>`:''}</div>`).join('')+'</div>';}
 
 // ═══ INIT ═══
+// ════════════════════════════════════════════════════
+// MILEAGE CALCULATOR
+// ════════════════════════════════════════════════════
+const AMT_HQ_CITY = 'Fort Lauderdale, FL'; // Base location
+const MILES_FREE = 100;
+const RATE_PER_MILE = 0.85;
+
+// Simple mileage calc from entered miles field
+function calcMileage(){
+  const miles = parseFloat(document.getElementById('nj_miles').value)||0;
+  const box = document.getElementById('mileageDisplay');
+  const breakdown = document.getElementById('mileageBreakdown');
+  if(miles <= 0){ box.style.display='none'; return; }
+  box.style.display = 'block';
+  const billable = Math.max(0, miles - MILES_FREE);
+  const charge = billable * RATE_PER_MILE;
+  breakdown.innerHTML =
+    '<strong>Total Miles:</strong> ' + miles + ' mi<br>' +
+    '<strong>Free Miles:</strong> ' + Math.min(miles, MILES_FREE) + ' mi (first 100)<br>' +
+    '<strong>Billable Miles:</strong> ' + billable + ' mi @ $0.85/mi<br>' +
+    '<strong style="color:var(--green);font-size:1rem">Mileage Charge: $' + charge.toFixed(2) + '</strong>' +
+    (charge === 0 ? '<br><span style="color:var(--text2);font-size:.78rem">Under 100 miles — no charge</span>' : '');
+}
+
+function getMileageCharge(miles){
+  const billable = Math.max(0, (parseFloat(miles)||0) - MILES_FREE);
+  return billable * RATE_PER_MILE;
+}
+
+// ════════════════════════════════════════════════════
+// KNOWLEDGE BASE
+// ════════════════════════════════════════════════════
+let kbEntries = JSON.parse(localStorage.getItem('amt_kb_v29')||'[]');
+let kbCatFilter = '';
+let kbSuggestPending = null;
+let editingKBId = null;
+function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); }
+
+function setKBTab(t){
+  ['files','kb','errcodes'].forEach(s=>{
+    document.getElementById('kb-tab-'+s).classList.toggle('active', s===t);
+    const el = s==='files' ? document.getElementById('kbp-files') : document.getElementById('kbp-'+s);
+    if(el) el.style.display = s===t ? 'block' : 'none';
+  });
+  if(t==='kb') renderKBEntries();
+  if(t==='errcodes') renderErrCodeList();
+  if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
+}
+
+function setKBCatFilter(cat){
+  kbCatFilter = cat;
+  document.querySelectorAll('[data-kbcat]').forEach(c=>c.classList.toggle('active', c.dataset.kbcat===cat));
+  renderKBEntries();
+}
+
+function renderKBEntries(){
+  const list = document.getElementById('kbEntryList');
+  if(!list) return;
+  let entries = kbCatFilter ? kbEntries.filter(e=>e.cat===kbCatFilter) : [...kbEntries];
+  entries.sort((a,b)=>new Date(b.created||0)-new Date(a.created||0));
+  if(!entries.length){
+    list.innerHTML = '<div class="empty-state"><div class="ei">🧠</div><p>No knowledge entries yet.<br>Complete jobs to auto-generate entries, or add manually.</p></div>';
+    return;
+  }
+  const catColors={GE:'#1565c0',Siemens:'#e65100',Philips:'#6a1b9a',Injector:'#2e7d32',CT:'#006064','Error Code':'#c62828',General:'#546e7a'};
+  list.innerHTML = entries.map(e=>`
+    <div style="background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;border-left:4px solid ${catColors[e.cat]||'var(--gray3)'}">
+      <div style="padding:12px 14px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:800;font-size:.95rem">${e.title||'Untitled'}</div>
+            <div style="font-size:.74rem;color:var(--text2);margin-top:2px">
+              <span class="badge" style="background:${catColors[e.cat]||'var(--gray2)'};color:white;font-size:.62rem">${e.cat||'General'}</span>
+              ${e.model?' · '+e.model:''}${e.error?' · <strong style="color:var(--red)">'+e.error+'</strong>':''}
+              ${e.date?' · '+e.date:''}
+            </div>
+          </div>
+          <div style="display:flex;gap:5px;flex-shrink:0">
+            <button class="btn btn-sm btn-warning" style="padding:5px 9px;min-height:0" onclick="editKBEntry('${e.id}')">✏️</button>
+            <button class="btn btn-sm btn-danger" style="padding:5px 9px;min-height:0" onclick="deleteKBEntry('${e.id}')">🗑</button>
+          </div>
+        </div>
+        ${e.problem?'<div style="margin-top:8px;font-size:.82rem"><strong>Problem:</strong> '+e.problem.substring(0,120)+(e.problem.length>120?'…':'')+'</div>':''}
+        ${e.solution?'<div style="margin-top:4px;font-size:.82rem"><strong>Fix:</strong> '+e.solution.substring(0,120)+(e.solution.length>120?'…':'')+'</div>':''}
+        ${e.tags&&e.tags.length?'<div style="margin-top:6px">'+e.tags.map(t=>'<span style="background:var(--gray);padding:2px 8px;border-radius:12px;font-size:.66rem;margin-right:4px;font-weight:600">'+t+'</span>').join('')+'</div>':''}
+      </div>
+    </div>`).join('');
+}
+
+function openKBEntryModal(id){
+  editingKBId = id||null;
+  const today = new Date().toISOString().slice(0,10);
+  populateKBJobDropdown();
+  if(id){
+    const e = kbEntries.find(x=>x.id===id); if(!e) return;
+    document.getElementById('kbModalTitle').textContent = '✏️ Edit Knowledge Entry';
+    document.getElementById('kb_title').value = e.title||'';
+    document.getElementById('kb_cat').value = e.cat||'General';
+    document.getElementById('kb_model').value = e.model||'';
+    document.getElementById('kb_error').value = e.error||'';
+    document.getElementById('kb_problem').value = e.problem||'';
+    document.getElementById('kb_solution').value = e.solution||'';
+    document.getElementById('kb_parts').value = e.parts||'';
+    document.getElementById('kb_job').value = e.jobId||'';
+    document.getElementById('kb_tags').value = (e.tags||[]).join(', ');
+  } else {
+    document.getElementById('kbModalTitle').textContent = '🧠 Add Knowledge Entry';
+    ['kb_title','kb_model','kb_error','kb_problem','kb_solution','kb_parts','kb_tags'].forEach(id=>{document.getElementById(id).value='';});
+    document.getElementById('kb_cat').value = 'General';
+    document.getElementById('kb_job').value = '';
+  }
+  openModal('kbEntryModal');
+}
+
+function editKBEntry(id){ openKBEntryModal(id); }
+
+function saveKBEntry(){
+  const title = document.getElementById('kb_title').value.trim();
+  if(!title){ alert('Title is required.'); return; }
+  const entry = {
+    id: editingKBId || ('kb_'+Date.now()),
+    title, cat: document.getElementById('kb_cat').value,
+    model: document.getElementById('kb_model').value,
+    error: document.getElementById('kb_error').value,
+    problem: document.getElementById('kb_problem').value,
+    solution: document.getElementById('kb_solution').value,
+    parts: document.getElementById('kb_parts').value,
+    jobId: document.getElementById('kb_job').value,
+    tags: document.getElementById('kb_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    date: new Date().toISOString().slice(0,10),
+    created: editingKBId ? undefined : new Date().toISOString(),
+    updated: new Date().toISOString()
+  };
+  if(editingKBId){ const i=kbEntries.findIndex(x=>x.id===editingKBId); if(i>=0) kbEntries[i]={...kbEntries[i],...entry}; }
+  else kbEntries.unshift(entry);
+  saveKBData(); closeModal('kbEntryModal'); renderKBEntries();
+  alert('✅ Knowledge entry saved!');
+}
+
+function deleteKBEntry(id){
+  if(!confirm('Delete this knowledge entry?')) return;
+  kbEntries = kbEntries.filter(x=>x.id!==id); saveKBData(); renderKBEntries();
+}
+
+function populateKBJobDropdown(){
+  const sel = document.getElementById('kb_job'); if(!sel) return;
+  sel.innerHTML = '<option value="">— No job linked —</option>'+
+    jobs.map(j=>`<option value="${j.id}">${j.site} — ${j.date||'No date'}</option>`).join('');
+}
+
+// ── AUTO-CATEGORIZE from completed job ──
+const ERROR_PATTERNS = [
+  {pattern:/E\d{3}/gi, cat:'Error Code'},
+  {pattern:/quench/i, cat:'GE'},{pattern:/helium|cryo/i, cat:'GE'},
+  {pattern:/gradient|grad amp/i, cat:'GE'},
+  {pattern:/rf amp|rf shield/i, cat:'GE'},
+  {pattern:/siemens|symphony|espree|avanto|skyra/i, cat:'Siemens'},
+  {pattern:/philips|achieva|ingenia|panorama/i, cat:'Philips'},
+  {pattern:/stellant|solaris|injector|contrast/i, cat:'Injector'},
+  {pattern:/ct|computed tomography|gantry/i, cat:'CT'},
+  {pattern:/ge |signa|discovery|optima/i, cat:'GE'},
+];
+
+function detectCategory(text){
+  for(const p of ERROR_PATTERNS){ if(p.pattern.test(text)) return p.cat; }
+  return 'General';
+}
+
+function extractErrorCodes(text){
+  const codes = text.match(/E\d{3}|F\d{3}|error\s+\d+/gi)||[];
+  return [...new Set(codes)];
+}
+
+function suggestKBFromJob(job){
+  if(!job || (!job.notes && !job.parts)) return;
+  const combinedText = [job.notes||'', job.parts||'', job.modality||'', job.model||''].join(' ');
+  const cat = detectCategory(combinedText) || (job.modality ? job.modality.split(' ')[0] : 'General');
+  const errorCodes = extractErrorCodes(combinedText);
+  const tags = [job.modality, job.model, ...errorCodes].filter(Boolean).map(t=>t.trim());
+  const suggested = {
+    title: (job.type||'Repair') + ' — ' + (job.site||'') + ' — ' + (job.model||job.modality||''),
+    cat, model: job.model||'', error: errorCodes.join(', '),
+    problem: 'Auto-detected from job notes. Review and edit:\n\n'+(job.notes||'').substring(0,300),
+    solution: '', parts: job.parts||'', jobId: job.id, tags,
+    date: job.date||new Date().toISOString().slice(0,10),
+  };
+  kbSuggestPending = suggested;
+  document.getElementById('kbSuggestContent').innerHTML = `
+    <div class="form-group"><label class="form-label">Title</label><input class="form-control" id="kbs_title" value="${esc(suggested.title)}"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Category</label>
+        <select class="form-control" id="kbs_cat">
+          ${['GE','Siemens','Philips','Injector','CT','Error Code','General'].map(c=>`<option${c===cat?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Error Code(s)</label><input class="form-control" id="kbs_error" value="${esc(errorCodes.join(', '))}"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Problem (from job notes)</label><textarea class="form-control" id="kbs_problem" style="min-height:80px">${esc(suggested.problem)}</textarea></div>
+    <div class="form-group"><label class="form-label">Solution / Fix (add details)</label><textarea class="form-control" id="kbs_solution" style="min-height:80px" placeholder="Describe the resolution…"></textarea></div>
+    <div class="form-group"><label class="form-label">Parts Used</label><input class="form-control" id="kbs_parts" value="${esc(suggested.parts)}"></div>
+    <div class="form-group"><label class="form-label">Tags</label><input class="form-control" id="kbs_tags" value="${esc(tags.join(', '))}"></div>`;
+  openModal('kbSuggestModal');
+}
+
+function confirmKBSuggest(){
+  if(!kbSuggestPending) return;
+  const entry = {
+    ...kbSuggestPending,
+    id: 'kb_'+Date.now(),
+    title: document.getElementById('kbs_title').value||kbSuggestPending.title,
+    cat: document.getElementById('kbs_cat').value,
+    error: document.getElementById('kbs_error').value,
+    problem: document.getElementById('kbs_problem').value,
+    solution: document.getElementById('kbs_solution').value,
+    parts: document.getElementById('kbs_parts').value,
+    tags: document.getElementById('kbs_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    created: new Date().toISOString()
+  };
+  kbEntries.unshift(entry); saveKBData();
+  closeModal('kbSuggestModal'); kbSuggestPending = null;
+  alert('✅ Knowledge entry saved!');
+}
+
+// ── UNIFIED SEARCH ──
+function kbSearch(q){
+  const res = document.getElementById('errResults'); if(!res) return;
+  if(!q||q.length<2){ res.innerHTML=''; return; }
+  const ql = q.toLowerCase();
+  // Search error DB + kb entries
+  const errMatches = FULL_ERROR_DB.filter(e=>
+    e.code.toLowerCase().includes(ql)||e.desc.toLowerCase().includes(ql)||e.brand.toLowerCase().includes(ql));
+  const kbMatches = kbEntries.filter(e=>
+    (e.title||'').toLowerCase().includes(ql)||(e.problem||'').toLowerCase().includes(ql)||
+    (e.solution||'').toLowerCase().includes(ql)||(e.error||'').toLowerCase().includes(ql)||
+    (e.model||'').toLowerCase().includes(ql)||(e.tags||[]).some(t=>t.toLowerCase().includes(ql)));
+  if(!errMatches.length && !kbMatches.length){ res.innerHTML=`<div class="alert alert-info">No results for "${q}".</div>`; return; }
+  let html = '';
+  if(kbMatches.length){
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🧠 Knowledge Base ('+kbMatches.length+')</div>'+
+      kbMatches.slice(0,5).map(e=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+        <strong style="font-size:.9rem">${e.title||'—'}</strong>
+        ${e.error?'<span class="badge br" style="margin-left:6px;font-size:.64rem">'+e.error+'</span>':''}
+        <div style="font-size:.8rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,100)}</div>
+      </div>`).join('')+'</div>';
+  }
+  if(errMatches.length){
+    html += '<div class="card"><div class="card-header">⚠️ Error Code Reference ('+errMatches.length+')</div>'+
+      errMatches.map(e=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+        <strong style="color:var(--red)">${e.code}</strong>
+        <span class="badge bc" style="font-size:.64rem;margin-left:6px">${e.brand}</span>
+        <div style="font-size:.82rem;color:var(--text2);margin-top:3px">${e.desc}</div>
+        ${e.manual?'<a href="https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+e.manual+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
+      </div>`).join('')+'</div>';
+  }
+  res.innerHTML = html;
+}
+
+// Alias for backwards compat
+// searchErrors aliased to kbSearch
+
+// ── ERROR CODE LIST TAB ──
+function renderErrCodeList(){
+  const list = document.getElementById('errCodeList'); if(!list) return;
+  list.innerHTML = '<div style="overflow-x:auto"><table class="cl-table" style="font-size:.82rem"><thead><tr><th style="text-align:left">Code</th><th style="text-align:left;min-width:60px">Brand</th><th style="text-align:left">Description</th><th style="text-align:left">Manual</th></tr></thead><tbody>'+
+    FULL_ERROR_DB.map(e=>`<tr>
+      <td><strong style="color:var(--red)">${e.code}</strong></td>
+      <td><span class="badge bc" style="font-size:.62rem">${e.brand}</span></td>
+      <td style="font-size:.8rem">${e.desc}</td>
+      <td>${e.manual?'<a href="https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/Manuals/'+e.manual+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
+    </tr>`).join('')+'</tbody></table></div>';
+}
+
+// ════════════════════════════════════════════════════
+// FILE EXPLORER (GitHub dynamic loading)
+// ════════════════════════════════════════════════════
+let explorerStack = []; // breadcrumb stack [{name, path}]
+let explorerCache = {}; // cache loaded directories
+
+function ghApiUrl(path){
+  const fullPath = path ? GH.manualsRoot + '/' + path : GH.manualsRoot;
+  return `https://api.github.com/repos/${GH.org}/${GH.repo}/contents/${encodeURIComponent(fullPath).replace(/%2F/g,'/')}?ref=${GH.branch}`;
+}
+
+function ghRawUrl(path){
+  return `https://raw.githubusercontent.com/${GH.org}/${GH.repo}/${GH.branch}/Manuals/${path}`;
+}
+
+function ghWebUrl(path){
+  return `https://github.com/${GH.org}/${GH.repo}/blob/${GH.branch}/Manuals/${path}`;
+}
+
+async function loadExplorer(path){
+  document.getElementById('explorerLoading').style.display='inline';
+  document.getElementById('explorerGrid').innerHTML='';
+  document.getElementById('fileListArea').innerHTML='';
+  // Breadcrumb
+  const bc = document.getElementById('explorerBreadcrumb');
+  const trail = document.getElementById('breadcrumbTrail');
+  if(!path){
+    bc.style.display='none'; explorerStack=[];
+  } else {
+    bc.style.display='block';
+    trail.innerHTML = explorerStack.map((s,i)=>
+      ` / <span style="color:var(--blue2);cursor:pointer" onclick="navToDepth(${i})">${s.name}</span>`
+    ).join('') + (explorerStack.length ? ' / <span style="color:var(--text2)">' + explorerStack[explorerStack.length-1]?.name + '</span>' : '');
+  }
+  // Check cache
+  if(explorerCache[path]){
+    renderExplorerItems(explorerCache[path], path);
+    document.getElementById('explorerLoading').style.display='none';
+    return;
+  }
+  try {
+    const r = await fetch(ghApiUrl(path), {headers:{Accept:'application/vnd.github.v3+json'}});
+    if(!r.ok) throw new Error('HTTP '+r.status+' — '+r.statusText);
+    const items = await r.json();
+    if(!Array.isArray(items)) throw new Error(items.message||'Unexpected response');
+    explorerCache[path] = items;
+    renderExplorerItems(items, path);
+  } catch(e) {
+    // Fallback to static folders at root
+    if(!path){
+      renderFallbackFolders();
+    } else {
+      document.getElementById('explorerGrid').innerHTML = `
+        <div class="alert alert-warning">
+          ⚠️ Could not load from GitHub: <strong>${e.message}</strong><br>
+          <a href="https://github.com/${GH.org}/${GH.repo}/tree/${GH.branch}/${GH.manualsRoot}${path?'/'+path:''}" target="_blank" style="color:var(--blue2)">Open folder on GitHub ↗</a>
+        </div>`;
+    }
+  }
+  document.getElementById('explorerLoading').style.display='none';
+}
+
+function renderExplorerItems(items, currentPath){
+  const dirs = items.filter(i=>i.type==='dir').sort((a,b)=>a.name.localeCompare(b.name));
+  const files = items.filter(i=>i.type==='file').sort((a,b)=>{
+    if(a.name.toLowerCase().startsWith('index')) return -1;
+    if(b.name.toLowerCase().startsWith('index')) return 1;
+    return a.name.localeCompare(b.name);
+  });
+  const hasIndex = files.some(f=>f.name.toLowerCase().startsWith('index.htm'));
+  let html = '';
+  // Directory grid
+  if(dirs.length){
+    html += '<div class="folder-grid" style="margin-bottom:12px">'+
+      dirs.map(d=>{
+        const icon = getFolderIcon(d.name);
+        return `<div class="folder-btn" onclick="navToFolder('${d.name}','${currentPath ? currentPath+'/'+d.name : d.name}')">
+          <span class="folder-icon">${icon}</span><span>${d.name}</span></div>`;
+      }).join('')+'</div>';
+  }
+  // Files list
+  if(files.length){
+    if(hasIndex) html += '<div class="file-notice">📌 <strong>Start here:</strong> Open <strong>index.htm</strong> for the table of contents.</div>';
+    html += '<ul class="file-list">'+files.map(f=>{
+      const ext = f.name.split('.').pop().toLowerCase();
+      const icon = ext==='pdf'?'📕':(ext==='htm'||ext==='html')?'🌐':(ext==='doc'||ext==='docx')?'📝':'📄';
+      const openUrl = (ext==='pdf'||ext==='htm'||ext==='html') ? (f.download_url||ghRawUrl(currentPath?currentPath+'/'+f.name:f.name)) : ghWebUrl(currentPath?currentPath+'/'+f.name:f.name);
+      const sizeStr = f.size ? formatBytes(f.size) : '';
+      return `<li><a class="file-item" href="${openUrl}" target="_blank" rel="noopener">
+        <span style="font-size:1.1rem;flex-shrink:0">${icon}</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${f.name}</span>
+        <span style="font-size:.68rem;color:var(--gray4);flex-shrink:0">${sizeStr ? sizeStr+' · ':''}.${ext} ↗</span>
+      </a></li>`;
+    }).join('')+'</ul>';
+  }
+  if(!dirs.length && !files.length){
+    html = '<div class="empty-state" style="padding:24px"><div class="ei">📁</div><p>Empty folder</p></div>';
+  }
+  document.getElementById('explorerGrid').innerHTML = html;
+}
+
+function renderFallbackFolders(){
+  document.getElementById('explorerGrid').innerHTML =
+    '<div class="alert alert-warning" style="margin-bottom:12px">⚠️ Could not reach GitHub API. Showing known folder structure — files will load when clicked.<br><a href="https://github.com/'+GH.org+'/'+GH.repo+'/tree/'+GH.branch+'/'+GH.manualsRoot+'" target="_blank" style="color:var(--blue2)">Browse on GitHub ↗</a></div>'+
+    '<div class="folder-grid">'+FALLBACK_FOLDERS.map(f=>
+      `<div class="folder-btn" onclick="navToFolder('${f.name}','${f.path}')">
+        <span class="folder-icon">${f.icon}</span><span>${f.name}</span></div>`
+    ).join('')+'</div>';
+}
+
+function getFolderIcon(name){
+  const n = name.toLowerCase();
+  if(n.includes('ge')) return '🟦';
+  if(n.includes('siemens')) return '🟧';
+  if(n.includes('philips')) return '🟪';
+  if(n.includes('injector')||n.includes('stellant')||n.includes('solaris')) return '💉';
+  if(n.includes('error')||n.includes('trouble')) return '⚠️';
+  if(n.includes('ct')||n.includes('computed')) return '🔵';
+  if(n.includes('mri')) return '🧲';
+  if(n.includes('service')||n.includes('guide')) return '📖';
+  if(n.includes('install')) return '🔧';
+  return '📁';
+}
+
+function formatBytes(bytes){
+  if(bytes<1024) return bytes+'B';
+  if(bytes<1048576) return (bytes/1024).toFixed(0)+'KB';
+  return (bytes/1048576).toFixed(1)+'MB';
+}
+
+function navToFolder(name, path){
+  explorerStack.push({name, path});
+  // Update breadcrumb trail properly
+  const trail = document.getElementById('breadcrumbTrail');
+  if(trail) trail.innerHTML = explorerStack.slice(0,-1).map((s,i)=>
+    ` / <span style="color:var(--blue2);cursor:pointer" onclick="navToDepth(${i})">${s.name}</span>`
+  ).join('') + (explorerStack.length>0 ? ' / <span style="color:var(--text2)">'+explorerStack[explorerStack.length-1].name+'</span>' : '');
+  document.getElementById('explorerBreadcrumb').style.display='block';
+  loadExplorer(path);
+}
+
+function navToRoot(){
+  explorerStack = [];
+  document.getElementById('explorerBreadcrumb').style.display='none';
+  document.getElementById('breadcrumbTrail').innerHTML='';
+  loadExplorer('');
+}
+
+function navToDepth(idx){
+  explorerStack = explorerStack.slice(0, idx+1);
+  const target = explorerStack[idx];
+  if(target) loadExplorer(target.path);
+  else navToRoot();
+}
+
+function refreshExplorer(){
+  explorerCache = {};
+  const currentPath = explorerStack.length ? explorerStack[explorerStack.length-1].path : '';
+  loadExplorer(currentPath);
+}
+
+// ════════════════════════════════════════════════════
+// FULL ERROR CODE DATABASE
+// ════════════════════════════════════════════════════
+const FULL_ERROR_DB=[
+  // GE MRI
+  {code:'E305',brand:'GE',desc:'RF Amplifier fault — check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
+  {code:'E410',brand:'GE',desc:'Gradient overheat — verify gradient cooling water flow and temperature',manual:'GE/Gradient_Service.htm'},
+  {code:'E501',brand:'GE',desc:'Cold head fault — check cold head compressor, helium level and power supply',manual:'GE/Cryo_Service.htm'},
+  {code:'E112',brand:'GE',desc:'Patient table drive fault — inspect table drive motor and encoder',manual:'GE/Table_Service.htm'},
+  {code:'E203',brand:'GE',desc:'Shim power supply fault — check shim supply voltages and connections',manual:''},
+  {code:'E601',brand:'GE',desc:'DAS communication fault — check DAS cables and power',manual:''},
+  {code:'E720',brand:'GE',desc:'RF shield breach — inspect door gaskets and RF penetrations',manual:''},
+  {code:'FREQ',brand:'GE',desc:'Frequency calibration failure — run shim/frequency calibration sequence',manual:'GE/Calibration.htm'},
+  {code:'Quench',brand:'GE/All',desc:'Magnet quench — immediate evacuation, contact OEM, cryogen refill required',manual:'GE/Cryo_Service.htm'},
+  {code:'He Level',brand:'GE/All',desc:'Low helium level — schedule fill immediately if below 60%',manual:'GE/Cryo_Service.htm'},
+  // Siemens MRI
+  {code:'F001',brand:'Siemens',desc:'Gradient amplifier fault — check GRADS cabinet and cooling lines',manual:'Siemens/Gradient.htm'},
+  {code:'F042',brand:'Siemens',desc:'RF power fault — inspect RF amplifier and transmission chain',manual:''},
+  {code:'F100',brand:'Siemens',desc:'Gradient coil temperature fault — check water cooling system',manual:''},
+  {code:'STE',brand:'Siemens',desc:'System emergency stop triggered — check all e-stop buttons',manual:''},
+  // Injector
+  {code:'INJ-01',brand:'Injector',desc:'Stellant: Head cable fault — inspect head cable and connectors',manual:'Injectors/Stellant_Service.htm'},
+  {code:'INJ-02',brand:'Injector',desc:'Pressure limit exceeded — check syringe seal and plunger alignment',manual:''},
+  {code:'INJ-03',brand:'Injector',desc:'Motor speed fault — check motor and drive belt for wear',manual:''},
+  // General
+  {code:'T200',brand:'All',desc:'Temperature warning — check HVAC, chiller, and all cooling systems',manual:''},
+  {code:'RF Shield',brand:'All',desc:'RF shielding breach detected — inspect door gaskets and penetrations',manual:''},
+  {code:'UPS',brand:'All',desc:'UPS fault or battery low — test and replace UPS batteries',manual:''},
+];
+
 document.addEventListener('DOMContentLoaded',()=>{
   checkOAuthCallback();
   tryAutoLogin();
   window.onGoogleLibraryLoad=()=>{if(typeof google!=='undefined'&&google.accounts)google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:r=>{try{const p=JSON.parse(atob(r.credential.split('.')[1]));if(!(p.email||'').toLowerCase().endsWith('@'+ALLOWED_DOMAIN)){document.getElementById('loginError').textContent='🚫 Access denied.';return;}doLogin(p.name||p.email,'Google');}catch(e){}}}); };
 });
 </script>
+
+<!-- KB Entry Modal -->
+<div class="modal-overlay" id="kbEntryModal">
+  <div class="modal"><div class="modal-header"><h3 id="kbModalTitle">🧠 Add Knowledge Entry</h3><button class="modal-close" onclick="closeModal('kbEntryModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-control" id="kb_title" placeholder="GE Signa — E305 RF Amp Fault Fix"></div>
+      <div class="form-group"><label class="form-label">Category</label>
+        <select class="form-control" id="kb_cat">
+          <option>GE</option><option>Siemens</option><option>Philips</option><option>Injector</option><option>CT</option><option>Error Code</option><option>General</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Scanner / Model</label><input class="form-control" id="kb_model" placeholder="Signa Voyager 1.5T"></div>
+      <div class="form-group"><label class="form-label">Error Code / Symptom</label><input class="form-control" id="kb_error" placeholder="E305, No image, Quench…"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Problem Description</label><textarea class="form-control" id="kb_problem" style="min-height:80px" placeholder="Describe the issue…"></textarea></div>
+    <div class="form-group"><label class="form-label">Solution / Fix Applied</label><textarea class="form-control" id="kb_solution" style="min-height:80px" placeholder="Steps taken to resolve…"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Parts Used</label><input class="form-control" id="kb_parts" placeholder="Part # and description"></div>
+      <div class="form-group"><label class="form-label">Link to Job</label><select class="form-control" id="kb_job"><option value="">— None —</option></select></div>
+    </div>
+    <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="kb_tags" placeholder="RF amp, cooling, E305"></div>
+  </div>
+  <div class="modal-footer"><button class="btn btn-success" onclick="saveKBEntry()">💾 Save Entry</button><button class="btn btn-outline" onclick="closeModal('kbEntryModal')">Cancel</button></div></div>
+</div>
+
+<!-- KB Suggest Modal (auto-created from completed job) -->
+<div class="modal-overlay" id="kbSuggestModal">
+  <div class="modal"><div class="modal-header" style="background:linear-gradient(135deg,#1b5e20,var(--green))"><h3>💡 New Knowledge Entry Suggested</h3><button class="modal-close" onclick="closeModal('kbSuggestModal')">✕</button></div>
+  <div class="modal-body">
+    <div class="alert alert-success">This job contains useful diagnostic information. Review and save it to your Knowledge Base.</div>
+    <div id="kbSuggestContent"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success" onclick="confirmKBSuggest()">✅ Save to Knowledge Base</button>
+    <button class="btn btn-outline" onclick="closeModal('kbSuggestModal')">Skip</button>
+  </div></div>
+</div>
+
+
 </body>
 </html>
