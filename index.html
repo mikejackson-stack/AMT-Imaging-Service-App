@@ -1245,7 +1245,10 @@ function searchAll(q) {
     f.name.toLowerCase().includes(ql)
   );
 
-  if (!kbResults.length && !driveResults.length) {
+  // ── GE Error Code database (14,313 codes) — run BEFORE empty check ──
+  const geResults = searchGEErrors(q);
+
+  if (!kbResults.length && !driveResults.length && !geResults.length) {
     el.innerHTML = '<div class="empty"><div class="ei">🤔</div><p>Nothing found for "' + q + '"<br>Try a different keyword or check your Knowledge Base sheet.</p></div>';
     return;
   }
@@ -1426,10 +1429,7 @@ function searchAll(q) {
     }).join('');
   }
 
-  // Search GE Error Code database (14,313 codes)
-  const geResults = searchGEErrors(q);
-
-  // Add GE Error Tool results if any
+  // Add GE Error results if any
   if (geResults.length > 0) {
     html += '<div style="font-size:11px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;padding:8px 2px 6px">GE MRI Error Database (' + geResults.length + ' match' + (geResults.length!==1?'es':'') + ')</div>';
     html += geResults.map(function(r) {
