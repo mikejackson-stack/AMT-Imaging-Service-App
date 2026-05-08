@@ -3545,112 +3545,11 @@ function openGHSettings(){
   openModal('ghSettingsModal');
 }
 
-async function testGHToken(){
-  const status = document.getElementById('gh_token_status');
-  const connStatus = document.getElementById('gh_connection_status');
-  if(status) { status.textContent = '⏳ Testing...'; status.style.color='var(--text2)'; }
-  const tokenVal = document.getElementById('gh_token_input')?.value?.trim() || GH.token;
-  const headers = {'Accept':'application/vnd.github.v3+json'};
-  if(tokenVal) headers['Authorization'] = 'Bearer '+tokenVal;
-  try {
-    const r = await fetch('https://api.github.com/repos/'+GH.org+'/'+GH.repo, {headers});
-    const data = await r.json();
-    if(r.ok){
-      const rateR = await fetch('https://api.github.com/rate_limit', {headers});
-      const rateData = await rateR.json();
-      const remaining = rateData?.rate?.remaining || '?';
-      const limit = rateData?.rate?.limit || '?';
-      if(status){
-        status.textContent = '✅ Connected! Rate limit: '+remaining+'/'+limit+' remaining';
-        status.style.color = 'var(--green2)';
-      }
-      if(connStatus){
-        connStatus.innerHTML = '<div class="alert alert-success" style="font-size:.78rem;margin:0">✅ <strong>GitHub connected</strong> — Repo: '+data.name+' · API calls remaining: '+remaining+'/'+limit+'</div>';
-      }
-    } else {
-      throw new Error(data.message || 'HTTP '+r.status);
-    }
-  } catch(e){
-    if(status){ status.textContent = '❌ '+e.message; status.style.color='var(--red,#dc2626)'; }
-    if(connStatus){ connStatus.innerHTML = '<div class="alert alert-warning" style="font-size:.78rem;margin:0">❌ Connection failed: '+e.message+'</div>'; }
-  }
-}
+async 
 
-function saveGHToken(){
-  const val = (document.getElementById('gh_token_input')?.value||'').trim();
-  if(val){
-    localStorage.setItem('amt_gh_token', val);
-    showToast('✅ GitHub token saved! Testing connection…');
-    testGHToken();
-  } else {
-    localStorage.removeItem('amt_gh_token');
-    showToast('GitHub token cleared');
-    const status = document.getElementById('gh_token_status');
-    if(status){ status.textContent='⚠️ No token — 60 API calls/hr limit applies'; status.style.color='var(--orange,#e65100)'; }
-  }
-}
 
-async function scanGitHubForManuals(){
-  const res = document.getElementById('gh_scan_results');
-  if(res) res.textContent = '⏳ Scanning GitHub repo…';
-  
-  const headers = {'Accept':'application/vnd.github.v3+json'};
-  if(GH.token) headers['Authorization'] = 'Bearer '+GH.token;
-  
-  try {
-    // Use git tree API to get ALL files recursively in one call
-    const treeUrl = 'https://api.github.com/repos/'+GH.org+'/'+GH.repo+'/git/trees/'+GH.branch+'?recursive=1';
-    const resp = await fetch(treeUrl, {headers});
-    
-    if(resp.status===403){
-      if(res) res.innerHTML = '❌ GitHub API rate limit hit. <strong>Set a token in GitHub Settings</strong> to get 5,000 calls/hour instead of 60.';
-      return;
-    }
-    if(!resp.ok){ if(res) res.textContent='❌ GitHub error: '+resp.status; return; }
-    
-    const data = await resp.json();
-    const allFiles = (data.tree||[]).filter(f=>f.type==='blob');
-    
-    // Filter to Manuals/ only
-    const manualFiles = allFiles.filter(f=>f.path.startsWith('Manuals/'));
-    
-    if(res) res.innerHTML = '✅ Found <strong>'+manualFiles.length+' files</strong> in Manuals folder. Clearing cache…';
-    
-    // Clear and rebuild cache
-    explorerCache = {};
-    
-    // Group by directory
-    const dirs = {};
-    manualFiles.forEach(f=>{
-      const parts = f.path.replace('Manuals/','').split('/');
-      const dir = parts.length > 1 ? parts.slice(0,-1).join('/') : '';
-      if(!dirs[dir]) dirs[dir] = [];
-      dirs[dir].push({name:parts[parts.length-1], path:f.path, type:'blob', size:f.size});
-    });
-    
-    // Store in explorer cache format
-    Object.keys(dirs).forEach(dir=>{
-      const items = dirs[dir].map(f=>({
-        name: f.name,
-        type: 'file',
-        size: f.size,
-        download_url: 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+f.path,
-        path: f.path
-      }));
-      explorerCache[dir] = {data: items, ts: Date.now()};
-    });
-    saveExplorerCache(explorerCache);
-    
-    const fileList = manualFiles.map(f=>'  '+f.path.replace('Manuals/','')).join('<br>');
-    if(res) res.innerHTML = 
-      '✅ <strong>'+manualFiles.length+' files</strong> indexed from GitHub:<br><br>'+
-      '<div style="max-height:200px;overflow-y:auto;font-family:monospace;font-size:.72rem;background:var(--gray);padding:8px;border-radius:4px;line-height:1.6">'+fileList+'</div><br>'+
-      '<button class="btn btn-primary btn-sm" onclick="setKBTab(&quot;files&quot;);loadExplorer(&quot;&quot;);closeModal(&quot;ghSettingsModal&quot;)">📁 Open File Explorer</button>';
-      
-  } catch(e){
-    if(res) res.textContent = '❌ Error: '+e.message;
-  }
-}
+
+async 
 
 document.addEventListener('DOMContentLoaded',()=>{
   // Set defaults
@@ -3700,18 +3599,7 @@ function printHoldHarmless(){
 }
 
 // ── GitHub Settings & Scan functions ──
-function openGHSettings(){
-  const tokenInput = document.getElementById('gh_token_input');
-  if(tokenInput) tokenInput.value = GH.token || '';
-  const status = document.getElementById('gh_token_status');
-  if(status){
-    status.textContent = GH.token
-      ? '✅ Token saved: ' + GH.token.slice(0,8)+'...'
-      : '⚠️ No token — 60 API calls/hr limit applies';
-    status.style.color = GH.token ? 'var(--green2)' : 'var(--orange,#e65100)';
-  }
-  openModal('ghSettingsModal');
-}
+
 
 async function testGHToken(){
   const status = document.getElementById('gh_token_status');
@@ -3890,50 +3778,48 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <!-- GITHUB SETTINGS MODAL -->
 <div id="ghSettingsModal" class="modal-overlay" style="display:none">
-<div class="modal" style="max-width:600px;border-radius:var(--r);max-height:90vh;overflow-y:auto">
-  <div class="modal-content">
-    <div class="modal-header"><strong>⚙️ GitHub / Manuals Settings</strong><button class="modal-close" onclick="closeModal('ghSettingsModal')">✕</button></div>
+  <div class="modal" style="max-width:580px;border-radius:var(--r);max-height:90vh;overflow-y:auto">
+    <div class="modal-header">
+      <h3>⚙️ GitHub / Manuals Settings</h3>
+      <button class="modal-close" onclick="closeModal('ghSettingsModal')">✕</button>
+    </div>
     <div class="modal-body">
 
-      <!-- Token setup -->
+      <!-- Token -->
       <div style="background:var(--gray);border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-weight:700;font-size:.85rem;margin-bottom:6px;color:var(--navy)">🔑 GitHub Personal Access Token</div>
-        <div style="font-size:.76rem;color:var(--text2);margin-bottom:8px">
-          Without a token: <strong>60 API calls/hr</strong> (folders may fail to load)<br>
-          With a token: <strong>5,000/hr</strong> — all folders load every time.
-          <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">Create token →</a> (select <strong>repo → contents: read</strong>)
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;color:var(--navy)">🔑 GitHub Personal Access Token</div>
+        <div style="font-size:.75rem;color:var(--text2);margin-bottom:8px">
+          Without token: 60 API calls/hr &nbsp;|&nbsp; With token: 5,000/hr<br>
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">Create token ↗</a> — select <strong>Contents: read-only</strong>
         </div>
-        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxx" style="margin-bottom:6px;font-family:monospace">
-        <div id="gh_token_status" style="font-size:.75rem;margin-bottom:8px;min-height:16px"></div>
+        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxx" style="margin-bottom:6px;font-family:monospace;font-size:.82rem">
+        <div id="gh_token_status" style="font-size:.75rem;margin-bottom:8px;min-height:18px;color:var(--text2)"></div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-success btn-sm" onclick="saveGHToken()" style="flex:1">💾 Save Token</button>
           <button class="btn btn-outline btn-sm" onclick="testGHToken()" style="flex:1">🔌 Test Connection</button>
         </div>
       </div>
 
-      <!-- Status -->
+      <!-- Connection status -->
       <div id="gh_connection_status" style="margin-bottom:12px"></div>
 
       <!-- Scan -->
       <div style="background:var(--gray);border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;color:var(--navy)">🔍 Scan GitHub for All Files</div>
-        <div style="font-size:.76rem;color:var(--text2);margin-bottom:8px">One-click index of every file in your Manuals/ folder — adds missing entries to error codes and KB.</div>
-        <button class="btn btn-primary" onclick="scanGitHubForManuals()" style="width:100%">🔍 Scan &amp; Index All Manuals Now</button>
-        <div id="gh_scan_results" style="font-size:.77rem;margin-top:8px"></div>
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;color:var(--navy)">🔍 Scan GitHub Repo</div>
+        <div style="font-size:.75rem;color:var(--text2);margin-bottom:8px">Indexes every file in your Manuals/ folder in one API call. Caches results for 24 hours.</div>
+        <button class="btn btn-primary" onclick="scanGitHubForManuals()" style="width:100%;margin-bottom:6px">🔍 Scan &amp; Index All Manuals Now</button>
+        <div id="gh_scan_results" style="font-size:.76rem;margin-top:6px;max-height:160px;overflow-y:auto"></div>
       </div>
 
-      <!-- Expected structure -->
-      <details style="margin-bottom:12px">
-        <summary style="font-size:.82rem;font-weight:700;cursor:pointer;padding:6px 0;color:var(--navy)">📁 Expected Manuals Folder Structure</summary>
-        <div style="font-size:.73rem;background:var(--gray);border-radius:6px;padding:10px;font-family:monospace;line-height:1.8;overflow-x:auto;margin-top:6px">
+      <!-- Folder structure -->
+      <details>
+        <summary style="font-size:.82rem;font-weight:700;cursor:pointer;padding:6px 0;color:var(--navy)">📁 Expected Folder Structure (click to expand)</summary>
+        <div style="font-size:.72rem;background:var(--gray);border-radius:6px;padding:10px;font-family:monospace;line-height:1.8;margin-top:6px;overflow-x:auto">
           Manuals/<br>
           ├── GE/<br>
           │&nbsp;&nbsp; ├── RF_Amp_Service.htm<br>
-          │&nbsp;&nbsp; ├── Gradient_Service.htm<br>
           │&nbsp;&nbsp; ├── MGD_APS_AGP_Service.pdf<br>
           │&nbsp;&nbsp; └── Parts_Manuals/<br>
-          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── Excite_FRU_2345481r13.pdf<br>
-          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── HDx_FRU_5166012r14.pdf<br>
           ├── Siemens/<br>
           ├── Injectors/<br>
           ├── Error Codes and Troubleshooting/<br>
@@ -3941,14 +3827,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         </div>
       </details>
 
-      <!-- Cache -->
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-outline btn-sm" onclick="refreshExplorer();closeModal('ghSettingsModal')" style="flex:1">🔄 Clear Cache &amp; Reload</button>
-      </div>
-
-<div class="modal-footer">
-      <button class="btn btn-success" onclick="saveGHToken()">💾 Save Token</button>
-      <button class="btn btn-outline" onclick="closeModal('ghSettingsModal')">Close</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="refreshExplorer();closeModal('ghSettingsModal')">🔄 Clear Cache &amp; Reload</button>
+      <button class="btn btn-primary" onclick="closeModal('ghSettingsModal')">Done</button>
     </div>
   </div>
 </div>
@@ -4008,8 +3890,8 @@ document.addEventListener('DOMContentLoaded',()=>{
       <button class="btn btn-outline" onclick="closeModal('addPartModal')">Cancel</button>
     </div>
   </div>
-</di
-</div>v>
+</div>
+</div>
 
 </body>
 </h
