@@ -887,9 +887,6 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       </div><!-- end letter preview -->
     </div>
   </div>
-
-  </div>
-  </div>
 </div>
 
 <!-- ══ MANUALS ══ -->
@@ -1940,12 +1937,8 @@ function confirmDelete(){ if(!writeGuard('Delete Job')) return; jobs=jobs.filter
 function openModal(id){
   const el = document.getElementById(id);
   if(!el) return;
-  // Handle both patterns: .modal-overlay (add class) and standalone modal (show flex)
-  if(el.classList.contains('modal-overlay')){
-    el.classList.add('open');
-  } else {
-    el.style.cssText += ';display:flex !important;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;align-items:center;justify-content:center;padding:16px';
-  }
+  el.style.removeProperty('display'); // always remove inline display:none first
+  el.classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeModal(id){document.getElementById(id).classList.remove('open');}
