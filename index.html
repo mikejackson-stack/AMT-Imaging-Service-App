@@ -2064,13 +2064,30 @@ function ghManualLink(manualPath, label, style){
   return '<a href="'+url+'" target="_blank" rel="noopener" title="'+tip+'" style="'+(style||'font-size:.78rem;color:var(--blue2)')+'">'+label+'</a>';
 }
 const FALLBACK_FOLDERS=[
-  {name:'GE',      icon:'🟦',path:'GE'},
-  {name:'Siemens', icon:'🟧',path:'Siemens'},
-  {name:'Philips', icon:'🟪',path:'Philips'},
-  {name:'Injectors',icon:'💉',path:'Injectors'},
-  {name:'Error Codes',icon:'⚠️',path:'Error Codes and Troubleshooting'},
-  {name:'CT',      icon:'🔵',path:'CT'},
-  {name:'Svc Guides',icon:'📖',path:'Service Guides'},
+  {name:'GE',              icon:'🟦', path:'GE'},
+  {name:'Siemens',         icon:'🟧', path:'Siemens'},
+  {name:'Error Codes',     icon:'⚠️', path:'Error codes and Troubleshooting'},
+];
+
+// Real GE sub-folders (from live repo scan)
+const GE_SUBFOLDERS=[
+  {name:'Artist EVO',                   icon:'📁', path:'GE/Artist EVO'},
+  {name:'Discovery 450',                icon:'📁', path:'GE/Discovery 450'},
+  {name:'Discovery 750',                icon:'📁', path:'GE/Discovery 750'},
+  {name:'Discovery 750w',               icon:'📁', path:'GE/Discovery 750w'},
+  {name:'HDxt 1.5T and 3T',            icon:'📁', path:'GE/HDxt 1.5T and 3T'},
+  {name:'LX 9X Platform',              icon:'📁', path:'GE/LX 9X Platform'},
+  {name:'Optima 450w',                 icon:'📁', path:'GE/Optima 450w'},
+  {name:'Sign Creator/Explorer/Star',  icon:'📁', path:'GE/Sign Creator,Explorer,Star,Aviator'},
+  {name:'Signa Excite 1.5T 12x',       icon:'📁', path:'GE/Signa Excite 1.5T 12x'},
+  {name:'Signa Excite 3T 12x',         icon:'📁', path:'GE/Signa Excite 3T 12x'},
+  {name:'Signa Excite HDxt 15x',       icon:'📁', path:'GE/Signa Excite HDxt 15x'},
+];
+
+// Real Siemens sub-folders
+const SIEMENS_SUBFOLDERS=[
+  {name:'Aera',   icon:'📁', path:'Siemens/Aera'},
+  {name:'Avanto', icon:'📁', path:'Siemens/Avanto'},
 ];
 function initManuals(){
   const grid = document.getElementById('explorerGrid');
@@ -2547,19 +2564,7 @@ async function loadExplorer(path){
     setGHStatusDot('error');
     if(!path){
       // Root failed — show clickable fallback folders
-      grid.innerHTML =
-        '<div class="alert alert-warning" style="margin-bottom:12px">'+
-          '⚠️ <strong>Could not load from GitHub:</strong> '+err.message+'<br>'+
-          '<small>Check your internet connection. Showing known folders below.</small>'+
-          ' <a href="https://github.com/'+GH.org+'/'+GH.repo+'/tree/'+GH.branch+'/'+GH.manualsRoot+'" target="_blank" style="color:var(--blue2)">Browse on GitHub ↗</a>'+
-        '</div>'+
-        '<div class="folder-grid">'+
-          FALLBACK_FOLDERS.map(f=>{
-            const n=f.name.replace(/"/g,'&quot;'), p=f.path.replace(/"/g,'&quot;');
-            return '<div class="folder-btn" onclick="navToFolder(&quot;'+n+'&quot;,&quot;'+p+'&quot;)">'+
-              '<span class="folder-icon">'+f.icon+'</span><span>'+f.name+'</span></div>';
-          }).join('')+
-        '</div>';
+      renderFallbackFolders(path||'');
     } else {
       grid.innerHTML =
         '<div class="alert alert-warning">'+
@@ -2626,13 +2631,32 @@ function renderExplorerItems(items, currentPath){
   grid.innerHTML = html;
 }
 
-function renderFallbackFolders(){
-  document.getElementById('explorerGrid').innerHTML =
-    '<div class="alert alert-warning" style="margin-bottom:12px">⚠️ Could not reach GitHub API. Showing known folder structure — files will load when clicked.<br><a href="https://github.com/'+GH.org+'/'+GH.repo+'/tree/'+GH.branch+'/'+GH.manualsRoot+'" target="_blank" style="color:var(--blue2)">Browse on GitHub ↗</a></div>'+
-    '<div class="folder-grid">'+FALLBACK_FOLDERS.map(f=>
-      `<div class="folder-btn" onclick="navToFolder('${f.name}','${f.path}')">
-        <span class="folder-icon">${f.icon}</span><span>${f.name}</span></div>`
-    ).join('')+'</div>';
+function renderFallbackFolders(currentPath){
+  const grid = document.getElementById('explorerGrid');
+  if(!grid) return;
+  
+  // Choose which folders to show based on current path
+  let folders = FALLBACK_FOLDERS;
+  let notice = '⚠️ GitHub not connected — showing known folders';
+  
+  if(currentPath && currentPath.startsWith('GE')) {
+    folders = GE_SUBFOLDERS;
+    notice = '⚠️ Not connected — known GE folders';
+  } else if(currentPath && currentPath.startsWith('Siemens')) {
+    folders = SIEMENS_SUBFOLDERS;
+    notice = '⚠️ Not connected — known Siemens folders';
+  }
+  
+  grid.innerHTML = 
+    '<div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:8px;padding:10px;margin-bottom:10px;font-size:.78rem">' +
+    notice + ' — <button onclick="openGHSettings()" style="background:#0a1628;color:white;border:none;padding:3px 10px;border-radius:5px;font-size:.75rem;cursor:pointer;font-weight:700">⚙️ Set Up Token</button>' +
+    '</div>' +
+    '<div class="folder-grid">' +
+    folders.map(f => {
+      const n = f.name.replace(/"/g,'&quot;'), p = f.path.replace(/"/g,'&quot;');
+      return '<div class="folder-btn" onclick="navToFolder(&quot;'+n+'&quot;,&quot;'+p+'&quot;)"><span class="folder-icon">'+f.icon+'</span><span>'+f.name+'</span></div>';
+    }).join('') +
+    '</div>';
 }
 
 function getFolderIcon(name){
