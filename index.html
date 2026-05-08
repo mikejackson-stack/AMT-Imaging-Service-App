@@ -1773,6 +1773,36 @@ function ghRawUrl(filePath){
 function ghWebUrl(filePath){
   return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+(filePath||'');
 }
+
+// Smart URL: .htm → htmlpreview, .pdf → Google Docs viewer, else → GitHub blob
+function ghOpenUrl(filePath, downloadUrl){
+  const ext = filePath.split('.').pop().toLowerCase();
+  const rawUrl = downloadUrl || ('https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+filePath);
+  if(ext === 'htm' || ext === 'html'){
+    // htmlpreview.github.io properly renders .htm files from GitHub
+    return 'https://htmlpreview.github.io/?'+rawUrl;
+  }
+  if(ext === 'pdf'){
+    // GitHub blob view renders PDFs inline natively
+    return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+filePath;
+  }
+  // Everything else: GitHub blob view
+  return ghWebUrl(filePath);
+}
+
+// Build correct manual URL for error code DB entries (path is relative to Manuals/)
+function ghManualUrl(manualPath){
+  if(!manualPath) return null;
+  const ext = manualPath.split('.').pop().toLowerCase();
+  const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
+  if(ext === 'htm' || ext === 'html'){
+    return 'https://htmlpreview.github.io/?'+rawUrl;
+  }
+  if(ext === 'pdf'){
+    return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
+  }
+  return rawUrl;
+}
 const FALLBACK_FOLDERS=[
   {name:'GE',      icon:'🟦',path:'GE'},
   {name:'Siemens', icon:'🟧',path:'Siemens'},
@@ -1787,7 +1817,7 @@ function initManuals(){
   if(grid && !grid.innerHTML.trim()) loadExplorer('');
 }
 
-function searchErrors(q){const res=document.getElementById('errResults');if(!q||q.length<2){res.innerHTML='';return;}const m=ERROR_DB.filter(e=>e.code.toLowerCase().includes(q.toLowerCase())||e.desc.toLowerCase().includes(q.toLowerCase())||e.brand.toLowerCase().includes(q.toLowerCase()));if(!m.length){res.innerHTML=`<div class="alert alert-info">No error codes found for "${q}".</div>`;return;}res.innerHTML='<div class="card"><div class="card-header">🔍 Error Code Results ('+m.length+')</div>'+m.map(e=>`<div style="padding:11px 14px;border-bottom:1px solid var(--gray2)"><strong style="color:var(--red)">${e.code}</strong> <span class="badge bc" style="font-size:.64rem">${e.brand}</span><div style="font-size:.83rem;color:var(--text2);margin-top:3px">${e.desc}</div>${e.manual?`<a href="https://raw.githubusercontent.com/${GH.org}/${GH.repo}/main/${e.manual}" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>`:''}</div>`).join('')+'</div>';}
+function searchErrors(q){const res=document.getElementById('errResults');if(!q||q.length<2){res.innerHTML='';return;}const m=ERROR_DB.filter(e=>e.code.toLowerCase().includes(q.toLowerCase())||e.desc.toLowerCase().includes(q.toLowerCase())||e.brand.toLowerCase().includes(q.toLowerCase()));if(!m.length){res.innerHTML=`<div class="alert alert-info">No error codes found for "${q}".</div>`;return;}res.innerHTML='<div class="card"><div class="card-header">🔍 Error Code Results ('+m.length+')</div>'+m.map(e=>`<div style="padding:11px 14px;border-bottom:1px solid var(--gray2)"><strong style="color:var(--red)">${e.code}</strong> <span class="badge bc" style="font-size:.64rem">${e.brand}</span><div style="font-size:.83rem;color:var(--text2);margin-top:3px">${e.desc}</div>${e.manual?`<a href="${ghManualUrl(e.manual)}" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>`:''}</div>`).join('')+'</div>';}
 
 // ═══ INIT ═══
 // ════════════════════════════════════════════════════
@@ -2042,7 +2072,7 @@ function kbSearch(q){
         <strong style="color:var(--red)">${e.code}</strong>
         <span class="badge bc" style="font-size:.64rem;margin-left:6px">${e.brand}</span>
         <div style="font-size:.82rem;color:var(--text2);margin-top:3px">${e.desc}</div>
-        ${e.manual?'<a href="https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+e.manual+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
+        ${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
       </div>`).join('')+'</div>';
   }
   res.innerHTML = html;
@@ -2059,7 +2089,7 @@ function renderErrCodeList(){
       <td><strong style="color:var(--red)">${e.code}</strong></td>
       <td><span class="badge bc" style="font-size:.62rem">${e.brand}</span></td>
       <td style="font-size:.8rem">${e.desc}</td>
-      <td>${e.manual?'<a href="https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/Manuals/'+e.manual+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
+      <td>${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
     </tr>`).join('')+'</tbody></table></div>';
 }
 
@@ -2071,13 +2101,8 @@ let explorerCache = {}; // cache loaded directories
 
 
 
-function ghRawUrl(path){
-  return `https://raw.githubusercontent.com/${GH.org}/${GH.repo}/${GH.branch}/Manuals/${path}`;
-}
+// URL helpers defined above
 
-function ghWebUrl(path){
-  return `https://github.com/${GH.org}/${GH.repo}/blob/${GH.branch}/Manuals/${path}`;
-}
 
 async function loadExplorer(path){
   const title = document.getElementById('explorerTitle');
@@ -2202,9 +2227,9 @@ function renderExplorerItems(items, currentPath){
     files.forEach(f=>{
       const ext = f.name.split('.').pop().toLowerCase();
       const icon = ext==='pdf' ? '📕' : (ext==='htm'||ext==='html') ? '🌐' : (ext==='doc'||ext==='docx') ? '📝' : '📄';
-      // Use download_url for raw content (works for htm/pdf), github html for others
       const filePath = currentPath ? currentPath+'/'+f.name : f.name;
-      const openUrl = f.download_url || ghRawUrl(filePath);
+      // Use smart URL: .htm → htmlpreview, .pdf → GitHub blob viewer, else → blob
+      const openUrl = ghOpenUrl(filePath, f.download_url);
       const sizeTxt = f.size ? formatBytes(f.size) : '';
       html += '<li><a class="file-item" href="'+openUrl+'" target="_blank" rel="noopener noreferrer">'
             + '<span style="font-size:1.1rem;flex-shrink:0">'+icon+'</span>'
