@@ -711,82 +711,184 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
   <!-- HOLD HARMLESS AGREEMENT -->
   <div id="holdHarmlessSection" class="card mt-12" style="border:2px solid var(--navy)">
-    <div class="card-header" style="background:var(--navy)">
-      <span>📋 Hold Harmless &amp; Limitation of Liability Agreement</span>
+    <div class="card-header" style="background:var(--navy);display:flex;align-items:center;justify-content:space-between">
+      <span>📋 Hold Harmless Agreement</span>
+      <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:4px 10px;min-height:0;font-size:.72rem" onclick="generateHoldHarmless()">⚙️ Fill Out</button>
     </div>
     <div style="padding:16px">
-      <!-- Logo + Company Header -->
-      <div style="text-align:center;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--gold)">
-        <img id="hhLogo" src="" alt="AMT Imaging Solutions" style="max-height:70px;max-width:220px;object-fit:contain;margin-bottom:8px"><br>
-        <strong style="font-size:1.05rem;color:var(--navy)">AMT Imaging Solutions LLC</strong><br>
-        <span style="font-size:.82rem;color:var(--text2)">MRI &amp; CT Field Service · 754-263-6089 · mike.jackson@amtimagingsolutions.com</span><br>
-        <span style="font-size:.78rem;color:var(--text2)">Fort Lauderdale, FL · 🏅 Veteran-Owned Business</span>
-      </div>
 
-      <div style="font-size:.83rem;line-height:1.65;color:var(--text)">
-        <p style="font-weight:700;text-align:center;font-size:.92rem;margin-bottom:12px;color:var(--navy)">HOLD HARMLESS AND LIMITATION OF LIABILITY AGREEMENT</p>
-
-        <p>This Hold Harmless and Limitation of Liability Agreement ("Agreement") is entered into by and between <strong>AMT Imaging Solutions LLC</strong>, a Florida limited liability company ("Service Provider"), and the undersigned Customer ("Customer"), effective as of the date of signature below.</p>
-
-        <p style="font-weight:700;margin-top:12px">1. SCOPE OF SERVICES</p>
-        <p>Service Provider agrees to perform medical imaging equipment service, maintenance, preventive maintenance (PM), repair, and related technical services ("Services") on Customer's equipment as requested and agreed upon in a separate work order or service agreement.</p>
-
-        <p style="font-weight:700;margin-top:12px">2. CUSTOMER HOLD HARMLESS</p>
-        <p>Customer agrees to hold harmless, defend, and indemnify AMT Imaging Solutions LLC, its members, employees, contractors, and agents from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to:</p>
-        <ul style="padding-left:18px;margin:6px 0">
-          <li>Pre-existing equipment conditions, wear, or latent defects not caused by Service Provider;</li>
-          <li>Customer's failure to follow recommended maintenance schedules or manufacturer guidelines;</li>
-          <li>Unauthorized modifications to equipment by parties other than Service Provider;</li>
-          <li>Equipment failure or downtime caused by factors outside Service Provider's control (power issues, environmental conditions, natural disasters);</li>
-          <li>Patient injury or adverse outcomes not directly resulting from Service Provider's negligence.</li>
-        </ul>
-
-        <p style="font-weight:700;margin-top:12px">3. LIMITATION OF LIABILITY</p>
-        <p>Service Provider's total cumulative liability to Customer arising from any single service event shall not exceed the total labor fees paid for that specific service visit. In no event shall Service Provider be liable for indirect, incidental, consequential, or punitive damages, including loss of revenue, loss of data, or business interruption.</p>
-
-        <p style="font-weight:700;margin-top:12px">4. WARRANTY DISCLAIMER</p>
-        <p>Unless otherwise specified in writing, Services are provided "as-is" with a standard 90-day workmanship warranty on parts and labor performed by Service Provider. This warranty does not cover damage caused by power surges, water, misuse, or third-party modifications after service.</p>
-
-        <p style="font-weight:700;margin-top:12px">5. HAZARDOUS ENVIRONMENT ACKNOWLEDGMENT</p>
-        <p>Customer acknowledges that MRI suite environments present unique hazards including strong magnetic fields, cryogenic materials, and high-voltage equipment. Customer agrees to: (a) provide adequate notice of any known hazards; (b) ensure a safe working environment; and (c) hold Service Provider harmless for injuries or equipment damage caused by undisclosed hazardous conditions.</p>
-
-        <p style="font-weight:700;margin-top:12px">6. GOVERNING LAW</p>
-        <p>This Agreement shall be governed by the laws of the State of Florida. Any disputes shall be resolved in Broward County, Florida.</p>
-
-        <p style="font-weight:700;margin-top:12px">7. ENTIRE AGREEMENT</p>
-        <p>This Agreement constitutes the entire understanding between the parties regarding limitation of liability and supersedes all prior discussions. This Agreement may be modified only in writing signed by both parties.</p>
-
-        <!-- Signature blocks -->
-        <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
-          <div>
-            <div style="border-bottom:1px solid var(--gray3);margin-bottom:4px;height:40px"></div>
-            <div style="font-size:.77rem;color:var(--text2)"><strong>Customer Signature</strong></div>
-            <div style="border-bottom:1px solid var(--gray3);margin:12px 0 4px;height:30px"></div>
-            <div style="font-size:.77rem;color:var(--text2)">Printed Name &amp; Title</div>
-            <div style="border-bottom:1px solid var(--gray3);margin:12px 0 4px;height:30px"></div>
-            <div style="font-size:.77rem;color:var(--text2)">Company / Facility Name</div>
-            <div style="border-bottom:1px solid var(--gray3);margin:12px 0 4px;height:30px"></div>
-            <div style="font-size:.77rem;color:var(--text2)">Date</div>
+      <!-- Condition checkboxes builder -->
+      <div id="hhBuilder" style="margin-bottom:16px;padding:12px;background:var(--gray);border-radius:8px">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:10px;color:var(--navy)">📝 Complete before printing:</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">Date</label>
+            <input id="hh_date" class="form-control" type="date" style="font-size:.8rem">
           </div>
-          <div>
-            <div style="border-bottom:1px solid var(--gray3);margin-bottom:4px;height:40px;display:flex;align-items:flex-end;padding-bottom:4px">
-              <span style="font-size:.88rem;font-style:italic;color:var(--navy)">Michael Jackson</span>
-            </div>
-            <div style="font-size:.77rem;color:var(--text2)"><strong>AMT Imaging Solutions LLC</strong></div>
-            <div style="border-bottom:1px solid var(--gray3);margin:12px 0 4px;height:30px;display:flex;align-items:flex-end;padding-bottom:4px">
-              <span style="font-size:.82rem;color:var(--text2)">Michael Jackson, Managing Member</span>
-            </div>
-            <div style="font-size:.77rem;color:var(--text2)">Printed Name &amp; Title</div>
-            <div style="border-bottom:1px solid var(--gray3);margin:12px 0 4px;height:30px"></div>
-            <div style="font-size:.77rem;color:var(--text2)">Date</div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">Customer Contact Name</label>
+            <input id="hh_contact" class="form-control" placeholder="e.g. Liz" style="font-size:.8rem">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">Customer / Facility Name</label>
+            <input id="hh_customer" class="form-control" placeholder="e.g. Millennium Diagnostic Center" style="font-size:.8rem">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">System (Make/Model)</label>
+            <input id="hh_system" class="form-control" placeholder="e.g. Siemens Espree 1.5T" style="font-size:.8rem">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">Service Date (on or about)</label>
+            <input id="hh_svcdate" class="form-control" type="date" style="font-size:.8rem">
+          </div>
+          <div class="form-group" style="margin:0">
+            <label class="form-label" style="font-size:.75rem">AMT Technician</label>
+            <input id="hh_tech" class="form-control" placeholder="e.g. Michael Jackson" value="Michael Jackson" style="font-size:.8rem">
           </div>
         </div>
 
-        <p style="text-align:center;font-size:.72rem;color:var(--text2);margin-top:20px;border-top:1px solid var(--gray2);padding-top:10px">
-          AMT Imaging Solutions LLC · 754-263-6089 · mike.jackson@amtimagingsolutions.com · Fort Lauderdale, FL · Veteran-Owned
-        </p>
+        <div style="font-weight:700;font-size:.8rem;margin-bottom:8px;color:var(--navy)">Check all applicable conditions:</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:.81rem">
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c1" style="margin-top:2px;flex-shrink:0">
+            <span>Site has no previous repair history with AMT Imaging Solutions.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c2" style="margin-top:2px;flex-shrink:0">
+            <span>The Customer's MRI has had a history of spontaneous quenches with reasons unknown.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c3" style="margin-top:2px;flex-shrink:0">
+            <span>The helium level in Customer's MRI is below the manufacturer's specified minimum level.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c4" style="margin-top:2px;flex-shrink:0">
+            <span>Parts being installed are not supplied by AMT Imaging Solutions.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c5" style="margin-top:2px;flex-shrink:0">
+            <span>The condition of the MRI unit is such that the Customer has requested that AMT perform a Ramp, De-ice, and/or Fill in a manner inconsistent with the MRI's original design mechanism.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c6" style="margin-top:2px;flex-shrink:0">
+            <span>Pre-existing equipment defects, damage, or wear that may affect the outcome of service.</span>
+          </label>
+          <label style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+            <input type="checkbox" id="hh_c7" style="margin-top:2px;flex-shrink:0">
+            <span>Customer has declined recommended repairs or upgrades prior to this service.</span>
+          </label>
+        </div>
+
+        <div style="font-weight:700;font-size:.8rem;margin:10px 0 6px;color:var(--navy)">Service Type:</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;font-size:.81rem">
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="hh_s1"> Ramp / De-ice</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="hh_s2"> Helium Fill</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="hh_s3"> Repair Service</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="hh_s4"> Preventive Maintenance</label>
+          <label style="display:flex;align-items:center;gap:5px;cursor:pointer"><input type="checkbox" id="hh_s5"> System Installation</label>
+        </div>
+        <div style="margin-top:10px">
+          <label class="form-label" style="font-size:.75rem">Additional Notes (optional)</label>
+          <textarea id="hh_notes" class="form-control" rows="2" placeholder="Any additional context or special conditions…" style="font-size:.8rem"></textarea>
+        </div>
+
+        <button class="btn btn-gold mt-12" onclick="printHoldHarmless()" style="width:100%">📄 Print / Download Hold Harmless Agreement</button>
       </div>
+
+      <!-- Live preview label -->
+      <div style="font-size:.75rem;color:var(--text2);text-align:center;margin-bottom:8px">⬇ Preview (updates when you fill out fields above)</div>
+
+      <!-- THE ACTUAL LETTER DOCUMENT - print target -->
+      <div id="hhLetterPreview" style="border:1px solid var(--gray2);border-radius:8px;padding:24px;background:white;color:#111;font-family:Georgia,serif;font-size:.85rem;line-height:1.7;max-width:700px;margin:0 auto">
+
+        <!-- Header with logo -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid #0a1628">
+          <img id="hhLogoLetter" src="" alt="AMT Imaging Solutions" style="max-height:65px;max-width:180px;object-fit:contain">
+          <div style="text-align:right;font-size:.78rem;line-height:1.5;font-family:Arial,sans-serif">
+            <div style="font-weight:700;color:#0a1628">AMT Imaging Solutions LLC</div>
+            <div>Fort Lauderdale, FL</div>
+            <div>📞 754-263-6089</div>
+            <div>mike.jackson@amtimagingsolutions.com</div>
+            <div style="color:#b8860b;font-weight:700">🏅 Veteran-Owned Business</div>
+          </div>
+        </div>
+
+        <!-- Date -->
+        <div id="hhLetter_date" style="margin-bottom:16px;font-family:Arial,sans-serif;font-size:.88rem"></div>
+
+        <!-- Re line -->
+        <div id="hhLetter_re" style="margin-bottom:12px;font-family:Arial,sans-serif;font-size:.88rem"><strong>Re:</strong> </div>
+
+        <!-- Salutation -->
+        <div id="hhLetter_salutation" style="margin-bottom:14px;font-family:Arial,sans-serif;font-size:.88rem"></div>
+
+        <!-- Body paragraph -->
+        <div id="hhLetter_body1" style="margin-bottom:14px;font-family:Arial,sans-serif;font-size:.88rem;text-align:justify"></div>
+
+        <!-- Conditions checklist -->
+        <div id="hhLetter_conditions" style="margin-bottom:16px;font-family:Arial,sans-serif;font-size:.88rem"></div>
+
+        <!-- Service type -->
+        <div id="hhLetter_svctype" style="margin-bottom:16px;font-family:Arial,sans-serif;font-size:.88rem"></div>
+
+        <!-- Indemnification paragraph -->
+        <div style="margin-bottom:16px;font-family:Arial,sans-serif;font-size:.88rem;text-align:justify">
+          AMT Imaging Solutions LLC is willing to provide the service under these conditions. However, Customer solely assumes all liability and shall indemnify AMT Imaging Solutions LLC, its members, employees, contractors, and agents for any damages, whether direct, indirect, consequential, special, or incidental, including any costs of litigation (e.g., attorneys' fees, discovery costs, etc.), resulting from any occurrence arising in connection with service performed under these conditions, except for damages resulting from AMT Imaging Solutions LLC's sole negligence. At the request of AMT Imaging Solutions LLC, Customer shall provide AMT, at Customer's cost, with a legal defense for any third-party claim against AMT for damages that Customer is liable for under the previous sentence.
+        </div>
+
+        <!-- Notes -->
+        <div id="hhLetter_notes" style="margin-bottom:16px;font-family:Arial,sans-serif;font-size:.88rem"></div>
+
+        <!-- Acceptance paragraph -->
+        <div style="margin-bottom:20px;font-family:Arial,sans-serif;font-size:.88rem">
+          If this agreement is acceptable to you, please sign the acceptance below and return a signed copy to AMT Imaging Solutions LLC via email at mike.jackson@amtimagingsolutions.com.
+        </div>
+
+        <!-- Sincerely -->
+        <div style="margin-bottom:32px;font-family:Arial,sans-serif;font-size:.88rem">
+          <div>Sincerely,</div>
+          <div style="margin-top:24px;border-top:1px solid #333;width:260px;padding-top:4px">
+            <div id="hhLetter_tech" style="font-weight:700">Michael Jackson</div>
+            <div>Field Service Engineer</div>
+            <div>AMT Imaging Solutions LLC</div>
+          </div>
+        </div>
+
+        <!-- Signature block -->
+        <div style="border-top:2px solid #0a1628;padding-top:14px;font-family:Arial,sans-serif;font-size:.85rem">
+          <div style="font-weight:700;margin-bottom:12px;color:#0a1628">CUSTOMER ACCEPTANCE:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <div style="border-bottom:1px solid #333;height:36px;margin-bottom:4px"></div>
+              <div style="font-size:.75rem;color:#555">Print Name</div>
+            </div>
+            <div>
+              <div style="border-bottom:1px solid #333;height:36px;margin-bottom:4px"></div>
+              <div style="font-size:.75rem;color:#555">Signature</div>
+            </div>
+            <div>
+              <div style="border-bottom:1px solid #333;height:36px;margin-bottom:4px"></div>
+              <div style="font-size:.75rem;color:#555">Title</div>
+            </div>
+            <div>
+              <div style="border-bottom:1px solid #333;height:36px;margin-bottom:4px"></div>
+              <div style="font-size:.75rem;color:#555">Date</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="margin-top:20px;padding-top:10px;border-top:1px solid #ccc;font-size:.7rem;color:#777;font-family:Arial,sans-serif;display:flex;justify-content:space-between;flex-wrap:wrap;gap:4px">
+          <span>Hold Harmless Agreement · AMT Imaging Solutions LLC</span>
+          <span>Effective Date: <span id="hhLetter_effdate"></span></span>
+          <span>Page 1 of 1</span>
+        </div>
+
+      </div><!-- end letter preview -->
     </div>
+  </div>
+
+  </div>
   </div>
 </div>
 
@@ -815,6 +917,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div style="display:flex;gap:6px;align-items:center">
         <span id="explorerLoading" style="font-size:.72rem;color:rgba(255,255,255,.6);display:none">⏳ Loading…</span>
         <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:5px 10px;min-height:0;font-size:.72rem" onclick="refreshExplorer()">🔄 Refresh</button>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:5px 10px;min-height:0;font-size:.72rem" onclick="openGHSettings()">⚙️ GitHub Settings</button>
       </div>
     </div>
     <!-- Breadcrumb -->
@@ -1901,7 +2004,10 @@ const GH={
   branch:'main',
   manualsRoot:'Manuals',
   // GitHub Pages base — files served with correct MIME types (htm=HTML, pdf=inline)
-  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App/Manuals'
+  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App/Manuals',
+  // Optional: GitHub Personal Access Token (read:contents only) to raise API limit
+  // Set via: localStorage.setItem('amt_gh_token', 'ghp_yourtoken')
+  get token(){ return localStorage.getItem('amt_gh_token')||''; }
 };
 // GitHub raw content base URL (bypasses CORS for public repos)
 function ghApiUrl(path){
@@ -1935,6 +2041,14 @@ function ghManualUrl(manualPath){
     return GH.pages + '/' + encodedPath;
   }
   return 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
+}
+
+// Build manual link HTML — shows path tip if file may not exist yet
+function ghManualLink(manualPath, label, style){
+  if(!manualPath) return '';
+  const url = ghManualUrl(manualPath);
+  const tip = 'Upload to: Manuals/' + manualPath;
+  return '<a href="'+url+'" target="_blank" rel="noopener" title="'+tip+'" style="'+(style||'font-size:.78rem;color:var(--blue2)')+'">'+label+'</a>';
 }
 const FALLBACK_FOLDERS=[
   {name:'GE',      icon:'🟦',path:'GE'},
@@ -2318,7 +2432,25 @@ function renderErrCodeList(){
 // FILE EXPLORER (GitHub dynamic loading)
 // ════════════════════════════════════════════════════
 let explorerStack = []; // breadcrumb stack [{name, path}]
-let explorerCache = {}; // cache loaded directories
+// ── Persistent explorer cache (localStorage, 24hr TTL) ──
+const EXPLORER_CACHE_KEY = 'amt_explorer_cache_v30';
+const EXPLORER_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+function loadExplorerCache(){
+  try {
+    const raw = localStorage.getItem(EXPLORER_CACHE_KEY);
+    if(!raw) return {};
+    const obj = JSON.parse(raw);
+    const now = Date.now();
+    // Remove expired entries
+    Object.keys(obj).forEach(k=>{ if(obj[k].ts && now - obj[k].ts > EXPLORER_CACHE_TTL) delete obj[k]; });
+    return obj;
+  } catch(e){ return {}; }
+}
+function saveExplorerCache(cache){
+  try { localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache)); } catch(e){}
+}
+let explorerCache = loadExplorerCache();
 
 
 
@@ -2351,19 +2483,18 @@ async function loadExplorer(path){
     }
   }
 
-  // Check cache first
-  if(explorerCache[path||'']){
-    renderExplorerItems(explorerCache[path||''], path||'');
+  // Check persistent cache first
+  if(explorerCache[path||''] && explorerCache[path||''].data){
+    renderExplorerItems(explorerCache[path||''].data, path||'');
     if(loading) loading.style.display='none';
     return;
   }
 
   try {
     const url = ghApiUrl(path);
-    const resp = await fetch(url, {
-      headers:{ 'Accept':'application/vnd.github.v3+json' },
-      cache:'no-cache'
-    });
+    const headers = { 'Accept':'application/vnd.github.v3+json' };
+    if(GH.token) headers['Authorization'] = 'Bearer '+GH.token;
+    const resp = await fetch(url, { headers, cache:'no-cache' });
 
     if(resp.status===403){
       // Rate limited — show fallback
@@ -2382,7 +2513,8 @@ async function loadExplorer(path){
       throw new Error('Unexpected response from GitHub');
     }
 
-    explorerCache[path||''] = items;
+    explorerCache[path||''] = {data: items, ts: Date.now()};
+    saveExplorerCache(explorerCache);
     renderExplorerItems(items, path||'');
 
   } catch(err) {
@@ -2524,6 +2656,7 @@ function navToDepth(idx){
 
 function refreshExplorer(){
   explorerCache = {};
+  saveExplorerCache({});
   explorerStack = [];
   const bc = document.getElementById('explorerBreadcrumb');
   if(bc) bc.style.display='none';
@@ -3294,18 +3427,295 @@ function suggestPartFromJob(job){
 }
 
 // Print hold harmless
+function updateHHPreview(){
+  const date     = document.getElementById('hh_date')?.value;
+  const contact  = document.getElementById('hh_contact')?.value || 'Customer';
+  const customer = document.getElementById('hh_customer')?.value || '[Customer Name]';
+  const system   = document.getElementById('hh_system')?.value || '[MRI System]';
+  const svcdate  = document.getElementById('hh_svcdate')?.value;
+  const tech     = document.getElementById('hh_tech')?.value || 'Michael Jackson';
+  const notes    = document.getElementById('hh_notes')?.value;
+
+  // Date
+  const fmt = d => d ? new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}) : '__/__/____';
+  const el = id => document.getElementById(id);
+  if(el('hhLetter_date'))    el('hhLetter_date').textContent  = fmt(date);
+  if(el('hhLetter_effdate')) el('hhLetter_effdate').textContent = fmt(date);
+  if(el('hhLetter_re'))      el('hhLetter_re').innerHTML      = '<strong>Re:</strong> '+system+': '+customer;
+  if(el('hhLetter_salutation')) el('hhLetter_salutation').textContent = 'Dear '+contact+',';
+  if(el('hhLetter_tech'))    el('hhLetter_tech').textContent  = tech;
+
+  // Body paragraph
+  if(el('hhLetter_body1')){
+    const svcdateStr = svcdate ? 'on or about '+fmt(svcdate) : 'on the scheduled service date';
+    el('hhLetter_body1').textContent =
+      customer+' has requested that AMT Imaging Solutions LLC perform service on the '+system+
+      ' at the Customer site referenced above '+svcdateStr+
+      ', under the following conditions (check all that apply):';
+  }
+
+  // Conditions checklist
+  const conditions = [
+    {id:'hh_c1', text:'Site has no previous repair history with AMT Imaging Solutions.'},
+    {id:'hh_c2', text:"The Customer’s MRI has had a history of spontaneous quenches with reasons unknown."},
+    {id:'hh_c3', text:"The helium level in Customer’s MRI is below the manufacturer’s specified minimum level."},
+    {id:'hh_c4', text:'Parts being installed are not supplied by AMT Imaging Solutions.'},
+    {id:'hh_c5', text:"The condition of the MRI unit is such that the Customer has requested that AMT perform a Ramp, De-ice, and/or Fill in a manner inconsistent with the MRI’s original design mechanism."},
+    {id:'hh_c6', text:'Pre-existing equipment defects, damage, or wear that may affect the outcome of service.'},
+    {id:'hh_c7', text:'Customer has declined recommended repairs or upgrades prior to this service.'},
+  ];
+  if(el('hhLetter_conditions')){
+    el('hhLetter_conditions').innerHTML = conditions.map(c=>{
+      const checked = document.getElementById(c.id)?.checked;
+      const box = checked
+        ? '<span style="display:inline-block;width:14px;height:14px;border:1px solid #333;background:#0a1628;color:white;font-size:10px;text-align:center;line-height:14px;margin-right:8px;flex-shrink:0">&#x2713;</span>'
+        : '<span style="display:inline-block;width:14px;height:14px;border:1px solid #333;margin-right:8px;flex-shrink:0"></span>';
+      return '<div style="display:flex;align-items:flex-start;margin-bottom:6px">'+box+'<span>'+c.text+'</span></div>';
+    }).join('');
+  }
+
+  // Service type
+  const svcs = [
+    {id:'hh_s1',label:'Ramp / De-ice'},{id:'hh_s2',label:'Helium Fill'},
+    {id:'hh_s3',label:'Repair Service'},{id:'hh_s4',label:'Preventive Maintenance'},
+    {id:'hh_s5',label:'System Installation'},
+  ];
+  const checkedSvcs = svcs.filter(s=>document.getElementById(s.id)?.checked).map(s=>s.label);
+  if(el('hhLetter_svctype') && checkedSvcs.length){
+    el('hhLetter_svctype').innerHTML =
+      '<strong>Service Type(s):</strong> '+checkedSvcs.map(s=>'<strong>&#x2611; '+s+'</strong>').join(' &nbsp; ');
+  } else if(el('hhLetter_svctype')){
+    el('hhLetter_svctype').innerHTML='';
+  }
+
+  // Notes
+  if(el('hhLetter_notes')){
+    el('hhLetter_notes').innerHTML = notes
+      ? '<strong>Additional Notes:</strong> '+notes : '';
+  }
+}
+
+function generateHoldHarmless(){
+  // Scroll to builder
+  document.getElementById('hhBuilder')?.scrollIntoView({behavior:'smooth',block:'start'});
+  // Set today as default date if empty
+  const d = document.getElementById('hh_date');
+  if(d && !d.value) d.value = new Date().toISOString().slice(0,10);
+  updateHHPreview();
+}
+
+// Auto-update preview when any HH field changes
+// ── GitHub Settings & Scan functions ──
+function openGHSettings(){
+  const tokenInput = document.getElementById('gh_token_input');
+  if(tokenInput) tokenInput.value = GH.token || '';
+  const status = document.getElementById('gh_token_status');
+  if(status) status.textContent = GH.token ? '✅ Token is set (' + GH.token.slice(0,8)+'...)' : '⚠️ No token set — limited to 60 API calls/hour';
+  openModal('ghSettingsModal');
+}
+
+function saveGHToken(){
+  const val = (document.getElementById('gh_token_input')?.value||'').trim();
+  if(val){
+    localStorage.setItem('amt_gh_token', val);
+    showToast('✅ GitHub token saved — reload Manuals for higher rate limits');
+  } else {
+    localStorage.removeItem('amt_gh_token');
+    showToast('GitHub token cleared');
+  }
+  closeModal('ghSettingsModal');
+}
+
+async function scanGitHubForManuals(){
+  const res = document.getElementById('gh_scan_results');
+  if(res) res.textContent = '⏳ Scanning GitHub repo…';
+  
+  const headers = {'Accept':'application/vnd.github.v3+json'};
+  if(GH.token) headers['Authorization'] = 'Bearer '+GH.token;
+  
+  try {
+    // Use git tree API to get ALL files recursively in one call
+    const treeUrl = 'https://api.github.com/repos/'+GH.org+'/'+GH.repo+'/git/trees/'+GH.branch+'?recursive=1';
+    const resp = await fetch(treeUrl, {headers});
+    
+    if(resp.status===403){
+      if(res) res.innerHTML = '❌ GitHub API rate limit hit. <strong>Set a token in GitHub Settings</strong> to get 5,000 calls/hour instead of 60.';
+      return;
+    }
+    if(!resp.ok){ if(res) res.textContent='❌ GitHub error: '+resp.status; return; }
+    
+    const data = await resp.json();
+    const allFiles = (data.tree||[]).filter(f=>f.type==='blob');
+    
+    // Filter to Manuals/ only
+    const manualFiles = allFiles.filter(f=>f.path.startsWith('Manuals/'));
+    
+    if(res) res.innerHTML = '✅ Found <strong>'+manualFiles.length+' files</strong> in Manuals folder. Clearing cache…';
+    
+    // Clear and rebuild cache
+    explorerCache = {};
+    
+    // Group by directory
+    const dirs = {};
+    manualFiles.forEach(f=>{
+      const parts = f.path.replace('Manuals/','').split('/');
+      const dir = parts.length > 1 ? parts.slice(0,-1).join('/') : '';
+      if(!dirs[dir]) dirs[dir] = [];
+      dirs[dir].push({name:parts[parts.length-1], path:f.path, type:'blob', size:f.size});
+    });
+    
+    // Store in explorer cache format
+    Object.keys(dirs).forEach(dir=>{
+      const items = dirs[dir].map(f=>({
+        name: f.name,
+        type: 'file',
+        size: f.size,
+        download_url: 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+f.path,
+        path: f.path
+      }));
+      explorerCache[dir] = {data: items, ts: Date.now()};
+    });
+    saveExplorerCache(explorerCache);
+    
+    const fileList = manualFiles.map(f=>'  '+f.path.replace('Manuals/','')).join('<br>');
+    if(res) res.innerHTML = 
+      '✅ <strong>'+manualFiles.length+' files</strong> indexed from GitHub:<br><br>'+
+      '<div style="max-height:200px;overflow-y:auto;font-family:monospace;font-size:.72rem;background:var(--gray);padding:8px;border-radius:4px;line-height:1.6">'+fileList+'</div><br>'+
+      '<button class="btn btn-primary btn-sm" onclick="setKBTab(&quot;files&quot;);loadExplorer(&quot;&quot;);closeModal(&quot;ghSettingsModal&quot;)">📁 Open File Explorer</button>';
+      
+  } catch(e){
+    if(res) res.textContent = '❌ Error: '+e.message;
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // Set defaults
+  const dateEl = document.getElementById('hh_date');
+  if(dateEl) dateEl.value = new Date().toISOString().slice(0,10);
+  
+  // Inject logo into letter header
+  const img = document.getElementById('hhLogoLetter');
+  if(img && typeof LOGO_B64!=='undefined') img.src='data:image/png;base64,'+LOGO_B64;
+
+  ['hh_date','hh_contact','hh_customer','hh_system','hh_svcdate','hh_tech','hh_notes',
+   'hh_c1','hh_c2','hh_c3','hh_c4','hh_c5','hh_c6','hh_c7',
+   'hh_s1','hh_s2','hh_s3','hh_s4','hh_s5'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('change', updateHHPreview);
+    if(el && el.tagName==='INPUT' && el.type!=='checkbox' && el.type!=='date')
+      el.addEventListener('input', updateHHPreview);
+    if(el && el.tagName==='TEXTAREA') el.addEventListener('input', updateHHPreview);
+  });
+  updateHHPreview();
+});
+
 function printHoldHarmless(){
-  const section = document.getElementById('holdHarmlessSection');
-  if(!section){ alert('Hold Harmless section not found.'); return; }
-  const w = window.open('','_blank','width=800,height=1000');
-  w.document.write('<html><head><title>AMT Imaging — Hold Harmless Agreement</title>'
-    +'<style>body{font-family:Georgia,serif;margin:40px;line-height:1.65}h1{font-size:1.2rem;text-align:center}p{margin:.7em 0}ul{padding-left:20px}'
-    +'table{width:100%;border-collapse:collapse}.sig{border-top:1px solid #000;padding-top:4px;margin-top:40px;font-size:.85rem}'
-    +'@media print{body{margin:20px}button{display:none}}</style></head>'
-    +'<body>'+section.innerHTML
-    +'<script>window.onload=function(){window.print();window.close();}<\/script>'
-    +'</body></html>');
+  updateHHPreview();
+  const letter = document.getElementById('hhLetterPreview');
+  if(!letter){ alert('Letter preview not found.'); return; }
+  
+  const logoSrc = document.getElementById('hhLogoLetter')?.src||'';
+  const letterHTML = letter.innerHTML.replace(
+    /src="data:image\/png;base64,[^"]+"/,
+    'src="'+logoSrc+'"'
+  );
+  
+  const w = window.open('','_blank','width=820,height=1050');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions — Hold Harmless Agreement</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.7}'+
+    'img{max-height:65px;object-fit:contain}'+
+    '@media print{body{padding:20px}button{display:none!important}@page{margin:1in}}'+
+    '</style></head><body>'+
+    letterHTML+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
   w.document.close();
+}
+
+// ── GitHub Settings & Scan functions ──
+function openGHSettings(){
+  const tokenInput = document.getElementById('gh_token_input');
+  if(tokenInput) tokenInput.value = GH.token || '';
+  const status = document.getElementById('gh_token_status');
+  if(status) status.textContent = GH.token ? '✅ Token is set (' + GH.token.slice(0,8)+'...)' : '⚠️ No token set — limited to 60 API calls/hour';
+  openModal('ghSettingsModal');
+}
+
+function saveGHToken(){
+  const val = (document.getElementById('gh_token_input')?.value||'').trim();
+  if(val){
+    localStorage.setItem('amt_gh_token', val);
+    showToast('✅ GitHub token saved — reload Manuals for higher rate limits');
+  } else {
+    localStorage.removeItem('amt_gh_token');
+    showToast('GitHub token cleared');
+  }
+  closeModal('ghSettingsModal');
+}
+
+async function scanGitHubForManuals(){
+  const res = document.getElementById('gh_scan_results');
+  if(res) res.textContent = '⏳ Scanning GitHub repo…';
+  
+  const headers = {'Accept':'application/vnd.github.v3+json'};
+  if(GH.token) headers['Authorization'] = 'Bearer '+GH.token;
+  
+  try {
+    // Use git tree API to get ALL files recursively in one call
+    const treeUrl = 'https://api.github.com/repos/'+GH.org+'/'+GH.repo+'/git/trees/'+GH.branch+'?recursive=1';
+    const resp = await fetch(treeUrl, {headers});
+    
+    if(resp.status===403){
+      if(res) res.innerHTML = '❌ GitHub API rate limit hit. <strong>Set a token in GitHub Settings</strong> to get 5,000 calls/hour instead of 60.';
+      return;
+    }
+    if(!resp.ok){ if(res) res.textContent='❌ GitHub error: '+resp.status; return; }
+    
+    const data = await resp.json();
+    const allFiles = (data.tree||[]).filter(f=>f.type==='blob');
+    
+    // Filter to Manuals/ only
+    const manualFiles = allFiles.filter(f=>f.path.startsWith('Manuals/'));
+    
+    if(res) res.innerHTML = '✅ Found <strong>'+manualFiles.length+' files</strong> in Manuals folder. Clearing cache…';
+    
+    // Clear and rebuild cache
+    explorerCache = {};
+    
+    // Group by directory
+    const dirs = {};
+    manualFiles.forEach(f=>{
+      const parts = f.path.replace('Manuals/','').split('/');
+      const dir = parts.length > 1 ? parts.slice(0,-1).join('/') : '';
+      if(!dirs[dir]) dirs[dir] = [];
+      dirs[dir].push({name:parts[parts.length-1], path:f.path, type:'blob', size:f.size});
+    });
+    
+    // Store in explorer cache format
+    Object.keys(dirs).forEach(dir=>{
+      const items = dirs[dir].map(f=>({
+        name: f.name,
+        type: 'file',
+        size: f.size,
+        download_url: 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+f.path,
+        path: f.path
+      }));
+      explorerCache[dir] = {data: items, ts: Date.now()};
+    });
+    saveExplorerCache(explorerCache);
+    
+    const fileList = manualFiles.map(f=>'  '+f.path.replace('Manuals/','')).join('<br>');
+    if(res) res.innerHTML = 
+      '✅ <strong>'+manualFiles.length+' files</strong> indexed from GitHub:<br><br>'+
+      '<div style="max-height:200px;overflow-y:auto;font-family:monospace;font-size:.72rem;background:var(--gray);padding:8px;border-radius:4px;line-height:1.6">'+fileList+'</div><br>'+
+      '<button class="btn btn-primary btn-sm" onclick="setKBTab(&quot;files&quot;);loadExplorer(&quot;&quot;);closeModal(&quot;ghSettingsModal&quot;)">📁 Open File Explorer</button>';
+      
+  } catch(e){
+    if(res) res.textContent = '❌ Error: '+e.message;
+  }
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -3375,6 +3785,76 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div></div>
 </div>
 
+
+<!-- GITHUB SETTINGS MODAL -->
+<div id="ghSettingsModal" class="modal" style="display:none">
+  <div class="modal-content">
+    <div class="modal-header"><strong>⚙️ GitHub / Manuals Settings</strong><button class="modal-close" onclick="closeModal('ghSettingsModal')">✕</button></div>
+    <div class="modal-body">
+
+      <div class="alert alert-info" style="font-size:.8rem;margin-bottom:12px">
+        <strong>Why set a token?</strong> GitHub's public API allows 60 requests/hour unauthenticated.
+        With a read-only Personal Access Token you get 5,000/hour — meaning all your folders load reliably every time.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">GitHub Personal Access Token (read-only)</label>
+        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        <div style="font-size:.72rem;color:var(--text2);margin-top:4px">
+          Create at: <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">github.com/settings/tokens</a>
+          → Select scope: <strong>repo → contents (read)</strong> only.
+        </div>
+      </div>
+
+      <div id="gh_token_status" style="font-size:.8rem;margin-top:6px"></div>
+
+      <hr style="margin:14px 0">
+      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">📁 Expected Manuals Folder Structure</div>
+      <div style="font-size:.77rem;background:var(--gray);border-radius:6px;padding:10px;font-family:monospace;line-height:1.8;overflow-x:auto">
+        Manuals/<br>
+        ├── GE/<br>
+        │&nbsp;&nbsp;&nbsp;├── index.htm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Start here page<br>
+        │&nbsp;&nbsp;&nbsp;├── RF_Amp_Service.htm<br>
+        │&nbsp;&nbsp;&nbsp;├── Gradient_Service.htm<br>
+        │&nbsp;&nbsp;&nbsp;├── Cryo_Service.htm<br>
+        │&nbsp;&nbsp;&nbsp;├── Table_Service.htm<br>
+        │&nbsp;&nbsp;&nbsp;├── Calibration.htm<br>
+        │&nbsp;&nbsp;&nbsp;├── MGD_APS_AGP_Service.pdf<br>
+        │&nbsp;&nbsp;&nbsp;└── Parts_Manuals/<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Excite_FRU_2345481r13.pdf<br>
+        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── HDx_FRU_5166012r14.pdf<br>
+        ├── Siemens/<br>
+        │&nbsp;&nbsp;&nbsp;├── Gradient.htm<br>
+        │&nbsp;&nbsp;&nbsp;└── (your Siemens service files)<br>
+        ├── Injectors/<br>
+        │&nbsp;&nbsp;&nbsp;└── Stellant_Service.htm<br>
+        ├── Error Codes and Troubleshooting/<br>
+        │&nbsp;&nbsp;&nbsp;└── (your error code docs)<br>
+        └── CT/<br>
+      </div>
+
+      <hr style="margin:14px 0">
+      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">🔍 Scan GitHub for New Files</div>
+      <div style="font-size:.8rem;color:var(--text2);margin-bottom:8px">
+        Scan your repo and automatically add any new manuals found to the Knowledge Base.
+      </div>
+      <button class="btn btn-primary" onclick="scanGitHubForManuals()" style="width:100%;margin-bottom:6px">🔍 Scan GitHub Manuals Now</button>
+      <div id="gh_scan_results" style="font-size:.78rem;color:var(--text2);margin-top:6px"></div>
+
+      <hr style="margin:14px 0">
+      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">🗑 Cache Management</div>
+      <div style="font-size:.8rem;color:var(--text2);margin-bottom:8px">
+        Explorer listings are cached locally for 24 hours. Clear to force fresh reload from GitHub.
+      </div>
+      <button class="btn btn-outline" onclick="refreshExplorer();closeModal('ghSettingsModal')" style="width:100%">🔄 Clear Cache &amp; Refresh Now</button>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="saveGHToken()">💾 Save Token</button>
+      <button class="btn btn-outline" onclick="closeModal('ghSettingsModal')">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- ADD PART MODAL -->
 <div id="addPartModal" class="modal" style="display:none">
