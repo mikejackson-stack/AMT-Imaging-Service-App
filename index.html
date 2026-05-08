@@ -1760,7 +1760,9 @@ const GH={
   org:'mikejackson-stack',
   repo:'AMT-Imaging-Service-App',
   branch:'main',
-  manualsRoot:'Manuals'
+  manualsRoot:'Manuals',
+  // GitHub Pages base — files served with correct MIME types (htm=HTML, pdf=inline)
+  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App/Manuals'
 };
 // GitHub raw content base URL (bypasses CORS for public repos)
 function ghApiUrl(path){
@@ -1774,34 +1776,26 @@ function ghWebUrl(filePath){
   return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+(filePath||'');
 }
 
-// Smart URL: .htm → htmlpreview, .pdf → Google Docs viewer, else → GitHub blob
+// Smart URL: uses GitHub Pages URL (correct MIME types for htm + pdf)
 function ghOpenUrl(filePath, downloadUrl){
-  const ext = filePath.split('.').pop().toLowerCase();
-  const rawUrl = downloadUrl || ('https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+filePath);
-  if(ext === 'htm' || ext === 'html'){
-    // htmlpreview.github.io properly renders .htm files from GitHub
-    return 'https://htmlpreview.github.io/?'+rawUrl;
+  // Use GitHub Pages URL — serves .htm as HTML and .pdf inline (correct MIME types)
+  if(GH.pages){
+    // Encode spaces in path segments for valid URLs
+    const encodedPath = filePath.split('/').map(seg => encodeURIComponent(seg)).join('/');
+    return GH.pages + '/' + encodedPath;
   }
-  if(ext === 'pdf'){
-    // GitHub blob view renders PDFs inline natively
-    return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+filePath;
-  }
-  // Everything else: GitHub blob view
-  return ghWebUrl(filePath);
+  return downloadUrl || ghRawUrl(filePath);
 }
 
 // Build correct manual URL for error code DB entries (path is relative to Manuals/)
 function ghManualUrl(manualPath){
-  if(!manualPath) return null;
-  const ext = manualPath.split('.').pop().toLowerCase();
-  const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
-  if(ext === 'htm' || ext === 'html'){
-    return 'https://htmlpreview.github.io/?'+rawUrl;
+  if(!manualPath) return '#';
+  // GitHub Pages serves with correct MIME types
+  if(GH.pages){
+    const encodedPath = manualPath.split('/').map(seg => encodeURIComponent(seg)).join('/');
+    return GH.pages + '/' + encodedPath;
   }
-  if(ext === 'pdf'){
-    return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
-  }
-  return rawUrl;
+  return 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+GH.manualsRoot+'/'+manualPath;
 }
 const FALLBACK_FOLDERS=[
   {name:'GE',      icon:'🟦',path:'GE'},
@@ -2228,7 +2222,7 @@ function renderExplorerItems(items, currentPath){
       const ext = f.name.split('.').pop().toLowerCase();
       const icon = ext==='pdf' ? '📕' : (ext==='htm'||ext==='html') ? '🌐' : (ext==='doc'||ext==='docx') ? '📝' : '📄';
       const filePath = currentPath ? currentPath+'/'+f.name : f.name;
-      // Use smart URL: .htm → htmlpreview, .pdf → GitHub blob viewer, else → blob
+      // Use GitHub Pages URL — opens htm as HTML, pdf inline
       const openUrl = ghOpenUrl(filePath, f.download_url);
       const sizeTxt = f.size ? formatBytes(f.size) : '';
       html += '<li><a class="file-item" href="'+openUrl+'" target="_blank" rel="noopener noreferrer">'
