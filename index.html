@@ -894,30 +894,33 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 <!-- ══ MANUALS ══ -->
 <div id="panel-manuals" class="panel">
-  <div class="sec-title">📚 Knowledge Base &amp; Manuals</div>
-
-  <!-- Search -->
-  <div class="search-box"><span class="search-ic">🔍</span>
-    <input type="text" id="errSearch" placeholder="Search error codes, symptoms, fixes, model…" oninput="kbSearch(this.value)">
+  <!-- Compact header row -->
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+    <div class="search-box" style="flex:1;min-width:200px;margin:0"><span class="search-ic">🔍</span>
+      <input type="text" id="errSearch" placeholder="Search error codes, parts, manuals…" oninput="kbSearch(this.value)" style="width:100%">
+    </div>
   </div>
-  <div id="errResults" style="margin-bottom:12px"></div>
+  <div id="errResults" style="margin-bottom:8px"></div>
 
   <!-- Sub-tabs -->
   <div style="display:flex;overflow-x:auto;scrollbar-width:none;background:var(--gray);border-radius:var(--r) var(--r) 0 0;border-bottom:2px solid var(--gray2);margin-bottom:0">
-    <button class="mst-btn active" id="kb-tab-files" onclick="setKBTab('files')" style="font-size:.76rem;padding:10px 14px">📁 File Explorer</button>
-    <button class="mst-btn" id="kb-tab-parts" onclick="setKBTab('parts')" style="font-size:.76rem;padding:10px 14px">🔩 Parts Search</button>
-    <button class="mst-btn" id="kb-tab-kb" onclick="setKBTab('kb')" style="font-size:.76rem;padding:10px 14px">🧠 Knowledge Base</button>
-    <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.76rem;padding:10px 14px">⚠️ Error Codes</button>
+    <button class="mst-btn active" id="kb-tab-files" onclick="setKBTab('files')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">📁 Manuals</button>
+    <button class="mst-btn" id="kb-tab-parts" onclick="setKBTab('parts')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🔩 Parts</button>
+    <button class="mst-btn" id="kb-tab-kb" onclick="setKBTab('kb')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🧠 Knowledge Base</button>
+    <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">⚠️ Error Codes</button>
   </div>
 
   <!-- FILE EXPLORER -->
-  <div id="kbp-files" class="card" style="border-radius:0 0 var(--r) var(--r);margin-bottom:14px">
-    <div class="card-header" id="explorerHeader" style="display:flex;align-items:center;justify-content:space-between">
-      <span id="explorerTitle">📁 AMT Manuals Library</span>
-      <div style="display:flex;gap:6px;align-items:center">
-        <span id="explorerLoading" style="font-size:.72rem;color:rgba(255,255,255,.6);display:none">⏳ Loading…</span>
-        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:5px 10px;min-height:0;font-size:.72rem" onclick="refreshExplorer()">🔄 Refresh</button>
-        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:white;padding:5px 10px;min-height:0;font-size:.72rem" onclick="openGHSettings()">⚙️ GitHub Settings</button>
+  <div id="kbp-files" class="card" style="border-radius:0 0 var(--r) var(--r);margin-bottom:14px;overflow:hidden">
+    <div class="card-header" id="explorerHeader" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;padding:10px 14px">
+      <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+        <span id="explorerTitle" style="font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:white;font-weight:700">📁 AMT Manuals Library</span>
+        <span id="explorerLoading" style="font-size:.7rem;color:rgba(255,255,255,.6);display:none;flex-shrink:0">⏳</span>
+        <span id="ghStatusDot" style="width:8px;height:8px;border-radius:50%;background:#9ca3af;display:inline-block;flex-shrink:0;cursor:pointer;transition:background .3s" title="GitHub: not connected — click to set up" onclick="openGHSettings()"></span>
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button onclick="refreshExplorer()" style="background:rgba(255,255,255,.15);color:white;border:none;padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer">🔄</button>
+        <button onclick="openGHSettings()" style="background:rgba(255,255,255,.15);color:white;border:none;padding:5px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;font-weight:600">⚙️ GitHub</button>
       </div>
     </div>
     <!-- Breadcrumb -->
@@ -1934,7 +1937,17 @@ function saveEdit(){
 function promptDelete(id){const j=jobs.find(x=>x.id===id);if(!j)return;deleteTarget=id;document.getElementById('deleteJobInfo').textContent=`${j.site} — ${j.type} — ${j.date||'No date'}`;openModal('deleteModal');}
 function confirmDelete(){ if(!writeGuard('Delete Job')) return; jobs=jobs.filter(x=>x.id!==deleteTarget);saveJobs();closeModal('deleteModal');renderJobs();renderDashboard();}
 
-function openModal(id){document.getElementById(id).classList.add('open');}
+function openModal(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  // Handle both patterns: .modal-overlay (add class) and standalone modal (show flex)
+  if(el.classList.contains('modal-overlay')){
+    el.classList.add('open');
+  } else {
+    el.style.cssText += ';display:flex !important;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:900;align-items:center;justify-content:center;padding:16px';
+  }
+  document.body.style.overflow='hidden';
+}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
 
@@ -2457,6 +2470,15 @@ let explorerCache = loadExplorerCache();
 // URL helpers defined above
 
 
+function setGHStatusDot(state){ // 'ok','error','loading','idle'
+  const dot = document.getElementById('ghStatusDot');
+  if(!dot) return;
+  const colors = {ok:'#22c55e', error:'#ef4444', loading:'#f59e0b', idle:'#9ca3af'};
+  const labels = {ok:'Connected', error:'Connection error — click to fix', loading:'Loading…', idle:'Not connected — click to set up'};
+  dot.style.background = colors[state]||'#9ca3af';
+  dot.title = labels[state]||state;
+}
+
 async function loadExplorer(path){
   const title = document.getElementById('explorerTitle');
   const loading = document.getElementById('explorerLoading');
@@ -2466,7 +2488,8 @@ async function loadExplorer(path){
   // Update header
   title.textContent = path ? '📁 '+path.split('/').pop() : '📁 AMT Manuals Library';
   if(loading) loading.style.display='inline';
-  grid.innerHTML='<div style="padding:16px;color:var(--text2);text-align:center">⏳ Loading from GitHub…</div>';
+  setGHStatusDot('loading');
+  grid.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:1.5rem;margin-bottom:8px">⏳</div><div style="font-size:.85rem;color:var(--text2)">Connecting to GitHub…</div></div>';
 
   // Update breadcrumb
   const bc = document.getElementById('explorerBreadcrumb');
@@ -2485,6 +2508,7 @@ async function loadExplorer(path){
 
   // Check persistent cache first
   if(explorerCache[path||''] && explorerCache[path||''].data){
+    setGHStatusDot('ok');
     renderExplorerItems(explorerCache[path||''].data, path||'');
     if(loading) loading.style.display='none';
     return;
@@ -2498,7 +2522,7 @@ async function loadExplorer(path){
 
     if(resp.status===403){
       // Rate limited — show fallback
-      throw new Error('GitHub API rate limit hit. Try again in 1 minute.');
+      throw new Error('GitHub API rate limit (60/hr exceeded). Click ⚙️ GitHub Settings to add a Personal Access Token for 5,000/hr.');
     }
     if(resp.status===404){
       throw new Error('Folder not found in GitHub repo. Check that "'+((path||GH.manualsRoot))+'" exists.');
@@ -2515,10 +2539,12 @@ async function loadExplorer(path){
 
     explorerCache[path||''] = {data: items, ts: Date.now()};
     saveExplorerCache(explorerCache);
+    setGHStatusDot('ok');
     renderExplorerItems(items, path||'');
 
   } catch(err) {
     console.warn('loadExplorer error:', err);
+    setGHStatusDot('error');
     if(!path){
       // Root failed — show clickable fallback folders
       grid.innerHTML =
@@ -3510,20 +3536,58 @@ function openGHSettings(){
   const tokenInput = document.getElementById('gh_token_input');
   if(tokenInput) tokenInput.value = GH.token || '';
   const status = document.getElementById('gh_token_status');
-  if(status) status.textContent = GH.token ? '✅ Token is set (' + GH.token.slice(0,8)+'...)' : '⚠️ No token set — limited to 60 API calls/hour';
+  if(status){
+    status.textContent = GH.token
+      ? '✅ Token saved: ' + GH.token.slice(0,8)+'...'
+      : '⚠️ No token — 60 API calls/hr limit applies';
+    status.style.color = GH.token ? 'var(--green2)' : 'var(--orange,#e65100)';
+  }
   openModal('ghSettingsModal');
+}
+
+async function testGHToken(){
+  const status = document.getElementById('gh_token_status');
+  const connStatus = document.getElementById('gh_connection_status');
+  if(status) { status.textContent = '⏳ Testing...'; status.style.color='var(--text2)'; }
+  const tokenVal = document.getElementById('gh_token_input')?.value?.trim() || GH.token;
+  const headers = {'Accept':'application/vnd.github.v3+json'};
+  if(tokenVal) headers['Authorization'] = 'Bearer '+tokenVal;
+  try {
+    const r = await fetch('https://api.github.com/repos/'+GH.org+'/'+GH.repo, {headers});
+    const data = await r.json();
+    if(r.ok){
+      const rateR = await fetch('https://api.github.com/rate_limit', {headers});
+      const rateData = await rateR.json();
+      const remaining = rateData?.rate?.remaining || '?';
+      const limit = rateData?.rate?.limit || '?';
+      if(status){
+        status.textContent = '✅ Connected! Rate limit: '+remaining+'/'+limit+' remaining';
+        status.style.color = 'var(--green2)';
+      }
+      if(connStatus){
+        connStatus.innerHTML = '<div class="alert alert-success" style="font-size:.78rem;margin:0">✅ <strong>GitHub connected</strong> — Repo: '+data.name+' · API calls remaining: '+remaining+'/'+limit+'</div>';
+      }
+    } else {
+      throw new Error(data.message || 'HTTP '+r.status);
+    }
+  } catch(e){
+    if(status){ status.textContent = '❌ '+e.message; status.style.color='var(--red,#dc2626)'; }
+    if(connStatus){ connStatus.innerHTML = '<div class="alert alert-warning" style="font-size:.78rem;margin:0">❌ Connection failed: '+e.message+'</div>'; }
+  }
 }
 
 function saveGHToken(){
   const val = (document.getElementById('gh_token_input')?.value||'').trim();
   if(val){
     localStorage.setItem('amt_gh_token', val);
-    showToast('✅ GitHub token saved — reload Manuals for higher rate limits');
+    showToast('✅ GitHub token saved! Testing connection…');
+    testGHToken();
   } else {
     localStorage.removeItem('amt_gh_token');
     showToast('GitHub token cleared');
+    const status = document.getElementById('gh_token_status');
+    if(status){ status.textContent='⚠️ No token — 60 API calls/hr limit applies'; status.style.color='var(--orange,#e65100)'; }
   }
-  closeModal('ghSettingsModal');
 }
 
 async function scanGitHubForManuals(){
@@ -3640,20 +3704,58 @@ function openGHSettings(){
   const tokenInput = document.getElementById('gh_token_input');
   if(tokenInput) tokenInput.value = GH.token || '';
   const status = document.getElementById('gh_token_status');
-  if(status) status.textContent = GH.token ? '✅ Token is set (' + GH.token.slice(0,8)+'...)' : '⚠️ No token set — limited to 60 API calls/hour';
+  if(status){
+    status.textContent = GH.token
+      ? '✅ Token saved: ' + GH.token.slice(0,8)+'...'
+      : '⚠️ No token — 60 API calls/hr limit applies';
+    status.style.color = GH.token ? 'var(--green2)' : 'var(--orange,#e65100)';
+  }
   openModal('ghSettingsModal');
+}
+
+async function testGHToken(){
+  const status = document.getElementById('gh_token_status');
+  const connStatus = document.getElementById('gh_connection_status');
+  if(status) { status.textContent = '⏳ Testing...'; status.style.color='var(--text2)'; }
+  const tokenVal = document.getElementById('gh_token_input')?.value?.trim() || GH.token;
+  const headers = {'Accept':'application/vnd.github.v3+json'};
+  if(tokenVal) headers['Authorization'] = 'Bearer '+tokenVal;
+  try {
+    const r = await fetch('https://api.github.com/repos/'+GH.org+'/'+GH.repo, {headers});
+    const data = await r.json();
+    if(r.ok){
+      const rateR = await fetch('https://api.github.com/rate_limit', {headers});
+      const rateData = await rateR.json();
+      const remaining = rateData?.rate?.remaining || '?';
+      const limit = rateData?.rate?.limit || '?';
+      if(status){
+        status.textContent = '✅ Connected! Rate limit: '+remaining+'/'+limit+' remaining';
+        status.style.color = 'var(--green2)';
+      }
+      if(connStatus){
+        connStatus.innerHTML = '<div class="alert alert-success" style="font-size:.78rem;margin:0">✅ <strong>GitHub connected</strong> — Repo: '+data.name+' · API calls remaining: '+remaining+'/'+limit+'</div>';
+      }
+    } else {
+      throw new Error(data.message || 'HTTP '+r.status);
+    }
+  } catch(e){
+    if(status){ status.textContent = '❌ '+e.message; status.style.color='var(--red,#dc2626)'; }
+    if(connStatus){ connStatus.innerHTML = '<div class="alert alert-warning" style="font-size:.78rem;margin:0">❌ Connection failed: '+e.message+'</div>'; }
+  }
 }
 
 function saveGHToken(){
   const val = (document.getElementById('gh_token_input')?.value||'').trim();
   if(val){
     localStorage.setItem('amt_gh_token', val);
-    showToast('✅ GitHub token saved — reload Manuals for higher rate limits');
+    showToast('✅ GitHub token saved! Testing connection…');
+    testGHToken();
   } else {
     localStorage.removeItem('amt_gh_token');
     showToast('GitHub token cleared');
+    const status = document.getElementById('gh_token_status');
+    if(status){ status.textContent='⚠️ No token — 60 API calls/hr limit applies'; status.style.color='var(--orange,#e65100)'; }
   }
-  closeModal('ghSettingsModal');
 }
 
 async function scanGitHubForManuals(){
@@ -3787,69 +3889,64 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 <!-- GITHUB SETTINGS MODAL -->
-<div id="ghSettingsModal" class="modal" style="display:none">
+<div id="ghSettingsModal" class="modal-overlay" style="display:none">
+<div class="modal" style="max-width:600px;border-radius:var(--r);max-height:90vh;overflow-y:auto">
   <div class="modal-content">
     <div class="modal-header"><strong>⚙️ GitHub / Manuals Settings</strong><button class="modal-close" onclick="closeModal('ghSettingsModal')">✕</button></div>
     <div class="modal-body">
 
-      <div class="alert alert-info" style="font-size:.8rem;margin-bottom:12px">
-        <strong>Why set a token?</strong> GitHub's public API allows 60 requests/hour unauthenticated.
-        With a read-only Personal Access Token you get 5,000/hour — meaning all your folders load reliably every time.
-      </div>
-
-      <div class="form-group">
-        <label class="form-label">GitHub Personal Access Token (read-only)</label>
-        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-        <div style="font-size:.72rem;color:var(--text2);margin-top:4px">
-          Create at: <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">github.com/settings/tokens</a>
-          → Select scope: <strong>repo → contents (read)</strong> only.
+      <!-- Token setup -->
+      <div style="background:var(--gray);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:6px;color:var(--navy)">🔑 GitHub Personal Access Token</div>
+        <div style="font-size:.76rem;color:var(--text2);margin-bottom:8px">
+          Without a token: <strong>60 API calls/hr</strong> (folders may fail to load)<br>
+          With a token: <strong>5,000/hr</strong> — all folders load every time.
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">Create token →</a> (select <strong>repo → contents: read</strong>)
+        </div>
+        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxx" style="margin-bottom:6px;font-family:monospace">
+        <div id="gh_token_status" style="font-size:.75rem;margin-bottom:8px;min-height:16px"></div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-success btn-sm" onclick="saveGHToken()" style="flex:1">💾 Save Token</button>
+          <button class="btn btn-outline btn-sm" onclick="testGHToken()" style="flex:1">🔌 Test Connection</button>
         </div>
       </div>
 
-      <div id="gh_token_status" style="font-size:.8rem;margin-top:6px"></div>
+      <!-- Status -->
+      <div id="gh_connection_status" style="margin-bottom:12px"></div>
 
-      <hr style="margin:14px 0">
-      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">📁 Expected Manuals Folder Structure</div>
-      <div style="font-size:.77rem;background:var(--gray);border-radius:6px;padding:10px;font-family:monospace;line-height:1.8;overflow-x:auto">
-        Manuals/<br>
-        ├── GE/<br>
-        │&nbsp;&nbsp;&nbsp;├── index.htm &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Start here page<br>
-        │&nbsp;&nbsp;&nbsp;├── RF_Amp_Service.htm<br>
-        │&nbsp;&nbsp;&nbsp;├── Gradient_Service.htm<br>
-        │&nbsp;&nbsp;&nbsp;├── Cryo_Service.htm<br>
-        │&nbsp;&nbsp;&nbsp;├── Table_Service.htm<br>
-        │&nbsp;&nbsp;&nbsp;├── Calibration.htm<br>
-        │&nbsp;&nbsp;&nbsp;├── MGD_APS_AGP_Service.pdf<br>
-        │&nbsp;&nbsp;&nbsp;└── Parts_Manuals/<br>
-        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── Excite_FRU_2345481r13.pdf<br>
-        │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── HDx_FRU_5166012r14.pdf<br>
-        ├── Siemens/<br>
-        │&nbsp;&nbsp;&nbsp;├── Gradient.htm<br>
-        │&nbsp;&nbsp;&nbsp;└── (your Siemens service files)<br>
-        ├── Injectors/<br>
-        │&nbsp;&nbsp;&nbsp;└── Stellant_Service.htm<br>
-        ├── Error Codes and Troubleshooting/<br>
-        │&nbsp;&nbsp;&nbsp;└── (your error code docs)<br>
-        └── CT/<br>
+      <!-- Scan -->
+      <div style="background:var(--gray);border-radius:8px;padding:12px;margin-bottom:12px">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;color:var(--navy)">🔍 Scan GitHub for All Files</div>
+        <div style="font-size:.76rem;color:var(--text2);margin-bottom:8px">One-click index of every file in your Manuals/ folder — adds missing entries to error codes and KB.</div>
+        <button class="btn btn-primary" onclick="scanGitHubForManuals()" style="width:100%">🔍 Scan &amp; Index All Manuals Now</button>
+        <div id="gh_scan_results" style="font-size:.77rem;margin-top:8px"></div>
       </div>
 
-      <hr style="margin:14px 0">
-      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">🔍 Scan GitHub for New Files</div>
-      <div style="font-size:.8rem;color:var(--text2);margin-bottom:8px">
-        Scan your repo and automatically add any new manuals found to the Knowledge Base.
-      </div>
-      <button class="btn btn-primary" onclick="scanGitHubForManuals()" style="width:100%;margin-bottom:6px">🔍 Scan GitHub Manuals Now</button>
-      <div id="gh_scan_results" style="font-size:.78rem;color:var(--text2);margin-top:6px"></div>
+      <!-- Expected structure -->
+      <details style="margin-bottom:12px">
+        <summary style="font-size:.82rem;font-weight:700;cursor:pointer;padding:6px 0;color:var(--navy)">📁 Expected Manuals Folder Structure</summary>
+        <div style="font-size:.73rem;background:var(--gray);border-radius:6px;padding:10px;font-family:monospace;line-height:1.8;overflow-x:auto;margin-top:6px">
+          Manuals/<br>
+          ├── GE/<br>
+          │&nbsp;&nbsp; ├── RF_Amp_Service.htm<br>
+          │&nbsp;&nbsp; ├── Gradient_Service.htm<br>
+          │&nbsp;&nbsp; ├── MGD_APS_AGP_Service.pdf<br>
+          │&nbsp;&nbsp; └── Parts_Manuals/<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── Excite_FRU_2345481r13.pdf<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── HDx_FRU_5166012r14.pdf<br>
+          ├── Siemens/<br>
+          ├── Injectors/<br>
+          ├── Error Codes and Troubleshooting/<br>
+          └── CT/
+        </div>
+      </details>
 
-      <hr style="margin:14px 0">
-      <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">🗑 Cache Management</div>
-      <div style="font-size:.8rem;color:var(--text2);margin-bottom:8px">
-        Explorer listings are cached locally for 24 hours. Clear to force fresh reload from GitHub.
+      <!-- Cache -->
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="refreshExplorer();closeModal('ghSettingsModal')" style="flex:1">🔄 Clear Cache &amp; Reload</button>
       </div>
-      <button class="btn btn-outline" onclick="refreshExplorer();closeModal('ghSettingsModal')" style="width:100%">🔄 Clear Cache &amp; Refresh Now</button>
 
-    </div>
-    <div class="modal-footer">
+<div class="modal-footer">
       <button class="btn btn-success" onclick="saveGHToken()">💾 Save Token</button>
       <button class="btn btn-outline" onclick="closeModal('ghSettingsModal')">Close</button>
     </div>
@@ -3857,7 +3954,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 </div>
 
 <!-- ADD PART MODAL -->
-<div id="addPartModal" class="modal" style="display:none">
+<div id="addPartModal" class="modal-overlay" style="display:none">
+<div class="modal">
   <div class="modal-content">
     <div class="modal-header"><strong>🔩 Add / Edit Part</strong><button class="modal-close" onclick="closeModal('addPartModal')">✕</button></div>
     <div class="modal-body">
@@ -3910,7 +4008,9 @@ document.addEventListener('DOMContentLoaded',()=>{
       <button class="btn btn-outline" onclick="closeModal('addPartModal')">Cancel</button>
     </div>
   </div>
-</div>
+</di
+</div>v>
 
 </body>
-</html>
+</h
+</div>tml>
