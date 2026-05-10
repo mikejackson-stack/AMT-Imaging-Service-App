@@ -405,10 +405,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 </div>
 
 <!-- View-Only Banner -->
-<div id="viewOnlyBanner" style="display:none;position:sticky;top:56px;z-index:490;background:linear-gradient(135deg,#e65100,#ef6c00);color:white;padding:8px 16px;text-align:center;font-size:.82rem;font-weight:700;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
-  <span>🔒 View Only Mode — PIN login provides read-only access.</span>
-  <button onclick="logout()" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:white;padding:4px 12px;border-radius:6px;font-size:.76rem;cursor:pointer;font-weight:700">Sign in with Google for full access →</button>
-</div>
+<div id="viewOnlyBanner" style="display:none"></div>
 
 <nav id="desktopNav">
   <div class="snav-section">Main</div>
@@ -1317,7 +1314,7 @@ async function submitPin(){
   if(enteredHash===storedHash){
     err.textContent='';
     const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez'};
-    doLogin(nameMap[key],'PIN', true); // PIN = view-only
+    doLogin(nameMap[key],'PIN', false); // PIN = full access
   } else {
     err.textContent='❌ Incorrect PIN — please try again.';
     document.getElementById('pinInput').value='';
@@ -1417,7 +1414,7 @@ function applyViewOnlyUI(){
 // Guard function - call before any write operation
 function writeGuard(label){
   if(isViewOnly()){
-    alert('🔒 View Only Mode\n\nYou are logged in with a PIN (read-only access).\nUse Google Login with your AMT email to make changes.\n\nAttempted: '+label);
+    alert('🔒 Access restricted.\n\nAttempted action: '+label);
     return false;
   }
   return true;
