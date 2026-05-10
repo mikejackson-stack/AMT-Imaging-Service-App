@@ -367,7 +367,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC — Staff Portal</p>
-    <button class="btn-google" onclick="triggerGoogleLogin()">
+    <div id="g_id_onload" style="display:flex;justify-content:center;margin-bottom:2px"></div>
+    <button class="btn-google" id="btnGoogleFallback" onclick="triggerGoogleLogin()">
       <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.5 13 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.3-7.7 2.3-6.1 0-11.3-4.1-13.2-9.6l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>
       Sign in with Google
     </button>
@@ -1335,6 +1336,15 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 // Google OAuth
 function triggerGoogleLogin(){
   if(window.location.protocol==='file:'){showHostingGuide();return;}
+  if(typeof google!=='undefined'&&google.accounts&&google.accounts.id){
+    google.accounts.id.prompt(function(n){
+      if(n.isNotDisplayed()||n.isSkippedMoment()){_triggerOAuthRedirect();}
+    });
+  } else {
+    _triggerOAuthRedirect();
+  }
+}
+function _triggerOAuthRedirect(){
   const nonce=Math.random().toString(36).substr(2)+Math.random().toString(36).substr(2);
   const params=new URLSearchParams({
     client_id:GOOGLE_CLIENT_ID, redirect_uri:REDIRECT_URI,
@@ -1357,7 +1367,8 @@ function checkOAuthCallback(){
   const idToken=params.get('id_token'); if(!idToken)return;
   try{
     const b64=idToken.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-    const payload=JSON.parse(atob(b64+'=='.slice((b64.length+3)%4)));
+    const padding='='.repeat((4-b64.length%4)%4);
+    const payload=JSON.parse(atob(b64+padding));
     const email=(payload.email||'').toLowerCase().trim();
     // Check against exact whitelist
     const allowedName = ALLOWED_EMAILS[email];
@@ -3823,25 +3834,33 @@ async function scanGitHubForManuals(){
 document.addEventListener('DOMContentLoaded',()=>{
   checkOAuthCallback();
   tryAutoLogin();
+  function _handleGISCredential(r){
+    try{
+      const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+      const padding='='.repeat((4-b64.length%4)%4);
+      const p=JSON.parse(atob(b64+padding));
+      const email=(p.email||'').toLowerCase().trim();
+      const allowedName=ALLOWED_EMAILS[email];
+      if(!allowedName){
+        alert('🚫 Access denied\n\n'+email+' is not on the AMT authorized list.\n\nAuthorized:\n• mike.jackson@amtimagingsolutions.com\n• antonio@amtimagingsolutions.com\n• tito@amtimagingsolutions.com\n\nUse Quick PIN Login instead.');
+        document.getElementById('loginError').textContent='🚫 '+email+' not authorized. Use PIN login.';
+        return;
+      }
+      doLogin(allowedName,'Google',false);
+    }catch(e){
+      alert('⚠️ Google login error. Please try again or use PIN login.');
+      document.getElementById('loginError').textContent='⚠️ Google login error. Use PIN.';
+    }
+  }
   window.onGoogleLibraryLoad=()=>{
     if(typeof google!=='undefined'&&google.accounts){
-      google.accounts.id.initialize({
-        client_id:GOOGLE_CLIENT_ID,
-        callback:function(r){
-          try{
-            const p=JSON.parse(atob(r.credential.split('.')[1]));
-            const email=(p.email||'').toLowerCase().trim();
-            const allowedName=ALLOWED_EMAILS[email];
-            if(!allowedName){
-              document.getElementById('loginError').textContent='🚫 Access denied: '+email+' is not an authorized AMT account.';
-              return;
-            }
-            doLogin(allowedName,'Google',false);
-          }catch(e){
-            document.getElementById('loginError').textContent='⚠️ Google login error. Use PIN.';
-          }
-        }
-      });
+      google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID, callback:_handleGISCredential});
+      const gBtn=document.getElementById('g_id_onload');
+      if(gBtn){
+        google.accounts.id.renderButton(gBtn,{theme:'filled_black',size:'large',text:'sign_in_with',logo_alignment:'left',width:280});
+        const fb=document.getElementById('btnGoogleFallback');
+        if(fb) fb.style.display='none';
+      }
     }
   };
 });
