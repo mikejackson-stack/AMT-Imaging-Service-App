@@ -1975,8 +1975,9 @@ function openModal(id){
   el.classList.add('open');
   document.body.style.overflow='hidden';
 }
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open');}));
+function closeModal(id){document.getElementById(id).classList.remove('open');if(!document.querySelector('.modal-overlay.open'))document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('click',e=>{if(e.target===ov){ov.classList.remove('open');if(!document.querySelector('.modal-overlay.open'))document.body.style.overflow='';}}));
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('.modal-overlay.open'))document.body.style.overflow='';});
 
 // ═══ PM CHECKLIST SYSTEM ═══
 const MODALITY_CL_MAP={'GE MRI':'ge_mri','Siemens MRI':'siemens_mri','Philips MRI':'ge_mri','GE CT':'ge_ct','Siemens CT':'siemens_ct','Stellant Injector':'stellant','Solaris/Spectris Injector':'solaris'};
