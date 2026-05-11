@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>AMT Imaging Solutions — Standalone</title>
 <!-- Google Sign-In (requires internet) -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="initGIS()"></script>
 <!-- jsPDF: loads from CDN when online; PDF generation requires internet -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
@@ -367,24 +367,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC — Staff Portal</p>
-    <div id="g_id_onload"
-         data-client_id="272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-callback="amtGoogleCallback"
-         data-auto_prompt="false"
-         data-itp_support="true">
-    </div>
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="rectangular"
-         data-theme="filled_black"
-         data-text="sign_in_with"
-         data-size="large"
-         data-logo_alignment="left"
-         data-width="280"
-         style="display:flex;justify-content:center;margin-bottom:4px">
-    </div>
+    <div id="g_id_signin" style="display:flex;justify-content:center;margin-bottom:4px;min-height:44px"></div>
     <div class="login-divider"><span>or use Quick PIN</span></div>
     <button class="btn-pin-toggle" onclick="togglePin()">🔐 Quick PIN Login</button>
     <div id="pinPanel">
@@ -1350,7 +1333,27 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 function triggerGoogleLogin(){
   if(window.location.protocol==='file:'){showHostingGuide();}
 }
+function initGIS(){
+  if(typeof google==='undefined'||!google.accounts){return;}
+  google.accounts.id.initialize({
+    client_id:GOOGLE_CLIENT_ID,
+    callback:amtGoogleCallback,
+    ux_mode:'popup',
+    auto_select:false,
+    cancel_on_tap_outside:true,
+    itp_support:true
+  });
+  const container=document.getElementById('g_id_signin');
+  if(container){
+    google.accounts.id.renderButton(container,{
+      theme:'filled_black',size:'large',text:'sign_in_with',
+      logo_alignment:'left',width:280
+    });
+  }
+}
 function amtGoogleCallback(r){
+  const loginErr=document.getElementById('loginError');
+  if(loginErr) loginErr.textContent='🔄 Verifying Google account...';
   try{
     const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
     const padding='='.repeat((4-b64.length%4)%4);

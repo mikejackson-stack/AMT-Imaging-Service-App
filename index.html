@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>AMT Imaging Solutions</title>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="initGIS()"></script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -369,26 +369,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC — Staff Portal</p>
-    <!-- GIS configuration — library reads data-* attributes automatically -->
-    <div id="g_id_onload"
-         data-client_id="272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com"
-         data-context="signin"
-         data-ux_mode="popup"
-         data-callback="amtGoogleCallback"
-         data-auto_prompt="false"
-         data-itp_support="true">
-    </div>
-    <!-- GIS renders the button based on these data-* attributes -->
-    <div class="g_id_signin"
-         data-type="standard"
-         data-shape="rectangular"
-         data-theme="filled_black"
-         data-text="sign_in_with"
-         data-size="large"
-         data-logo_alignment="left"
-         data-width="280"
-         style="display:flex;justify-content:center;margin-bottom:4px">
-    </div>
+    <!-- GIS button rendered here by initGIS() once library loads -->
+    <div id="g_id_signin" style="display:flex;justify-content:center;margin-bottom:4px;min-height:44px"></div>
     <div class="login-divider"><span>or use Quick PIN</span></div>
     <button class="btn-pin-toggle" onclick="togglePin()">🔐 Quick PIN Login</button>
     <div id="pinPanel">
@@ -1353,11 +1335,32 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 
 // Google OAuth
 function triggerGoogleLogin(){
-  // kept for any external callers; GIS button handles login via amtGoogleCallback
   if(window.location.protocol==='file:'){showHostingGuide();}
 }
-// Global callback required by GIS data-callback attribute — must be global scope
+// Called by onload on the GIS script tag — most reliable timing
+function initGIS(){
+  if(typeof google==='undefined'||!google.accounts){return;}
+  google.accounts.id.initialize({
+    client_id:GOOGLE_CLIENT_ID,
+    callback:amtGoogleCallback,
+    ux_mode:'popup',
+    auto_select:false,
+    cancel_on_tap_outside:true,
+    itp_support:true
+  });
+  const container=document.getElementById('g_id_signin');
+  if(container){
+    google.accounts.id.renderButton(container,{
+      theme:'filled_black',size:'large',text:'sign_in_with',
+      logo_alignment:'left',width:280
+    });
+  }
+}
+// Global callback called by GIS after successful account selection
 function amtGoogleCallback(r){
+  // Show immediate feedback so we know the callback fired
+  const loginErr=document.getElementById('loginError');
+  if(loginErr) loginErr.textContent='🔄 Verifying Google account...';
   try{
     const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
     const padding='='.repeat((4-b64.length%4)%4);
