@@ -1,0 +1,64 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Axial Control Theory (Major Function)</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5114045-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;10<BR>LightSpeed 4.X Service Information (Advanced)</P></td></tr></table><H1 ID="top">Axial Control Theory (Major Function) </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114267258">1&nbsp;&nbsp;Axial Power Contactor Interlock (Minor Function)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Axial Power Contactor minor function controls the 440 VAC input
+to the Axial Motor Drive. The Axial Power Contactor is an AC rated contactor
+that connects or disconnects the 3-phase 440 VAC. This function also provides
+status monitoring and reporting of the power contactor. There is an interlock
+in the power contactor control for the Axial Enable/Disable switch on the
+STC chassis backplane.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e30"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/mechanical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><B><IMG ALIGN="TOP" SRC="../icons/Danger.gif"></B>  </SPAN></TD></TR><TR><TD><B>POSSIBLE AXIAL DRIVE MOTION</B></TD></TR><TR><TD><B>THE AXIAL LOOP CONTACTOR STATUS LED ON THE STC CHASSIS BACKPLANE
+INDICATES THE STATUS OF THE AXIAL POWER CONTROL CIRCUIT ONLY, NOT THE STATE
+OF THE AXIAL POWER CONTACTOR. A FAILURE IN THE POWER CONTACTOR COULD LEAVE
+440 VAC CONNECTED TO THE AXIAL MOTOR DRIVE AT ALL TIMES.</B></TD></TR><TR><TD><B style="text-transform : uppercase;">DISABLE THE AXIAL DRIVE MECHANISM BEFORE SERVICING THE GANTRY INTERIOR. </B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114267266">1.1&nbsp;&nbsp;Axial Power Contactor Circuit<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The base requirements for this circuit to function are: Power to the
+PDU, DRIVEON enabled, and Axial drive switch enabled on the STC chassis backplane.
+At this point the firmware is needed to close the Axial Drive Power Contactor.
+This means the scan hardware needs to be downloaded successfully. The Axial
+II Control Board, Altera (FPGA), now contains the necessary firmware. When
+the FPGA receives a valid request to rotate the gantry, the LOOPCONT signal
+is generated. This signal energizes the K3 relay on the Axial board. The following
+sequence then occurs.</P><P CLASS="sect2">The 24V-B from the PDU relay board goes through the Axial drive enable
+switch, S2, on the STC chassis backplane. At this point 24V-B becomes AX_DR_EN_SW/SW2.
+When Axial board relay K3 closes, AX_DR_EN_SW/SW2 becomes CLOSELOOP as it
+leaves the Axial board. The CLOSELOOP signal goes to the PDU Relay bd, K6.
+This in turn energizes K13, on the PDU relay bd, generating the LOOPHI command.
+LOOPHI energizes A3K4, which closes and provides 3-phase 440 VAC power to
+the Axial Motor Drive.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e44"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">440 VAC will be present at the Axial Motor Drive under normal
+conditions. Remember that this is firmware controlled. Also the Axial Drive
+Enable Switch on the STC backplane will disable/enable the Axial Drive Power
+Contactor independent of firmware control. A second hardware reset is not
+required.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114267273">1.2&nbsp;&nbsp;Axial Power Contactor Read Back Circuit<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">When the Axial Power Contactor is energized, it closes a set of N.O.
+contacts that permits the application of +24V through the Axial Power Contactor
+relay contacts, back to the Gantry. The signal LOOP-CONT-CLOSED enters the
+Axial Board at J2A3 and flows into an opto-isolator. The opto-isolator converts
+the 24 VDC LOOP_CONT signal to 5 volt logic and is sent to the Altera (FPGA).
+Also the green LED LPC (DS13) illuminates.</P><P CLASS="sect2">LOOP-CONT-CLOSED_RTN is actually PGND from the PDU. This is a differential
+circuit.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114267278">1.3&nbsp;&nbsp;Axial Brake Circuit<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Altera generates the AXBRAKE command based upon the scan type and
+firmware request. A 5 VDC signal called AX_BRAKE_OUT is routed to the SSR
+(Solid State Relay) mounted on the Axial motor. This signal is always present.
+The Altera generates the control signal AXBRAKE, which provides a return path
+for AX_BRAKE_OUT_RTN. This allows current to flow through the SSR, which energizes
+the coil of the holding brake assembly. When the SSR is energized, its contacts
+close and apply 120 VAC to the Axial Holding Brake assembly. The Axial Holding
+Brake is now released. With no power applied, the holding brake is engaged.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e59"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The axial brake is released when the Axial Drive Enable Switch
+is in the &#8220;disable&#8221; position. This allows the gantry to be rotated
+by hand without fighting the friction of the brake.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114267284">1.4&nbsp;&nbsp;Remote Axial C-Pulse Indicator Circuit<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Axial II Control Board receives the &#8220;C&#8221; pulse from the
+encoder at J2D25 (AX_ENC_CHC) and J2C25 (AX_ENC_CHC_RTN). This signal is opto-isolated
+and becomes CHC. A green LED DS2 (CHC) lights when a &#8220;C&#8221; pulse
+is received. CHC is processed and becomes CH_C*. This CH_C* signal provides
+the return path for REMOTE_C_L. REMOTE_C_H is the 5 VDC source used to illuminate
+the &#8220;C&#8221; pulse LED on the STC backplane. The &#8220;C&#8221; pulse
+LED located on the left fan assembly is also driven by this circuit.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114267290">2&nbsp;&nbsp;Axial Servo Control Loop (Minor Function)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The hardware involved in the axial servo drive consists of the Axial
+II Control Board, Axial Motor Drive, Axial Motor, Axial Motor Brake, Axial
+Encoder, Axial Drive Belt and Axial Home Flag.</P><P CLASS="sect1">The Axial Motor is an induction motor. The axial brake engages the motor
+shaft and is meant as a static brake to hold the gantry still once it has
+been positioned by the axial drive. The brake's friction is not sufficient
+to hold the gantry still against the full accelerating force of the motor
+and amplifier. Should the brake fail while the gantry is in motion, the gantry
+will continue to rotate until halted by firmware. The brake cannot hold the
+gantry still while the tube or inverters are being changed. When servicing
+the rotating base, the gantry should be locked using the locking block mechanism.</P><P CLASS="sect1">The axial brake is released when the Axial Drive Enable Switch is in
+the &#8220;disable&#8221; position. This allows the gantry to be rotated by
+hand without fighting the friction of the brake.</P><P CLASS="sect1">The encoder is directly coupled to the rotating bearing. It is an incremental
+encoder and provides 2048 counts per rotation. The quadrature information
+from the encoder is decoded on the Axial board and used for gantry position
+and speed control as well as DAS trigger generation.</P><P CLASS="sect1">The motor is coupled to the rotating bearing with a steel reinforced
+Kevlar belt, with a gear ratio of 13 motor rotations to 1 gantry bearing rotation.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

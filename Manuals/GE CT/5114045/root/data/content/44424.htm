@@ -1,0 +1,455 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Functions of the Stationary Gantry</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5114045-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;10<BR>LightSpeed 4.X Service Information (Advanced)</P></td></tr></table><H1 ID="top">Functions of the Stationary Gantry </H1><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Stationary Gantry FRU versus Function</SPAN> </P><table summary="Stationary Gantry FRU versus Function" border="1"><colgroup><col width="167"><col width="555"></colgroup><thead><tr><th align="left" valign="top">FRU</th><th align="left" valign="top">FUNCTION</th></tr></thead><tbody><tr><td rowspan="3" align="left" valign="top">STC Computer</td><td align="left" valign="top">Axial board control </td></tr><tr><td>LSCOM board control </td></tr><tr><td>LAN communications to System Host Control</td></tr><tr><td rowspan="6" align="left" valign="top">Axial Board</td><td align="left" valign="top">Scan Start/stop control </td></tr><tr><td>Operator Hard key monitor </td></tr><tr><td>X-ray light control </td></tr><tr><td>DAS trigger generation </td></tr><tr><td>Gantry axial speed and position control </td></tr><tr><td>Axial speed/position monitoring</td></tr><tr><td align="left" valign="top">LSCOM Board</td><td align="left" valign="top">Slip ring communications to/from
+rotating gantry</td></tr></tbody></table></CENTER></DIV><P CLASS="descriptive">DAS and HV subsystems are located in other sections of this manual.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114290415">1&nbsp;&nbsp;Communication Subsystem Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Communication Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44438.gif" BORDER="0" usemap="#44438.gif"></P></DIV><P CLASS="sect1">See <A HREF="javascript:winopen('44424illd0e79.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.
+Communications between the OC and Table/Gantry computers are performed by
+a LAN connection and hard-wired slip-rings. Scan data from the DAS is transferred
+across the HSDCD (High Speed Data Capacitive Device) ring to the DIP board
+in the console. The DAS data transfer rate is 850Mbaud. The 10base2 thin net
+50 ohm LAN cable provides the communication path between the OC computer in
+the console, the ETC in the table, and the STC in the stationary gantry. The
+hard slip rings allow the bidirectional transfer of data between the STC and
+the rotating components, including the OBC. The control rings transfer data
+at 2.5 Mbaud.</P><P CLASS="sect1">The system utilizes one HSDCD ring and 12 hard wired
+slip rings. Six rings provide AC and DC power and ground; three provide interlock
+signals for the HV subsystem; and three provide the communication path between
+the stationary and rotating components. Only the three communication rings
+will be discussed here.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e90"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><B><IMG ALIGN="TOP" SRC="../icons/Danger.gif"></B>  </SPAN></TD></TR><TR><TD><B>POSSIBLE ELECTRIC SHOCK</B></TD></TR><TR><TD><B>EXTREME CAUTION IS NECESSARY WHEN WORKING IN THE SLIP RING AREA,
+AS BOTH HV DC PRIMARY AND 120 VAC ARE PRESENT AND EXPOSED ON THE RING.</B></TD></TR><TR><TD><B style="text-transform : uppercase;">Equipment service can only be performed SAFELY with the main Power
+"Disconnect" tagged and locked out.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The hard slip rings communication connection acts as a sub-network between
+the STC and OBC, but also carries the specific DAS trigger and Exposure Command
+signals multiplexed within the data stream. Control and status information
+travels in both directions across the rotating interface along 2 high speed
+serial links utilizing 3 rings, one inbound and one outbound, both using an
+isolated ring as signal reference. This provides for excellent noise immunity.
+Brushes ride on the conductive ring material to provide signal connection
+to the stationary components, and screws inserted into the back of each ring
+provide the connection for the rotating components. Serial link control and
+signal multiplexing/de-multiplexing is provided by 2 common LSCOM boards.
+LEDs located on these boards indicate communication status of the data paths.</P><P CLASS="sect1">Scan Data travels from the rotating side to the stationary side and
+ultimately to the reconstruction subsystem through the HSDCD ring. This contact-less
+path begins at the HSDCD transmitter on the rotating structure. The stationary
+pickup is an antenna and receiver coupled together. The HSDCD ring and antenna
+form two plates of a capacitor. The transmitter input and receiver output
+are fiber-optic connections. Forward error correction is used in this path
+to ensure extremely high data reliability.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114290824">2&nbsp;&nbsp;Axial Motion &amp; Control<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Axial II Control Board is responsible for interfacing the axial
+drive control firmware of the gantry Stationary Controller (STC) microprocessor.
+The hardware involved in the axial servo drive consists of the Axial II Control
+Board, the Axial Motor Drive, the Axial Motor, Axial Motor Dynamic Brake Assembly,
+Axial Encoder, Axial Drive Belt and Axial Home Flag. See <A HREF="javascript:winopen('44424illd0e108.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Axial Control Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44435.gif" BORDER="0" usemap="#44435.gif"></P></DIV><P CLASS="sect1">The Axial Drive Power Contactor in the PDU controls the 3 phase, 440
+VAC input of the Axial Motor Drive Module. There are interlocks in the power
+contactor control for an Axial Enable/Disable switch located on the STC chassis
+backplane.</P><P CLASS="sect1">The Axial Motor Drive module is supplied with enable, speed, brake and
+direction information from the Axial II Control Board. The Axial Motor Drive
+monitors the axial speed and direction internally, as well as receiving axial
+encoder feedback from the Axial II board for fine speed control. The combination
+of internal and external control allows the drive module to modulate the frequency
+of the AC output, allowing the gantry to rotate at a maximum speed of 0.5
+seconds per revolution in the clockwise direction. Note, the drive module
+will not drive in a counter-clockwise direction under normal control.</P><P CLASS="sect1">The Axial Motor is an AC induction type. The axial brake engages the
+motor shaft and is meant as a static brake to hold the gantry still once it
+has been positioned by the axial drive.</P><P CLASS="sect1">The motor is coupled to the rotating bearing with a belt, with a gear
+ratio of 13 motor rotations to 1 gantry bearing rotation. An optical &#8220;slip-flag&#8221;
+detector senses a metal flag that rotates through it once every bearing revolution.
+The slip-flag information is used for axial coincidence as a position reference
+and over-speed sensing.</P><P CLASS="sect1">The encoder is directly coupled to the rotating bearing next to the
+Axial Drive Belt. It is interfaced with a direct contact gear as weighted
+assembly with a 13 to 1 gear ratio, the same as the axial motor to rotating
+bearing. This arrangement allows for simplified transfer functions for speed
+control and more accurate positioning of DAS trigger generation versus motor
+mounted encoder packaging. The axial encoder is an incremental encoder and
+provides 2048 counts per encoder rotation. The information from the encoder
+is decoded on the Axial board and used for gantry position and speed control
+as well as DAS trigger generation. The STC firmware verifies the Axial II
+board&#8217;s encoder counts to be 106496 &plusmn; 3 counts per gantry revolution
+referenced to home coincidence.</P><P CLASS="sect1">The axial dynamic brake assembly is used to dissipate energy originating
+from the induction motor. Axial braking is accomplished by reducing the frequency
+applied to the motor leads to a level lower than the current operating point
+of the motor windings. This is termed negative slip. Negative slip generates
+electrical field resistance or negative torque within the windings. At the
+same time the motor windings generate voltage raising the motor lead voltage.
+This excess voltage is dissipated by the dynamic braking module via load resistors
+and chopper circuit control via the AXDC bus. This means that 440 VAC is always
+applied to the Axial Motor Drive module to both accelerate and decelerate
+the gantry. Loss of this voltage will result in the gantry coasting to stop-this
+can take more than a minute.</P><P CLASS="sect1">Scan start/stop and Autovoice control are implemented using switches
+on the console keyboard assembly. A hard-key processor on the keyboard assembly
+is hard-wired to the axial board via a UART serial link. The hard-key processor
+monitors the status of the &#8220;Start Scan&#8221; and &#8220;Stop Scan&#8221;
+switches on the keyboard assembly. Upon closure of the Start Scan switch contacts,
+the hard-key processor sends a &#8220;start scan&#8221; message to the STC
+via the axial board, indicating that the scan should start. This communications
+link is also used to signal the start of Autovoice messages.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e127"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/mechanical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><B><IMG ALIGN="TOP" SRC="../icons/Danger.gif"></B>  </SPAN></TD></TR><TR><TD><B>POSSIBLE PHYSICAL INJURY</B></TD></TR><TR><TD><B>THE AXIAL DRIVE ENABLE STATUS LED, DS4, ON THE STC CHASSIS BACKPLANE
+INDICATES STATUS OF THE AXIAL POWER CONTROL CIRCUIT ONLY, NOT THE STATE OF
+THE AXIAL POWER CONTACTOR. A FAILURE IN THE POWER CONTACTOR COULD ENABLE AXIAL
+MOTOR DRIVE AND CAUSE UN-COMMANDED MOTION. </B></TD></TR><TR><TD><B style="text-transform : uppercase;">Disable the Axial Drive Mechanism before servicing the gantry interior.
+Whenever servicing the rotating ASSEMBLY, lock the gantry using the locking
+mechanism.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291099">2.1&nbsp;&nbsp;Axial Motor Drive (AMD Assembly)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The AMD Assembly consists of an Interface Board, AC Drive, Dynamic Brake
+Assembly, harnesses and 2 power sources. <A HREF="javascript:winopen('44424illd0e141.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A> shows a block diagram of the AMD assembly.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">AMD Hardware Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44441.gif" BORDER="0" usemap="#44441.gif"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291342">2.2&nbsp;&nbsp;General Axial Drive Function<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Axial Motor Drive (AMD) provides three phase power to the Axial
+AC motor. In addition to the Axial II Control Board, the axial motor requires
+an external Axial Dynamic Brake Module. The AMD is a 2 part integrated device,
+Axial Interface board (AIF) and AC Drive. The axial firmware controls the
+acceleration, run, and deceleration cycles of the axial motor. The axial control
+firmware resides in the STC CPU and sends drive instructions to the Axial
+II Control Board (ACB).</P><P CLASS="sect2">The ACB communicates with the AC Drive through the (AIF), located on
+the AMD assembly. The AMD interprets the instructions and configures itself
+to execute the commands. The AMD has its own self contained firmware. The
+drive converts 3 phase 440 VAC input power to three phase Axial HEM (High
+Efficiency Motor Drive) power. This motor drive power is applied directly
+to the Axial Motor for acceleration, run and braking functions.</P><P CLASS="sect2">Refer to <A HREF="javascript:winopen('44424illd0e141.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>. Control
+signals travel from the STC Axial II Control Board to the AMD through the
+Axial Interface harness. The AIF routes the signals to the AC Drive.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114291462">3&nbsp;&nbsp;Axial II Control Board - Theory of Operation<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Axial Control board (ACB), located in the STC chassis, uses the
+VME bus to communicate with the STC CPU. The ACB uses a CAN (Controller Area
+Network) serial interface, called the ACAN (AXIAL CAN), and discrete signals
+to communicate with the AMD. <A HREF="javascript:winopen('44424illd0e233.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  4</A>,
+shows the discrete control signals. The ACAN interface and discrete control
+signals enter the AIF for control of the AC Drive.</P><P CLASS="sect1">The AMD supplies isolated 12V power (1.2A capability) to the ACAN and
+Fault circuitry.</P><P CLASS="sect1">Fault detectors and fault status feedback from the ACAN monitor hardware
+operation. The AMD notifies the ACB when it detects a fault, or a monitored
+value falls out of tolerance.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291583">3.1&nbsp;&nbsp;VME Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The VME interface contains the logic to perform address and data latching,
+address decoding, and VME handshaking, according to timing specified in PAL
+documentation, 2147462PDL. All signals pass through the standard VME connector,
+J1.</P><P CLASS="sect2">Of the seven interrupts defined for the VME bus, the ACB uses level
+1, level 2, level 4 and level 5. Other boards on the STC also use the level
+1 interrupt, which is wire OR-ed on the backplane.</P><UL><LI CLASS="bulletlist"><P>IRQ1: Interrupt level 1 indicates an over-speed condition.
+This can be reset by firmware and function retried.</P></LI><LI CLASS="bulletlist"><P>IRQ2: The ACB uses Interrupt level 2 during ACAN communications.</P></LI><LI CLASS="bulletlist"><P>IRQ4: Interrupt level 4 is a normal operating indication the
+ACB uses for state or positive edge transitions.</P><UL><LI CLASS="bulletlist"><P>Axial Power COntactor &gt;State Change</P></LI><LI CLASS="bulletlist"><P>Exposure Command&gt; Positive edge detect</P></LI><LI CLASS="bulletlist"><P>Option Box (Cardiac R Pulse) &gt; Positive edge detect</P></LI><LI CLASS="bulletlist"><P>Zero Trigger (Scan End) &gt; Positive Edge Detect</P></LI><LI CLASS="bulletlist"><P>Home Flag&gt; Positive edge detect</P></LI><LI CLASS="bulletlist"><P>Axial Sample timer (25 msec timer for speed control)&gt; Positive
+edge</P></LI><LI CLASS="bulletlist"><P>Table Sync (Used to synchronize scout and Helical Scans with
+cradle motion)&gt; Positive edge detect.</P></LI><LI CLASS="bulletlist"><P>Smart View foot switch&gt; State transition</P></LI><LI CLASS="bulletlist"><P>Gantry contact (Gantry tape switches)&gt; Positive edge detect</P></LI><LI CLASS="bulletlist"><P>Axial Motor Drive (Faults; AT_SPEED, AT_FREQ, AT_POS)&gt; State
+transition.</P></LI><LI CLASS="bulletlist"><P>Extra Inputs (Undefined Spares)&gt; State transition</P></LI><LI CLASS="bulletlist"><P>I2C interrupts (ACB mounted temp sense, communications) &gt;
+STATE TRANSITIONS</P></LI></UL></LI><LI CLASS="bulletlist"><P>IRQ5: The ACB uses interrupt level 5 for console pushbutton,
+serial communications.</P></LI></UL><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e225"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For a full size version of this illustration, click on the pdf
+icon below.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">Full Size Illustration: Hardwire Control Signals, Functional Interconnect</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/45351.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Hardwire Control Signals, Functional Interconnect</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44448.gif" BORDER="0" usemap="#44448.gif"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291898">3.2&nbsp;&nbsp;Command I/O<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">In normal operation, the STC CPU sends state commands through the command
+registers located at address 0xFFAC00 to 0xFFAFFF. This includes Diagnostic
+testing and status reporting.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291901">3.3&nbsp;&nbsp;Reset Pushbutton<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The ACB contains a manual board reset pushbutton, S1. Pushing the on-board
+reset has the same effect as receiving a SYSRST from the VME.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291903">3.4&nbsp;&nbsp;Clocks<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Y1, Y2, Y3, and Y4 on the ACB generate 16MHz, 12MHz, 40Mhz, and 3.6864Mhz
+clocks respectively. Y1 is used for AX_CAN communications. Y4 is used for
+console pushbutton communications from the SCIM.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114291906">4&nbsp;&nbsp;Axial Controller Interface Bus (ACIB) Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The ACIB is the umbilical cord that links the Axial Motor Drive to the
+Axial II Control Board. This link consists of the signals listed below. Each
+signal is a differential pair for noise immunity.</P><UL><LI CLASS="bulletlist"><P>Isolated 12VDC is generated by the HEMRC Control Board that
+powers the Controller Area Network (CAN) Drivers.</P></LI><LI CLASS="bulletlist"><P>Axial Enable is available to the AMD to determine when gantry
+rotation begins and ends.</P></LI><LI CLASS="bulletlist"><P>CAN Serial Line is used for the transmission of control signals.
+It must be terminated by a 120 ohm resistor at the beginning and end of the
+cable. This particular CAN line is referenced as the Axial CAN (ACAN) bus.</P></LI><LI CLASS="bulletlist"><P>Fault Line is the primary means to inform the Axial II Control
+Board of a fault. The fault line is asserted by the AMD under the following
+conditions:</P><UL><LI CLASS="bulletlist"><P>The Controller is reset</P></LI><LI CLASS="bulletlist"><P>A Fault is detected by the controller</P></LI></UL></LI></UL><P CLASS="sect1">Reset is asserted by the STC when it becomes desirable to reset the
+AMD. The ACB resets the AMD via a command register or during an STC reset.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291921">4.1&nbsp;&nbsp;Axial CAN (AX_CAN)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The ACB uses the 82527 CAN protocol controller (U45) and CAN bus interface
+circuitry to communicate with the AMD Assembly. This is a bidirectional serial
+link. The 82527 interrupts the Altera controller (FPGA) with the AX_DRIVE_COMM*
+signal to indicate a status change of the 82527. The 82527 communicates with
+the Altera (FPGA) directly via AXADDR and DATA buses on the ACB. The 82527
+uses the 16MHz clock for timing. The board AXRESET* signal resets the 82527.</P><P CLASS="sect2">U26 and U24 optically isolate the AX_CAN bus from the ACB board circuitry.
+U28, the CAN transceiver chip, resides on the isolated side of the CAN interface.
+The optically isolated side of the AX_CAN receives power from an isolated
+12 volt, 125 mA supply located on the AMD. VR1 regulates this 12 volt supply
+down to 5 volts (+5V_AXCAN). This isolated 5 volt supply provides power to
+the isolated side of the AX_CAN interface. The AX_CAN output signals are AX_CAN_H
+and AX_CAN_L. R339 provides the required CAN bus termination for the Axial
+II Control Board end of the AX_CAN bus.</P><P CLASS="sect2">DS12 illuminates whenever U26 receives data over the AX_CAN bus.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291925">4.2&nbsp;&nbsp;ACB to AMD Interface Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The communications between the ACB and AMD consist of:</P><UL><LI CLASS="bulletlist"><P>Bidirectional CAN serial communications bus: a 125 Kbaud bidirectional
+serial link, used to convey commands and status information.</P></LI><LI CLASS="bulletlist"><P>AX_Fault signal from the AMD to ACB.</P></LI><LI CLASS="bulletlist"><P>AX_AT-SPD* signal from the AMD to the ACB.</P></LI><LI CLASS="bulletlist"><P>AX_AT_FREQ* signal from the AMD to the ACB.</P></LI><LI CLASS="bulletlist"><P>AX_AT_POS* signal from the AMD to the ACB.</P></LI><LI CLASS="bulletlist"><P>AX_EN_P, AX_EN_N signal from the ACB to the AMD</P></LI><LI CLASS="bulletlist"><P>AX_ENC_CHA/CHB signals from the ACB to the AMD</P></LI><LI CLASS="bulletlist"><P>Three-wire start-stop signal</P></LI></UL><P CLASS="sect2">The opto-isolated Enable, Start, and Stop signals from the ACB to the
+AMD provide a contact closure as an input to the AMD. The Enable contacts
+close electrically to enable the AMD, the Start contacts close electrically
+to start the AMD, and the Stop contacts close electrically to enable the AMD
+to run and open electrically to stop the AMD. The Enable, Start, and Stop
+opto-isolators carry 10mA with less than a 3V drop when closed, and withstand
+5V when the contacts open.</P><P CLASS="sect2">The fault signal from the AMD to the ACB consists of the AX_FLT and
+AX_FLT_RTN signal wires. The circuit uses drives with a normally-open fault
+contact. If either the fault signal wires open electrically, the ACB generates
+a fault condition. If the AX_SPD_FRQ_RTN signal wire opens during operation,
+the system can report either AX_AT_SPD or AX_AT_FREQ errors.</P><P CLASS="sect2">The AX_AT_SPD*, AX_AT_FREQ* AND AX_AT_POS* are active low or NO FAULT
+conditions during normal axial operations. These signals should be high with
+the gantry rotation idle. The AX_FLT is a normally low signal. If this signal
+goes high, then the AX_FAULT_CONTACTS in the AMD have opened and you have
+a fault.</P><P CLASS="sect2">If the motor is at or above Frequency for the phase it is currently
+in, then AT SPEED will be satisfied and closes. AT SPEED will then open when
+the phase changes transition, and waits for the motor to be at or above Frequency
+again for this next phase, then will close if the motor reaches Frequency.
+This will continue throughout the entire rotation cycle, Accel, Run, and Brake.
+It is key to know that the AMD module will try to drive the motor to the correct
+speed, and if it cannot attain the speed requested, the current will max out
+at a specific level and not drive any higher, the result will be that the
+motor could not make it to the correct frequency in the allotted time for
+that phase, and the AT SPEED fault will be seen.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291945">4.3&nbsp;&nbsp;AMD Stop and Start<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The discrete start and stop signals to the AMD are opto-coupled logic
+signals. The STOP_AXIAL signal must equal a logic high for the AMD to start
+acceleration, continue acceleration or run. The logic high STOP_AXIAL signal
+creates a low impedance between the STOP_AXIAL and STRT_STP_COM output signals,
+which permits the AMD to accelerate or run.</P><P CLASS="sect2">When the START_AXIAL signal goes to a logic high (causing a low impedance
+between the START_AXIAL and STRT_STP_COM outputs) and the STOP_AXIAL signal
+equals a logic high, the AMD begins to accelerate (if it hasn&#8217;t already
+done so). Once acceleration begins, the AMD continues to advance along its
+acceleration profile, or continues to run, regardless of the logic condition
+of the START_AXIAL signal. The AMD begins to decelerate (if it is running)
+whenever the STOP_AXIAL signal goes to a logic low.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291949">4.4&nbsp;&nbsp;AXDC Bus Voltage Monitoring<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This function is performed within the AMD module. Errors are reported
+to the Axial II Control Board.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291951">4.5&nbsp;&nbsp;CAN Error Detection<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">CAN implements five error detection mechanisms: three at the message
+level and two at the bit level.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e344"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">CAN will retry up to 128 times before logging an error.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">The following mechanisms are at the message level:</P><UL><LI CLASS="bulletlist"><P>Cyclic Redundancy Checks (CRC) - Every transmitted message
+contains a 15 bit Cyclic Redundancy Check (CRC) code. The CRC is computed
+by the transmitter and is based on the message content. All receivers that
+accept the message perform a similar calculation and flag any errors.</P></LI><LI CLASS="bulletlist"><P>Frame Checks - There are certain predefined bit values that
+must be transmitted at certain points within any CAN Message Frame. If a receiver
+detects an invalid bit in one of these positions, a Form Error (sometimes
+also known as For at Error) will be flagged.</P></LI><LI CLASS="bulletlist"><P>Acknowledgement Error Checks - If a transmitter determines
+that a message has not been acknowledged, then an ACK Error is flagged.</P></LI></UL><P CLASS="sect2">The following mechanisms are at the bit level:</P><UL><LI CLASS="bulletlist"><P>Bit Monitoring - Any transmitter automatically monitors and
+compares the actual bit level on the bus with the level that it transmitted.
+If the two are not the same, then a bit error is flagged.</P></LI><LI CLASS="bulletlist"><P>Bit Stuffing - CAN uses a technique known as bit stuffing
+as a check on communication integrity. After five consecutive identical bit
+levels have been transmitted, the transmitter will automatically inject (stuff)
+a bit of the opposite polarity into the bit stream. Receivers of the message
+will automatically delete (de-stuff) such bits before processing the message
+in any way. Because of the bit stuffing rule, if any receiving node detects
+six consecutive bits of the same level, a stuff error is flagged.</P></LI></UL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114291969">5&nbsp;&nbsp;Axial Motor Drive - Theory of Operation<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291971">5.1&nbsp;&nbsp;Axial Motor Drive (AMD)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Axial Motor Drive is a customized version of a commercially available
+Allen-Bradley Model 1336 Plus II variable frequency AC motor drive. It contains
+its own microprocessor, power supplies and a three-phase full bridge inverter.
+The AMD communicates with the Axial II Control Board through a CAN (Controller
+Area Network) serial bus.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114291973">5.2&nbsp;&nbsp;Jumper Settings for the Axial Motor Drive<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Axial Motor Drive Encoder Board Jumpers</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44445.gif" BORDER="0" usemap="#44445.gif"></P></DIV><P CLASS="sect2">The AMD Encoder board jumpers J1 and J2 should be set for 5V.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Axial Motor Drive Control Board Jumpers</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/44432.gif" BORDER="0" usemap="#44432.gif"></P></DIV><P CLASS="sect2">The AMD Control board jumpers are all factory default settings. See <A HREF="javascript:winopen('44424illd0e386.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  6</A> for specifics.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114292366">6&nbsp;&nbsp;Axial Control Error Messages<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Axial II Control Board receives certain detected error conditions,
+generally related to communication or functional interfaces to the AMD. Many
+of these messages contain variable fields. The general description has been
+provided for clarity.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Axial Control Error Messages </SPAN> </P><table summary="Axial Control Error Messages " border="1"><colgroup><col width="19%"><col width="80%"></colgroup><thead><tr><th align="left" valign="top">ERROR CODE CLASS 260006500</th><th align="left" valign="top">MESSAGE TEXT Drive error messages
+are posted as 260006500. In the body of the error log entry the fault code
+will be posted in the format of FXX</th></tr></thead><tbody><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F01</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive.  Retry operation.
+ If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F02</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Auxiliary Fault. The
+interlock between the Chopper Control circuit on the axial I/F Board and the
+Drive is open. Possible Chopper Control fault or connections to the I/F board.
+ Also check the fuse on the chopper resistor pan.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F03</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Power Loss Fault. The
+Drive internal DC bus remained low for &gt;500mS.  Possible low voltage condition
+on 480 VAC in gantry or power interruption. Also may indicate excessive run
+or braking power required due to sluggish Motor.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F04</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undervoltage Fault.
+The Drive internal DC bus voltage dropped below 325V. Possible low voltage
+condition on 480 VAC in gantry or power interruption.  Also, may indicate
+excessive run or braking power required due to sluggish Motor.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F05</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Overvoltage Fault.
+The Drive internal DC bus voltage has exceeded 810V.  Possible failure of
+axial I/F Board Chopper Control or excessive motor regeneration from AXMotor
+during braking.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F06</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Motor Stall Fault.
+The Drive output current has exceeded 12.6A for &gt; 4 seconds.  Possible Motor
+frozen bearing or shorted Motor winding. Defective Motor and/or cabling.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F07</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Overload Fault. The
+Drive output current has exceeded 9.7A for an extended time.  Possible Motor
+sticky bearing or shorted Motor winding.  Also, possible defective Motor and/or
+cabling.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F08</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Overtemp Fault. The
+Drive heatsink temperature has exceeded 90C (195F).  Check for blocked or
+dirty heat sink fins.  Also check if the gantry ambient temperature has exceeded
+40C (104F).</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F09</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Open Pot Fault. Potentiometer
+speed control is not used in this system.  This fault code indicates a possible
+corrupted configuration parameter, defective Drive or Control Board.  Retry
+operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F10</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Serial Fault. This
+fault code indicates a possible corrupted configur-ation parameter, defective
+Drive or Control Board.  Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F11</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Op Error Fault. This
+fault code indicates a possible corrupted config-uration parameter, defective
+Drive or Control Board.  Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F12</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Overcurrent Fault.
+Check for a short circuit at the drive output or excessive load conditions
+at the motor.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F13</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Ground Fault. Check
+the motor and external wiring to the drive output terminals for a grounded
+condition.</FONT></SPAN></td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">F14</FONT></SPAN></td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Option Error. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F15</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Motor Thermistor. System
+detected and open or short in the Motor Thermistor.  Retry Check connections
+to thermistor and motor heat.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F16</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Bipolar directional
+fault detected by the axial drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F17</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">C167 Watchdog. Internal
+Drive Fault. Perform Reset of the Drive. If the problem.  Retry is frequent
+the Drives main control board is suspect replace drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F18</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Hardware Trap. Internal
+Drive Fault. Perform Reset of the Drive. If the problem.  Retry is frequent
+the Drives main control board is suspect replace drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F19</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Precharge Fault. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F20</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The load loss detect
+is set to enabled and the drive output torque current was below the load loss
+level for a time period greater then the load loss time.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F21</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive.  Retry operation.
+ If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F22</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">DSP Reset Fault. Power
+up has occurred with an open Stop_AX2 or closed Start_AX2* signal. Check Control
+Board and wiring between Drive and </FONT></SPAN>STC<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F23</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Loop Overrun Fault.
+This fault code indicates a possible hardware failure in the Drive. Retry
+operation.  If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F24</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Motor Mode Fault. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F25</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive.  Retry operation.
+ If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F26</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Power Mode Fault. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F27</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">DSP Comm Fault. Internal
+Drive Fault. Perform Reset of the Drive. If the problem.  Retry is frequent
+the Drives main control board is suspect replace drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F28</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">DSP Timeout Fault.
+Internal Drive Fault. Perform Reset of the Drive. If the problem.  Retry is
+frequent the Drives main control board is suspect replace drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F29</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Hertz Error Fault.
+This fault code indicates an operating frequency parameter was out of range.
+ Possible corrupted configuration parameter, defective Drive or Control Board.
+ Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F30</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Hertz Select Fault.
+This fault code indicates an operating frequency parameter was out of range.
+ Possible corrupted configuration parameter, defective Drive or Control Board.
+ Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F31</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">DSP Queue Fault. Internal
+Drive Fault. Perform Reset of the Drive. If the problem.  Retry is frequent
+the Drives main control board is suspect replace drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F32</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">EEprom Fault. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F33</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Max Retries Fault.
+The Drive unsuccessfully tried to reset a fault.  See message(s) above for
+original problem.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F34</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Prm Access Flt. Verify
+that the [Run Boost] parameter is less than or equal to the [Start Boost]
+parameter.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F35</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Negative Slope Fault.
+This fault code indicates a Volts / Hertz programming error.  Possible corrupted
+configuration parameter, defective Drive or Control Board. Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F36</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Diag C Lim Fault. Check
+programming of [Cur Lim Trip En] parameter. Check for excess load, improper
+DC boost setting, DC brake volts set too high or other causes of excess current.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F37</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">P Jump Error Fault</FONT></SPAN></td></tr><tr><td align="left" valign="top">F38</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Phase U Fault\n\</FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">A
+phase to ground short has been detected in the U phase.  Check the wiring\n\</FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">between
+the drive and Motor.  Check Motor for grounded primary winding.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F39</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Phase V Fault. A phase
+to ground short has been detected in the V phase.  Check the wiring between
+the drive and Motor.  Check Motor for grounded primary winding.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F40</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Phase W Fault. A phase
+to ground short has been detected in the W phase.  Check the wiring between
+the drive and Motor.  Check Motor for grounded primary winding.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F41</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UV Short Fault. A phase
+to phase short has been detected between the U &amp; V phases.  Check the
+wiring between the drive and Motor.  Check Motor for shorted primary.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F42</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UW Short Fault. A phase
+to phase short has been detected between the U &amp; W phases.  Check the
+wiring between the drive and Motor.  Check Motor for shorted primary.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F43</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">VW Short Fault. A phase
+to phase short has been detected between the V &amp; W phases.  Check the
+wiring between the drive and Motor.  Check Motor for shorted primary.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F44</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F45</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F46</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Power Test Fault. This
+fault code indicates a possible hardware failure in the Drive. Check all connections
+to the Power/Driver Board. Retry operation. If problems persist, replace the
+Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F47</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Transistor Saturation
+Fault. This fault code indicates a possible hardware failure in the Drive.
+Retry operation.  If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F48</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Reprogram Fault. Reset
+the </FONT></SPAN>STC<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"> or cycle power to the drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F49</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F50</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Poles Calc Fault</FONT></SPAN></td></tr><tr><td align="left" valign="top">F51</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Background 10ms Over.
+This fault code indicates a possible hardware failure in the Drive. Retry
+operation. If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F52</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Foreground 10ms Over.
+This fault code indicates a possible hardware failure in the Drive. Retry
+operation.  If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F53</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">EE Init Read. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F54</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">EE Init Value. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F55</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Temp Sense Open. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F56</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Precharge Open. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F57</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Ground Warning. Check
+the Motor and external wiring to the drive output terminals for a grounded
+condition.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F58</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Blown Fuse Fault. This
+fault code indicates a possible hardware failure in the Drive. Retry operation.
+ If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F59</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Undefined Fault. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F60</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Encoder Loss. This
+indicates that the axial drive can not sense the axial encoder. Possible causes
+are:Encoder, cabling, unplugged Axial II Control Board or improper axial drive
+encoder jumper setting.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F61</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mult Prog Input. Multiple
+functions selected may indicate a defective Drive.  Retry More than one function
+has been programed reset hardware.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F62</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">III Prog Input. Multiple
+functions selected may indicate a defective Drive. Retry Config file or Drive
+Eprom may be corrupt reset hardware.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F63</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Shear Pin Fault. Output
+Amps exceeds program limits Check Axial hardware and belt. Retry Look for
+slippage in Axial drive hardware or Axial Drive Belt.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F64</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Power Overload. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F65</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Adapter Frequency Error.
+This fault code indicates an operating frequency parameter was out of range.
+Possible corrupted configuration parameter, defective Drive or Control Board.
+Retry Operation.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F66</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">EEprom Checksum Fault.
+This fault code indicates a possible hardware failure in the Drive. Retry
+operation. If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F67</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Sync Loss Fault. This
+fault code is undefined and may indicate a defective Drive. Retry operation.
+If problems persist contact the factory for instructions.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F68</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ROM or RAM Loss Fault.
+Internal power-up tests did not execute properly. Check Language Module. Retry
+operation. If problems persist, replace the Drive.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F69</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Open Output Fault.
+An undercurrent condition has been detected in one or more of the Drive output
+wires. Check the wiring between the drive and the Motor. Check the Motor for
+an open primary winding.</FONT></SPAN></td></tr><tr><td align="left" valign="top">F70</td><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Phase Unbalance Fault.
+An imbalance between Drive output phase currents has been detected. Check
+the wiring between the drive and the Motor.</FONT></SPAN></td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114292751">7&nbsp;&nbsp;Axial Dynamic Brake Assembly<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This assembly provides logic and control power for the AMD when the
+Axial Power Contactor is open. During gantry deceleration, excess AMD AXDC
+bus power is dissipated through chopper load resistors.</P><P CLASS="sect1">The Axial Dynamic Brake Assembly is a modified HEMRC circuit. All components
+are identical, but configured differently. The following theory describes
+the Axial Applications only.</P><P CLASS="sect1">The following reference information comes from the HEMRC Interface Board
+Test Specification, 2145832TST. Refer to the 2145832TST document for any updated
+information, or for more complete discussion of the Interface Board functions.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292756">7.1&nbsp;&nbsp;Chopper Control<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e869"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><B><IMG ALIGN="TOP" SRC="../icons/Danger.gif"></B>  </SPAN></TD></TR><TR><TD><B>POTENTIALLY LETHAL VOLTAGE SOURCE. </B></TD></TR><TR><TD><B>THE CHOPPER CONTROL CIRCUIT ON THE INTERFACE BOARD IS REFERENCED
+TO THE AXDC - RAIL AT ALL TIMES. THIS IS A POTENTIALLY LETHAL VOLTAGE SOURCE.</B></TD></TR><TR><TD><B style="text-transform : uppercase;">DO NOT CONNECT TO GROUND.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">The Interface board Chopper circuit helps dissipate excess energy in
+the Axial Motor Drive&#8217;s internal AXDC bus. The Chopper circuit is always
+active in this application. As the motor decelerates, it acts as a generator,
+which converts some of the kinetic energy to current. The Axial Motor Drive
+channels this current into its internal AXDC bus, which causes the voltage
+on the bus to rise. If the bus voltage exceeds 810V, the drive will disable
+itself and abort the braking process. When the braking process aborts, the
+gantry coasts to a stop. The chopper circuit limits the bus voltage to approximately
+750V to prevent the gantry from coasting.</P><P CLASS="sect2">The Axial Motor Drive&#8217;s AXDC voltage powers the circuit at J7
+of the HEMRC board. Two 7500 ohm 40W chassis mounted dropping resistors, connected
+at J4 &amp; J5, limit the power supply current to &lt;50 mA. CR4 regulates
+the nominal 15V to power the Chopper Control circuit. LED DS3 illuminates
+to indicate the presence of circuit power.</P><P CLASS="sect2">Since the chopper is always enabled, the open collector of AR1-1 floats,
+which in turn enables the operation of comparator circuit of AR1-2. The voltage
+sensed at J7-1 is scaled and compared to a fixed 5V reference provided by
+VR1. When the bus voltage exceeds 750V, AR1-2 goes high, driving Q3 and turning
+on IGBT Q1. An external 100 ohm, 1000W shunt resistor is connected through
+a fuse (AXDC+ and J7-5) to the collector of Q1. When Q1 turns on, this shunt
+resistor is applied to the AXDC bus and discharges the excess energy. When
+the voltage falls below 700V, AR1-2 goes low and driver transistor Q2 turns
+off Q1, which disconnects the shunt resistor.</P><P CLASS="sect2">The AR1-13 circuit detects the on state of Q1. Normally, Q1 stays on
+for a few milliseconds at a time. If it stays on too long, Q1 can damage the
+shunt resistor. Therefore, when the collector of Q1 goes low for more than
+~1ms, AR1-13 floats high to release the RC timer of R26 &amp; C10. If this
+condition lasts for more than ~130ms, AR1-14 goes high, which generates a
+fault condition.</P><P CLASS="sect2">Pins 4 &amp; 5 of J8 are normally jumpered together so the normal low
+state of AR1-14 turns &#8220;on&#8221; the normally open solid-state relay
+U2, and closes its output &#8220;contact&#8221;. The output of U2 passes through
+J10-9 &amp; 10 to the Axial Motor Drive. When this circuit opens, the drive
+detects an error condition and aborts all operation. It also notifies the
+system of an auxiliary drive fault.</P><P CLASS="sect2">The detected fault also turns on Q4, to generate a pulse from T1 at
+J8-1 &amp; 3, which fires the gate of an external SCR. The SCR is connected
+between an 8 ohm tap on the shunt resistor and the AXDC-. When the SCR fires,
+the surge current blows the chopper&#8217;s input fuse and isolates the fault
+from the AXDC bus supply.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292768">7.2&nbsp;&nbsp;Filter Board<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The filter board adds differential mode and common mode capacitance
+to the Axial Motor Drive internal AXDC bus, to reduce the electrical noise
+created by the switching IGBTs. This board is required for EMI/EMC compatibility.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292771">7.3&nbsp;&nbsp;Chopper Resistor Assembly<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The chopper resistor assembly provides a high power dissipation load
+to the AMD bus, if required during axial braking. The chopper resistor configuration
+resembles the shunt regulator. The Interface Board contains the actual chopper
+switching element (an IGBT).</P><P CLASS="sect2">When the axial induction motor brakes, it can momentarily generate a
+current. When this happens, the AMD converts some of the rotational energy
+to electrical energy and returns it to the internal AXDC bus causing a rise
+in the bus voltage. If the AXDC bus voltage exceeds ~750V, the chopper IGBT
+turns on and discharges the excess energy through resistors A4R1 &amp; A4R2.
+The IGBT turns off when the voltage drops below ~700V. This process continues
+as long as necessary to keep the bus voltage below ~750V. Normally this action
+occurs for less than 5 seconds during the brake cycle. At all other times
+the IGBT remains off and essentially &#8220;disconnects&#8221; the resistors
+from the bus. The intermittent duty cycles permits the use of resistors with
+a much lower power rating than a continuous duty cycle would require.</P><P CLASS="sect2">Because the circuit uses the intermittent duty rated resistors A4R1
+&amp; A4R2, it contains fuse A4F1 to isolate the resistors from the bus in
+the event of a control failure. If a fault occurs, A4SCR1 fires and crowbars
+the bus. The anode of A4SCR1 connects to a tap on resistor A4R1, nominally
+set to 8 ohms from the fused end. When the SCR fires, the high current load
+it creates causes fuse A4F1 to open and disconnect the resistor assembly from
+the bus, to isolate the fault.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292776">7.4&nbsp;&nbsp;Step-Up Transformer<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">500VA isolation transformer, T1, is configured as a nominal 115:380
+V step-up transformer. T1 provides the 24 hour power to the AMD that is needed
+to maintain communication with the ACB. Diodes inside the AMD rectify the
+~380VAC to create a nominal 500 VDC bus (no load, with 120 VAC input). DC
+to DC converters inside the drive develop power for its internal logic from
+this bus. T1 should normally never provide power for axial braking.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292778">7.5&nbsp;&nbsp;Bridge Rectifier<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Bridge Rectifier CR1 connects in series between the T1 step-up transformer
+and the AMD AXDC bus as the logic and control power source for the drive.
+The drive internal bus voltage always equals the greater of either the braking
+voltage or the T1 voltage.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114292781">7.6&nbsp;&nbsp;Dropping Resistors<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Chassis mounted dropping resistors R4 &amp; R5 limit the chopper circuit
+power supply current derived from the AMD AXDC bus to &lt;50 mA. The Chopper
+Control supply is referenced to the AXDC bus return, NOT to ground. NEVER
+reference this voltage to ground.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e917"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><B><IMG ALIGN="TOP" SRC="../icons/Danger.gif"></B>  </SPAN></TD></TR><TR><TD><B>POTENTIALLY LETHAL VOLTAGE SOURCE.</B></TD></TR><TR><TD><B>THE CHOPPER CONTROL CIRCUIT ON THE INTERFACE BOARD IS REFERENCED
+TO THE AMD AXDC BUS AT ALL TIMES. THIS IS A POTENTIALLY LETHAL VOLTAGE SOURCE.</B></TD></TR><TR><TD><B style="text-transform : uppercase;">DO NOT CONNECT TO GROUND. VARIOUS COMPONENTS, INCLUDING THE CHOPPER
+RESISTOR ASSEMBLY AND HEMRC INTERFACE BOARD, ARE REFERENCED TO THE AXIAL MOTOR
+DRIVE AXDC BUS AT ALL TIMES. THIS IS A POTENTIALLY LETHAL VOLTAGE SOURCE.
+DO NOT CONNECT TO GROUND.THE HEMRC INTERFACE BOARD CONTAINS NO TEST POINTS.
+ALL ACTIVE CIRCUITRY IS HIGH IMPEDANCE AND TIED TO HAZARDOUS VOLTAGES. DO
+NOT PROBE.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">A4R1 &amp; A4R2 TAP ADJUSTMENTS</P><P CLASS="sect2">Verify/Align the connection tabs and hardware of the chopper resistors
+A4R1 and A4R2 so they clear any sheet metal by at least 0.5in.</P><P CLASS="sect2">Adjust the tap band on chopper resistor A4R1 to 8 ohms &plusmn; 0.5
+ohms, with respect to the end connected to fuse A4F1.</P><P CLASS="sect2">The tap band on chopper resistor A4R2 is not used, but you still must
+secure the band in place to prevent dielectric failure to the adjacent sheet
+metal. To minimize confusion, adjust the tap band to 8 &plusmn; 0.5 ohms,
+with respect to the end connected to A2J7-5.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114292791">8&nbsp;&nbsp;X-Ray Light Control<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The axial board provides a set of relay contacts, K1, to control a relay
+in the PDU. The PDU relay closes a set of contacts that drive the site X-ray
+ON Light. The relay contacts are closed (x-ray light turned on) whenever the
+Axial II Control Board commands X-rays to the OBC. The axial board must drive
+a 24V 100mA LED mounted in the rear of the Gantry. This light, separate from
+the Gantry display, will indicate the presence of the axial board&#8217;s
+x-ray command and will coincide with the PDU x-ray ON light signal. The light
+is controlled by firmware rather than hardware so that it can be coordinated
+with actual x-ray state and not just the x-ray exposure command. STC firmware
+receives notification via the communication slip rings from the OBC when x-rays
+turn on and off.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
