@@ -1,0 +1,47 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Auxiliary Channel Test</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/28/08</P></td></tr></table><H1 ID="top">Auxiliary Channel Test </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="48%"><col width="52%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Last Revised:</td><td valign="">October 16, 2008</td></tr></tbody></table></div></DIV><P CLASS="descriptive">The auxiliary channel test&#8217;s primary function is to query
+the DCB and report specific data-such as detector temperature, power
+supply voltage, board temperatures, and KV/mA readings. With the exception
+of the KV/mA channel sub-test, this test uses basic firmware routines
+to communicate and query the DCB. It does not use the Scan Acquisition
+process that DDC uses. The reason is that if the DAS fails power-up
+diagnostics, the error is reported to software and scanning is prevented,
+either in applications or Diagnostic Data Collection (DDC). This &#8220;tool&#8221;
+allows the user to query the DCB and read the supply voltages, or
+detector board temperatures &#8220;real-time&#8221;. </P><P CLASS="descriptive">The Iterations setting can be changed to poll and report aux
+channel data over a period of time at defined intervals.</P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e50"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">In the log output from this test, ONLY failures are listed.
+Passing results are not shown. To view all results look at the ssw.dastools_aux_chxx.hist
+file found in /usr/g/service/state directory, where xx is 01-05 rotating
+log files for each pass.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1939126-326814">1&nbsp;&nbsp;Detector Rail Temperature<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The detector temperature is measured by the DCB as is reported
+in one of the auxiliary channels. The DCB queries the Heater Controller
+through the fan controller communication link. The specifications
+vary depending on the detector type and are reported with the Aux
+channel output.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1939127-326814">2&nbsp;&nbsp;Power Supply Voltages<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">DCB circuitry measures all DAS power supplies  and reports in
+the auxiliary channels in the form of voltages. The DCB also queries
+the DIFB's for the power supply voltages they generate for themselves
+and the A/D boards of all Digital Modules. The supplies that go to
+the Digital modules are sampled at the backplane connection for each
+Digital module's digital cable. The specifications and results are
+all shown in the Aux channel output.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1939128-326814">3&nbsp;&nbsp;Board Temperatures<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The DCB queries the DIFB's to supply the DIFB and Digital module
+board temperatures. The DIFB's and A/D board's (2 - A/D boards per
+digital module, each with 2 sensors) temperature is read and reported
+in the Aux channel output. There are no specifications but the DIFB's
+will shut down power to the A/D boards should an over temp condition
+exist. A power or hardware reset is required to restore the DIFB power.
+Another source of good information is the Scan Analysis Aux channel
+plotting that will show the temperature profile across the detector
+for the DIFB's and A/D boards.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1939129-326814">4&nbsp;&nbsp;KV / mA Channels<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These auxiliary channels report the actual KV and mA signals
+as read from the generator (KV and mA control boards). Since this
+requires x-ray, this test is not part of the auto-mode, but it can
+be initiated in the manual-test mode with operator intervention. You
+must push the Scan Enable push-button to initiate x-ray. All x-ray
+safe guards are in place, which terminate x-ray in the event of a
+system failure, tube cooling limitations, or exposure time limitations.</P><P CLASS="sect1">The test takes several scans at selected techniques, and the
+measured KV and mA signals are compared to the selected techniques.
+If the  reported signals do not match the firmware reported technique
+with specifications then a failure will be noted in the DAStools log.
+See the gantry interconnect drawing for the kV/mA measured signal
+path to the DCB which is different depending on system type.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

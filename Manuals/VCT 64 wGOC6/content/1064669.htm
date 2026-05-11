@@ -1,0 +1,119 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>High Speed Disc Array (HSDA) Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;4.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;2/23/12</P></td></tr></table><H1 ID="top">High Speed Disc Array (HSDA) Theory </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="49%" align="center"><col width="51%" align="center"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">Last Revised: </td><td align="center" valign="">3 October 2011</td></tr></tbody></table></div></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2133907-1064669">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="SL2133908-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">High Speed Disk Array</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1065873.jpg" BORDER="0" usemap="#SL2133859-1064669"></P></DIV><P CLASS="sect1">The HSDA is a Commercial Off The Shelf (COTS) RAID (Redundant
+Array of Independent Discs) disk array configured specially for GE
+Healthcare by a third party vendor.  The primary purpose of the HSDA
+is to save raw scan data coming from the Data Acquisition Subsystem
+(DAS) which is transmitted across the Slip Ring to the DIG Computer.
+ The DIG Computer saves the raw scan data to the HSDA for later image
+generation and reconstruction.</P><DIV CLASS="ILLUSTRATION" id="SL2133909-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1066320.jpg" BORDER="0" usemap="#SL3332802-1064669"></P></DIV><P CLASS="sect1">The following is a brief theory overview of the hardware and
+software associated with the HSDA.</P><P CLASS="sect1"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2133910-1064669">2&nbsp;&nbsp;HSDA Hardware (Infortrend&reg;, EonStor&reg;)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The HSDA resides in the Reconstruction Engine component group
+of the GOC 6 Series Consoles. The HSDA is a Serial Attached SCSI (SAS)
+RAID disk array utilizing Serial ATA (SATA II) disk drives.  The array
+is configured in a RAID 5 (striped set of drives with distributed
+parity) for increased system reliability and speed.</P><P CLASS="sect1"></P><P CLASS="sect1">Basic Configuration:</P><UL><LI CLASS="bulletlist"><P>1 - 12 Bay Chassis with RAID Controller
+Module</P></LI><LI CLASS="bulletlist"><P>8 - SATA II Hard Disk Drives</P></LI><LI CLASS="bulletlist"><P>2 - 120V AC Power Supply Modules</P></LI><LI CLASS="bulletlist"><P>2 - Fan Cooling Modules</P></LI></UL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e91"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The bottom row of HSDA HDD Trays are empty. No HDDs will
+be installed in this row.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL2133915-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Component Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1066319.jpg" BORDER="0" usemap="#SL2133869-1064669"></P></DIV><P CLASS="sect1"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2133916-1064669">2.1&nbsp;&nbsp;HSDA RAID Controller Module<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2133917-1064669">2.1.1&nbsp;&nbsp;HSDA RAID Controller<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The HSDA RAID Controller Module processes I/O requests and RAID
+parity computations (data protection/redundancy) for the HDDs included
+in the array.  This module also supplies the Serial Attached SCSI
+(SAS) input interface for the DIG Computer.  The RAID configuration
+is controlled by this module.</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e108"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"><B>HSDA RAID Controller Firmware:
+In order to support the latest SATA Hard Drive FRUs (Seagate &#8211; PN#ST3500514NS
+&#8211; Constellation &#8211; 3Gb/s 500GB or Seagate &#8211; PN#ST500NM0011 - Constellation
+&#8211; 6 Gb/s 500GB) an upgrade of the HSDA&#8217;s internal RAID Controller
+Firmware was required.</B>  The new firmware will be installed
+in all forward production systems starting 1st Quarter 2011.  With
+the new firmware installed, the HSDA will support any combination
+of old verses new SATA II Hard Drive FRUs. The new Hard Drive will
+not work in HSDA&#8217;s still running the older (original) firmware.<DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="12%"><col width="20%"><col width="68%"></colgroup><tbody valign=""><tr valign="top"><td rowspan="4" align="center" valign="middle">HSDA
+Assembly</td><td bgcolor="aqua" align="center" valign="middle">RAID Controller Firmware Revision</td><td bgcolor="aqua" align="center" valign="middle">Supported SATA II Hard Drive FRUs</td></tr><tr valign="top"><td align="center" valign="middle">363B</td><td align="center" valign="middle">All (8) Old SATA II Hard Drives
+- Part # 5308760</td></tr><tr valign="top"><td align="center" valign="middle">371E</td><td align="center" valign="middle">OLD &amp; NEW SATA II Hard Drive
+(in combination/mixed mode) - Part # 5308760, 5308760-2 &amp; 5308760-3</td></tr><tr valign="top"><td align="center" valign="middle">371E</td><td align="center" valign="middle">All (8) New SATA II Hard Drives
+- Part # 5308760-2 or 5308760-3</td></tr></tbody></table></div></DIV><p>See HSDA HDD Replacement procedure in the Replacement Chapter
+of this service manual for details on identifying HSDA RAID Controller
+Firmware revision.</p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2133918-1064669">2.1.2&nbsp;&nbsp;Network Interface &amp; Remote Management (RM)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The HSDA is equipped with Remote Management functionality via
+the RAID Controller Module and its dedicated Ethernet network access.
+By utilizing the RM functionality in the HSDA, an independent path
+for communication and hardware status checking can be established
+without the need of a fully functioning HSDA. </P><P CLASS="sect3">The RM functionality of the RAID Controller Module in the HSDA
+provides the means for virtual presence (remote console) at the Host
+Computer. This presence includes keyboard, video and mouse redirection.
+ As long as the standby power of the HSDA power supply is present,
+the RAID Controller Module will operate and allow access from the
+Host Computer. This RM functionality replaces the Serial over LAN
+(SOL) functionality used in previous console generations. (See <SPAN CLASS="MODULEREF"><A HREF="1064675.htm#SL2093008-1064675"><I>HSDA Troubleshooting</I></A></SPAN>.)</P><P CLASS="sect3"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2133919-1064669">2.2&nbsp;&nbsp;HSDA Hard Disk Drives (HDDs)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The HSDA utilizes eight (8) Serial ATA (SATA) Hard Disk Drives
+(HDDs) for saving raw scan data in a redundant format (RAID 5).  By
+utilizing a RAID 5 configuration in the HSDA, a single HDD failure
+will not cause immediate down time.  The HSDA will continue working
+until such time where the failed HDD can be replaced.  (See RAID definitions <A HREF="1064669.htm#SL3327360-1064669">Section&nbsp;4.3</A>.)</P><P CLASS="sect2"></P><P CLASS="sect2">The following lists the HSDA HDD specifications:</P><UL><LI CLASS="bulletlist"><P>&#8226;	Drive type: Serial ATA</P></LI><LI CLASS="bulletlist"><P>&#8226;	Interface - SATA,  3.0 Gb/s or 6.0
+Gb/s</P></LI><LI CLASS="bulletlist"><P>Drives: (8) Seagate - PN#ST3250310NS
+- Baracuda  - 3 Gb/s 250GB or (8) Seagate - PN#ST3500514NS - Constellation
+- 3 Gb/s 500GB or (8) Seagate - PN#ST500NM0011 - Constellation - 6
+Gb/s 500GB or any combination of the three.</P></LI></UL><P CLASS="sect2"></P><DIV CLASS="ILLUSTRATION" id="SL2133925-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA SATA Hard Disk Drive</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1066321.jpg" BORDER="0" usemap="#SL2133889-1064669"></P></DIV><P CLASS="sect2">Each HDD will be mounted in a tray assembly which allows for
+Hot Swapping of the drives in the HSDA assembly.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2133926-1064669">2.3&nbsp;&nbsp;Power Supplies<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The HSDA is equipped with two (2) power supply assemblies in
+a redundant fashion.  Both power supplies are required for normal
+operation, but the HSDA can function with only one working power supply.
+ The power supply assemblies are Hot Swappable and have independent
+power switches on each of the PSU modules</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2133927-1064669">2.4&nbsp;&nbsp;Cooling Modules<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The HSDA is equipped with two (2) redundant cooling modules
+for controlling the temperature of the HSDA assembly.  Under normal
+operation each of the cooling modules will run in a low speed mode.
+ Under the following conditions the cooling modules will increase
+their fan rotational speed.</P><UL><LI CLASS="bulletlist"><P>&#8226;	Component failure: if one cooling
+fan in a cooling module, a PSU, or a temperature sensor fails, the
+remaining cooling fan(s) automatically raises its rotation speed.</P></LI><LI CLASS="bulletlist"><P>&#8226;	Elevated temperature: if any of the
+temperature readings breaches the upper threshold set for any of the
+interior temperature sensors, the cooling fans automatically raise
+their rotation speed.</P></LI><LI CLASS="bulletlist"><P>&#8226;	During the subsystem initialization
+stage, the cooling fans operate at the high speed and return to low
+speed once the initialization process is completed and no erroneous
+condition is detected.</P></LI></UL><P CLASS="sect2"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2133931-1064669">3&nbsp;&nbsp;HSDA CONNECTIONS<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">See Illustration 6 and 7 for connection destinations of the
+HSDA in the GOC 6 Series console.</P><DIV CLASS="ILLUSTRATION" id="SL2133932-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA 1 Connections</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1066322.jpg" BORDER="0" usemap="#SL2133896-1064669"></P></DIV><P CLASS="sect1"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3327358-1064669">4&nbsp;&nbsp;HSDA Logical Disk and RAID Array Configuration<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3333030-1064669">4.1&nbsp;&nbsp;Logical Disk (/dev/sda)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">By design each HSDA contains eight Hard Disk Drives (HDDs) of
+250 GB or larger capacity (8 X 250 GB = 2 TB). The actual Logical
+Disk (/dev/sda) created on the HSDA is only 512 GB in size. The Logical
+Disk Volume of 512 GB is evenly spread across all eight HDDs with
+an effective scan data capacity of approximately 439 GB (due to RAID
+5 utilization). </P><P CLASS="sect2">.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3327359-1064669">4.2&nbsp;&nbsp;RAID Array Structure<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The HSDA's RAID Controller Module is responsible for mapping
+the available hardware (HDDs), and based on the RAID method configured,
+creates a disk volume of a specific size spanned across the HDD's.
+This mapping process is optimized to support specific read/write performance
+specification critical in handling of the raw scan data.</P><P CLASS="sect2">With RAID 5 utilization and limiting the Logical Disk Volume
+to 512 GB, each HDD is effectively partitioned to approximately 73
+GB. This technique of partitioning the HDDs to be smaller than the
+actual capacity of the HDD is call &#8220;destroking&#8221;. Destroking
+allows for slightly better read/write performance since the logical
+disk space on the HDD is limited to the faster rotating section of
+the HDD platter/s.</P><P CLASS="sect2">With RAID 5 utilization, one (1) HDD worth of usable storage
+evenly spread across all eight (8) HDDs is used for storing the Distributed
+Parity (Ap - Hp) information. This Distributed Parity information
+is later used, in the event of a single HDD failure, to supply the
+necessary data needed to replace missing scan data from the failed
+HDD. The Distributed Parity information is also used to rebuild the
+logical disk on a replacement drive, when its installed in the array.
+The following illustration demonstrates how the HDDs are mapped in
+the array.</P><P CLASS="sect2"></P><P CLASS="sect2"><DIV CLASS="ILLUSTRATION" id="SL2133920-1064669"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA RAID 5 Disk Array Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1108301.jpg" BORDER="0" usemap="#SL3332993-1064669"></P></DIV></P><P CLASS="sect2"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3327360-1064669">4.3&nbsp;&nbsp;RAID Definitions<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">RAID (Redundant Array of Independent Discs) is a concept in
+storage subsystems that can deliver higher levels of protection against
+down-time and data loss than conventional disc drives. RAID refers
+to a drive architecture designed to safeguard critical data through
+redundancy.</P><P CLASS="sect2">RAID 5 Definition: Block level striping with parity data distributed
+across all member disks (utilized within HSDA).</P><P CLASS="sect2">Distributed parity requires all but one drive to be present
+to operate; drive failure requires replacement, but the array is not
+destroyed by a single drive failure. Upon drive failure, any subsequent
+reads can be calculated from the distributed parity such that the
+drive failure is masked from the end user. The array will have data
+loss in the event of a second drive failure and is vulnerable until
+the data that was on the failed drive is rebuilt onto a replacement
+drive.</P><P CLASS="sect2">Provides improved performance and additional storage, but provides
+no fault tolerance.  Any disk failure destroys the array, which becomes
+more likely with more disks in the array.  A single disk failure destroys
+the entire array because when data is written to a RAID 0 drive, the
+data is broken into fragments. </P><P CLASS="sect2">The number of fragments is dictated by the number of disks in
+the drive. The fragments are written to their respective disks simultaneously
+on the same sector. This allows smaller sections of the entire chunk
+of data to be read off the drive in parallel, giving this type of
+arrangement huge bandwidth. When one sector on one of the disks fails,
+however, the corresponding sector on every other disk is rendered
+useless because part of the data is now corrupted. </P><P CLASS="sect2">There is more to RAID than redundancy. RAID contributes to automatic
+load balancing. The right choice of RAID level can speed up data transfers
+or handle more I/O requests per second.</P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

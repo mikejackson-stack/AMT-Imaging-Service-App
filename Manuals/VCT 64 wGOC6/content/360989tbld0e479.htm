@@ -1,0 +1,239 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>JBOD Assembly (5114536) &#8211; Verify Disks and Mount State Command
+Output</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL2730125-360989"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">JBOD Assembly (5114536) - Verify Disks and Mount State Command
+Output</SPAN> </P><table summary="JBOD Assembly (5114536) &#8211; Verify Disks and Mount State Command&#xA;Output" border="1"><colgroup><col width="100%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>{ctuser@hostname}[3] rsh darc
+Last login: Thu Jul 27 12:39:59 from oc
+[ctuser@darc ~]$ df
+Filesystem           1K-blocks      Used Available Use% Mounted on
+/dev/hda2              4182720   2821880   1360840  68% /
+/dev/hda1               101086      5107     90760   6% /boot
+none                   3117332   2242436    874896  72% 
+/dev/shm/dev/hda9             65625544     45340  65580204   1% /usr/g
+/dev/md0             515938304    971744 514966560   1% /raw_data
+[ctuser@darc ~]$ su -
+Password: #bigguy
+[root@darc ~]# sg_map -i -x
+/dev/sg0  0 0 1 0  0  /dev/sda  SEAGATE   ST373454LC        0002
+/dev/sg1  0 0 2 0  0  /dev/sdb  SEAGATE   ST373454LC        0002
+/dev/sg2  0 0 4 0  0  /dev/sdc  SEAGATE   ST373454LC        0002
+/dev/sg3  0 0 6 0  0  /dev/sdd  SEAGATE   ST373454LC        0002
+/dev/sg4  0 0 15 0  3  nStor     NexStor 4000S     2.02
+/dev/sg5  1 0 1 0  0  /dev/sde  SEAGATE   ST373454LC        0002
+/dev/sg6  1 0 2 0  0  /dev/sdf  SEAGATE   ST373454LC        0002
+/dev/sg7  1 0 3 0  0  /dev/sdg  SEAGATE   ST373454LC        0002
+/dev/sg8  1 0 5 0  0  /dev/sdh  SEAGATE   ST373454LC        0002
+/dev/sg9  1 0 15 0  3  nStor     NexStor 4000S     2.02
+[root@darc ~]# cat /proc/scsi/scsi
+Attached devices:
+Host: scsi0 Channel: 00 Id: 01 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 02 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 04 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 06 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 15 Lun: 00
+  Vendor: nStor    Model: NexStor 4000S    Rev: 2.02
+  Type:   Processor                        ANSI SCSI revision: 02
+Host: scsi1 Channel: 00 Id: 01 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 02 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 03 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 05 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 15 Lun: 00
+  Vendor: nStor    Model: NexStor 4000S    Rev: 2.02
+  Type:   Processor                        ANSI SCSI revision: 02
+[root@darc ~]# cat /proc/scsi/aic79xx/{0,1}
+Adaptec AIC79xx driver version: 1.3.11
+Adaptec AIC7902 Ultra320 SCSI adapter
+aic7902: Ultra320 Wide Channel A, SCSI Id=7, PCI-X 67-100Mhz, 512 SCBs
+Allocated SCBs: 64, SG List Length: 128
+ 
+Serial EEPROM:
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x09f4 0x0146 0x2807 0x0010 0xffff 0xffff 0xffff 0xffff0
+xffff 0xffff 0xffff 0xffff 0xffff 0xffff 0x0430 0xb3f7
+ 
+Target 0 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 1 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 1 Lun 0 Settings
+                Commands Queued 7659
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 2 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 2 Lun 0 Settings
+                Commands Queued 7647
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 3 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 4 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 4 Lun 0 Settings
+                Commands Queued 7756
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 5 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 6 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 6 Lun 0 Settings
+ 
+                Commands Queued 7597
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 7 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 8 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 9 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 10 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 11 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 12 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 13 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 14 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 15 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 6.600MB/s transfers (16bit)
+        Curr: 6.600MB/s transfers (16bit)
+        Transmission Errors 0
+        Channel A Target 15 Lun 0 Settings
+                Commands Queued 1369
+                Commands Active 0
+                Command Openings 1
+                Max Tagged Openings 0
+                Device Queue Frozen Count 0
+Adaptec AIC79xx driver version: 1.3.11
+Adaptec AIC7902 Ultra320 SCSI adapter
+aic7902: Ultra320 Wide Channel B, SCSI Id=7, PCI-X 67-100Mhz, 512 SCBs
+Allocated SCBs: 56, SG List Length: 128
+ 
+Serial EEPROM:
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x09f4 0x0146 0x2807 0x0010 0xffff 0xffff 0xffff 0xffff
+0xffff 0xffff 0xffff 0xffff 0xffff 0xffff 0x0430 0xb3f7
+ 
+Target 0 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 1 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 1 Lun 0 Settings
+                Commands Queued 7705
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 2 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 2 Lun 0 Settings
+                Commands Queued 7647
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 3 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 3 Lun 0 Settings
+                Commands Queued 7558
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 4 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 5 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 5 Lun 0 Settings
+                Commands Queued 7560
+                Commands Active 0
+                Command Openings 32
+                Max Tagged Openings 32
+                Device Queue Frozen Count 0
+Target 6 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 7 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 8 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 9 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 10 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 11 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 12 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 13 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 14 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 15 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 6.600MB/s transfers (16bit)
+        Curr: 6.600MB/s transfers (16bit)
+        Transmission Errors 0
+        Channel A Target 15 Lun 0 Settings
+                Commands Queued 1369
+                Commands Active 0
+                Command Openings 1
+                Max Tagged Openings 0
+                Device Queue Frozen Count 0
+[root@darc ~]#</PRE></td></tr></tbody></table></CENTER></DIV></BODY></HTML>

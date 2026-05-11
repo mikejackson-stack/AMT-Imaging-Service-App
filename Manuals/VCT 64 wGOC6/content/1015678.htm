@@ -1,0 +1,1013 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VCT Disk Array Commands and Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/2/08</P></td></tr></table><H1 ID="top">VCT Disk Array Commands and Troubleshooting </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Last revised:</td><td valign="">24 February 2008</td></tr></tbody></table></div></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1590488-1015678">1&nbsp;&nbsp;Command List<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><B>07MW18.4</B> is the software version used
+to validate these commands.</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody valign=""><tr valign="top"><td style="Font:bold" align="center" valign="">Command</td><td style="Font:bold" align="center" valign="">Description</td></tr><tr valign="top"><td rowspan="3" valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl -a /dev/sd</B></FONT></SPAN></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>(where *
+= sda , sdb, through sdh)</B></FONT></SPAN><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl -H /dev/sd*</B></FONT></SPAN><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc
+~]#</FONT></SPAN></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl -H /dev/sd* | grep OK | wc
+-l</B></FONT></SPAN><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>(if result is anything other than 1 -
+bad drive)</B></FONT></SPAN></P></td><td rowspan="3" valign="top">Verifies the &#8220;SMART
+Health Status&#8221; output for potential failing disk(s) in the Disk
+Array (JBOD). (See <A HREF="1015678.htm#SL1613219-1015678">Section&nbsp;21</A>.)</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid -q</B></FONT></SPAN></td><td rowspan="2" valign="">Apps Up or Down. Runs a performance
+test on the /raw_data filesystem if the file system is already mounted.
+A failure message is displayed if performance falls below the minimum
+configured threshold (no action is taken to stop the disk array, etc).
+Chassis layout is displayed.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid -a</B></FONT></SPAN></td><td rowspan="2" valign="top">Apps Down ONLY. Starts
+and tests the RAID.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid -s</B></FONT></SPAN></td><td rowspan="2" valign="top">Apps Down ONLY. Stops
+the RAID.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid -c</B></FONT></SPAN></td><td rowspan="2" valign="top">Apps Down ONLY. Repartitions
+(creates) and starts the RAID.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN>&nbsp;</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid
+-z -c then sudo gre-raid -a then sudo gre-raid -q</B></FONT></SPAN></td><td rowspan="2" valign="top">Apps Down ONLY. Used only
+when instructed to by Engineering or the OLC. This command removes
+the serial number of a bad disk.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>df -h /raw_data</B></FONT></SPAN></td><td valign="">Displays partition information and verifies that raw_data is
+mounted on dev/md0.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sg_map -i -x</B></FONT></SPAN></td><td valign="">Lists device information with /dev/sg (#) to /dev/sd (letter).
+Listing of the SCSI Bus devices seen by the VDARC, which currently
+consists of two controllers each with 4 disks and 1 nStor device located
+on the SAF-TE Board.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep  'Curr: '   /proc/scsi/aic79xx/*</B></FONT></SPAN></td><td valign="">Lists DARC SCSI Controller 0 and 1 BIOS info.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /var/log grep -Hi transmission mess*</B></FONT></SPAN></td><td rowspan="2" valign="top">{ctuser@darc} then cd
+/var/log to view transmission errors, or [root@darc ~]# grep -Hi transmission
+/var/log/mess*.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /var/log grep -Hi Dump Card mess*</B></FONT></SPAN></td><td rowspan="2" valign="top">{ctuser@darc} then cd
+/var/log to view Dump Card errors, or [root@darc ~]# grep -Hi Dump
+Card /var/log/mess*.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep  -i  transmission /proc/scsi/aic79xx/{0,1}</B></FONT></SPAN></td><td valign="">Transmission error info for 0 and 1 for vdarc scsi.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /var/log grep -Hic &#8216;transmission&#8217; mess*</B></FONT></SPAN></td><td valign="">Shows number of times transmission errors have occurred.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /var/log grep -Hic &#8216;Dump Card&#8217; mess*</B></FONT></SPAN></td><td valign="">Shows number of times Dump Card State has occurred.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign=""><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#sg_map -a</B></FONT></SPAN></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sg_map
+-sd</B></FONT></SPAN></td><td rowspan="2" valign="top">Lists /dev/sg# (letter)
+to /dev/</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dd if=/dev/sdx of=/dev/null</B></FONT></SPAN></td><td valign="">Lights a LED for each drive for the Disk Array. Reads data
+1 character at a time.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dd if=/dev/zero bs 64M of /dev/sdx</B></FONT></SPAN></td><td valign="">Disk Array. Reads and writes a block size of data.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep -ci direct /proc/scsi/scsi</B></FONT></SPAN></td><td valign="">Lists SCSI information.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/scsi/scsi</B></FONT></SPAN></td><td valign="">Lists device information.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/scsi/aic79xx/0</B></FONT></SPAN></td><td valign="">Lists DARC SCSI Controller 0 info.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/scsi/aic79xx/1</B></FONT></SPAN></td><td valign="">Lists DARC SCSI Controller 1 info.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/scsi/aic79xx/{0,1}</B></FONT></SPAN></td><td valign="">Lists DARC SCSI Controller info.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]#</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/mdstat</B></FONT></SPAN></td><td valign="">&nbsp;</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>safte-monitor  -p  |  grep  -I  power</B></FONT></SPAN></td><td valign="">Displays if both power supplies are operational for the VCT
+Disk Array</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>safte-monitor  -p  |  grep  -I  fan</B></FONT></SPAN></td><td valign="">Displays if both fans are operational for the VCT Disk Array</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep  -ic  nstor  /proc/scsi/scsi</B></FONT></SPAN></td><td valign="">A return of #2 verifies the VDARC Node can see the VCT Disk
+Array. If not verify SCSI Cables may be suspect.</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc bin]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>/gre-file-perf  -s  15  /raw_data</B></FONT></SPAN></td><td valign="">With Apps UP - should display success for the VCT Disk Array
+and properly created and assembled</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>safte-monitor  -p  |  grep  "disk present"</B></FONT></SPAN></td><td valign="">[See following explanation.]</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>tail&nbsp;&nbsp;&nbsp;&nbsp;-100f&nbsp;&nbsp;&nbsp;&nbsp;gesys_bay45.log&nbsp;&nbsp;&nbsp;&nbsp;&amp;</B></FONT></SPAN></td><td valign="">&nbsp;</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>slay&nbsp;&nbsp;&nbsp;&nbsp;tail</B></FONT></SPAN></td><td valign="">&nbsp;</td><td class="auto-generated">&nbsp;</td></tr></tbody></table></div></DIV><P CLASS="sect1"><B>Explanation of &#8220;disk present&#8221; output:</B></P><P CLASS="sect1">View the VCT Disk Array from the front.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e413"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When a Disk drops out (sdc), the letters (sdc) will change
+from Bus 0 ID4 to Bus 0 ID6. Only the BUS and ID output shown by performing
+a SCSI command will remain the same.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1"><SPAN CLASS="GUIicon"><IMG SRC="../media/1015678-1057465.jpg" BORDER="0"></SPAN></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598024-1015678">2&nbsp;&nbsp;Disk Array Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">When troubleshooting the disk array, do not attempt to perform
+a hot swap. The disk is running at 10K RPM. Always HALT the console
+when performing cable or disk swapping. Without the HALT there is
+no guarantee that the Disk Array will recover properly. Perform the
+commands with Apps Down whenever possible. The only diagnostic command
+that should be performed with Apps Up is the query command: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc ~}$</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid -q</B></FONT></SPAN></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1598025-1015678">2.1&nbsp;&nbsp;Command Overview as [root@darc]<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sg_map -i -x</B></FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep(spacebar)'Curr:(spacebar)'(spacebar)/proc/scsi/aic79xx/*</B></FONT></SPAN></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1598026-1015678">2.2&nbsp;&nbsp;Command Overview as {ctuser@darc}<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid(spacebar)-a		(Non-Destructive
+ASSEMBLE)</B></FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid(spacebar)-q		(Non-Destructive
+QUERY/MAP)</B></FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid(spacebar)-c		(Destructive CREATE
+REPARTITION)</B></FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid(spacebar)-s		(STOP - UNMOUNT)</B></FONT></SPAN></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1590493-1015678">3&nbsp;&nbsp;Disk Array Erase Serial Number Command<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There may be times the Disk Array gets into a confused state
+and cannot be corrected. This may be due to a disk not being seen
+for a moment during the LFC, or due to create/assemble/query commands
+being run. This confusion does not occur often, but when it does the
+-z command may be used in conjunction with another diagnostic command
+(usually -c to erase the disk serial number, then reassemble).</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e457"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Erase the Disk Array serial numbers. Be careful when using
+the -z command. If a disk continues to fail, replace it. You must
+assemble after the erase.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc ~}$</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid
+-z -c</B></FONT></SPAN></P><P CLASS="sect1">Then run:</P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc ~}$</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo gre-raid
+-a</B></FONT></SPAN></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598027-1015678">4&nbsp;&nbsp;VDARC Disk Array Device Check<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The term SCSI Generic (&#8220;sg&#8221;) applies to emulated
+SCSI devices. The following output is for an 8 Disk Array system.
+Notice that two channels and 8 disks plus two nStor devices are shown.</P><P CLASS="sect1">Check SCSI Bus HW detected at the VDARC Node as root@darc as
+follows:</P><PRE>Device			Manufacturer	Model#		Revision
+/dev/sg0  /dev/sda	SEAGATE		ST373454LC		0002
+
+[root@darc ~]# sg_map -i -x
+
+/dev/sg0  0 0 1 0  0  /dev/sda  SEAGATE   ST373454LC        0002
+/dev/sg1  0 0 2 0  0  /dev/sdb  SEAGATE   ST373454LC        0002
+/dev/sg2  0 0 4 0  0  /dev/sdc  SEAGATE   ST373454LC        0002
+/dev/sg3  0 0 6 0  0  /dev/sdd  SEAGATE   ST373454LC        0002
+/dev/sg4  0 0 15 0  3  nStor     NexStor 4000S     2.02
+SCSI Bus Adaptor CH 2
+/dev/sg5  1 0 1 0  0  /dev/sde  SEAGATE   ST373454LC        0002
+/dev/sg6  1 0 2 0  0  /dev/sdf  SEAGATE   ST373454LC        0002
+/dev/sg7  1 0 3 0  0  /dev/sdg  SEAGATE   ST373454LC        0002
+/dev/sg8  1 0 5 0  0  /dev/sdh  SEAGATE   ST373454LC        0002
+/dev/sg9  1 0 15 0  3  nStor     NexStor 4000S     2.02
+SCSI Bus Adaptor CH 1
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598028-1015678">5&nbsp;&nbsp;VDARC Disk Array BIOS Setting Check<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following verification is performed to ensure that the VDARC
+Node BIOS screens have been setup properly. This check does not address
+the process for correcting an error. Certain BIOS setting issues may
+show up during gre-raid diagnostic output as &#8220;Unexpected Negotiated
+Parameters.&#8221;</P><P CLASS="sect1">Open a Unix shell (window) and login as root. The following
+example is for a 8 Disk Array. To change the DARC BIOS, see the Appendix
+for instructions.</P><PRE>{ctuser@hostname}: su (space) -
+
+Enter &lt;password&gt;
+[root@ hostname]# rsh (space) darc
+
+Last login: Wed Jan 19 17:41:38 from oc
+[root@darc ~]# grep    'Curr:    '    /proc/scsi/aic79xx/*
+/proc/scsi/aic79xx/0:   Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+
+/proc/scsi/aic79xx/0:   Curr: 6.600MB/s transfers (16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 6.600MB/s transfers (16bit )
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598029-1015678">6&nbsp;&nbsp;Disk Array Help Menu<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@hostname} rsh darc
+
+Last login: Fri Nov  4 14:41:39 from oc
+{ctuser@darc ~}$ sudo gre-raid -h
+
+gre-raid: built Oct 18 2005 17:52:27
+
+Usage: gre-raid &lt;-a | -c | -q | -s&gt; [ options ]
+-a	--assemble		Assemble/start an existing disk array.
+-c	--create		Create a new disk array with all valid drives.
+-q	--query			Query disk array.
+-s	--stop			Stop disk array.
+
+-f	--force			Attempt force start of existing disk array.
+-h	--help			Display this usage information.
+-m	--mfgtest		Manufacturing test mode - fail if any warnings.
+-v	--verbose		Display additional information.
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598030-1015678">7&nbsp;&nbsp;Disk Array Assemble Diagnostic (Failure)<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@darc ~}$ sudo gre-raid -a		(Non-Destructive ASSEMBLE)
+
+gre-raid: built Oct 18 2005 17:52:27
+
+/dev/sd&lt;x&gt;: scanning disk array...done
+</PRE><P CLASS="sect1"><B>Important: </B>Verify that there are no &#8220;unexpected
+negotiated parameters&#8221; shown here.</P><PRE>Device    Bus  ID  Mfg       Model        Fwrev  Serial-number
+/dev/sda  0    1   SEAGATE   ST373454LC   0002   3KP01Z6E00007518DNTZ
+/dev/sdb  0    2   SEAGATE   ST373454LC   0002   3KP0T5B200007551QAAU
+/dev/sdc  0    4   SEAGATE   ST373454LC   0002   3KP0N9FP00007547X70C
+/dev/sdd  0    6   SEAGATE   ST373454LC   0002   3KP0LDTX000075471RBD
+/dev/sde  1    1   SEAGATE   ST373454LC   0002   3KP0TZF000007551L0ZR
+/dev/sdf  1    2   SEAGATE   ST373454LC   0002   3KP0MH8200007546P0J2
+/dev/sdg  1    3   SEAGATE   ST373454LC   0002   3KP0LPDS00007546P08W
+/dev/sdh  1    5   SEAGATE   ST373454LC   0002   3KP0TM1F00007551BVZL
+
+dasType: VDAS_64
+/usr/g/config/gre-raid-8.cfg: RAID-0 profile
+/raw_data: unmounting filesystem...done
+/dev/md0: stopping...done
+/var/log/messages: checking for SCSI errors...done
+/var/log/messages: 0 drive(s) found with SCSI errors found since last start
+
+/dev/sda: testing...52.4MB/sec...done
+/dev/sdb: testing...52.7MB/sec...done
+/dev/sdc: testing...52.8MB/sec...done
+/dev/sdd: testing...not_currently_used [Dropped out]
+
+/dev/sde: testing...52.8MB/sec...done
+/dev/sdf: testing...52.3MB/sec...done
+/dev/sdg: testing...Mon Jan 16 11:47:25 2006 fail_scsi_errors(1) [Failure]
+
+/dev/sdh: testing...52.7MB/sec...done
+
+/dev/md0: starting...done
+/dev/md0: RAID-0 active with (8) drives, 256k chunk size, and 493GB capacity
+
+/raw_data: mounting /dev/md0 filesystem...done
+/raw_data: testing...410.1MB/sec...done
+/raw_data: 0.5% used, 489.5GB avail
+
+gre-raid: success
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598033-1015678">8&nbsp;&nbsp;Disk Array Stop Diagnostic<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@darc ~}$ sudo gre-raid -s
+
+gre-raid: built Oct 18 2005 17:52:27
+
+/dev/sd&lt;x&gt;: scanning disk array...done
+
+Device    Bus  ID  Mfg       Model        Fwrev  Serial-number
+/dev/sda  0    1   SEAGATE   ST373454LC   0002   3KP01Z6E00007518DNTZ
+/dev/sdb  0    2   SEAGATE   ST373454LC   0002   3KP0T5B200007551QAAU
+/dev/sdc  0    4   SEAGATE   ST373454LC   0002   3KP0N9FP00007547X70C
+/dev/sdd  0    6   SEAGATE   ST373454LC   0002   3KP0LDTX000075471RBD
+/dev/sde  1    1   SEAGATE   ST373454LC   0002   3KP0TZF000007551L0ZR
+/dev/sdf  1    2   SEAGATE   ST373454LC   0002   3KP0MH8200007546P0J2
+/dev/sdg  1    3   SEAGATE   ST373454LC   0002   3KP0LPDS00007546P08W
+/dev/sdh  1    5   SEAGATE   ST373454LC   0002   3KP0TM1F00007551BVZL
+
+dasType: VDAS_64
+/usr/g/config/gre-raid-8.cfg: RAID-0 profile
+/raw_data: unmounting filesystem...done
+/dev/md0: stopping...done
+
+gre-raid: success
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598034-1015678">9&nbsp;&nbsp;VDARC Node BIOS Telnet Reconfiguration Process<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">If the DARC SCSI BIOS "extended int 13 support for drives &gt;
+1GB" setting is disabled on either host controller, then gre-raid
+will fail to create/start the scan disk array (by design).</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e522"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">SCSI controller settings for A and B &#8220;Sync Transfer
+Rate&#8221; should all be at 320 (not 160).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">Ideally this one-time procedure would be done before the LFC.
+Use Serial Over LAN (SOL) to reboot the VCT DARC Node and access the
+DARC SCSI setup.</P><OL><LI CLASS="numlist"><P>With Application Software DOWN, open
+a Unix Shell:</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]# service cliservice start</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Starting dpcproxy message or restarted dpcproxy message</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]# telnet localhost 623</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]# service cliservice start</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Server: darc</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username: (press the enter/return key)</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password: (press the enter/return key)</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">At the dpccli prompt: reset</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Ok</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">At the dpccli prompt: console</FONT></SPAN></P></LI><LI CLASS="numlist"><P> Press Ctrl-A (when message appears)
+to configure the SCSI BIOS. Message appears shortly after system BIOS
+display.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN> to
+select <B>AIC-7902 A at slot ##</B>.</P><OL TYPE="a"><LI CLASS="numlist"><P>Press <B>Configure/View SCSI
+Controller Settings</B>.</P></LI><LI CLASS="numlist"><P>Use down-arrow key to select <B>SCSI Device Configuration</B>.</P></LI><LI CLASS="numlist"><P>Verify that the Sync Transfer Rate
+(MB/Sec) for all is set at 320.</P></LI><LI CLASS="numlist"><P>If the Sync Transfer Rate (MB/Sec)
+is not set at 320, arrow to the value in need of change and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>.</P></LI><LI CLASS="numlist"><P>Use up arrow key to 320 and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>, then arrow over and select Enter&gt; for next change.</P></LI><LI CLASS="numlist"><P>Verify that all (0 through 15) are
+set to 320.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave the Configuration screen for <B>AIC-7902 A</B>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave this screen and return to <B>AIC-7902 A at slot ##</B> screen.</P></LI></OL></LI><LI CLASS="numlist"><P>At the <B>AIC-7902 A at slot
+## </B>screen:</P><OL TYPE="a"><LI CLASS="numlist"><P>Use the down-arrow key to select "Advanced
+Configuration" and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>.</P></LI><LI CLASS="numlist"><P>Use down-arrow key to select "Extended
+Int 13 Translation for DOS Drives &gt; 1 GByte".</P></LI><LI CLASS="numlist"><P>If setting is disabled, press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN> and select/enter "Enabled".</P></LI><LI CLASS="numlist"><P>Press the <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> key twice to go up two levels: (AIC-7902A Configuration screen,
+then Save Changes Made?).</P></LI><LI CLASS="numlist"><P>Select "Yes" to save changes.</P></LI><LI CLASS="numlist"><P>Press the <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> key to get out of the options screen: Configure/View SCSI Controller
+Settings.</P></LI></OL></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN> to
+select <B>AIC-7902 B at slot ##</B>.</P><OL TYPE="a"><LI CLASS="numlist"><P>Press <SPAN CLASS="GUILABEL"><I>Configure/View SCSI
+Controller Settings</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Use down-arrow key to select <SPAN CLASS="GUILABEL"><I>SCSI Device Configuration</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Verify that the Sync Transfer Rate
+(MB/Sec) for all is set at 320.</P></LI><LI CLASS="numlist"><P>If the Sync Transfer Rate (MB/Sec)
+is not set at 320, arrow to the value in need of change and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>.</P></LI><LI CLASS="numlist"><P>Use up arrow key to 320 and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>, then arrow over and select Enter&gt; for next change.</P></LI><LI CLASS="numlist"><P>Verify that all (0 through 15) are
+set to 320.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave the Configuration screen for <B>AIC-7902 B</B>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave this screen and return to <B>AIC-7902 B at slot ##</B> screen.</P></LI></OL></LI><LI CLASS="numlist"><P>At the <B>AIC-7902 B at slot
+## </B>screen, use the down-arrow key to select "Advanced
+Configuration" and press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>.</P><OL TYPE="a"><LI CLASS="numlist"><P>Use down-arrow key to select "Extended
+Int 13 Translation for DOS Drives &gt; 1 GByte".</P></LI><LI CLASS="numlist"><P>If setting is disabled, press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN> and select "Enabled".</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> twice
+to go up two levels: (AIC-7902A Configuration screen then Save Changes
+Made?).</P></LI><LI CLASS="numlist"><P>Select "Yes" to save changes.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+get out of the options screen: Configure/View SCSI Controller Settings.</P></LI></OL></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave this screen and return to AIC A/B Selection Screen.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="GUIBUTTON">[Esc]</SPAN> to
+leave EXIT UTILITY? Use Arrow Key to select Yes, then press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598035-1015678">10&nbsp;&nbsp;VDARC Node Replacement Loading and Saving Raw Data<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Shut down system and replace VDARC
+hardware.</P></LI><LI CLASS="numlist"><P>Remove VCT Disk Array power (2) cords
+from the rear of the VCT Disk Array power supplies or turn off both
+(2) power supplies located at the rear of the Disk Array.</P></LI><LI CLASS="numlist"><P>Boot system, stopping Application Software
+from coming up.</P></LI><LI CLASS="numlist"><P>Load software media following instructions
+from the appropriate LFC procedure:</P><UL><LI CLASS="bulletlist"><P>DARC OS</P></LI><LI CLASS="bulletlist"><P>DARC Apps (ignore any Disk Array errors)</P></LI></UL></LI><LI CLASS="numlist"><P>With Application Software down as ctuser,
+perform vrac_flash_update, answer "y".</P></LI><LI CLASS="numlist"><P>As root, halt the system.</P></LI><LI CLASS="numlist"><P>Attach VCT Disk Array (2) power cords
+to the rear of the VCT Disk Array power supplies or turn on both (2)
+power supplies located at the rear of the Disk Array.</P></LI><LI CLASS="numlist"><P>Boot the system but stop APPS from
+coming up.</P></LI><LI CLASS="numlist"><P>Assemble and query the Disk Array from
+the VDARC:</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}: sudo gre-raid -a</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@darc}: sudo gre-raid -q</FONT></SPAN></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e810"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">After booting up, the images will reconstruct automatically.
+No data is lost.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598036-1015678">11&nbsp;&nbsp;VDARC Node Scan Data Disk Identification<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Lights each individual Disk Array Drive LED to identify it.</P><PRE>{ctuser@darc}$ dd if=/dev/sdl of=/dev/null
+dd: opening `/dev/sdl': Permission denied
+{ctuser@darc}$ must be root
+
+[root@darc]# dd if=/dev/sda of=/dev/null	
+
+6962064+0 records in
+6962064+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# dd if=/dev/sdb of=/dev/null
+1201296+0 records in
+1201296+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# CtrlC to stop
+CtrlC: Command not found.
+[root@darc scripts]# dd if=/dev/sdc of=/dev/null
+8439440+0 records in
+8439440+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# dd if=/dev/sdd of=/dev/null
+2252688+0 records in
+2252688+0 records out
+ Select: Control-C to stop [root@darc scripts]#
+[root@darc scripts]# dd if=/dev/sde of=/dev/null
+3380112+0 records in
+3380112+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# dd if=/dev/sdf of=/dev/null
+1484952+0 records in
+1484952+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# dd if=/dev/sdg of=/dev/null
+1434256+0 records in
+1434256+0 records out
+ Select: Control-C to stop
+[root@darc scripts]# dd if=/dev/sdh of=/dev/null
+1785361+0 records in
+1785361+0 records out
+ Select: Control-C to stop
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598037-1015678">12&nbsp;&nbsp;VDARC Node Active DARC Node SCSI Devices / VDARC BIOS Setup<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@darc ~}$ or [root@darc ~]# cat  /proc/scsi/scsi
+
+Attached devices:
+Host: scsi0 Channel: 00 Id: 01 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 02 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 04 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 06 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi0 Channel: 00 Id: 15 Lun: 00
+Part of the SCSI Bus Adaptor - Channel 2
+  Vendor: nStor    Model: NexStor 4000S    Rev: 2.02
+Not A Disk - should see nStor if flashed
+  Type:   Processor                        ANSI SCSI revision: 02
+Host: scsi1 Channel: 00 Id: 01 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 02 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 03 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 05 Lun: 00
+  Vendor: SEAGATE  Model: ST373454LC       Rev: 0002
+  Type:   Direct-Access                    ANSI SCSI revision: 03
+Host: scsi1 Channel: 00 Id: 15 Lun: 00
+Part of the SCSI Bus Adaptor - Channel 1
+  Vendor: nStor    Model: NexStor 4000S    Rev: 2.02
+Not A Disk - should see nStor if flashed
+  Type:   Processor                        ANSI SCSI revision: 02
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598038-1015678">13&nbsp;&nbsp;VDARC Node Active SCSI Devices / Channel 0<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@hostname} rsh darc
+
+Last login: Mon Nov  8 11:57:36 from oc
+{ctuser@darc ~}$ cat  /proc/scsi/aic79xx/0
+
+Adaptec AIC79xx driver version: 1.3.11
+Adaptec AIC7902 Ultra320 SCSI adapter
+aic7902: Ultra320 Wide Channel A, SCSI Id=7, PCI-X 67-100Mhz, 512 SCBs
+Allocated SCBs: 128, SG List Length: 128
+ 
+Serial EEPROM:
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x09f4 0x0146 0x2807 0x0010 0xffff 0xffff 0xffff 0xffff
+0xffff 0xffff 0xffff 0xffff 0xffff 0xffff 0x0430 0xb3f7
+ 
+Target 0 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 1 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 1 Lun 0 Settings
+                Commands Queued 39
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 2 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 2 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+ 
+Target 3 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 3 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 4 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 4 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 5 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 5 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 6 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 6 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 7 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+ 
+Target 8 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 9 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 10 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 11 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 12 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 13 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 14 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 15 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 6.600MB/s transfers (16bit)
+        Curr: 6.600MB/s transfers (16bit)
+        Transmission Errors 0
+        Channel A Target 15 Lun 0 Settings
+                Commands Queued 32755
+                Commands Active 0
+                Command Openings 1
+                Max Tagged Openings 0
+                Device Queue Frozen Count 0
+{ctuser@darc ~}
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598039-1015678">14&nbsp;&nbsp;VDARC Node Active SCSI Devices / Channel 1<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@darc ~} cat  /proc/scsi/aic79xx/1
+
+Adaptec AIC79xx driver version: 1.3.11
+Adaptec AIC7902 Ultra320 SCSI adapter
+aic7902: Ultra320 Wide Channel B, SCSI Id=7, PCI-X 67-100Mhz, 512 SCBs
+Allocated SCBs: 128, SG List Length: 128
+ 
+Serial EEPROM:
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8 0x17c8
+0x09f4 0x0146 0x2807 0x0010 0xffff 0xffff 0xffff 0xffff
+0xffff 0xffff 0xffff 0xffff 0xffff 0xffff 0x0430 0xb3f7
+ 
+Target 0 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 1 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 1 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 2 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 2 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 3 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 3 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 4 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 4 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 5 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 5 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 6 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Transmission Errors 0
+        Channel A Target 6 Lun 0 Settings
+                Commands Queued 41
+                Commands Active 0
+                Command Openings 4
+                Max Tagged Openings 4
+                Device Queue Frozen Count 0
+Target 7 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 8 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 9 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 10 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 11 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 12 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 13 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 14 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+Target 15 Negotiation Settings
+        User: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit)
+        Goal: 6.600MB/s transfers (16bit)
+        Curr: 6.600MB/s transfers (16bit)
+        Transmission Errors 0
+        Channel A Target 15 Lun 0 Settings
+                Commands Queued 32779
+                Commands Active 0
+                Command Openings 1
+                Max Tagged Openings 0
+                Device Queue Frozen Count 0</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598040-1015678">15&nbsp;&nbsp;VDARC to Disk Array Part Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1598595-1015678">15.1&nbsp;&nbsp;SCSI Channel 1<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">B (TOP) is Controller 1 and goes to the right side of the Disk
+Array, assuming that all 8 disks are seen. The letters are as follows.
+The numbers listed always stay the same. Lettering sometimes changes
+due to drop-out.</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="51%" align="center"><col width="49%" align="center"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">1(e)</td><td align="center" valign="">2(f)</td></tr><tr valign="top"><td align="center" valign="">3(g)</td><td align="center" valign="">empty</td></tr><tr valign="top"><td align="center" valign="">5(h)</td><td align="center" valign="">empty</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1598596-1015678">15.2&nbsp;&nbsp;SCSI Channel 2<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">A (BOTTOM) is Controller 0 and goes to the left side of the
+Disk Array, assuming that all 8 disks are seen. The letters are as
+follows. The numbers listed always stay the same.</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="51%" align="center"><col width="49%" align="center"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">1(a)</td><td align="center" valign="">2(b)</td></tr><tr valign="top"><td align="center" valign="">empty</td><td align="center" valign="">4(C)</td></tr><tr valign="top"><td align="center" valign="">empty</td><td align="center" valign="">6(D)</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1598597-1015678">15.3&nbsp;&nbsp;Procedure<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Run the Query / Assemble commands as
+needed to isolate a faulty side.</P></LI><LI CLASS="numlist"><P>After a side is isolated, mark that
+specific Ultra320 SCSI Cable as failed.</P></LI><LI CLASS="numlist"><P>Halt the system and swap the Ultra320
+SCSI Cables.</P></LI><LI CLASS="numlist"><P>Ensure that both ends are swapped.</P></LI><LI CLASS="numlist"><P>Restart the system and stop apps from
+starting. See if the fault follows the Ultra320 SCSI Cable or remains
+on the original failing side.</P></LI><LI CLASS="numlist"><P>Note any failing drives. Mark all drives
+with their original location.</P></LI><LI CLASS="numlist"><P>Note any failing drives and mark them
+appropriately as well with fail??. A failing drive on one side will
+show an error, while the other side must DROP-OUT a drive and usually
+states not currently used. The DROPPED-OUT Drive is not a failure.</P></LI><LI CLASS="numlist"><P>Restart the system (via Halt) and stop
+Apps from starting. If a drive is actually failing there is no other
+work around--all data will be lost.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e920"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">We can now attempt to see if the failure follows the drives
+or stays with the VDARC.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>As ctuser on the darc: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo
+gre-raid -s</B></FONT></SPAN> then HALT.</P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1599907-1015678">16&nbsp;&nbsp;Power Distribution Box<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUIicon"><IMG SRC="../media/1015678-1015697.jpg" BORDER="0"></SPAN></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598587-1015678">17&nbsp;&nbsp;VDARC Disk Array BIOS Setting Check<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following verification is performed to ensure that the VDARC
+Node BIOS screens have been setup properly. This check does not address
+the process for correcting an error. Certain BIOS setting issues may
+show up during gre-raid diagnostic output as &#8220;Unexpected Negotiated
+Parameters."</P><P CLASS="sect1">1. Open a Unix shell and login as root. The following example
+is for an 8 Disk Array.</P><P CLASS="sect1">2. Change the DARC Node SCSI BIOS.</P><PRE>{ctuser@hostname}: su (space) -
+
+Enter &lt;password&gt;
+[root@ hostname]# rsh (space) darc
+
+Last login: Wed Jan 19 17:41:38 from oc
+[root@darc ~]# grep(space)  'Curr: ' (space) /proc/scsi/aic79xx/*
+
+/proc/scsi/aic79xx/0:   Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB/s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/0:   Curr: 6.600MB/s transfers (16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 320.000MB /s transfers (160.000MHz DT|IU|QAS, 16bit )
+/proc/scsi/aic79xx/1:   Curr: 6.600MB/s transfers (16bit )
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598588-1015678">18&nbsp;&nbsp;Disk_Array_Auto Console Test - Turned Off PS #1 on Left Rear<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e950"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Auto console tests may not be available at your site.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>started on: 2005-12-01 20:19:49
+----Number of Iterations: 3----
+
+
+
+Starting to run the Disk Array diagnostic...
+Each iteration of this diagnostic will take a maximum of 5
+minutes to complete.
+3 iterations were selected.
+
+====================================================
+Iteration 1 of 3 starting...
+
+
+Performing rsh to DARC...
+
+OK.
+Successful rsh to DARC
+
+
+Checking for disk array...
+
+Checking power supply...
+
+----------------------------------------------------------
+Error: Disk Array power supply is not functional.
+   supply 0 (right): 0
+   supply 1 (left) : -1
+
+One or more disk array power supplies are not functional.
+  1. Visually verify switches and LEDs
+
+      Expected: ' 0
+,-1
+'
+      Actual  : ' power supply 0 is okay and on
+
+power supply 1 is malfunctioning and commanded on
+power supply 0 is okay and on
+power supply 1 is malfunctioning and commanded on '
+----------------------------------------------------------
+
+   supply 0 (right): 0
+   supply 1 (left) : -1
+
+One or more disk array power supplies are not functional.
+  1. Visually verify switches and LEDs
+
+
+Status= -202
+
+
+Checking cooling fans...
+
+Checking scsi data cables...
+
+Checking raid...
+
+Checking raid configuration...
+
+Checking raid partition...
+Error: iteration 1 of 3 failed.
+
+1 0
+
+
+====================================================
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598589-1015678">19&nbsp;&nbsp;Disk_Array_Test with Left SCSI Cable Disconnected at DA<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e959"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Auto console tests may not be available at your site.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting Disk Array Test----
+started on: 2005-12-01 20:25:26
+----Number of Iterations: 3----
+
+
+
+
+Starting to run the Disk Array diagnostic...
+Each iteration of this diagnostic will take a maximum of 5
+minutes to complete.
+3 iterations were selected.
+
+====================================================
+Iteration 1 of 3 starting...
+
+
+
+Performing rsh to DARC...
+
+OK.
+Successful rsh to DARC
+
+
+Checking for disk array...
+
+Checking power supply...
+
+Checking cooling fans...
+
+Checking scsi data cables...
+
+----------------------------------------------------------
+Error: SCSI data cable is not correct.
+
+
+      Expected: ' 1245 '
+      Actual  : ' 12 '
+----------------------------------------------------------
+
+Status= -204
+
+
+Checking raid...
+
+----------------------------------------------------------
+Error: Raid response was not acceptable
+
+Possible failing hard disk
+      Expected: ' gre-raid: success '
+      Actual  : ' /usr/g/bin/gre-raid: built Nov 18 2005 00:02:09
+
+/dev/sd&lt;x&gt;: scanning disk array...done
+
+Device    Bus  ID  Mfg       Model        Fwrev  Serial-number
+/dev/sda  0    1   SEAGATE   ST373454LC   0002   3KP0JFYM00007544YWYG
+/dev/sdb  0    2   SEAGATE   ST373454LC   0002   3KP0J9AM000075469UDS
+/dev/sdc  0    4   SEAGATE   ST373454LC   0002   3KP1BWYW00007609AFH4
+/dev/sdd  0    6   SEAGATE   ST373454LC   0002   3KP0JL2Z00007609JCBK
+
+dasType: VDAS_64
+/usr/g/config/gre-raid-8.cfg: RAID-0 profile
+/var/log/messages: checking for SCSI errors...done
+/var/log/messages: 0 drive(s) found with SCSI errors found since last start
+
+/dev/sda: testing...53.1MB/sec...not_currently_used
+/dev/sdb: testing...52.9MB/sec...not_currently_used
+/dev/sdc: testing...52.6MB/sec...not_currently_used
+/dev/sdd: testing...52.8MB/sec.../dev/md0: not enough valid hard drives - bus0(4), 
+us1(0)
+
+/dev/md0: unable to create a new disk array
+not_currently_used
+
+Disk Array Chassis Layout - Configured
+|===============================================|
+|  [DRIVE]  |  [DRIVE]  |  [DRIVE]  |  [DRIVE]  |
+|===============================================|
+|  &lt;empty&gt;  |  [DRIVE]  |  [DRIVE]  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  |  [DRIVE]  |  [DRIVE]  |  &lt;empty&gt;  |
+|===============================================|
+
+Disk Array Chassis Layout - Current
+|===============================================|
+| sda: pass | sdb: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  | sdc: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  | sdd: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+
+Please compare the current chassis layout with the
+configured chassis layout and verify the following:
+- hard drives are in configured slot locations
+- SCSI cables are not reversed
+
+/raw_data: testing...Input/output error:/raw_data/gre-raid-test/gre-00003: Input/ou
+put error
+Input/output error:/raw_data/gre-raid-test/gre-00004: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00005: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00006: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00007: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00008: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00009: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00010: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00011: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00012: Input/output error
+Input/output error:/raw_data/gre-raid-test/gre-00013: Input/output error
+open file failed
+/raw_data: testing...Input/output error:/raw_data/gre-raid-test/gre-00014: Input/ou
+put error
+open file failed
+/raw_data: testing...
+gre-raid: failure - RAID performance below minimum (exit status: 33)
+open file failed '
+----------------------------------------------------------
+
+Status= -205
+
+
+Checking raid configuration...
+
+----------------------------------------------------------
+Error: Raid configuration response was not acceptable
+
+Disk array has changed since the last create command.
+      Expected: ' gre-raid: success '
+      Actual  : ' /usr/g/bin/gre-raid: built Nov 18 2005 00:02:09
+
+/dev/sd&lt;x&gt;: scanning disk array...done
+
+Device    Bus  ID  Mfg       Model        Fwrev  Serial-number
+/dev/sda  0    1   SEAGATE   ST373454LC   0002   3KP0JFYM00007544YWYG
+/dev/sdb  0    2   SEAGATE   ST373454LC   0002   3KP0J9AM000075469UDS
+/dev/sdc  0    4   SEAGATE   ST373454LC   0002   3KP1BWYW00007609AFH4
+/dev/sdd  0    6   SEAGATE   ST373454LC   0002   3KP0JL2Z00007609JCBK
+
+dasType: VDAS_64
+/usr/g/config/gre-raid-8.cfg: RAID-0 profile
+/var/log/messages: checking for SCSI errors...done
+/var/log/messages: 0 drive(s) found with SCSI errors found since last start
+
+/dev/sda: testing...53.0MB/sec...not_currently_used
+/dev/sdb: testing...52.9MB/sec...not_currently_used
+/dev/sdc: testing...53.2MB/sec...not_currently_used
+/dev/sdd: testing...52.7MB/sec.../dev/md0: not enough valid hard drives - bus0(4), 
+us1(0)
+/dev/md0: unable to create a new disk array
+not_currently_used
+
+Disk Array Chassis Layout - Configured
+|===============================================|
+|  [DRIVE]  |  [DRIVE]  |  [DRIVE]  |  [DRIVE]  |
+|===============================================|
+|  &lt;empty&gt;  |  [DRIVE]  |  [DRIVE]  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  |  [DRIVE]  |  [DRIVE]  |  &lt;empty&gt;  |
+|===============================================|
+
+Disk Array Chassis Layout - Current
+|===============================================|
+| sda: pass | sdb: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  | sdc: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+|  &lt;empty&gt;  | sdd: pass |  &lt;empty&gt;  |  &lt;empty&gt;  |
+|===============================================|
+
+Please compare the current chassis layout with the
+configured chassis layout and verify the following:
+- hard drives are in configured slot locations
+- SCSI cables are not reversed
+
+/raw_data: testing...
+gropen file failed
+/raw_data: testing...open file failed
+/raw_data: testing...e-raid: failure - RAID performance below minimum (exit status:
+33)
+open file failed '
+----------------------------------------------------------
+
+Status= -206
+
+
+Checking raid partition...
+
+Checking raid performance...
+
+----------------------------------------------------------
+Error: Raid performance response was not acceptable
+
+
+      Expected: ' Success '
+      Actual  : ' /usr/g/bin/gre-file-perf: built Nov 18 2005 00:01:56
+
+Generating random test pattern buffer...gre-file-perf.cpp(181) in WriteTestFile(): 
+pen() - /raw_data/gre-raid-test/gre-00000 - "Input/output error (5)"
+done
+
+Writing file data...
+
+MB/sec  % Used  GBytes  MinPerfCnt
+
+Failed.
+'
+----------------------------------------------------------
+
+Status= -208
+
+
+Error: iteration 1 of 3 failed.
+
+1 0
+
+
+====================================================
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1598590-1015678">20&nbsp;&nbsp;Disk Array Auto-Diagnostic Commands<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e968"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Auto console tests may not be available at your site.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>########################################################################
+"become root
+"rsh darc..."
+########################################################################
+"Checking for disk array..."
+cmd = grep -ic nstor /proc/scsi/scsi
+expResult = "2"
+Unexpected result:
+ErrorReport: "Can't detect the disk array"
+1. Verify the Disk Array is connected, VDARC SW is loaded; power switches are on.
+########################################################################
+"Checking power supply..."
+cmd = safte-monitor -p | grep -i power
+    expResult1 = "power supply 0 is okay and on"
+    expResult2 = "power supply 1 is okay and on"
+Unexpected result:
+"One or more disk array power supplies are not functional."
+1. Visually verify switches and LEDs"
+ErrorReport: "Disk Array power supply is not functional."
+########################################################################
+"Checking cooling fans..."
+cmd = safte-monitor -p |grep -i fan
+cmd = safte-monitor -p |grep -i fan |grep -i operational
+expResult1 = "fan 0 is operational"
+expResult2 = "fan 1 is operational"
+Unexpected result:
+ErrorReport "Cooling is not functional."
+########################################################################
+"Checking scsi data cables..."
+cmd = safte-monitor -p | awk &#8216;$5==&#8221;not&#8221; {printf $3}&#8217;
+expResult = "1245"
+Unexpected result:
+"SCSI data cable is not correct."
+if result == "4512": OperatorMsg: "SCSI cables are inverted. Correct and retest."
+Are either 12 or 45 missing? Then VDARC cannot see one of the Channels on the Disk Array.  Halt system and swap cables to see if failure follows the cable.
+Is there more present than just 1245? Halt - then try reseating the drives and re-run.
+cmd = safte-monitor -p | grep &#8220;disk present&#8221;
+########################################################################
+"Checking raid.query&#8230;"
+cmd = cd usr/g/bin	gre-raid -q
+{ctuser@darc}sudo gre-raid -q | egrep -i &#8220;(fail | unexpected)&#8221;
+NOTE: There should be no fail or unexpected text
+"fail_scsi_errors"
+"Unexpected negotiated"
+expResult = "gre-raid: success"
+Unexpected results:
+"Raid response indicated an error"
+"The device name of the failing drive should be listed above."
+"To determine the disk to replace, run this command on the darc:  gre-raid -q and find the device name that matches the output above."
+
+"SCSI BIOS set incorrectly. Replace DARC or manually set SCSI BIOS correctly if unexpected messaging appears."
+"Unknown disk fault. "Raid response was not acceptable" Possible failing hard disk"
+Call OLC for support"
+########################################################################
+"Checking raid via query command..."
+cmd = cd usr/g/bin	gre-raid -q
+expResult = "gre-raid: success"
+Unexpected result:
+"Raid configuration response was not acceptable"
+"Disk array has changed since the last create command."
+########################################################################
+"Checking raid partition..."
+cmd = df /raw_data
+expResult = "raw_data"
+expResult = RaidPartitionIsOk():
+Unexpected result:
+"Raid partition response was not acceptable"
+########################################################################
+"Checking raid performance..."
+cmd = cd /usr/g/bin	gre-file-perf -s 15 /raw_data
+expResult =  RaidPerfIsOk
+expResult = "Success"
+Unexpected result:
+"Raid performance response was not acceptable"
+################################################
+Determine product type from HOST
+cmd = swhwinfo -d
+expResult = "VDAS"
+If 'VDAS' is in the DAS type then it must be a VCT scanner
+print "Product type is VCT"
+########################################################################
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1613219-1015678">21&nbsp;&nbsp;VCT JBOD Smart Control Firmware Disk Issue<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1649595-1015678">21.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The GOC5 VCT Operator Console is turned on or rebooted. At this
+point the VDARC Node is seen as RUNNING per the &#8220;ifconfig&#8221;
+command from the Host. The command &#8220;ping darc&#8221; fails.
+When the Application Software is started the VDARC Node fails to boot.</P><P CLASS="sect2">An Attention Box (<A HREF="javascript:winopen('1015678illd0e986.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>) will pop-up stating
+that the Host is &#8220;Unable to verify system functionality on startup.&#8221; </P><DIV CLASS="ILLUSTRATION" id="SL1613234-1015678"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Attention Box</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1015678-1040629.jpg" BORDER="0" usemap="#SL1676674-1015678"></P></DIV><P CLASS="sect2">When OK is selected the user may notice the following &#8220;Verify
+DARC Status&#8221; window (<A HREF="javascript:winopen('1015678illd0e995.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>). The gre-verify-darc process has failed because
+the VDARC cannot boot.</P><DIV CLASS="ILLUSTRATION" id="SL1649596-1015678"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Verify DARC Status Screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1015678-1040628.jpg" BORDER="0" usemap="#SL1676678-1015678"></P></DIV><P CLASS="sect2">The Operator Console Application Startup will attempt to recover.
+In the start-up Unix shell the following ipmitool messages will appear
+and attempt to turn off and then on the VDARC Node for a recovery
+process, however, this recovery will fail.</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="100%" align="center"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="top"><PRE>
+*********** starting the LightSpeed system ***********
+Attentioninfo - ipmitool -H darc -P "" chassis power off
+Chassis Power Control: Down/Off
+info - ipmitool -H darc -P "" chassis power on
+Chassis Power Control: Up/On
+</PRE></td></tr></tbody></table></div></DIV><P CLASS="sect2">If the gesyslog is accessed (example shown below), the user
+will see the gre-verify-darc failure message shown immediately below.</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="100%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>
+{ctuser@hostname} cd  /usr/g/service/log
+{ctuser@hostname} ls  ge*
+gesys_bay45.log  gesys_bay45.log.05.22.2007.14.55.56.Z
+{ctuser@hostname} tail  -100f   gesys_bay45.log  &amp;
+
+
+1181044312      0       1       Tue Jun  5 11:51:52 2007        290014004      4
+        bay45   gre-verify-darc
+gre-verify-darc.cpp             180
+Unable to verify DARC system startup.
+/usr/g/bin/gre-verify-darc: failure - waiting for ping darc response (exit status: 8)
+</PRE></td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1022"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">To perform a slay process if two gesys logs are opened,
+perform the following (substituting site info for &#8220;XXXXX&#8221;):<p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>{ctuser@hostname} slay  tail</B></FONT></SPAN></p><p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>8301 tail -100f gesys_XXXXX.log</B></FONT></SPAN></p><p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>    (y/n) [n] ?y</B></FONT></SPAN></p><p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>8797 tail -100f gesys_XXXXX.log</B></FONT></SPAN></p><p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>    (y/n) [n] ?</B></FONT></SPAN></p><p><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>{ctuser@hostname}</B></FONT></SPAN></p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1649597-1015678">21.2&nbsp;&nbsp;Initiate console Telnet from Host to VDARC Node<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Perform the telnet command as follows:</P><OL><LI CLASS="numlist"><P>At the Toolchest, with Application
+software down, open a Unix Shell.</P></LI><LI CLASS="numlist"><P>Verify another telnet window from the
+Host to the VDARC Node has not already been opened.</P></LI><LI CLASS="numlist"><P>Perform the telnet command to the VDARC
+Node from the Host Computer:</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">}</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su -</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password:</FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;password&gt;</I></B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service  cliservice  start</B></FONT></SPAN></P><P>dpcproxy server will be reported as already running or restarted</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>telnet  localhost  623</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Trying 127.0.0.1...</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Connected to localhost.</FONT></SPAN></P><P>*** Indicates cliservice proxy server is running ***</P><P>Escape character is <SPAN CLASS="KEYBOARD">&lt;^&gt;</SPAN>.</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Server:</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> darc</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username:</FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password:</FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt; reset</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">OK</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt; console</FONT></SPAN></P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677189-1015678">21.3&nbsp;&nbsp;Record Failures<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If a VCT Disk Array (JBOD) failure is causing the VDARC Node
+to stop the booting process, the user identifies the failure as follows:</P><OL><LI CLASS="numlist"><P>If the booting process stops, the console
+window prompts the user to press any key to continue.</P></LI><LI CLASS="numlist"><P>The user presses a key to allow the
+VCT Disk Array to display the failure as in this example:</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Drive 2 on adaptor 0 is predicting future failure.
+Sense Qualifier is 00h. Press any key to continue....</FONT></SPAN></P></LI><LI CLASS="numlist"><P>The user records the failure.</P></LI><LI CLASS="numlist"><P>The user presses any key to continue
+the VDARC Node boot process.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677190-1015678">21.4&nbsp;&nbsp;Understand SMART Control Output<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1677191-1015678">21.4.1&nbsp;&nbsp;Failing Drive Example<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">An example of a failing drive is provided below. Verify the
+&#8220;SMART Health Status&#8221; output:</P><PRE>[root@darc ~]# smartctl -a /dev/sda</PRE><PRE>smartctl version 5.33 [i386-redhat-linux-gnu] Copyright (C) 2002-4 Bruce Allen</PRE><PRE>Home page is http://smartmontools.sourceforge.net/</PRE><PRE>Device: SEAGATE  ST373454LC       Version: 0002</PRE><PRE>Serial number: 3KP42LBG000097177EB5</PRE><PRE>Device type: disk</PRE><PRE>Transport protocol: Parallel SCSI (SPI-4)</PRE><PRE>Local Time is: Tue Jun  5 12:28:29 2007 CDT</PRE><PRE>Device supports SMART and is Enabled</PRE><PRE>Temperature Warning Enabled</PRE><PRE>SMART Health Status: FAILURE PREDICTION THRESHOLD EXCEEDED</PRE><PRE>[asc=5d,ascq=0]</PRE><PRE>Current Drive Temperature:     34 C</PRE><PRE>Drive Trip Temperature:        68 C</PRE><PRE>Vendor (Seagate) cache information</PRE><PRE> Blocks sent to initiator = 98388816</PRE><PRE> Blocks received from initiator = 396302262</PRE><PRE>Blocks read from cache and sent to initiator = 44535918</PRE><PRE> Number of read and write commands whose size &lt;= segment size = 1773227</PRE><PRE> Number of read and write commands whose size &gt; segment size = 12370</PRE><PRE>Error counter log:</PRE><PRE>          Errors Corrected by           Total   Correction     Gigabytes    Tot al</PRE><PRE>             EEC          rereads/    errors   algorithm      processed    unc orrected</PRE><PRE>  fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  err ors</PRE><PRE>read:     165662       15         8    165685    1184447        116.801   0</PRE><PRE>write:         0        0         0         0          0        195.450   0</PRE><PRE>Non-medium error count:       62</PRE><PRE>Error Events logging not supported</PRE><PRE>[GLTSD (Global Logging Target Save Disable) set. Enable Save with '-S on']</PRE><PRE>SMART Self-test log</PRE><PRE>Num  Test              Status                 segment  LifeTime  LBA_first_err [ SK ASC ASQ]</PRE><PRE>     Description                              number   (hours)</PRE><PRE># 1  Background long   Failed in segment --&gt;       -   960  0x         6c32368 [ 0x3 0x11 0x0]</PRE><PRE># 2  Background short  Completed                   -   960                   - [ -   -    -]</PRE><PRE>Long (extended) Self Test duration: 1150 seconds [19.2 minutes]</PRE></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1677192-1015678">21.4.2&nbsp;&nbsp;Passing Drive Example<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">An example of a passing drive is provided below. Verify the
+&#8220;SMART Health Status&#8221; output:</P><PRE>[root@darc ~]# smartctl -a /dev/sdb</PRE><PRE>smartctl version 5.33 [i386-redhat-linux-gnu] Copyright (C) 2002-4 Bruce Allen</PRE><PRE>Home page is http://smartmontools.sourceforge.net/</PRE><PRE>Device: SEAGATE  ST373454LC       Version: 0002</PRE><PRE>Serial number: 3KP3NQW0000097089GZ9</PRE><PRE>Device type: disk</PRE><PRE>Transport protocol: Parallel SCSI (SPI-4)</PRE><PRE>Local Time is: Tue Jun  5 12:28:44 2007 CDT</PRE><PRE>Device supports SMART and is Enabled</PRE><PRE>Temperature Warning Enabled</PRE><PRE>SMART Health Status: OK</PRE><PRE>Current Drive Temperature:     40 C</PRE><PRE>Drive Trip Temperature:        68 C</PRE><PRE>Vendor (Seagate) cache information</PRE><PRE>  Blocks sent to initiator = 988796</PRE><PRE>  Blocks received from initiator = 45181853</PRE><PRE>  Blocks read from cache and sent to initiator = 182708</PRE><PRE>  Number of read and write commands whose size &lt;= segment size = 78535</PRE><PRE>  Number of read and write commands whose size &gt; segment size = 194</PRE><PRE>Error counter log:</PRE><PRE>           Errors Corrected by           Total   Correction     Gigabytes    Total</PRE><PRE>               EEC          rereads/    errors   algorithm      processed    uncorrected</PRE><PRE>           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors</PRE><PRE>read:       1647        0         0      1647       1647          1.462           0write:         0        0         0         0          0         58.052           0</PRE><PRE>Non-medium error count:        0</PRE><PRE>Error Events logging not supported</PRE><PRE>[GLTSD (Global Logging Target Save Disable) set. Enable Save with '-S on']</PRE><PRE>No self-tests have been logged</PRE><PRE>Long (extended) Self Test duration: 1150 seconds [19.2 minutes]</PRE><PRE>[root@darc ~]#</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677193-1015678">21.5&nbsp;&nbsp;Identify Failures<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1677194-1015678">21.5.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">A SMART issue you may encounter is when you find that the BIOS
+reports a problem with "Drive X on adapter Y," but when you swap Drive
+X it doesn't fix the problem. Chances are the documented mapping for
+the Adaptor/Controller does not match the reported mapping due to
+differences in the BIOS. (See <A HREF="javascript:winopen('1015678illd0e1379.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>.) In all likelihood, the mapping has been documented
+from the Host OS point of view. If Linux starts counting buses, channels,
+and luns at zero, but the BIOS or the SCSI adapter starts counting
+them at one, that would account for this discrepancy.</P><P CLASS="sect3">Currently several drives have been identified with the following
+failure message:</P><PRE>FAILURE PREDICTION THRESHOLD EXCEEDED [asc=5d,ascq=0]</PRE><PRE>unrecovered read error: "ASC=11 ASCQ=00, SelfTestByte=00, VendorSpecificByte=0F"</PRE><DIV CLASS="ILLUSTRATION" id="SL1677181-1015678"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Documented Disk Array Mapping</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1015678-1040627.jpg" BORDER="0" usemap="#SL1677185-1015678"></P></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1677195-1015678">21.5.2&nbsp;&nbsp;Verify Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Verify the SMART Health Status output for all Disk Array Drives
+present using the <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smart control</B></FONT></SPAN> command by opening
+a Unix Shell and typing:</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1393"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Perform the following command for each Disk in the Disk
+Array to determine which drive(s) is/are faulty. Replace all failing
+drives.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">}</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su  -</B></FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password:</FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;password&gt;</I></B></FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  darc</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Last login: Tue Jun  5 12:12:07 from oc</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sda</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdb</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdc</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdd</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sde</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdf</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdg</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl  -a  /dev/sdh</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SMART Health Status:</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> exit</B></FONT></SPAN></P></LI></OL></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677224-1015678">21.6&nbsp;&nbsp;Working Around a Disk Failure<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If one or two disk drives in the Disk Array are bad, the user
+may be able to continue running the Operator Console until the replacement
+drives arrive. However, all patient data not already backed up will
+be lost.</P><P CLASS="sect2">The Disk Array (JBOD) will allow a total of two disks to be
+dropped (from 8 to 6). Three disks must be good on each side of the
+Disk Array for Application Software to boot up and scan. If a total
+of seven disks are good and one disk is bad, only six disks will be
+used. A good disk from the other side will be dropped out until a
+good replacement disk is inserted and the <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>gre-raid</B></FONT></SPAN> commands are performed. Additionally, the user is required to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>reconfig</B></FONT></SPAN> and <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>regen</B></FONT></SPAN> the database when
+the replacement drive is inserted.</P><OL><LI CLASS="numlist"><P>Pull the first bad disk out of the
+Disk Array (JBOD).</P></LI><LI CLASS="numlist"><P>If a second bad disk is present, verify
+that it is inserted into the other side of the Disk Array by swapping
+it with a good disk drive.</P></LI><LI CLASS="numlist"><P>Do not insert any bad disks into the
+Disk Array.</P></LI><LI CLASS="numlist"><P>As long as only one bad disk is present
+on each side of the Disk Array (JBOD), the VDARC Node will successfully
+boot up and Application Software will start up. A message will be
+present in the gesyslog stating that six disks are present and the
+user may be informed by a pop-up window as well.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677225-1015678">21.7&nbsp;&nbsp;Ordering Disk Replacements<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The VCT Operator Console is designed to run with eight disks
+present. Required replacement Disks for identified failing disk drives
+should be ordered immediately. The Disk Array FRU status may change.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677226-1015678">21.8&nbsp;&nbsp;Rebooting to Verify VDARC Node Boot<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Perform a reboot command with Application software down. Verfiy
+that the VDARC Node boots up without user input and that the VCT System
+scans properly.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677227-1015678">21.9&nbsp;&nbsp;Replacement<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Refer to the LightSpeed Family for
+7.x products.</P></LI><LI CLASS="numlist"><P>Select the Replacement tab.</P></LI><LI CLASS="numlist"><P>Select the Console tab.</P></LI><LI CLASS="numlist"><P>Select Disk Array (JBOD) FRU Replacements.</P></LI><LI CLASS="numlist"><P>Perform all required tests.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1677228-1015678">21.10&nbsp;&nbsp;Regen the database in Reconfig<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>With Application Software down, open
+a Unix Shell.</P></LI><LI CLASS="numlist"><P>Become root and perform the <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>reconfig</B></FONT></SPAN> command.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUILABEL"><I>REGEN DATABASE</I></SPAN> and <SPAN CLASS="GUIBUTTON">[Accept]</SPAN>. The Operator Console will reboot.</P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1677229-1015678">22&nbsp;&nbsp;Finalization<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Perform Scout, Axial, and Helical sanity
+scans.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1591"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the System will not scan or reconstruct, verify that
+the:<UL><LI CLASS="bulletlist"><P>Memory on the VDARC Node is correct
+(lhinv).</P></LI><LI CLASS="bulletlist"><P>VDIP diagnostics pass (vdip_menu -A).</P></LI><LI CLASS="bulletlist"><P>VRAC diagnostics pass (performed as
+root: vrac_menu -a).</P></LI><LI CLASS="bulletlist"><P>System Error Log reports gre-raid success
+with 8 drives present.</P></LI></UL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Verify that the image(s) reconstruct
+and are properly displayed.</P></LI><LI CLASS="numlist"><P>Install the front and rear Operator
+Console covers.</P></LI><LI CLASS="numlist"><P>After a halt, all IGs present should be under DARC
+control when the Console is rebooted, and when Apps is up image_gen
+should be present /running for each IG Node. Any item in the queue
+may require a cleanq from the host prompt. Verify that Recon Management
+is not Paused.</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

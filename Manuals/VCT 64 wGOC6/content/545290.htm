@@ -1,0 +1,89 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Center Module Adjustment Procedure</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/20/08</P></td></tr></table><H1 ID="top">Center Module Adjustment Procedure </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2090343-545290">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Dial gage tool can be used to help manually adjust center
+location modules (slots 27-31) that may not easily go into alignment
+using just the bias tool.  The dial gage is available from the Tool
+Depot.</P><P CLASS="sect1">This procedure assumes you have installed a center module (27-31),
+checked the alignment and found that the module alignment did not
+meet specifications after a second try using the bias tool.  At this
+point you have two options.  If you have the module alignment gage,
+this procedure defines how to use it.  If you don&#8217;t have the
+alignment gage, you will need to shift the module slightly by hand
+to see if you can position it within specifications.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e35"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Please read through this procedure completely before beginning.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="48%"><col width="52%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Last Revised</td><td valign="">May 30, 2008</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2090344-545290">2&nbsp;&nbsp;Saving alignment data files<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Save the last alignment scan run for future reference.  To save
+the alignment scan data output run the following commands from a Unix
+Shell:</P><PRE>cd  /usr/g/service/state 
+cp  CCal_small_32x0.625.sprp  CCal_small_32x0.625.sprp.baseline </PRE><P CLASS="sect1">Do not change the existing base filename, only add something
+on the end. In the above example we added &#8220;.baseline&#8221;
+to the end of the filename.  You could also use a date/time format
+if desired such as &#8220;.9Jan06_1400&#8221; to indicate the file
+was saved on January 9th at 2PM.</P><P CLASS="sect1">To pull up the baseline plot data at a later time run the following
+command: </P><PRE>run_modalign  /usr/g/service/state/CCal_small_32x0.625.sprp.baseline</PRE><P CLASS="sect1">This will open a plot window that can be left open to compare
+to the plot from an alignment scan after module re-alignment.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2090345-545290">3&nbsp;&nbsp;Gage Attachment<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Due to the differences in detector rails between
+32 and 64 slice systems, there is a different gage mount.  Use the
+section below appropriate to your system type.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2090346-545290">3.1&nbsp;&nbsp;64 Slice System<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">1.	Turn the system OFF and remove plenum, light seal cover
+plate, and screw cover bands as shown in the module replacement procedure.</P><P CLASS="sect2">2.	Attach the Module adjust tool to the detector rail such
+that the tip of the gage is aligned to the center of the ceramic substrate
+on the module to be moved as shown in <A HREF="javascript:winopen('545290illd0e83.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P><DIV CLASS="ILLUSTRATION" id="SL546404-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">64 slice Dial Gage attachment</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545288.jpg" BORDER="0" usemap="#SL546401-545290"></P></DIV><P CLASS="sect2">3.	Tighten the thumbscrews on the back of the fixture enough
+to prevent any movement. Gently wiggle the mount block to make sure
+the gage reading does not shift around more than 2-3 microns.  This
+makes sure the gage is tight on the rail.</P><P CLASS="sect2">4.	Turn dial scale to set the current position as zero. (see <A HREF="javascript:winopen('545290illd0e94.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>) Retract the tip of the dial with your fingers to get a sense for
+the direction the indicator will turn when you move the module. Notice
+that there is one large and one small dial. The large dial has large
+and small numbers. Each division on the large dial is a micron.  The
+small dial counts number of turns from the large dial scale.</P><DIV CLASS="ILLUSTRATION" id="SL546409-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">64 slice Dial gage zero position</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545287.jpg" BORDER="0" usemap="#SL546406-545290"></P></DIV><P CLASS="sect2">5.	Take note of the reading on the small dial. This needle
+should stay within one unit after an adjustment less than 100 microns.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2090347-545290">3.2&nbsp;&nbsp;32 Slice System<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">1.	Attach Module adjust tool to the detector rail. The base
+plate is fixed by 4 of M4x16 CAP screw.    (see <A HREF="javascript:winopen('545290illd0e111.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>)</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e108"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">ONLY finger tighten the screws.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL546423-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">32 slice dial gage mount</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545284.jpg" BORDER="0" usemap="#SL546412-545290"></P></DIV><P CLASS="sect2">2.	Make sure the base plate is NOT placed on the detector
+heater and the digital module mounting pad (Black parts). See <A HREF="javascript:winopen('545290illd0e120.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>.</P><DIV CLASS="ILLUSTRATION" id="SL578760-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">32 slice mount position</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545285.jpg" BORDER="0" usemap="#SL546411-545290"></P></DIV><P CLASS="sect2">3.	Loosen the screw for dial gage attachment and align the
+tip of the dial gage to the center of the ceramic substrate on the
+module to be moved. Then finger tighten the screw for dial gage attachment.
+See <A HREF="javascript:winopen('545290illd0e129.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;5</A>.</P><DIV CLASS="ILLUSTRATION" id="SL546415-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">32 slice dial gage position</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545282.jpg" BORDER="0" usemap="#SL546410-545290"></P></DIV><P CLASS="sect2">4.	Loosen the M4 screw for adjusting gage height such that
+the small indicator of gage stays between 4-6 on the gage scale. Then
+finger tighten the M4 screw.</P><DIV CLASS="ILLUSTRATION" id="SL2090348-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">32 slice Dial gage preset</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545286.jpg" BORDER="0" usemap="#SL546416-545290"></P></DIV><P CLASS="sect2">5.	Turn the dial register to set the current position as
+zero. Retract the tip of the dial gage with your fingers to get a
+sense for the direction the indicator will turn when you move the
+module. Notice that there is one large and one small dial. The large
+dial has large and small numbers. Each division on the large dial
+is a micron. The small dial counts number of turns from the large
+dial scale. (see <A HREF="javascript:winopen('545290illd0e145.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;7</A>)</P><DIV CLASS="ILLUSTRATION" id="SL546426-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">32 slice dial gage zero set</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-545283.jpg" BORDER="0" usemap="#SL546417-545290"></P></DIV><P CLASS="sect2">6.	Take note of the reading on the small dial. This needle
+should stay within one unit after an adjustment less than 200 microns.</P><P CLASS="sect2">7.	Ensure that the tool is tight and does not move. Gently
+wiggle the base plate or gage attachment to make sure the gage needle
+does not shift around more than 10 microns.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2090349-545290">4&nbsp;&nbsp;Adjustment Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Loosen the module to allow it to move using the following
+steps.</P><OL TYPE="a"><LI CLASS="numlist"><P>Unscrew the digital cable screws and pull them out
+to release the cable from the backplane same as if you were removing
+the module. </P></LI><LI CLASS="numlist"><P>Remove light seal clips (if existing) and the wedge
+lock clamp. </P></LI><LI CLASS="numlist"><P>Note the reading on the small dial of the gage in
+case the module moves more than 100 microns after loosening the module
+screws. </P></LI><LI CLASS="numlist"><P>Loosen the two module mounting screws starting with
+the front screw (closest to you). Check the small dial gage to make
+sure the module did not move by more than 100 microns.  If it did,
+you must take this into account for repositioning.</P></LI></OL></LI><LI CLASS="numlist"><P>Read the zalignmentWizard graph to determine the necessary
+adjustment.</P><OL TYPE="a"><LI CLASS="numlist"><P>For positive misalignment move the module towards
+the operator (table side). Any negative misalignment should be treated
+with much care as this is moving toward the back rail.  The module
+may already be against the back rail.</P></LI><LI CLASS="numlist"><P>The example in <A HREF="javascript:winopen('545290illd0e193.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;8</A> shows Module 27 at +50 microns
+and Module 30 is at -35 microns.  Assuming the specification is 48
+microns for module 27 and 31 you should attempt to move module 27
+about 50 microns to guarantee best alignment possible.  Assuming the
+specification is 32 microns for modules 28,29,30, you only need a
+minimum of 3 microns movement to get the module into specification.
+ Since the negative reading means the module must be pushed toward
+the back rail, a gentle push on the module can achieve this even if
+the module is already against the back rail.</P><P>DO NOT PUSH modules hard towards the back rail. This can damage
+the alignment pins. Modules requiring this adjustment should be reseated
+first then retested for alignment. Do not attempt to make a negative
+adjustment of more than minus 7 microns by applying force. If this
+does not work the module may need to be replaced with a new one.</P><P>Adjustments in the positive direction virtually have no limit
+but adjustments in the negative direction are limited to minus 7 microns.</P></LI><LI CLASS="numlist"><P>Tighten the module mounting Back Screw First. Then
+tighten the front screw.</P></LI></OL></LI></OL><DIV CLASS="ILLUSTRATION" id="SL578766-545290"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Example Plot</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/545290-578761.jpg" BORDER="0" usemap="#SL578762-545290"></P></DIV><P CLASS="sect1">3. Reinstall the wedge lock clamp, light seal clips and digital
+cable screws.</P><P CLASS="sect1">4. Replace the light seal cover plate, plenum and reconnect
+cabling.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e203"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Be careful not to pinch the thermistor wires when installing
+the light seal plate.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2090359-545290">5&nbsp;&nbsp;Alignment Recheck<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Rerun the zalignmentWizard to confirm module alignment
+is now within specification.</P></LI><LI CLASS="numlist"><P>To save the new alignment plot scan data output run
+the following commands from a Unix Shell:</P><P><B>cd /usr/g/service/state cp CCal_small_32x0.625.sprp
+ CCal_small_32x0.625.sprp.xxxxx</B> (xxxxx=time or date/time
+for tracking)</P><P>Note: to pull up the plot data at a later time run the following
+command: </P><P><B>run_modalign  /usr/g/service/state/CCal_small_32x0.625.sprp.xxxxx</B>  (use whatever suffix was added to the base file name)</P></LI><LI CLASS="numlist"><P>Tighten all bolts and cables on plenum to specified
+torque.</P></LI><LI CLASS="numlist"><P>Continue with the module Dastools tests, calibrations
+and IQ retests as defined in the module replacement procedure.</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
