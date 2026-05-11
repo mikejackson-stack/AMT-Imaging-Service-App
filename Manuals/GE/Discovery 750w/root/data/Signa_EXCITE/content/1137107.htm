@@ -1,0 +1,57 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>High Speed Stability Signature on 50 Hz Systems</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670006,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Discovery MR750w GEM Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/14/11</P></td></tr></table><H1 ID="top">High Speed Stability Signature on 50 Hz Systems </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4197494-1137107">1&nbsp;&nbsp;Introduction<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The High Speed Stability (HSS) test evaluates the effects of
+vibration, or other rapid environmental or system phenomena, on the
+stability of the MRI process, or of the hardware used to receive and
+process MRI signals.</P><P CLASS="sect1">The HSS Pulse Sequence Design (PSD) drives the Exciter with
+a rectangular Radio Frequency (RF) pulse that is modulated to full
+scale to create a simple Free Induction Decay (FID), and collects
+the resultant FID with the receiver. The FID is used to measure the
+frequency deviation or phase deviation over time. A Fast Fourier Transform
+(FFT) is performed on the deviation data to produce a frequency spectrum
+of any magnetic field disturbance within the selected bandwidth for
+the test.</P><OL><LI CLASS="numlist"><P>Vibrations</P><OL TYPE="a"><LI CLASS="numlist"><P>External to System - Elevators, Generators,
+etc.</P></LI><LI CLASS="numlist"><P>System Related - Coldhead, Bridge alignment</P></LI></OL></LI><LI CLASS="numlist"><P>System Calibration - Grafidy (Eddy
+Current Compensation)</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4197499-1137107">2&nbsp;&nbsp;New for MR750W<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">New Specifications for 60 Hz. Systems were developed due to
+new scaling algorithm and larger bandwidth. The Spec for 60Hz systems
+are defined by the Red line on the FFT results plot of HSS. This spec
+only applies to 60Hz Systems, currently there is no specification
+for 50Hz systems.</P><P CLASS="sect1">There is a known frequency disturbance on 50Hz Power on MR750W
+Magnets. A shield inside the magnet tends to resonate with the coldhead
+running at 50Hz. input frequency. This result as a 1st harmonic (~100Hz)
+pulse that is seen the frequency spectrum and FFT plot of the HSS
+Data. This FFT &#8220;hump&#8221; at approximately 100Hz is normal
+for 50 Hz Systems. </P><DIV CLASS="ILLUSTRATION" id="SL4197500-1137107"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">50Hz HSS FFT Plot at 200 Hz bandwidth</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137897.jpg" BORDER="0" usemap="#SL4197461-1137107"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4197501-1137107">3&nbsp;&nbsp;Running the HSS Tool <SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Follow the High Speed Stability (HSS) Test procedure found in
+the Class C/M Service Method Documentation. It is found in Troubleshooting,
+Image Quality folder.</P><P CLASS="sect1">After proper hardware set-up and starting the HSS Tool, the
+main menu is displayed, below:</P><DIV CLASS="ILLUSTRATION" id="SL4197502-1137107"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSS Top Level Menu</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137896.jpg" BORDER="0" usemap="#SL4197465-1137107"></P></DIV><P CLASS="sect1">Running HSS at the default bandwidth of 45 Hz is usually good
+enough to detect vibrations, however if the FFT results plot indicates
+spikes, the reported frequency may not be accurate due to the bandwidth
+and higher frequencies being wrapped back into the 0 - 45 Hz Bandwidth.
+To see a better representation of the actual frequency contribution,
+increase the Tool bandwidth to 200Hz and rescan.</P><DIV CLASS="ILLUSTRATION" id="SL4197503-1137107"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Typical location of HSS Coil using Grafidy plate</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137895.jpg" BORDER="0" usemap="#SL4197469-1137107"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4197504-1137107">4&nbsp;&nbsp;Known 50 Hz Issue<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">As stated in Section 2, there is a known frequency disturbance
+on 50Hz Power on MR750W Magnets. A shield inside the magnet tends
+to resonate with the coldhead running at 50Hz input frequency. This
+result as a 1st harmonic (~100Hz) pulse that is seen the frequency
+spectrum and FFT plot of the HSS Data. This FFT &#8220;hump&#8221;
+at approximately 100Hz is normal for 50 Hz Systems.</P><DIV CLASS="ILLUSTRATION" id="SL4197505-1137107"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSS results comparison between 60 Hz and 50 Hz Systems</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137894.jpg" BORDER="0" usemap="#SL4197473-1137107"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL4197506-1137107">5&nbsp;&nbsp;Ruling out the Coldhead<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">All Ghosting issues are not caused by the coldhead. If by turning
+off the coldhead, the ~100 Hz &#8220;hump&#8221; goes away, this does
+not mean your coldhead is causing your Image Ghosting Steps:</P><OL><LI CLASS="numlist"><P>Run HSS with sample off center.<DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137897.jpg" BORDER="0" usemap="#SL4197477-1137107"></P></DIV></P></LI><LI CLASS="numlist"><P>Turn OFF Coldhead, re-run HSS with
+sample off center<DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137893.jpg" BORDER="0" usemap="#SL4197484-1137107"></P></DIV></P></LI><LI CLASS="numlist"><P>Analyze Data:</P><OL TYPE="a"><LI CLASS="numlist"><P>Expected: Hump at ~ 100Hz with cold
+head &#8216;On&#8217;, Hump gone with coldhead &#8216;off&#8217;.</P></LI><LI CLASS="numlist"><P>Try to re-scan, using the same protocol
+without the coldhead ON.</P><OL TYPE="i"><LI CLASS="numlist"><P>If the image still has Image Ghosting,
+the coldhead is NOT the root cause, and further troubleshooting and/or
+Applications support may be needed.</P></LI><LI CLASS="numlist"><P>If Image Ghosting is gone, and the
+ONLY difference is coldhead On &amp; Off, then the coldhead is the
+suspect root cause.</P></LI></OL></LI></OL></LI></OL><P CLASS="sect1">Another check to see if the Image Ghosting is by mechanical
+vibration or scan parameters is to run the HSS tool with the HSS Coil
+and 0,25 NiCl at isocenter in all 3 planes. Position the HSS coil
+in the center of the Grafidy plate using 1 HSS Coil riser. Landmark
+on the coil. This should place the coil in all 3 - axis&#8217; at
+the magnet isocenter.</P><OL><LI CLASS="numlist"><P>Run HSS with sample at iso-center with
+coldhead &#8216;ON&#8217;.</P><P>Analyze Data:</P><P> Expected: There should be no, or very small hump at ~ 100Hz.
+This is expected because the effect of vibrations should be zero at
+the center, and the B0 instability magnitude grows the further away
+from isocenter.</P><P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1137107-1137892.jpg" BORDER="0" usemap="#SL4197488-1137107"></P></DIV></P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

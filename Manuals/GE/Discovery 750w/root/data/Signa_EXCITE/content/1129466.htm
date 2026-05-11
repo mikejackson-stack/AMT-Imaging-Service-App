@@ -1,0 +1,36 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Keyboard PSE Loop Test</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670006,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Discovery MR750w GEM Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/12/11</P></td></tr></table><H1 ID="top">Keyboard PSE Loop Test </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923004-1129466_1">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function&gt;&gt; Global Operator Console&gt;&gt;Keyboard
+Datapath</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Locations&gt;&gt; Global Operator
+Console&gt;&gt;Keyboard Datapath</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL3923005-1129466_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Keyboard Datapath</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052798-1129461.jpg" BORDER="0" usemap="#SL3922981-1129466_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923006-1129466_1">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic verifies that the SCIM (Keyboard Processor)
+serial communication path is working with a loopback connector external
+to the PSE board.</P><P CLASS="sect1">Click <SPAN CLASS="GUIBUTTON">[Calculate Time]</SPAN> to get an estimate
+of the time it takes to run the selected diagnostics.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923007-1129466_1">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The SCIM serial communication path is tested from the SCP across
+the CAM Backplane to the PSE, and from the PSE across any cables between
+the PSE and the loopback connector. The SCIM is not tested.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923008-1129466_1">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Before running this test, you must install a DB 25 loopback
+connector  (P/N 5395500, part of Service Cable Kit P/N 5306523) external
+to the PSE board on the SCP to SCIM communication path. The loopback
+connector can be installed:</P><UL><LI CLASS="bulletlist"><P>Directly on the PSE.</P></LI><LI CLASS="bulletlist"><P>On the outside of the PGR Cabinet Interface.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923011-1129466_1">5&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="SL3923012-1129466_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SCIM External Loopback Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1129466-1137579.jpg" BORDER="0" usemap="#SL3922994-1129466_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923013-1129466_1">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>The SCP transmits a data packet through
+the SCIM serial port on the SCP board.</P></LI><LI CLASS="numlist"><P>The serial data is looped back externally
+to the PSE board.</P></LI><LI CLASS="numlist"><P>The SCP verifies that it received the
+same data that was sent. </P></LI></OL><P CLASS="sect1">Do not change the <SPAN CLASS="GUILABEL"><I>Test Options</I></SPAN> settings
+from the default settings unless instructed to do so by a GE Healthcare
+engineer. There are very few circumstances when these settings need
+to be changed.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3923017-1129466_1">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">After the SCIM communication path is broken to install the loopback
+connector, the emergency stop is triggered. Press the <B>EMO
+Reset</B> on the PDU to recover after the SCIM communication
+path is restored.</P><P CLASS="sect1">Output values pass or fail. In the event of failure, the details
+of the failure can be found in the <SPAN CLASS="GUILABEL"><I>GE System Log</I></SPAN>.</P><P CLASS="sect1">In the case of errors, you can click the <SPAN CLASS="GUILABEL"><I>1st Error</I></SPAN> number to see the nature of the error. GE recommends that you view
+the <SPAN CLASS="GUILABEL"><I>GE System Log</I></SPAN> to view all the errors that
+were recorded.</P><P CLASS="sect1">If this test fails, the possible reasons are: </P><UL><LI CLASS="bulletlist"><P>Loopback connector is defective or
+not installed. </P></LI><LI CLASS="bulletlist"><P>Any cable between the loopback connector
+and the PSE board. </P></LI><LI CLASS="bulletlist"><P>CAM Backplane is defective.</P></LI><LI CLASS="bulletlist"><P>PSE board is defective. </P></LI><LI CLASS="bulletlist"><P>SCP board is defective. </P></LI></UL><P CLASS="sect1">If the test passes with the loopback connector directly on the
+PSE, but fails with the loopback connector on the outside of the System
+Cabinet, then the cable from the PSE to the System Cabinet Interface
+or the System Cabinet Interface connector is defective. </P><P CLASS="sect1">If the test fails with the loopback connector directly on the
+PSE, then the problem is either the PSE board, CAM Backplane, or the
+SCP. Run the SCP loopback test to determine if the SCP is defective.
+If the SCP loopback test succeeds, check for bent or missing pins
+where the PSE board and SCP board connect. </P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -1,0 +1,21 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE></TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><P CLASS="stepdetails">The output displays a list of  time servers and the delay, offset
+and jitter that each server is experiencing. The delay and offset
+values of the NTP server you just synchronized should be non-zero
+and the jitter value should be under 100. </P><P CLASS="stepdetails">The illustration below is an example showing correct synchronization.</P><DIV CLASS="ILLUSTRATION" id="SL3785513-1123931"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Output With Correct Synchronization Values</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1123931-1123935.jpg" BORDER="0" usemap="#SL3785479-1123931"></P></DIV><P CLASS="stepdetails">Once configured, NTP will synchronize the time between the server
+and the client in Universal Time initially, after system startup and
+at a default time intervals.</P><TABLE CLASS="ADMONstepdetails" CELLSPACING="0%" CELLPADDING="0%" ID="d0e128"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the Host Computer drifts more than 1,000 seconds (approx
+17 minutes) from the NTP server, the NTP service on the Host Computer
+will no longer synchronize automatically. The system will have to
+be restarted manually, or rebooted.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="stepdetails">Under circumstances, where the system cannot be rebooted, you
+can force synchronization manually. Verify that the system is idle
+and that no scans will start for the next 15 minutes. Verify that
+you have network connectivity to the NTP time server and the time
+server's IP address. To synchronize  the system without rebooting,
+follow these steps:</P><OL><LI CLASS="numlist"><P>Log onto the system as root user and
+from a command window.</P></LI><LI CLASS="numlist"><P>Enter the following command: <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>/usr/sbin/intpd -q -g</I></B></FONT></SPAN>.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e143"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If Guided Install "saveinfo" was not done after configuring
+the NTP server's IP address, and if this information was not restored,
+then do a Load from Cold and repeat the Configuration of the NTP Server.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL><P>&nbsp;</P></BODY></HTML>

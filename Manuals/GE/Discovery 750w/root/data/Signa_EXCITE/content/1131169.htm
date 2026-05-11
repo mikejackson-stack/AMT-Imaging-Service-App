@@ -1,0 +1,135 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Dual Drive Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670006,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Discovery MR750w GEM Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;10/18/11</P></td></tr></table><H1 ID="top">Dual Drive Theory </H1><P CLASS="descriptive"></P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3977044-1131169">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The purpose of the dual drive feature is to improve image homogeneity.</P><P CLASS="sect1">Dual drive technology reduces shading caused by dielectric affect
+when scanning areas of the body that are more elliptical or irregular
+in shape (rather than circular), such as the thigh, pelvis, abdomen,
+and breast. The dual drive controls the amplitude and phase relationships
+between the two separate drive points on the system body coil and
+minimizes the dielectric effect. The MR750w establishes an elliptical
+polarized RF field primarily in a horizontal direction.</P><P CLASS="sect1">Dual drive applies only to body transmit. Two identical body
+transmit paths are maintained from the Exciter output to the body
+coil input. Dual drive only affects body mode imaging and receive-only
+surface coil (single channel and phased array) imaging.</P><P CLASS="sect1">The MR750w drives the body coil in either <B>Quadrature mode</B> or <B>Elliptical
+mode</B>. </P><P CLASS="sect1">The two Elliptical modes are selectable in the GUI:</P><UL><LI CLASS="bulletlist"><P><B>Preset mode: </B> A fixed set of values for attenuation and phase; the default mode
+for the end user in most scans. The fixed values are 3dB of magnitude
+and -30 degrees of phase.</P></LI><LI CLASS="bulletlist"><P><B>Optimized mode: </B> The operator sets the values of attenuation and phase on a per-patient
+and per-anatomy basis. The process of using Optimized mode is complicated
+and time consuming. The majority of operators will not use this option.</P></LI></UL><P CLASS="sect1">Most system tools and service protocols are run only in Quadrature
+mode. One exception is Uniformity, which lets the user choose Quadrature
+or Preset in the GUI.</P><P CLASS="sect1">Anatomies with circular shapes, such as head, knees, and wrists,
+are not improved through the use of dual drive technology. Therefore,
+dual drive is not applicable to any local TR coils (TR Split Head,
+TR Knee, TR Wrist, etc).</P><P CLASS="sect1">The dual drive feature includes new and modified hardware, new
+and modified software, and modified system tools.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3983613-1131169">2&nbsp;&nbsp;Block Diagrams<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The block diagrams show configurations for the equipment room
+and the scan room.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3983614-1131169">2.1&nbsp;&nbsp;Equipment Room Block Diagram<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following illustration shows the configuration of a dual
+drive equipment room.</P><DIV CLASS="ILLUSTRATION" id="SL3983615-1131169"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Dual Drive Equipment Room Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1131169-1132182.jpg" BORDER="0" usemap="#SL4116597-1131169"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3983616-1131169">2.2&nbsp;&nbsp;Scan Room Block Diagram<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following illustration shows the configuration of a dual
+drive scan room.</P><DIV CLASS="ILLUSTRATION" id="SL3983617-1131169"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Dual Drive Scan Room Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1131169-1132183.jpg" BORDER="0" usemap="#SL4006640-1131169"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3977048-1131169">3&nbsp;&nbsp;Hardware Components<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The dual drive system changes most hardware components in the
+transmit chain. However, only the body receive Quadrature Preamp/Combiner
+Module in the receive chain is affected.</P><P CLASS="sect1">MR750w has no remotely-located Dummy Load (in the hybrid or
+magnet room) to absorb reflected power. Instead, all reflected power
+from the RF body coil is absorbed by use of internal circulators and
+dummy loads inside the RF amplifier. Therefore, during normal operation,
+it is not unusual for large values of reflected power in excess of
+4:1 VSWR to be present on the Channel 1 and Channel 2 body RF transmission
+lines. The MR750w DTX1 Exciter drives the Channel 1 and Channel 2
+RF amplifier gain stages with two RF outputs, each of which can be
+independently set with respect to amplitude and phase. However, both
+outputs use the same exciter unblank control signal.</P><P CLASS="sect1">In Dual Drive, the naming convention of CH1 for Channel 1 and
+CH2 for Channel 2 is used. CH2 exits the exciter at J13 and leads
+with respect to CH1 (at J12). CH2 is the adjustable channel for elliptical
+mode. The Dual Drive RF amplifier has two independent RF inputs and
+uses one unblank signal to control dual body output ports. Each body
+output port is capable of 15 kW pep @ 1 kW average. </P><P CLASS="sect1">During body transmit, the RF amplifier receives two inputs from
+the exciter (J14 and J21), and there are two outputs on J4 and J22.
+During head transmit, the RF amplifier receives one input from the
+exciter (J14), and there is one output on J3.</P><P CLASS="sect1">The driver module provides a single body TR bias signal to the
+dual drive RF amplifier, as in previous systems. The amplifier couples
+this single bias signal onto the two body transmit output ports. Therefore,
+both body channel transmit cables carry both RF and common body TR
+DC signal (as in previous systems). What is different is that an open
+or short-circuit failure on either CH1 or CH2 transmission line can
+cause a body TR bias fault. Locating source of fault involves suing
+TR DD System Path Check diagnostic and comparing reported body TR
+bias current values while disconnecting CH1 and CH2 transmission lines
+one at a tiime.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986008-1131169">3.1&nbsp;&nbsp;Dual Drive RF Amplifier<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Dual Drive RF Amplifier transmits on two separate body channels
+(J4 and J22) or a head channel (J3). Each channel must be calibrated
+separately. Both body channels are calibrated for 15 kW at 127.72
+MHz.</P><P CLASS="sect2">The amplifier has two adjustment potentiometers. One is used
+for Body Channel 1 and the Head; the other is used for Body Channel
+2.</P><P CLASS="sect2"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986009-1131169">3.2&nbsp;&nbsp;DVMR Drive Module<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Driver Module is the same part for both MR750 and MR750w.
+However, only BD1 Control and BD4 Control are used as dyanamic disable
+outputs. </P><P CLASS="sect2">The system uses a dynamic disable biasing scheme similar to
+that used for 3T HDx where reverse bias voltage (150V), which detunes
+the body coil, is the output during head mode and surface coil receive
+mode and forward bias voltage (-13V), which syncs current through
+the body coil tuning circuits and tunes the body coil, is applied
+during the body mode.</P><P CLASS="sect2">The new open circuit limit for the Body TR Control is such that
+values less than 3200 mA indicate an open circuit fault for dual drive
+versus 2400 mA for an HDx single drive. Since both CH1 and CH2 are
+identical transmission line circuits and the body TR bias is being
+supplied in parallel fashion between both circuits, one should expect
+to see the same amount of bias drawn on each circuit when the other
+circuit is physically disconnected. When an open circuit fault is
+reported, then the fault is located on the channel circuit reporting
+the least amount of current during TR DD System Path Check diagnostic
+when the other channel is disconnected. Likewise, when a short circuit
+reporting the most amount of current during the TR DD System Path
+Check diagnostic when the other channel is disconnected.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986010-1131169">3.3&nbsp;&nbsp;Dual Transmit Switch (DTRSW)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Dual Transmit Switch (DTRSW) contains the Body TR circuitry
+needed to properly route the transmit and receive signals and to protect
+the body preamps and combiner assembly from signal overload. It does
+not contain quadrature phase shifting circuitry as this function is
+now performed by the DTX1 Exciter. It also does not utilize direct
+drive bias as does the MR750 body hybrid splitter. The routing of
+dynamic disable bias is different from how this is done in MR750.
+MR750w dynamic disable bias is routed directly onto the body RF coil
+Channel 1 and Channel 2 RF drive transmission lines through the DTRSW.</P><P CLASS="sect2">For the dual drive feature, the DTRSW replaces the body hybrid.
+The DTRSW is mounted on the right side of the magnet near the back,
+opposite from where the body hybrid was. The Preamp Combiner assembly
+is mounted on it.</P><P CLASS="sect2">The Head Transmit circuit routing is identical to that used
+in MR750 and the same components are used. The Head Transmit circuit
+is a single drive and does not use dual drive or a DTRSW.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986011-1131169">3.4&nbsp;&nbsp;Body Coil<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Body Coil is a high-pass design as compared to a band-pass.
+The dynamic disable diodes are in series with the RF input cables. </P><UL><LI CLASS="bulletlist"><P>Applying dynamic disable bias in forward
+state (13V) so that diodes are conducting tunes body coil so that
+system is in body mode.</P></LI><LI CLASS="bulletlist"><P>Applying dynamic disable bias to reverse
+state (150V) so that diodes are not conducting detunes body coil so
+that system is in head mode or surface coil receive state. </P></LI></UL><P CLASS="sect2">Be aware that removing dynamic disable bias from the body coil
+effectively puts it into a detuned condition, which makes it a poor
+receive antenna. This is different from MR750 as removing dynamic
+disable bias in that product puts the body coil into tuned state and
+makes it a good receive antenna.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986012-1131169">3.5&nbsp;&nbsp;Narrowband Exciter<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The MR750w exciter is the same basic exciter, but with two independent
+RF output channels. It also has a new part number.</P><P CLASS="sect2">Both channels are calibrated with each TPS reset. Each channel&#8217;s
+output is calibrated for amplitude and phase utilizing the system
+receive loopback functionality.  Three log files are generated in <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log: dtx1_cal_I_date-stamp</FONT></SPAN>, <SPAN CLASS="filename"><FONT FACE="COURIER">dtx1_cal_Q_date-stamp</FONT></SPAN>, and <SPAN CLASS="filename"><FONT FACE="COURIER">dtx1_iqPhase_date-stamp</FONT></SPAN>.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3986013-1131169">3.6&nbsp;&nbsp;Quadrature Preamp/Combiner Module<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The 3T quadrature preamp combiner is the first gain/processing
+block in the body coil receive chain (RxC). The preamp combiner accepts
+two inputs: the I and Q channels from the body coil. The preamp combiner
+has a single output that connects to the RF Hub. The function of the
+preamp combiner is similar to the existing legacy preamp combiner.</P><P CLASS="sect2">The high level function of the preamp combiner can be divided
+into two sections: the preamplifier and the IQ combiner. The preamplifier
+will provide a nominal gain of 28 dB with a low level of injected
+noise. The IQ combiner will combine the two amplified body coil channels
+(I and Q) in quadrature to produce one composite output. See the functional
+block diagram.</P><DIV CLASS="ILLUSTRATION" id="SL4197529-1131169"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Preamp Combiner Functional Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1131169-1137898.jpg" BORDER="0" usemap="#SL4197519-1131169"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL3977049-1131169">4&nbsp;&nbsp;Software<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3977050-1131169">4.1&nbsp;&nbsp;Dual Drive Configuration Files<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">MRConfig.cfg in /w/config has a new amp type for Dual Drive
+as well as three additional parameters to enable Dual Drive: RFampType,
+dualDriveCapable, and ellipticDriveEnable. </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3977051-1131169">4.2&nbsp;&nbsp;Scan Rx<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">A new parameter called <SPAN CLASS="GUILABEL"><I>RF Drive Mode</I></SPAN> has
+been added to the scan prescription page. <B>Quadrature</B> or <B>Preset</B> can be selected on almost any scan
+sequence without any preliminary work. <B>Preset</B> is usually the default value. </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3983618-1131169">4.3&nbsp;&nbsp;Tools Affected by Dual Drive<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following service tools are effected by Dual Drive:</P><UL><LI CLASS="bulletlist"><P>RF/UPM Calibration (modified tool)</P></LI><LI CLASS="bulletlist"><P>RF Amp Power Check Tool (modified tool)</P></LI><LI CLASS="bulletlist"><P>RFA (modified tool)</P></LI><LI CLASS="bulletlist"><P>Uniformity tool (modified tool)</P></LI><LI CLASS="bulletlist"><P>Dual Drive Quadrature Calibration (new
+calibration tool)</P></LI></UL><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3983619-1131169">4.3.1&nbsp;&nbsp;RF Amp and UPM Calibration<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">UPM Tool UI includes setup for RF Amp calibration. </P><P CLASS="sect3">Apbcal PSD ignores any values in the <SPAN CLASS="filename"><FONT FACE="COURIER">QuadratureTransmit.dat</FONT></SPAN> file, so no attenuation or phase is added during calibration.</P><P CLASS="sect3">With Dual Drive, the system has two body channels and one head
+channel. the additional body channel, along with the other two channels,
+needs calibrating and requires a functional check.</P><P CLASS="sect3">For more information, see <SPAN CLASS="MODULEREF"><A HREF="1062914.htm#SL2029391-1062914"><I>Body and Head Maximum Power Setup and Calibration</I></A></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3983620-1131169">4.3.2&nbsp;&nbsp;RF Amp Power Check Tool<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The RF Amp Power Check Tool is used to understand the health
+of the RF amplifier and the rest of the transmit chain. It includes
+data for the additional body channel. Test the RF amplifier independently
+from the transmit chain hardware by connecting the body transmit channel
+(the one that you are testing) directly to an air-cooled RF dummy
+load. For more information, see <SPAN CLASS="MODULEREF"><A HREF="1096662.htm#SL2941881-1096662"><I>RF Amp Power Check Tool</I></A></SPAN>.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3983621-1131169">4.3.3&nbsp;&nbsp;RFA<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">RFA includes the additional channel at Exciter and Amp output.
+However, it still only captures data on one channel at a time. It
+does allow the &#8220;unused&#8221; channel to be enabled or disabled.
+For more information, see <SPAN CLASS="MODULEREF"><A HREF="1051111.htm#SL1801048-1051111"><I>RFA Loopback Test</I></A></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3983622-1131169">4.3.4&nbsp;&nbsp;Uniformity Tool<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The user interface for the Uniformity Tool allows testing in
+Quad or Preset mode with PASS/FAIL results based on different limits.
+Quad &gt; 15 and Preset &gt; 30. For more information, see <SPAN CLASS="MODULEREF"><A HREF="1125091.htm#SL2941881-1125091"><I>Uniformity Test</I></A></SPAN>.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3983623-1131169">4.3.5&nbsp;&nbsp;Dual Drive Quadrature Calibration Tool<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The Quadrature Calibration Tool is new and is designed to determine
+the attenuation and phase values needed to create a quadrature field
+inside the bore. It compensates for non-idealities in exciter, cabling,
+amp, DTRSW and body coil. For Quad operation, the goal is to have
+two equal amplitude body transmit paths that are nominally 90 degrees
+apart. For more information, see <SPAN CLASS="MODULEREF"><A HREF="1096662.htm#SL2941881-1096662"><I>Dual Drive Quadrature Tool</I></A></SPAN></P></DIV></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

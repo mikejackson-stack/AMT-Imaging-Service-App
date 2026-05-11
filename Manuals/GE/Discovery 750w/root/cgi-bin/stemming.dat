@@ -1,0 +1,81 @@
+3+ies  -> y
+3+ing  ->
+4+ness ->
+ss     -> ss
+3+s    ->
+4+ion  ->
+4+ism  ->
+4+ly   ->
+3+eed  -> ee
+4+ied  -> y
+4+ed   ->
+3+ed   -> e
+4+er   ->
+4+ful  ->
+4+able ->
+4+ible ->
+3+v    -> f
+4+e    ->
+3+dd   -> d
+3+gg   -> g
+3+ll   -> l
+3+mm   -> m
+3+nn   -> n
+3+pp   -> p
+3+rr   -> r
+3+ss   -> s
+3+tt   -> t
+------------------------------------------------------------------
+Customized Stemming
+===================
+
+	Stemming rules vary from one language to another.  dtSearch
+includes a set of stemming rules designed to work with English. 
+These rules are in the file STEMMING.DAT.  If you need to
+implement stemming for a different language, or you want to
+modify the English stemming rules, you can create a new set of
+stemming rules to be used in place of STEMMING.DAT.
+
+	Stemming rules consist of a series of lines like this:
+
+     3+ies -> Y
+     4+ing ->
+     
+	The first rule would convert any word with three or more letters
+followed by ies to the same initial letters followed by y.
+"Applies" would turn into "apply".
+
+	The second rule would remove the "ing" from any word with four or
+more letters followed by "ing".  "Fishing" would turn into "fish", but
+"sing" would not change.
+
+	In general, a rule consists of: a minimum number of letters (not
+including the suffix), a + sign, a suffix to be removed, an arrow
+(->) and the replacement for the suffix, if any.  Stemming rules
+must use lower-case letters only.  Up to 100 stemming rules can be
+included in a stemming.dat file.
+
+	When stemming a word, dtSearch will look at each rule in order
+until it finds one that applies.  If it finds a rule, dtSearch
+will apply the rule and then start over, repeating the process
+until the word does not change. The result is the "stem" of the
+original word.
+
+	Sometimes you may want to create a rule with an exception.  For
+example, suppose you want to remove a trailing "s" in a word,
+unless the word ends in "ss".  To do this, you would use these two
+rules:
+
+     3+ss -> ss
+     3+s  ->
+     
+	If a word ends in "ss", dtSearch will never get past the first rule
+and will give up stemming the word because the rule "3+ss -> ss"
+does not change the word.  Only words not ending in "ss" will get
+to the next rule, which removes the trailing "s".
+
+	Setting up stemming rules can be somewhat tricky.  To help,
+dtSearch includes the STEMTEST utility.  STEMTEST will allow you
+to try out your stemming rules, entering words and seeing what
+the resulting stem words are.
+
