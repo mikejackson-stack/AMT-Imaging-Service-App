@@ -1,0 +1,46 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Vacuum System Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133330-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">Vacuum System Theory </H1><P CLASS="descriptive">The Quiet Technology used on the Signa TwinSpeed system is partially
+achieved by evacuating the air from around the Gradient coil and RF Body coil
+within the warm bore of the magnet.  The components that make up the Vacuum
+system and are located in both the MR Equipment Room and the Magnet Room.
+ See <A HREF="javascript:winopen('70396illd0e31.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>, Block Diagram.</P><DIV CLASS="ILLUSTRATION" id="SL70423-70396"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">BLOCK DIAGRAM</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/70396-70426.jpg" BORDER="0" usemap="#SL70432-70396"></P></DIV><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e36"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">As of January, 2003 the software needed to communicate between
+the magnet monitor and the PLC has not been released.  There is no method
+to remotely monitor the vacuum level.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e39"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">As of March, 2002 a new vacuum sensor and regulator replaced the
+existing units.  The new configuration does not require calibration.  See
+picture below to identify vacuum sensor.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="ov-1294332797837"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Sensor Identification</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/70584-70424.jpg" BORDER="0" usemap="#SL70434-70396"></P></DIV><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e48"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">An FMI (60631) will be issued in March 2003 that will locate the
+Vacuum Sensor to the TAC cabinet.  This FMI will also add a Vacuum Regulator
+to the vacuum line.  The purpose of the Vacuum Regulator is to prevent the
+vacuum from going below 140 Torr if the primary Vacuum Control system fails.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="descriptive">On initial startup the Vacuum Gauge Controller will supply two 15-vdc
+signals to the Vacuum Regulator Box.  One signal activates a solid-state relay,
+which supplies 120-vac to the Vacuum Pump, and the other 15-vdc signal activates
+a solid-state relay, which supplies 120-vac to the Vacuum Solenoid Valve.
+  The Solenoid energizes causing the Vacuum Valve to open thereby allowing
+the Vacuum Pump to evacuate the Magnet Vacuum Enclosure.  After about 10 minutes
+the vacuum level should decrease from atmosphere (760 torr at sea level) down
+to about 150 torr.  Once the Gauge Controller reaches the lower limit of 150
+torr (set point 1 - Low) it will remove the 15-vdc control signal for the
+Vacuum Solenoid Valve, allowing it to close.  The Vacuum Pump continues to
+run with no load applied.  The vacuum level within the Magnet Vacuum Enclosure
+will start to drift upward until the upper limit of 190 torr (set point 1
+- High) is reached.   The Gauge Controller re-activates the Vacuum Solenoid
+Valve causing it to open and the evacuation process is repeated.  The typical
+drift time (no evacuation) for a normal operating system is 1 to 4 minutes.</P><P CLASS="descriptive">The Mechanical Vacuum Regulator uses a flexible diaphram that will prevent
+the vacuum level from going below 140Torr.  This regulator is factory set
+and is not field adjustable.  The Vacuum Regulator was added as a safety feature
+via FMI (60631) to prevent body coil failures.</P><P CLASS="descriptive">In the event of a failure where the vacuum level could be lower than
+130 torr a second set point is used to de-active the Vacuum Pump.  If the
+vacuum level ever reaches 130 torr (set point 2 &#8211; low) then the Gauge Controller
+will remove the 15-vdc control signal going to the solid-state relay that
+controls the input power to the Vacuum Pump.  The control signal will remain
+at 0-vdc until the upper limit of 200 torr (set point 2 &#8211; High) is reached.
+ The Gauge Controller will then change the control voltage from 0-vdc to 15-vdc
+activating the solid-state relay again.  This feature was added to prevent
+damage to the RF Body Coil as components on the coil will arc and be damaged
+at vacuum levels less than 100 torr.</P><P CLASS="descriptive">The Gauge Controller also sends the vacuum level data (analog format)
+to the Cooling Cabinet &#8211; Programmable Logic Control (PLC) where it is then
+relayed to the Magnet Monitor via the RS232 data link.  The Magnet Monitor
+continuously monitors the data link and will send alarm status to the OLC
+and Host computer as configured by the operator.</P><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

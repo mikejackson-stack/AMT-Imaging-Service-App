@@ -1,0 +1,117 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>RFT Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133330-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">RFT Theory </H1><P CLASS="descriptive">RFT is an RF loop-back test that will quickly evaluate stability, magnitude
+and phase linearity, of the RF transmit chain in a Signa system. This is accomplished
+by playing out four different RF pulses and collecting each one as a separate
+"echo". The first pulse has a wide flat top and is used for stability testing.
+The second pulse has a narrower flat top and its amplitude increments during
+the scan for magnitude and phase linearity testing. The third pulse is a sync
+2 and the fourth pulse is a sync 8. The amplitude of the third and fourth
+pulses is incremented like the second pulse for pulse fidelity analysis. The
+3.0T Excite system does not support the Pulse Fidelity test or its analysis
+function. All tests are run at the following frequency: (Actual magnet center
+frequency will not be used.)</P><P CLASS="descriptive">3.0T - 127.72MHz</P><UL><LI CLASS="bulletlist"><P>RFT Hardware:</P><P>A switchable attenuator controlled by the PSD is required, to extend
+the dynamic range of the linearity and stability tests. Linearity and stability
+data are collected twice, first with the transmit path attenuator set to 30
+dB (IN) and again with it set to 0 dB (OUT). The receive path attenuator is
+30 dB when the transmit path attenuator is 0 dB and vice versa. Stability
+data is collected twice more with a gradient pulse applied during the RF pulse.
+The switchable attenuator is used as before.</P></LI><LI CLASS="bulletlist"><P>Testing Sequence:</P><P>This document is structured for 2 basic modes of running RFT: 1) baseline
+(reference) data collection, 2) stability troubleshooting. Flowcharts are
+provided for each mode. The flowcharts direct you to the appropriate tables
+and diagrams for software and hardware setup, prescan, and scan references.</P></LI></UL><P CLASS="descriptive">2 Magnitude Stability Analysis (groups 1, 3, 5 and 7)</P><P CLASS="descriptive">A magnitude matrix is calculated from echo 1 raw data. Each element
+in the normalization vector (nvc) contains the mean of the corresponding column
+in the magnitude matrix. Peak magnitude (pkmag) is the mean of elements 31
+through 37 in the normalization vector. Each element in the sample max vector
+(smaxc) contains the maximum of the corresponding column in the normalized
+magnitude matrix. (cmax) is element number (c) for which smaxc is maximum.
+Each element in the sample min vector (sminc) contains the minimum of the
+corresponding column in the normalized magnitude matrix. (cmin) is element
+number (c) for which sminc is minimum. Each element in the view means vector
+(vmeanr) contains the mean of the corresponding row in the normalized magnitude
+matrix.</P><P CLASS="descriptive">The test provides plots of "Sample Deviation All" (max% &amp; min%),
+"View Means" (%), "Max Sample Deviation" (%), and "Min Sample Deviation" (%).
+Report data file summary:</P><PRE>* Max-Min (p-p)
+* +Stdev
+* -Stdev
+* +Area
+* -Area
+* Max Sample Column
+* Min Sample Column
+* View Means
+</PRE><P CLASS="descriptive">3  Phase Stability Analysis (groups 2, 4, 6 &amp; 8)</P><P CLASS="descriptive">An unwrapped phase matrix is calculated from echo 1 raw data. Each element
+in the normalization vector (nvc) contains the mean of the corresponding column
+in the unwrapped phase matrix. Each element in the sample max vector (smaxc)
+contains the maximum of the corresponding column in the normalized phase matrix.
+(cmax) is element number (c) for which smaxc is maximum. Each element in the
+sample min vector (sminc) contains the minimum of the corresponding column
+in the normalized phase matrix. (cmin) is element number (c) for which sminc
+is minimum. Each element in the view means vector (vmeanr) contains the mean
+of the corresponding row in the normalized phase matrix. The test provides
+plots of "Sample Deviation All" (max% &amp; min%), "View Means" (%), "Max
+Sample Deviation" (%), and "Min Sample Deviation" (%). Report data file summary:</P><PRE>* Max-Min (p-p)
+* +Stdev
+* -Stdev
+* +Area
+* -Area
+* Max Sample Column
+* Min Sample Column
+* View Means
+4  Sample of Config File Data header Information
+xxxxxxxx.RFT/15/15   SERVICE CONFIG FILE
+=========================================================
+       SITENAME = xxxxxx
+
+            USN = nnn
+            MLN = nnnn
+      SRVCONFIG = 09/18/2003 13:18:16
+        EXCITER = 000
+       RECEIVER = S0/E0/PE0
+      XMTRFCOIL = BODY
+      RCVRFCOIL = BODY
+    RCVCOILGAIN = 11.16000
+    XMTGRADCOIL = BODY
+    RCVGRADCOIL = BODY
+             R1 = 13
+             R2 = 15
+             TG = 200
+           FREQ = 127789484 Hz
+           TIME = 09/23/2003 14:16:00
+        BASERUN = 00512
+     CONFIGCODE = _100114110127727696
+        SOFTREV = G3.0_0338a
+        NUCLIDE = 000
+     HEADERCODE = 0x00000000
+       GRADMODE = WHOLE
+             C1 = NO COMMENT
+             C2 = Body,Ax,2D,SE
+@END
+@HDR 15 41
+
+magnetSerNum = "W006"
+
+magnetType = "Unknown - W006"
+fieldStrength ="3.0T"
+room shielding (Yes/No) = "No"
+Magnishield (Yes/No) = "No"
+Shieldcooler type (0,1,2,3,4,5,6) = "4"
+resistive shim power supply (0,1,2,3,4,5,6) = "0"
+external passive shim (Yes/No) = "No"
+passive shim drum (Yes,No) = "No"
+RFampType (ErbtecTube, ErbtecSolidState, TELI Solid State) = "11"
+spectroAmp (None, ENI) = "None"
+lineCondType (0,1,2) = "2"
+lineFreq (50,60) = "60"
+SRMode (120,77,20,17)  = "77"
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+ThisLineNotUsed = ""
+------------------------------------------------------ 
+</PRE><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
