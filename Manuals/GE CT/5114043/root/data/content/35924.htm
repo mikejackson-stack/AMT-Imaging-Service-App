@@ -1,0 +1,220 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VME Chassis Boot-Up - iceConsole.log</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5114043-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;9<BR>LightSpeed 3.X Service Methods (Advanced)</P></td></tr></table><H1 ID="top">VME Chassis Boot-Up - iceConsole.log </H1><P CLASS="descriptive">When the VME chassis boots up, the Motorola powerPC (RIP) logs bootup
+and application startup communications. The output is logged to <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/usr/g/service/log/iceConsole.log</FONT></SPAN> file.
+There are two methods for viewing this log. One method is using the service
+desktop, another is using a Unix shell and typing commands.</P><P CLASS="descriptive">The following shows a typical sequence of communications that occur
+of these boards, taken from the iceConsole.log file along with a brief description/interpretation
+of the output. At a prompt, enter the following:</P><P CLASS="descriptive">Example: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">iceConsole.log</FONT></SPAN></P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@bayxx}[1]: </FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd  /usr/g/service/log</B></FONT></SPAN></P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@bayxx}[2]: </FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more iceConsole.log</B></FONT></SPAN></P><P CLASS="descriptive">Comment:  Begin Apps startup</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Logfile updated Thu Mar 22 10:50:04 2001</FONT></SPAN></P><P CLASS="descriptive">"Proc_Ice" records the beginning of applications process startup in
+the "iceConsole log, as above.</P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Reset VME Chassis</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[VxWorks Boot]: b</FONT></SPAN></P><P CLASS="descriptive">Upon executing the &#8220;b&#8221; command from boot PROM, a VME reset
+takes place.</P><P CLASS="descriptive">Comment:  VME reset successful</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Copyright Motorola Inc. 1988 - 1999, All Rights Reserved</FONT></SPAN></P><P CLASS="descriptive">First header printed after a successful VME reset.</P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>List Version &amp;date</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">PPC1 Debugger/Diagnostics Release Version 4.5 - 09/24/99 RM01</FONT></SPAN></P><P CLASS="descriptive">Version and dates vary with release.</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">COLD Start</FONT></SPAN></P><P CLASS="descriptive">Comment:  List Clock Speeds </P><PRE>Local Memory Found =08000000 (&amp;134217728)
+MPU Clock Speed =333Mhz
+BUS Clock Speed =67Mhz</PRE><P CLASS="descriptive">MPU speed can vary</P><PRE>Reset Vector Location  : ROM Bank B
+Mezzanine Configuration: Single-MPU
+Current 60X-Bus Master : MPU0
+Idle MPU(s)            : NONE
+L2Cache:       NONE</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Check Memory</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Initializing System Memory (DRAM)...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System
+Memory: 128MB, ECC Enabled (ECC-Memory Detected)</FONT></SPAN></P><P CLASS="descriptive">128MB of system memory must be recognized for applications to startup.</P><P CLASS="descriptive">Comment:  Begin Transfer of Control</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">PPC1-Bug&gt;rb ;v</FONT></SPAN></P><P CLASS="descriptive">Boot ROM command prompt.</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ROMBoot about to Begin... Press &lt;ESC&gt; to Bypass, &lt;SPC&gt;
+to Continue</FONT></SPAN></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Check  that firmware is good</P><PRE>Direct Adr: FF000000 FF000000: Searching for ROMboot Module at:  FF000000
+Executing ROMboot Module "VxWorks Boot ROM" at FF000000</PRE><P CLASS="descriptive">Good Firmware found, transfer control to VxWorks Boot ROM now.</P><P CLASS="descriptive">Comment:  VxWorks started</P><PRE>                           VxWorks System Boot
+Copyright 1984-1998  Wind River Systems, Inc.
+CPU: Motorola MVME2300 - MPC 604e
+Version: 5.4
+BSP version: 1.2/0
+Creation date: Mar 20 2001, 21:12:23</PRE><P CLASS="descriptive">Creation Date above can vary</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[VxWorks Boot]: </FONT></SPAN></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>VxWorks Boot String Executed</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[VxWorks Boot]: $dc(0,0)oc:/usr/g/ice/bin/vxWorks.mv2300 e=192.9.220.11
+b=192.9.220.12:ffffffff h=192.9.220.1 u=target tn=ice s=/usr/g/ice/bin/init.sh</FONT></SPAN></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin Parsed Boot string ouput</P><PRE>boot device          : dc
+unit number          : 0 
+processor number     : 0 
+host name            : oc
+file name            : /usr/g/ice/bin/vxWorks.mv2300</PRE><P CLASS="descriptive">Comment:  Kernel location specified</P><P CLASS="descriptive">File /usr/g/ice/bin/vxWorks.mv2300 is located on the host computer</P><PRE>inet on ethernet (e) : 192.9.220.11
+inet on backplane (b): 192.9.220.12:ffffffff
+host inet (h)        : 192.9.220.1
+user (u)             : target
+flags (f)            : 0x0 
+target name (tn)     : ice</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>End parsed output</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">startup script (s)&nbsp;&nbsp;&nbsp;: /usr/g/ice/bin/init.sh</FONT></SPAN></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin Kernel download</P><PRE>Attached TCP/IP interface to dc0.
+Attaching network interface lo0... done.
+Loading... 1418644</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>End Kernel download</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Starting at 0x100000...</FONT></SPAN></P><P CLASS="descriptive">The number of bytes loaded can vary. A loading of Zero (0) bytes indicates
+a possible problem.</P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Configure &amp; report SCSI Devices</P><PRE>ID LUN VendorID    ProductID     Rev. Type  Blocks  BlkSize pScsiPhysDev 
+-- --- -------- ---------------- ---- ---- -------- ------- ------------
+ 1  0  SEAGATE  ST318404LW       0006   0  35843670    512    0x017dda88 </PRE><P CLASS="descriptive"></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Setup NFS  connection on Host Computer</P><PRE>Attached TCP/IP interface to dc unit 0
+Attaching interface lo0...done
+Initializing backplane net with anchor at 0x4100... done.
+Backplane anchor at 0x4100... Attaching network interface sm0... done.
+Creating proxy network: 192.9.220.12
+Mounting NFS file systems from host oc for target ice:</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Mount /usr/g directory</P><PRE>/usr/g
+...done</PRE><P CLASS="descriptive">A good /usr/g directory NFS mount is important.</P><P CLASS="descriptive"></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Load Symbol Table</P><PRE>Loading symbol table from oc:/usr/g/ice/bin/vxWorks.mv2300.sym ...done
+Using a rsh, load the symbol table located on the host.</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin output from VxWorks Kernel Boot</P><PRE> ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+      ]]]]]]]]]]]  ]]]]     ]]]]]]]]]]       ]]              ]]]]         (R)
+ ]     ]]]]]]]]]  ]]]]]]     ]]]]]]]]       ]]               ]]]]            
+ ]]     ]]]]]]]  ]]]]]]]]     ]]]]]] ]     ]]                ]]]]            
+ ]]]     ]]]]] ]    ]]]  ]     ]]]] ]]]   ]]]]]]]]]  ]]]] ]] ]]]]  ]]   ]]]]]
+ ]]]]     ]]]  ]]    ]  ]]]     ]] ]]]]] ]]]]]]   ]] ]]]]]]] ]]]] ]]   ]]]]  
+ ]]]]]     ]  ]]]]     ]]]]]      ]]]]]]]] ]]]]   ]] ]]]]    ]]]]]]]    ]]]] 
+ ]]]]]]      ]]]]]     ]]]]]]    ]  ]]]]]  ]]]]   ]] ]]]]    ]]]]]]]]    ]]]]
+ ]]]]]]]    ]]]]]  ]    ]]]]]]  ]    ]]]   ]]]]   ]] ]]]]    ]]]] ]]]]    ]]]]
+ ]]]]]]]]  ]]]]]  ]]]    ]]]]]]]      ]     ]]]]]]]  ]]]]    ]]]]  ]]]] ]]]]]
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]]]       Development System
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]]
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]]       VxWorks version 5.4
+ ]]]]]]]]]]]]]]]]]]]]]]]]]]       KERNEL: WIND version 2.5
+ ]]]]]]]]]]]]]]]]]]]]]]]]]       Copyright Wind River Systems, Inc., 1984-2000
+                               CPU: Motorola MVME2300 - MPC 604e.  Processor #0.
+                              Memory Size: 0x2000000.  BSP version 1.2/0.
+                             WDB: Ready.</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>End boot output</P><P CLASS="descriptive"></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin Startup scprit</P><PRE>Executing startup script /usr/g/ice/bin/init.sh ...
+rebootHookAdd mv2305_vme_reset
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>#
+# disable automatic static constructors
+#
+cplusXtorSet (0);
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Setting Memory Options</P><PRE>#
+# Don&#8217;t suspend any proxy if memPartFree() invalid block
+#
+# 0x01 -- MEM__ALLOC_ERROR_LOG_MSG
+# 0x04 -- MEM_BLOCK_ERROR_LOG_MSG
+# 0x10 -- MEM_BLOCK_CHECK
+memOptionsSet (0x01 | 0x10 | 0x04);
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>#
+# Dynamically load all modules before starting code.
+#
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Load Apps SW Modules</P><PRE># load application modules
+#
+cd "/usr/g/ice/bin";
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>ld &lt; vxMonitor_pegasus.ppc
+value = 24347656 = 0x1738408</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0  (bad)</P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e268"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">An error message here means that Application SW will not likely
+start.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>#
+# disable scanfile debug messages
+#
+</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>_scanfile_debug = 0;
+_scanfile_debug = 0x1283010: value = 0 = 0x0
+#
+# Add the rest of the heap before starting code,
+# but after loading modules.  DO NOT LOAD ANY MODULES AFTER THIS.
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>memPartAddToPool (memSysPartId, sysMemTop (), sysPhysMemTop () - sysMemTop ());
+value = 0 = 0x0</PRE><PRE>#
+# call the static constructors
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>cplusCtors (0);
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin comments(#)</P><PRE># task option defines
+# VX_FP_TASK (0x0008)
+#     execute with floating-point coprocessor support.
+# VX_PRIVATE_ENV (0x0080)
+#    include private environment support (see envLib).
+# VX_NO_STACK_FILL (0x0100)
+#     do not fill the stack for use by checkStack( ).
+#VX_UNBREAKABLE (0x0002)
+#     do not allow breakpoint debugging.
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>End Comments</P><PRE># enable round-robin time slicing between equal tasks
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>kernelTimeSlice (1);
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Sart HW watchdog timer on  Motorola Bd.</P><PRE>#
+# Setup the HW watchdog timer in case CPU gets so we can&#8217;t reboot normally
+# Task runs every 90 seconds and sets watchdog timeout to 124 seconds
+taskSpawn ("watchDog", 100, 0x0008, 20000, periodRun, 90, sysHwWatchdogSet, 124, 1, 0, 0, 0);
+value = 134174256 = 0x7f0xf56307ff5630 (watchDog
+): sysHwWatchdogSet[
+0]: timer set to #124 seconds; reset=
+1
+# Initialize ermes database
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>putenv ("LOGHOST=oc");
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>msgHandlerInit ();
+value = 0 = 0x0
+#putenv("RECONMGRDEBUG=0x00001000");
+#
+# set the network credentials for file access
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>value = 0 (good)</P><PRE>nfsAuthUnixSet ("oc", 100, 100, 0, 0);
+value = 0 = 0x0</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Begin Scan Data Disk  Configuration &amp;
+Mount function</P><PRE>#
+# configure and mount the scan disk
+#
+usrScsiDiskInit (1, "/raw_data");
+/raw_data/  - disk check in progress ...
+                                                                                                                                                                                    WARNING : dosChkLib : system clock is being set to THU MAR 22 06:32:22 2001
+Value obtained from file system referenced by volume descriptor pointer: 0x7ff9ea8
+The old setting was THU JAN 01 00:00:00 1970
+Accepted system dates are greater than FRI JAN 01 00:00:00 1999
+/raw_data/  - Volume is OK 
+	  total # of clusters:	17,503
+	   # of free clusters:	3,762
+	    # of bad clusters:	0
+	     total free space:	3,762 Mb
+     max contiguous free space:  1,845,493,760 bytes
+		   # of files:	433
+		 # of folders:	18
+	 total bytes in files:	13,521 Mb
+	     # of lost chains:	0
+   total bytes in lost chains:  0
+volume descriptor ptr (pVolDesc):	0x7ff9ea8
+cache block I/O descriptor ptr (pCbio):	0x7ffb520
+auto disk check on mount:		DOS_CHK_ONLY | DOS_CHK_VERB_1
+max # of simultaneously open files:	34
+file descriptors in use:		0
+# of different files in use:		0
+# of descriptors for deleted files:	0
+# of  obsolete descriptors:		0
+current volume configuration:
+ - volume label:	NO LABEL ; (in boot sector:	)
+ - volume Id:		0xee220200
+ - total number of sectors:	35,843,670
+ - bytes per sector:		512
+ - # of sectors per cluster:	2,048
+ - # of reserved sectors:	32
+ - FAT entry size:		FAT32
+ - # of sectors per FAT copy:	137
+ - # of FAT table copies:	2
+ - # of hidden sectors:		0
+ - first cluster is in sector #	306
+ - directory structure:		VFAT
+ - root dir start cluster:	2
+FAT handler information:
+------------------------
+ - allocation group size:	2 clusters
+ - free space on volume:	3,944,742,912 bytes
+Disk Cache, /raw_data:
+Cached Block I/O Device, handle=0x7ffb520
+	Description: Disk Cache - LRU
+	Disk size 17 Gbytes, RAM Size 2097152 bytes
+	Block size 512, heads 0, blocks/track 0, # of blocks 35843670
+	partition offset 0 blocks, type Fixed, Media changed No
+Total cache Blocks 3774, 0 blocks (%0) dirty
+Tunable Params:
+   Bypass Threshold 2, Max Dirty 254, Read Ahead 32 blocks, Sync interval 0 sec
+Hit Stats: Cookie Hits 16948 Miss 272, Hash size 2221 Hits 2495 Miss 1651
+   LRU Hits 2493, Misses 127, Hit Ratio %95
+Write Sstats: Foreground 0, Background 0, Hidden 0, Forced 137
+Subordinate Device Start:
+Cached Block I/O Device, handle=0x7ffb5a8
+	Description: Block Device
+	Disk size 17 Gbytes, RAM Size 0 bytes
+	Block size 512, heads 0, blocks/track 0, # of blocks 35843670
+	partition offset 0 blocks, type Fixed, Media changed No</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN> End  configuration and mounts</P><PRE>Subordinate Device End:
+value = 0 = 0x0
+A value of zero is returned by the &#8220;usrScsiDiskInit&#8221; function, if successful.
+ttsFlag = 0
+ttsFlag = 0x128330c: value = 0 = 0x0
+#
+# Start the applications
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Start VxMonitor</P><PRE>taskSpawn ("vxmonitor", 100, 0x0008, 500000, vxmonitor);
+value = 132051792 = 0x7def350THU MAR 22 10:50:5
+5.000 2001</PRE><P CLASS="descriptive">Value can vary by SW release. VxMonitor is started to spawns and manages
+task on Motorola.</P><PRE>#
+# put the nettask same as dataacq
+#
+netTaskPriority = 52;stderr i
+s redirected to fd netTaskPriority15 = 0x
+241f14: value = 52 = 0x34 = &#8217;4&#8217;
+taskPrioritySet(taskNameToId("tNetTask"), netTaskPriority);
+value = 0 = 0x0
+#
+# done
+#</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>End Startup Script</P><PRE>Done executing startup script /usr/g/ice/bin/init.sh</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Applications SW startup Output</P><PRE>-&gt; num_offset_views : 512
+offset_first_view : 0
+offset_reuse_window : 30.000000
+rebin:successfully initialized.
+daGetConfigValue: dataacq.cfg, da_timeout_delta, &#8217;0&#8217;
+daGetConfigValue: dataacq.cfg, da_dip_mem_and_save_size, &#8217;2048&#8217;
+daGetConfigValue: dataacq.cfg, da_debug, &#8217;0x00000&#8217;
+dip_execute_test_sequence: 0
+dip_execute_test_sequence: 2
+dip_execute_test_sequence: 5
+RESTORE successfully initialized</PRE><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Startup complete</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">*** reconmgr: GOING INTO EVENT LOOP&nbsp;&nbsp;****</FONT></SPAN></P><P CLASS="descriptive">Recon subsystem is now up and running.</P><P CLASS="descriptive"></P><P CLASS="descriptive">Comment: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN>Shutdown requested</P><P CLASS="descriptive"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">-&gt; mv2305_vme_reset</FONT></SPAN></P><P CLASS="descriptive">The above command indicates a shutdown has been requested by the host.</P><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
