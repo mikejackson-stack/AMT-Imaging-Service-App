@@ -369,12 +369,26 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC — Staff Portal</p>
-    <!-- GIS renders official button here; fallback shown if library not loaded -->
-    <div id="g_id_onload" style="display:flex;justify-content:center;margin-bottom:2px"></div>
-    <button class="btn-google" id="btnGoogleFallback" onclick="triggerGoogleLogin()">
-      <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.8 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.5 13 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4 7.1-10 7.1-17z"/><path fill="#FBBC05" d="M10.4 28.7A14.6 14.6 0 0 1 9.5 24c0-1.6.3-3.2.9-4.7l-7.8-6A23.9 23.9 0 0 0 0 24c0 3.9.9 7.5 2.6 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.5-5.8c-2 1.4-4.6 2.3-7.7 2.3-6.1 0-11.3-4.1-13.2-9.6l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>
-      Sign in with Google
-    </button>
+    <!-- GIS configuration — library reads data-* attributes automatically -->
+    <div id="g_id_onload"
+         data-client_id="272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="amtGoogleCallback"
+         data-auto_prompt="false"
+         data-itp_support="true">
+    </div>
+    <!-- GIS renders the button based on these data-* attributes -->
+    <div class="g_id_signin"
+         data-type="standard"
+         data-shape="rectangular"
+         data-theme="filled_black"
+         data-text="sign_in_with"
+         data-size="large"
+         data-logo_alignment="left"
+         data-width="280"
+         style="display:flex;justify-content:center;margin-bottom:4px">
+    </div>
     <div class="login-divider"><span>or use Quick PIN</span></div>
     <button class="btn-pin-toggle" onclick="togglePin()">🔐 Quick PIN Login</button>
     <div id="pinPanel">
@@ -1339,36 +1353,29 @@ document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementB
 
 // Google OAuth
 function triggerGoogleLogin(){
-  if(window.location.protocol==='file:'){showHostingGuide();return;}
-  // Try GIS prompt first (modern, no redirect needed)
-  if(typeof google!=='undefined'&&google.accounts&&google.accounts.id){
-    google.accounts.id.prompt(function(n){
-      if(n.isNotDisplayed()||n.isSkippedMoment()){
-        _triggerOAuthRedirect(); // fallback to redirect if One Tap blocked
-      }
-    });
-  } else {
-    _triggerOAuthRedirect();
-  }
+  // kept for any external callers; GIS button handles login via amtGoogleCallback
+  if(window.location.protocol==='file:'){showHostingGuide();}
 }
-function _triggerOAuthRedirect(){
-  const nonce=Math.random().toString(36).substr(2)+Math.random().toString(36).substr(2);
-  const params=new URLSearchParams({
-    client_id:GOOGLE_CLIENT_ID, redirect_uri:REDIRECT_URI,
-    response_type:'id_token', scope:'openid email profile',
-    nonce, prompt:'select_account', state:'amt_login'
-  });
-  sessionStorage.setItem('amt_oauth_nonce',nonce);
-  window.location.href='https://accounts.google.com/o/oauth2/v2/auth?'+params.toString();
+// Global callback required by GIS data-callback attribute
+function amtGoogleCallback(response){
+  _handleGISCredential(response);
 }
 
 function checkOAuthCallback(){
   const hash=window.location.hash;
-  if(!hash||(!hash.includes('id_token')&&!hash.includes('error')))return;
+  if(!hash||!hash.includes('state=amt_login'))return;
   const params=new URLSearchParams(hash.substring(1));
+  // Always clean the URL hash regardless of outcome
   if(history&&history.replaceState)history.replaceState(null,'',window.location.pathname+window.location.search);
   if(params.get('error')){
-    document.getElementById('loginError').textContent='⚠️ Google: '+params.get('error')+'. Use PIN login.';
+    const err=document.getElementById('loginError');
+    if(err) err.textContent='⚠️ Google: '+params.get('error')+'. Use PIN login.';
+    return;
+  }
+  // If hash has state but no id_token, Google rejected the implicit flow
+  if(!params.get('id_token')){
+    const err=document.getElementById('loginError');
+    if(err) err.textContent='⚠️ Google redirect did not return a token. Use PIN login or try the Google button above.';
     return;
   }
   const idToken=params.get('id_token');
@@ -3855,7 +3862,7 @@ async function scanGitHubForManuals(){
 document.addEventListener('DOMContentLoaded',()=>{
   checkOAuthCallback();
   tryAutoLogin();
-  // Shared GIS credential handler
+  // GIS credential handler — called by amtGoogleCallback (global, set via data-callback)
   function _handleGISCredential(r){
     try{
       const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
@@ -3875,19 +3882,6 @@ document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('loginError').textContent='⚠️ Google login error. Use PIN.';
     }
   }
-  window.onGoogleLibraryLoad=()=>{
-    if(typeof google!=='undefined'&&google.accounts){
-      google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID, callback:_handleGISCredential});
-      // Render the official Google button (works even when One Tap is blocked)
-      const gBtn=document.getElementById('g_id_onload');
-      if(gBtn){
-        google.accounts.id.renderButton(gBtn,{theme:'filled_black',size:'large',text:'sign_in_with',logo_alignment:'left',width:280});
-        // Hide the fallback once official button is ready
-        const fb=document.getElementById('btnGoogleFallback');
-        if(fb) fb.style.display='none';
-      }
-    }
-  };
 });
 </script>
 
