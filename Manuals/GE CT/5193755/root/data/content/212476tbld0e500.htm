@@ -1,0 +1,25 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Output Signals to Elevation</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Output Signals to Elevation</SPAN> </P><table summary="Output Signals to Elevation" border="1"><colgroup><col width="38%"><col width="61%"></colgroup><tbody><tr><td>Signal</td><td>Description</td></tr><tr><td rowspan="2">Elevation Enable</td><td>This is a firmware controlled signal originating in the
+FPGA code. This signal controls a solid state relay on the MTCB that sends
+out 24Vdc to the Elevation Drive when the relay is closed. This signal is
+used to enable the elevation drive motion in either the upward or downward
+direction. The following conditions must be met in order for the elevation
+drive to be enabled.</td></tr><tr><td><UL><LI CLASS="bulletlist">The watchdog circuit must be active.</LI><LI CLASS="bulletlist">The Tape Switch signal must be present indicating the tape
+switch circuitry is connected and ready for elevation down only.</LI><LI CLASS="bulletlist">The Table Drives Enable Signal from MSUB must be present (or
+the service switch is in service mode which activates the table drives enable
+signal).</LI><LI CLASS="bulletlist">A firmware command to enable the cradle drive must be present.</LI></UL></td></tr><tr><td rowspan="4">Elevation Drive Inhibits</td><td>Elevation Upward Motion Inhibit:</td></tr><tr><td>This signal controls a solid state relay on the MTCB that
+sends out 24Vdc to the elevation drive when the relay is closed. This signal
+is used to inhibit the motion in the upward direction. In order for this signal
+not to be inhibiting the upward table motion the elevation up limit switch
+must not be activated. This signal can be forced active by firmware.</td></tr><tr><td>Elevation Downward Motion Inhibit:</td></tr><tr><td>This signal controls a solid state relay on the MTCB that
+sends out 24Vdc to the elevation drive when the relay is closed. This signal
+is used to inhibit the motion in the downward direction for the table. In
+order for this signal not to be inhibiting the downward table motion the elevation
+down limit switch must not be activated. This signal can be forced active
+by firmware.</td></tr><tr><td>Elevation Upward / Downward Motion Control</td><td>This functionality is controlled by firmware only. The enable signals
+and inhibit signals need to be in the correct state in order for firmware
+motion control.</td></tr><tr><td>Elevation Drive Fault Reset</td><td>This signal controls a solid state relay on the MTCB that sends out
+24Vdc to the elevation drive when the relay is closed. This signal is used
+to reset the drive by through a hard line instead of through the serial port
+interface. </td></tr><tr><td>Elevation Spare Output</td><td>The MTCB does not have a spare output for the elevation functionality.</td></tr></tbody></table></CENTER></DIV></BODY></HTML>
