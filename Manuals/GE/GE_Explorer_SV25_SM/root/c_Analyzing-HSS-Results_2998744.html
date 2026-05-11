@@ -1,0 +1,502 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.oxygenxml.com/webhelp/components" xml:lang="en" lang="en" whc:version="22.0">
+
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><link rel="icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta name="description" content="Effectivity: Parts of this Service Note are related to the newer systems that have UCERD and the 1.5T RF/PDU. However, most of methodology explained within can be applied to any Lx System. Problem: ..."/><meta charset="UTF-8"/><meta name="copyright" content="(C) Copyright 2023"/><meta name="DC.rights.owner" content="(C) Copyright 2023"/><meta name="DC.type" content="concept"/><meta name="DC.coverage" content=""/><meta name="prodname" content=""/><meta name="version" content="0"/><meta name="brand" content=""/><meta name="component" content=""/><meta name="featnum" content="none"/><meta name="featnum" content=""/><meta name="prognum" content=""/><meta name="platform" content=""/><meta name="DC.creator" content=""/><meta name="DC.publisher" content="11.0482023"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="id_13106878"/><title>Analyzing HSS Results</title><!--  Generated with Oxygen version 23.1, build number 2021121412.  --><meta name="wh-path2root" content=""/><meta name="wh-source-relpath" content="c_Analyzing-HSS-Results_2998744.dita"/><meta name="wh-out-relpath" content="c_Analyzing-HSS-Results_2998744.html"/>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="./oxygen-webhelp/lib/jquery-ui/jquery-ui.min.css"/>
+    
+    <!-- Template default styles  -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/app/topic-page.css?buildId=2021121412"/>
+    
+    
+    <script type="text/javascript" src="./oxygen-webhelp/lib/jquery/jquery-3.5.1.min.js"><!----></script>
+    
+    <script data-main="./oxygen-webhelp/app/topic-page.js" src="./oxygen-webhelp/lib/requirejs/require.js"></script>
+<link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/notes.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/GEHealthCare.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/print.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/footer-fix.css?buildId=2021121412"/><script src="./oxygen-webhelp/lib/scripts/Remove_LSEP.js"></script></head>
+    <body id="id_13106878" class="wh_topic_page frmBody">
+        <!--US578: WHR - Move search to line up with manual title-->
+        <div class="SupressSearch">
+            <!--Search form 
+                Removed class for DE238: Double search fields when webhelp is viewed on
+            <whc:webhelp_search_input class="navbar-form wh_topic_page_search search" role="form">-->
+            <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input " role="form">
+                
+                
+                <div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div>
+                
+                
+            </div>
+        </div>
+        <a href="#topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
+        
+        
+        
+        <header class="navbar navbar-default wh_header" whc:version="23.1">
+    <div class="container-fluid">
+        <!-- GEDev US509 Webhelp: expandable navbar icon invisible changed to navbar-light -->
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-light">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <!--
+                            This component will be generated when the next parameters are specified in the transformation scenario:
+                            'webhelp.logo.image' and 'webhelp.logo.image.target.url'.
+                            See: http://oxygenxml.com/doc/versions/17.1/ug-editor/#topics/dita_webhelp_output.html.
+                    -->
+                    <!-- GE Dev US464 change logo link to blank target -->
+                    <a href="https://www.gehealthcare.com/" class=" wh_logo d-none d-sm-block " target="_blank"><img src="oxygen-webhelp\template\img\GE-HLTHCR_Webhelp_CMYK-CompPrpl.svg" alt="SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ AviatorService Manual"/></a>
+                    <div class=" wh_publication_title "><a href="index.html"><span class="booktitle"><span class="ph mainbooktitle"><span class="ph">SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ Aviator</span><span class="ph"></span></span><span class="ph booktitlealt">Service Manual</span></span></a></div>
+                    <!--* DE224: WHR: Link under the search field is missing -->
+                    <div class="search_container">
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input "><div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div></div><whc:search_field></whc:search_field>
+                        <div class="search_link">
+                             
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- The menu button for mobile devices is copied in the output only when the 'webhelp.show.top.menu' parameter is set to 'yes' -->
+                <button type="button" data-target="#wh_top_menu_and_indexterms_link" id="wh_menu_mobile_button" data-toggle="collapse" class="navbar-toggler collapsed wh_toggle_button" aria-expanded="false" aria-label="Toggle menu" aria-controls="wh_top_menu_and_indexterms_link">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+            </div>
+            
+            
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                <nav class=" wh_top_menu " aria-label="Menu Container"><ul role="menubar" aria-label="Menu"><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033906-d46e66-mi" data-tocid="id_2033906-d46e66" data-state="not-ready" class=" topicref " data-id="id_2033906"><span class="title"><a href="c_Safety_WebhelpLandingPage.html">Safety and General Information</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033907-d46e619-mi" data-tocid="id_2033907-d46e619" data-state="not-ready" class=" topicref " data-id="id_2033907"><span class="title"><a href="c_PreInstallation_WebhelpLandingPage.html">Pre-Installation</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033908-d46e667-mi" data-tocid="id_2033908-d46e667" data-state="not-ready" class=" topicref " data-id="id_2033908"><span class="title"><a href="c_InstallationAndUpgrade_WebhelpLandingPage.html">Installation and Upgrade</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033902-d46e773-mi" data-tocid="id_2033902-d46e773" data-state="not-ready" class=" topicref " data-id="id_2033902"><span class="title"><a href="c_AdjustmentsAndCalibrations_WebhelpLandingPage.html">Adjustments/Calibrations</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033910-d46e1889-mi" data-tocid="id_2033910-d46e1889" data-state="not-ready" class=" topicref " data-id="id_2033910"><span class="title"><a href="c_FunctionalChecks_WebhelpLandingPage.html">Functional Checks</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033911-d46e2714-mi" data-tocid="id_2033911-d46e2714" data-state="not-ready" class=" topicref " data-id="id_2033911"><span class="title"><a href="c_Software_WebhelpLandingPage.html">Software</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033912-d46e7942-mi" data-tocid="id_2033912-d46e7942" data-state="not-ready" class=" topicref " data-id="id_2033912"><span class="title"><a href="c_Theory_WebhelpLandingPage.html">Theory</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033914-d46e8205-mi" data-tocid="id_2033914-d46e8205" data-state="not-ready" class=" topicref " data-id="id_2033914"><span class="title"><a href="c_PlannedMaintenance_WebhelpLandingPage.html">Planned Maintenance</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033916-d46e8464-mi" data-tocid="id_2033916-d46e8464" data-state="not-ready" class=" topicref " data-id="id_2033916"><span class="title"><a href="c_Parts_WebhelpLandingPage.html">Parts</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033903-d46e8512-mi" data-tocid="id_2033903-d46e8512" data-state="not-ready" class=" topicref " data-id="id_2033903"><span class="title"><a href="c_OEMAndOtherManuals_WebhelpLandingPage.html">OEM and Other Manuals</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033917-d46e8584-mi" data-tocid="id_2033917-d46e8584" data-state="not-ready" class=" topicref " data-id="id_2033917"><span class="title"><a href="c_Replacements_WebhelpLandingPage.html">Replacements</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033904-d46e15711-mi" data-tocid="id_2033904-d46e15711" data-state="not-ready" class=" topicref " data-id="id_2033904"><span class="title"><a href="c_Coils_WebhelpLandingPage.html">Coils</a></span></span></li><li role="menuitem"><span id="id_2033918-d46e15759-mi" data-tocid="id_2033918-d46e15759" data-state="leaf" class=" topicref " data-id="id_2033918"><span class="title"><a href="c_OptionalFeatures_WebhelpLandingPage.html">Optional Features</a></span></span></li></ul></nav>
+                <div class=" wh_indexterms_link "><a href="indexTerms.html" title="Index" aria-label="Go to index terms page"><span>Index</span></a></div>
+                <!--whc:include_html href="${webhelp.fragment.after.top_menu}"/-->
+                
+            </div>
+            
+        </div>
+    </div>
+</header>
+        
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+
+                        <!-- External resource link -->
+                        
+
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page" class="oxy-icon oxy-icon-print"></button></div>
+
+                        <!-- Expand/Collapse publishing TOC 
+                             The menu button for mobile devices is copied in the output only when the publication TOC is available
+                        -->
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+
+            <!--whc:include_html href="${webhelp.fragment.before.main.content.area}"/>
+           
+            <whc:include_html href="${webhelp.fragment.before.main.content.area.topic.page}"/-->
+
+
+            <div class="wh_content_area">
+                <!-- US616 - TOC toggle buttons -->
+                <div class="row" id="topic_body">
+                    
+                    <div id="pub_toc_button">
+                        <button type="button" data-target="#wh_publication_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc"></button>
+                    </div>
+                    
+                    <!--  DE234:  Spacing irregularities with flexible TOCS in Webhelp 
+                    Moved related links out 2 divs, moved topic tocs into topic body-->
+                    <div id="wh_topic_body">
+                        
+                        <div id="body_grid"><!-- DE234:  Added Body grid to fix issue with related links-->
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+        <div class="topicMeta"><ul class="- topic/title title"><li> </li><li></li><li></li><li><span class="metalabel">Object ID: </span>00000018WIA30DE3F20GYZ</li><li><span class="metalabel">Topic ID: </span>id_13106878<span class="metalabel"> Version: </span>1.2</li><li><span class="metalabel">Date: </span>Jul 6, 2019 12:17:31 AM</li></ul></div><h1 class="- topic/title title topictitle1" id="ariaid-title1">Analyzing HSS Results</h1></header>
+        <div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_13106878__id_14820024" data-ofbid="id_13106878__id_14820024">
+      <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Effectivity:</span>
+    </p><p class="- topic/p p" id="id_13106878__id_14820025" data-ofbid="id_13106878__id_14820025">Parts of this Service Note are related to the newer systems
+that have UCERD and the 1.5T RF/PDU. However, most of methodology
+explained within can be applied to any Lx System.</p><p class="- topic/p p" id="id_13106878__id_14820026" data-ofbid="id_13106878__id_14820026">
+      <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Problem:</span>
+    </p><p class="- topic/p p" id="id_13106878__id_14820027" data-ofbid="id_13106878__id_14820027">HSS Area has been failing specification since the introduction
+of 2 new hardware components approximately December 1999. The current
+specification for Area is &lt; 1.2 counts.</p><p class="- topic/p p" id="id_13106878__id_14820028" data-ofbid="id_13106878__id_14820028">The Universal Combined Exciter Receiver and
+Data Acquisition board (UCERD) was developed
+and phased into production so that a single Exciter/Receiver configuration
+could be used at different field strengths. However, this also introduced
+low level phase noise that is characterized as broadband noise and
+higher Area in HSS.</p><p class="- topic/p p" id="id_13106878__id_14820029" data-ofbid="id_13106878__id_14820029">Approximately the same time, the 1.5T RF/PDU was also phased-in.
+The 1.5T RF/PDU Test port, which is used to supply RF energy to the
+HSS Coil, no longer utilized a blanking signal. The previous generation
+RF Cabinet used a blanking signal to force the output to a zero state
+between RF pulses.  Without this blanking signal, any noise created
+by the RFI circuitry would show up as additional broadband noise.
+ Again, this broadband noise would be identified as higher Area in
+HSS.</p><p class="- topic/p p" id="id_13106878__id_14820030" data-ofbid="id_13106878__id_14820030">The HSS fault isolation process described in this Service Note
+is to help analyze HSS Frequency Stability Test results and provide
+the correct flow to troubleshooting and fault isolation.  <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Do not</span> arbitrarily diagnose failing FFT Area results
+as a function of the UCERD or the 1.5T RF/PDU. </p><figure class="- topic/fig fig fignone" id="id_13106878__SL2998942-88975" data-ofbid="id_13106878__SL2998942-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">1. </span></span><span class="fig--title">HSS Fault Isolation Process</span></figcaption><img class="- topic/image image" id="id_13106878__id_14820031" src="424624.jpg"/></figure></div><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998824-88975" aria-labelledby="ariaid-title2" id="id_SL2998824-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998824-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title2"> Peak To Peak (P-P) Analysis</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998824-88975__id_14820032" data-ofbid="id_SL2998824-88975__id_14820032">The time history plots display the real time frequency drift
+collected during the scan.  Each scan is comprised of 5 passes, each
+pass is plotted on its own page along with its corresponding frequency
+domain plot (post FFT) below it.</p><figure class="- topic/fig fig fignone" id="id_SL2998824-88975__SL424658-88975" data-ofbid="id_SL2998824-88975__SL424658-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">2. </span></span><span class="fig--title">Failing P-P Spec</span></figcaption><img class="- topic/image image" id="id_SL2998824-88975__id_14820033" src="424631.jpg"/></figure><p class="- topic/p p" id="id_SL2998824-88975__id_14820034" data-ofbid="id_SL2998824-88975__id_14820034">Review the time history plots. Review each of the 5 individual
+passes for P-P Frequency Deviation.  The maximum allowed frequency
+instability specification is 0.7 P-P within a 40cm Diameter Spherical Volume (DSV).</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820035" data-ofbid="id_SL2998824-88975__id_14820035">The Time History plots should show a signal with a frequency
+component that is fairly centered and horizontal on the graph.  There
+should be no upward or downward slope. Abnormalies are displayed as
+transient bursts, frequency patterns, sloping curves, or low frequency
+curves (See <a class="- topic/xref xref" href="#id_SL2998824-88975__SL424658-88975"><span>Figure 2</span></a>).</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820036" data-ofbid="id_SL2998824-88975__id_14820036">In Mobile environments, windy days can cause van movement which
+will affect frequency drift. An indication in the plot of van motion
+due to wind typically results in a very low frequency “wave”
+in the time history plot and a large slope decay from 0 to 1-2 Hz
+range in the FFT plot. If wind is suspect, rerun HSS after changing <span class="+ topic/ph ui-d/uicontrol ph uicontrol">CV rhuser5</span> from 0 to 1.  This selects a Hanning filter
+that removes very low frequencies.  HSS would now produce twice as
+many plots  (with and without the filter).</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820037" data-ofbid="id_SL2998824-88975__id_14820037">See <a class="- topic/xref xref" href="#id_SL424661-88975">Hanning Window Filter</a> in this document. See examples of
+Van motion caused by wind in I<a class="- topic/xref xref" href="#id_SL424661-88975__SL424664-88975"><span>Figure 10</span></a>.</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820038" data-ofbid="id_SL2998824-88975__id_14820038">Also, movement of the van, such as a person walking can cause
+P-P failures as well as Area and FFT amplitude failures.</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820039" data-ofbid="id_SL2998824-88975__id_14820039">Movement in a van or movement around the magnet during HSS 
+will typically cause failures and the test will need to be rerun!</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820040" data-ofbid="id_SL2998824-88975__id_14820040">Unstable magnet pressure will also cause Frequency drift.  If
+the magnet was just refilled with Helium, the Chiller was off, or
+there is a significant Scan room temperature change, frequency drift
+can occur.  Recheck Center Frequency during Manual Prescan.  If it
+is changing, let the system stabilize or troubleshoot the center frequency
+drift problem.</p><p class="- topic/p p" id="id_SL2998824-88975__id_14820041" data-ofbid="id_SL2998824-88975__id_14820041">The Magnet Monitor would also indicate changing Helium pressure.</p></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998825-88975" aria-labelledby="ariaid-title3" id="id_SL2998825-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998825-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title3"> FFT Amplitude</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998825-88975__id_14820042" data-ofbid="id_SL2998825-88975__id_14820042">When analyzing HSS for high spikes in the FFT plots, view each
+of the Frequency Domain (FFT) plots to see if the spike is consistent
+across all 5 passes or is intermittent.</p><figure class="- topic/fig fig fignone" id="id_SL2998825-88975__SL424669-88975" data-ofbid="id_SL2998825-88975__SL424669-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">3. </span></span><span class="fig--title"> FFT Amplitude Spikes</span></figcaption><img class="- topic/image image" id="id_SL2998825-88975__id_14820043" src="424621.jpg"/></figure><p class="- topic/p p" id="id_SL2998825-88975__id_14820044" data-ofbid="id_SL2998825-88975__id_14820044">The FFT amplitude is an indication of the magnitude/strength
+of the vibration, or noise at a particular frequency.<a class="- topic/xref xref" href="#id_SL2998825-88975__SL424669-88975"><span>Figure 3</span></a> shows the plot of an HVAC fan that is slightly out
+of balance causing a spike on the FFT graph at a frequency of 18.984
+Hz, and with an amplitude of .063 (e.g. <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424669-88975"><span>Figure 3</span></a>.  A fan that is extremely out of balance could have
+the same frequency component of 18.984Hz, but the FFT amplitude (spike
+height) could be 0.1 counts or higher.  The higher the spike or FFT
+amplitude, the greater the amount of area under the spike, causing
+higher Area, which also may fail spec. <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Fix the cause of
+the spike first, before attempting to fix high Area.</span></p><ol class="- topic/ol ol" id="id_SL2998825-88975__id_14820045" data-ofbid="id_SL2998825-88975__id_14820045"><li class="- topic/li li" id="id_SL2998825-88975__SL2998826-88975" data-ofbid="id_SL2998825-88975__SL2998826-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820046" data-ofbid="id_SL2998825-88975__id_14820046">Perform an HSS scan and analysis in
+the normal mode.  Record output file number. ________________</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998827-88975" data-ofbid="id_SL2998825-88975__SL2998827-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820047" data-ofbid="id_SL2998825-88975__id_14820047">Using Report Manager, review the Time
+History plots, <span class="+ topic/ph ui-d/uicontrol ph uicontrol">not the averaged plot</span>. The example
+plot (<a class="- topic/xref xref" href="#id_SL2998825-88975__SL424674-88975"><span>Figure 4</span></a>) indicates a high “spike”
+at 31.025Hz with a FFT amplitude of 0.059.  Even though the amplitude
+is within spec (less than 0.1), it is still unusual.  The question
+to be answered, is 31.025Hz the real frequency, or could this spike
+be caused from a frequency higher than 45Hz that has aliased back
+into the plot?</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998828-88975" data-ofbid="id_SL2998825-88975__SL2998828-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820048" data-ofbid="id_SL2998825-88975__id_14820048">Verify the frequency of the “spike”.
+It is important to know the correct frequency which will help in troubleshooting
+(i.e. knowing the actual frequency to compare with accelerometer results,
+or by determining the RPMs to find corresponding rotational frequencies
+of fans, blowers, motors, etc.).</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998829-88975" data-ofbid="id_SL2998825-88975__SL2998829-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820049" data-ofbid="id_SL2998825-88975__id_14820049">With the System still set-up from the
+previous HSS scan, change 2 CVs (hss_tr &amp; rhuser0). This will
+expand the bandwidth of the HSS scan to 50Hz. (Continue using the
+standard 0.25M NiCl2 (green color) sample vial.)</p>
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820050" data-ofbid="id_SL2998825-88975__id_14820050">From <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Research Operations</span>:</p>
+          <ul class="- topic/ul ul" id="id_SL2998825-88975__id_14820051" data-ofbid="id_SL2998825-88975__id_14820051"><li class="- topic/li li" id="id_SL2998825-88975__SL2998830-88975" data-ofbid="id_SL2998825-88975__SL2998830-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820052" data-ofbid="id_SL2998825-88975__id_14820052">Select <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Display CV's</span></p>
+            </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998831-88975" data-ofbid="id_SL2998825-88975__SL2998831-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820053" data-ofbid="id_SL2998825-88975__id_14820053">For CV Name, type or select: <kbd class="+ topic/ph sw-d/userinput ph userinput">hss_tr</kbd></p>
+            </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998832-88975" data-ofbid="id_SL2998825-88975__SL2998832-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820054" data-ofbid="id_SL2998825-88975__id_14820054">Change the Current Value to: <kbd class="+ topic/ph sw-d/userinput ph userinput">10000</kbd><span class="+ topic/ph ui-d/uicontrol ph uicontrol">Enter</span>(Default is 11111)</p>
+            </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998833-88975" data-ofbid="id_SL2998825-88975__SL2998833-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820055" data-ofbid="id_SL2998825-88975__id_14820055">Next CV, type or select:  <kbd class="+ topic/ph sw-d/userinput ph userinput">rhuser0</kbd></p>
+            </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998834-88975" data-ofbid="id_SL2998825-88975__SL2998834-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820056" data-ofbid="id_SL2998825-88975__id_14820056">Change the Current Value to: <kbd class="+ topic/ph sw-d/userinput ph userinput">50</kbd><span class="+ topic/ph ui-d/uicontrol ph uicontrol">Enter</span> (Default is 45)</p>
+              <div class="- topic/note note note note_note" id="id_SL2998825-88975__id_14820057" data-ofbid="id_SL2998825-88975__id_14820057"><span class="note__title">Note:</span> 
+                <p class="- topic/p p" id="id_SL2998825-88975__id_14820058" data-ofbid="id_SL2998825-88975__id_14820058"> Do <span class="+ topic/ph ui-d/uicontrol ph uicontrol">NOT</span> change the User CVs from
+the “Additional Parameters” screen on the Scan Desktop.
+Leave it at BW=0 (45Hz).</p>
+              </div>
+            </li></ul>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998835-88975" data-ofbid="id_SL2998825-88975__SL2998835-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820059" data-ofbid="id_SL2998825-88975__id_14820059">Perform a <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Download</span> and then scan.</p>
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820060" data-ofbid="id_SL2998825-88975__id_14820060">From <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Research Operations</span>: Select <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Download</span>.</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998836-88975" data-ofbid="id_SL2998825-88975__SL2998836-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820061" data-ofbid="id_SL2998825-88975__id_14820061">Record HSS output file number.  ______________</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998837-88975" data-ofbid="id_SL2998825-88975__SL2998837-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820062" data-ofbid="id_SL2998825-88975__id_14820062">Display the Time History Plots using
+Report Manager.  See <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424677-88975"><span>Figure 5</span></a>.</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998838-88975" data-ofbid="id_SL2998825-88975__SL2998838-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820063" data-ofbid="id_SL2998825-88975__id_14820063">Determine if the spike moved.</p>
+          <ol class="- topic/ol ol" type="a" id="id_SL2998825-88975__id_14820064" data-ofbid="id_SL2998825-88975__id_14820064"><li class="- topic/li li" id="id_SL2998825-88975__SL2998839-88975" data-ofbid="id_SL2998825-88975__SL2998839-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820065" data-ofbid="id_SL2998825-88975__id_14820065">If the spike appears to have moved
+slightly to the left, and is reporting a similar FFT Frequency, then
+the correct natural frequency value has been reported.</p>
+            </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998840-88975" data-ofbid="id_SL2998825-88975__SL2998840-88975">
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820066" data-ofbid="id_SL2998825-88975__id_14820066">If the spike has moved to the right,
+and the reported frequency is higher, then the spike is caused by
+a higher frequency that has aliased back into the 45Hz bandwidth.
+To determine the actual higher frequency value:</p>
+              <ol class="- topic/ol ol" type="i" id="id_SL2998825-88975__id_14820067" data-ofbid="id_SL2998825-88975__id_14820067"><li class="- topic/li li" id="id_SL2998825-88975__SL2998841-88975" data-ofbid="id_SL2998825-88975__SL2998841-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820068" data-ofbid="id_SL2998825-88975__id_14820068">Find the difference between the reported
+frequency of the 50Hz and the 45Hz bandwidth scans.</p>
+                </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998842-88975" data-ofbid="id_SL2998825-88975__SL2998842-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820069" data-ofbid="id_SL2998825-88975__id_14820069">Add the difference with 45Hz. (See
+following example.)</p>
+                </li></ol>
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820070" data-ofbid="id_SL2998825-88975__id_14820070">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Using the Example from</span>
+                <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424674-88975"><span>Figure 4</span></a>
+                  :</p>
+              <ul class="- topic/ul ul" id="id_SL2998825-88975__id_14820071" data-ofbid="id_SL2998825-88975__id_14820071"><li class="- topic/li li" id="id_SL2998825-88975__SL2998843-88975" data-ofbid="id_SL2998825-88975__SL2998843-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820072" data-ofbid="id_SL2998825-88975__id_14820072">Spike is at 31.025 Hz in the 45Hz BW
+scan.</p>
+                </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998844-88975" data-ofbid="id_SL2998825-88975__SL2998844-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820073" data-ofbid="id_SL2998825-88975__id_14820073">Expanding the Bandwidth to 50Hz, the
+spike moves to the right and is now reported as 41.211Hz (see <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424677-88975"><span>Figure 5</span></a>). This indicates that the natural frequency
+is above the 45Hz window.</p>
+                </li></ul>
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820074" data-ofbid="id_SL2998825-88975__id_14820074">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Find the Frequency:</span>
+              </p>
+              <ul class="- topic/ul ul" id="id_SL2998825-88975__id_14820075" data-ofbid="id_SL2998825-88975__id_14820075"><li class="- topic/li li" id="id_SL2998825-88975__SL2998845-88975" data-ofbid="id_SL2998825-88975__SL2998845-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820076" data-ofbid="id_SL2998825-88975__id_14820076">45Hz -31Hz = 14Hz Difference between
+Reported Freq. and Bandwidth.</p>
+                </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998846-88975" data-ofbid="id_SL2998825-88975__SL2998846-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820077" data-ofbid="id_SL2998825-88975__id_14820077">45Hz + 14Hz = <span class="+ topic/ph ui-d/uicontrol ph uicontrol">59Hz</span> Actual Frequency of the disturbance.</p>
+                </li></ul>
+              <p class="- topic/p p" id="id_SL2998825-88975__id_14820078" data-ofbid="id_SL2998825-88975__id_14820078">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">It also works using the 50Hz Bandwidth
+plot:</span>
+              </p>
+              <ul class="- topic/ul ul" id="id_SL2998825-88975__id_14820079" data-ofbid="id_SL2998825-88975__id_14820079"><li class="- topic/li li" id="id_SL2998825-88975__SL2998847-88975" data-ofbid="id_SL2998825-88975__SL2998847-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820080" data-ofbid="id_SL2998825-88975__id_14820080">50Hz -41Hz = 9Hz Difference between
+Reported Freq. and Bandwidth.</p>
+                </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998848-88975" data-ofbid="id_SL2998825-88975__SL2998848-88975">
+                  <p class="- topic/p p" id="id_SL2998825-88975__id_14820081" data-ofbid="id_SL2998825-88975__id_14820081">50Hz + 9Hz   = <span class="+ topic/ph ui-d/uicontrol ph uicontrol">59Hz </span>Actual Frequency of the disturbance.</p>
+                </li></ul>
+            </li></ol>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998849-88975" data-ofbid="id_SL2998825-88975__SL2998849-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820082" data-ofbid="id_SL2998825-88975__id_14820082">Troubleshoot and find root cause of
+component that is vibrating at 59Hz.</p>
+        </li></ol><p class="- topic/p p" id="id_SL2998825-88975__id_14820083" data-ofbid="id_SL2998825-88975__id_14820083">
+        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Additional Troubleshooting Tips:</span>
+      </p><p class="- topic/p p" id="id_SL2998825-88975__id_14820084" data-ofbid="id_SL2998825-88975__id_14820084">Spikes that are very narrow (e.g. 1 pixel in width) are usually
+caused by electrical sources. Mechanical vibrations typically cause
+spikes that have some bandwidth (like the previous examples) or spikes
+that vary in frequency, even slightly.</p><p class="- topic/p p" id="id_SL2998825-88975__id_14820085" data-ofbid="id_SL2998825-88975__id_14820085">Check frequency with <a class="- topic/xref xref" href="#id_SL2998857-88975__SL424684-88975"><span>Table 1</span></a> to see if it is
+a known system or mobile component that may be suspect.  (This table
+is a guideline and <span class="+ topic/ph ui-d/uicontrol ph uicontrol">should NOT</span> be used to identify
+a source as a definitive problem.)</p><p class="- topic/p p" id="id_SL2998825-88975__id_14820086" data-ofbid="id_SL2998825-88975__id_14820086">Turn off a component and see if the peak at the offending frequency
+is removed or greatly reduced.</p><p class="- topic/p p" id="id_SL2998825-88975__id_14820087" data-ofbid="id_SL2998825-88975__id_14820087">If <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">YES</samp>, troubleshoot the component to find
+root cause.</p><p class="- topic/p p" id="id_SL2998825-88975__id_14820088" data-ofbid="id_SL2998825-88975__id_14820088">If <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">NO</samp>, continue turning off components one
+at a time and take an HSS scan to determine if frequency spike is
+gone.</p><p class="- topic/p p" id="id_SL2998825-88975__id_14820089" data-ofbid="id_SL2998825-88975__id_14820089">Turn OFF components in the following order:</p><ol class="- topic/ol ol" id="id_SL2998825-88975__id_14820090" data-ofbid="id_SL2998825-88975__id_14820090"><li class="- topic/li li" id="id_SL2998825-88975__SL2998850-88975" data-ofbid="id_SL2998825-88975__SL2998850-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820091" data-ofbid="id_SL2998825-88975__id_14820091">
+              
+                Heating, Ventilation,
+and Air Conditioning
+                 (HVAC)
+              , including
+blowers in Mobile environments</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998851-88975" data-ofbid="id_SL2998825-88975__SL2998851-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820092" data-ofbid="id_SL2998825-88975__id_14820092">Gradient Patient Blower</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998852-88975" data-ofbid="id_SL2998825-88975__SL2998852-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820093" data-ofbid="id_SL2998825-88975__id_14820093">Heat Exchanger</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998853-88975" data-ofbid="id_SL2998825-88975__SL2998853-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820094" data-ofbid="id_SL2998825-88975__id_14820094">Chiller</p>
+        </li><li class="- topic/li li" id="id_SL2998825-88975__SL2998854-88975" data-ofbid="id_SL2998825-88975__SL2998854-88975">
+          <p class="- topic/p p" id="id_SL2998825-88975__id_14820095" data-ofbid="id_SL2998825-88975__id_14820095">Other</p>
+        </li></ol><figure class="- topic/fig fig fignone" id="id_SL2998825-88975__SL424674-88975" data-ofbid="id_SL2998825-88975__SL424674-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">4. </span></span><span class="fig--title">FFT  BW = 45HZ </span></figcaption><img class="- topic/image image" id="id_SL2998825-88975__id_14820096" src="424619.jpg"/></figure><figure class="- topic/fig fig fignone" id="id_SL2998825-88975__SL424677-88975" data-ofbid="id_SL2998825-88975__SL424677-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">5. </span></span><span class="fig--title">FFT  BW = 50HZ</span></figcaption><img class="- topic/image image" id="id_SL2998825-88975__id_14820097" src="424620.jpg"/></figure></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998855-88975" aria-labelledby="ariaid-title4" id="id_SL2998855-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998855-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title4"> Other Observations</h2><div class="- topic/body concept/conbody body conbody"></div><article class="- topic/topic concept/concept topic concept nested2 yes id_SL2998856-88975" aria-labelledby="ariaid-title5" id="id_SL2998856-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998856-88975</header><h3 class="- topic/title title topictitle3" id="ariaid-title5">Narrow Spikes</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998856-88975__id_14820098" data-ofbid="id_SL2998856-88975__id_14820098">If the spike is very narrow (e.g.1 pixel in width) from the
+base to the top, and the frequency is consistent with every HSS scan,
+then the spike may be caused from a electrical source.  For example,
+the 29.833Hz spike seen on systems with a UCERD, is caused by a 60Hz
+harmonic feedback from the UCERD.  This is a known pattern for a UCERD
+and the amplitude is usually small in normal situations. (See <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424674-88975"><span>Figure 4</span></a>, Pk No 5 (peak number 5).)</p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL2998857-88975" aria-labelledby="ariaid-title6" id="id_SL2998857-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998857-88975</header><h3 class="- topic/title title topictitle3" id="ariaid-title6">Wide Spikes</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998857-88975__id_14820099" data-ofbid="id_SL2998857-88975__id_14820099">If there is some bandwidth to the spike and/or the frequency
+drifts slightly from one scan to another, then the spike is usually
+mechanical in nature. (See <a class="- topic/xref xref" href="#id_SL2998825-88975__SL424677-88975"><span>Figure 5</span></a>, Pk No 2.)  Check
+for mechanical vibrations from various components.  See <a class="- topic/xref xref" href="#id_SL2998857-88975__SL424684-88975"><span>Table 1</span></a>.</p><table class="- topic/table table" id="id_SL2998857-88975__SL424684-88975" data-ofbid="id_SL2998857-88975__SL424684-88975"><caption class="- topic/title title tablecap" caption-side="top" is-repeated="true"><span class="table--title-label">Table<span class="table--title-label-number"> 1</span><span class="table--title-label-punctuation">. </span></span><span class="table--title">Frequency 
+Vs. Suspect Causes</span></caption><colgroup><col style="width:50%"/><col style="width:50%"/></colgroup><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820100">
+                    Frequency</td><td class="- topic/entry entry align-center colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820101">
+                    Suspect Component</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820102">&lt;1 Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820103">Could indicate siting or magnet problems.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820104">1.2 Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820105">Cold Head</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820106">3-10Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820107">Natural frequency of van, may be enhanced by van motion caused
+by wind, etc.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820108">11Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820109">Resonance Freq. of Ellis &amp; Watts mobile</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820110">~11.25Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820111">Compressor belt on Ellis &amp; Watts mobile</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820112">~18 -19Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820113">HVAC system</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820114">23 Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820115">Chiller Blower</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820116">29.883Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820117">60Hz noise/harmonic on UCERD, OK if not excessively high.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820118">~30-34Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820119">Magnet mounting not shimmed or loose.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820120">~20- 40Hz</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820121">60Hz Electrical noise</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-right colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820122">~59 - 60HZ</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL2998857-88975__id_14820123">HVAC compressor vibration</td></tr></tbody>
+        </table></div></article></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998858-88975" aria-labelledby="ariaid-title7" id="id_SL2998858-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998858-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title7"> Converting Frequency to RPMs</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998858-88975__id_14820124" data-ofbid="id_SL2998858-88975__id_14820124">To identify the rotational frequency or Revolutions Per Minute
+(RPM) of equipment such as fans or blowers, multiply the reported
+FFT Frequency by 60.  For example, a peak located at 19Hz multiplied
+by 60 is equal to 1140 RPM. This happens to be the number of revolutions
+per minute of the fan blades in the HVAC (Heating Ventilation and
+Air Conditioning) on Mobiles. An HVAC service person would be required
+to balance the fan or to replace/repair the fan vibration isolation,
+if it demonstrated that it causes image quality problems.</p><p class="- topic/p p" id="id_SL2998858-88975__id_14820125" data-ofbid="id_SL2998858-88975__id_14820125">The Spec for the Amplitude of a peak value is dependent upon
+frequency using the following Chart:</p><figure class="- topic/fig fig fignone" id="id_SL2998858-88975__SL2998859-88975" data-ofbid="id_SL2998858-88975__SL2998859-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">6. </span></span><span class="fig--title">HSS Frequency Domain Specs.</span></figcaption><img class="- topic/image image" id="id_SL2998858-88975__id_14820126" src="424625.jpg"/></figure></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998860-88975" aria-labelledby="ariaid-title8" id="id_SL2998860-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998860-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title8"> FFT Area Analysis</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998860-88975__id_14820127" data-ofbid="id_SL2998860-88975__id_14820127">The first Plot shows the average of all 5 HSS scans.</p><figure class="- topic/fig fig fignone" id="id_SL2998860-88975__SL424693-88975" data-ofbid="id_SL2998860-88975__SL424693-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">7. </span></span><span class="fig--title">Average of 5 Passes</span></figcaption><img class="- topic/image image" id="id_SL2998860-88975__id_14820128" src="424630.jpg"/></figure><p class="- topic/p p" id="id_SL2998860-88975__id_14820129" data-ofbid="id_SL2998860-88975__id_14820129">The Area is a measurement of the amount of “space”
+under the FFT Plot line.  Since HSS analyzes frequency components
+between 0 to 45 Hz, higher area across the entire graph indicates
+presence of broadband noise.  This is only true IF there are no significant
+“Spikes” or larger bandwidth “mounds” present
+in the plot.</p><p class="- topic/p p" id="id_SL2998860-88975__id_14820130" data-ofbid="id_SL2998860-88975__id_14820130">Example of a relatively good HSS plot with elevated Area is
+shown in <a class="- topic/xref xref" href="#id_SL2998860-88975__SL424693-88975"><span>Figure 7</span></a>. This graph shows a relatively flat
+plot with few, low spikes, however the Area is calculated to be 1.784
+which is above Area spec (1.2).  Note the elevated baseline (e.g.
+the baseline is not at zero).</p><p class="- topic/p p" id="id_SL2998860-88975__id_14820131" data-ofbid="id_SL2998860-88975__id_14820131">The example in <a class="- topic/xref xref" href="#id_SL2998860-88975__SL424693-88975"><span>Figure 7</span></a> clearly shows the
+effect of broadband noise.  To reduce the broadband noise, the following
+must be used when executing HSS tests to meet the HSS Area specification:</p><ul class="- topic/ul ul" id="id_SL2998860-88975__id_14820132" data-ofbid="id_SL2998860-88975__id_14820132"><li class="- topic/li li" id="id_SL2998860-88975__SL2998861-88975" data-ofbid="id_SL2998860-88975__SL2998861-88975">
+          <p class="- topic/p p" id="id_SL2998860-88975__id_14820133" data-ofbid="id_SL2998860-88975__id_14820133">Revision 8.3 M5 (or later) System Software
+(Has revised PSD to compensate for UCERD Phase noise) and,</p>
+        </li><li class="- topic/li li" id="id_SL2998860-88975__SL2998862-88975" data-ofbid="id_SL2998860-88975__SL2998862-88975">
+          <p class="- topic/p p" id="id_SL2998860-88975__id_14820134" data-ofbid="id_SL2998860-88975__id_14820134">Alternative method using the signal
+from the Head Port through an attenuator (to compensate for noise
+coming from the RFI).  See <a class="- topic/xref xref" href="#id_SL2998865-88975__SL424698-88975"><span>Figure 8</span></a>.</p>
+        </li></ul><p class="- topic/p p" id="id_SL2998860-88975__id_14820135" data-ofbid="id_SL2998860-88975__id_14820135">If the broadband noise is still present (&gt;1.2 cts.), then further
+troubleshooting is required to determine the source of the noise.</p></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998863-88975" aria-labelledby="ariaid-title9" id="id_SL2998863-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998863-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title9"> Troubleshooting Tips</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998863-88975__id_14820136" data-ofbid="id_SL2998863-88975__id_14820136">Evaluate each of the 5 individual passes from the HSS scan.
+ Before troubleshooting failing Area, verify Peak to Peak and FFT
+Amplitude are within specifications on all scans.  Elevated Area caused
+by broadband noise will be present in all 5 scans and should be relatively
+flat (e.g. No humps or spikes).  If high Area, spikes, or humps are
+intermittent, look for components which cycle power (turn off and
+on) as a possible suspect, for example, HVAC.</p><p class="- topic/p p" id="id_SL2998863-88975__id_14820137" data-ofbid="id_SL2998863-88975__id_14820137">Turn off components one at a time and take a HSS scan to isolate
+the root cause by process of elimination.  It may be necessary to
+look outside of the scan room as elevators, hospital generators, HVAC,
+nearby construction, or traffic could also induce vibrations.  If
+this is the case, you may have to contact the OnLine Center or Local
+Support Engineer (e.g. ZSE or RSE) to assist in troubleshooting and/or
+contacting a vibration expert or consultant.</p></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL2998864-88975" aria-labelledby="ariaid-title10" id="id_SL2998864-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998864-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title10"> HSS Test Using the Head Output Port Procedure</h2><div class="- topic/body concept/conbody body conbody"></div><article class="- topic/topic concept/concept topic concept nested2 yes id_SL2998865-88975" aria-labelledby="ariaid-title11" id="id_SL2998865-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998865-88975</header><h3 class="- topic/title title topictitle3" id="ariaid-title11">Hardware Configuration</h3><div class="- topic/body concept/conbody body conbody"><figure class="- topic/fig fig fignone" id="id_SL2998865-88975__SL424698-88975" data-ofbid="id_SL2998865-88975__SL424698-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">8. </span></span><span class="fig--title">HSS Using Head Output Configuration</span></figcaption><img class="- topic/image image" id="id_SL2998865-88975__id_14820138" src="424626.jpg"/></figure></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL2998866-88975" aria-labelledby="ariaid-title12" id="id_SL2998866-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL2998866-88975</header><h3 class="- topic/title title topictitle3" id="ariaid-title12">Software/Scan Configuration Setup</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL2998866-88975__id_14820139" data-ofbid="id_SL2998866-88975__id_14820139">Set up for the HSS scan per the normal directions.  The exception
+is the RF Amp setup.</p><ol class="- topic/ol ol" id="id_SL2998866-88975__id_14820140" data-ofbid="id_SL2998866-88975__id_14820140"><li class="- topic/li li" id="id_SL2998866-88975__SL2998867-88975" data-ofbid="id_SL2998866-88975__SL2998867-88975">
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820141" data-ofbid="id_SL2998866-88975__id_14820141">Enter the HSS prescription per the
+normal directions</p>
+          </li><li class="- topic/li li" id="id_SL2998866-88975__SL2998868-88975" data-ofbid="id_SL2998866-88975__SL2998868-88975">
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820142" data-ofbid="id_SL2998866-88975__id_14820142">After the prescription has been saved
+and downloaded, modify CV <span class="+ topic/ph ui-d/uicontrol ph uicontrol">rfamp_type = 2.</span></p>
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820143" data-ofbid="id_SL2998866-88975__id_14820143">
+              <img class="- topic/image image" id="id_SL2998866-88975__id_14820144" src="424628.jpg"/>
+            </p>
+          </li><li class="- topic/li li" id="id_SL2998866-88975__SL2998869-88975" data-ofbid="id_SL2998866-88975__SL2998869-88975">
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820145" data-ofbid="id_SL2998866-88975__id_14820145">Download and go into Manual Prescan.</p>
+            <div class="- topic/note note note note_note" id="id_SL2998866-88975__id_14820146" data-ofbid="id_SL2998866-88975__id_14820146"><span class="note__title">Note:</span> 
+              <p class="- topic/p p" id="id_SL2998866-88975__id_14820147" data-ofbid="id_SL2998866-88975__id_14820147">If you get DD or TR Driver errors, check the attenuator
+setups.</p>
+              <p class="- topic/p p" id="id_SL2998866-88975__id_14820148" data-ofbid="id_SL2998866-88975__id_14820148">If you do not get any signal, exit Manual Prescan and go back
+into modify CV's.</p>
+            </div>
+          </li><li class="- topic/li li" id="id_SL2998866-88975__SL2998870-88975" data-ofbid="id_SL2998866-88975__SL2998870-88975">
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820149" data-ofbid="id_SL2998866-88975__id_14820149">Follow standard procedure to peak signal
+and to analyze results.</p>
+            <p class="- topic/p p" id="id_SL2998866-88975__id_14820150" data-ofbid="id_SL2998866-88975__id_14820150">
+              <img class="- topic/image image" id="id_SL2998866-88975__id_14820151" src="424627.jpg"/>
+            </p>
+          </li></ol></div></article></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL424661-88975" aria-labelledby="ariaid-title13" id="id_SL424661-88975"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL424661-88975</header><h2 class="- topic/title title topictitle2" id="ariaid-title13">  Hanning Window Filter</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL424661-88975__id_14820152" data-ofbid="id_SL424661-88975__id_14820152">The use of this filter basically removes low frequencies, in
+the range of approximately 0 -2 Hz and the corresponding Area calculations
+reflect this change.  This option is primarily used in alternate environments
+(e.g. Mobiles) where wind can cause low frequency “rocking/movement”
+of the van AND other System related components have been ruled out
+as the cause of the low frequency oscillations (e.g. the coldhead).
+ The use of this filter option may remove “Real” low frequency
+disturbances and cause further confusion during troubleshooting.</p><div class="- topic/note note note note_note" id="id_SL424661-88975__id_14820153" data-ofbid="id_SL424661-88975__id_14820153"><span class="note__title">Note:</span> 
+        <p class="- topic/p p" id="id_SL424661-88975__id_14820154" data-ofbid="id_SL424661-88975__id_14820154">Always evaluate both Unfiltered and Filtered plots to
+determine wind-related motion or possible “Real” System
+related problems (See <a class="- topic/xref xref" href="#id_SL424661-88975__SL424664-88975"><span>Figure 10</span></a> &amp; <a class="- topic/xref xref" href="#id_SL424661-88975__SL424703-88975"><span>Figure 11</span></a>).</p>
+      </div><p class="- topic/p p" id="id_SL424661-88975__id_14820155" data-ofbid="id_SL424661-88975__id_14820155">The Filter must be enabled prior to the HSS Scan. The filter
+cannot be applied to an existing HSS file.</p><p class="- topic/p p" id="id_SL424661-88975__id_14820156" data-ofbid="id_SL424661-88975__id_14820156">With the System set-up for an HSS scan, change CV  <span class="+ topic/ph ui-d/uicontrol ph uicontrol">rhuser5</span>  value from “0” to “1”.</p><ul class="- topic/ul ul" id="id_SL424661-88975__id_14820157" data-ofbid="id_SL424661-88975__id_14820157"><li class="- topic/li li" id="id_SL424661-88975__SL2998871-88975" data-ofbid="id_SL424661-88975__SL2998871-88975">
+          <p class="- topic/p p" id="id_SL424661-88975__id_14820158" data-ofbid="id_SL424661-88975__id_14820158">From <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Research Operations</span>,</p>
+        </li><li class="- topic/li li" id="id_SL424661-88975__SL2998872-88975" data-ofbid="id_SL424661-88975__SL2998872-88975">
+          <p class="- topic/p p" id="id_SL424661-88975__id_14820159" data-ofbid="id_SL424661-88975__id_14820159">Select <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Display CV's</span></p>
+        </li><li class="- topic/li li" id="id_SL424661-88975__SL2998873-88975" data-ofbid="id_SL424661-88975__SL2998873-88975">
+          <p class="- topic/p p" id="id_SL424661-88975__id_14820160" data-ofbid="id_SL424661-88975__id_14820160">For CV Name, type or select: <kbd class="+ topic/ph sw-d/userinput ph userinput">rhuser5</kbd></p>
+        </li><li class="- topic/li li" id="id_SL424661-88975__SL2998874-88975" data-ofbid="id_SL424661-88975__SL2998874-88975">
+          <p class="- topic/p p" id="id_SL424661-88975__id_14820161" data-ofbid="id_SL424661-88975__id_14820161">Change the Current Value to: 1 <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Enter</span> (Default value is 0)</p>
+        </li></ul><figure class="- topic/fig fig fignone" id="id_SL424661-88975__SL2998875-88975" data-ofbid="id_SL424661-88975__SL2998875-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">9. </span></span><span class="fig--title">Hanning Window CV</span></figcaption><img class="- topic/image image" id="id_SL424661-88975__id_14820162" src="424623.jpg"/></figure><p class="- topic/p p" id="id_SL424661-88975__id_14820163" data-ofbid="id_SL424661-88975__id_14820163">The HSS plots will show BOTH the Normal (without the Hanning
+Filter) and the Filtered Plots.</p><figure class="- topic/fig fig fignone" id="id_SL424661-88975__SL424664-88975" data-ofbid="id_SL424661-88975__SL424664-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">10. </span></span><span class="fig--title">Standard, Un-Filtered Plots</span></figcaption><img class="- topic/image image" id="id_SL424661-88975__id_14820164" src="424629.jpg"/></figure><p class="- topic/p p" id="id_SL424661-88975__id_14820165" data-ofbid="id_SL424661-88975__id_14820165">If strong winds are present and the HSS plot indicates a intermittent
+high P-P signal in the Time History plots AND the Amplitude plots
+indicates a slope from 0 -2 Hertz with a “Hump” near 3-
+4 Hz and 10-11 Hz  (which indicates van rocking, as seen in <a class="- topic/xref xref" href="#id_SL424661-88975__SL424664-88975"><span>Figure 10</span></a>), then it may be appropriate to use the Hanning Filter.
+Otherwise, use of the Hanning Filter may mask other System or Van
+related problems.</p><figure class="- topic/fig fig fignone" id="id_SL424661-88975__SL424703-88975" data-ofbid="id_SL424661-88975__SL424703-88975"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">11. </span></span><span class="fig--title">Hanning Filter Plot</span></figcaption><img class="- topic/image image" id="id_SL424661-88975__id_14820166" src="424622.jpg"/></figure><table role="presentation" border="1" class="+ topic/note hazard-d/hazardstatement note hazardstatement notice hazardstatement_notice ansi"><colgroup><col class="hazardstatement--logo-col"/><col class="hazardstatement--msg-col"/></colgroup><thead><tr><th colspan="2" class="hazardstatement--notice"><span>Notice</span></th></tr></thead><tbody><tr><td><svg xmlns="http://www.w3.org/2000/svg" class="hazardsymbol" version="1.1" height="4em" viewBox="0 0 600 525">
+   <metadata>
+      <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+         <cc:Work xmlns:cc="http://creativecommons.org/ns#" rdf:about="">
+            <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+            <dc:type xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+            <dc:title xmlns:dc="http://purl.org/dc/elements/1.1/"></dc:title>
+         </cc:Work>
+      </rdf:RDF>
+   </metadata>
+   <defs>
+      <path d="M 2.8117,-1.046 A 3,3 0 0 1 0.5,2.958 V 4.5119 A 10.5,10.5 0 0 1 2,25.3078 v 0.5583 A 15,15 0 0 0 14.7975,8.5433 15,15 0 0 0 23.4007,-11.201 l -0.4835,0.2792 A 10.5,10.5 0 0 1 4.1574,-1.8229 z m 3.4148,8.871 a 10,10 0 0 1 -12.453,0 9.5,9.5 0 0 0 -2.1756,2.7417 13.5,13.5 0 0 0 16.8042,0 A 10,10 0 0 0 6.2265,7.825 z" transform="matrix(10,0,0,-10,260,260)"></path>
+   </defs>
+   <path d="M 597.6,499.6 313.8,8 C 310.9,3 305.6,0 299.9,0 294.2,0 288.9,3.1 286,8 L 2.2,499.6 c -2.9,5 -2.9,11.1 0,16 2.9,5 8.2,8 13.9,8 h 567.6 c 5.7,0 11,-3.1 13.9,-8 2.9,-5 2.9,-11.1 0,-16 z"></path>
+   <polygon points="43.875,491.5 299.875,48.2 555.875,491.5 " transform="matrix(1,0,0,0.99591458,0.125,2.0332437)" style="fill:#f6bd16;fill-opacity:1;stroke:none;overflow:visible"></polygon>
+   <path d="m -384.00937,417.52725 a 38.151581,36.156727 0 1 1 -76.30316,0 38.151581,36.156727 0 1 1 76.30316,0 z" transform="matrix(0.99319888,0,0,1.0479962,719.28979,-2.9357862)" style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.62514842;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:0.4;stroke-dasharray:none;stroke-dashoffset:0"></path>
+   <path d="m 300,168.60074 c -20.64745,0 -37.26716,16.97292 -37.26716,38.05658 l 11.01897,133.31318 c 2.10449,17.24457 3.90184,27.0149 11.01898,31.60966 4.64712,2.1172 9.79468,3.32214 15.22921,3.32214 5.40832,0 10.53383,-1.1913 15.16343,-3.28925 7.15697,-4.58178 8.97556,-14.35941 11.08476,-31.64255 l 11.01898,-133.31318 c 0,-21.08366 -16.61973,-38.05658 -37.26717,-38.05658 z" style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.88582677;stroke-linecap:square;stroke-miterlimit:4;stroke-opacity:1;stroke-dashoffset:0"></path>
+</svg></td><td><div class="+ topic/ul hazard-d/messagepanel ul messagepanel"><div class="+ topic/li hazard-d/typeofhazard li typeofhazard">
+          </div><div class="+ topic/li hazard-d/consequence li consequence">
+          </div><div class="+ topic/li hazard-d/howtoavoid li howtoavoid">Be aware that use of the Hanning Filter will put a glitch and a spike at the beginning and the end of the time history plot, that will drive the P-P Frequency Deviation number out of spec. Determine the actual P-P Deviation by interpreting the plot. In the example above, <a class="- topic/xref xref" href="#id_SL424661-88975__SL424703-88975"><span>Figure 11</span></a> the Time History Plot (Frequency Drift), the X scaling is +/- 0.4. Ignoring the artifact at the very beginning and very end of the plot caused by the Hanning Filter, the P-P Frequency Deviation is about 0.28.</div></div></td></tr></tbody></table><p class="- topic/p p" id="id_SL424661-88975__id_14820173" data-ofbid="id_SL424661-88975__id_14820173">
+        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Acknowledgements</span>: The authors would like
+to thank Dwayne Purgill, Mike Radziun, Bruce Collick and Phil Steen
+from Systems Engineering, for their inputs.</p><p class="- topic/p p" id="id_SL424661-88975__id_14820174" data-ofbid="id_SL424661-88975__id_14820174">John A. Johnson <span class="+ topic/ph ui-d/uicontrol ph uicontrol">MR Service Engineering</span></p><p class="- topic/p p" id="id_SL424661-88975__id_14820175" data-ofbid="id_SL424661-88975__id_14820175">Rudy Kopp <span class="+ topic/ph ui-d/uicontrol ph uicontrol">MR Mobile Systems</span></p></div></article></article></main></div>
+                        
+                        
+                        
+                        </div>
+                        
+                        
+                        <!--<whc:webhelp_related_links class="d-print-none"/> -->
+                        
+                        
+                        
+                        
+                        <!-- GEDev US503: next/previous buttons on bottom -->
+                        
+                            
+                            <nav id="wh_topic_toc" class="d-print-none collapsible" aria-label="On this page">
+                                <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#id_SL2998824-88975" data-tocid="id_SL2998824-88975"> Peak To Peak (P-P) Analysis</a></li><li class="topic-item"><a href="#id_SL2998825-88975" data-tocid="id_SL2998825-88975"> FFT Amplitude</a></li><li class="topic-item"><a href="#id_SL2998855-88975" data-tocid="id_SL2998855-88975"> Other Observations</a><ul><li class="topic-item"><a href="#id_SL2998856-88975" data-tocid="id_SL2998856-88975">Narrow Spikes</a></li><li class="topic-item"><a href="#id_SL2998857-88975" data-tocid="id_SL2998857-88975">Wide Spikes</a></li></ul></li><li class="topic-item"><a href="#id_SL2998858-88975" data-tocid="id_SL2998858-88975"> Converting Frequency to RPMs</a></li><li class="topic-item"><a href="#id_SL2998860-88975" data-tocid="id_SL2998860-88975"> FFT Area Analysis</a></li><li class="topic-item"><a href="#id_SL2998863-88975" data-tocid="id_SL2998863-88975"> Troubleshooting Tips</a></li><li class="topic-item"><a href="#id_SL2998864-88975" data-tocid="id_SL2998864-88975"> HSS Test Using the Head Output Port Procedure</a><ul><li class="topic-item"><a href="#id_SL2998865-88975" data-tocid="id_SL2998865-88975">Hardware Configuration</a></li><li class="topic-item"><a href="#id_SL2998866-88975" data-tocid="id_SL2998866-88975">Software/Scan Configuration Setup</a></li></ul></li><li class="topic-item"><a href="#id_SL424661-88975" data-tocid="id_SL424661-88975">  Hanning Window Filter</a></li></ul></div>
+                            </nav>
+                            <!--whc:include_html href="${webhelp.fragment.after.topic.toc}"/-->
+                        
+                        <div id="topic_toc_button">
+                            <button type="button" data-target="#wh_topic_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle topic table of content" aria-controls="contain-topic_toc"></button>
+                        </div>
+                        <!--whc:include_html href="${webhelp.fragment.toggle.toc}"/-->
+                        
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <div class="row">
+            <div id="wh_tools">
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    <div class="wh_right_tools">
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+                    </div>
+                </nav>
+            </div>
+            </div>
+            </div>
+        <!-- webhelp.fragment.after.main.content.area and webhelp.fragment.after.main.content.area.topic.page moved out of div to try and fix scrolling issue -->
+        
+        
+        <footer class="navbar navbar-default wh_footer" whc:version="23.1">
+  <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="ftrcustom"><span>5756356-2EN</span> | <span>Revision  11.0</span> | <span>en | </span><span><a target="_blank" href="https://www.gehealthcare.com/">gehealthcare.com</a></span></div><div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="copyright_info"><span class="copyright_years"> ©2016-2023</span> GE HealthCare Proprietary<div class="GETradmark"><span>GE is a trademark of General Electric Company used under trademark license.</span></div></div>
+</footer>
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        <!-- The modal container for images -->
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="modal-img" alt=""/>
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+        
+        
+    </body>
+</html>
