@@ -1,0 +1,39 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Keyboard STIF Loop Test</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5670000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;1<BR>Optima MR450w 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;4.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/15/09</P></td></tr></table><H1 ID="top">Keyboard STIF Loop Test </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903645-1052800_1">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function&gt;&gt; Global Operator Console&gt;&gt;Keyboard
+Datapaths</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Locations&gt;&gt; Global Operator
+Console&gt;&gt;Keyboard Datapaths</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1904398-1052800_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Keyboard Datapaths</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052796-1057787.jpg" BORDER="0" usemap="#SL1904281-1052800_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903646-1052800_1">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic verifies that the SCIM (Keyboard Processor)
+serial communication path is working with a loopback connector external
+to the STIF board.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e46"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Click <SPAN CLASS="GUIBUTTON">[Calculate Time]</SPAN> to get an
+estimate of the time it takes to run the selected diagnostics.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903647-1052800_1">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The SCIM serial communication path is tested from the SCP across
+the CAM Backplane to the STIF, and from the STIF across any cables
+between the STIF and the loopback connector. The SCIM is not tested.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903648-1052800_1">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Before running this test, you must install a loopback connector
+external to the STIF board on the SCP to SCIM communication path.
+There are two possible configurations for the loopback connector: </P><UL><LI CLASS="bulletlist"><P>Place the loopback connector directly
+on the STIF.</P></LI><LI CLASS="bulletlist"><P>Place the loopback connector on the
+outside of the PGR Cabinet Interface.</P></LI></UL><P CLASS="sect1">To make the loopback connector, use a DB9 connector and wire
+pins 1 and 2 together and pins 6 and 7 together (see <A HREF="javascript:winopen('1052800illd0e76.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>). To connect to the PGR Cabinet Interface or STIF
+board, use a female connector.</P><DIV CLASS="ILLUSTRATION" id="SL1903651-1052800_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Loopback from a DB9 Connector</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052800-1070978.gif" BORDER="0" usemap="#SL2265072-1052800_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903652-1052800_1">5&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="SL1903653-1052800_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SCIM External Loopback Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052800-1070988.gif" BORDER="0" usemap="#SL2265320-1052800_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903654-1052800_1">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>The SCP transmits a data packet through
+the SCIM serial port on the SCP board.</P></LI><LI CLASS="numlist"><P>The serial data is looped back externally
+to the STIF board.</P></LI><LI CLASS="numlist"><P>The SCP verifies that it received the
+same data that was sent. </P></LI></OL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e104"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Do not change the <SPAN CLASS="GUILABEL"><I>Test Options</I></SPAN> settings
+from the default settings unless instructed to do so by a GE Healthcare
+engineer. There are very few circumstances when these settings need
+to be changed.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1903658-1052800_1">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">After the SCIM communication path is broken to install the loopback
+connector, the emergency stop is triggered. Press the <B>EMO
+Reset</B> on the PDU to recover after the SCIM communication
+path is restored.</P><P CLASS="sect1">Output values pass or fail. In the event of failure, the details
+of the failure can be found in the <SPAN CLASS="GUILABEL"><I>GE System Log</I></SPAN>.</P><P CLASS="sect1">In the case of errors, click the <SPAN CLASS="GUILABEL"><I>1st Error </I></SPAN> number to see the nature of the error. It is recommended that you
+view the <SPAN CLASS="GUILABEL"><I>GE System Log</I></SPAN> to view all the errors
+that were recorded.</P><P CLASS="sect1">If this test fails, the possible reasons are: </P><UL><LI CLASS="bulletlist"><P>Loopback connector is defective or
+not installed. </P></LI><LI CLASS="bulletlist"><P>Any cable between the loopback connector
+and the STIF board. </P></LI><LI CLASS="bulletlist"><P>CAM Backplane is defective.</P></LI><LI CLASS="bulletlist"><P>STIF board is defective. </P></LI><LI CLASS="bulletlist"><P>SCP board is defective. </P></LI></UL><P CLASS="sect1">If the test passes with the loopback connector directly on the
+STIF, but fails with the loopback connector on the outside of the
+System Cabinet, then the cable from the STIF to the System Cabinet
+Interface or the System Cabinet Interface connector is defective. </P><P CLASS="sect1">If the test fails with the loopback connector directly on the
+STIF, then the problem is either the STIF board, CAM Backplane, or
+the SCP. Run the SCP loopback test to determine if the SCP is defective.
+If the SCP loopback test succeeds, check for bent or missing pins
+where the STIF board and SCP board connect. </P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

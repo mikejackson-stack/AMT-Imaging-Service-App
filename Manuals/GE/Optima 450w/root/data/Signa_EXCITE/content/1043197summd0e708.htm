@@ -1,0 +1,27 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE></TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><P CLASS="stepdetails">After finishing the phantom position check, a results file is
+created. It contains the measured results of phantom offset, shape
+offset, and phantom size. The latest head mode and body result files
+are saved under /usr/g/service/cclass/spt as<SPAN CLASS="filename"><FONT FACE="COURIER">SPT_pos.result.head</FONT></SPAN> and <SPAN CLASS="filename"><FONT FACE="COURIER">SPT_pos.result.body</FONT></SPAN>, respectively. The
+formats of the two files are the same. Line four, five and six in
+those files are the detailed results from the phantom position check. </P><P CLASS="stepdetails">Here is an example of the result file for body phantom position
+check (SPT_pos.result.body):</P><PRE>#Axial,xcent_offset,ycent_offset,xsize,ysize (mm)= 0 11 264 253
+#Sagittal,ycent_offset,zcent_offset,ysize,zsize (mm)= 11 0 252 257
+#Coronal,xcent_offset,zcent_offset,xsize,zsize (mm)= 2 2 263 253
+#X offset= L 1 mm; Y offset= A 11 mm, Z offset= S 1 mm
+#X size=259 mm; Y size=253 mm, Z size=260 mm
+#Shape offset Axial p=4 %; Sagittal p=2 %, Coronal p=4 %
+</PRE><P CLASS="stepdetails">In the example above line four shows that the final phantom
+offset is 1mm on L (left) direction along X-axis, 11 mm on A (anterior)
+direction along Y-axis, and 1 mm on S (superior) direction along Z-axis.
+Line five shows that the phantom size is 259 mm, 253 mm, 260 mm along
+X-axis, Y-axis, and Z-axis, respectively. Line six shows that the
+shape offset will be 4%, 2% and 4% for Axial, Sagittal, and Coronal
+images, respectively.</P><P CLASS="stepdetails">In addition, SPT saves phantom position check images in JPEG
+format as <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/cclass/spt </FONT></SPAN> as <SPAN CLASS="filename"><FONT FACE="COURIER">autoshim_head.jpg</FONT></SPAN> and <SPAN CLASS="filename"><FONT FACE="COURIER">autoshim_body.jpg</FONT></SPAN> for head phantom check and body phantom check, respectively.</P><P CLASS="stepdetails">The specs for the phantom position checks are:</P><UL CLASS="STEPDETAILS1"><LI CLASS="bulletlist"><P>Phantom Offset: Less than 15 mm along
+Z direction.</P></LI><LI CLASS="bulletlist"><P>Phantom Size: </P><UL CLASS="STEPDETAILS2"><LI CLASS="bulletlist"><P>for head TLT phantom, the acceptable
+head phantom size range is 136 mm to 204 mm.</P></LI><LI CLASS="bulletlist"><P>For body TLT phantom, the acceptable
+body phantom size range is 216 mm to 324 mm.</P></LI></UL></LI><LI CLASS="bulletlist"><P>Shape Offset: Less than 15%.</P></LI></UL><P>&nbsp;</P></BODY></HTML>
