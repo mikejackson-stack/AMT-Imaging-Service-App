@@ -1,0 +1,35 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE></TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DL><DT><I>1* Offset Data Bytes 1.23 E+12</I>&nbsp;
+</DT><DD><P CLASS="def">This is the number of offset data bytes transferred from the DAS DCB
+to the DIP in the console via fiber-optic cable across the slipring. To convert
+bytes to bits for calculations, multiply by 10. (10 bits / byte with encoding)</P></DD><DT><I>2* Scan Data Bytes 8.35 E+11</I>&nbsp;
+</DT><DD><P CLASS="def">This is the number of X-ray-on scanning data bytes transferred from
+the DAS DCB to the DIP in the console via fiber-optic cable across the slipring.
+To convert bytes to bits for calculations, multiply by 10. (10 bits / byte
+with encoding)</P></DD><DT><I>3* No. of Taxi Modem Violations 6734</I>&nbsp;
+</DT><DD><P CLASS="def">This is the number of occurrences that the Taxi (or newer HP G-Link)
+receiver chip detected bit-stream codes that were invalid. </P></DD><DT><I>4* No. of FEC Correction Attempts 347; 5* No. of Uncorrected
+Errors 22; 6* No. of Corrected Errors 325</I>&nbsp;
+</DT><DD><P CLASS="def">This is forward Error Correction (FEC) will try to correct all errors
+detected on the data-link. Data is transferred in ~150 byte packets. Each
+packet contains CRC codes that allow error detection and on-the-fly correction.
+If the data is detected as corrupt, correction will turn-on in the DIP and
+attempt to fix the flaws. If the flaws are less than 120nS, there is a 99/100
+chance that the correction will be successful. Above 190nS, correction will
+fail. This type of correction is tuned to typical system noise events such
+as electrostatic discharge (ESD) and tube spits. In the example above, there
+were 347 noise events, and 6734 messed-up bytes transferred. The average noise
+event was 19 bytes duration, or 1.5uSec. (violations / attempts) Because this
+average is greater than 400nSec, and because we know that 325 corrections
+were successful, we can be sure that many of these noise events were shorter
+than 400nSec. We also know that at most 22 of these events were longer than
+400 nSec. Uncorrected errors cause scan halt and resumes. The customer suffered
+22 scan resumes due to this problem, even though there were 6734 link errors
+in the same time period. </P></DD><DT><I>7* Raw Bit Error Rate on Scan Data 1.68 E-11; 8* Corrected
+Bit Error Rate on Scan Data 1.06 E-12</I>&nbsp;
+</DT><DD><P CLASS="def">Raw BER is the probability of an error on the slipring, before correction
+attempts. Corrected BER is the probability of a non-correctable error, resulting
+in a &#8220;RESUME.&#8221;</P></DD><DT><I>9* No. of DAS Data Buffer Overruns 2; 10* No. of View Length
+Errors 4</I>&nbsp;
+</DT><DD><P CLASS="def"></P></DD></DL><P>&nbsp;</P></BODY></HTML>
