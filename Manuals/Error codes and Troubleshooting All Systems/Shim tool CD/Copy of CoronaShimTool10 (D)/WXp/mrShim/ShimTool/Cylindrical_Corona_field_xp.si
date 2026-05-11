@@ -1,0 +1,462 @@
+########################################################
+########################################################
+# NO '=' as a field seperator, use ','                 # 
+########################################################
+#    Used with corona Shimtool Version 2.5B            #
+#    Modified 05_JUL-2006 to add "WB" series magnet    #
+#    and run with Version 2.5C shimtool                #
+#    Name changed to "Cylindrical_Corona_field_xp.si"  #
+#    Added XRMB/DVMR shimming                          #
+#                                                      #
+# modified for MR450 / MR450w field use                #
+#    Added R/RB series magnet with XRMB for MR450      #
+#    and run with ShimTool 2.5D                        #
+#                                                      #
+#               FIELD USE ONLY CORONA                  #
+########################################################
+# Known Commands Are:
+#       magnet,name,series - begins a magnet definition
+#       Visible,True | False - determine whether subtype is visible in the menu
+#       Rings,# - number of passive shim rings (number of locations in Z)
+#       Slots,# - number of passive shim slots (Number of locations in phi)
+#       Geometry,Radius,-Z centroid,[+Z centroid],[unit] - passive shim geometry
+#       Phi,angle - angular offset of first shim center from 0
+#       Thickness,number - default maximum shim thickness
+#       PasvCal,filename - name of the default passive calibration
+#       Quantum,number - minimum shim thickness for rounding
+#       Precision,number - number of decimals in printout (default 1)
+#       Coils,number - number of shim coils
+#       Current,number - maximum shim current
+#       ActiveCal,filename - name of the default active calibration
+#       InputMapTempl,mapname - map template for input field maps
+#       UnifiedMapTempl,mapname - map template on which to perform shim
+#       Tolerance,filename - default unified target file
+#       SpecTemplate,mapname - map template for checking spec (subsample with interpolation)
+#       SpecLimits[,Overall PPM],value per volume,... - if negative use as +/- value
+#       Unit,string - sets the units name printed in the output (default is mil)
+#       ReportVolumes,dsv1,dsv2,dsv3,.....
+###################################################################################
+
+
+#####################################################################################
+Magnet,Corona,W
+Rings,25
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,45.6325,-30,,cm
+Thickness,6
+PasvCal,D:\MrShim\shimtool\W_CoronaP.cal
+Quantum,1
+
+Coils,14
+Current,20.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,9.5,6.5,2.0,0.3,0.05
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            4.0 ppm
+# 24x24 30 cm            1.2 ppm
+# 12x12 20 cm            0.3 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+
+
+
+#####################################################################################
+Magnet,CoronaRW,WA
+Rings,25
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,45.6325,-30,,cm
+Thickness,6
+PasvCal,D:\MrShim\shimtool\W_CoronaP.cal
+Quantum,1
+
+Coils,14
+Current,20.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC_MARKII.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,9.5,6.5,2.0,0.3,0.05
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            4.0 ppm
+# 24x24 30 cm            1.2 ppm
+# 12x12 20 cm            0.3 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+
+
+#####################################################################################
+
+Magnet,CoronaP41,W
+Rings,41
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,45.6325,-50,,cm
+Thickness,6
+PasvCal,D:\MrShim\shimtool\W_CoronaP41.cal
+Quantum,1
+
+Coils,14
+Current,20.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,9.5,6.5,2.0,0.3,0.05
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            3.25 ppm
+# 24x24 30 cm            1.0 ppm
+# 12x12 20 cm            0.25 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+#####################################################################################
+Magnet,WB_41,WB
+Rings,41
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,45.6325,-50,,cm
+Thickness,6
+PasvCal,D:\MrShim\shimtool\W_CoronaP41.cal
+Quantum,1
+
+Coils,18
+Current,15.0
+ActiveCal,D:\MrShim\shimtool\WB_CoronaSC_MARKIII.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,26,12,3.25,1.0,0.25
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            4.0 ppm
+# 24x24 30 cm            1.2 ppm
+# 12x12 20 cm            0.30 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+#####################################################################################
+
+Magnet,CoronaXRMB,W
+Rings,45
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,38.15,-55,,cm
+Thickness,12.0
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+
+Coils,14
+Current,20.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,9.5,6.5,2.0,0.3,0.05
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            3.25 ppm
+# 24x24 30 cm            1.0 ppm
+# 12x12 20 cm            0.25 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+#####################################################################################
+
+Magnet,WB_XRMB,WB
+Rings,45
+Slots,36
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,38.15,-55,,cm
+Thickness,12
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+
+Coils,18
+Current,15.0
+ActiveCal,D:\MrShim\shimtool\WB_CoronaSC_MarkIII.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,26,12,3.25,1.0,0.25
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            3.25 ppm
+# 24x24 30 cm            1.0 ppm
+# 12x12 20 cm            0.25 ppm
+SpecLimits,30,12,4.0,1.2,0.3
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+#####################################################################################
+
+Magnet,LCC-R-1.5T-XRMB12,R
+Rings,45
+Slots,12
+Geometry,38.15,-(55),,cm
+Thickness,12
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+PrintListSkip,3
+
+Coils,18
+Current,15.0
+ActiveCal,D:\MrShim\shimtool\rs393sc.cal
+
+InputMapTempl,LCC-48cm-329
+UnifiedMapTempl,LCC-4vol-393Unified
+Tolerance,D:\MrShim\shimtool\rs393b.tol
+
+# Specify the field map template for checking spec
+SpecTemplate,LCC-4vol-393Unified
+# Specify the max PPM values to achieve specification
+SpecLimits,14,10,-6.0,-0.8,-0.4
+
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.175,0.15,0.1,0.05
+ReportVRMS,3.20,2.0,0.97,0.35,0.0,0.14,0.06,0.02
+#####################################################################################
+
+Magnet,LCC-RB-1.5T-XRMB12,RB
+Rings,45
+Slots,12
+Geometry,38.15,-(55),,cm
+Thickness,12
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+PrintListSkip,3
+
+Coils,18
+Current,12.0
+Indcur,15.7,16.0,15.6,14.9,15.8,13.9,12.0,15.2,17.0,15.2,17.0,16.3,12.0,15.2,17.0,15.2,17.0,16.3
+PasvCal,D:\MrShim\shimtool\RB_SC.cal
+APRatio,0.10 
+
+InputMapTempl,LCC-48cm-329
+UnifiedMapTempl,LCC-4vol-393Unified
+Tolerance,D:\MrShim\shimtool\rs393b.tol
+
+# Specify the field map template for checking spec
+SpecTemplate,LCC-4vol-393Unified
+# Specify the max PPM values to achieve specification
+SpecLimits,14,10,-6.0,-0.8,-0.4
+
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.175,0.15,0.1,0.05
+ReportVRMS,3.20,2.0,0.97,0.35,0.0,0.14,0.06,0.02
+
+#####################################################################################
+
+Magnet,WB_XRMB_18T,WB
+Rings,45
+Slots,18
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,38.15,-55,,cm
+Thickness,12
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+
+Coils,18
+Current,15.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC_MarkIII.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,26,12,3.25,1.0,0.25
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            3.25 ppm
+# 24x24 30 cm            1.0 ppm
+# 12x12 20 cm            0.25 ppm
+SpecLimits,26,12,3.25,1.0,0.25
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+#####################################################################################
+
+Magnet,CoronaXRMB_18T,W
+Rings,45
+Slots,18
+
+# This is the radius, then Z- of the last shim centroid
+Geometry,38.15,-55,,cm
+Thickness,30.0
+PasvCal,D:\MrShim\shimtool\XRMB_0_25mm.cal
+Quantum,1
+
+Coils,14
+Current,15.0
+ActiveCal,D:\MrShim\shimtool\W_CoronaSC.cal
+
+#Force,50
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,G3UnifiedTarget
+Tolerance,26,12,3.25,1.0,0.25
+
+Unit, shims
+
+# Specify the field map template for checking spec
+SpecTemplate,Corona-SpecVols
+# Specify the max PPM values to achieve specification
+# Corona Spec Volumes Field Map
+# 24x24 48x45 cm         12 ppm
+# 24x24 40 cm            3.25 ppm
+# 24x24 30 cm            1.0 ppm
+# 12x12 20 cm            0.25 ppm
+SpecLimits,26,12,3.25,1.0,0.25
+
+# Specifies the volumes to report PPM and RMS values on in the ATR file
+# first two numbers are # of circles and # of arcs, # of on axis (0 or 2 only)
+# then DSV radii
+# Alternate format is ReportVol,map-template-name
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.15,0.1,0.05
+# The spec values for each volume
+ReportVRMS,3.00,2.0,1.00,0.5,0.25,0.05,0.02
+
+########################################################################################
+Magnet,DVw-SiFe,HM
+Rings,45
+Slots,36
+Geometry,100,-(100),,cm
+Thickness,56
+PasvCal,DVw_PassiveSIFE.cal
+Quantum,1.0
+
+Coils,18
+Current,0.0
+ActiveCal,lcc.cal
+
+InputMapTempl,W_CoronaCamera50dsv
+UnifiedMapTempl,DVw-45fov-unified
+Tolerance,23.0:8.5:3.0:0.6:0.1
+
+# Specify the field map template for checking spec
+SpecTemplate,DVw-45fov-unified
+# Specify the max PPM values to achieve specification
+# 2nd spec                   Tony's numbers
+# 15 P-P PPM for overall map  N/A
+# 12 P-P PPM for 50x40 cm     25.0
+#  2 P-P PPM for 45x36 cm     10.0 
+#  0 P-P PPM for 42x32 cm      4.0
+#  0 P-P PPM for 30x24 cm      1.0
+#  0 P-P PPM for 20x16 cm      0.5
+#
+SpecLimits,25.0,10.0,4.0,1.0,0.5
+
+ReportVol,24,24,0,0.25,0.24,0.225,0.2,0.175,0.15,0.1,0.05
+ReportVRMS,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+
+
+##################################################  END OF FILE #####################
+

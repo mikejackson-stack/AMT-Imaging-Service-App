@@ -1,0 +1,109 @@
+
+<html>
+<head>
+<meta http-equiv="MSThemeCompatible" content="yes" />
+<LINK REL=StyleSheet HREF="dtSearch_WebSearchForm.css" TITLE="Standard" TYPE="text/css">
+<style>
+body { margin: 5; padding: 0; }
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script Language="JavaScript">
+haveEH = 0;
+</script>
+
+<script Language="JavaScript1.3">
+
+haveEH = 1;
+
+function safeShowNoHitsMsg()
+{   var name = "Unknown";
+    try {
+        name = new String(parent.doc.location);
+        }
+    catch(err) {
+        }
+    finally {
+        if (name.indexOf("#xml=") != -1)
+            alert("Use the buttons on the Adobe Reader toolbar to navigate hits in a PDF file.  Click the Help button for more information.");
+        else
+            alert("There are no hits marked in this document.");
+        }
+}
+</script>
+
+<script language="JavaScript">
+function initBar() {
+    }
+
+function showNoHitsMsg()
+{    if (haveEH)
+        safeShowNoHitsMsg()
+    else {
+        var name = new String(parent.doc.location);
+        if (name.indexOf("#xml=") != -1)
+            alert("Use the buttons on the Adobe Reader toolbar to navigate hits in a PDF file.  Click the Help button for more information.");
+        else
+            alert("There are no hits marked in this document.");
+        }
+}
+
+function newSearch() {
+    parent.res.window.location.hash = "NewSearch";
+    }
+
+function nextDoc() {
+    if (parent.res.nextDoc)
+        parent.res.nextDoc();
+    }
+function prevDoc() {
+    if (parent.res.prevDoc)
+        parent.res.prevDoc();
+    }
+function topOfFile() {
+    if (parent.doc.gotoNthHit)
+        parent.doc.gotoNthHit(0);
+    else
+        showNoHitsMsg();
+    }
+function nextHit() {
+    if (parent.doc.nextHit)
+        parent.doc.nextHit();
+    else
+        showNoHitsMsg();
+}
+function prevHit() {
+    if (parent.doc.prevHit)
+        parent.doc.prevHit();
+    else
+        showNoHitsMsg();
+}
+
+function firstHit() {
+    if (parent.doc.gotoNthHit)
+        parent.doc.gotoNthHit(1);
+    else
+        showNoHitsMsg();
+    }
+
+function showHelp() {
+    parent.doc.window.location = "dtSearch_help.html";
+    }
+
+</script>
+
+</head>
+<body class="BB_body" border="0">
+<div id="ButtonBar">
+	<input type="button" class="BBbutton" onClick="JavaScript:firstHit()" value="First Hit">
+	<input type="button" class="BBbutton" onClick="JavaScript:nextHit()" value="Next Hit">
+	<input type="button" class="BBbutton" onClick="JavaScript:prevHit()" value="Prev Hit">
+	&nbsp;&nbsp;
+	&nbsp;&nbsp;
+	<input type="button" class="BBbutton" onClick="JavaScript:prevDoc()" value="Prev Doc">
+	<input type="button" class="BBbutton" onClick="JavaScript:nextDoc()" value="Next Doc">
+	&nbsp;&nbsp;
+	&nbsp;&nbsp;
+	<input type="button" class="BBbutton" onClick="JavaScript:showHelp()" value="Help">
+ </div>
+</body>
+</html>
