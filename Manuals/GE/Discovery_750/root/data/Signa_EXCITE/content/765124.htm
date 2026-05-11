@@ -1,0 +1,63 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VRE Troubleshooting Tips </TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;11/17/08</P></td></tr></table><H1 ID="top">VRE Troubleshooting Tips  </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL765153-765124">1&nbsp;&nbsp;ICN Switch On/Off Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Assuming that all the Ethernet connections on the ICNs and GOC
+are wired correctly:</P><OL><LI CLASS="numlist"><P>The ICNs will automatically switch ON when the HP
+GOC is switched ON, and the system reaches the login prompt.</P></LI><LI CLASS="numlist"><P>The ICNs will automatically switch OFF when the HP
+Computer is switched OFF using the software in an orderly.</P><UL><LI CLASS="bulletlist"><P>Turning off the HP Computer by switching OFF power
+to it or the GOC will <B>not</B> shut down the ICNs.
+The software running on the HP Computer must be brought down in order
+to affect the ICNs.</P></LI><LI CLASS="bulletlist"><P>A blue LED on the front of the ICNs indicates the
+power is ON when illuminated, and power is OFF when extinguished.</P></LI></UL></LI></OL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e48"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>The following is NOT a preferred solution. Perform only if no
+other option is available. If after 3 minutes the ICN has still has
+not shut down, <B>HOLD</B> the power button down on
+the ICNs to override the ICN OS and force a shutdown.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>If the HP GOC is locked up or inactive, bring the
+ICNs down manually as follows:</P><OL TYPE="a"><LI CLASS="numlist"><P>Press the power button on the ICNs to bring the ICN
+OS down cleanly and shut off power to the ICNs. (There is a delay
+of 30 seconds after pressing the power button before the shutdown
+begins.)</P></LI><LI CLASS="numlist"><P>Wait for 3 minutes for the ICNs to shut off after
+closing all files.</P></LI></OL></LI><LI CLASS="numlist"><P>When a working GOC is brought back up, the ICNs should
+turn back on.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2269963-765124">2&nbsp;&nbsp; ICN Connections<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>All ICNs must have three connections to the Ethernet
+Switch (Example: 3 Com). Viewed from the rear, two connections are
+on the right side and one on the left.</P></LI><LI CLASS="bulletlist"><P>The left connection is the diagnostics port. Through
+this port, the firmware is loaded onto the ICN.</P></LI><LI CLASS="bulletlist"><P>Connection to the Infiniband light in the MGD Chassis
+is <B>not</B> initialized until the TPS resets. Infiniband
+LEDs might not be lit until the TPS reset is complete.</P></LI><LI CLASS="bulletlist"><P>In a fully functional two-ICN system, the Infiniband
+Board green LED must be ON for all connected ICNs and the yellow LED
+also ON for the Primary/Master ICN.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2269968-765124">3&nbsp;&nbsp;ICN Software<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>When loading software, upon selecting the number of
+ICNs, the system displays an error if the number detected does <B>not</B> match the ICNs selected. At this point, physically
+check the number of ICNs present to make sure the number selected
+matches the number the system detects.</P><OL TYPE="a"><LI CLASS="numlist"><P>If the system detects more ICNs than selected, switch
+off the MGD chassis, load the OS, and switch it ON. Continue the software
+load as the number of ICNs will then match. </P></LI><LI CLASS="numlist"><P>If the system detects fewer ICNs than selected, check
+power to the ICNs, that is all the IPMI cables to the ICNs (farthest
+left Ethernet connection when facing the back of the ICN). Make sure
+it is properly seated on both ends.  </P></LI><LI CLASS="numlist"><P>Try swapping Ethernet cables or try another port on
+the Ethernet Switch before checking for a defective ICN.</P></LI></OL></LI><LI CLASS="numlist"><P>After the OS load if all the ICNs (four in this example)
+are loaded successfully, the system will indicate 4 ICNs are loaded.
+If only three are loaded, it will indicate 3 out of 4 are loaded,
+which means the system detected the 4th ICN, but could not load OS
+onto it. Contact GE Support for assistance.</P><UL><LI CLASS="bulletlist"><P>After the ICN OS load, a connection error reported
+from the Infiniband Board is normal. Software will prompt to acknowledge.</P></LI><LI CLASS="bulletlist"><P>Even though OS on the ICNs is loaded successfully,
+the green light on the Infiniband Board will not illuminate until
+the TPS reset is complete.</P></LI></UL></LI><LI CLASS="numlist"><P>During boot up, if the MGD Chassis encounters boot
+problems (hardware or software), a host communication time out error
+will result, but will not specify MGD issues. </P><P>Try to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping APS</B></FONT></SPAN>, <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping AGP</B></FONT></SPAN>, <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping SCP</B></FONT></SPAN> and the term server. If successful,
+perform the <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">mgd_term</FONT></SPAN> to watch boot errors when
+the MGD Chassis is recycled.</P></LI><LI CLASS="numlist"><P>When the ICNs are not recognized, and the blue LED
+is OFF:</P><OL TYPE="a"><LI CLASS="numlist"><P>Do <B>not</B> pull out the ICN, remove
+the cables or tamper with the hardware.</P></LI><LI CLASS="numlist"><P>Note the MAC address of the ICNs with LEDs extinguished,
+and switch these ICNs OFF.</P><P>Refer to <SPAN CLASS="MODULEREF"><A HREF="635973.htm#SL636156-635973" TARGET="_blank"><I>ICN
+ON/OFF Procedure</I></A></SPAN>. For instructions on ICN replacement,
+refer to <SPAN CLASS="MODULEREF"><A HREF="507346.htm#SL765150-507346" TARGET="_blank"><I>VRE
+Replacements</I></A></SPAN>.</P></LI></OL></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2269980-765124">4&nbsp;&nbsp;Power Failure<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"> In the event of a power outage, go through the normal power
+up procedure from the GOC. If one of the ICNs does <B>not</B> power ON, proceed as follows:</P><UL><LI CLASS="bulletlist"><P>Try to reload the ICN OS using the normal procedure
+from the Common Service Desktop.</P></LI><LI CLASS="bulletlist"><P>If there are discrepancies in the number of ICNs configured
+and the number detected, return to<A HREF="765124.htm#SL765153-765124">Section&nbsp;1</A>.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2269983-765124">5&nbsp;&nbsp;IP Address Changes and VRE ICN Reconfiguration<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e177"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Verify that the IP addresses are up to date (both Host IP and
+MGD IP) during new installations and upgrades. If any changes were
+made to an IP address, follow the instructions in <SPAN CLASS="MODULEREF"><A HREF="636962.htm#SL637027-636962"><I> Reconfigure the ICN</I></A></SPAN>.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">Problems that occur:</P><UL><LI CLASS="bulletlist"><P>During application startup, some or all of the ICNs
+may not successfully initiate, and TPS reset failures will occur if
+the ICN was not reconfigured since the last IP address change.</P></LI><LI CLASS="bulletlist"><P>Changing the Host IP address or MGD IP address without
+performing an ICN reconfiguration leaves information pertaining to
+the old IP addresses in the VRE configuration files.</P></LI></UL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

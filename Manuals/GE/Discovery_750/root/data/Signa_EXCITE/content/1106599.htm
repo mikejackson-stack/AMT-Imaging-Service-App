@@ -1,0 +1,200 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>HEC Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/10/10</P></td></tr></table><H1 ID="top">HEC Troubleshooting </H1><P CLASS="descriptive">This document describes various conditions for the HEC and possible
+solutions for those conditions.</P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e29"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Avoid leaks by checking that the bleeder valves on the front
+of each pump in the bottom of the HEC are fully closed before powering
+pumps on for the first time.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL3287539-1106599"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">HEC Troubleshooting</SPAN> </P><table summary="HEC Troubleshooting" border="1"><colgroup><col width="200"><col width="0"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" valign="top">For this condition:</th><th style="Font:bold" valign="top">Follow these steps:</th></tr></thead><tbody valign=""><tr valign="top"><td valign="">Difficulty navigating or interpreting HEC screens.</td><td valign="">Section 5.3 of <SPAN CLASS="MODULEREF"><A HREF="1063626.htm#SL2048183-1063626"><I>Heat Exchanger Theory</I></A></SPAN> describes how to navigate the screens. Procedures for setting parameters
+for the HEC are described in subsequent sections of that document.</td></tr><tr valign="top"><td valign="">HEC display shows zero cryogen compressor coolant flow despite
+customer coolant flowing through the HEC and the cryocompressor receiving
+adequate flow.</td><td valign="">A TPS Reset will download new firmware to the HEC. After the
+first successful TPS Reset, recheck the HEC display for the coolant
+flow value.</td></tr><tr valign="top"><td valign="">The HEC display shows dashes instead of values for Gradient
+or Power Electronics coolant flow.</td><td valign="">Check the red VFD display of the pump on the circuit in question.
+Make sure the display is not dark and that the circuit breaker above
+it is not turned off. <P CLASS="entry">If the VFD display is turned on, the issue
+most likely is with the PE or GC pressure sensors:</P><UL><LI CLASS="bulletlist">If the HEC display shows either the
+Gradient or Power Electronics coolant flow value, the sensor for the
+value that is being shown is functioning. Swap the PE (J4) and GC
+(J3) pressure sensors at the signal box and see if the values change.</LI><LI CLASS="bulletlist">The pressure sensors are FRUs and are
+listed in the FRU manual.</LI><LI CLASS="bulletlist">Check the wire crimps at the connectors
+of any suspected faulty sensors.</LI></UL></td></tr><tr valign="top"><td valign="">The system displays messages saying that the HEC coolant reservoir
+is low. The HEC display appears to confirm this.</td><td valign="">There are upper and lower pressure-sensitive level sensors
+mounted on the right side of each reservoir tank. These sensors close
+(turn on) when the coolant level is high enough over the sensors (usually
+three inches, but sometimes the height must be as much as five inches).<P CLASS="entry">You can measure the switch continuity with a DMM (switch closed,
+low resistance/switch open, very high resistance). </P><P CLASS="entry">Add
+coolant to the reservoir until the coolant level is four to five inches
+above the sensors. See <SPAN CLASS="MODULEREF"><A HREF="1059549.htm#SL1948679-1059549"><I>HEC Coolant Fill and Coolant Leak Check</I></A></SPAN>. PE
+or GC should stop reporting the warning when the increase in coolant
+pressure causes the switches to engage.</P><P CLASS="entry">Rarely, the pressure
+sensors become stuck. Stuck sensors can be freed by tapping them with
+a finger. Do not use anything with a greater mass to tap the sensors.</P></td></tr><tr valign="top"><td valign="">The system displays messages saying coolant resistivity is
+too low.</td><td valign="">New systems have a coolant resistivity between 1.5 kOhm-cm
+and 15.0 kOhm-cm. The system reports a warning when resistivity falls
+below 3.5 kOhm-cm and inhibits a scan below 2.5 kOhm-cm. <P CLASS="entry">Deionizing
+the coolant will restore the proper resistivity. See <SPAN CLASS="MODULEREF"><A HREF="1061827.htm#SL2002978-1061827"><I>Heat Exchange Cabinet Coolant Deionization</I></A></SPAN>. </P><P CLASS="entry">Deionizing the coolant removes coolant contaminants, rust inhibitors,
+and biocide additives. This increases coolant resistivity up to 950
+kOhm-cm or higher. Re-adding the chemical additives to the deionized
+coolant will decrease the resistivity back to the normal 1.5 kOhm-cm
+to 15.0 kOhm-cm range.</P></td></tr><tr valign="top"><td valign="">The system displays pressure or cooling errors for the HEC.</td><td valign="">Any deviations from specifications for pressure or cooling
+are stored in the system error log. <P CLASS="entry">See the Facility Coolant
+Requirements section of Direction 5500101, <SPAN CLASS="pubref"><I>Discovery MR750
+3.0T Preinstallation Manual</I></SPAN> or Direction 5500109, <SPAN CLASS="pubref"><I>Discovery MR450 1.5T Preinstallation Manual</I></SPAN> for the HEC
+pressure and cooling requirements. </P><P CLASS="entry">If the system returns
+error 2268904:  </P><UL><LI CLASS="bulletlist">The error is displayed if the temperature
+exceeds the upper temperature limit or falls below the lower temperature
+limit.  These are &plusmn; 2&deg; C from a set-point of 14&deg; C
+in MR750/450 and &plusmn; 2&deg; C from a set-point of 18&deg; C in
+MR450w.</LI><LI CLASS="bulletlist">See the HEC block diagram. The temperature
+sensor that is detecting this error is located in the top manifold
+of the chilled-air HEC blower assembly. This sensor rarely fails.</LI><LI CLASS="bulletlist">This error occurs commonly if the facility
+coolant cooling capacity is inadequate. Check the facility parameters
+on the HEC to make sure they are within specification.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e131"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">See <SPAN CLASS="MODULEREF"><A HREF="1063626.htm#SL2048183-1063626"><I>Heat Exchanger Theory</I></A></SPAN> for information about navigating the HEC screens.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist">From the Main Menu of the HEC LED screen,
+select <SPAN CLASS="MENUCHOICE">Monitor
+&#8594;
+Facility</SPAN>.</LI><LI CLASS="numlist">Record the <SPAN CLASS="GUILABEL"><I>Facility Temperature</I></SPAN>, <SPAN CLASS="GUILABEL"><I>Inlet Pressure</I></SPAN>, and <SPAN CLASS="GUILABEL"><I>Differential
+Pressure</I></SPAN> values.</LI><LI CLASS="numlist">See the Facility Coolant Requirements
+section of Direction 5500101, <SPAN CLASS="pubref"><I>Discovery MR750 3.0T Preinstallation
+Manual</I></SPAN> or Direction 5500109, <SPAN CLASS="pubref"><I>Discovery MR450 1.5T
+Preinstallation Manual</I></SPAN> for the HEC pressure and cooling requirements.</LI><LI CLASS="numlist">If the Facility parameters do not meet
+specifications, have the customer fix the coolant flow or temperature
+issue. (The in-line filter may require replacement.)</LI><LI CLASS="numlist"> If the Facility parameters meet specifications,
+check the mixing valve values<OL TYPE="i"><LI CLASS="numlist">From the Main screen of the HEC LED
+display, select <SPAN CLASS="MENUCHOICE">Diags
+&#8594;
+PID
+Monitor</SPAN>.</LI><LI CLASS="numlist">Record the <SPAN CLASS="GUILABEL"><I>Blower Mixing
+Valve Percent Open</I></SPAN> value.</LI><LI CLASS="numlist">Typically, this valve is at around
+50% open. If the value is at one extreme or the other (around 0% or
+around 100%), check that the mixing valve is not stuck. (It is more
+likely that the facility coolant temperature is not well controlled
+by the customer's chiller.) Call the OLC before ordering parts for
+this problem.</LI></OL></LI><LI CLASS="numlist">If the facility parameters are within
+specification and the mixing valve is operating normally:<OL TYPE="i"><LI CLASS="numlist">Check to see whether the error condition
+always corrects within 1 to three seconds, or whether a TPS Reset
+is always needed to correct the error condition.</LI><LI CLASS="numlist">If either of these conditions is true,
+contact the OLC and request that the <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cooling.xml</FONT></SPAN> file be examined for spiking.</LI></OL></LI></OL></LI></UL><P CLASS="entry">Refer to <SPAN CLASS="MODULEREF"><A HREF="1103495.htm#SL3214918-1103495"><I>HEC Data Viewer</I></A></SPAN> for additional information on
+analyzing trends.</P><P CLASS="entry">Refer to the Lytron vendor manual (GE
+part number 5161931) for vendor specifications.</P></td></tr><tr valign="top"><td rowspan="4" valign="">Suspected bad pressure sensor.</td><td valign="">It is important to determine whether the sensor or the Signal
+Box (PLC) is actually faulty. </td></tr><tr valign="top"><td valign="">If you are testing an HEC facility coolant inlet or outlet
+sensor:<OL><LI CLASS="numlist">Note the facility inlet and outlet
+pressure readings from the HEC LCD screen.</LI><LI CLASS="numlist">Swap J5 and J6 on the Signal Box and
+confirm the facility inlet and outlet pressure readings are swapped
+on the HEC LCD screen. If they are swapped, the sensor is faulty.</LI></OL></td></tr><tr valign="top"><td valign="">If you are testing a GC pressure sensor:<OL><LI CLASS="numlist">Note the GC inlet pressure reading
+from the HEC LCD screen.</LI><LI CLASS="numlist">Swap J3 and J6 on the Signal Box and
+confirm the same pressure reading on the <SPAN CLASS="GUILABEL"><I>Facility Inlet
+Pressure</I></SPAN> on the HEC LCD screen.</LI></OL></td></tr><tr valign="top"><td valign="">If you are trying to test a PE pressure sensor:<OL><LI CLASS="numlist">Note the PE inlet pressure reading
+from the HEC LCD screen.</LI><LI CLASS="numlist">Swap J4 and J6 and confirm the same
+pressure reading on <SPAN CLASS="GUILABEL"><I>Facility Inlet Pressure</I></SPAN> on
+the HEC LCD screen.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e256"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Alternatively, you can test GC and PE pressure sensors
+by swapping J4 with J5 (<SPAN CLASS="GUILABEL"><I>Facility Outlet Pressure</I></SPAN>) instead of swapping J4 and J6.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></td></tr><tr valign="top"><td rowspan="5" valign="">Suspected bad temperature sensor.</td><td valign="">It is important to determine whether the sensor or the Signal
+Box (PLC) is actually faulty. </td></tr><tr valign="top"><td valign="">If you are testing the HEC facility coolant inlet sensor:<OL><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> inlet temperature reading from the HEC LCD screen.</LI><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>GC</I></SPAN> inlet
+temperature reading from HEC LCD screen.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e283"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The HEC will stop pumping when the GC sensor is disconnected.
+Pumps will restart when the sensor is reconnected.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist">Swap J18 (Facility) and J17 (GC) on
+the Signal Box, and confirm that the Facility temperature is now visible
+for GC on the HEC LCD screen, and that the GC temperature is now visible
+for <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> on the HEC LCD screen.</LI></OL></td></tr><tr valign="top"><td valign="">If you are testing the GC temperature sensor:<OL><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> inlet temperature reading from the HEC LCD screen.</LI><LI CLASS="numlist">Note the GC inlet temperature reading
+from the HEC LCD screen.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e305"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The HEC will stop pumping when the GC sensor is disconnected.
+Pumps will restart when the sensor is reconnected.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist">Swap J18 (Facility) and J17 (GC) on
+the Signal Box, and confirm that the Facility temperature is now visible
+for GC on the HEC LCD screen, and that the GC temperature is now visible
+for <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> on HEC LCD screen.</LI></OL></td></tr><tr valign="top"><td valign=""><P CLASS="entry">If you are testing the PE temperature sensor:</P><OL><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> inlet temperature reading from the HEC LCD screen.</LI><LI CLASS="numlist">Note the PE inlet temperature reading
+from the HEC LCD screen.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e328"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The HEC will stop pumping when the PE sensor is disconnected.
+Pumps will restart when the sensor is reconnected.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist">Swap J18 (Facility) and J16 (PE) on
+the Signal Box, and confirm that the Facility temperature is now visible
+for PE on the HEC LCD screen, and that the PE temperature is now visible
+for <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> on HEC LCD screen.</LI></OL></td></tr><tr valign="top"><td valign="">If you are testing the Blower temperature sensor:<OL><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> inlet temperature reading from the HEC LCD screen.</LI><LI CLASS="numlist">Note the <SPAN CLASS="GUILABEL"><I>Blower</I></SPAN> inlet temperature reading from the HEC LCD screen.</LI><LI CLASS="numlist">Move the connector at J18 (Facility)
+to J28 (Blower) on the Signal Box, and confirm that the Blower temperature
+is now visible for <SPAN CLASS="GUILABEL"><I>Facility</I></SPAN> temperature on the
+HEC LCD screen.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e359"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You can move the connector at J28 to J18 to make the temperature
+check the other way. However, this may require cutting the tie wraps
+for the J28 cable to reach the J18 connector.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></td></tr><tr valign="top"><td valign="">Circuit breaker trips when power is applied to the HEC. Circuit
+breaker or fuses in Main Disconnect Panel may trip at same time.</td><td valign="">Examine the HEC for short circuits: <OL><LI CLASS="numlist">LOTO the HEC.</LI><LI CLASS="numlist">Open the HEC Power Box, and disconnect
+pump or blower wiring from the VFD.</LI><LI CLASS="numlist">Use a DVM to measure resistance between
+the pump or blower lines (phase-to-phase) and from each line to ground
+(phase-to-ground) for short circuits.</LI><LI CLASS="numlist">Use a DVM to measure resistance between
+the VFD input and output connections (phase-to-phase) and from each
+line to ground (phase-to-ground) for short circuits.</LI><LI CLASS="numlist">Use a DVM to measure resistance between
+the BLW CB circuit breaker input and output connections (phase-to-phase)
+and each connection to ground (phase-to-ground) for short circuits.</LI></OL><P CLASS="entry">If there are no short circuits observed, order and
+replace the HEC Power Box.</P><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e385"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">GC and PE pumps may be
+swapped between VFDs for troubleshooting purposes only.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr><tr valign="top"><td valign="">Location of the cryogen compressor flowmeter is different than
+in previously encountered HECs.</td><td valign="">Previous HECs measured cryogen flow from the inlet line. Current
+production HECs measure cryogen flow from the outlet line. This change
+results in no difference in the ability of Magnet Monitor 3 units
+to measure cryogen flow accurately.</td></tr><tr valign="top"><td valign="">There is insufficient water flow to or from components in the
+PGR cabinet.</td><td valign=""><OL><LI CLASS="numlist">Check for kinks in the supply and return
+hoses, especially where hoses are behind units. You can often quickly
+clear a kink by twisting a pressurized hose a full rotation in one
+direction and then twisting it in the opposite direction.</LI><LI CLASS="numlist">Use a discharge hose and a flask or
+bucket as troubleshooting tools to check for coolant flow on the supply
+and return hoses and through components.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e404"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>The water cooling system for the PGR cabinet is rated to 65
+psi.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist">Use a high volume pump to try to clear
+blockages in components. Try the return side first, then the supply
+side. You may need to repeat this a few times to get the blockage
+to clear.</LI></OL></td></tr><tr valign="top"><td valign="">Need to view HEC parameters in real-time.</td><td valign="">The system uses event-based polling to monitor the HEC, storing
+the data it receives to the <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cooling.xml</FONT></SPAN> log file. <P CLASS="entry">Open a c-shell and type: </P><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/paramdata/cooling.xml</B></FONT></SPAN></P><P CLASS="entry">Each output describes units in which the value is expressed.
+You must pay attention to the units and scaling.</P><P CLASS="entry">Refer
+to <SPAN CLASS="MODULEREF"><A HREF="1103495.htm#SL3214918-1103495"><I>HEC Data Viewer</I></A></SPAN> for
+additional information on analyzing trends.</P></td></tr><tr valign="top"><td valign="">At power up, one of the GC or PE coolant pumps is not operating.
+The VFD for the pump displays 0.</td><td valign="">Check to see if a pump or the Signal Box has failed:<OL><LI CLASS="numlist">Swap pump connections between VFDs.</LI><LI CLASS="numlist">If previously non-working pump now
+operates with other VFD, swap input Signal Box control lines between
+VFDs.</LI><LI CLASS="numlist">If after swapping the control lines
+the pump is not operating, replace the Signal Box.</LI><LI CLASS="numlist">If the pump never operates during these
+tests, replace the pump.</LI></OL></td></tr><tr valign="top"><td valign="">After initial power up, the system reports the GC coolant resistivity
+is out of range (too low or too high).</td><td valign="">If the GC resistivity value is less than 2.5 kOhm-cm and greater
+than 1 kOhm-cm, de-ionize the coolant. See <SPAN CLASS="MODULEREF"><A HREF="1061827.htm#SL2002978-1061827"><I>Heat Exchange Cabinet Coolant Deionization</I></A></SPAN>. <P CLASS="entry">A GC resistivity value greater than 20.0 kOhm-cm may mean an FE forgot
+to add rust inhibitor and biocide chemicals after performing the last
+de-ionization procedure. Perform de-ionization again and insure these
+are added per procedure. If values are unchanged after adding additives
+then proceed to &#8220;If Fuse OK&#8221; section below.</P><P CLASS="entry">A GC resistivity value less than 1 kOhm-cm may indicate faulty hardware:</P><UL><LI CLASS="bulletlist">Check the PLC code version:<OL><LI CLASS="numlist">From the main Signal Box PLC screen,
+press <SPAN CLASS="GUILABEL"><I>Diags</I></SPAN>. The code version is a date code
+and will look like <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">G3.MM.DD.YYYY</FONT></SPAN>.</LI><LI CLASS="numlist">If the code version is anything earlier
+than G3.02.16.2009 and the HEC only has one DI sensor in the GC tank,
+wait until the MR host computer has been connected to the HEC and
+the first successful TPS Reset is completed. This will download version
+G3.02.16.2009 or newer.</LI><LI CLASS="numlist">Recheck resistivity value.</LI></OL></LI><LI CLASS="bulletlist">Check the condition of the DI circuit
+board fuse.<OL><LI CLASS="numlist">Remove the HEC Signal Box cover and
+check the condition of the fuse located in the upper left corner of
+the DI circuit board.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e489"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">A spare fuse is usually provided in a plastic bag inside
+the Signal Box. If the fuse is unavailable, order 5266827 Fuse FRU
+Kit.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist">If the fuse is open:<OL TYPE="i"><LI CLASS="numlist">View the voltage selector toggle switch
+setting through the view holes on front of the HEC Power Box (this
+may require a flashlight).</LI><LI CLASS="numlist">Confirm that the switch is in the correct
+position for incoming voltage to the HEC. See Section 4.3 of <SPAN CLASS="MODULEREF"><A HREF="1051504.htm#SL1816254-1051504"><I>Power-On Sequencing</I></A></SPAN>.</LI></OL></LI><LI CLASS="numlist">If the fuse is intact:<OL TYPE="i"><LI CLASS="numlist">Note the resistivity value reported
+for the Gradient circuit cooling circuit on the HEC LED screen.</LI><LI CLASS="numlist">Disconnect the resistivity sensor DI1
+from J23 on the side of the Signal Box.</LI><LI CLASS="numlist">Recheck the resistivity value on the
+HEC LED screen. It should read 0.01kOhm-cm.</LI><LI CLASS="numlist"> If removing resistivity sensor DI1
+does not result in a significant change in the resistivity value,
+replace the Signal Box.<TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e523"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">During operation, a good working DI sensor will measure
+approximately 1.2 VDC (corresponds to ~12.0 kOhm-cm resistivity) across
+the white (+) and black wires (-). A faulty, open sensor will measure
+~2.5 VDC. A faulty, shorted sensor will measure much less than 1.2
+VDC.<p>Early units have a second sensor (J10 on the Signal Box), later
+units have only a single sensor. The second sensor is not measured
+(not used) in systems with 20.0 M4 software and later (Signal Box
+PLC code versions G3.02.16.2009 and newer. Check the code revision
+on HEC Signal Box PLC by pressing <SPAN CLASS="GUILABEL"><I>Diags</I></SPAN> on the
+Main Screen).</p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></LI></OL></LI></UL></td></tr><tr valign="top"><td valign="">The cable dressing for the HEC Signal Box appears different.</td><td valign="">There are two versions of the cable dressing for the HEC Signal
+Box. The newer version is used in HEC version 11 and higher and Signal
+Box version 2 and higher. <P CLASS="entry">To determine the version of the HEC,
+locate the rating label for the HEC behind the left side front door
+on the floor of the cabinet. </P><P CLASS="entry">To determine the version
+of the Signal Box, locate the label on the side of the Signal Box.
+If there is no label, the Signal Box is an early model.</P></td></tr><tr valign="top"><td valign="">The mixing valve reading on the Signal Box LCD screen is at
+100% or at 0%.</td><td valign="">A reading of 100% means:<UL><LI CLASS="bulletlist">The maximum amount of coolant is being
+passed through the heat exchanger.</LI><LI CLASS="bulletlist"> The stem on the mixing valve is completely
+down so that the stem is almost flush with the mixing valve case.</LI><LI CLASS="bulletlist">The PLC PID value for the mixing valve
+position is 4094 (this value is not displayed).</LI></UL><P CLASS="entry">A reading of 0% means:</P><UL><LI CLASS="bulletlist">The minimum amount of coolant is being
+passed through the heat exchanger (the maximum amount of coolant is
+being passed around the heat exchanger).</LI><LI CLASS="bulletlist">The stem of the mixing valve is at
+the maximum height above the mixing valve case.</LI><LI CLASS="bulletlist">The PLC PID value for the mixing valve
+position is 0 (this value is not displayed).</LI></UL></td></tr><tr valign="top"><td valign="">HEC Blower circuit breaker trips and needs to be manually reset.</td><td valign="">The blower may be drawing excessive current because of a blockage.
+Check the condition of the air filter on the PEN wall in the scan
+room. Clean or replace if it is dirty. <P CLASS="entry">Additionally, there are
+hoses internal to the HEC that connect to the blower. It may be necessary
+to remove the suction hose (the one not connected to the liquid to
+air heat exchanger) and check if the internal wall of the hose is
+still intact and not delaminated or clogging airflow.</P></td></tr></tbody></table></div></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

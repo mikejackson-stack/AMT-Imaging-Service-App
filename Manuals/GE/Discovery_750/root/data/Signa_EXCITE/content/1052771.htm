@@ -1,0 +1,30 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Gradient Fidelity Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;6/16/08</P></td></tr></table><H1 ID="top">Gradient Fidelity Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933713-1052771_1">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; Gradient &gt;&gt; Gradient
+Diagnostics</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; PGR Cabinet &gt;&gt;
+Gradient &gt;&gt; Gradient Diagnostics</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1933714-1052771_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Gradient Diagnostics screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052771-1062034.jpg" BORDER="0" usemap="#SL2007754-1052771_1"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933715-1052771_1">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Fidelity Diagnostic is designed to verify the accuracy,
+stability, and symmetry of the gradient amplifier outputs. Performing
+this diagnostic isolates any failures to the gradient subsystem. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933716-1052771_1">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic exercises only the gradient subsystem. This
+includes all of the gradient hardware inside the gradient cabinet.
+It also includes the gradient coil and everything in the transmission
+circuit between the gradient cabinet and the gradient coil. </P><P CLASS="sect1">The system uses an Ethernet Link to initiate the XGD GMC to
+start the test. The XGD GMC then uses data stored in onboard read-only
+memory to generate test waveforms. Gradient amplifiers drive these
+test waveforms to the gradient coil.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933717-1052771_1">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Ethernet Link from SCP to XGD GMC must be functional. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933719-1052771_1">5&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Calculate Time]</SPAN> to get an estimate of the time it will take to run the selected
+diagnostics.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN> to
+initiate test.</P><P>The diagnostic checks that Ethernet communication is established
+between SCP and XGD GMC. </P></LI></OL><P CLASS="sect1">A ramp-sampled EPI readout waveform is generated on each axis,
+separately, for 100 shots with 64 views in each shot. Gradient error
+data is acquired, and the following tests are performed.</P><OL><LI CLASS="numlist"><P><B>Accuracy</B> - Across
+all 100 shots, the largest point of inaccuracy is recorded, in units
+of microampere-seconds. </P></LI><LI CLASS="numlist"><P><B>Shot to Shot Stability</B> - Each of the 100 shots is compared to the others. The largest difference
+between any two shots is recorded, in units of microampere-seconds.</P></LI><LI CLASS="numlist"><P><B>View to View Stability </B>- Each pair of positive/negative views in the 100 x 64 views is compared
+to the others. The largest difference between any two views is recorded,
+in units of microampere-seconds.</P></LI><LI CLASS="numlist"><P><B>EPI Plus/minus Symmetry</B> - Each view represented by a positive half-cycle is compared to
+the subsequent view represented by a negative half-cycle.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1933722-1052771_1">6&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Output values are judged pass or fail. In the event of failure,
+the details of the failure can be found in the <SPAN CLASS="GUILABEL"><I>GE System
+Log</I></SPAN>.</P><P CLASS="sect1">Although, in the case of errors you can click the <SPAN CLASS="GUILABEL"><I>1st Error </I></SPAN>number to see the nature of the error, it is
+recommended that you view the <SPAN CLASS="GUILABEL"><I>GE System Log</I></SPAN> to
+view all the errors that were recorded.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
