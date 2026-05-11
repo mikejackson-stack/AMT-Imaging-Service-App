@@ -1,0 +1,68 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>MGD_Stage Emulation Commands</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL684247-1064361"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">MGD_Stage Emulation Commands</SPAN> </P><table summary="MGD_Stage Emulation Commands" border="1"><colgroup><col width="18%"><col width="82%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>Command</B></td><td align="center" valign="middle"><B>Action</B></td></tr><tr valign="top"><td colspan="2" valign="">a &#8656; Insert commands after
+the &#8220;a&#8221; (e.g., aT emulates all Table controls).</td></tr><tr valign="top"><td colspan="2" valign="">When the letter listed below (case
+sensitive) is present in the first line following the &#8217;a&#8217;,
+the corresponding device is emulated as described below:</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>A</B></FONT></SPAN></td><td valign="">Emulate PAC. <P CLASS="entry">This command causes the SPU to generate
+canned cardiac and respiratory waveforms and to generate cardiac triggers.
+This should be used when no PAC is present or if no cardiac simulator
+is available.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>B</B></FONT></SPAN></td><td valign="">Emulate System Monitoring.<P CLASS="entry">This command disables monitoring
+of the RF Door. This should only be used to allow scanning to continue
+if the RF Door switch is not functioning correctly.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>C</B></FONT></SPAN></td><td valign="">Emulate SCIM (Hardkeys).<P CLASS="entry">This disables the SCP to SCIM
+interface. If this is done, start scan, stop scan, pause scan, adv
+to scan, stop table buttons on the SCIM hardkeys will not work. This
+should only be used to allow scanning to continue if the SCP to SCIM
+link is not functioning correctly.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN></td><td valign="">Emulate the Driver Module on the CAN link. <P CLASS="entry">When this
+is emulated, the SCP will not monitor the DCB board or set any values
+to it. It will also not initialize it as a valid node on the CANopen
+network. Any diagnostics that require the Driver Module will fail
+if emulated. If this emulation is chosen, RF Amp emulation (<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>H</B></FONT></SPAN>) will automatically be set to protect hardware.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>F</B></FONT></SPAN></td><td valign="">Emulate IRDs.<P CLASS="entry">This is intended for targets that do not
+have DTX, RRX, or XGD modules. When this flag is present, AGP will
+simulate any missing modules and will not fail TPS_reset because the
+modules are missing. The IRF3 board must be present.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>G</B></FONT></SPAN></td><td valign="">Emulate Gradient Amps.<P CLASS="entry">The SCP will connect to XGD if
+it is present. There will be no error reporting or status monitoring.
+Debug commands may still be sent to XGD with this emulation on. No
+file updates or tuning parameters (including ECC) will be downloaded
+automatically.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>H</B></FONT></SPAN></td><td valign="">Emulate RF Amp(s). <P CLASS="entry">When this is emulated, the SCP will
+not send commands to the RF amplifiers (Analogic narrow band and spectroscopy's
+ENI broad band), and SCP will not monitor their state. Therefore,
+the Analogic RF amp will stay in standby, and no RF will be put out.
+The ENI amp has no standby state, and therefore will put out RF, but
+the correct filter will not be set.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>J</B></FONT></SPAN></td><td valign="">Emulate Entire CAN Network. <P CLASS="entry">This disables communication
+to all devices on the CAN link. It will not setup the CAN PMC board
+and thus all of the devices on the CAN link will not communicate on
+the link.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>N</B></FONT></SPAN></td><td valign="">Emulate Shim CAN Node.<P CLASS="entry">This disables communications to
+the CAN DSP on the Shim Supply. The shim currents will not be updated
+by the host under this condition.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>R</B></FONT></SPAN></td><td valign="">Emulate SRI. <P CLASS="entry">This disables SPI communication to the SRI.
+It disables magnet shroud annunciators, the scan time display, and
+landmarking. The alignment lights, fan, and bore light will not work.
+However, if the SRI has had code downloaded at least once, then table
+positioning will still work.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>S</B></FONT></SPAN></td><td valign="">Emulate the bore wall temperature sensor, gradient coil temperature
+sensors, and airflow sensors.</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>T</B></FONT></SPAN></td><td valign="">Emulate Table.<P CLASS="entry">This emulates SRI cradle control and LPCA.
+Therefore, the table positioning will not work. This eliminates the
+need to establish a landmark.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>a</B></FONT></SPAN></td><td valign="">Not used (place holder).</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>b</B></FONT></SPAN></td><td valign="">Emulate RRX with ERF Board. <P CLASS="entry">Causes the ERF board to look
+like a RRX. The F flag must also be present. The IRF3 and ERF boards
+must be present. The ERF board must be cabled to the IRF3 board.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>c</B></FONT></SPAN></td><td valign="">Emulate Coil ID. <P CLASS="entry">Any coil can be selected and used if
+this emulation is set, but only for a target or show system. If any
+coils are connected, they will be checked as if coil ID was not emulated.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>f</B></FONT></SPAN></td><td valign="">Emulate CAN Fiber-Optic Board. <P CLASS="entry">If this emulation is selected,
+the SCP will not set up the CFB and communication to the nodes connected
+to the CFB may not be allowed, including the SRI, PAC, and RF Hub.
+If this emulation is chosen, RF Amp emulation (H) will automatically
+be set to protect hardware.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>g</B></FONT></SPAN></td><td valign="">Disable Gradient Processor Application Loading.<P CLASS="entry">The SCP
+will not load the application if this emulation is selected, which
+can take 30 minutes to complete.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>l</B></FONT></SPAN></td><td valign="">Emulate Cooling Cabinet Monitoring. <P CLASS="entry">Both Ethernet and
+serial connections with the Cooling Cabinet will be ignored, alarms
+will not be reported, and feedback variables will not be logged.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>p</B></FONT></SPAN></td><td valign="">Disable UPM. <P CLASS="entry">This will disable the power monitoring of
+the CAN Power Monitor and will allow scanning without the presence
+of the power monitor.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>r</B></FONT></SPAN></td><td valign="">Emulate RF Hub.<P CLASS="entry">If this emulation is selected, the SCP
+will not communicate to the RF Hub. Any diagnostics that require the
+RF Hub will fail if emulated. If this emulation is chosen, RF Amp
+emulation (H) will automatically be set to protect hardware.</P></td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>s</B></FONT></SPAN></td><td valign="">Emulate the airflow sensors.</td></tr><tr valign="top"><td colspan="2" valign="">Example:<P CLASS="entry">If the first line
+of this file reads <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">aT</FONT></SPAN>:</P><P CLASS="entry">Table control,
+SRI cradle control, and LPCA would be emulated. Therefore, the table
+positioning will not work. This eliminates the need to establish a
+landmark.</P><P CLASS="entry">If the first line of this file reads <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">a</FONT></SPAN>: Nothing would be emulated or disabled. This is normal
+product configuration.</P><P CLASS="entry">/ * Software Note: These letter
+options should mirror CFG_STRING in hpc_cfg.h */</P></td></tr></tbody></table></CENTER></DIV></BODY></HTML>
