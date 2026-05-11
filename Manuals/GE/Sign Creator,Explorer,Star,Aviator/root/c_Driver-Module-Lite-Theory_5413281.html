@@ -1,0 +1,187 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" stringName="id_16895523">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2020" /><meta name="DC.rights.owner" content="(C) Copyright 2020" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="Driver Module Lite Theory" /><meta name="DC.Coverage" content="" /><meta name="prodname" content="" /><meta name="version" content="0" /><meta name="brand" content="" /><meta name="component" content="" /><meta name="featnum" content="Service Operations" /><meta name="featnum" content="" /><meta name="prognum" content="" /><meta name="platform" content="" /><meta name="DC.Creator" content="" /><meta name="DC.Publisher" content="7182020" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="id_16895523" /><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>Driver Module Lite Theory</title><meta name="description" content=" " /><meta name="keywords" content=" " /><meta name="author" content=" " /><meta name="header_prop" content="Basic Service Documentation. Copyright General Electric Company." /><meta name="header_marketing" content="" /><meta name="header_field" content="" /><meta name="header_platform" content="" /><meta name="header_topic" content="id_16895523" /><!--  Generated with Oxygen version 18.1, build number 2016102619.  --><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><script type="text/javascript"><!--
+
+            var prefix = "index.html";
+
+            --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.11.3.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/twisty/twisty.js"><!----></script></head>
+<div style="float:right;padding: 6px 6px 0 0;"><a id="oldFrames" target="_blank" href="index_frames.html" title="Open with frames" class="openFrame" style="background-repeat: no-repeat;"></a> <a HREF="javascript:window.print()" title="Print this page" class="printTopic"></a> <script>
+          document.write('<a href="mailto:SIMS_Admin@gehealthcare.com?subject=Driver Module Lite Theory&amp;body='+window.location.href+'" title="Email" class="mail" target="_blank"></a>');
+        </script></div><body onload="highlightSearchTerm()" id="id_16895523">
+<header role="banner"><table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td style="width:75%;"><span class="topic_breadcrumb_links"></span></td><td><span id="topic_navigation_links" class="navheader"></span></td></tr></tbody></table></header><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+<h1 class="title topictitle1" id="emailsubject">Driver Module Lite Theory</h1></header>
+<div class="body conbody"><ul class="ul" id="id_16895523__id_16919243"><li id="id_16895523__SL2898837-1093541" class="li">
+        <p id="id_16895523__id_16919244" class="p">The Driver Module Lite communicates
+with the Host Computer through CAN (Control Area Network) Communication
+to receive its configuration data and to report on status and errors.</p>
+
+      </li>
+<li id="id_16895523__SL2898838-1093541" class="li">
+        <p id="id_16895523__id_16919245" class="p">The Driver Control Board (DCB) with
+its CAN Communication Core (CCC) daughter board is the module’s
+intelligence, main interface and control.</p>
+
+      </li>
+<li id="id_16895523__SL2898839-1093541" class="li">
+        <p id="id_16895523__id_16919246" class="p">The module contains an AC-DC power
+supply which supplies power for the module itself, the CAN network
+(up to 32 nodes), the multicoil and head preamps, the Cross-Point
+Switch and the LPCA (Low Profile Carriage Assembly).</p>
+
+      </li>
+<li id="id_16895523__SL2898840-1093541" class="li">
+        <p id="id_16895523__id_16919247" class="p">The multi-coil configuration information
+is passed to the Driver Module Lite during download. The Release 10.x
+coil configuration files contain voltage configuration information,
+channel selection, and open and short circuit detection levels.</p>
+
+      </li>
+<li id="id_16895523__SL2898841-1093541" class="li">
+        <p id="id_16895523__id_16919248" class="p">The power op amp on the Multicoil Driver
+Board can source and sink up to about 0.5 amp of DC Bias current.
+The positive output voltage is set up by a MUX circuit and the driver
+switching is accomplished with an analog switch at the front end of
+the op amps.</p>
+
+      </li>
+<li id="id_16895523__SL2898842-1093541" class="li">
+        <p id="id_16895523__id_16919249" class="p">The output current of the MC drivers
+is sensed as a voltage drop across a resistor and appropriately scaled
+before being sent to the DCB for monitoring.</p>
+
+      </li>
+<li id="id_16895523__SL2898843-1093541" class="li">
+        <p id="id_16895523__id_16919250" class="p">There are new filters on the pen panel
+to account for the increase in signal lines going into the magnet
+room. The MC Filter has 18 signals (16 drivers; 2 loop back) and the
+Preamp Bias Filter has 11 signals (5 power; 6 control).</p>
+
+      </li>
+<li id="id_16895523__SL2898844-1093541" class="li">
+        <p id="id_16895523__id_16919251" class="p">Key power supply outputs are monitored.
+Although a failure may not prevent scanning, this monitoring will
+help identify the cause of a problem. </p>
+
+      </li>
+<li id="id_16895523__SL2898845-1093541" class="li">
+        <p id="id_16895523__id_16919252" class="p">All driver outputs are monitored real-time
+during scanning. If a fault is detected the scan is stopped and actual
+values detected are reported in the error message.</p>
+
+      </li>
+<li id="id_16895523__SL2898846-1093541" class="li">
+        <p id="id_16895523__id_16919253" class="p">Error messages should be much more
+helpful in pointing to the problem. The first driver detecting a fault
+is identified as well as a value in hex that states how many drivers
+detected faults. In addition, the expected value and the monitored
+value are reported.</p>
+
+      </li>
+<li id="id_16895523__SL2898847-1093541" class="li">
+        <p id="id_16895523__id_16919254" class="p">An open circuit fault means that a
+driver has detected less than the allowable limit but greater than
+zero. Open circuits are detected with the MC drivers during transmit
+(unblank) when the drivers output should be positive. An example open
+circuit fault: expected limit = 350 ma and monitored value = 165 ma.</p>
+
+      </li>
+<li id="id_16895523__SL2898848-1093541" class="li">
+        <p id="id_16895523__id_16919255" class="p">A transmit fault means that during
+transmit (unblank), the driver expected to source current (positive)
+but instead detected that it was sinking current (negative). An example
+transmit fault: expected limit = 350 ma and monitored value = –130
+ma.</p>
+
+      </li>
+<li id="id_16895523__SL2898849-1093541" class="li">
+        <p id="id_16895523__id_16919256" class="p">A short circuit fault means that a
+driver has detected current sunk more than the allowable limit and
+less than zero. Short circuits are detected with the MC drivers during
+receive (blank) when a selected driver output should be negative.
+An example short circuit fault:  expected limit = –250 ma and monitored
+value = –400 ma.</p>
+
+      </li>
+<li id="id_16895523__SL2898850-1093541" class="li">
+        <p id="id_16895523__id_16919257" class="p">A receive fault means that during receive
+(blank), the driver expected to sink current (negative) but instead
+detected that it was sourcing current (positive).  An example receive
+fault: expected limit = –250 ma and monitored value = 390 ma.</p>
+
+      </li>
+<li id="id_16895523__SL2898851-1093541" class="li">
+        <p id="id_16895523__id_16919258" class="p">Hex mask of all failed channels indicates
+all monitored drivers that detected the fault. For example: 0x2 =
+0000 0010 only the second driver detected a fault; 0x3c = 0011 1100
+– potential cause CTLMID coil chosen but not plugged in.</p>
+
+      </li>
+<li id="id_16895523__SL2898852-1093541" class="li">
+        <p id="id_16895523__id_16919259" class="p">At this time the HV (SW1), TR (SW2),
+and DD (SW3) disable switches on the Driver Module Lite do nothing
+but light an LED and put a message on the screen. To disable fault
+detection on the TR and DD drivers you must still use the disable
+switches on the SSM.</p>
+
+      </li>
+<li id="id_16895523__SL2898853-1093541" class="li">
+        <p id="id_16895523__id_16919260" class="p">In order to disable fault detection
+of the MC driver you must disable the switch (SW4) on the Driver Module
+Lite. You should not use the switch on the SSM because that will put
+the whole SSM into service mode.</p>
+
+      </li>
+</ul>
+<p id="id_16895523__id_16919261" class="p">
+    </p>
+<p id="id_16895523__id_16919262" class="p">Differences Between Driver Module Lite and SSM Hardware</p>
+<p id="id_16895523__id_16919263" class="p">This section briefly describes some of the major hardware differences
+between the new Driver Module Lite and the SSM (System Support Module):
+	</p>
+<ul class="ul" id="id_16895523__id_16919264"><li id="id_16895523__SL2898854-1093541" class="li">
+        <p id="id_16895523__id_16919265" class="p">The Driver Module Lite only performs
+Multicoil, TR &amp; DD driver functions as well as provide DC bias
+to preamps via the Cross-Point Switch and LPCA</p>
+
+      </li>
+<li id="id_16895523__SL2898855-1093541" class="li">
+        <p id="id_16895523__id_16919266" class="p">Potential for up to 32 MC drivers in
+the Driver Module Lite compared to 4 in the SSM. At this time only
+8 independent MC channels are used. Therefore each channel in an array
+has an independent driver network instead of being shared. </p>
+
+      </li>
+<li id="id_16895523__SL2898856-1093541" class="li">
+        <p id="id_16895523__id_16919267" class="p">The Driver Module Lite uses CAN instead
+of MDS communication. CAN is faster (500 k-baud Vs. 9600 baud), has
+greater bandwidth, is parallel (which means one bad node won’t
+take them all out) and supports Peer-to-Peer and Event communication.
+Also, CAN-open is an off-the-shelf protocol and it is easier to add
+additional nodes.</p>
+
+      </li>
+<li id="id_16895523__SL2898857-1093541" class="li">
+        <p id="id_16895523__id_16919268" class="p">The MC drivers in the SSM have fixed
+voltage outputs and fixed error detection levels. The MC drivers in
+the Driver Module Lite are configurable with regard to positive output
+voltage and error detection levels.</p>
+
+      </li>
+<li id="id_16895523__SL2898858-1093541" class="li">
+        <p id="id_16895523__id_16919269" class="p">Fault reporting is more intelligent
+with the Driver Module Lite. Rather than simply informing which drivers
+an open or short was detected on, actual output levels detected are
+reported as well as how many drivers faulted using a hex mask. </p>
+
+      </li>
+</ul>
+</div>
+</article></main><footer role="contentinfo"><div class="navfooter"><div class="ftrcustom"><p><span class="ph">
+						Basic Service Documentation. Copyright General Electric Company. 
+						
+						
+					</span></p><p align="center"><span> 5543247-2EN</span> | <span>Revision  7</span> | <span>en-US</span> | <span><a href="legal.html">Legal Notice</a> | <a target="_blank" href="http://www.ge.com">ge.com</a></span></p><img src="oxygen-webhelp/resources/img/GEmeatball.png" alt="GE Logo" width="50pt" height="50pt" /></div></div></footer></body>
+</html>

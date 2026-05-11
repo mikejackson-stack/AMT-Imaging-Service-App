@@ -1,0 +1,1211 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" stringName="id_13107077">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2020" /><meta name="DC.rights.owner" content="(C) Copyright 2020" /><meta name="DC.Type" content="concept" /><meta name="DC.Title" content="LVShim Calibration File Generation Details" /><meta name="DC.Coverage" content="" /><meta name="prodname" content="" /><meta name="version" content="0" /><meta name="brand" content="" /><meta name="component" content="" /><meta name="featnum" content="Service Operations" /><meta name="featnum" content="" /><meta name="prognum" content="" /><meta name="platform" content="" /><meta name="DC.Creator" content="" /><meta name="DC.Publisher" content="7182020" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="id_13107077" /><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>LVShim Calibration File Generation Details</title><meta name="description" content=" " /><meta name="keywords" content=" " /><meta name="author" content=" " /><meta name="header_prop" content="Basic Service Documentation. Copyright General Electric Company." /><meta name="header_marketing" content="" /><meta name="header_field" content="" /><meta name="header_platform" content="" /><meta name="header_topic" content="id_13107077" /><!--  Generated with Oxygen version 18.1, build number 2016102619.  --><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><script type="text/javascript"><!--
+
+            var prefix = "index.html";
+
+            --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.11.3.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/twisty/twisty.js"><!----></script></head>
+<div style="float:right;padding: 6px 6px 0 0;"><a id="oldFrames" target="_blank" href="index_frames.html" title="Open with frames" class="openFrame" style="background-repeat: no-repeat;"></a> <a HREF="javascript:window.print()" title="Print this page" class="printTopic"></a> <script>
+          document.write('<a href="mailto:SIMS_Admin@gehealthcare.com?subject=LVShim Calibration File Generation Details&amp;body='+window.location.href+'" title="Email" class="mail" target="_blank"></a>');
+        </script></div><body onload="highlightSearchTerm()" id="id_13107077">
+<header role="banner"><table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td style="width:75%;"><span class="topic_breadcrumb_links"></span></td><td><span id="topic_navigation_links" class="navheader"></span></td></tr></tbody></table></header><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+<h1 class="title topictitle1" id="emailsubject">LVShim Calibration File Generation Details</h1></header>
+<div class="body conbody"><p id="id_13107077__id_14852605" class="p">LVshim calibration files contain coil characterization data used by
+the LVshim analysis tool to calculate the new currents needed to correct for
+magnetic field inhomogeneity. Generic shim calibration files are supplied
+with the system software for all gradient coils and for GE S/C shim coils.
+Shim calibration files must be created at the site for Oxford and GE resistive
+shim coils.  The generic gradient and S/C shim calibration files should work
+well at all sites, so it should not be necessary to create them. Creating
+a S/C shim calibration file is time-consuming and prone to errors. The procedures
+for creating a gradient or S/C shim calibration file on-site have not been
+supplied. Before creating a gradient or S/C shim calibration file at a site,
+contact your MAC Team Leader, or the OLC Magnet Support Group for assistance. </p>
+<div class="note note" id="id_13107077__id_14852606"><span class="notetitle">note:</span> 
+      <p id="id_13107077__id_14852607" class="p">If the resistive shim coil assembly is replaced, or is moved within
+the magnet bore, then a new cal file may need to be created. Also, changes
+to system software may require the creation of a new cal file</p>
+
+    </div>
+</div>
+<article class="topic concept nested1" aria-labelledby="ariaid-title2" id="id_ov-1525796028989"><h2 class="title topictitle2" id="ariaid-title2">1  Creating a Shim Calibration File</h2>
+<div class="body conbody"><div class="note note" id="id_ov-1525796028989__id_14852608"><span class="notetitle">note:</span> 
+        <p id="id_ov-1525796028989__id_14852609" class="p">Creating a resistive shim calibration file can take two to four
+hours, and can be error-prone. Be sure there is adequate time to perform the
+task, and be careful during coil characterization to enter the correct perturbation
+currents. </p>
+
+      </div>
+<p id="id_ov-1525796028989__id_14852610" class="p">The procedure in this section describes the creation of a 45-cm DSV
+Oxford Resistive Shim calibration file. The process of creating a GE Resistive
+Shim calibration file is similar. If you cannot collect image data to build
+a 45-cm DSV calibration file (due to phase wrap issues), then build a 32-cm
+DSV calibration file instead. Shim the magnet using the 32-cm DSV calibration
+file, but check the shim on a 45-cm DSV. You should be able to meet the 45-cm
+DSV shim specifications with the 32-cm DSV calibration file. If you cannot
+meet the 45-cm DSV shim specification, contact your local Zone Engineer or
+Support Center - Magnet Support Team for assistance.</p>
+<p id="id_ov-1525796028989__id_14852611" class="p">A shim calibration file can be created in either of two ways:</p>
+<ul class="ul" id="id_ov-1525796028989__id_14852612"><li id="id_ov-1525796028989__ov-1525796028990" class="li">
+          <p id="id_ov-1525796028989__id_14852613" class="p">Collect coil characterization scan data for all the coils
+in a coil set, then run the shim calibration processing on all the data to
+create the calibration matrix.</p>
+
+        </li>
+<li id="id_ov-1525796028989__ov-1525796028990-dup.1" class="li">
+          <p id="id_ov-1525796028989__id_14852614" class="p">Collect coil characterization scan data for one coil in a
+coil set, then run the shim calibration processing on the data for that coil.
+This process is repeated until all the coils in the set have been characterized;
+then the calibration matrix is created.</p>
+
+        </li>
+</ul>
+</div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title3" id="id_ov-1525796028990-dup.2"><h2 class="title topictitle2" id="ariaid-title3">2  Three Generation Options</h2>
+<div class="body conbody"><p id="id_ov-1525796028990-dup.2__id_14852615" class="p">There are three generation options: Create, Resume, and Modify. <a class="xref" href="#id_ov-1525796028990-dup.2__SL36999-36930"><span>Table 1</span></a> shows all options.</p>
+<aside>
+<div class="tablenoborder"><span class="orgID" id="SL36999-36930"></span><table id="id_ov-1525796028990-dup.2__SL36999-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 1. CAL FILE GENERATION OPTIONS</span></caption><colgroup><col style="width:1.5in" /><col style="width:4.5in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852616" style="text-align:center;vertical-align:top;">OPTION</td>
+<td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852617" style="text-align:center;vertical-align:top;">CAL FILE TYPE</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852618" style="vertical-align:middle;">CREATE</td>
+<td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852619" style="vertical-align:top;">When this option is used, a new calibration file is created for the
+image data being analyzed. The new file contains the calibration file name
+token specified in menu item 4. </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852620" style="vertical-align:middle;">RESUME</td>
+<td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852621" style="vertical-align:top;">This option allows the user to resume a previously started shim calibration
+process. The software automatically displays the calibration file name token
+and sampling diameter of the latest partial shim file associated with the
+selected cal file type.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852622" style="vertical-align:middle;">MODIFY</td>
+<td class="entry cellrowborder" id="id_ov-1525796028990-dup.2__id_14852623" style="vertical-align:top;">This option allows the modification of the data in an existing shim
+calibration file. The data is modified one coil at a time by re-scanning and
+reprocessing the baseline and perturbed states for a coil. The process is
+repeated for each coil to be re-characterized. The software automatically
+displays the calibration file name and sampling diameter of the latest shim
+file associated with the selected cal file type. To get a list of other shim
+calibration files associated with the selected cal file type, enter 4 at the
+Modify menu.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside></div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title4" id="id_SL37088-36930"><h2 class="title topictitle2" id="ariaid-title4">3  Suggested Perturb Currents and Series Descriptions</h2>
+<div class="body conbody"><p id="id_SL37088-36930__id_14852624" class="p">Perturbation Current</p>
+<p id="id_SL37088-36930__id_14852625" class="p">The Perturbation Current is the amount that the coil was perturbed during
+the collection of the selected image data set. If the perturbation value is
+set to 0 (zero), the selected image data set is treated as the baseline scan
+for the named coil.</p>
+<p id="id_SL37088-36930__id_14852626" class="p">This section contains the suggested perturb currents and series descriptions
+to be used during shim calibration file generation. The information in <a class="xref" href="#id_SL37088-36930__SL37003-36930"><span>Table 2</span></a> to 9-coil gradient/resistive
+magnets. <a class="xref" href="#id_SL37088-36930__SL37024-36930"><span>Table 3</span></a> applies to 12-coil
+resistive magnets.</p>
+<aside>
+<div class="tablenoborder"><span class="orgID" id="SL37003-36930"></span><table id="id_SL37088-36930__SL37003-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 2. NINE-COIL GRADIENT/RESISTIVE (GE S-I, S-II, S-III)</span></caption><colgroup><col style="width:1.5in" /><col style="width:1.5in" /><col style="width:2.0in" /><col style="width:2.0in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852627" style="vertical-align:top;">
+              </td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852628" colspan="3" style="text-align:center;vertical-align:middle;">SCAN INFORMATION</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852629" style="text-align:center;vertical-align:top;">COIL NAME</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852630" style="text-align:center;vertical-align:top;">SCAN TYPE</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852631" style="text-align:center;vertical-align:top;">SUGGESTED  PERTURB CURRENT</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852632" style="text-align:center;vertical-align:top;">SERIES DESCRIPTION (SEE NOTE)</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852633" rowspan="2" style="text-align:center;vertical-align:middle;">GRAD_X</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852634" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852635" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852636" style="vertical-align:top;">XGRAD baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852637" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852638" style="vertical-align:top;">50</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852639" style="vertical-align:top;">XGRAD 50</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852640" rowspan="2" style="text-align:center;vertical-align:middle;">GRAD_Y</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852641" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852642" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852643" style="vertical-align:top;">YGRAD baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852644" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852645" style="vertical-align:top;">50</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852646" style="vertical-align:top;">YGRAD 50</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852647" rowspan="2" style="text-align:center;vertical-align:middle;">GRAD_Z</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852648" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852649" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852650" style="vertical-align:top;">ZGRAD baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852651" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852652" style="vertical-align:top;">50</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852653" style="vertical-align:top;">ZGRAD 50</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852654" rowspan="2" style="text-align:center;vertical-align:middle;">Z2</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852655" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852656" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852657" style="vertical-align:top;">Z2 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852658" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852659" style="vertical-align:top;">2.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852660" style="vertical-align:top;">Z2 2.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852661" rowspan="2" style="text-align:center;vertical-align:middle;">Z3</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852662" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852663" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852664" style="vertical-align:top;">Z3 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852665" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852666" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852667" style="vertical-align:top;">Z3 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852668" rowspan="2" style="text-align:center;vertical-align:middle;">ZX</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852669" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852670" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852671" style="vertical-align:top;">ZX baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852672" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852673" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852674" style="vertical-align:top;">ZX 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852675" rowspan="2" style="text-align:center;vertical-align:middle;">ZY</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852676" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852677" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852678" style="vertical-align:top;">ZY baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852679" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852680" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852681" style="vertical-align:top;">ZY 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852682" rowspan="2" style="text-align:center;vertical-align:middle;">X2-Y2</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852683" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852684" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852685" style="vertical-align:top;">X2-Y2 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852686" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852687" style="vertical-align:top;">5.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852688" style="vertical-align:top;">X2-Y2 5.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852689" rowspan="2" style="text-align:center;vertical-align:middle;">XY</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852690" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852691" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852692" style="vertical-align:top;">XY baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852693" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852694" style="vertical-align:top;">5.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852695" style="vertical-align:top;">XY 5.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852696" colspan="4" style="vertical-align:top;">Note:  0 (zero) can be used in place of
+baseline for baseline scans. For example, XGRAD baseline is the same as XGRAD
+0.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside><aside>
+<div class="tablenoborder"><span class="orgID" id="SL37024-36930"></span><table id="id_SL37088-36930__SL37024-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 3. TWELVE-COIL RESISTIVE (OXFORD)</span></caption><colgroup><col style="width:1.5in" /><col style="width:1.5in" /><col style="width:2.0in" /><col style="width:2.0in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852697" style="vertical-align:top;">
+              </td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852698" colspan="3" style="text-align:center;vertical-align:middle;">SCAN INFORMATION</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852699" style="text-align:center;vertical-align:top;">COIL NAME</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852700" style="text-align:center;vertical-align:top;">SCAN TYPE</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852701" style="text-align:center;vertical-align:top;">SUGGESTED  PERTURB CURRENT</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852702" style="text-align:center;vertical-align:top;">SERIES DESCRIPTION (SEE NOTE)</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852703" rowspan="2" style="text-align:center;vertical-align:middle;">Z1</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852704" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852705" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852706" style="vertical-align:top;">Z1 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852707" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852708" style="vertical-align:top;">0.1</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852709" style="vertical-align:top;">Z1 0.1</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852710" rowspan="2" style="text-align:center;vertical-align:middle;">Z2</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852711" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852712" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852713" style="vertical-align:top;">Z2 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852714" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852715" style="vertical-align:top;">0.5</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852716" style="vertical-align:top;">Z2 0.5</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852717" rowspan="2" style="text-align:center;vertical-align:middle;">Z3</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852718" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852719" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852720" style="vertical-align:top;">Z3 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852721" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852722" style="vertical-align:top;">2.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852723" style="vertical-align:top;">Z3 2.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852724" rowspan="2" style="text-align:center;vertical-align:middle;">Z4</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852725" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852726" style="vertical-align:top;">
+              </td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852727" style="vertical-align:top;">Z4 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852728" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852729" style="vertical-align:top;">2.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852730" style="vertical-align:top;">Z4 2.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852731" rowspan="2" style="text-align:center;vertical-align:middle;">X</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852732" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852733" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852734" style="vertical-align:top;">X baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852735" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852736" style="vertical-align:top;">0.1</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852737" style="vertical-align:top;">X 0.1</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852738" rowspan="2" style="text-align:center;vertical-align:middle;">Y</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852739" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852740" style="vertical-align:top;">
+              </td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852741" style="vertical-align:top;">Y baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852742" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852743" style="vertical-align:top;">0.</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852744" style="vertical-align:top;">Y 0.1</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852745" rowspan="2" style="text-align:center;vertical-align:middle;">ZX</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852746" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852747" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852748" style="vertical-align:top;">ZX baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852749" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852750" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852751" style="vertical-align:top;">ZX 0.1</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852752" rowspan="2" style="text-align:center;vertical-align:middle;">ZY</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852753" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852754" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852755" style="vertical-align:top;">ZY baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852756" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852757" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852758" style="vertical-align:top;">ZY 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852759" rowspan="2" style="text-align:center;vertical-align:middle;">XY</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852760" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852761" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852762" style="vertical-align:top;">XY baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852763" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852764" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852765" style="vertical-align:top;">XY 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852766" rowspan="2" style="text-align:center;vertical-align:middle;">X2-Y2</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852767" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852768" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852769" style="vertical-align:top;">X2-Y2 baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852770" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852771" style="vertical-align:top;">1.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852772" style="vertical-align:top;">X2-Y2 1.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852773" rowspan="2" style="text-align:center;vertical-align:middle;">Z2X</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852774" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852775" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852776" style="vertical-align:top;">Z2X baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852777" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852778" style="vertical-align:top;">2.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852779" style="vertical-align:top;">Z2X 2.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852780" rowspan="2" style="text-align:center;vertical-align:middle;">Z2Y</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852781" style="vertical-align:top;">Baseline</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852782" style="vertical-align:top;">-</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852783" style="vertical-align:top;">Z2Y baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852784" style="vertical-align:top;">Perturbation</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852785" style="vertical-align:top;">2.0</td>
+<td class="entry cellrowborder" id="id_SL37088-36930__id_14852786" style="vertical-align:top;">Z2Y 2.0</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL37088-36930__id_14852787" colspan="4" style="vertical-align:top;">Note: 0 (zero) can be used in place of
+baseline for baseline scans. For example, Z1 baseline is the same as Z1 0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside></div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title5" id="id_ov-1525796029008"><h2 class="title topictitle2" id="ariaid-title5">4  Enter Baseline Currents</h2>
+<div class="body conbody"><p id="id_ov-1525796029008__id_14852788" class="p">Before starting data collection, enter the baseline currents for the
+coil set into the system. These are the final mechanical shim currents, or
+the currents used to get the best shim to date. </p>
+<ol class="ol" id="id_ov-1525796029008__id_14852789"><li id="id_ov-1525796029008__ov-1525796029009" class="li">
+          <p id="id_ov-1525796029008__id_14852790" class="p">At the operator workspace, select the tools icon in the desktop
+control panel.</p>
+
+        </li>
+<li id="id_ov-1525796029008__ov-1525796029009-dup.1" class="li">
+          <p id="id_ov-1525796029008__id_14852791" class="p">To run the LVShim tool from the Service Browser, follow the
+instructions on <a class="xref" href="#id_ov-1525796029008__SL37036-36930"><span>Figure 1</span></a>, below:</p>
+
+        </li>
+</ol>
+<figure class="fig fignone" id="id_ov-1525796029008__SL37036-36930"><p style="font-weight:bold" class="figcap">Figure 1. STARTING THE LVSHIM TOOL FROM THE SERVICE BROWSER</p><img class="image inline" id="id_ov-1525796029008__id_14852792" src="34520.jpg" /></figure>
+<p id="id_ov-1525796029008__id_14852793" class="p">For TwinSpeed, highlight the GradMode, then click on <span class="uicontrol">OK</span>.
+Continue as shown in <a class="xref" href="#id_ov-1525796029008__SL37068-36930"><span>Table 4</span></a>.</p>
+<aside>
+<div class="tablenoborder"><span class="orgID" id="SL37068-36930"></span><table id="id_ov-1525796029008__SL37068-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 4. 
+        </span></caption><colgroup><col style="width:7.51in" /><col style="width:4.80in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_ov-1525796029008__id_14852794" style="text-align:center;vertical-align:top;">Output/Prompts</td>
+<td class="entry cellrowborder" id="id_ov-1525796029008__id_14852795" style="text-align:center;vertical-align:top;">INPUTS/COMMENTS</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029008__id_14852796" colspan="2" style="vertical-align:top;">
+                <p class="lines" id="id_ov-1525796029008__id_14852797"><br />
+                    &lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+<br />
+1. Shim Type (Gradient, Oxf-12,TEST): Gradient<br />
+2. Image Data (Ex, Se, Im Number)      : None Selected<br />
+3. Operation Mode (Service or Research): Service<br />
+4. Display Mag and Phase Diff Images   : No<br />
+5. Calibration File Name : lv_15t_3gc_22dsv.8645<br />
+6. Existing Current in Each Coil<br />
+<br />
+XGRAD:  0.000   YGRAD:  0.000   ZGRAD: 0.000 <br />
+<br />
+Accept (q or s to quit).<br />
+Enter the Index Number to Change Default (0..6)[0]: ... 1 [Enter] To change Shim Type to <br />
+                                                         Resistive.<br />
+                  </p>
+
+              </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029008__id_14852798" colspan="2" style="vertical-align:top;">
+                <p class="lines" id="id_ov-1525796029008__id_14852799"><br />
+                    &lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;<br />
+     (Magnet Type : Oxford (12 coil))<br />
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12<br />
+2. Image Data (Ex, Se, Im Number)      : [None Selected]<br />
+3. Operation Mode (Service or Research): Service<br />
+4. Display Mag and Phase Diff Images   : No<br />
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*<br />
+6. 	Existing Current in Each Coil.<br />
+<br />
+    Z1:  0.000     X:  0.000      XY:  0.000<br />
+    Z2:  0.000     Y:  0.000   X2-Y2:  0.000<br />
+    Z3:  0.000    ZX:  0.000     Z2X:  0.000<br />
+    Z4:  0.000    ZY:  0.000     Z2Y:  0.000<br />
+0. Accept (q or s to quit).<br />
+Enter the Index Number to Change Default (0..6)[0]: ...	        6 [Enter]<br />
+<br />
+Coil 1 [ Z1 ] (-20.00..20.00) [0.0]: ..............   Enter baseline current for Coil 1 (Z1)<br />
+      &lt;-------------------------------------          Enter baseline currents for Coils 2–11<br />
+Coil 12 [ Z2Y ] (-10.00..10.00) [0.0]: ............   Enter baseline current for Coil 12 (Z2Y)<br />
+&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+<br />
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12<br />
+2. Image Data (Ex, Se, Im Number)      : [None Selected]<br />
+3. Operation Mode (Service or Research): Service<br />
+4. Display Mag and Phase Diff Images   : No<br />
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*<br />
+6. Existing Current in Each Coil.<br />
+<br />
+    Z1:  0.853     X: -3.407      XY:  0.310    <br />
+    Z2: -1.716     Y: -1.292   X2-Y2:  0.280    <br />
+    Z3:  1.489    ZX:  0.557     Z2X: -1.042    <br />
+    Z4:  4.112    ZY:  0.387     Z2Y:  0.641<br />
+<br />
+0. Accept (q or s to quit).<br />
+Enter the Index Number to Change Default (0..6)[0]: ...	6 [Enter]<br />
+Coil 1 [ Z1 ] (-20.00..20.00) [0.0]: ..............      Enter baseline current for Coil 1 (Z1)<br />
+      &lt;-------------------------------------             Enter baseline currents for Coils 2–11<br />
+Coil 12 [ Z2Y ] (-10.00..10.00) [0.0]: ............      Enter baseline current for Coil 12 (Z2Y)<br />
+&lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+<br />
+1. Shim Type (Gradient, Oxf-12,TEST): Oxf-12<br />
+2. Image Data (Ex, Se, Im Number)      : [None Selected]<br />
+3. Operation Mode (Service or Research): Service<br />
+4. Display Mag and Phase Diff Images   : No<br />
+5. Calibration File Name : lv_15t_12rc_45dsv.tag*<br />
+6. Existing Current in Each Coil.<br />
+<br />
+    Z1:  0.853     X: -3.407      XY:  0.310<br />
+    Z2: -1.716     Y: -1.292   X2-Y2:  0.280<br />
+    Z3:  1.489    ZX:  0.557     Z2X: -1.042<br />
+    Z4:  4.112    ZY:  0.387     Z2Y:  0.641<br />
+<br />
+0. Accept (q or s to quit). ............... Make sure the correct currents are displayed, then:<br />
+Enter the Index Number to Change Default (0..6)[0]: ...	  q [Enter] (To quit.)<br />
+Exit LVshim? (Y,N) [N] : ..............................	  y [Enter]  (Exit LVshim.)<br />
+Press any key to quit --&gt; .............................	  Press any key<br />
+                  </p>
+
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside></div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title6" id="id_ov-1525796029025"><h2 class="title topictitle2" id="ariaid-title6">5  Get Hard Copy of Perturbation Currents (Optional)</h2>
+<div class="body conbody"><p id="id_ov-1525796029025__id_14852800" class="p">If a printer is available, and you wish to get a hard copy of the perturbation
+currents:</p>
+<ol class="ol" id="id_ov-1525796029025__id_14852801"><li id="id_ov-1525796029025__ov-1525796029025-dup.1" class="li">
+          <p id="id_ov-1525796029025__id_14852802" class="p">At the operator workspace, select the tools icon in the desktop
+control panel.</p>
+
+        </li>
+<li id="id_ov-1525796029025__ov-1525796029025-dup.2" class="li">
+          <p id="id_ov-1525796029025__id_14852803" class="p">To run the LVShim tool from the Service Browser, follow the
+instructions on <a class="xref" href="#id_ov-1525796029008__SL37036-36930"><span>Figure 1</span></a></p>
+
+        </li>
+<li id="id_ov-1525796029025__ov-1525796029029" class="li">
+          <p id="id_ov-1525796029025__id_14852804" class="p">For TwinSpeed, highlight the GradMode and click on <span class="uicontrol">OK</span>.
+Continue as shown in <a class="xref" href="#id_ov-1525796029025__SL37074-36930"><span>Table 5</span></a>.</p>
+
+        </li>
+</ol>
+<aside>
+<div class="tablenoborder"><span class="orgID" id="SL37074-36930"></span><table id="id_ov-1525796029025__SL37074-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 5. GETTING HARD COPY OF PERTURBATION CURRENTS (OPTIONAL)</span></caption><colgroup><col style="width:7.51in" /><col style="width:4.80in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_ov-1525796029025__id_14852805" style="text-align:center;vertical-align:top;">Output/Prompts</td>
+<td class="entry cellrowborder" id="id_ov-1525796029025__id_14852806" style="text-align:center;vertical-align:top;">INPUTS/COMMENTS</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029025__id_14852807" colspan="2" style="vertical-align:top;">
+                <p class="lines" id="id_ov-1525796029025__id_14852808"><br />
+                    &lt;&lt;&lt; LVshim Analysis &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+<br />
+1. Cal File Type (Gradient, Oxf-12 )    : Gradient<br />
+2. Generation (Create, Resume or Modify): Create<br />
+3. Operation Mode (Service or Research) : Service<br />
+4. Calibration File Name Token          : NEW<br />
+5. Sampling Diameter in Centimeters     : 45<br />
+6. Display Phase Diff Images            : No<br />
+7. Display Calibration Matrix           : Yes<br />
+8. Control Gradient Shim Coil Current   : Yes<br />
+<br />
+0. Accept (q or s to quit).<br />
+<br />
+Enter the index number to change default (0..9) [0]: ..	 1 [Enter] to change Cal File Type<br />
+                                                           to Resistive<br />
+<br />
+&lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;<br />
+    (Magnet Type : Oxford (12 coil))<br />
+1. Cal File Type (Gradient, Oxf-12 ) : Oxf-12 <br />
+2. Generation (Create, Resume or Modify): Create<br />
+3. Operation Mode (Service or Research) : Service<br />
+4. Calibration File Name Token          : NEW<br />
+5. Sampling Diameter in Centimeters     : 45<br />
+6. Display Phase Diff Images            : No<br />
+7. Display Calibration Matrix           : Yes<br />
+8. Show Suggested Perturb Current       : Yes<br />
+9. Suggested Perturb Current.<br />
+<br />
+     Z1: 0.1       X: 0.1       XY: 1.0<br />
+     Z2: 0.5       Y: 0.1    X2-Y2: 1.0<br />
+     Z3: 2.0      ZX: 1.0      Z2X: 2.0<br />
+     Z4: 2.0      ZY: 1.0      Z2Y: 2.0<br />
+<br />
+0. Accept (q or s to quit).<br />
+<br />
+Enter the index number to change default (0..10)[0]: ..	   [Enter]<br />
+Displaying Suggested Perturb Current<br />
+                  </p>
+
+              </td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside></div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title7" id="id_ov-1525796029035"><h2 class="title topictitle2" id="ariaid-title7">6  Data Collection</h2>
+<div class="body conbody"></div>
+<article class="topic concept nested2" aria-labelledby="ariaid-title8" id="id_ov-1525796029035-dup.1"><h3 class="title topictitle3" id="ariaid-title8">6.1 Control Gradient Shim Coil Currents</h3>
+<div class="body conbody"><div class="note note" id="id_ov-1525796029035-dup.1__id_14852809"><span class="notetitle">note:</span> 
+          <p id="id_ov-1525796029035-dup.1__id_14852810" class="p">Option availability I is available only when the Cal File Type
+is "Gradient."</p>
+
+        </div>
+<p id="id_ov-1525796029035-dup.1__id_14852811" class="p">When this option is set to yes, the gradient shim coil perturb currents
+are automatically set by the software. When the option is set to no, the gradient
+shim coil perturb currents must be manually set.</p>
+<p id="id_ov-1525796029035-dup.1__id_14852812" class="p">To manually set the gradient shim coil currents:</p>
+<ol class="ol" id="id_ov-1525796029035-dup.1__id_14852813"><li id="id_ov-1525796029035-dup.1__ov-1525796029035-dup.2" class="li">
+            <p id="id_ov-1525796029035-dup.1__id_14852814" class="p">At the operator workspace, select <span class="uicontrol">Manual Prescan</span>.</p>
+
+          </li>
+<li id="id_ov-1525796029035-dup.1__ov-1525796029035-dup.3" class="li">
+            <p id="id_ov-1525796029035-dup.1__id_14852815" class="p">Set x, y, and z to the desired values, then select <span class="uicontrol">Files</span>,
+then <span class="uicontrol">Save Shim File</span>.  Select <span class="uicontrol">Done</span> to
+save the file.</p>
+
+          </li>
+<li id="id_ov-1525796029035-dup.1__ov-1525796029035-dup.4" class="li">
+            <p id="id_ov-1525796029035-dup.1__id_14852816" class="p">Select <span class="uicontrol">Done</span> to exit Manual Prescan.</p>
+
+          </li>
+</ol>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title9" id="id_ov-1525796029035-dup.5"><h3 class="title topictitle3" id="ariaid-title9">6.2 Suggested Perturb Current</h3>
+<div class="body conbody"><div class="note note" id="id_ov-1525796029035-dup.5__id_14852817"><span class="notetitle">note:</span> 
+          <p id="id_ov-1525796029035-dup.5__id_14852818" class="p">Option availability II is available only when the Cal File Type
+is not "Gradient."</p>
+
+        </div>
+<p id="id_ov-1525796029035-dup.5__id_14852819" class="p">When this option is set to yes, the suggested perturb currents for the
+coil set being calibrated are displayed, allowing you to get a hard copy of
+the currents. This option allows you to change the perturb currents to be
+used for the coil set being calibrated. When selected, the software prompts
+for the new currents, one at a time. Illustration 5-2A shows a typical suggested
+perturb currents display (shown in Genesis format; the Lx display is different).</p>
+<figure class="fig fignone" id="id_ov-1525796029035-dup.5__ov-1525796029035-dup.6"><p style="font-weight:bold" class="figcap">Figure 2. SUGGESTED PERTURB CURRENTS (OXFORD RESISTIVE SHIM COIL)</p><img class="image inline" id="id_ov-1525796029035-dup.5__id_14852820" src="34516.jpg" /></figure>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title10" id="id_ov-1525796029041"><h3 class="title topictitle3" id="ariaid-title10">6.3 Storage</h3>
+<div class="body conbody"><p id="id_ov-1525796029041__id_14852821" class="p">There are two types of storage: Accumulate and Replace. Accumulate is used when you wish to average multiple scans for a given coil type/perturbation (such as taking three Z1 baseline scans to average the data). Replace is used when you wish to throw out the old data and replace them with data from a different scan. If you choose Replace mode, all previous data collected for the coil are lost.</p>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title11" id="id_ov-1525796029041-dup.1"><h3 class="title topictitle3" id="ariaid-title11">6.4 Data Collection</h3>
+<div class="body conbody"><ol class="ol" id="id_ov-1525796029041-dup.1__id_14852822"><li id="id_ov-1525796029041-dup.1__ov-1525796029041-dup.2" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852823" class="p">
+              <a class="xref" href="t_LVShim-Tools-And-Phantom-Setup_34603.html">Perform a Phantom Setup</a>, if you haven’t
+already done so.</p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029046" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852824" class="p">At the operator workspace, select the Scan icon in the desktop
+control panel and set up LVshim scan as follows:</p>
+
+            <ol type="a" class="ol" id="id_ov-1525796029041-dup.1__id_14852825"><li id="id_ov-1525796029041-dup.1__ov-1525796029046-dup.1" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852826" class="p">In RX Manager, click <span class="uicontrol">New Series</span>.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029046-dup.2" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852827" class="p"> At the operator workspace, prepare the system for LVshim scanusing the "Service Protocols" procedure located on the service methods CD-ROM, or, for the alternate proprietary procedure, see below.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029046-dup.4" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852832" class="p">In Additional Parameters, click <span class="uicontrol">User CVs Screen</span>.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029046-dup.5" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852833" class="p">In the User Control Variables window enter the following:</p>
+
+                <ul class="ul" id="id_ov-1525796029041-dup.1__id_14852834"><li id="id_ov-1525796029041-dup.1__ov-1525796029047" class="li">
+                    <p id="id_ov-1525796029041-dup.1__id_14852835" class="p">No. of Scan Planes: 6</p>
+
+                  </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.1" class="li">
+                    <p id="id_ov-1525796029041-dup.1__id_14852836" class="p">Bandwidth: 2000</p>
+
+                  </li>
+</ul>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.2" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852837" class="p">Click <span class="uicontrol">Accept</span> and then <span class="uicontrol">Save
+Series</span>. </p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.3" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852838" class="p">In RX Manager, click <span class="uicontrol">Prepare to Scan</span>.</p>
+
+              </li>
+</ol>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.4" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852839" class="p">Click <span class="uicontrol">Manual Prescan</span>. While in the<span class="uicontrol"> Center
+Freq Coarse (CFC)</span> mode, verify the frequency peak is centered
+in the display. Adjust the center frequency peak as necessary. After locating
+the best signal, open the [Frequency] menu at the top of Manual Prescan window
+and select <span class="uicontrol">Save Frequency</span> to save the new center frequency.</p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.5" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852840" class="p">Click <span class="uicontrol">Scan TR (R1/R2)</span>. Verify that
+R1 and R2 are not over ranged. Adjust R1 and R2 for approximately 50%. </p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.6" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852841" class="p">Click <span class="uicontrol">Done</span> to exit manual prescan.</p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.7" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852842" class="p">Click <span class="uicontrol">Scan</span>.</p>
+
+            <div class="note note" id="id_ov-1525796029041-dup.1__id_14852843"><span class="notetitle">note:</span> 
+              <p id="id_ov-1525796029041-dup.1__id_14852844" class="p">A Resistive Shim Calibration file can be created by using one
+baseline scan and one perturbation scan for each coil in a coil set. However,
+if time allows, three scans should be taken for each baseline and perturbation
+to insure accuracy of the calibration matrix (by averaging the data).</p>
+
+            </div>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.8" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852845" class="p">If more than one scan is desired, when the first scan is finished,
+press <span class="uicontrol">Scan</span> again to collect a second set of scan data.
+Then, when the second scan is finished, press <span class="uicontrol">Scan</span> again
+to collect a third set of scan data.</p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029047-dup.9" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852846" class="p">When the baseline scan(s) is finished, in RX Manager, copy
+and paste the present series, then select <span class="uicontrol">View Edit</span>.
+Change the Series Description to Z1 0.1, then click <span class="uicontrol">Save Series</span>,
+followed by <span class="uicontrol">Prepare to Scan</span>. Perturb the Z1 coil baseline
+current by 0.1 amps as described in <a class="xref" href="#id_SL37088-36930">Suggested Perturb Currents and Series Descriptions</a>,
+then repeat steps 3 through 8 to collect the Z1 perturbation scan(s). After
+the Z1 perturbation scan(s) have been collected, set the Z1 coil current back
+to its baseline value.</p>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852847" class="p">To collect scan data for all of the coils in a coil set before
+processing, follow these steps:</p>
+
+            <ol type="a" class="ol" id="id_ov-1525796029041-dup.1__id_14852848"><li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.1" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852849" class="p">In RX Manager, copy and paste the present series, then select <span class="uicontrol">View
+Edit</span>. </p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.2" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852850" class="p">Change the Series Description to Z2 baseline, then click <span class="uicontrol">Save
+Series</span>, followed by <span class="uicontrol">Prepare to Scan</span>.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.3" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852851" class="p">Perform steps 3 through 9 to collect baseline and perturbation
+scans for the Z2 coil (use Z2 0.5 as the Series Description name for the Z2
+perturbation scans).</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.4" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852852" class="p">Repeat steps a through c for the remaining coils in the coil
+set.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.5" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852853" class="p">When scan data for all coils have been collected, perform
+Shim Calibration Processing (Silent Mode = Yes).</p>
+
+              </li>
+</ol>
+
+          </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.6" class="li">
+            <p id="id_ov-1525796029041-dup.1__id_14852854" class="p">To collect and process scan data for each coil, one at a time</p>
+
+            <ol type="a" class="ol" id="id_ov-1525796029041-dup.1__id_14852855"><li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.7" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852856" class="p">Perform Shim Calibration Processing on the Z1 coil scans (baseline
+and perturbation) (Silent Mode = No).</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.8" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852857" class="p">When the processing is done, in RX Manager, copy and paste
+the present series, then select <span class="uicontrol">View Edit</span>. Change the
+Series Description to Z2 baseline, then click <span class="uicontrol">Save Series</span>,
+followed by <span class="uicontrol">Prepare to Scan</span>.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.9" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852858" class="p">Perform steps 3 through 9 to collect baseline and perturbation
+scans for the Z2 coil.</p>
+
+              </li>
+<li id="id_ov-1525796029041-dup.1__ov-1525796029052-dup.10" class="li">
+                <p id="id_ov-1525796029041-dup.1__id_14852859" class="p">Repeat steps a through c for the remaining coils in the coil
+set.</p>
+
+              </li>
+</ol>
+
+          </li>
+</ol>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title12" id="id_ov-1525796029052-dup.11"><h3 class="title topictitle3" id="ariaid-title12">6.5 Existing Current in Each Coil</h3>
+<div class="body conbody"><p id="id_ov-1525796029052-dup.11__id_14852860" class="p">Existing current values are displayed for all the coils in the coil
+set being shimmed. This option allows you to change the existing values. When
+the gradient current values are changed, the new values are automatically
+sent to the gradient amplifiers by the software.</p>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title13" id="id_ov-1525796029052-dup.12"><h3 class="title topictitle3" id="ariaid-title13">6.6 Shim Calibration Processing</h3>
+<div class="body conbody"><ol class="ol" id="id_ov-1525796029052-dup.12__id_14852861"><li id="id_ov-1525796029052-dup.12__ov-1525796029052-dup.13" class="li">
+            <p id="id_ov-1525796029052-dup.12__id_14852862" class="p">In the Service Browser, select the Calibration tab, then in
+the menu options on the left side of the browser, click LVShim.  On the right
+side, click the link Click here to start this tool. See <a class="xref" href="#id_ov-1525796029008__SL37036-36930"><span>Figure 1</span></a>. </p>
+
+          </li>
+<li id="id_ov-1525796029052-dup.12__ov-1525796029056" class="li">
+            <p id="id_ov-1525796029052-dup.12__id_14852863" class="p">For TwinSpeed, highlight the GradMode and click on OK. Continue
+as shown in <a class="xref" href="#id_ov-1525796029052-dup.12__SL37151-36930"><span>Table 6</span></a>.</p>
+
+          </li>
+</ol>
+<aside>
+<div class="tablenoborder"><span class="orgID" id="SL37151-36930"></span><table id="id_ov-1525796029052-dup.12__SL37151-36930" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 6. SHIM CALIBRATION PROCESSING</span></caption><colgroup><col style="width:5.5in" /><col style="width:2.00in" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852864" style="text-align:center;vertical-align:top;">OUTPUT/PROMPTS</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852865" style="text-align:center;vertical-align:top;">INPUTS/COMMENTS</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852866" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852867"><br />
+                      &lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+<br />
+1. Cal File Type (Gradient, Oxf-12 )    : Gradient<br />
+2. Generation (Create, Resume or Modify): Create<br />
+3. Operation Mode (Service or Research) : Service<br />
+4. Calibration File Name Token          : NEW<br />
+5. Sampling Diameter in Centimeters     : 45<br />
+6. Display Phase Diff Images            : No<br />
+7. Display Calibration Matrix           : Yes<br />
+8. Control Gradient Shim Coil Current   : Yes<br />
+<br />
+0. Accept (q or s to quit).<br />
+<br />
+Enter the index number to change default (0..9) [0] :<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852868" style="vertical-align:bottom;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">1</span>
+                  <span class="uicontrol">Enter</span> to
+change Cal File Type to Oxf-12</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852869" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852870"><br />
+                      &lt;&lt;&lt; LVshim Calibration File Generation &gt;&gt;&gt;<br />
+(Magnet Type : Oxford (12 coil))<br />
+1. Cal File Type (Gradient, Oxf-12 )    : Oxf-12:  <br />
+(Additional menu selections displayed)<br />
+9. Suggested Perturb Current.<br />
+<br />
+Z1: 0.1       X: 0.1       XY: 1.0        <br />
+Z2: 0.5       Y: 0.1    X2-Y2: 1.0        <br />
+Z3: 2.0      ZX: 1.0      Z2X: 2.0        <br />
+Z4: 2.0      ZY: 1.0      Z2Y: 2.0 <br />
+<br />
+  0. Accept (q or s to quit).<br />
+Enter the index number to change default (0..10) [0]:<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852871" style="vertical-align:bottom;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">0</span>
+                  <span class="uicontrol">Enter</span> when
+all menu items are acceptable. </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852872" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852873"><br />
+                      &lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;<br />
+   <br />
+Z1:         X:          XY:         <br />
+Z2:         Y:       X2-Y2:         <br />
+Z3:        ZX:         Z2X:         <br />
+Z4:        ZY:         Z2Y:      <br />
+Common Baseline: Pending<br />
+1. Image Data (Ex, Se, Im Number) : 50008, 1, 1   <br />
+(Series Description: Z1 baseline)<br />
+2. Storage (Accumulate or Replace): Accumulate<br />
+3. Display Phase Diff Images      : No<br />
+4. Processing in Silent Mode      : No<br />
+5. Coil Name (To be Characterized): [None Selected]<br />
+<br />
+0. Accept (q or s to Return).<br />
+<br />
+Enter the Index Number to Change Default (0..6) [0]: ...<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852874" style="vertical-align:bottom;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">5</span>
+                  <span class="uicontrol">Enter</span> (To
+select coil to be characterized.)</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852875" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852876"><br />
+                      1.   Z1   0.100 [Z1]  <br />
+2.   Z2   0.500 [Z2]  <br />
+3.   Z3   2.000 [Z3]  <br />
+4.   Z4   2.000 [Z4]  <br />
+5.    X   0.100 [X]  <br />
+6.    Y   0.100 [Y]  <br />
+7.   ZX   1.000 [ZX]  <br />
+8.   ZY   1.000 [ZY]  <br />
+9.   XY   1.000 [XY] <br />
+10. X2-Y2  1.000 [X2_Y2] <br />
+11.   Z2X  2.000 [Z2X] <br />
+12.   Z2Y  2.000 [Z2Y]  <br />
+0.  Common Baseline.<br />
+<br />
+Enter the Index Number (0..12) [6] : ..................<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852877" style="vertical-align:bottom;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">1</span>
+                  <span class="uicontrol">Enter</span> to
+select Z1 coil</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852878" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852879"><br />
+                      &lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;<br />
+   <br />
+Z1:         X:          XY:         <br />
+Z2:         Y:       X2-Y2:         <br />
+Z3:        ZX:         Z2X:         <br />
+Z4:        ZY:         Z2Y:      <br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852880" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852881" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852882"><br />
+                      Common Baseline: Pending<br />
+1. Image Data (Ex, Se, Im Number):50008, 1, 1 &lt;-------<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852883" style="vertical-align:top;">Be sure this is the correct (Series Description: Z1 baseline) image
+data set for the Z1 baseline scan</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852884" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852885"><br />
+                      (Series Description: Z1 baseline)<br />
+2. Storage (Accumulate or Replace): Accumulate<br />
+3. Display Phase Diff Images     : N<br />
+5. Coil Name (To be Characterized): Z1<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852886" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852887" style="vertical-align:top;">6.Perturbation Current        : 0.100 &lt;---------------</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852888" style="vertical-align:top;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">0</span>
+                  <span class="uicontrol">Enter</span> to change Perturbation
+Current to Baseline</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852889" style="vertical-align:top;">0. Accept (q or s to Return).</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852890" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852891" style="vertical-align:top;">Enter the Index Number to Change Default (0..7)[0]: ..</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852892" style="vertical-align:top;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">0</span>
+                  <span class="uicontrol">Enter</span> when all of the menu
+items are acceptable.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852893" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852894"><br />
+                      If Silent Mode was set to Yes, the following is displayed:<br />
+Processing ... plane  1 of 6.<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852895" style="vertical-align:middle;">Image data are processed (planes 1 - 6)</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852896" style="vertical-align:top;">Processing ... done.  6 of 6</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852897" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852898" style="vertical-align:top;">When all the coils have been characterized, the following is displayed
+(if Yes was entered for Display Calibration Matrix):</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852899" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852900" style="vertical-align:top;">Displaying Calibration Matrix</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852901" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852902" style="vertical-align:top;">Cal File Generation Complete. Run Again? (Y,N)[N]: ...</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852903" style="vertical-align:top;">Enter y or n as appropriate</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852904" style="vertical-align:top;">If Silent Mode was set to No, the following is displayed:</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852905" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852906" style="vertical-align:top;">Processing plane 1 of 6         &lt;---------------------</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852907" style="vertical-align:top;">Image data is processed     (planes 1 - 6).</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852908" style="vertical-align:top;">Processing ... done.  6 of 6</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852909" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852910" style="vertical-align:top;">If image phase wrap is detected, the following message appears:</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852911" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852912" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852913"><br />
+                      Excessive phase wrapping<br />
+....Please re-scan at Wider Bandwidth or smaller test diameter<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852914" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852915" style="vertical-align:top;">Exit Cal File Generator? (Y,N) [N]: ..................</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852916" style="vertical-align:top;">Select <span class="uicontrol">Research Operations </span>and <span class="uicontrol">Modify
+CVs</span>. Type opuser2 and enter a higher bandwidth. Valid bandwidth
+entries are: 200, 500, 1000, and 5000. Select <span class="uicontrol">Research Operations</span><span class="uicontrol">Download</span>,
+and restart the calibration file process using the higher bandwidth.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852917" style="vertical-align:top;">If Yes was entered for Display Phase Diff Images, the following appears:</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852918" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852919" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852920"><br />
+                      The Following Are the Image Display Options.<br />
+1. Image Plane 1<br />
+2. Image Plane 2<br />
+3. Image Plane 3<br />
+4. Image Plane 4<br />
+5. Image Plane 5<br />
+6. Image Plane 6<br />
+7. Image With Sampling Pixels.<br />
+8. Save Phase Difference Image Into Database. <br />
+0. Return<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852921" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852922" style="vertical-align:top;">Enter Index (0..8) [1] : .............................</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852923" style="vertical-align:top;">Enter appropriate choice for more option information, or <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">0 </span><span class="uicontrol">Enter</span> to
+continue.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852924" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852925"><br />
+                      Coil Name (To be Characterized)  : Z1 &lt;---------------<br />
+Perturbation Current             : 0.100<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852926" style="vertical-align:top;">When processing is done, the next image data set is displayed and processed.
+Each image data set is displayed and processed until all have been processed.
+If all the data sets have been processed, but not all the coils have not been
+characterized, the Characterizing Shimming Coils screen is displayed.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852927" style="vertical-align:top;">More Coils to Process (Y,N) [Y] : ....................</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852928" style="vertical-align:top;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">y</span>
+                  <span class="uicontrol">Enter</span> to process the Z1
+perturbation scan (or a second Z1 baseline scan).</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852929" style="vertical-align:top;">If Yes was entered at More Coils to Process prompt, the following appears:</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852930" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852931" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852932"><br />
+                      &lt;&lt;&lt; Characterizing Shimming Coils &gt;&gt;&gt;<br />
+Z1: (B 1, C 0)	X:	XY:	&lt;---------<br />
+Z2:	   Y:	   X2-Y2:<br />
+Z3:	   ZX:	   Z2X:<br />
+Z4:	   ZY:	   Z2Y:<br />
+Common Baseline: Pending<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852933" style="vertical-align:top;">The software automatically shows the current status of the coil characterization
+process. In this example, B 1 means that one baseline scan has been performed,
+and C 0 means that zero perturbation scans have been performed.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852934" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852935"><br />
+                      1. Image Data (Ex, Se, Im Number): 50008, 2, 1 &lt;-----   <br />
+(Series Description: Z1 0.100)<br />
+2. Storage (Accumulate or Replace): Accumulate<br />
+3. Display Phase Diff Images      : No<br />
+4. Processing in Silent Mode      : No<br />
+<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852936" style="vertical-align:top;">The software automatically increments to the next image data set. If
+there are no more LVshim images, it displays [None Selected]. Be sure that
+these are the correct data before accepting.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852937" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852938"><br />
+                      5. Coil Name (To be Characterized): Z1  &lt;----<br />
+6. Perturbation Current           : 0.100  &lt;-------<br />
+<br />
+0. Accept (q or s to Return).<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852939" style="vertical-align:top;">The software automatically increments to the next logical coil name
+and perturbation current. Be sure this information is correct before accepting</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852940" style="vertical-align:top;">Enter the Index Number to Change Default (0..7)[0]: ..</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852941" style="vertical-align:top;">
+                  <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">0</span>
+                  <span class="uicontrol">Enter</span> when all menu items
+are acceptable.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852942" style="vertical-align:top;">Processing plane 1 of 6         &lt;---------------------</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852943" style="vertical-align:top;">Image data are processed (planes 1 - 6).</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852944" style="vertical-align:top;">Processing ... done.  6 of 6</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852945" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852946" style="vertical-align:top;">More Coils to Process (Y,N) [Y] : ....................</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852947" style="vertical-align:top;">Repeat scanning and processing until all coils in the coil set have
+been characterized, then <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">n</span><span class="uicontrol">Enter</span> to
+continue.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852948" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852949"><br />
+                      When No is entered at the More Coils to Process prompt, this happens:	<br />
+If some coils have not been characterized, the following appears:<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852950" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852951" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852952"><br />
+                      Coil Characterization Is Incomplete.<br />
+Not Enough Data To Create Calibration Matrix<br />
+Build Partial Matrix? (Y,N) [Y] : ....................<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852953" style="vertical-align:top;">Since not all of the coils have been characterized, the software may
+not able to create a calibration file. Generally, you should enter <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">n</span> at
+this prompt.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852954" style="vertical-align:top;">If No is entered at Build Partial Matrix prompt, the following appears:</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852955" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852956" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852957"><br />
+                      Process Will Be Saved and Can Be Resumed Later.<br />
+Exit Cal File Generator? (Y,N) [N] : .................<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852958" style="vertical-align:top;">Enter <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">y</span> or <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">n</span> as appropriate.
+The processed calibration data are saved. The calibration generation process
+can be resumed later by selecting Resume for menu item 2 (Generation).</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852959" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852960"><br />
+                      Coil Characterization Is Incomplete.<br />
+Matrix Is Not Invertable.<br />
+Process Will Be Saved and Can Be Resumed Later.<br />
+Exit Cal File Generator? (Y,N) [N]: ..................<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852961" style="vertical-align:top;">Enter <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">y</span> or <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">n</span> as appropriate.
+The software was not able to generate a calibration matrix because some of
+the coils have not been characterized. The processed calibration data are
+saved. The calibration generation process can be resumed later by selecting
+Resume for menu item 2 (Generation).</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852962" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852963"><br />
+                      If all the coils have been characterized, the following appears<br />
+(if Yes was entered for Display Calibration Matrix):<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852964" style="vertical-align:top;">
+                </td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852965" style="vertical-align:top;">
+                  <p class="lines" id="id_ov-1525796029052-dup.12__id_14852966"><br />
+                      Displaying Calibration Matrix<br />
+Displaying Calibration Matrix<br />
+Please Get the Hardcopy if Desired.<br />
+Press Enter to Continue. [ ] : .....................<br />
+                    </p>
+
+                </td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852967" style="vertical-align:top;">The Calibration Matrix is displayed. See Section 6-9 for details. If
+a hard copy of the matrix is desired, print it now. Then, press Enter to continue.</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852968" style="vertical-align:top;">Cal File Generation Complete. Run Again? (Y,N) [N]: ..</td>
+<td class="entry cellrowborder" id="id_ov-1525796029052-dup.12__id_14852969" style="vertical-align:top;">Enter <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">y</span> or <span class="userinput" style="font-weight: bold; font-family:courier, fixed, monospace;">n</span> as appropriate.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside><div class="note note" id="id_ov-1525796029052-dup.12__id_14852970"><span class="notetitle">note:</span> 
+          <p id="id_ov-1525796029052-dup.12__id_14852971" class="p">Signa 1.0T Mobiles may have a Z2 Resistive Shim Coil installed
+on the Passive Shim Drum. Make sure that the Z2 Resistive Shim Power Supply
+(mounted on the operator workspace table) is powered off when performing this
+procedure.</p>
+
+        </div>
+</div>
+</article>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title14" id="id_ov-1525796029065"><h2 class="title topictitle2" id="ariaid-title14">7  Sampling Diameter in Centimeters</h2>
+<div class="body conbody"><p id="id_ov-1525796029065__id_14852972" class="p">The sampling diameter is the size of the diameter spherical volume (DSV)
+to be used during processing. Only data within this specified volume are processed.
+This value is editable during creation of the shim calibration file, but is
+fixed during normal shimming.</p>
+</div>
+</article>
+<article class="topic concept nested1" aria-labelledby="ariaid-title15" id="id_ov-1525796029065-dup.1"><h2 class="title topictitle2" id="ariaid-title15">8  Details of Characterizing Shimming Coils</h2>
+<div class="body conbody"><p id="id_ov-1525796029065-dup.1__id_14852973" class="p">This section provides detailed information about the items in the Characterizing
+Shimming Coils menu. When selected, some of the items toggle to another value
+(available choices are shown in parentheses), some toggle between Yes and
+No, and some prompt for additional input.</p>
+</div>
+<article class="topic concept nested2" aria-labelledby="ariaid-title16" id="id_ov-1525796029065-dup.2"><h3 class="title topictitle3" id="ariaid-title16">8.1 Coil Characterization Status</h3>
+<div class="body conbody"><p id="id_ov-1525796029065-dup.2__id_14852974" class="p">The coil characterization status is located in the area under the menu
+title line. It consists of the following information for each of the coils
+in the coil set: </p>
+<ul class="ul" id="id_ov-1525796029065-dup.2__id_14852975"><li id="id_ov-1525796029065-dup.2__ov-1525796029065-dup.3" class="li">
+            <p id="id_ov-1525796029065-dup.2__id_14852976" class="p">Coil name</p>
+
+          </li>
+<li id="id_ov-1525796029065-dup.2__ov-1525796029065-dup.4" class="li">
+            <p id="id_ov-1525796029065-dup.2__id_14852977" class="p">Number of Baseline scans for the coil (designated with a B)</p>
+
+          </li>
+<li id="id_ov-1525796029065-dup.2__ov-1525796029065-dup.5" class="li">
+            <p id="id_ov-1525796029065-dup.2__id_14852978" class="p">Number of Perturbation scans for the coil (designated with
+a C)</p>
+
+          </li>
+</ul>
+<p id="id_ov-1525796029065-dup.2__id_14852979" class="p">The following is an example of the coil characterization status for
+a typical coil (with three baseline scans and three perturbation scans):</p>
+<p id="id_ov-1525796029065-dup.2__id_14852980" class="p">AX_1: ( B 3, C 3 )</p>
+<p id="id_ov-1525796029065-dup.2__id_14852981" class="p">The coil characterization status area also shows whether a common baseline
+has been processed for the coil set. A common baseline is a baseline scan
+used during characterization of all the coils in a coil set. A common baseline
+is not necessary if a new baseline scan is performed before each coil perturbation. </p>
+</div>
+</article>
+<article class="topic concept nested2" aria-labelledby="ariaid-title17" id="id_ov-1525796029065-dup.6"><h3 class="title topictitle3" id="ariaid-title17">8.2 Coil Name</h3>
+<div class="body conbody"><p id="id_ov-1525796029065-dup.6__id_14852982" class="p">This is the name of the coil to be characterized by the selected image
+data set. If the selected image data set is being used as the baseline scan
+for all the coils, use the name common baseline.</p>
+</div>
+</article>
+</article>
+</article></main><footer role="contentinfo"><div class="navfooter"><div class="ftrcustom"><p><span class="ph">
+						Basic Service Documentation. Copyright General Electric Company. 
+						
+						
+					</span></p><p align="center"><span> 5543247-2EN</span> | <span>Revision  7</span> | <span>en-US</span> | <span><a href="legal.html">Legal Notice</a> | <a target="_blank" href="http://www.ge.com">ge.com</a></span></p><img src="oxygen-webhelp/resources/img/GEmeatball.png" alt="GE Logo" width="50pt" height="50pt" /></div></div></footer></body>
+</html>
