@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Patient table Emergency Release","shortdesc":"<p class=\"shortdesc\">Make sure that you can undock the patient table with the Emergency Release handle.<\/p>","href":"c_Patient-Table-Emergency-Release_2208575.html","attributes":{"data-id":"id_12374328"},"menu":{"hasChildren":false},"tocID":"id_12374328-d46e16826","topics":[]}]});

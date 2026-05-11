@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Doing a Touch-n-Go (TnG) button test","shortdesc":"<p class=\"shortdesc\">The diagnostic displays the ADC value of the left and right touch and go strips. <\/p>","href":"c_Touch-n-go-Button-Test_4020116.html","attributes":{"data-id":"id_12374591"},"menu":{"hasChildren":false},"tocID":"id_12374591-d46e44812","topics":[]}]});
