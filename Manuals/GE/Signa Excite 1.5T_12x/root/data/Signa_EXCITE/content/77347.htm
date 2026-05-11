@@ -1,0 +1,34 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Troubleshooting the Term Server</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133315-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">Troubleshooting the Term Server </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294269546687">1&nbsp;&nbsp;Reseting the Term Server<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Resetting Term Server to Factory Defaults</P><OL><LI CLASS="numlist"><P>Remove power connector from the term server.</P></LI><LI CLASS="numlist"><P>Press and hold the small square button, labeled 'reset' next
+to power jack.</P></LI><LI CLASS="numlist"><P>Connect power to termserver, while continuing to hold in reset
+button.</P></LI><LI CLASS="numlist"><P>Continue to hold reset button until the POWER LED blinks on
+and off in a 1:5:1 sequence. If you interrupted the continuous hold momentarily,
+by slip/mistake, the 1:5:1 will not appear. If this is the case repeat till
+LED blink sequence is as noted. Once this LED is on continuosly, it has received
+its IP from host. NOTE: now use the browser interface described above to set
+port mode to RealPort.</P></LI></OL><P CLASS="sect1">The need for this activity is required each time to initiate the rarp
+requests. Our default configuration will be RealPort</P><P CLASS="sect1">Ethernet UP LED (green) Ethernet activity LED (yellow)</P><P CLASS="sect1">RESET button</P><P CLASS="sect1">Power LED (green)</P><P CLASS="sect1">When all is configured and operating correctly, the power and Ethernet
+UP LED should be continuously on, and the Ethernet activity LED will periodically
+flicker.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294269546689">2&nbsp;&nbsp;Troubleshooting communication to the Term Server <SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following assumes that the host ethernet port and all cabling is
+working.</P><P CLASS="sect1">Required services on top of working ethernet:</P><P CLASS="sect1">/etc/rc.d/init.d/dgrp_daemon</P><P CLASS="sect1">/etc/rc.d/init.d/rarpd</P><P CLASS="sect1">If all is OK, check the port status with the following command:</P><P CLASS="sect1">'/etc/rc.d/init.d/dgrp_daemon status' the following output should be
+seen:</P><PRE>#---------------------------------------
+# Avail
+# ID Major State Ports
+#---------------------------------------
+1 253 READY 4</PRE><P CLASS="sect1">If the digi daemon is running, but the ethernet link is not up 'Avail
+Ports' will show '0'. Also perform a grep on /var/log/messages for dgrp: 'grep
+-i dgrp /var/log/messages'. Status messages will show up here.</P><P CLASS="sect1">Terminal Server 3 of 3 MR PCLinux 3/2/03 Mark Storsved</P><OL><LI CLASS="numlist"><P>Verify contents of /etc/ethers. Context: 'xx:xx:xx:xx:xx:xx
+1.1.1.1' where xx's=mac address of term server, and 1's equal the IP in the
+hosts /etc/hosts file. Here is an example of t19's ethers file: 00:40:9D:22:C6:77
+10.0.19.7</P></LI><LI CLASS="numlist"><P>Make sure rarpd is up and running. Do with '/etc/rc.d/init.d/rarpd
+status'. The follow is an example of output.</P><P>root@t19]# /etc/rc.d/init.d/rarpd status</P><P>rarpd (pid 1275) is running...</P><P>[root@t19]#</P></LI><LI CLASS="numlist"><P>Do a 'tail -f /var/log/messages', looking for rarpd to log
+any requests it sees. Actually this is how I read the mac address of the device
+I am connecting. mac addresses unknown are logged here.</P></LI><LI CLASS="numlist"><P>do a 'tail -f /var/log/messages', looking for rarpd to log
+any requests it sees. Actually this is how I read the mac address of the device
+I am connecting. mac addresses unknown are logged here.</P><P>username: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>root</B></FONT></SPAN></P><P>passwd: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dbps</B></FONT></SPAN></P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Config]</SPAN>, then <SPAN CLASS="GUIBUTTON">[Port]</SPAN> and
+configure all ports to 'RealPort' mode, verses 'Terminal' mode. Select <SPAN CLASS="GUIBUTTON">[Admin]</SPAN> and
+select <SPAN CLASS="GUIBUTTON">[reboot]</SPAN>.</P></LI><LI CLASS="numlist"><P>When term server is back up, restart digi daemon, using '/etc/rc.d/init.d/dgrp_daemon
+restart'. Watch in /var/log/messages above for its messages.</P></LI><LI CLASS="numlist"><P>TPS reset should now work, allowing scans.</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
