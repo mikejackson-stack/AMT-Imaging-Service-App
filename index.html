@@ -1356,9 +1356,27 @@ function triggerGoogleLogin(){
   // kept for any external callers; GIS button handles login via amtGoogleCallback
   if(window.location.protocol==='file:'){showHostingGuide();}
 }
-// Global callback required by GIS data-callback attribute
-function amtGoogleCallback(response){
-  _handleGISCredential(response);
+// Global callback required by GIS data-callback attribute — must be global scope
+function amtGoogleCallback(r){
+  try{
+    const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+    const padding='='.repeat((4-b64.length%4)%4);
+    const p=JSON.parse(atob(b64+padding));
+    const email=(p.email||'').toLowerCase().trim();
+    const allowedName=ALLOWED_EMAILS[email];
+    if(!allowedName){
+      alert('🚫 Access denied\n\n'+email+' is not on the AMT authorized list.\n\nAuthorized:\n• mike.jackson@amtimagingsolutions.com\n• antonio@amtimagingsolutions.com\n• tito@amtimagingsolutions.com\n\nUse Quick PIN Login instead.');
+      const err=document.getElementById('loginError');
+      if(err) err.textContent='🚫 '+email+' is not authorized. Use PIN login.';
+      return;
+    }
+    doLogin(allowedName,'Google',false);
+  }catch(e){
+    console.error('[AMT GIS]',e);
+    alert('⚠️ Google login error. Please try again or use PIN login.');
+    const err=document.getElementById('loginError');
+    if(err) err.textContent='⚠️ Google login error. Use PIN.';
+  }
 }
 
 function checkOAuthCallback(){
@@ -3862,26 +3880,6 @@ async function scanGitHubForManuals(){
 document.addEventListener('DOMContentLoaded',()=>{
   checkOAuthCallback();
   tryAutoLogin();
-  // GIS credential handler — called by amtGoogleCallback (global, set via data-callback)
-  function _handleGISCredential(r){
-    try{
-      const b64=r.credential.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-      const padding='='.repeat((4-b64.length%4)%4);
-      const p=JSON.parse(atob(b64+padding));
-      const email=(p.email||'').toLowerCase().trim();
-      const allowedName=ALLOWED_EMAILS[email];
-      if(!allowedName){
-        alert('🚫 Access denied\n\n'+email+' is not on the AMT authorized list.\n\nAuthorized:\n• mike.jackson@amtimagingsolutions.com\n• antonio@amtimagingsolutions.com\n• tito@amtimagingsolutions.com\n\nUse Quick PIN Login instead.');
-        document.getElementById('loginError').textContent='🚫 '+email+' is not authorized. Use PIN login.';
-        return;
-      }
-      doLogin(allowedName,'Google',false);
-    }catch(e){
-      console.error('[AMT GIS]',e);
-      alert('⚠️ Google login error. Please try again or use PIN login.');
-      document.getElementById('loginError').textContent='⚠️ Google login error. Use PIN.';
-    }
-  }
 });
 </script>
 
