@@ -1,0 +1,329 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>GOC3/GOC4 Command Line Diagnostic Tests (adv)</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5196839-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>RT16 and Xtra Service Info Adv</P></td></tr></table><H1 ID="top">GOC3/GOC4 Command Line Diagnostic Tests (adv) </H1><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col align="right" width="50%"><col width="50%"></colgroup><tbody><tr><td align="right">Last Revised:</td><td>10 September 2008</td></tr></tbody></table></CENTER></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1707555-185612">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The various command line diagnostic tests described below support
+software versions prior to 06MW03.x.</P><P CLASS="sect1">Select the PDF icon below for an overview of basic communication
+flow between Nodes.</P><P CLASS="sect1"><A HREF="../media/183640.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">GRE Command Line Diagnostic Tests</SPAN> </P><table summary="GRE Command Line Diagnostic Tests" border="1"><colgroup><col width="28%"><col width="23%"><col width="22%"><col width="26%"></colgroup><tbody><tr><td>Host (<A HREF="185612.htm#SL185885-185612">Section 2</A>)</td><td>DARC (<A HREF="185612.htm#SL190856-185612">Section 3</A>)</td><td>IG (<A HREF="185612.htm#SL190880-185612">Section 4</A>)</td><td>SDDA (<A HREF="185612.htm#SL190898-185612">Section 5</A>)</td></tr><tr><td>Host - pwho (<A HREF="185612.htm#SL190823-185612">Section 2.1</A>)</td><td>&nbsp;</td><td>&nbsp;</td><td>SDDA - reconfigScanDisk (<A HREF="185612.htm#SL190901-185612">Section 5.1</A>)</td></tr><tr><td>Host - scsistat (<A HREF="185612.htm#SL190828-185612">Section 2.2</A>)</td><td>DARC - ping (<A HREF="185612.htm#SL190862-185612">Section 3.1</A>)</td><td>IG - ping (<A HREF="185612.htm#SL190886-185612">Section 4.1</A>)</td><td>SDDA - Verification of the Two High Speed Disks (<A HREF="185612.htm#SL213289-185612">Section 5.2</A>)</td></tr><tr><td>Host - ifconfig (System Level) (<A HREF="185612.htm#SL190835-185612">Section 2.3</A>)</td><td>DARC - sens-v (<A HREF="185612.htm#SL190865-185612">Section 3.2</A>)</td><td>IG - sens-v (<A HREF="185612.htm#SL190889-185612">Section 4.2</A>)</td><td>SDDA - Drive Test (<A HREF="185612.htm#SL213292-185612">Section 5.3</A>)</td></tr><tr><td>Host - ifconfig -a (HP PC Only) (<A HREF="185612.htm#SL190838-185612">Section 2.4</A>)</td><td>DARC - DipDiag (<A HREF="185612.htm#SL190868-185612">Section 3.3</A>)</td><td>IG - RAC Test (<A HREF="185612.htm#SL190892-185612">Section 4.3</A>)</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>DARC - Messages (<A HREF="185612.htm#SL190871-185612">Section 3.4</A>)</td><td>IG - reset -c (<A HREF="185612.htm#SL190895-185612">Section 4.4</A>)</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>DARC - Clear the RECON Queue (<A HREF="185612.htm#SL190874-185612">Section 3.5</A>)</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>DARC - reset -c (<A HREF="185612.htm#SL190877-185612">Section 3.6</A>)</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>sg map -i (<A HREF="185612.htm#SL212336-185612">Section 6.1</A>)</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>DARC - Verifying RAID Devices (<A HREF="185612.htm#SL213283-185612">Section 6.2.1</A>)</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>DARC - Verifying RAID is mounted (<A HREF="185612.htm#SL213286-185612">Section 6.2.2</A>)</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL185885-185612">2&nbsp;&nbsp;Host<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190823-185612">2.1&nbsp;&nbsp;Host - pwho<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707557-185612">2.1.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Check for running processes using <SPAN CLASS="filename"><FONT FACE="COURIER">init</FONT></SPAN> files
+in <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/config</FONT></SPAN>.</P><OL><LI CLASS="numlist"><P>Make sure Applications are up.</P></LI><LI CLASS="numlist"><P>Open a UNIX shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>pwho</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707558-185612">2.1.2&nbsp;&nbsp;Example of Host Normal Operating System Structure<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>Checking for running processes using init files in:
+/usr/g/config
+
+INITFILE               PID    OWNER STATE NAME
+WLServer.init         5982   ctuser     S WLServer
+accs.init            17040   ctuser     S accs
+afQueueMgr.init       5986   ctuser     S afQueueMgr
+awStart.init          5248   ctuser     S awStart
+ces.init              5247   ctuser     S ces
+cupPrompt.init        5138   ctuser     S cupPrompt
+data_restore.init     5991   ctuser     S data_restore
+dataacq.init          5238   ctuser     S dataacq
+dis_event_router.init 5137   ctuser     S dis_event_route
+dms.init              6023   ctuser     S dms
+event_router.init     5137   ctuser     S dis_event_route
+examRxDisplayMgr.init 5985   ctuser     S examRxDisplayMg
+examRxEnv.init        5246   ctuser     S examRxEnv
+fwmgr.init            5141     root     S fwmgr
+headermgr.init        5987     root     S headermgr
+image_buffer.init     5440   ctuser     S image_buffer
+imagecreate.init      5145   ctuser     S imagecreate
+msgView.init          5140   ctuser     S msgView
+mtran.init            5249   ctuser     S mtran
+piRxMgmt.init         6197   ctuser     S piRxMgmt
+reconMgmt.init        6198   ctuser     S reconMgmt
+reconSelftest.init    6078   ctuser     S reconSelftest
+recon_control.init    5992   ctuser     S recon_control
+resourceMgr.init      5136   ctuser     S resourceMgr
+retroRecon.init       6199   ctuser     S retroRecon
+rtsmgr.init           5155   ctuser     S rtsmgr
+scanRx.init           6200   ctuser     S scanRx
+scanfile_recvr.init   5993   ctuser     S scanfile_recvr
+scanfile_xfer.init    5994   ctuser     S scanfile_xfer
+scanfilemgr.init      5983     root     S scanfilemgr
+scanmgr.init          5989     root     S scanmgr
+sdiomgr.init          5230   ctuser     S sdiomgr
+sdm.init              5322   ctuser     S sdm
+sfm_archive.init      5990   ctuser     S sfm_archive
+sidney.init           5143   ctuser     S sidney
+start_sdda.init       5146   ctuser     S start_sdda
+stcIf.init            6255     root     S stcIf
+uif_si.init           5144   ctuser     S uif_si
+vavQueueMgr.init      5984   ctuser     S vavQueueMgr
+visScript.init        6196   ctuser     S visScript
+</PRE><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e228"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">&#8220;S&#8221; means the process has Started. (This is
+expected when the system is idle. Anything else could indicate a problem.)</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190828-185612">2.2&nbsp;&nbsp;Host - scsistat<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707559-185612">2.2.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Open a shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>scsistat</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>An example output is shown in <A HREF="185612.htm#SL185715-185612">Section 2.2.2</A>: Example Output.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL185715-185612">2.2.2&nbsp;&nbsp;Example CT Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>Device 0 00    Direct-Access   SEAGATE ST336753LW FW Rev: HPS2
+Device 1 01    Direct-Access   SEAGATE ST373453LW FW Rev: HPS2
+Device 1 02    Direct-Access   SEAGATE ST373453LW FW Rev: HPS2
+Device 2 03    Optical Device  SONY SMO-F551-SD FW Rev: 1.04
+Device 2 04    CD-ROM  HITACHI DVD-RAM GF-2050 FW Rev: E372
+Device 3 00    CD-ROM  HL-DT-ST        DVD-ROM GDR8162B FW Rev: 0018
+</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190835-185612">2.3&nbsp;&nbsp;Host - ifconfig (System Level)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707560-185612">2.3.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Open a Unix shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ifconfig</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707561-185612">2.3.2&nbsp;&nbsp;xw8000 Host Computer Output Example<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>eth0      Link encap:Ethernet  HWaddr 00:07:E9:39:59:7A
+          inet addr:3.57.255.53  Bcast:3.57.255.255  Mask:255.255.252.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:5075839 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:4266629 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:3405020084 (3247.2 Mb)  TX bytes:320465369 (305.6 Mb)
+          Interrupt:28 Base address:0x2800 Memory:da140000-da160000
+
+eth2      Link encap:Ethernet  HWaddr 00:07:E9:39:59:40
+          inet addr:172.16.0.1  Bcast:172.16.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:2049563 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:520259 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:2690009327 (2565.3 Mb)  TX bytes:60385615 (57.5 Mb)
+          Interrupt:24 Base address:0x2880 Memory:da180000-da1a0000
+
+eth3      Link encap:Ethernet  HWaddr 00:07:E9:39:59:41
+          inet addr:192.9.220.1  Bcast:192.9.220.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:629886 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:628636 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:18775 txqueuelen:100
+          RX bytes:87054068 (83.0 Mb)  TX bytes:81444448 (77.6 Mb)
+          Interrupt:25 Base address:0x28c0 Memory:da1a0000-da1c0000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:1192477 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1192477 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+</PRE><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Additional Information - xw8000</SPAN> </P><table summary="Additional Information - xw8000" border="1"><colgroup><col width="30%"><col width="70%"></colgroup><tbody><tr><td><B>NIC Address</B></td><td><B>Description </B></td></tr><tr><td>eth0 </td><td>Hospital Backbone (xw8000 hostid)</td></tr><tr><td>eth1</td><td>Gantry STC</td></tr><tr><td>eth2 </td><td>DARC</td></tr><tr><td>eth3</td><td>Gantry TGP</td></tr><tr><td>eth4</td><td>AW</td></tr></tbody></table></CENTER></DIV><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Additional Information - xw8200</SPAN> </P><table summary="Additional Information - xw8200" border="1"><colgroup><col width="30%"><col width="70%"></colgroup><tbody><tr><td><B>NIC Address</B></td><td><B>Description </B></td></tr><tr><td>eth0 </td><td>DARC  (xw8200 hostid)</td></tr><tr><td>eth1</td><td>Gantry TGP</td></tr><tr><td>eth2 </td><td>Hospital Backbone</td></tr><tr><td>eth3</td><td>Gantry STC</td></tr><tr><td>eth4</td><td>AW</td></tr></tbody></table></CENTER></DIV><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e359"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Error and overruns listed under eth0 should always be
+zero when the system has just started.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190838-185612">2.4&nbsp;&nbsp;Host - ifconfig -a (xw8000 Only)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707564-185612">2.4.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Open a shell window. </P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ifconfig -a</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707565-185612">2.4.2&nbsp;&nbsp;Output (xw8000) Example<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>eth0      Link encap:Ethernet  HWaddr 00:07:E9:39:59:7A
+          inet addr:3.57.255.53  Bcast:3.57.255.255  Mask:255.255.252.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:5077649 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:4266714 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:3405184252 (3247.4 Mb)  TX bytes:320474098 (305.6 Mb)
+          Interrupt:28 Base address:0x2800 Memory:da140000-da160000
+
+eth1      Link encap:Ethernet  HWaddr 00:07:E9:39:59:7B
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+          Interrupt:29 Base address:0x2840 Memory:da160000-da180000
+
+eth2      Link encap:Ethernet  HWaddr 00:07:E9:39:59:40
+          inet addr:172.16.0.1  Bcast:172.16.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:2049786 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:520266 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:2690023738 (2565.4 Mb)  TX bytes:60386290 (57.5 Mb)
+          Interrupt:24 Base address:0x2880 Memory:da180000-da1a0000
+
+eth3      Link encap:Ethernet  HWaddr 00:07:E9:39:59:41
+          inet addr:192.9.220.1  Bcast:192.9.220.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:630550 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:629300 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:18794 txqueuelen:100
+          RX bytes:87140366 (83.1 Mb)  TX bytes:81529114 (77.7 Mb)
+          Interrupt:25 Base address:0x28c0 Memory:da1a0000-da1c0000
+
+eth4      Link encap:Ethernet  HWaddr 00:30:6E:D7:65:95
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:100
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+          Interrupt:16 Base address:0x4000 Memory:da320000-da340000
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:1193604 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:1193604 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0
+          RX bytes:275252067 (262.5 Mb)  TX bytes:275252067 (262.5 Mb)
+</PRE></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL190856-185612">3&nbsp;&nbsp;DARC<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190862-185612">3.1&nbsp;&nbsp;DARC - ping<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707566-185612">3.1.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e394"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The OS and Apps DARC software must be loaded for <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping</B></FONT></SPAN> to respond.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3">From the host, ping DARC.</P><OL><LI CLASS="numlist"><P>Open a Unix shell.</P></LI><LI CLASS="numlist"><P>Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Ctrl+C&gt;</SPAN> to
+exit.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707567-185612">3.1.2&nbsp;&nbsp;Example Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>PING darc (172.16.0.2) from 172.16.0.1 : 56(84) bytes of data.
+64 bytes from darc (172.16.0.2): icmp_seq=1 ttl=64 time=0.339 ms
+64 bytes from darc (172.16.0.2): icmp_seq=2 ttl=64 time=0.258 ms
+64 bytes from darc (172.16.0.2): icmp_seq=3 ttl=64 time=0.202 ms
+64 bytes from darc (172.16.0.2): icmp_seq=4 ttl=64 time=0.378 ms
+
+--- darc ping statistics ---
+4 packets transmitted, 4 received, 0% loss, time 3000ms
+rtt min/avg/max/mdev = 0.202/0.294/0.378/0.069 ms</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190865-185612">3.2&nbsp;&nbsp;DARC - sens-v <SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707568-185612">3.2.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">When software is not booted, the Host talks to the DARC and
+the DARC talks to the IG via a serial over LAN connections. Use the
+same connection to check the status of the DARC (or IG - sens-v).
+Use to check voltage, temperature, and fan speed.</P><OL><LI CLASS="numlist"><P>Open a Unix shell as root.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service cliservice
+start</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>telnet localhost 623</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Enter server name as <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>darc</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username</FONT></SPAN></P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN> and a <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN> prompt appear.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sens -v </B></FONT></SPAN> - or - <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sensors -v </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707569-185612">3.2.2&nbsp;&nbsp;Example sens Output with Power ON<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e495"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Note the following:<UL><LI CLASS="bulletlist"><P>If the Power to the DARC is OFF, a
+warning message appears. See Section <A HREF="185612.htm#SL185882-185612">Section 3.2.3</A>: Example Output with Power OFF.</P></LI><LI CLASS="bulletlist"><P>All should be OK. </P></LI><LI CLASS="bulletlist"><P>Save a copy of the output for your
+site records.</P></LI></UL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>03/31/2004 | 07:45:55 | Baseboard 1.2V       | ok           |    1.21 | Volts
+03/31/2004 | 07:45:56 | Baseboard 1.25V      | ok           |    1.25 | Volts
+03/31/2004 | 07:45:57 | Baseboard 1.8V       | ok           |    1.79 | Volts
+03/31/2004 | 07:45:58 | Baseboard 1.8VSB     | ok           |    1.80 | Volts
+03/31/2004 | 07:45:59 | Baseboard 2.5V       | ok           |    2.53 | Volts
+03/31/2004 | 07:45:59 | Baseboard 3.3V       | ok           |    3.41 | Volts
+03/31/2004 | 07:46:00 | Baseboard 3.3AUX     | ok           |    3.31 | Volts
+03/31/2004 | 07:46:01 | Baseboard 5.0V       | ok           |    5.15 | Volts
+03/31/2004 | 07:46:02 | Baseboard 5VSB       | ok           |    4.93 | Volts
+03/31/2004 | 07:46:03 | Baseboard 12V        | ok           |   11.78 | Volts
+03/31/2004 | 07:46:04 | Baseboard 12VRM      | ok           |   11.84 | Volts
+03/31/2004 | 07:46:04 | Baseboard -12V       | ok           |  -12.26 | Volts
+03/31/2004 | 07:46:05 | Baseboard VBAT       | ok           |    3.10 | Volts
+03/31/2004 | 07:46:06 | Baseboard Temp       | ok           |   31.00 | Celsius
+03/31/2004 | 07:46:07 | SCSI A Term Pwr      | ok           |    4.18 | Volts
+03/31/2004 | 07:46:08 | SCSI B Term Pwr      | ok           |    4.22 | Volts
+03/31/2004 | 07:46:15 | Processor1 Temp      | ok           |   28.00 | Celsius
+03/31/2004 | 07:46:15 | Processor2 Temp      | ok           |   25.00 | Celsius
+03/31/2004 | 07:46:18 | Proc Fan 1           | ok           | 4998.00 | RPM
+03/31/2004 | 07:46:19 | Proc Fan 2           | ok           | 4998.00 | RPM
+03/31/2004 | 07:46:19 | Processor Vccp       | ok           |    1.47 | Volts
+</PRE></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL185882-185612">3.2.3&nbsp;&nbsp;Example sens Output with Power OFF<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>WARNING: Power is off, these are the last recorded readings.  Some sensors will not display values.
+07/11/2003 | 12:34:19 | Baseboard 1.2V       | ok           |    1.20 | Volts
+07/11/2003 | 12:34:19 | Baseboard 1.25V      | ok           |    1.26 | Volts
+07/11/2003 | 12:34:19 | Baseboard 1.8V       | ok           |    1.78 | Volts
+07/11/2003 | 12:34:20 | Baseboard 1.8VSB     | ok           |    1.80 | Volts
+07/11/2003 | 12:34:20 | Baseboard 2.5V       | ok           |    2.52 | Volts
+07/11/2003 | 12:34:20 | Baseboard 3.3V       | ok           |    3.41 | Volts
+07/11/2003 | 12:34:20 | Baseboard 3.3AUX     | ok           |    3.33 | Volts
+07/11/2003 | 12:34:21 | Baseboard 5.0V       | ok           |    5.17 | Volts
+07/11/2003 | 12:34:21 | Baseboard 5VSB       | ok           |    4.93 | Volts
+07/11/2003 | 12:34:21 | Baseboard 12V        | ok           |   11.78 | Volts
+07/11/2003 | 12:34:21 | Baseboard 12VRM      | ok           |   11.84 | Volts
+07/11/2003 | 12:34:21 | Baseboard -12V       | ok           |  -12.26 | Volts
+07/11/2003 | 12:34:22 | Baseboard VBAT       | ok           |    3.04 | Volts
+07/11/2003 | 12:34:22 | Baseboard Temp       | ok           |   30.00 | Celsius
+07/11/2003 | 12:34:22 | SCSI A Term Pwr      | ok           |    4.16 | Volts
+07/11/2003 | 12:34:22 | SCSI B Term Pwr      | ok           |    4.22 | Volts
+07/11/2003 | 12:34:23 | Processor1 Temp      | ok           |   25.00 | Celsius
+07/11/2003 | 12:34:23 | Processor2 Temp      | ok           |   24.00 | Celsius
+07/11/2003 | 12:34:23 | Proc Fan 1           | ok           | 5559.00 | RPM
+07/11/2003 | 12:34:23 | Proc Fan 2           | ok           | 5457.00 | RPM
+07/11/2003 | 12:34:23 | Processor Vccp       | ok           |    1.47 | Volts</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190868-185612">3.3&nbsp;&nbsp;DARC - DipDiag<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e522"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Before running this test, ensure that the CT Applications
+are NOT running.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a UNIX shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd/user/g/bin</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>DipDiag</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>When prompted to continue, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>y</B></FONT></SPAN>.</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">+---------------------------+ </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">| DIP Diagnostics Main Menu |</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">+---------------------------+</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;1. X-ray Enable Relay</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;2. Test FEC Bit</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;3. Test EDDR Bit</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;4. Test Magic Number Register</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;5. Memory Test</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;6. Interrupt Test</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;7. External LoopBack Test</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;8. DMA Test</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;0. Exit</FONT></SPAN></P></LI><LI CLASS="numlist"><P>Select your test by typing its number.
+(See Test numbers, above.)</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e597"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Tests 7 and 8 WILL FAIL, if a Loopback Cable is not installed
+between the RX and TX ports of the DIP.  It is recommended to use
+part 2293408-2 or equivalent optic fiber as loopback cable.<p>You may select more than one test. </p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190871-185612">3.4&nbsp;&nbsp;DARC - Messages<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Messages files took the place of SYSLOG.</P><OL><LI CLASS="numlist"><P>Open a Linux shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd/var/log</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more messages</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL><P CLASS="sect2">For more information, see <SPAN CLASS="MODULEREF"><I><A HREF="188110.htm">GOC3 Message Logs (adv)</A></I></SPAN>.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190874-185612">3.5&nbsp;&nbsp;DARC - Clear the RECON Queue<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e641"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><B><IMG ALIGN="TOP" SRC="../icons/notice.gif"></B>  </SPAN></TD></TR><TR><TD><b>The command &#8220;cleanq&#8221; will remove all entries. Do
+not use this without verification that all prospective scans have
+been processed or deemed unnecessary. Do not run this command when
+applications are running.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd/usr/g/bin</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>RECON_STOP</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cleanq</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>RECON_START</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190877-185612">3.6&nbsp;&nbsp;DARC - reset -c<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707570-185612">3.6.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Used on the DARC (or IG).</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e691"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">After using this command, you must reboot the entire system
+prior to scanning to insure all devices are synced.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a Unix shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service cliservice
+start</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>telnet localhost 623</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Enter server name as <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>darc</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username</FONT></SPAN></P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN> and a <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN> prompt appear.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW prior to 06MW03.x)
+ 
+</B></FONT></SPAN>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>reset -c</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW 06MW03.x or greater)
+ 
+</B></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>&nbsp;&nbsp;reset</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>&nbsp;&nbsp;console</B></FONT></SPAN></P></LI><LI CLASS="numlist"><P>A boot up script appears (see Example
+Output, below). </P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707571-185612">3.6.2&nbsp;&nbsp;Example Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>ok
+Red Hat Linux release 7.3 (Valhalla)
+Kernel 2.4.18-18SGI_XFS_1.2pre5smp on an i686
+.3 2.96-110)) #1 SMP Mon Jan 13 18:12:36 CST 2003
+BIOS-provided physical RAM map:                    10.0.1.1
+ BIOS-e820: 0000000000000000 - 000000000009b800 (usable)
+ BIOS-e820: 000000000009b800 - 00000000000a0000 (reserved)
+ .....  &lt; Entire boot up script will be displayed &gt;</PRE></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL190880-185612">4&nbsp;&nbsp;IG<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190886-185612">4.1&nbsp;&nbsp;IG - ping<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707572-185612">4.1.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e791"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You cannot ping the IG directly from the host. First <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh</FONT></SPAN> to DARC. The OS software must be running for <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ping</FONT></SPAN> to respond.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a Unix shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping ig1</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707573-185612">4.1.2&nbsp;&nbsp;Example Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>PING ig1 (10.0.1.2) from 10.0.1.1 : 56(84) bytes of data.
+64 bytes from ig1 (10.0.1.2): icmp_seq=1 ttl=64 time=0.325 ms
+64 bytes from ig1 (10.0.1.2): icmp_seq=2 ttl=64 time=0.362 ms
+64 bytes from ig1 (10.0.1.2): icmp_seq=3 ttl=64 time=0.367 ms
+64 bytes from ig1 (10.0.1.2): icmp_seq=4 ttl=64 time=0.245 ms
+
+--- ig1 ping statistics ---
+4 packets transmitted, 4 received, 0% loss, time 3000ms
+rtt min/avg/max/mdev = 0.245/0.324/0.367/0.053 ms</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190889-185612">4.2&nbsp;&nbsp;IG - sens-v<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707574-185612">4.2.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">When software is not booted, the Host talks to the DARC and
+the DARC talks to the IG via a serial over Lan connections. Use the
+same connection to check the status of the IG or (DARC - sens-v).
+Use to check voltage, temperature, and fan speed.</P><OL><LI CLASS="numlist"><P>Open a UNIX shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service cliservice
+start</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>telnet localhost 623</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Enter server name as <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ig1</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username</FONT></SPAN></P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN> and a <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN> prompt appear.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW prior to 06MW03.x)
+ 
+</B></FONT></SPAN>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sens -v</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW 06MW03.x or greater)
+ 
+</B></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>&nbsp;&nbsp;sensors -v</B></FONT></SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707575-185612">4.2.2&nbsp;&nbsp;Example sens Output with Power ON<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e910"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the Power to the IG is OFF, a warning message appears.
+See <A HREF="185612.htm#SL185879-185612">Section 4.2.3</A>.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>06/26/2003 | 08:00:38 | Baseboard 1.2V       | ok      |    1.20 | Volts
+06/26/2003 | 08:00:39 | Baseboard 1.25V      | ok      |    1.26 | Volts
+06/26/2003 | 08:00:40 | Baseboard 1.8V       | ok      |    1.79 | Volts
+06/26/2003 | 08:00:40 | Baseboard 1.8VSB     | ok      |    1.80 | Volts
+06/26/2003 | 08:00:41 | Baseboard 2.5V	     | ok      |    2.52 | Volts
+06/26/2003 | 08:00:42 | Baseboard 3.3V	     | ok      |    3.41 | Volts
+06/26/2003 | 08:00:43 | Baseboard 3.3AUX     | ok      |    3.33 | Volts
+06/26/2003 | 08:00:44 | Baseboard 5.0V	     | ok      |    5.17 | Volts
+06/26/2003 | 08:00:44 | Baseboard 5VSB	     | ok      |    4.93 | Volts
+06/26/2003 | 08:00:45 | Baseboard 12V        | ok      |   11.84 | Volts
+06/26/2003 | 08:00:46 | Baseboard 12VRM	     | ok      |   11.84 | Volts
+06/26/2003 | 08:00:47 | Baseboard -12V	     | ok      |  -12.11 | Volts
+06/26/2003 | 08:00:48 | Baseboard VBAT	     | ok      |    3.07 | Volts
+06/26/2003 | 08:00:49 | Baseboard Temp	     | ok      |   34.00 | Celsius
+06/26/2003 | 08:00:56 | Processor1 Temp      | ok      |   30.00 | Celsius
+06/26/2003 | 08:00:57 | Processor2 Temp      | ok      |    30.00| Celsius
+06/26/2003 | 08:00:59 | Proc Fan 1           | ok      |  3264.00| RPM
+06/26/2003 | 08:01:00 | Proc Fan 2           | ok      | 3264.00 | RPM
+06/26/2003 | 08:01:01 | Processor Vccp       | ok      |    1.47 | </PRE></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL185879-185612">4.2.3&nbsp;&nbsp;Example sens Output with Power OFF<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>WARNING: Power is off, these are the last recorded readings.  Some sensors will not display values.
+07/11/2003 | 12:05:34 | Baseboard 1.2V       | ok           |    1.20 | Volts
+07/11/2003 | 12:05:34 | Baseboard 1.25V      | ok           |    1.27 | Volts
+07/11/2003 | 12:05:34 | Baseboard 1.8V       | ok           |    1.79 | Volts
+07/11/2003 | 12:05:34 | Baseboard 1.8VSB     | ok           |    1.80 | Volts
+07/11/2003 | 12:05:35 | Baseboard 2.5V       | ok           |    2.52 | Volts
+07/11/2003 | 12:05:35 | Baseboard 3.3V       | ok           |    3.41 | Volts
+07/11/2003 | 12:05:35 | Baseboard 3.3AUX     | ok           |    3.31 | Volts
+07/11/2003 | 12:05:35 | Baseboard 5.0V       | ok           |    5.20 | Volts
+07/11/2003 | 12:05:36 | Baseboard 5VSB       | ok           |    4.96 | Volts
+07/11/2003 | 12:05:36 | Baseboard 12V        | ok           |   11.72 | Volts
+07/11/2003 | 12:05:36 | Baseboard 12VRM      | ok           |   11.84 | Volts
+07/11/2003 | 12:05:36 | Baseboard -12V       | ok           |  -12.11 | Volts
+07/11/2003 | 12:05:36 | Baseboard VBAT       | ok           |    3.04 | Volts
+07/11/2003 | 12:05:37 | Baseboard Temp       | ok           |   29.00 | Celsius
+07/11/2003 | 12:05:37 | Processor1 Temp      | ok           |   26.00 | Celsius
+07/11/2003 | 12:05:37 | Processor2 Temp      | ok           |   22.00 | Celsius
+07/11/2003 | 12:05:37 | Proc Fan 1           | ok           | 3213.00 | RPM
+07/11/2003 | 12:05:38 | Proc Fan 2           | ok           | 3264.00 | RPM
+07/11/2003 | 12:05:38 | Processor Vccp       | ok           |    1.47 | Volts</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190892-185612">4.3&nbsp;&nbsp;IG - RAC Test<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707576-185612">4.3.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Run the RAC (Recon Accelerator Card) test on the IG if you experience:</P><UL><LI CLASS="bulletlist"><P>No recon</P></LI><LI CLASS="bulletlist"><P>Slow recon</P></LI><LI CLASS="bulletlist"><P>Artifacts</P></LI></UL><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e942"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><B><IMG ALIGN="TOP" SRC="../icons/notice.gif"></B>  </SPAN></TD></TR><TR><TD><b>Prior to running this test, ensure that CT Applications are
+NOT running.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a Unix shell.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /usr/g/bin </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>At the <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ctuser</FONT></SPAN> prompt,
+type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>racdiags</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI></OL><P CLASS="sect3">These tests are pass/fail. If any of the tests fail, replace
+the IG. </P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e975"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If only one IG Node is present, ignore other IG Node failures.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707577-185612">4.3.2&nbsp;&nbsp;Example racdiags Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>  0 SRAM A Incr Pat            PASSED 10 loops
+  1 SRAM A Walking Pat         PASSED 10 loops
+  2 SRAM A Address Pat         PASSED 10 loops
+  3 SRAM B Incr Pat            PASSED 10 loops
+  4 SRAM B Walking Pat         PASSED 10 loops
+  5 SRAM B Address Pat         PASSED 10 loops
+  6 FLASH Region 0             PASSED 10 loops
+  7 FLASH Region 1             PASSED 10 loops
+ 13 DMA host&lt;-image mem        PASSED 10 loops
+ 14 DMA host-&gt;projection mem   PASSED 10 loops
+
+10 Loops: All tests passed</PRE><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e984"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"> While the tests are running, the iteration number on
+screen increments.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190895-185612">4.4&nbsp;&nbsp;IG - reset -c<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707578-185612">4.4.1&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Used on the IG (or DARC) for troubleshooting only. Invoking
+this command is the equivalent of pushing the Reset button on the
+front of either the DARC or IG. The unit will reboot and the -c switch
+causes the bootup script to be echoed to the terminal from which the
+command was issued (remote or shell on system).</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e995"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">After using this command, you must reboot the entire system
+prior to scanning to insure all devices are synced.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Open a Unix shell as root.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service cliservice
+start</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>telnet localhost 623</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Enter server name as <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ig1</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username</FONT></SPAN></P></LI><LI CLASS="numlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> at <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password</FONT></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN> and a <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN> prompt appear.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW prior to 06MW03.x)
+ 
+</B></FONT></SPAN>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>reset -c</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For SW 06MW03.x or greater)
+ 
+</B></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>&nbsp;&nbsp;reset</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>&nbsp;&nbsp;console</B></FONT></SPAN></P></LI><LI CLASS="numlist"><P>A boot up script appears (see Example
+Output, below). </P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1707579-185612">4.4.2&nbsp;&nbsp;Example reset Output<SPAN CLASS="SECT1EFF"> </SPAN></H4><PRE>ok
+
+Red Hat Linux release 7.3 (Valhalla)
+Kernel 2.4.18-18SGI_XFS_1.2pre5smp on an i686
+
+.3 2.96-110)) #1 SMP Mon Jan 13 18:12:36 CST 2003
+BIOS-provided physical RAM map:                    10.0.1.1
+ BIOS-e820: 0000000000000000 - 000000000009b800 (usable)
+ BIOS-e820: 000000000009b800 - 00000000000a0000 (reserved)
+ .....  &lt; Entire boot up script will be displayed &gt;</PRE></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL190898-185612">5&nbsp;&nbsp;Disk Array<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL190901-185612">5.1&nbsp;&nbsp;reconfigScanDisk<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This script can be run only on software older than 06MW03.x.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1101"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Normally, this test is not run in the field. Applications/Install
+reconfig will internally/automatically run this to setup RAID. This
+programs sets up RAID (and then tests the RAID setup).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1104"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><B><IMG ALIGN="TOP" SRC="../icons/notice.gif"></B>  </SPAN></TD></TR><TR><TD><b>This erases all data on the Scan Disk. </b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">On the DARC,</P><OL><LI CLASS="numlist"><P>Open a shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>/usr/g/scripts/reconfigScanDisk</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL><P CLASS="sect2">Each action appears on screen and OK should appear next to the
+action once it has completed successfully.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL213289-185612">5.2&nbsp;&nbsp;Verification of the Two High Speed Disks<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/scsi/scsi/</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>The output is shown below.</P></LI></OL><PRE>Attached devices: 
+Host: scsi0 Channel: 00 Id: 00 Lun: 00 
+Vendor: MITSUMI Model: CD-ROM SR244W Rev: T01A 
+Type: CD-ROM ANSI SCSI revision: 02 
+Host: scsi1 Channel: 00 Id: 00 Lun: 00 
+Vendor: SEAGATE Model: ST336753LW Rev: 0005 
+Type: Direct-Access ANSI SCSI revision: 03 
+Host: scsi1 Channel: 00 Id: 01 Lun: 00 
+Vendor: SEAGATE Model: ST336753LW Rev: 0005 
+Type: Direct-Access ANSI SCSI revision: 03 
+</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL213292-185612">5.3&nbsp;&nbsp;Disk Array Drive Test<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This test lights the drive to identify it.</P><OL><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su -</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#bigguy</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dd if=/dev/sda of=/dev/null</B></FONT></SPAN>,</P><P>To verify the first Raw Data Drive in the Disk Array.</P><P>- OR -</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dd if=/dev/sdb of=/dev/null</B></FONT></SPAN>,</P><P>To verify the second Raw Data Drive in the Disk Array.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1196"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">These two tests take around 10 minutes, each. You will
+not see any output while they are running.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P>Example Output:</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">71687372+0 records in</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">71687372+0 records out</FONT></SPAN></P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1707580-185612">6&nbsp;&nbsp;Other<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL212336-185612">6.1&nbsp;&nbsp;sg_map -i<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1213"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">&#8221;sg&#8221; stands for &#8220;SCSI Generic&#8221;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">This test applies to emulated SCSI devices like the DARC CD-ROM.</P><OL><LI CLASS="numlist"><P>Open a Unix shell as root.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sg_map -i</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI></OL><P CLASS="sect2">The output is shown below.</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/dev/sg0 /dev/scd0 MITSUMI CD-ROM SR244W T01A</FONT></SPAN> (CD-ROM in the DARC)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/dev/sg1 /dev/sda SEAGATE ST336753LW 0005</FONT></SPAN> (1st Raw Data Disk)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/dev/sg2 /dev/sdb SEAGATE ST336753LW 0005</FONT></SPAN> (2nd Raw Data Disk) </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1707581-185612">6.2&nbsp;&nbsp;Raid Devices<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL213283-185612">6.2.1&nbsp;&nbsp;Verify Raid Device Is Running<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cat /proc/mdstat</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Personalities : [raid0]</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">read_ahead 1024 sectors</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">md0 : active raid0 sdb1[1] sda1[0]</FONT></SPAN> The device
+is named &#8216;md0&#8217;. Active</P><P>71681792 blocks 4k chunks means the device is available </P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">unused devices: &lt;none&gt;</FONT></SPAN></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL213286-185612">6.2.2&nbsp;&nbsp;Verifying Raid Device Is Mounted on /raw_data<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>df -h /raw_data</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Filesystem Size Used Avail Use% Mounted on </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/dev/md0 68G 4.4G 63G 7% /raw_data</FONT></SPAN></P></LI></OL></DIV></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
