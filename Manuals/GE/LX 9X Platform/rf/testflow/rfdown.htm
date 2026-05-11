@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft FrontPage 4.0">
+<TITLE>Safety awareness</TITLE>
+</HEAD>
+<BODY>
+
+<B><P ALIGN="CENTER"><font size="5">Safety Awareness</font></B><font size="5"> </font>(Based on Service
+Note)</P>
+<P ALIGN="left"><B><font size="4">Proper Way to Shut Down Erbtec High Field RF AMP Subsystem Prior to
+Repair or Adjustment</font></P>
+Erbtec Power Down Preparation:
+</B><ol>
+	<li> Remove the screws necessary to withdraw the amplifier unit from the cabinet enclosure.
+	<li> Attach a laptop or other terminal to the serial port using the serial cable that comes with the
+      Amp, and command the amplifier to the &quot;Off&quot; mode. With the
+      laptop running Windows 95/98:
+      <li> From Start button, select <b>Find</b> and <b>Files</b> or <b> Folders</b>.
+	<li> Enter the word and symbols:  <b>*terminal*</b> in the &quot;Named&quot; dialog box and select <b>Find Now</b>.
+	<li> In the list that displays, select <b>Terminal.exe</b>.
+	<li> When the Terminal window displays, select <b>Settings </b>and<b> 
+      Communications</b>.
+	<li> Under Communications, ensure the following setup:
+</ol>
+<blockquote>
+  <ul>
+    <li>Baud rate: <b>9600</b></li>
+    <li>Data bits: <b>8</b></li>
+    <li>Stop bits: <b>1</b></li>
+    <li>Parity: <b>none</b></li>
+    <li>Flow control: <b>Xon/Xoff</b></li>
+  </ul>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp; Attach the cable connector to the com port being used.
+With service laptop, this should be <b>com2</b>. (Com1 is used either by the external mouse or the modem
+card.)</p>
+<p><b><font size="3">Troubleshooting:</font></p>
+</b>
+<p>If unable to obtain control of the Amp:
+<ol>
+	<li> Make sure you have the right type of serial cable attached. Two CPU's attached to one another require a NULL modem cable (Xmit/Rcv lines are crossed)
+	<li> Make sure you have an active com port. (switch to the other port)
+	<li> Try 7 data bits 1 parity and 1 stop bit. (Older terminals/Laptops only)
+	</ol>
+<br>
+<b><font size="3">Command RF Amp to OFF State:</font></b>
+ <ol>
+	<li> Command the Erbtec Microprocessor controller to internal control by typing:  <b>O0</b>  (letter &quot;O&quot; and a zero) in the Terminal window.
+      (This will disconnect the Amp from external computer control.)
+
+	<li> Turn OFF the Erbtec Amp breaker at the rear of the cabinet.
+	<li> Perform LOTO procedure at the Main disconnect, and remove and lock the incoming AC power cord in the cup.
+	<center><b><p style="margin-bottom: 3">CAUTION:</b> <b>USE EXTREME CAUTION IN THE NEXT STEP. THERE STILL MAY BE HAZARDOUS VOLTAGES PRESENT!</b></center></p>
+<li>
+  <p style="margin-bottom: 12"><b>WAIT at least 10 minutes</b> to ensure the HV capacitors have bled down to ground potential.
+  <p style="margin-bottom: 0">
+<center><b>WARNING: NEVER SHORT THE POWER SUPPLY TO GROUND. DOING SO MAY RESULT
+IN A DESTROYED POWER SUPPLY OR SEVERE SHOCK HAZARD!</b></center>
+<li> 
+  <p style="margin-bottom: 6"> Remove the respective covers, and connect the negative lead of a DVM to the chassis;
+  measure potential hazard points in the areas where you will be placing your hands.
+  (At each point, you should measure ZERO volts. If you measure a potential anywhere above 20 volts, <B>STOP</B>. Something is not powered off correctly
+  or has not bled down yet. Proceed ONLY when measured potentials are below 20 volts.)
+<li> Attach a ground wire to the Amp frame and the other end of the ground wire to each power supply.
+  (This requires two ground wires: one for the 3kv supply and one for the 6kv supply. These
+  can be #14 gauge wire.)
+</ol>
+<b><center></center></b>
+The Erbtec Amplifier should now be safe to work on. Remember your ESD procedures if removing any of the TTL logic boards within the cabinet.
+
+<b><p><font size="3">To Re-enable Erbtec RF Amplifier:</font></p></b>
+<ol>
+<li>Remove any ground wires that were attached.
+<li>Replace all covers.
+<li>Turn on the circuit breaker for the RF Amplifier, and remove LOTO equipment.
+<li>Reconnect your laptop and enter the terminal program.
+<li>Command the Erbtec Microprocessor Controller to internal control by typing:  <b>O1</b>  (letter &quot;O&quot; and the number one) followed by <b> O3</b> 
+  (letter &quot;O&quot; and the number three) in the Terminal window. (This will disconnect the
+  Amp from external computer control.)
+
+</ol>
+<p>&nbsp;</p>
+<P> </P>
+</BODY>
+</HTML>
