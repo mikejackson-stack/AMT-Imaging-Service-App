@@ -1,0 +1,267 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Universal Power Monitor (UPM) Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;6.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;2/9/10</P></td></tr></table><H1 ID="top">Universal Power Monitor (UPM) Troubleshooting </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1909472-1058080">1&nbsp;&nbsp;	Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"> There are UPM Diagnostics that can be found on the Common Service
+Desktop.  See <SPAN CLASS="MODULEREF"><A HREF="1052850.htm#SL1857240-1052850"><I>UPM Diagnostics</I></A></SPAN> for
+more details.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1909473-1058080">2&nbsp;&nbsp;Reference Documents / Vendor Manuals<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P> FRU Manual</P></LI><LI CLASS="numlist"><P><SPAN CLASS="MODULEREF"><A HREF="1089523.htm#SL1935629-1089523"><I>Interactive Block Diagrams</I></A></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="MODULEREF"><A HREF="1045719.htm#SL1750167-1045719"><I>Universal Power Monitor - Head and Body Setup and Calibration </I></A></SPAN></P></LI><LI CLASS="numlist"><P><SPAN CLASS="MODULEREF"><A HREF="1046253.htm#SL1761393-1046253"><I>UPM - Body &amp; Head Functional Check</I></A></SPAN></P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1909480-1058080">3&nbsp;&nbsp;UPM Component Descriptions<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909481-1058080">3.1&nbsp;&nbsp;Top Panel <SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>ASC Reset Button will reset both UPMs;
+however, any measured RF power from the scanner is NOT reset.</P></LI><LI CLASS="bulletlist"><P>Voltage banana jacks are for checks
+of the power supply for the entire CAM.</P></LI></UL><DIV CLASS="ILLUSTRATION" id="SL1909486-1058080"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">UPM Components</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1058080-1058607.jpg" BORDER="0" usemap="#SL1932840-1058080"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909487-1058080">3.2&nbsp;&nbsp;Power Supply <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The power supply provides 3.3V, 5.0V, +12V and &#8211;12V to the processor
+and detector boards.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909488-1058080">3.3&nbsp;&nbsp;Processor Board <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The processor board for UPM1 and UPM2 are identical.  These
+boards collect sample data from the detector boards, calculate the
+RF power and inhibit the scan if the trip limits have been exceeded
+or if some other UPM error occurs.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909489-1058080">3.4&nbsp;&nbsp;RF Detector Boards <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There are two types of detector boards, one that measures forward
+and reflected power (3.0T systems) and one that only measures forward
+power (1.5T systems).  All RF detector boards in a system are identical.
+ For systems with MNS, there will be four RF detector boards (2 boards
+for each UPM).  Systems that do not use MNS will only have 2 RF detector
+boards.  These boards convert measured RF power into a digital signal
+that is sent to the processor boards.  Each board has two channels
+and each channel has 1-3 RF input ports; see details in the table
+below.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL1909490-1058080"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RF Detector Boards </SPAN> </P><table summary="RF Detector Boards " border="1"><colgroup><col width="25%"><col width="30%"><col width="45%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><B>DETECTOR BOARD PORTS	</B></td><td valign=""><B>NARROW BAND RF DETECTOR PORT USAGE	</B></td><td valign=""><B>BROAD BAND RF PORT USAGE (OPTION)</B></td></tr><tr valign="top"><td valign="">Channel 1 FWD	</td><td valign="">Body Forward	</td><td valign="">CW Forward (Not Used)</td></tr><tr valign="top"><td valign="">Channel 1 REF 1		</td><td valign="">Body Reflected (Used only on 3.0T)</td><td valign="">CW Reflected (Not Used)</td></tr><tr valign="top"><td valign="">Channel 1 REF 2		</td><td valign="">Body Hybrid Reflected (Used only on 3.0T)</td><td valign="">CW Hybrid Reflected (Not Used)</td></tr><tr valign="top"><td valign="">Channel 2 FWD	</td><td valign="">Head Forward	</td><td valign="">MNS Forward</td></tr><tr valign="top"><td valign="">Channel 2 REF 1</td><td valign="">Head Reflected (Used only on 3.0T)	</td><td valign="">MNS Reflected (Used only on 3.0T)</td></tr><tr valign="top"><td valign="">Channel 2 REF 2	</td><td valign="">Head Hybrid Reflected (Not Used)	</td><td valign="">MNS Hybrid Reflected (Not Used)</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909491-1058080">3.5&nbsp;&nbsp;RF Interface Boards <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">These two boards offer a secondary communication path and status
+monitor for the RF Amplifiers. One board is for the Narrowband RF
+Amplifier; the other board is for the Broadband MNS Amplifier.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909492-1058080">3.6&nbsp;&nbsp;UPM1 / UPM2 <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Every system contains two (redundant) UPMs where UPM refers
+to 1 RF Processor board working in conjunction with 1 RF Detector
+Board (standard narrow band configuration) or 2 RF detector boards
+(system with the MNS option). These UPM&#8217;s are identical and
+boards can be swapped between the two for troubleshooting; see <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> for details. </P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e164"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">A 50 Ohm Terminator is required on any RF port on the
+RF Detector Boards that is not being used.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL1909493-1058080"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">UPM 1 Or UPM 2</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1058080-1058608.jpg" BORDER="0" usemap="#SL1932845-1058080"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL1909494-1058080"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RF Processor and Detector Board LEDs</SPAN> </P><table summary="RF Processor and Detector Board LEDs" border="1"><colgroup><col width="18%"><col width="82%"></colgroup><tbody valign=""><tr valign="middle"><td valign="middle"><B>LED NAME </B></td><td valign="middle"><B>DESCRIPTION</B></td></tr><tr valign="top"><td valign="">Sense	</td><td valign="">If ON, the RF Detector board is detecting RF input signal into
+one of the 3 ports on that Channel.  If the Sense LED is OFF, then
+no signal is detected on that channel.</td></tr><tr valign="top"><td valign="">1.5V </td><td valign="">If ON, the processor board indicates it is receiving 3.3V from
+the power supply and generating 1.5V. If the 3.3V power is okay, the
+issue is probably the processor board.</td></tr><tr valign="top"><td valign="">CAN Power	</td><td valign="">If ON, the 24V from the CAN power supply is detected.  Note
+that this voltage is provided via the CAN communication cable connected
+to the UPM Processor board.  So, this LED should be ON even if the
+UPM is powered down.</td></tr><tr valign="top"><td valign="">CAN Status	</td><td valign="">If the CAN status blinks once, then the processor board is
+attempting to communicate with the MGD host.  If the LED blinks twice,
+then the processor board is communicating with the MGD host.  If LED
+remains OFF, then the processor board is not attempting communication
+with the host.</td></tr><tr valign="top"><td valign="">Inhibit	</td><td valign="">If this LED is ON, then the UPM has detected some sort of fault
+and has inhibited any scanning.  The LED will remain ON until the
+fault is cleared.  Check the error log for details on the fault. 
+For excessive power faults, it will clear once the power level is
+less than 99% of the trip limit.</td></tr></tbody></table></div></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL219641-1058080">4&nbsp;&nbsp;UPM Calibration<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="MODULEREF"><A HREF="1045719.htm#SL1750167-1045719"><I>Universal Power Monitor - Head and Body
+Setup and Calibration </I></A></SPAN></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909495-1058080">4.1&nbsp;&nbsp;Theory<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The UPM calibration runs a pcal scan and adjusts digital attenuators
+internal to the UPM to match the expected RF signal level.</P><P CLASS="sect2">The UPM calibration parameters found in the UPM calibration
+files are used in the calibration/functional check program. The program
+code sets the digital attenuators in the UPM based on the results
+of the 3 calibrations per channel (forward, reflected and hybrid reflected
+(if applicable)), and a comparison to these UPM calibration parameters.
+This calibration file is accessible from within the UPM calibration
+tool from the &#8220;File&#8221; pull down menu, &#8220;Edit Config&#8221;
+option. </P><P CLASS="sect2">The final UPM digital attenuator values are written to the UPM
+Calibration Configuration files (Upm1Cal.cfg, Upm2Cal.cfg) located
+in directory: w/config.  There can be substantial variation in these
+calibration values from port to port, or on the same port following
+the replacement of any hardware.</P><P CLASS="sect2">Prior to starting the troubleshooting of the UPM, you can save
+the current calibration files as the Default backup.  This can be
+done by entering the UPM calibration tool, selecting File and BKUP
+UPM Cal.  After troubleshooting, if the UPM is restored in its original
+configuration (ie, each board is in its original location) you can
+restore the backup calibration file by opening the UPM calibration
+tool, selecting File and Restore BKUP UPM Cal.  (The following error
+message may appear:  "Warning: single selection listbox control requires
+that the Value be an integer range. Control will not be rendered until
+all of its parameter values are valid."&#8230;.this error can be ignored).</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1909496-1058080">4.2&nbsp;&nbsp;Troubleshooting<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If the UPM calibration fails, first check the system error log.
+ Use the Problem/Solution Table in <A HREF="1058080.htm#SL219592-1058080">Section&nbsp;6</A> to troubleshoot
+the errors in the error log.  If <A HREF="1058080.htm#SL219592-1058080">Section&nbsp;6</A> does not solve
+the calibration errors, attempt the following steps: </P><OL><LI CLASS="numlist"><P>Quit UPM Calibration tool, end any
+open exams and TPS reset.</P></LI><LI CLASS="numlist"><P>Open a new exam, Patient ID: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>geservice</B></FONT></SPAN>, weight: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>111</B></FONT></SPAN> lbs.</P></LI><LI CLASS="numlist"><P>Select Service, <SPAN CLASS="GUIBUTTON">[Other]</SPAN>.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>apb cal</B></FONT></SPAN> (series 1 if troubleshooting body and series 2 if troubleshooting
+head).</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Save Series]</SPAN>.</P></LI><LI CLASS="numlist"><P>Make sure that the correct hardware
+setup exists (ie cables connections and dummy load connections match
+setup in documentation).</P></LI><LI CLASS="numlist"><P>Click on <SPAN CLASS="GUIBUTTON">[Manual Pre-scan]</SPAN>.</P></LI><LI CLASS="numlist"><P>Change TG to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>63</B></FONT></SPAN> if troubleshooting UPM Reflected Power Calibration, or set TG above <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>149</B></FONT></SPAN> if troubleshooting UPM Forward Power Calibration.</P></LI><LI CLASS="numlist"><P>Click on <SPAN CLASS="GUIBUTTON">[Scan TR]</SPAN>.</P></LI><LI CLASS="numlist"><P>	Check for <B>inhibit</B> light on CAM Chassis, Driver Module.</P></LI><LI CLASS="numlist"><P>Check for <B>Sense</B> LED&#8217;s flashing on the correct channel (both RF Detector boards
+should have one of the channel&#8217;s <B>Sense</B> LEDs flashing, matching the Channel you are troubleshooting).</P></LI><LI CLASS="numlist"><P>Exit out of Manual Prescan.</P></LI></OL><P CLASS="sect2">The system must be able to scan with the correct UPM <B>Sense</B> LEDs flashing prior to running the calibration.
+ If the <B>Sense</B> LEDs are not flashing, check
+the error log to determine if the scan was stopped.  Also check that
+the hardware setup is correct.</P><P CLASS="sect2">If setup and system are okay but the <B>Sense</B> lights are not flashing, make sure RF is getting to the UPM by placing
+a 50 Ohm terminator in the port you are troubleshooting and the UPM
+RF cable into a 50ohm terminated scope.  Make sure you see a RF signal,
+if no signal exists, attempt reading at various points along the cable
+path to determine where the signal is lost.  If a signal exists, attempt
+swapping/replacing RF Detector boards.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e324"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Sometimes calibration may fail due to a RF Amp excessive
+peak power fault.  Please recheck setup and condition of test equipment
+and RF cable connections at every component.  Also confirm that the
+RF Amplifier power calibration was performed per the documented service
+procedure.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1909509-1058080">5&nbsp;&nbsp;	UPM Functional Check <SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="MODULEREF"><A HREF="1046253.htm#SL1761393-1046253"><I>UPM - Body &amp; Head Functional Check</I></A></SPAN></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1910945-1058080">5.1&nbsp;&nbsp;Theory<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The UPM Functional check runs a prescribed scan in the RF Chain
+selected.  It compares the measured RF power from the UPM to the expected
+value in a config file.  If the values do not fall within 12%, then
+the functional check will fail.  In addition, the functional check
+confirms the UPM will stop scanning if the RF measured exceeds the
+trip limit.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1910946-1058080">5.2&nbsp;&nbsp;Troubleshooting<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If the functional check fails to run, first check the system
+error log.  Proceed to <A HREF="1058080.htm#SL219592-1058080">Section&nbsp;6</A> for troubleshooting UPM system errors.</P><P CLASS="sect2">If the functional check fails due to inaccurate power measurement
+re-calibrate the UPM then attempt the functional check again.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL219592-1058080">6&nbsp;&nbsp;Problem / Solution Table<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL1909510-1058080"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Problem - Solution Table</SPAN> </P><table summary="Problem - Solution Table" border="1"><colgroup><col width="35%"><col width="30%"><col width="35%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>FAULT DESCRIPTION</B></td><td align="center" valign="middle"><B>PROBLEM DESCRIPTION</B></td><td align="center" valign="middle"><B>GE FIELD ACTION</B></td></tr><tr valign="top"><td valign="">EM_SCP_STOP_ACTION_UPM_ERRORUniversal Power Monitor error occurred.</td><td valign="">General fault	</td><td valign="">This is a general UPM fault; view other errors in error log
+for more details.</td></tr><tr valign="top"><td valign="">EM_POWER_FAULT_WARNING Power Monitor Warning: % percent of
+limit reached for the XX Average.		</td><td valign="">General high power warning</td><td valign="">This is a general warning that the scan approached the maximum
+allowable Specific Absorption Rate (SAR).  No action required.</td></tr><tr valign="top"><td valign="">EM_LARGE_DIFFERENCE_DETECTED. Large difference was detected
+between the two Power Monitors. Difference is in the (Long/short term)
+Average.<OL><LI CLASS="numlist">Monitor 1 reads XX W/kg</LI><LI CLASS="numlist">Monitor 2 reads YY W/kg</LI></OL></td><td valign="">The power levels detected by the UPMs differ greatly.<UL><LI CLASS="bulletlist">Error can occur during the calibration
+process.  If this error occurs during UPM Calibrations, ignore.</LI><LI CLASS="bulletlist">Error can also occur during troubleshooting
+if UPM boards have been swapped.  Return boards to original spot or
+run UPM calibrations.</LI></UL></td><td valign=""><OL><LI CLASS="numlist">Calibrate and run the UPM functional
+check.</LI><LI CLASS="numlist">If error continues, go to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+RF Detector boards.  Recalibrate and run the UPM functional check.
+ If lower value follows board, order new board.  Try replacing one
+board, recalibrate and run the functional check.  If error continues,
+replace other board; recalibrate and run functional check.</LI><LI CLASS="numlist">If lower RF value does NOT follow RF
+Detector board, swap the cables running into the RF Detector boards.
+ Recalibrate and run the UPM functional check.  If lower value moves
+to other UPM, then check resistance of both cable runs.  If the resistance
+of the cables are equal, then replace the RF couplers internal to
+the effected RF Amp (couplers may not be the FRU, actual FRU is dependant
+on amplifier type).</LI><LI CLASS="numlist">If lower value moves to other UPM,
+then check resistance of both cable runs. If the resistance of the
+cables are equal, then replace the RF couplers internal to the effected
+RF Amp (couplers may not be the FRU, actual FRU is dependant on amplifier
+type).</LI><LI CLASS="numlist">If steps 1-4 do not fix the issue,
+then replace the UPM Processor board within the UPM chain experiencing
+faults.</LI></OL></td></tr><tr valign="top"><td valign="">EM_TOO_MUCH_REFLECTED_POWERUPM1/2 detected more reflected power
+than forward power on the (Head/Body/MNS) Amplifier.Possible cause
+is swapped Forward and Reflected Power Cables.<P CLASS="entry">Forward Power
+= XX W</P><P CLASS="entry">Reflected Power = YY W</P><P CLASS="entry">Coil Reflected
+Power = ZZ W</P></td><td valign="">UPM detected that there was more reflected power than forward
+power.</td><td valign=""><OL><LI CLASS="numlist">If this error occurs during reflected
+UPM calibrations, then ignore.</LI><LI CLASS="numlist">Check to make sure UPM cabling matches
+block diagrams.</LI><LI CLASS="numlist">Make sure that there are no opens in
+the transmit chain.  Opens could cause equal power for forward/reflected
+that could trigger this fault.</LI><LI CLASS="numlist">If 1-3 are not applicable, then go
+to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap Detector boards to determine if error moves as well.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_FPGA_SN_FLTThe (UPM1/2) has detected that the FPGA was
+unable to read serial number information.</td><td valign="">The FPGA was unable to read serial number information from
+(RF Detector/RF Processor) UPM board. This could be caused by an old
+revision of FPGA code or a hardware problem.</td><td valign=""><OL><LI CLASS="numlist">Go to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap Detector
+boards to see if fault moves.  If so, replace faulty Detector board.</LI><LI CLASS="numlist">If root cause not determined, go to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap Processor
+boards to see if fault moves.  If so, replace faulty Processor board.</LI><LI CLASS="numlist">If root cause not determined, replace
+the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_PWR_FLT_DETECT The (UPM1/2) has detected an Invalid
+Power Fault on the (Head/Body/MNS/CW) Amplifier. </td><td valign="">The UPM detected RF power out of an amplifier port that should
+not have been producing RF at that time.</td><td valign=""><OL><LI CLASS="numlist">Capture the protocol/sequence that
+produces this error repeatedly, then follow the following steps.</LI><LI CLASS="numlist">If only one UPM detects this error,
+then go to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the effected RF Detector boards.</LI><LI CLASS="numlist">If only one UPM detects this error
+and step 2 was attempted with no success, go to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A>and swap the
+Processor boards.</LI><LI CLASS="numlist">If both UPMs indicate this failure,
+or steps 2 and 3 were attempted with no success, then proceed with
+troubleshooting the un-blank signal and affected RF Amplifier, as
+this indicates a system fault.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_PWR_LIMIT_EXCEEDThe (UPM1/2) detected a Power Fault
+on the (Short/Long Term) Average.Calculated Average =XXLimit =XX</td><td valign=""> This indicates that the UPM detected power that exceeded the
+trip limit for the area scanned.</td><td valign=""><OL><LI CLASS="numlist">Customer should check the protocol
+to determine if it produces excessive SAR.  Protocol should be approved
+by GE Apps specialist, if applicable.</LI><LI CLASS="numlist">If the protocol is acceptable, calibrate
+UPM and run the UPM functional check.</LI><LI CLASS="numlist">If the trip is consistently on one
+UPM, proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the RF Detector boards.  Make sure
+to recalibrate the UPM after the swap.  If the faults follow the RF
+Detector board, replace it.  If the fault doesn&#8217;t follow the
+RF Detector board, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_RF_NB_BOARD_MISSINGNB Detector Board Missing</td><td valign="">UPM detects that a NB RF Detector board is missing</td><td valign=""><OL><LI CLASS="numlist">Attempt to reseat both RF Detector
+boards, check for bent/broken pins on backplane and board.</LI><LI CLASS="numlist">Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap Detector
+boards.</LI><LI CLASS="numlist">If error doesn&#8217;t follow the Detector
+board, proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap Processor boards to see if fault moves.
+ If so, replace faulty Processor board.</LI><LI CLASS="numlist">If the cause of error cannot be determined
+by Steps 1-3, replace CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_RF_BB_BOARD_MISSINGMNS Detector Board Missing</td><td valign="">UPM detects that a MNS RF Detector board is missing.</td><td valign=""><OL><LI CLASS="numlist">If the detector boards are indicating
+a cable-missing fault, place a 50-Ohm terminator in the effected port.
+ If error continues, replace the Detector Board. </LI><LI CLASS="numlist">If the error goes away, determine where
+in the cable chain the connection is lost by using a DMM and checking
+for 50 Ohm resistance between the shield and center pin. You can also
+test by swapping cables along the chain to see where the failure occurs.
+If the error remains, replace the RF detector board.</LI><LI CLASS="numlist">If the processor board unblank error
+occurs, check the voltage between pins 1 and 6 of the cable into the
+processor boards.  The voltage should be between 2 Volts and 3.3 Volts.
+ If it falls out of this range, then troubleshoot the cable chain
+back to the Driver Module.  If the voltage appears okay, proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap processor
+boards to see if fault moves.  If so, replace faulty Processor board.</LI><LI CLASS="numlist">If Step 2 doesn&#8217;t determine root
+cause, use a DMM to check the continuity of the cable connected to
+it. If it is bad, replace the cable. </LI></OL></td></tr><tr valign="top"><td valign="">EM_BUS_SELFTEST_FAILThe UPM1/2 failed its BUS Self Test on
+the XXChannel<P CLASS="entry">Expected Data : X%</P><P CLASS="entry">Detected Data :
+Y%</P></td><td valign="">This is a failure of the data bus from the RF detector board,
+through the backplane, to the processor board.</td><td valign=""><OL><LI CLASS="numlist">Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap RF
+Detector boards to see if fault moves.  If so, replace faulty Detector
+board. </LI><LI CLASS="numlist">If the RF Detector board is not the
+failure, then proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the Processor boards to see if fault
+moves.  If so, replace faulty Processor board. </LI><LI CLASS="numlist">If both RF Detector and Processor boards
+are okay, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_DAC_SELFTEST_FAILThe (Upm1/2) failed its DAC Self Test on
+the XX Channel.<P CLASS="entry">Expected Data : X</P><P CLASS="entry">Detected Data :
+ Y</P></td><td valign="">This is a failure of the digital to analog converter on the
+RF detector board.</td><td valign=""><OL><LI CLASS="numlist">Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap RF
+Detector boards to see if fault moves.  If so, replace faulty Detector
+board.  </LI><LI CLASS="numlist">If the RF Detector board is not the
+failure, then proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the Processor boards to see if fault
+moves.  If so, replace faulty Processor board.</LI><LI CLASS="numlist">If both RF Detector and Processor boards
+are okay, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_LUT_SELFTEST_FAILThe (UPM1/2) failed its LUT Self Test on
+the XX Channel.<P CLASS="entry">Expected Data : 0x%x.</P><P CLASS="entry">Detected Data
+: 0x%x.</P></td><td valign="">The LUT = Look up Table.  This is a failure of the processor
+board.</td><td valign=""><OL><LI CLASS="numlist">Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+Processor boards to see if fault moves.  If so, replace faulty Processor
+board.</LI><LI CLASS="numlist">If the processor board is not the root
+cause, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_NB_LUT_TABLE_LOAD_FAILThe UPM1/2 Look Up Table Failed on
+the Narrow Band RF Detector board.Number of Write Failures: ##</td><td valign="">The LUT = Look up Table.  This is a failure of the processor
+board</td><td valign=""><OL><LI CLASS="numlist">	Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+Processor boards, to see if fault moves.  If so, replace faulty Processor
+board.</LI><LI CLASS="numlist">If the processor board is not the root
+cause, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign=""><P CLASS="entry">EM_MNS_LUT_TABLE_LOAD_FAIL</P><P CLASS="entry">The UPM1/2 Look
+Up Table Failed on the MNS RF Detector board.</P><P CLASS="entry">Number of
+Write Failures: ##</P></td><td valign="">The LUT = Look up Table.  This is a failure of the processor
+board.</td><td valign=""><OL><LI CLASS="numlist">Proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+MNS Processor boards to see if fault moves.  If so, replace faulty
+Processor board.</LI><LI CLASS="numlist">If the processor board is not the root
+cause, replace the CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign=""><P CLASS="entry">EM_SCP_UPM_SHORT_TERM_REG_FAIL</P><P CLASS="entry">(Head/Body/Extremity/Other)
+Short Term Limit Write Fail.</P><P CLASS="entry">Head Present Limit: XX</P><P CLASS="entry">Body Present Limit: XX</P><P CLASS="entry">Extremity Present Limit:
+XX</P><P CLASS="entry">Other Present Limit:  XX</P></td><td valign="">A value written to the register was read back as a different
+value. </td><td valign="">Don&#8217;t change any hardware, as this could normally appear
+during resets or when software is not in- sync with the UPM.  If the
+failure continues, replace the processor board.</td></tr><tr valign="top"><td valign=""><P CLASS="entry">EM_SCP_UPM_LONG_TERM_REG_FAIL</P><P CLASS="entry">(Head/Body/Extremity/Other)
+Long Term Limit Write Fail.</P><P CLASS="entry">Head Present Limit: XX</P><P CLASS="entry">Body Present Limit: XX</P><P CLASS="entry">Extremity Present Limit:
+XX</P><P CLASS="entry">Other Present Limit:  XX</P></td><td valign="">A value written to the register was read back as a different
+value.</td><td valign="">Don&#8217;t change any hardware, as this could normally appear
+during resets or when software is not in- sync with the UPM.  If the
+failure continues, replace the processor board.</td></tr><tr valign="top"><td valign="">EM_UPM_CALIBRATION_FAILThe (UPM1/2) detected a Calibration
+failure on the ADC.Calibration Pass BitMap = XX</td><td valign="">The Analog to Digital converter on the RF Detector board failed
+to autocal properly.</td><td valign=""><OL><LI CLASS="numlist">Reseat RF Detector board, checking
+for bent bins on both the boards and backplane.</LI><LI CLASS="numlist">If failure occurs on only one board,
+use <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> to swap RF detector boards to see if fault moves.  If so, replace
+faulty Detector board.</LI><LI CLASS="numlist">If steps 1 and 2 don&#8217;t find the
+root cause,  use <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the processor boards to see if fault
+moves. If so, replace faulty Processor board.If steps 1, 2 and 3 don&#8217;t find root cause, replace the
+CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_CAN_SELFTESTThe (UPM1/2) failed its CAN selftest.The
+CAN module on the DSP failed its self test procedure&#8230;</td><td valign="">The fault indicates a failure in the CAN DSP, which is located
+on the UPM Processor board.</td><td valign=""><OL><LI CLASS="numlist">Pull out and reseat both processor
+boards.  Run the UPM I/O Diagnostics to see if the error has cleared.</LI><LI CLASS="numlist">If error continues, replace the effected
+UPM Processor Board.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_FPGAThe (UPM1/2) Has Detected a FPGA error.Source of
+Fault is (one of the following):FPGA Read/Write failureFPGA INIT not
+ready</td><td valign="">The fault indicates a failure in the FPGA which is located
+on the UPM Processor board.</td><td valign=""><OL><LI CLASS="numlist">Pull out and reseat both processor
+boards and the power supply.  Run the UPM I/O Diagnostics to see if
+the error has cleared.</LI><LI CLASS="numlist">If error continues, replace the effected
+UPM Processor Board.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_NOT_CALIBRATEDThe UPM1/2 has not been Calibrated.No
+Scanning will be Allowed until Calibrated.</td><td valign="">This fault occurs when the UPM has not been calibrated.</td><td valign="">Calibrate the UPM and perform the UPM functional check.</td></tr><tr valign="top"><td valign="">EM_UPM_PS_FAULTThe (UPM1/2) Has Detected a Power Supply Fault.
+Source of Fault is (one of the following):<UL><LI CLASS="bulletlist">UPB +12 Volts</LI><LI CLASS="bulletlist">UPB -12 Volts</LI><LI CLASS="bulletlist">UPB +5 Volts</LI><LI CLASS="bulletlist">UPB +3.3 Volts</LI><LI CLASS="bulletlist">UPB +1.5 Volts</LI><LI CLASS="bulletlist">UPB +1.65 VoltsActual Voltage = ##</LI><LI CLASS="bulletlist">Limit Voltage = ##</LI></UL>The UPM detected a problem with one of its power supplies. <TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e774"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">the fault indicates RF, then proceed to next row in this table.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td><td valign="">This fault occurs when the UPM processor board detects incorrect
+power from the power supply.  This is due to a failed power supply,
+backplane, processor board or a processor board or power supply that
+is not seated correctly in its slot.</td><td valign=""><OL><LI CLASS="numlist">Pull out and reseat both processor
+boards and the power supply.  Run the UPM Analog Diagnostics to see
+if the error has cleared.</LI><LI CLASS="numlist">Check the voltages using a DMM at the
+Input Panel of the UPM.  If these voltage levels confirm the fault
+description, then replace the UPM Power Supply.</LI><LI CLASS="numlist">If the error is only coming from one UPM consistently, proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+UPM Processor boards , to see if fault moves.  If so, replace faulty
+Processor board.  </LI><LI CLASS="numlist">Check that the incoming power to the
+CAM is 110 to 130VAC 50/60Hz.</LI><LI CLASS="numlist">If the error continues after attempting
+the above, replace the CAM Chassis, as it this indicates a failure.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_PS_FAULTThe (UPM1/2) Has Detected a Power Supply Fault.Source
+of Fault is (one of the following):<UL><LI CLASS="bulletlist">RF NB +12 Volts</LI><LI CLASS="bulletlist">RF MNS +12 Volts</LI><LI CLASS="bulletlist">RF NB +5 Volts</LI><LI CLASS="bulletlist">RF MNS +5 Volts</LI><LI CLASS="bulletlist">RF NB +3.3 Volts</LI><LI CLASS="bulletlist">RF MNS +3.3 Volts</LI><LI CLASS="bulletlist">RF NB Ref Voltage</LI><LI CLASS="bulletlist">RF MNS Ref Voltage</LI><LI CLASS="bulletlist">Actual Voltage = ##</LI><LI CLASS="bulletlist">Limit Voltage = ##</LI></UL>The UPM detected a problem with power on a RF Detector
+board.</td><td valign="">The issue is either with a supply voltage on one of the detector
+boards or with the monitoring of that supply voltage on the associated
+UPM Processor board</td><td valign=""><OL><LI CLASS="numlist">Pull out and reseat effected processor
+board and RF detector       board</LI><LI CLASS="numlist">If the error is only coming from 1
+UPM consistently, proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the
+UPM RF Detector boards, to see if fault moves.  If so, replace faulty
+Detector board. </LI><LI CLASS="numlist">If error doesn&#8217;t follow RF Detector
+boards, then proceed to <A HREF="1058080.htm#SL219588-1058080">Section&nbsp;7</A> and swap the UPM Processor boards, to see if
+fault moves.  If so, replace faulty Processor board.</LI><LI CLASS="numlist">If error is still on the same UPM,
+then replace CAM Chassis.</LI></OL></td></tr><tr valign="top"><td valign="">EM_UPM_FILE_OPEN_FAILUnable to open the YY file.  Please fix
+and TPS Reset.</td><td valign="">Caused due to software config file missing.</td><td valign="">Error should state the file name and location.  Attempt restore
+info; otherwise a software load may be required.</td></tr><tr valign="top"><td valign="">EM_UPM_CAL_FAIL_EMULATEDUnable to Calibrate the UPM because
+it is emulated out.  Please remove emulationand TPS Reset.</td><td valign="">UPM is emulated out.</td><td valign="">Remove UPM emulation from mgd_stage file.  TPS reset and recalibrate.</td></tr><tr valign="top"><td valign="">EM_UPM_CAL_FAIL_FILE_OPENUPM Calibration failed due to failure
+to open XX file.</td><td valign="">Caused due to software config file missing.</td><td valign="">Error should state the file name and location.  Attempt restore
+info; otherwise a software load may be required.</td></tr><tr valign="top"><td valign="">EM_UPM_CAL_FAIL_POWER"UPM Calibration failed due to failure
+to converge on a calibration point. Verify that power is applied on
+the proper channel on the UPM."</td><td valign="">UPM calibration failure, the UPM attempted to calibrate to
+applied power; however, could not match value required.</td><td valign="">Go to <A HREF="1058080.htm#SL1909496-1058080">Section&nbsp;4.2</A> for UPM calibration troubleshooting.</td></tr><tr valign="top"><td valign="">EM_UPM_CAL_TIMEOUT"UPM Calibration failed due to a timeout
+on the Calibration process.Verify that the UPM is powered up and all
+cables are connected properly."</td><td valign="">UPM calibration failure, the UPM attempted to calibrate to
+applied power; however, could not match value required.</td><td valign="">Go to <A HREF="1058080.htm#SL1909496-1058080">Section&nbsp;4.2</A> for UPM calibration troubleshooting.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL219588-1058080">7&nbsp;&nbsp;UPM Board Swap Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e898"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If either the Processor Board or RF Detector boards are
+swapped, the UPM calibration and functional check must be run prior
+to patient scanning.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL1909587-1058080"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">UPM Board Swap Procedure</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1058080-1058199.jpg" BORDER="0" usemap="#SL1911149-1058080"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

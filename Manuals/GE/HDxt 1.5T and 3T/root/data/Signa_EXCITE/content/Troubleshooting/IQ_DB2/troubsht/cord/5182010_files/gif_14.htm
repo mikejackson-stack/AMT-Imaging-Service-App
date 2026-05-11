@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+5182010 revC
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="gif_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+	if(parent.isUpLevel)
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+
+<script type="text/jscript" language="jscript">
+
+var pageID = 14;
+
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = 0.248333;
+	viewMgr.visBBoxRight = 10.751667;
+	viewMgr.visBBoxBottom = 0.202081;
+	viewMgr.visBBoxTop = 8.366408;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF">
+
+<div id=arrowdiv style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+<DIV id=RasterDiv>
+
+
+<center>
+  <IMG id="ConvertedImage" SRC="gif_14.gif" ALT="Page-8" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="Full Retest (Page 16)" origTitle="Full Retest (Page 16)" TITLE="Full Retest (Page 16)" HREF="gif_30.htm" target="frmDrawing" COORDS=" 441,462 441,503 483,545 524,503 524,462 441,462" onmouseover="UpdateTooltip(this,14,9)" onfocus="UpdateTooltip(this,14,9)" onclick="return OnShapeClick(14,9);" onkeyup="OnShapeKey(14,9);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From  Spikes on one axis? (Page 5)" origTitle="From  Spikes on one axis? (Page 5)" TITLE="From  Spikes on one axis? (Page 5)" HREF="gif_7.htm" target="frmDrawing" COORDS=" 57,61 93,79 93,3 73,3 73,0 41,0 41,3 17,3 17,79 53,61 57,61" onmouseover="UpdateTooltip(this,14,1)" onfocus="UpdateTooltip(this,14,1)" onclick="return OnShapeClick(14,1);" onkeyup="OnShapeKey(14,1);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Perform epiwp test with a different receive coil  (Ex.:..." origTitle="Perform epiwp test with a different receive coil  (Ex.:..." TITLE="Perform epiwp test with a different receive coil  (Ex.:..." HREF="..%5C..%5C..%5C..%5C..%5C496308.htm" target="_top" COORDS=" 184,192 368,192 368,91 184,91 184,192" onmouseover="UpdateTooltip(this,14,8)" onfocus="UpdateTooltip(this,14,8)" onclick="return OnShapeClick(14,8);" onkeyup="OnShapeKey(14,8);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Determine if spikes are from outside the bore  (Page 9)" origTitle="Determine if spikes are from outside the bore  (Page 9)" TITLE="Determine if spikes are from outside the bore  (Page 9)" HREF="gif_15.htm" target="frmDrawing" COORDS=" 323,504 324,503 324,455 228,455 228,503 276,552 322,506 323,506 323,504" onmouseover="UpdateTooltip(this,14,6)" onfocus="UpdateTooltip(this,14,6)" onclick="return OnShapeClick(14,6);" onkeyup="OnShapeKey(14,6);">
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>
+

@@ -1,0 +1,84 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>MGD_STAGE Emulation Commands</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL684247-1074753"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">MGD_STAGE Emulation Commands</SPAN> </P><table summary="MGD_STAGE Emulation Commands" border="1"><colgroup><col width="18%"><col width="82%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>Command</B></td><td align="center" valign="middle"><B>Action</B></td></tr><tr valign="top"><td colspan="2" valign="">a &#8656; Insert commands after
+the &#8220;a&#8221;! (e.g. aT emulates all Table controls)</td></tr><tr valign="top"><td colspan="2" valign=""># everything from here down is
+comment <P CLASS="entry">When the letter listed below is present in the first
+line (following the &#8217;a&#8217;, then the corresponding device
+is emulated, as described below (Note these ARE case sensitive):</P></td></tr><tr valign="top"><td align="center" valign="middle">A</td><td valign="">emulate PAC. This command causes the SPU to generate canned
+cardiac and respiratory waveforms and to generate cardiac triggers.
+This should be used when no PAC is present, or if no cardiac simulator
+is available.</td></tr><tr valign="top"><td align="center" valign="middle">B</td><td valign="">emulate System Monitoring. This command disables monitoring
+of the RF Door. This should only be used to allow scanning to continue
+if the RF Door switch is not functioning correctly.</td></tr><tr valign="top"><td align="center" valign="middle">C</td><td valign="">emulate SCIM (Hardkeys). This disables the SCP to SCIM interface.
+If this is done the start scan, stop scan, pause scan, adv to scan,
+stop table buttons on the SCIM hardkeys will not work. This should
+only be used to allow scanning to continue if the SCP to SCIM link
+is not functioning correctly.</td></tr><tr valign="top"><td align="center" valign="middle">E</td><td valign="">emulate the Driver Module on the CAN link. When this is emulated,
+the SCP will not monitor the DCB board or set any values to it. It
+will also not initialize it as a valid node on the CANopen network.
+Any diagnostics that require the Driver Module will fail if emulated.
+If this emulation is chosen, RF Amp emulation (H) will automatically
+be set to protect hardware.</td></tr><tr valign="top"><td align="center" valign="middle">F</td><td valign="">emulate RRF. This is intended for targets that do not have
+an RRF chassis. When this is emulated, the DRF will create fake receiver
+data, and the Irf drivers will emulate the RRF boards. The IRF2 board
+must be present.</td></tr><tr valign="top"><td align="center" valign="middle">G</td><td valign="">emulate gradient amps. When this is emulated, the SCP will
+not send commands to the gradient amplifier, and will not monitor
+its state.	Therefore, the gradient amps will stay in standby, and
+no gradient waveforms will be put out. The gradient configuration
+will still be downloaded. Real time monitoring will not be performed
+if enabled in the MRconfig.cfg file.</td></tr><tr valign="top"><td align="center" valign="middle">H</td><td valign="">emulate RF amp(s). When this is emulated, the SCP will not
+send commands to the RF amplifiers (ERBTEC narrow band and spectroscopy's	ENI
+broad band), and SCP will not monitor their state. Therefore, the
+ERBTEC RF amp will stay in standby, and no RF will be put out. The
+ENI amp has no standby state, and therefore will put out RF, but the
+correct filter will not be set.</td></tr><tr valign="top"><td align="center" valign="middle">I</td><td valign="">emulate power monitor. This is meant to be used only on test
+systems where	no power monitor is present. It disables SCP from
+sending out the proper power monitor settings selected by the PSD.
+If this is emulated when a power monitor is present, it will cause
+the power monitor to trip as soon as the scan/prescan begins. This
+will not fix RF amp 85 faults,	but will instead cause them.</td></tr><tr valign="top"><td align="center" valign="middle">J</td><td valign="">emulate entire CAN network. This disables communication to
+all devices on the CAN link. It will not setup the CAN PMC board and
+thus all of the devices on the CAN link will not communicate on the
+link. When this emulation is present, the CAN T/R driver, RF amp(s),
+Shim CAN node, SRI, bore wall temperature sensor, table, GP3, RRF-DIF
+FPGA's and UPM will all automatically be emulated as well.</td></tr><tr valign="top"><td align="center" valign="middle">K</td><td valign="">emulate CAN RRF-DIF DSP's. This disables communications to
+the CAN DSP's on the RRF-DIF boards. The RRF-DIF FPGA's will not be
+reset during a TPS Reset under this condition.</td></tr><tr valign="top"><td align="center" valign="middle">L</td><td valign="">emulate TNS. This disables setup of the TNS board, counting,
+and TNS logging.</td></tr><tr valign="top"><td align="center" valign="middle">M</td><td valign="">emulate entire MDS. This disables communication to all devices
+on the MDS link. It is equivalent to emulating all of the following:
+RF amp, T/R driver, power monitor, and TYME II, except that in 	this
+case the alignment lights, fan, and bore light will not work.</td></tr><tr valign="top"><td align="center" valign="middle">N</td><td valign="">emulate Shim CAN node. This disables communications to the
+CAN DSP on the Shim Supply. The shim currents will not be updated
+by the host under this condition.</td></tr><tr valign="top"><td align="center" valign="middle">O</td><td valign="">disable reporting of gradient overloads. Normally, overloads
+of the Gradient Driver Subsystem are reported to the error log. If
+this flag is set then overloads will not be reported. This has no
+effect on scan operation.</td></tr><tr valign="top"><td align="center" valign="middle">R</td><td valign="">emulate SRI. This disables SCP communication to the SRI. It
+disables	magnet shroud annunciators, the scan time display, and
+landmarking.	The alignment lights, fan, and bore light will not
+work. However, if the SRI has had code downloaded at least once, then
+table 	positioning will still work. When this emulation is present,
+the bore wall temperature sensor and table will automatically be emulated.
+If the autoemulation override option key is not present, the gradient
+amp(s) will be automatically emulated as well.</td></tr><tr valign="top"><td align="center" valign="middle">S</td><td valign="">emulate bore wall temperature sensor. This is meant only for
+test systems which do not have a temperature sensor. If the autoemulation
+override option key is not present, the gradient amp(s) will be automatically
+emulated.</td></tr><tr valign="top"><td align="center" valign="middle">T</td><td valign="">emulate table. This emulates SRI cradle control. Therefore,
+the table positioning will not work. This eliminates the need to establish
+a landmark.</td></tr><tr valign="top"><td align="center" valign="middle">X</td><td valign="">disable SRI errors. This allows SCP to send commands to the
+SRI, but any errors experienced by the SRI will be ignored, and scanning
+will be allowed to continue.</td></tr><tr valign="top"><td align="center" valign="middle">a</td><td valign="">dummy place holder</td></tr><tr valign="top"><td align="center" valign="middle">c</td><td valign="">Emulate Coil ID. This will allow you to select any coil you
+want and scan. This is only meant to be used for targets and show
+systems. If any coils are connected, they will be checked as if coil
+ID was not emulated. The RF amp(s) will automatically be emulated
+to protect hardware.</td></tr><tr valign="top"><td align="center" valign="middle">p</td><td valign="">disable UPM. This will disable the power monitoring of the
+CAN Power Monitor and will allow scanning without the presence of
+the power monitor.</td></tr><tr valign="top"><td align="center" valign="middle">y</td><td valign="">emulate gradient switch. This is only valid for the GP3. The
+system will not communicate with the gradient switch.</td></tr><tr valign="top"><td colspan="2" valign="">EXAMPLE:<P CLASS="entry">If the first line
+of this file read:</P><P CLASS="entry">aTYZ</P><P CLASS="entry">then Table control
+would be emulated, gradient errors would be disabled, and watchdog
+debug mode would be enabled.</P><P CLASS="entry">I f the first line of this
+file read:</P><P CLASS="entry">a</P><P CLASS="entry">Then nothing would be emulated
+or disabled at all. This is normal product configuration.</P><P CLASS="entry">/ * software note: these letter options should mirror CFG_STRING
+in hpc_cfg.h */</P></td></tr></tbody></table></CENTER></DIV></BODY></HTML>

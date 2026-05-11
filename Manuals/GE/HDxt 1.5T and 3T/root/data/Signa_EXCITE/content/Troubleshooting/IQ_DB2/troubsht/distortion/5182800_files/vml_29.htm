@@ -1,0 +1,181 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" 
+ xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>5182800</title>
+<style type="text/css">
+	 v\:* { behavior: url(#default#VML); }
+</style>
+
+<script src="vml_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+
+	var pageID = 15;
+	var viewMgr = null;
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+	function getPNZ()
+	{
+		var rawHTML = VMLDiv.innerHTML;
+		var strReturn = ""
+		
+		strReturn = rawHTML.slice( rawHTML.indexOf( '<v:group' ), rawHTML.indexOf( "</v:shape>" ) );
+		strReturn += "</v:shape></v:group>\n";
+				
+		return strReturn;
+	}
+	
+	function load()
+	{
+		viewMgr = new parent.CViewMgr("ConvertedImage", "arrowDiv");
+
+		viewMgr.put_Location = ViewMgrSetVMLLocation;
+
+
+		viewMgr.visBBoxLeft = 0.185833;
+		viewMgr.visBBoxRight = 10.689167;
+		viewMgr.visBBoxBottom = 0.358331;
+		viewMgr.visBBoxTop = 8.439167;
+
+		viewMgr.Zoom = VMLZoomChange;
+		viewMgr.setView= VMLSetView;
+
+		viewMgr.SupportsDetails = true;
+		viewMgr.SupportsSearch = true;
+
+		parent.viewMgr = viewMgr;
+
+		fit();
+	}
+
+	function unload()
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+
+	function fit()
+	{
+		if(parent.frmToolbar)
+		{
+			if (parent.g_WidgetsLoaded)
+			{
+				var zoom100 = parent.frmToolbar.document.all('a100');
+				if (zoom100)
+				{
+					parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+					zoom100.click();
+				}
+				else
+				{
+					parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+					viewMgr.Zoom(100);
+				}
+			}
+			else
+			{
+				window.setTimeout("fit()", 500);
+			}
+		}	
+		else
+		{
+			parent.viewMgr.PostZoomProcessing = PostZoomProcessing;
+			viewMgr.Zoom(100);
+		}
+	}
+
+	function PostZoomProcessing (newZoomLevel)
+	{
+		parent.viewMgr.PostZoomProcessing = null;
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.viewMgr.getPNZ = getPNZ;
+		parent.CurPageUpdate (pageIndex);
+	}
+
+
+	
+	var isUpLevel = parent.isUpLevel;
+	var OnShapeClick = parent.OnShapeClick;
+	var OnShapeKey = parent.OnShapeKey;
+	var UpdateTooltip = parent.UpdateTooltip;
+	var clickMenu = parent.clickMenu;
+	var toggleMenuDiv = parent.toggleMenuDiv;
+	var toggleMenuLink = parent.toggleMenuLink;
+	var GoToPage = parent.GoToPage;
+
+	window.onload = load;
+	window.onunload = unload;
+	document.onclick = clickMenu;
+
+
+
+
+</script>
+
+</head>
+
+<body style="MARGIN:10px" onresize="VMLOnResize();" onscroll="VMLOnScroll();">
+
+<div id="arrowdiv" style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+
+
+
+<div id="VMLDiv" >
+
+
+<v:group  id="ConvertedImage" style="width:5.199132in;height:4.000000in;position:absolute;visibility=hidden;" coordSize="2600,2000" coordOrigin="-1000,-1000" >
+
+<v:shapetype 
+  id="VISSHAPE"
+  target="_parent"
+  coordsize="2600,2000"
+  coordorigin="-1000,-1000"
+  stroked="f"
+  strokecolor="red"
+  filled="t"
+>
+<v:fill opacity="0.0"/>
+</v:shapetype>
+
+
+<v:shape style="top:-1000.0;left:-1000.0;width:2599.6;height:2000.0;position:absolute" coordSize="2600,2000" coordOrigin="-1000,-1000" >
+<v:imagedata src="vml_29.emz"/>
+</v:shape>
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="From Grad Amp (Page 9)" origTitle="From Grad Amp (Page 9)"  style="top:-1000;left:-1000;width:2600;height:2000;position:absolute" path=" m -734,-995 l -734,-996 l -949,-996 l -949,-780 l -842,-834 l -734,-780 l -734,-939 l -731,-939 l -731,-995 l -734,-995xe" onmouseover="UpdateTooltip(this,15,8)" onclick="OnShapeClick(15,8)" onfocus="UpdateTooltip(this,15,8);" onkeyup="OnShapeKey(15,8)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Gradcal / Other (Page 11)" origTitle="Gradcal / Other (Page 11)"  style="top:-1000;left:-1000;width:2600;height:2000;position:absolute" path=" m 837,303 l 870,270 l 870,147 l 624,147 l 624,270 l 657,303 l 657,313 l 667,313 l 747,393 l 827,313 l 837,313 l 837,303xe" onmouseover="UpdateTooltip(this,15,9)" onclick="OnShapeClick(15,9)" onfocus="UpdateTooltip(this,15,9);" onkeyup="OnShapeKey(15,9)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="" tabindex="1" title="Details" origTitle="Details"  style="top:-1000;left:-1000;width:2600;height:2000;position:absolute" path=" m -118,-313 l -163,-313 l -164,-313 l -165,-313 l -166,-313 l -167,-313 l -167,-312 l -168,-312 l -169,-312 l -170,-311 l -171,-311 l -172,-310 l -172,-310 l -173,-309 l -174,-309 l -174,-308 l -175,-307 l -176,-307 l -176,-306 l -177,-305 l -177,-304 l -177,-303 l -178,-302 l -178,-301 l -178,-301 l -178,-300 l -178,-299 l -178,-298 l -178,-276 l -178,-275 l -178,-274 l -178,-273 l -178,-272 l -178,-271 l -177,-271 l -177,-270 l -177,-269 l -176,-268 l -176,-267 l -175,-267 l -174,-266 l -174,-265 l -173,-265 l -172,-264 l -172,-263 l -171,-263 l -170,-262 l -169,-262 l -168,-262 l -167,-261 l -167,-261 l -166,-261 l -165,-261 l -164,-261 l -163,-261 l -81,-261 l -82,-260 l -83,-260 l -84,-260 l -85,-260 l -86,-260 l -87,-259 l -88,-259 l -89,-259 l -90,-258 l -91,-258 l -92,-258 l -93,-257 l -94,-257 l -95,-257 l -96,-256 l -97,-256 l -98,-256 l -99,-255 l -100,-255 l -100,-254 l -101,-254 l -102,-254 l -121,-243 l -121,-242 l -122,-242 l -123,-242 l -123,-241 l -124,-241 l -124,-240 l -125,-240 l -125,-240 l -125,-239 l -125,-239 l -126,-239 l -126,-238 l -126,-238 l -126,-238 l -126,-237 l -126,-237 l -125,-237 l -125,-237 l -125,-236 l -125,-236 l -124,-236 l -124,-236 l -123,-236 l -123,-236 l -122,-235 l -122,-235 l -121,-235 l -120,-235 l -119,-235 l -119,-235 l -5,-235 l -4,-235 l -4,-234 l -3,-233 l -2,-233 l -1,-232 l -1,-232 l 0,-232 l 1,-231 l 2,-231 l 3,-231 l 4,-231 l 5,-231 l 6,-230 l 7,-231 l 7,-231 l 8,-231 l 9,-231 l 10,-231 l 11,-231 l 12,-232 l 13,-232 l 13,-233 l 14,-233 l 15,-234 l 16,-234 l 16,-235 l 17,-235 l 20,-235 l 21,-235 l 21,-235 l 22,-235 l 23,-235 l 23,-235 l 24,-235 l 25,-235 l 25,-234 l 25,-234 l 26,-234 l 26,-234 l 26,-234 l 27,-233 l 27,-233 l 27,-233 l 27,-233 l 27,-232 l 27,-232 l 27,-232 l 27,-231 l 26,-231 l 26,-231 l 26,-230 l 25,-230 l 25,-229 l 24,-229 l 24,-229 l 23,-228 l 23,-228 l 22,-227 l 21,-227 l 21,-227 l 20,-226 l 20,-226 l 19,-225 l 19,-225 l 18,-225 l 18,-224 l 18,-224 l 17,-224 l 17,-223 l 17,-223 l 17,-223 l 17,-222 l 17,-222 l 17,-222 l 18,-222 l 18,-221 l 18,-221 l 18,-221 l 19,-221 l 19,-221 l 20,-220 l 20,-220 l 21,-220 l 22,-220 l 22,-220 l 23,-220 l 24,-220 l 24,-220 l 25,-220 l 26,-220 l 27,-220 l 28,-220 l 29,-220 l 30,-221 l 31,-221 l 32,-221 l 33,-221 l 34,-221 l 35,-221 l 36,-222 l 37,-222 l 38,-222 l 115,-243 l 116,-243 l 117,-243 l 118,-244 l 119,-244 l 120,-244 l 121,-245 l 122,-245 l 123,-246 l 124,-246 l 125,-246 l 126,-247 l 127,-247 l 128,-247 l 128,-248 l 129,-248 l 130,-249 l 130,-249 l 131,-249 l 131,-250 l 132,-250 l 132,-251 l 133,-251 l 133,-251 l 133,-252 l 134,-252 l 134,-252 l 134,-253 l 134,-253 l 134,-253 l 134,-254 l 127,-278 l 127,-278 l 127,-278 l 127,-279 l 127,-279 l 126,-279 l 126,-279 l 126,-279 l 125,-279 l 125,-279 l 124,-279 l 124,-279 l 123,-279 l 122,-279 l 122,-279 l 121,-279 l 120,-279 l 119,-279 l 118,-279 l 118,-279 l 117,-279 l 116,-279 l 115,-278 l 114,-278 l 113,-278 l 112,-278 l 111,-278 l 110,-277 l 110,-277 l 109,-277 l 108,-276 l 107,-276 l 106,-276 l 106,-275 l 105,-275 l 104,-275 l 104,-275 l 103,-274 l 94,-269 l 93,-269 l 93,-268 l 92,-268 l 91,-268 l 90,-267 l 89,-267 l 88,-266 l 87,-266 l 86,-266 l 85,-265 l 84,-265 l 83,-265 l 82,-264 l 81,-264 l 80,-264 l 79,-263 l 78,-263 l 77,-263 l 76,-263 l 75,-262 l 74,-262 l 73,-262 l 72,-262 l 71,-262 l 70,-262 l 69,-262 l 68,-262 l 67,-261 l 66,-261 l 65,-261 l 43,-261 l 58,-276 l 58,-277 l 59,-277 l 59,-278 l 60,-279 l 60,-280 l 61,-281 l 61,-281 l 61,-282 l 62,-283 l 62,-284 l 62,-285 l 62,-286 l 62,-287 l 62,-288 l 62,-289 l 62,-290 l 62,-291 l 61,-292 l 61,-292 l 61,-293 l 60,-294 l 60,-295 l 59,-296 l 59,-296 l 58,-297 l 58,-298 l 9,-346 l 9,-347 l 8,-347 l 7,-348 l 7,-348 l 6,-348 l 5,-349 l 4,-349 l 4,-349 l 3,-349 l 2,-349 l 1,-349 l 1,-349 l 0,-349 l -1,-349 l -2,-349 l -2,-348 l -3,-348 l -4,-348 l -4,-347 l -5,-347 l -6,-346 l -6,-346 l -7,-345 l -7,-345 l -8,-344 l -8,-343 l -8,-342 l -8,-342 l -9,-341 l -9,-340 l -9,-339 l -9,-339 l -9,-329 l -9,-328 l -9,-327 l -9,-326 l -9,-325 l -10,-324 l -10,-323 l -10,-322 l -11,-321 l -11,-321 l -12,-320 l -12,-319 l -13,-318 l -13,-318 l -118,-318 l -118,-313x m -81,-261 l -80,-261 l -79,-261 l -78,-261 l -77,-261 l -76,-261 l -76,-261 l -75,-261 l -74,-261 l -73,-261 l 43,-261 l 17,-235 l -5,-235 l -6,-236 l -6,-237 l -7,-237 l -7,-238 l -7,-239 l -8,-240 l -8,-241 l -8,-242 l -9,-242 l -9,-243 l -9,-244 l -9,-245 l -9,-246 l -9,-247 l -9,-248 l -9,-249 l -10,-250 l -10,-251 l -10,-252 l -11,-252 l -11,-253 l -12,-254 l -12,-255 l -13,-255 l -13,-256 l -14,-257 l -15,-257 l -16,-258 l -16,-258 l -17,-259 l -18,-259 l -19,-260 l -20,-260 l -21,-260 l -22,-260 l -22,-261 l -23,-261 l -24,-261 l -81,-261xe" onmouseover="UpdateTooltip(this,15,18)" onclick="OnShapeClick(15,18)" onfocus="UpdateTooltip(this,15,18);" onkeyup="OnShapeKey(15,18)"/> 
+
+<v:shape type="#VISSHAPE"  href="#" origHref="..%5C..%5C..%5C..%5C..%5C470619.htm" tabindex="1" title="Perform gradient DC offset Calibration" origTitle="Perform gradient DC offset Calibration"  style="top:-1000;left:-1000;width:2600;height:2000;position:absolute" path=" m 68,-210 l 500,-210 l 500,-364 l 68,-364 l 68,-210xe" onmouseover="UpdateTooltip(this,15,4)" onclick="OnShapeClick(15,4)" onfocus="UpdateTooltip(this,15,4);" onkeyup="OnShapeKey(15,4)"/> 
+
+</v:group>
+
+
+
+</div>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,134 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="visio.css"/>
+<title>
+5182537
+</title>
+<script type="text/javascript" language="javascript">
+function UpdateTooltip(){};
+function OnShapeClick(){};
+</script>
+
+<script src="gif_1.js" type="text/jscript" language="jscript"></script>
+
+<script type="text/jscript" language="jscript">
+	if(parent.isUpLevel)
+	{
+		location.replace(parent.g_FileList[parent.g_CurPageIndex].PriImage);
+	}
+</script>
+
+
+
+<script type="text/jscript" language="jscript">
+
+var pageID = 42;
+
+var isUpLevel = parent.isUpLevel;
+var OnShapeClick = null;
+if (!parent.isMac)
+{
+	OnShapeClick = parent.OnShapeClick;
+}
+
+var OnShapeKey = parent.OnShapeKey;
+var UpdateTooltip = parent.UpdateTooltip;
+var clickMenu = parent.clickMenu;
+var toggleMenuDiv = parent.toggleMenuDiv;
+var toggleMenuLink = parent.toggleMenuLink;
+var GoToPage = parent.GoToPage;
+
+
+if (parent.isUpLevel)
+{
+
+	if (parent.g_FirstPageToLoad != null && parent.g_FirstPageToLoad.length > 0)
+	{
+		if (parent.g_FileList[parent.g_CurPageIndex].PageID != pageID)
+		{
+			var fileEntry = parent.g_FileList[parent.g_CurPageIndex];
+			var fileToLoad = fileToLoad = fileEntry.PriImage;
+			if (fileEntry.SecImage.length > 0)
+			{
+				fileToLoad = fileEntry.SecImage;
+			}
+
+			location.replace(fileToLoad);
+		}
+
+		parent.g_FirstPageToLoad = null;
+	}
+
+
+	var viewMgr = new parent.CViewMgr();
+	parent.viewMgr = viewMgr;
+
+	viewMgr.SupportsDetails = true;
+	viewMgr.SupportsSearch = true;
+
+	viewMgr.put_Location = ViewMgrSetRasterLocation;
+	viewMgr.visBBoxLeft = 0.123333;
+	viewMgr.visBBoxRight = 10.751667;
+	viewMgr.visBBoxBottom = 0.024998;
+	viewMgr.visBBoxTop = 8.425001;
+	viewMgr.highlightDiv = null;
+}
+
+function load ()
+{
+	if(isUpLevel)
+	{
+		arrowdiv.innerHTML = '<img id="arrowgif" alt="Shows the location of the selected shape" src="arrow.gif"/>';
+
+		var pageIndex = parent.PageIndexFromID (pageID);
+		parent.CurPageUpdate (pageIndex);
+	}
+}
+
+function unload()
+{
+	if(isUpLevel)
+	{
+		viewMgr = null;
+		parent.viewMgr = null;
+	}
+}
+
+window.onload = load;
+window.onunload = unload;
+document.onclick = clickMenu;
+
+</script>
+</head>
+
+<body class="pageView" bgcolor="#FFFFFF">
+
+<div id=arrowdiv style="position:absolute;top:0;left:0;visibility:hidden;z-index:5">
+</div>
+
+<div id="menu1" onclick="clickMenu()" class="hlMenu">
+</div>
+
+<DIV id=RasterDiv>
+
+
+<center>
+  <IMG id="ConvertedImage" SRC="gif_13.gif" ALT="Page-13" name=RasterImage BORDER="0" USEMAP="#visImageMap">
+</center>
+
+<MAP NAME="visImageMap">
+  <AREA shape="POLYGON" tabindex="1" ALT="See Corduroy/EPI White Pixels Flowchart" origTitle="See Corduroy/EPI White Pixels Flowchart" TITLE="See Corduroy/EPI White Pixels Flowchart" HREF="..%5C..%5Ccord%5C5182010.htm" target="_top" COORDS=" 496,545 603,545 603,491 496,491 496,545" onmouseover="UpdateTooltip(this,42,13)" onfocus="UpdateTooltip(this,42,13)" onclick="return OnShapeClick(42,13);" onkeyup="OnShapeKey(42,13);">
+  <AREA shape="POLYGON" tabindex="1" ALT="Shim Problem (Page 11)" origTitle="Shim Problem (Page 11)" TITLE="Shim Problem (Page 11)" HREF="gif_11.htm" target="frmDrawing" COORDS=" 567,313 577,303 577,267 505,267 505,303 515,313 515,316 518,316 541,339 564,316 567,316 567,313" onmouseover="UpdateTooltip(this,42,7)" onfocus="UpdateTooltip(this,42,7)" onclick="return OnShapeClick(42,7);" onkeyup="OnShapeKey(42,7);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From Intro (Page 1)" origTitle="From Intro (Page 1)" TITLE="From Intro (Page 1)" HREF="gif_1.htm" target="frmDrawing" COORDS=" 0,75 36,57 72,75 72,4 0,4 0,75" onmouseover="UpdateTooltip(this,42,2)" onfocus="UpdateTooltip(this,42,2)" onclick="return OnShapeClick(42,2);" onkeyup="OnShapeKey(42,2);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From SPT Test (Page 4)" origTitle="From SPT Test (Page 4)" TITLE="From SPT Test (Page 4)" HREF="gif_4.htm" target="frmDrawing" COORDS=" 85,75 121,57 157,75 157,4 85,4 85,75" onmouseover="UpdateTooltip(this,42,4)" onfocus="UpdateTooltip(this,42,4)" onclick="return OnShapeClick(42,4);" onkeyup="OnShapeKey(42,4);">
+  <AREA shape="POLYGON" tabindex="1" ALT="From Correlated Noise (Page 10)" origTitle="From Correlated Noise (Page 10)" TITLE="From Correlated Noise (Page 10)" HREF="gif_10.htm" target="frmDrawing" COORDS=" 209,59 241,75 241,4 223,4 223,0 192,0 192,4 170,4 170,75 202,59 209,59" onmouseover="UpdateTooltip(this,42,15)" onfocus="UpdateTooltip(this,42,15)" onclick="return OnShapeClick(42,15);" onkeyup="OnShapeKey(42,15);">
+</MAP>
+
+
+
+</DIV>
+
+</body>
+</html>
+
