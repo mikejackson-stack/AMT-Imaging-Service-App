@@ -1,0 +1,35 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>SaveInfo Backup File and Log File</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5440001-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/15/07</P></td></tr></table><H1 ID="top">SaveInfo Backup File and Log File </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289902340001">1&nbsp;&nbsp;SaveInfo Backup File<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Beginning with software release Signa 9.1 and 10.0, whenever a SaveInfo
+is made a backup file is created of all the files saved to the SaveInfo MOD.
+This backup file is located in <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log/saveINFO.tar.gz</FONT></SPAN> and
+can be used to manually update configuration files in the advent the SaveInfo
+MOD becomes corrupted. It is suggested that a backup copy be keep by using
+FTP to move the file to the service laptop or other machine and saved. </P><P CLASS="sect1">To use the contents of this file is a manual process at the moment.
+Following is some quick steps for file example file recovery:</P><OL><LI CLASS="numlist"><P>Create a directory to move the backup file to. It is suggested
+to create the directory in /temp. If created there the files will be deleted
+on reboot saving disk space.</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /temp</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Move to
+temp directory)</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>mkdir junk</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Create
+a directory named &#8220;junk&#8221;)</P></LI><LI CLASS="numlist"><P>Move or FTP your saved copy of <SPAN CLASS="filename"><FONT FACE="COURIER">saveINFO.tar.gz</FONT></SPAN> to
+/temp/junk</P></LI><LI CLASS="numlist"><P>Now unzip and tar the SaveInfo file.</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>gunzip saveINFO.tar.gz</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>tar &#8211;xvf  saveINFO.tar</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>You will now find a subdirectory tree created under /temp/junk.
+cd to /temp/junk/usr/g/MRINFO/holdingtank and you will find in that directory
+a directory tree  similar to the Signa product directory tree. All the configuration
+files that where saved during the saveInfo can be found in the directory it
+came from on the system. </P></LI></OL><P CLASS="sect1">As an example assume the <SPAN CLASS="filename"><FONT FACE="COURIER">MRconfig.cfg</FONT></SPAN> file on you
+system became corrupted and you wanted to just replace that file. Unzip and
+tar the saveInfo file as show above. Then do the following command line step
+to replace the file:</P><P CLASS="sect1">&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cp /temp/junk/usr/g/MRINFO/holdingtank/usr/gvx/w/config/MRconfig.cfg
+   usr/g/MRINFO/holdingtank/usr/gvx/w/config/MRconfig.cfg</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P CLASS="sect1">In this example there is not enough room here to show it, but this whole
+statement is on one line with a space between MRconfig.cfg and usr. The system
+will ask if you want to over write the existing file. Answer <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>yes</B></FONT></SPAN>. </P><P CLASS="sect1">Or, perhaps the you may not want to view the contents the older file
+and compare it&#8217;s contents to what is seen in the current config file.
+Then you would only need to do the following:</P><P CLASS="sect1">&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /temp/junk/usr/g/MRINFO/holdingtank/usr/gvx/w/config/MRconfig.cfg</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289902340004">2&nbsp;&nbsp;SaveInfo Log File<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Beginning with software release Signa 9.1 and 10.0, SaveINFO now creates
+a log file in /usr/g/service/log directory called <SPAN CLASS="filename"><FONT FACE="COURIER">saveINFO.log</FONT></SPAN>.
+This file will list all the files that saveINFO was expecting to save but
+could not find on the system and hence could not save. Some of the files may
+be specific to TWIN or HFO or MGD systems and in those cases the log file
+will have a comment to that effect so that the FE is not confused. It is not
+required but is a good practice that this file is checked after a saveInfo
+to insure all files have been successfully saved. </P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

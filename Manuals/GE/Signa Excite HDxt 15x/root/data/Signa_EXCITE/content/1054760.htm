@@ -1,0 +1,50 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VRF Status Display</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5440001-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;6.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;8/25/10</P></td></tr></table><H1 ID="top">VRF Status Display </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1949614-1054760">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="MENUCHOICE">Diagnostics
+&#8594;
+System
+Function
+&#8594;
+Recon
+&#8594;
+VRF
+Status Display</SPAN></P><P CLASS="sect1"><SPAN CLASS="MENUCHOICE">Diagnostics
+&#8594;
+Hardware
+Location
+&#8594;
+PGR Cabinet
+&#8594;
+Recon
+&#8594;
+VRF Status Display</SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1950962-1054760"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">VRF Status Display for Software Revisions Pre-22.x</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1054760-1060210.jpg" BORDER="0" usemap="#SL1950954-1054760"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL3533549-1054760"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">VRF Status Display for Software Revisions 22.x and higher</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1054760-1117845.jpg" BORDER="0" usemap="#SL3533545-1054760"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1949615-1054760">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The purpose of the VRF Status Display diagnostic is to display
+the internal status of the VRF. This diagnostic can be used for further
+debugging if the VRF hardware or communication diagnostics fail.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1949626-1054760">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>VRF serial number</P></LI><LI CLASS="bulletlist"><P>FPGA firmware version and temperatures</P></LI><LI CLASS="bulletlist"><P>Status of the VRF clock input, Flash
+memory, and VRF fiber links</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1950966-1054760">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">No special requirements.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1950967-1054760">5&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e91"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Observe the following:<UL><LI CLASS="bulletlist"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;32-channel 4100 systems) 
+</B></FONT></SPAN> Use the <SPAN CLASS="MODULEREF"><A HREF="1060760.htm#SL1958933-1060760"><I>ICN Identification</I></A></SPAN> tool from the Common Service Desktop (<SPAN CLASS="MENUCHOICE">Utilities
+&#8594;
+Toolbox
+&#8594;
+VRE
+&#8594;
+ICN Identification</SPAN>) to help distinguish ICN1 from ICN2.</P><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;32-channel 4170 systems) 
+</B></FONT></SPAN> Open the <SPAN CLASS="MENUCHOICE">HART Log
+&#8594;
+Current Status</SPAN>. Look for the item &#8220;vrf&#8221; in the <SPAN CLASS="GUILABEL"><I>BoardType</I></SPAN> column. Check the Board Location for this board
+(icn1 VRF1 or icn1 VRF2). The slot number indicates the physical Location
+of the VRF. Slot 19 is located to the side of the ICN. Slot 13 is
+located at the center of the ICN. </P></LI><LI CLASS="bulletlist"><P>To distinguish between VRF and VRF2,
+open the <SPAN CLASS="MENUCHOICE">HART Log
+&#8594;
+Current
+Status</SPAN>. Look for the item "vrf" in the <SPAN CLASS="GUILABEL"><I>BoardType</I></SPAN> column. Check the Firmware revision for this
+board. If the FPGA Rev is &lt;1000, the ICN has VRF. If it is &gt;1000,
+the ICN has VRF2.  </P></LI></UL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Select the VRF Status Display diagnostic.</P></LI><LI CLASS="numlist"><P>Select the ICN/VRF you would like to
+conduct the test. You can only select one option.</P><P>Your test options are:</P><OL TYPE="a"><LI CLASS="numlist"><P>ICN1 VRF1</P></LI><LI CLASS="numlist"><P>ICN1 VRF2</P></LI><LI CLASS="numlist"><P>ICN2 VRF1</P></LI><LI CLASS="numlist"><P>ICN2 VRF2</P></LI></OL><P>Each execution will check the following status of
+the selected VRF.</P><UL><LI CLASS="bulletlist"><P>VRF Serial Number</P></LI><LI CLASS="bulletlist"><P>VRF FPGA Revision</P></LI><LI CLASS="bulletlist"><P>VRF Clock Status</P></LI><LI CLASS="bulletlist"><P>VRF Link Status</P></LI><LI CLASS="bulletlist"><P>VRF Temperature</P></LI></UL></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI><LI CLASS="numlist"><P>Ensure that the VRF passes the diagnostic
+by reviewing the status in the Test Results section.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1950978-1054760">6&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic has either a pass or fail status.</P><UL><LI CLASS="bulletlist"><P>If the selected test passes, the <SPAN CLASS="GUILABEL"><I>Test Results</I></SPAN> table displays the requested information.</P></LI><LI CLASS="bulletlist"><P>If the test fails, review the error
+log and corresponding extended error messages for subsequent actions.</P></LI></UL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
