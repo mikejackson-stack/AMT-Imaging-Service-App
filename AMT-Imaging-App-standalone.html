@@ -2140,13 +2140,13 @@ function ghWebUrl(filePath){
 // filePath comes from GitHub API and already includes 'Manuals/' prefix
 function ghOpenUrl(filePath, downloadUrl){
   const lower = filePath.toLowerCase();
+  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')){
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
     return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
   }
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    const blobUrl='https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-    return 'https://htmlpreview.github.io/?'+blobUrl;
+    return githackUrl;
   }
   return downloadUrl || rawUrl;
 }
@@ -2158,12 +2158,11 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')){
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
     return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
   }
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    const blobUrl='https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+encodedFull;
-    return 'https://htmlpreview.github.io/?'+blobUrl;
+    return 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
   }
   return rawUrl;
 }

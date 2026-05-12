@@ -2165,15 +2165,16 @@ function ghWebUrl(filePath){
 // filePath comes from GitHub API and already includes 'Manuals/' prefix
 function ghOpenUrl(filePath, downloadUrl){
   const lower = filePath.toLowerCase();
+  // raw.githack.com serves with correct MIME types + relative links work
+  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  // .doc/.docx → Google Docs Viewer (opens in tab, no download)
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')){
+  // .doc/.docx/.pptx → Google Docs Viewer (opens in tab, no download)
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
     return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
   }
-  // .htm/.html → htmlpreview (renders HTML with assets + relative links intact)
+  // .htm/.html → raw.githack.com (serves as text/html, relative links resolve correctly)
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    const blobUrl='https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-    return 'https://htmlpreview.github.io/?'+blobUrl;
+    return githackUrl;
   }
   // .pdf and everything else → raw URL (PDF opens in browser's built-in viewer)
   return downloadUrl || rawUrl;
@@ -2186,14 +2187,13 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  // .doc/.docx → Google Docs Viewer
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')){
+  // .doc/.docx/.pptx → Google Docs Viewer
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
     return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
   }
-  // .htm/.html → htmlpreview
+  // .htm/.html → raw.githack.com (correct MIME type, relative links work)
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    const blobUrl='https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+encodedFull;
-    return 'https://htmlpreview.github.io/?'+blobUrl;
+    return 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
   }
   // .pdf → raw URL
   return rawUrl;
