@@ -21,21 +21,21 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout app files only (sparse — skip multi-GB Manuals folder)
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            index.html
-            .nojekyll
-          sparse-checkout-cone-mode: false
+      - name: Download app file only (no git checkout — skips multi-GB Manuals)
+        run: |
+          mkdir _site
+          curl -fsSL \
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/index.html" \
+            -o _site/index.html
+          touch _site/.nojekyll
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload artifact (index.html only)
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
