@@ -2162,12 +2162,15 @@ function ghWebUrl(filePath){
 }
 
 // Smart URL for any file from the GitHub file explorer
-// filePath comes from GitHub API and already includes 'Manuals/' prefix
+// filePath is relative to Manuals/ — downloadUrl from GitHub API has the full correct path
 function ghOpenUrl(filePath, downloadUrl){
   const lower = filePath.toLowerCase();
-  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  // Office files → Microsoft Office Online (more reliable than Google Docs Viewer)
+  // downloadUrl already has full path with Manuals/ prefix; build fallback for edge cases
+  const rawUrl = downloadUrl ||
+    ('https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+
+     GH.manualsRoot+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/'));
+  const githackUrl = rawUrl.replace('//raw.githubusercontent.com/', '//raw.githack.com/');
+  // Office files → Microsoft Office Online viewer
   if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
     return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
@@ -2175,7 +2178,7 @@ function ghOpenUrl(filePath, downloadUrl){
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
     return githackUrl;
   }
-  // .pdf and everything else → raw.githack.com (serves with correct MIME type; raw.githubusercontent.com serves as octet-stream which triggers download)
+  // .pdf → raw.githack.com (correct Content-Type; raw.githubusercontent.com serves as octet-stream which triggers download)
   return githackUrl;
 }
 
