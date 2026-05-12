@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Table fixture installation and adjustment for mobile site","shortdesc":"<p class=\"shortdesc\"\/>","href":"t_Fixture_Alignement_and_Installation_Mobile_Config.html","attributes":{"data-id":"id_2035161"},"menu":{"hasChildren":false},"tocID":"id_2035161-d46e9721","topics":[]}]});
