@@ -2165,19 +2165,18 @@ function ghWebUrl(filePath){
 // filePath comes from GitHub API and already includes 'Manuals/' prefix
 function ghOpenUrl(filePath, downloadUrl){
   const lower = filePath.toLowerCase();
-  // raw.githack.com serves with correct MIME types + relative links work
   const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  // .doc/.docx/.pptx → Google Docs Viewer (opens in tab, no download)
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
-    return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
+  // Office files → Microsoft Office Online (more reliable than Google Docs Viewer)
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
   // .htm/.html → raw.githack.com (serves as text/html, relative links resolve correctly)
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
     return githackUrl;
   }
-  // .pdf and everything else → raw URL (PDF opens in browser's built-in viewer)
-  return downloadUrl || rawUrl;
+  // .pdf and everything else → raw.githack.com (serves with correct MIME type; raw.githubusercontent.com serves as octet-stream which triggers download)
+  return githackUrl;
 }
 
 // Build viewable URL for manual paths relative to Manuals/
@@ -2187,16 +2186,17 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  // .doc/.docx/.pptx → Google Docs Viewer
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
-    return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
+  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+  // Office files → Microsoft Office Online viewer
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
   // .htm/.html → raw.githack.com (correct MIME type, relative links work)
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    return 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+    return githackUrl;
   }
-  // .pdf → raw URL
-  return rawUrl;
+  // .pdf and everything else → raw.githack.com (correct Content-Type; raw.githubusercontent.com serves as octet-stream)
+  return githackUrl;
 }
 
 // Build manual link HTML — shows path tip if file may not exist yet

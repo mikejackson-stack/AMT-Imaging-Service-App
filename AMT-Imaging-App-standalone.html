@@ -2142,13 +2142,15 @@ function ghOpenUrl(filePath, downloadUrl){
   const lower = filePath.toLowerCase();
   const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
-    return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
+  // Office files → Microsoft Office Online viewer
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
     return githackUrl;
   }
-  return downloadUrl || rawUrl;
+  // raw.githack.com serves correct MIME type; raw.githubusercontent.com serves as octet-stream (triggers download)
+  return githackUrl;
 }
 
 // Build viewable URL for manual paths relative to Manuals/
@@ -2158,13 +2160,16 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')){
-    return 'https://docs.google.com/viewer?url='+encodeURIComponent(rawUrl);
+  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+  // Office files → Microsoft Office Online viewer
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
   if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    return 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+    return githackUrl;
   }
-  return rawUrl;
+  // .pdf and everything else → raw.githack.com (correct Content-Type)
+  return githackUrl;
 }
 
 // Build manual link HTML — shows path tip if file may not exist yet
