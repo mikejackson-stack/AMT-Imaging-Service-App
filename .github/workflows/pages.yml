@@ -21,12 +21,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Download app file only (no git checkout — skips multi-GB Manuals)
+      - name: Download app files only (no git checkout — skips multi-GB Manuals)
         run: |
           mkdir _site
           curl -fsSL \
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/index.html" \
             -o _site/index.html
+          curl -fsSL \
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/rates.json" \
+            -o _site/rates.json
           touch _site/.nojekyll
 
       - name: Setup Pages
