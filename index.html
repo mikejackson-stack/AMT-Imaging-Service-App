@@ -17,6 +17,7 @@ window.addEventListener('online', ()=>{ const b=document.getElementById('offline
 window.addEventListener('offline',()=>{ const b=document.getElementById('offlineBadge'); if(b)b.style.display='flex'; });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root{
   --navy:#0a1628;--navy2:#112240;--navy3:#1a3358;
@@ -439,6 +440,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <button class="mnav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="mni">📋</span><span>Jobs</span></button>
   <button class="mnav-item" onclick="showTab('money')" data-tab="money"><span class="mni">💵</span><span>Money</span></button>
   <button class="mnav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="mni">📚</span><span>Manuals</span></button>
+  <button class="mnav-item" onclick="showTab('rates')" data-tab="rates"><span class="mni">💰</span><span>Rates</span></button>
 </nav>
 
 <div id="contentArea">
@@ -749,7 +751,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <!-- Condition checkboxes builder -->
       <div id="hhBuilder" style="margin-bottom:16px;padding:12px;background:var(--gray);border-radius:8px">
         <div style="font-weight:700;font-size:.85rem;margin-bottom:10px;color:var(--navy)">📝 Complete before printing:</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:10px">
           <div class="form-group" style="margin:0">
             <label class="form-label" style="font-size:.75rem">Date</label>
             <input id="hh_date" class="form-control" type="date" style="font-size:.8rem">
@@ -1017,6 +1019,17 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div class="filter-chip" onclick="setKBCatFilter('CT')" data-kbcat="CT">CT</div>
       <div class="filter-chip" onclick="setKBCatFilter('Error Code')" data-kbcat="Error Code">Error Codes</div>
     </div>
+    <!-- PDF Upload to KB -->
+    <div id="pdfDropZone"
+         style="border:2px dashed var(--gray3);border-radius:var(--r);padding:18px 16px;text-align:center;margin-bottom:12px;transition:.2s;background:var(--gray);cursor:pointer"
+         ondrop="handlePDFDrop(event)" ondragover="event.preventDefault();document.getElementById('pdfDropZone').style.borderColor='var(--blue2)'" ondragleave="document.getElementById('pdfDropZone').style.borderColor='var(--gray3)'">
+      <div style="font-size:1.6rem;margin-bottom:4px">📄</div>
+      <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:2px">Drop a PDF to add it to the Knowledge Base</div>
+      <div style="font-size:.72rem;color:var(--text2);margin-bottom:10px">Text is extracted and saved as searchable entries</div>
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('pdfKBInput').click()">📁 Choose PDF</button>
+      <input type="file" id="pdfKBInput" accept=".pdf" style="display:none" onchange="handlePDFUpload(this.files[0]);this.value=''">
+      <div id="pdfUploadStatus" style="font-size:.75rem;color:var(--text2);margin-top:8px;min-height:16px"></div>
+    </div>
     <div id="kbEntryList"></div>
   </div>
 
@@ -1029,6 +1042,9 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 </div><!-- /contentArea -->
 </div><!-- /mainApp -->
+
+<!-- Toast notification -->
+<div id="appToast" style="position:fixed;bottom:76px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(10,22,40,.93);color:#fff;padding:10px 22px;border-radius:24px;font-size:.82rem;font-weight:600;opacity:0;transition:opacity .25s,transform .25s;z-index:9999;pointer-events:none;white-space:nowrap;max-width:92vw;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.3)"></div>
 
 <!-- ══ MODALS ══ -->
 <!-- Edit Job -->
@@ -3999,6 +4015,96 @@ async function scanGitHubForManuals(){
   } catch(e){
     if(res) res.textContent = '❌ Error: '+e.message;
   }
+}
+
+// ── Toast notification ──────────────────────────────────────────────────────
+let _toastTimer;
+function showToast(msg, duration){
+  const el = document.getElementById('appToast');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.opacity = '1';
+  el.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(()=>{
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(-50%) translateY(12px)';
+  }, duration || 3000);
+}
+
+// ── PDF → Knowledge Base ────────────────────────────────────────────────────
+function handlePDFDrop(e){
+  e.preventDefault();
+  document.getElementById('pdfDropZone').style.borderColor = 'var(--gray3)';
+  const file = Array.from(e.dataTransfer.files).find(f=>f.name.toLowerCase().endsWith('.pdf'));
+  if(file) handlePDFUpload(file);
+  else showToast('Please drop a PDF file.');
+}
+
+async function handlePDFUpload(file){
+  if(!file || !file.name.toLowerCase().endsWith('.pdf')){
+    showToast('Please select a PDF file.');
+    return;
+  }
+  if(typeof pdfjsLib === 'undefined'){
+    showToast('PDF reader not loaded — check your internet connection.');
+    return;
+  }
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const statusEl = document.getElementById('pdfUploadStatus');
+  const setStatus = t => { if(statusEl) statusEl.textContent = t; };
+  setStatus('⏳ Reading PDF…');
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+    const totalPages = pdf.numPages;
+    let fullText = '';
+    for(let i = 1; i <= totalPages; i++){
+      setStatus('⏳ Extracting text (page '+i+'/'+totalPages+')…');
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      fullText += content.items.map(item=>item.str).join(' ') + '\n\n';
+    }
+    const chunks = pdfChunkText(fullText, 500);
+    const baseName = file.name.replace(/\.pdf$/i,'');
+    const added = [];
+    chunks.forEach((chunk, idx) => {
+      added.push({
+        id: 'kb_pdf_'+Date.now()+'_'+idx,
+        title: baseName + (chunks.length > 1 ? ' (Part '+(idx+1)+'/'+chunks.length+')' : ''),
+        cat: 'General',
+        model: '', error: '',
+        problem: chunk.trim(),
+        solution: '', parts: '',
+        tags: ['pdf','imported'],
+        date: new Date().toISOString().slice(0,10),
+        created: new Date().toISOString(),
+        updated: new Date().toISOString()
+      });
+    });
+    if(!added.length){ setStatus('⚠️ No readable text found in PDF.'); return; }
+    kbEntries.push(...added);
+    saveKBData();
+    renderKBEntries();
+    const n = added.length;
+    setStatus('✅ Added '+n+' KB entr'+(n===1?'y':'ies')+' from "'+file.name+'"');
+    setTimeout(()=>setStatus(''), 6000);
+    showToast('✅ '+n+' KB entr'+(n===1?'y':'ies')+' added from PDF');
+  } catch(err){
+    console.error('[PDF import]', err);
+    setStatus('❌ Error: '+err.message);
+  }
+}
+
+function pdfChunkText(text, wordsPerChunk){
+  const words = text.split(/\s+/).filter(w=>w.length > 0);
+  const chunks = [];
+  for(let i = 0; i < words.length; i += wordsPerChunk){
+    const chunk = words.slice(i, i + wordsPerChunk).join(' ');
+    if(chunk.trim().length > 60) chunks.push(chunk);
+  }
+  return chunks;
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
