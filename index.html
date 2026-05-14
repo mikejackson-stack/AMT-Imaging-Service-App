@@ -437,6 +437,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <button class="mnav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="mni">📋</span><span>Jobs</span></button>
   <button class="mnav-item" onclick="showTab('money')" data-tab="money"><span class="mni">💵</span><span>Money</span></button>
   <button class="mnav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="mni">📚</span><span>Manuals</span></button>
+  <button class="mnav-item" onclick="showTab('rates')" data-tab="rates"><span class="mni">💰</span><span>Rates</span></button>
 </nav>
 
 <div id="contentArea">
@@ -714,7 +715,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
-  <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🏅 Veteran-Owned</div>
+  <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</div>
 
   <!-- EMAIL SIGNATURE GENERATOR -->
   <div id="emailSigSection" style="display:none" class="card mt-12">
@@ -2188,15 +2189,24 @@ function ghWebUrl(filePath){
   return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+(filePath||'');
 }
 
-// Smart URL: uses GitHub Pages URL (correct MIME types for htm + pdf)
+// Smart URL: routes files to the correct viewer based on type
 function ghOpenUrl(filePath, downloadUrl){
-  // Use GitHub Pages URL — serves .htm as HTML and .pdf inline (correct MIME types)
-  if(GH.pages){
-    // Encode spaces in path segments for valid URLs
-    const encodedPath = filePath.split('/').map(seg => encodeURIComponent(seg)).join('/');
-    return GH.pages + '/' + encodedPath;
+  const lower = filePath.toLowerCase();
+  // downloadUrl already has full path with Manuals/ prefix; build fallback for edge cases
+  const rawUrl = downloadUrl ||
+    ('https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+
+     GH.manualsRoot+'/'+filePath.split('/').map(s=>encodeURIComponent(s)).join('/'));
+  const githackUrl = rawUrl.replace('//raw.githubusercontent.com/', '//raw.githack.com/');
+  // Office files → Microsoft Office Online viewer
+  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
   }
-  return downloadUrl || ghRawUrl(filePath);
+  // .htm/.html → raw.githack.com (serves as text/html, relative links resolve correctly)
+  if(lower.endsWith('.htm')||lower.endsWith('.html')){
+    return githackUrl;
+  }
+  // .pdf → raw.githack.com (correct Content-Type; raw.githubusercontent.com serves as octet-stream which triggers download)
+  return githackUrl;
 }
 
 // Build correct manual URL for error code DB entries (path is relative to Manuals/)
