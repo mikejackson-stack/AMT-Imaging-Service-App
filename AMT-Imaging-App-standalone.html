@@ -1017,7 +1017,10 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
   <!-- ERROR CODE DB -->
   <div id="kbp-errcodes" style="display:none">
-    <div class="alert alert-info" style="margin-bottom:10px">📋 Built-in error code reference. Entries from completed jobs are added automatically.</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+      <div class="alert alert-info" style="margin:0;flex:1">📋 Built-in error code reference — tap <strong>🤖 AI Fix</strong> on any entry for step-by-step Claude recommendations.</div>
+      <button onclick="setupClaudeKey()" id="claudeKeyBtn" style="background:var(--navy);color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0">🔑 API Key</button>
+    </div>
     <div id="errCodeList"></div>
   </div>
 </div>
@@ -1026,6 +1029,20 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 </div><!-- /mainApp -->
 
 <!-- ══ MODALS ══ -->
+<!-- AI Fix Modal -->
+<div class="modal-overlay" id="aiFixModal">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-header"><h3>🤖 AI Fix Recommendation</h3><button class="modal-close" onclick="closeModal('aiFixModal')">✕</button></div>
+    <div class="modal-body">
+      <div id="aiFixContext" style="background:var(--gray);padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:.82rem;border-left:3px solid var(--red)"></div>
+      <div id="aiFixContent" style="font-size:.85rem;line-height:1.65"></div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between">
+      <button class="btn btn-outline" onclick="clearClaudeKey()" style="font-size:.75rem">🔑 Change API Key</button>
+      <button class="btn btn-outline" onclick="closeModal('aiFixModal')">Close</button>
+    </div>
+  </div>
+</div>
 <!-- Edit Job -->
 <div class="modal-overlay" id="editModal">
   <div class="modal"><div class="modal-header"><h3>✏️ Edit Job</h3><button class="modal-close" onclick="closeModal('editModal')">✕</button></div>
@@ -2402,7 +2419,7 @@ function setKBTab(t){
     if(el) el.style.display = s===t ? 'block' : 'none';
   });
   if(t==='kb') renderKBEntries();
-  if(t==='errcodes') renderErrCodeList();
+  if(t==='errcodes'){ renderErrCodeList(); updateClaudeKeyBtn(); }
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
   if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
 }
@@ -2627,11 +2644,15 @@ function kbSearch(q){
       </div>`).join('')+'</div>';
   }
   if(errMatches.length){
+    _aiErrEntries = errMatches;
     html += '<div class="card"><div class="card-header">⚠️ Error Code Reference ('+errMatches.length+')</div>'+
-      errMatches.map(e=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
-        <strong style="color:var(--red)">${e.code}</strong>
-        <span class="badge bc" style="font-size:.64rem;margin-left:6px">${e.brand}</span>
-        <div style="font-size:.82rem;color:var(--text2);margin-top:3px">${e.desc}</div>
+      errMatches.map((e,i)=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <strong style="color:var(--red)">${e.code}</strong>
+          <span class="badge bc" style="font-size:.64rem">${e.brand}</span>
+          <button onclick="getAIFix(${i})" style="margin-left:auto;background:var(--navy);color:white;border:none;padding:3px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button>
+        </div>
+        <div style="font-size:.82rem;color:var(--text2);margin-top:4px">${e.desc}</div>
         ${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
       </div>`).join('')+'</div>';
   }
@@ -2644,12 +2665,14 @@ function kbSearch(q){
 // ── ERROR CODE LIST TAB ──
 function renderErrCodeList(){
   const list = document.getElementById('errCodeList'); if(!list) return;
-  list.innerHTML = '<div style="overflow-x:auto"><table class="cl-table" style="font-size:.82rem"><thead><tr><th style="text-align:left">Code</th><th style="text-align:left;min-width:60px">Brand</th><th style="text-align:left">Description</th><th style="text-align:left">Manual</th></tr></thead><tbody>'+
-    FULL_ERROR_DB.map(e=>`<tr>
+  _aiErrEntries = FULL_ERROR_DB;
+  list.innerHTML = '<div style="overflow-x:auto"><table class="cl-table" style="font-size:.82rem"><thead><tr><th style="text-align:left">Code</th><th style="text-align:left;min-width:60px">Brand</th><th style="text-align:left">Description</th><th style="text-align:left">Manual</th><th></th></tr></thead><tbody>'+
+    FULL_ERROR_DB.map((e,i)=>`<tr>
       <td><strong style="color:var(--red)">${e.code}</strong></td>
       <td><span class="badge bc" style="font-size:.62rem">${e.brand}</span></td>
       <td style="font-size:.8rem">${e.desc}</td>
       <td>${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
+      <td><button onclick="getAIFix(${i})" style="background:var(--navy);color:white;border:none;padding:3px 8px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button></td>
     </tr>`).join('')+'</tbody></table></div>';
 }
 
@@ -3999,6 +4022,100 @@ async function scanGitHubForManuals(){
 document.addEventListener('DOMContentLoaded',()=>{
   checkOAuthCallback();
   tryAutoLogin();
+});
+
+// ════════════════════════════════════════════════════
+// AI FIX RECOMMENDATION (Claude API — Haiku)
+// ════════════════════════════════════════════════════
+let _aiErrEntries = [];
+
+function setupClaudeKey(){
+  const existing = localStorage.getItem('amt_claude_key');
+  const msg = existing
+    ? 'API key is set. Enter a new key to replace it, or leave blank to cancel:'
+    : 'Enter your Anthropic API key (stored locally on this device only):';
+  const key = prompt(msg);
+  if(key && key.trim()){
+    localStorage.setItem('amt_claude_key', key.trim());
+    showToast('✅ Claude API key saved');
+    updateClaudeKeyBtn();
+  }
+}
+
+function clearClaudeKey(){
+  localStorage.removeItem('amt_claude_key');
+  closeModal('aiFixModal');
+  showToast('API key cleared');
+  updateClaudeKeyBtn();
+}
+
+function updateClaudeKeyBtn(){
+  const btn = document.getElementById('claudeKeyBtn');
+  if(!btn) return;
+  const has = !!localStorage.getItem('amt_claude_key');
+  btn.textContent = has ? '🔑 API Key ✓' : '🔑 API Key';
+  btn.style.background = has ? 'var(--green2)' : 'var(--navy)';
+}
+
+async function getAIFix(idx){
+  const e = _aiErrEntries[idx];
+  if(!e) return;
+  let apiKey = localStorage.getItem('amt_claude_key');
+  if(!apiKey){
+    apiKey = prompt('Enter your Anthropic API key (stored locally on this device):');
+    if(!apiKey) return;
+    localStorage.setItem('amt_claude_key', apiKey.trim());
+    updateClaudeKeyBtn();
+    apiKey = apiKey.trim();
+  }
+  document.getElementById('aiFixContext').innerHTML =
+    `<strong style="color:var(--red)">${e.code}</strong>&ensp;<span class="badge bc" style="font-size:.65rem">${e.brand}</span><div style="margin-top:4px;color:var(--text2)">${e.desc}</div>`;
+  document.getElementById('aiFixContent').innerHTML =
+    '<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Getting AI recommendation…</div>';
+  openModal('aiFixModal');
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'x-api-key': apiKey,
+        'anthropic-version':'2023-06-01',
+        'content-type':'application/json',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1024,
+        messages:[{role:'user',content:
+          `You are an expert MRI/CT field service engineer. Provide specific troubleshooting steps for this fault:\n\nSystem: ${e.brand}\nError/Fault: ${e.code}\nDescription: ${e.desc}\n\nGive 5-7 numbered diagnostic and repair steps ordered from quickest check to deeper investigation. Include specific component names, test points, measurements, or part numbers where known. Be concise and technical.`
+        }]
+      })
+    });
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.error?.message||`HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    document.getElementById('aiFixContent').innerHTML = formatAIText(data.content[0].text);
+  } catch(err){
+    document.getElementById('aiFixContent').innerHTML =
+      `<div class="alert alert-danger">⚠️ ${err.message}</div>
+       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="clearClaudeKey()">Reset Key</button></div>`;
+  }
+}
+
+function formatAIText(text){
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^(\d+)[.)]\s+(.+)$/gm,
+      '<div style="display:flex;gap:8px;margin:7px 0"><span style="color:var(--navy);font-weight:700;min-width:18px">$1.</span><span>$2</span></div>')
+    .replace(/\n\n+/g,'<br>')
+    .replace(/\n/g,' ');
+}
+
+// re-attach DOMContentLoaded for standalone dual-listener pattern
+document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
