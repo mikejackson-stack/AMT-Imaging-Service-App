@@ -718,7 +718,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
-  <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🏅 Veteran-Owned</div>
+  <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</div>
 
   <!-- EMAIL SIGNATURE GENERATOR -->
   <div id="emailSigSection" style="display:none" class="card mt-12">
@@ -842,6 +842,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
             <div>Fort Lauderdale, FL</div>
             <div>📞 754-263-6089</div>
             <div>mike.jackson@amtimagingsolutions.com</div>
+            <div>🌐 www.amtimagingsolutions.net</div>
             <div style="color:#b8860b;font-weight:700">🏅 Veteran-Owned Business</div>
           </div>
         </div>
@@ -874,7 +875,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
         <!-- Acceptance paragraph -->
         <div style="margin-bottom:20px;font-family:Arial,sans-serif;font-size:.88rem">
-          If this agreement is acceptable to you, please sign the acceptance below and return a signed copy to AMT Imaging Solutions LLC via email at mike.jackson@amtimagingsolutions.com.
+          If this agreement is acceptable to you, please sign the acceptance below and return a signed copy to AMT Imaging Solutions LLC via email at mike.jackson@amtimagingsolutions.com or visit us at www.amtimagingsolutions.net.
         </div>
 
         <!-- Sincerely -->
@@ -3343,7 +3344,7 @@ function buildInvoicePDF(invId){
   doc.text('AMT Imaging Solutions LLC',hdrX,13);
   doc.setFontSize(7.5); doc.setFont('helvetica','normal');
   doc.text('Tel: 754-263-6089   mike.jackson@amtimagingsolutions.com',hdrX,21);
-  doc.text('https://mikejackson-stack.github.io/AMT-Imaging-Service-App/',hdrX,28);
+  doc.text('www.amtimagingsolutions.net',hdrX,28);
   doc.text('Veteran-Owned Business',hdrX,34);
 
   // ── Invoice badge ──
@@ -3443,7 +3444,7 @@ function buildInvoicePDF(invId){
   doc.setFillColor(10,22,40);
   doc.rect(0,285,W,12,'F');
   doc.setTextColor(255,255,255); doc.setFontSize(7);
-  doc.text('AMT Imaging Solutions LLC  |  754-263-6089  |  mike.jackson@amtimagingsolutions.com  |  Veteran-Owned Business',W/2,292,{align:'center'});
+  doc.text('AMT Imaging Solutions LLC  |  754-263-6089  |  mike.jackson@amtimagingsolutions.com  |  www.amtimagingsolutions.net  |  Veteran-Owned Business',W/2,292,{align:'center'});
 
   return doc;
 }
@@ -3472,7 +3473,7 @@ function sendInvoiceEmail(invId){
     'Please find your invoice attached (saved to your Downloads as '+filename+').\n\n'+
     'Amount Due: $'+((inv&&inv.amount)||'0.00')+'\n'+
     'Due Date: '+(inv&&inv.due?inv.due:'Net 30')+'\n\n'+
-    'For questions, contact:\nMike Jackson\nAMT Imaging Solutions LLC\n754-263-6089\nmike.jackson@amtimagingsolutions.com\n\n'+
+    'For questions, contact:\nMike Jackson\nAMT Imaging Solutions LLC\n754-263-6089\nmike.jackson@amtimagingsolutions.com\nwww.amtimagingsolutions.net\n\n'+
     'Thank you for your business!'
   );
   window.open('mailto:'+email+'?subject='+subject+'&body='+body);
@@ -4238,6 +4239,7 @@ function buildEmailSig(key){
       <div style="font-size:11px;color:#4a5568;margin-bottom:5px">Precision. Performance. Trust.&nbsp;&nbsp;|&nbsp;&nbsp;&#127885;&nbsp;Veteran-Owned</div>
       <div style="font-size:12px;margin-bottom:2px">&#128222;&nbsp;<a href="tel:+17542636089" style="color:#1565c0;text-decoration:none">${p.phone}</a></div>
       <div style="font-size:12px;margin-bottom:5px">&#128231;&nbsp;<a href="mailto:${p.email}" style="color:#1565c0;text-decoration:none">${p.email}</a></div>
+      <div style="font-size:11px;margin-bottom:2px">&#127760;&nbsp;<a href="https://www.amtimagingsolutions.net" style="color:#1565c0;text-decoration:none">www.amtimagingsolutions.net</a></div>
       <div style="font-size:11px;color:#78909c">Fort Lauderdale, FL&nbsp;&nbsp;|&nbsp;&nbsp;GE MRI Field Service Specialists</div>
     </td>
   </tr>
