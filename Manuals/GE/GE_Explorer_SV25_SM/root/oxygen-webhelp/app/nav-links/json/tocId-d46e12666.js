@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Gradient Filter","href":"t_Gradient-Filter_12059937.html","attributes":{"data-id":"id_13105807"},"menu":{"hasChildren":false},"tocID":"id_13105807-d46e12667","topics":[]}]});

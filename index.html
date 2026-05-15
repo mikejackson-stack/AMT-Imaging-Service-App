@@ -725,7 +725,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   </div>
   <div class="btn-row mt-12">
     <button class="btn btn-gold" onclick="showTab('money');setMoneyTab('invoices');openInvoiceModal()">📝 Generate Invoice</button>
-    <button class="btn btn-outline" onclick="window.print()">🖨 Print Rates</button>
+    <button class="btn btn-outline" onclick="printRates()">🖨 Print Rates</button>
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
@@ -1039,8 +1039,15 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <!-- ERROR CODE DB -->
   <div id="kbp-errcodes" style="display:none">
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
-      <div class="alert alert-info" style="margin:0;flex:1">📋 Built-in error code reference — tap <strong>🤖 AI Fix</strong> on any entry for step-by-step Claude recommendations.</div>
-      <button onclick="setupClaudeKey()" id="claudeKeyBtn" style="background:var(--navy);color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap;flex-shrink:0">🔑 API Key</button>
+      <div class="alert alert-info" style="margin:0;flex:1">📋 Built-in error code reference — tap <strong>🤖 AI Fix</strong> on any entry for step-by-step AI recommendations.</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap">
+        <div style="display:flex;border:1px solid #0a1628;border-radius:7px;overflow:hidden;font-size:.73rem" title="Choose AI provider">
+          <button id="aiProvClaude" onclick="setAIProvider('claude')" style="padding:5px 9px;background:#0a1628;color:white;border:none;cursor:pointer;transition:all .15s">Claude</button>
+          <button id="aiProvGrok" onclick="setAIProvider('grok')" style="padding:5px 9px;background:transparent;color:#0a1628;border:none;cursor:pointer;transition:all .15s">Grok</button>
+        </div>
+        <button onclick="setupClaudeKey()" id="claudeKeyBtn" style="background:#0a1628;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap">🔑 Claude Key</button>
+        <button onclick="setupGrokKey()" id="grokKeyBtn" style="background:#0a1628;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap;display:none">🤖 Grok Key</button>
+      </div>
     </div>
     <div id="errCodeList"></div>
   </div>
@@ -1059,7 +1066,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div id="aiFixContent" style="font-size:.85rem;line-height:1.65"></div>
     </div>
     <div class="modal-footer" style="justify-content:space-between">
-      <button class="btn btn-outline" onclick="clearClaudeKey()" style="font-size:.75rem">🔑 Change API Key</button>
+      <button class="btn btn-outline" onclick="changeAIKey()" style="font-size:.75rem">🔑 Change API Key</button>
       <button class="btn btn-outline" onclick="closeModal('aiFixModal')">Close</button>
     </div>
   </div>
@@ -1388,7 +1395,7 @@ function bootApp(){
   renderDashboard();
   // Set today on date fields
   ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=now.toISOString().slice(0,10);});
-  updateClaudeKeyBtn();
+  updateAIKeyBtns();
 }
 
 function logout(){
@@ -1630,7 +1637,7 @@ function showTab(t){
   if(t==='manuals'){
     setKBTab('files');
     setTimeout(initManuals, 50);
-    updateClaudeKeyBtn();
+    updateAIKeyBtns();
   }
   // Populate job dropdowns when money tab opens
   if(t==='money')populateMoneyJobDropdowns();
@@ -2483,7 +2490,7 @@ function setKBTab(t){
   if(t==='errcodes') renderErrCodeList();
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
   if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
-  updateClaudeKeyBtn();
+  updateAIKeyBtns();
 }
 
 function setKBCatFilter(cat){
@@ -3951,7 +3958,7 @@ function toggleEmailSig(){
 
 function buildEmailSig(key){
   const p = EMAIL_SIG_PEOPLE[key]; if(!p) return;
-  const logo = typeof LOGO_DATA_URL !== 'undefined' ? LOGO_DATA_URL : '';
+  const logo = typeof LOGO_B64 !== 'undefined' ? LOGO_B64 : (document.getElementById('topbarLogo')?.src||'');
   _emailSigCurrentHTML = `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#1a2332;border-collapse:collapse;max-width:480px">
   <tr>
     <td style="background:#0a1628;padding:10px 14px;vertical-align:middle;border-radius:6px 0 0 6px">
@@ -3996,13 +4003,13 @@ function printHoldHarmless(){
   updateHHPreview();
   const letter = document.getElementById('hhLetterPreview');
   if(!letter){ alert('Letter preview not found.'); return; }
-  
+
   const logoSrc = document.getElementById('hhLogoLetter')?.src||'';
   const letterHTML = letter.innerHTML.replace(
     /src="data:image\/png;base64,[^"]+"/,
     'src="'+logoSrc+'"'
   );
-  
+
   const w = window.open('','_blank','width=820,height=1050');
   w.document.write(
     '<html><head><title>AMT Imaging Solutions — Hold Harmless Agreement</title>'+
@@ -4015,6 +4022,59 @@ function printHoldHarmless(){
     '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
     '</body></html>'
   );
+  w.document.close();
+}
+
+function printRates(){
+  const panel = document.getElementById('panel-rates');
+  if(!panel){ alert('Rates panel not found.'); return; }
+  // Collect rate content, stopping before the button row / email sig / hold harmless sections
+  let ratesHTML = '';
+  const kids = panel.children;
+  for(let i=0;i<kids.length;i++){
+    const el = kids[i];
+    if(el.classList.contains('btn-row') || el.id==='emailSigSection' || el.id==='holdHarmlessSection') break;
+    ratesHTML += el.outerHTML;
+  }
+  const logoSrc = typeof LOGO_B64!=='undefined' ? LOGO_B64 : (document.getElementById('topbarLogo')?.src||'');
+  const w = window.open('','_blank','width=860,height=1100');
+  w.document.write(`<html><head><title>AMT Imaging Solutions — Service Rate Sheet</title><style>
+    *{box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;margin:0;padding:28px 36px;color:#111;font-size:13px;background:#fff}
+    h1{color:#0a1628;font-size:1.15rem;margin:0 0 2px}
+    .header-row{display:flex;align-items:center;gap:18px;border-bottom:3px solid #c9a84c;padding-bottom:14px;margin-bottom:18px}
+    .co-info{font-size:.78rem;color:#444;line-height:1.6}
+    .sec-title{font-weight:800;font-size:1rem;color:#0a1628;margin:14px 0 8px;text-transform:uppercase;letter-spacing:.5px}
+    .card{border:1px solid #ddd;border-radius:8px;overflow:hidden;margin-bottom:14px}
+    .rates-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+    .rate-card{border:1px solid #ddd;border-radius:8px;overflow:hidden}
+    .rate-head{font-weight:700;font-size:.82rem;padding:7px 12px;color:white}
+    .rh-navy{background:#0a1628}.rh-blue{background:#1565c0}.rh-cyan{background:#006064}.rh-orange{background:#e65100}.rh-green{background:#2e7d32}
+    .rate-row{display:flex;justify-content:space-between;align-items:center;padding:5px 12px;font-size:.8rem;border-bottom:1px solid #f0f0f0}
+    .rate-row.hi{background:#f8f9fa}
+    .rate-label{color:#333}.rate-val{font-weight:700;color:#0a1628;white-space:nowrap;margin-left:8px}
+    .pop-row{background:#fffde7}.pop-tag{background:#f9a825;color:#fff;font-size:.62rem;padding:1px 5px;border-radius:3px;margin-left:4px}
+    img{max-height:60px;object-fit:contain}
+    .footer-note{margin-top:18px;padding:10px 14px;background:#f0f4ff;border-left:4px solid #0a1628;border-radius:4px;font-size:.75rem;color:#444;line-height:1.6}
+    @media print{body{padding:18px 24px}@page{margin:.6in}button{display:none!important}}
+  </style></head><body>
+  <div class="header-row">
+    ${logoSrc?'<img src="'+logoSrc+'" alt="AMT Imaging Solutions" width="72" height="72">':''}
+    <div>
+      <h1>AMT Imaging Solutions LLC</h1>
+      <div class="co-info">
+        <strong>Service Rate Sheet</strong> — Effective 2025/2026<br>
+        📞 754-263-6089 &nbsp;|&nbsp; mike.jackson@amtimagingsolutions.com &nbsp;|&nbsp; www.amtimagingsolutions.net<br>
+        Fort Lauderdale, FL &nbsp;|&nbsp; 🏅 Veteran-Owned &nbsp;|&nbsp; GE MRI / CT Field Service Specialists
+      </div>
+    </div>
+  </div>
+  ${ratesHTML}
+  <div class="footer-note">
+    ⚠️ <strong>Rates are subject to change without notice.</strong> All work performed under AMT Imaging Solutions' standard Terms &amp; Conditions. Travel beyond 100 miles billed at $0.85/mile. Emergency response may include trip fee. Invoices due net 15 unless otherwise contracted. A signed Hold Harmless Agreement is required before ramping, de-icing, or shimming services.
+  </div>
+  <script>window.onload=function(){setTimeout(function(){window.print();},450);};<\/script>
+  </body></html>`);
   w.document.close();
 }
 
@@ -4141,88 +4201,153 @@ let _aiErrEntries = [];
 function setupClaudeKey(){
   const existing = localStorage.getItem('amt_claude_key');
   const msg = existing
-    ? 'API key is set. Enter a new key to replace it, or leave blank to cancel:'
+    ? 'Claude API key is set. Enter a new key to replace it, or leave blank to cancel:'
     : 'Enter your Anthropic API key (stored locally on this device only):';
   const key = prompt(msg);
   if(key && key.trim()){
     localStorage.setItem('amt_claude_key', key.trim());
     showToast('✅ Claude API key saved');
-    updateClaudeKeyBtn();
+    updateAIKeyBtns();
   }
 }
 
 function clearClaudeKey(){
   localStorage.removeItem('amt_claude_key');
   closeModal('aiFixModal');
-  showToast('API key cleared');
-  updateClaudeKeyBtn();
+  showToast('Claude API key cleared');
+  updateAIKeyBtns();
+}
+
+function changeAIKey(){
+  const prov = localStorage.getItem('amt_ai_provider')||'claude';
+  if(prov==='grok') setupGrokKey(); else { clearClaudeKey(); setupClaudeKey(); }
+}
+
+function getAIProvider(){ return localStorage.getItem('amt_ai_provider')||'claude'; }
+
+function setAIProvider(prov){
+  localStorage.setItem('amt_ai_provider', prov);
+  updateAIKeyBtns();
+  showToast('AI provider set to ' + (prov==='grok'?'Grok (xAI)':'Claude (Anthropic)'));
+}
+
+function setupGrokKey(){
+  const existing = localStorage.getItem('amt_grok_key');
+  const msg = existing
+    ? 'Grok API key is set. Enter a new key to replace it, or leave blank to cancel:'
+    : 'Enter your xAI Grok API key (stored locally on this device only):';
+  const key = prompt(msg);
+  if(key && key.trim()){
+    localStorage.setItem('amt_grok_key', key.trim());
+    showToast('✅ Grok API key saved');
+    updateAIKeyBtns();
+  }
+}
+
+function clearGrokKey(){
+  localStorage.removeItem('amt_grok_key');
+  closeModal('aiFixModal');
+  showToast('Grok API key cleared');
+  updateAIKeyBtns();
 }
 
 function updateClaudeKeyBtn(){
   const btn = document.getElementById('claudeKeyBtn');
   if(!btn) return;
   const has = !!localStorage.getItem('amt_claude_key');
-  btn.textContent = has ? '🔑 API Key ✓' : '🔑 API Key';
+  btn.textContent = has ? '🔑 Claude Key ✓' : '🔑 Claude Key';
   btn.style.background = has ? '#16a34a' : '#0a1628';
+}
+
+function updateGrokKeyBtn(){
+  const btn = document.getElementById('grokKeyBtn');
+  if(!btn) return;
+  const has = !!localStorage.getItem('amt_grok_key');
+  btn.textContent = has ? '🤖 Grok Key ✓' : '🤖 Grok Key';
+  btn.style.background = has ? '#16a34a' : '#0a1628';
+}
+
+function updateAIKeyBtns(){
+  const prov = getAIProvider();
+  const claudeKeyBtn = document.getElementById('claudeKeyBtn');
+  const grokKeyBtn = document.getElementById('grokKeyBtn');
+  const aiProvClaude = document.getElementById('aiProvClaude');
+  const aiProvGrok = document.getElementById('aiProvGrok');
+  if(aiProvClaude){
+    aiProvClaude.style.background = prov==='claude' ? '#0a1628' : 'transparent';
+    aiProvClaude.style.color = prov==='claude' ? 'white' : '#0a1628';
+  }
+  if(aiProvGrok){
+    aiProvGrok.style.background = prov==='grok' ? '#0a1628' : 'transparent';
+    aiProvGrok.style.color = prov==='grok' ? 'white' : '#0a1628';
+  }
+  if(claudeKeyBtn) claudeKeyBtn.style.display = prov==='claude' ? '' : 'none';
+  if(grokKeyBtn) grokKeyBtn.style.display = prov==='grok' ? '' : 'none';
+  updateClaudeKeyBtn();
+  updateGrokKeyBtn();
+}
+
+async function callAI(messages, maxTokens){
+  maxTokens = maxTokens||1024;
+  const prov = getAIProvider();
+  if(prov==='grok'){
+    let key = localStorage.getItem('amt_grok_key');
+    if(!key){
+      key = prompt('Enter your xAI Grok API key (stored locally on this device):');
+      if(!key) throw new Error('No Grok API key provided.');
+      localStorage.setItem('amt_grok_key', key.trim());
+      updateAIKeyBtns();
+    }
+    const resp = await fetch('https://api.x.ai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key.trim(),'Content-Type':'application/json'},
+      body:JSON.stringify({model:'grok-beta',max_tokens:maxTokens,messages})
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Grok HTTP ${resp.status}`);}
+    const data = await resp.json();
+    return data.choices[0].message.content;
+  } else {
+    let key = localStorage.getItem('amt_claude_key');
+    if(!key){
+      key = prompt('Enter your Anthropic API key (stored locally on this device):');
+      if(!key) throw new Error('No Claude API key provided.');
+      localStorage.setItem('amt_claude_key', key.trim());
+      updateAIKeyBtns();
+    }
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages})
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Claude HTTP ${resp.status}`);}
+    const data = await resp.json();
+    return data.content[0].text;
+  }
 }
 
 async function getAIFix(code){
   const e = FULL_ERROR_DB.find(x=>x.code===code);
   if(!e) return;
-  let apiKey = localStorage.getItem('amt_claude_key');
-  if(!apiKey){
-    apiKey = prompt('Enter your Anthropic API key (stored locally on this device):');
-    if(!apiKey) return;
-    localStorage.setItem('amt_claude_key', apiKey.trim());
-    updateClaudeKeyBtn();
-    apiKey = apiKey.trim();
-  }
   document.getElementById('aiFixContext').innerHTML =
     `<strong style="color:var(--red)">${e.code}</strong>&ensp;<span class="badge bc" style="font-size:.65rem">${e.brand}</span><div style="margin-top:4px;color:var(--text2)">${e.desc}</div>`;
   document.getElementById('aiFixContent').innerHTML =
-    '<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Getting AI recommendation…</div>';
+    `<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Getting AI recommendation (${getAIProvider()==='grok'?'Grok':'Claude'})…</div>`;
   openModal('aiFixModal');
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'x-api-key': apiKey,
-        'anthropic-version':'2023-06-01',
-        'content-type':'application/json',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:1024,
-        messages:[{role:'user',content:
-          `You are an expert MRI/CT field service engineer. Provide specific troubleshooting steps for this fault:\n\nSystem: ${e.brand}\nError/Fault: ${e.code}\nDescription: ${e.desc}\n\nGive 5-7 numbered diagnostic and repair steps ordered from quickest check to deeper investigation. Include specific component names, test points, measurements, or part numbers where known. Be concise and technical.`
-        }]
-      })
-    });
-    if(!resp.ok){
-      const err = await resp.json().catch(()=>({}));
-      throw new Error(err.error?.message||`HTTP ${resp.status}`);
-    }
-    const data = await resp.json();
-    document.getElementById('aiFixContent').innerHTML = formatAIText(data.content[0].text);
+    const text = await callAI([{role:'user',content:
+      `You are an expert MRI/CT field service engineer. Provide specific troubleshooting steps for this fault:\n\nSystem: ${e.brand}\nError/Fault: ${e.code}\nDescription: ${e.desc}\n\nGive 5-7 numbered diagnostic and repair steps ordered from quickest check to deeper investigation. Include specific component names, test points, measurements, or part numbers where known. Be concise and technical.`
+    }], 1024);
+    document.getElementById('aiFixContent').innerHTML = formatAIText(text);
   } catch(err){
     document.getElementById('aiFixContent').innerHTML =
       `<div class="alert alert-danger">⚠️ ${err.message}</div>
-       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="clearClaudeKey()">Reset Key</button></div>`;
+       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="changeAIKey()">Reset Key</button></div>`;
   }
 }
 
 async function askKBAI(id){
   const e = kbEntries.find(x=>x.id===id);
   if(!e) return;
-  let apiKey = localStorage.getItem('amt_claude_key');
-  if(!apiKey){
-    apiKey = prompt('Enter your Anthropic API key (stored locally on this device):');
-    if(!apiKey) return;
-    localStorage.setItem('amt_claude_key', apiKey.trim());
-    updateClaudeKeyBtn();
-    apiKey = apiKey.trim();
-  }
   const catColors={GE:'#1565c0',Siemens:'#e65100',Philips:'#6a1b9a',Injector:'#2e7d32',CT:'#006064','Error Code':'#c62828',General:'#546e7a'};
   document.getElementById('aiFixContext').innerHTML =
     `<strong style="color:${catColors[e.cat]||'var(--navy)'}">${e.title||'KB Entry'}</strong>
@@ -4230,35 +4355,17 @@ async function askKBAI(id){
      ${e.model?'<span style="margin-left:6px;font-size:.75rem;color:var(--text2)">'+e.model+'</span>':''}
      ${e.error?'<div style="margin-top:4px"><strong style="color:var(--red)">Error:</strong> '+e.error+'</div>':''}`;
   document.getElementById('aiFixContent').innerHTML =
-    '<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Analyzing KB entry…</div>';
+    `<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Analyzing KB entry (${getAIProvider()==='grok'?'Grok':'Claude'})…</div>`;
   openModal('aiFixModal');
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'x-api-key': apiKey,
-        'anthropic-version':'2023-06-01',
-        'content-type':'application/json',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({
-        model:'claude-haiku-4-5-20251001',
-        max_tokens:1024,
-        messages:[{role:'user',content:
-          `You are an expert MRI/CT field service engineer reviewing a knowledge base repair entry. Provide expanded analysis.\n\nTitle: ${e.title||''}\nSystem/Model: ${e.model||'Unknown'} (${e.cat||''})\nError Code: ${e.error||'N/A'}\nProblem: ${e.problem||'(not recorded)'}\nFix Applied: ${e.solution||'(not recorded)'}\nParts Used: ${e.parts||'None noted'}\n\nProvide:\n1. Whether this fix approach is correct and complete\n2. Additional verification steps to confirm the repair held\n3. Root cause analysis if not already described\n4. Related failures to watch for after this repair\n5. Preventive maintenance tips to avoid recurrence\n\nBe concise and technical. Use numbered steps.`
-        }]
-      })
-    });
-    if(!resp.ok){
-      const err = await resp.json().catch(()=>({}));
-      throw new Error(err.error?.message||`HTTP ${resp.status}`);
-    }
-    const data = await resp.json();
-    document.getElementById('aiFixContent').innerHTML = formatAIText(data.content[0].text);
+    const text = await callAI([{role:'user',content:
+      `You are an expert MRI/CT field service engineer reviewing a knowledge base repair entry. Provide expanded analysis.\n\nTitle: ${e.title||''}\nSystem/Model: ${e.model||'Unknown'} (${e.cat||''})\nError Code: ${e.error||'N/A'}\nProblem: ${e.problem||'(not recorded)'}\nFix Applied: ${e.solution||'(not recorded)'}\nParts Used: ${e.parts||'None noted'}\n\nProvide:\n1. Whether this fix approach is correct and complete\n2. Additional verification steps to confirm the repair held\n3. Root cause analysis if not already described\n4. Related failures to watch for after this repair\n5. Preventive maintenance tips to avoid recurrence\n\nBe concise and technical. Use numbered steps.`
+    }], 1024);
+    document.getElementById('aiFixContent').innerHTML = formatAIText(text);
   } catch(err){
     document.getElementById('aiFixContent').innerHTML =
       `<div class="alert alert-danger">⚠️ ${err.message}</div>
-       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="clearClaudeKey()">Reset Key</button></div>`;
+       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="changeAIKey()">Reset Key</button></div>`;
   }
 }
 
@@ -4326,14 +4433,22 @@ function importFileSelected(input){
   document.getElementById('importResults').style.display = 'none';
   document.getElementById('importConfirmBtn').style.display = 'none';
   document.getElementById('importStatus').textContent = 'Reading file…';
+  const ext = file.name.split('.').pop().toLowerCase();
   const r = new FileReader();
   r.onload = e => {
     _importFileText = e.target.result;
-    if(_importFileText.length < 10){
-      document.getElementById('importStatus').textContent = '⚠️ File appears empty or is a binary PDF (try copy-pasting text instead)';
+    const isBinaryPDF = _importFileText.startsWith('%PDF') || (ext==='pdf' && _importFileText.length<50);
+    if(isBinaryPDF){
+      document.getElementById('importStatus').innerHTML =
+        '⚠️ <strong>Binary PDF detected.</strong> Browsers can\'t extract text from scanned PDFs. Try: (a) a text-based PDF, (b) an .htm / .html manual file, or (c) copy-paste text from the PDF into a .txt file and upload that.';
+      document.getElementById('importParseBtn').style.display = 'block'; // still allow attempt
       return;
     }
-    document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length} chars extracted`;
+    if(_importFileText.length < 10){
+      document.getElementById('importStatus').textContent = '⚠️ File appears empty — try a different file.';
+      return;
+    }
+    document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} characters extracted`;
     document.getElementById('importParseBtn').style.display = 'block';
   };
   r.onerror = () => { document.getElementById('importStatus').textContent = '⚠️ Could not read file'; };
@@ -4341,42 +4456,29 @@ function importFileSelected(input){
 }
 
 async function importParseWithClaude(){
-  const apiKey = localStorage.getItem('amt_claude_key');
-  if(!apiKey){
-    const k = prompt('Enter your Anthropic API key to use AI parsing:');
-    if(!k) return;
-    localStorage.setItem('amt_claude_key', k.trim());
-    updateClaudeKeyBtn();
-  }
   const target = document.getElementById('importTarget').value;
   const text = _importFileText.substring(0, 12000);
-  document.getElementById('importStatus').textContent = '⏳ Claude is parsing the document…';
-  document.getElementById('importParseBtn').querySelector('button').disabled = true;
+  const prov = getAIProvider();
+  document.getElementById('importStatus').textContent = `⏳ ${prov==='grok'?'Grok':'Claude'} is parsing the document…`;
+  const parseBtn = document.getElementById('importParseBtn').querySelector('button');
+  if(parseBtn) parseBtn.disabled = true;
 
-  const prompt = target === 'kb'
+  const promptText = target === 'kb'
     ? `Extract repair knowledge base entries from this field service document. Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
     : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'x-api-key':localStorage.getItem('amt_claude_key'),'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,messages:[{role:'user',content:prompt}]})
-    });
-    if(!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||`HTTP ${resp.status}`); }
-    const data = await resp.json();
-    const raw = data.content[0].text.trim();
-    const match = raw.match(/\[[\s\S]*\]/);
+    const raw = await callAI([{role:'user',content:promptText}], 2048);
+    const match = raw.trim().match(/\[[\s\S]*\]/);
     if(!match) throw new Error('No JSON array found in response');
     const entries = JSON.parse(match[0]);
-    if(!entries.length) throw new Error('No entries extracted');
+    if(!entries.length) throw new Error('No entries extracted from document');
     importShowResults(entries, target);
-    document.getElementById('importStatus').textContent = `Found ${entries.length} entries — review and select below`;
+    document.getElementById('importStatus').textContent = `Found ${entries.length} entr${entries.length===1?'y':'ies'} — review and select below`;
   } catch(err){
     document.getElementById('importStatus').textContent = '⚠️ ' + err.message;
   } finally {
-    const btn = document.getElementById('importParseBtn').querySelector('button');
-    if(btn) btn.disabled = false;
+    if(parseBtn) parseBtn.disabled = false;
   }
 }
 
@@ -4465,7 +4567,7 @@ function formatAIText(text){
         </select>
       </div>
       <div id="importParseBtn" style="display:none;margin-bottom:12px">
-        <button class="btn btn-primary" onclick="importParseWithClaude()" style="width:100%">🤖 Parse with Claude AI</button>
+        <button class="btn btn-primary" onclick="importParseWithClaude()" style="width:100%">🤖 Parse with AI</button>
       </div>
       <div id="importResults" style="display:none">
         <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">Review extracted entries — uncheck any you don't want to add:</div>

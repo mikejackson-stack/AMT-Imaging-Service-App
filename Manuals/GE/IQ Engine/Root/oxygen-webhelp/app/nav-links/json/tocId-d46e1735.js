@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Reset\/Power on\/off ","href":"t_IQE_Power_Off_On.html","attributes":{"data-id":"id_2054928"},"menu":{"hasChildren":false},"tocID":"id_2054928-d46e1739","topics":[]},{"title":"Log","href":"t_IQE_Log.html","attributes":{"data-id":"id_2054523"},"menu":{"hasChildren":false},"tocID":"id_2054523-d46e1842","topics":[]}]});

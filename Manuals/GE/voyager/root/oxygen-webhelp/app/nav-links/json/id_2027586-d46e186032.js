@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Aligning the rotary pump","shortdesc":"<p class=\"shortdesc\">Procedure to align the rotary pump in the patient table.<\/p>","href":"t_AligningTheRotaryPump.html","attributes":{"data-id":"id_2048748"},"menu":{"hasChildren":false},"tocID":"id_2048748-d46e186139","topics":[]}]});

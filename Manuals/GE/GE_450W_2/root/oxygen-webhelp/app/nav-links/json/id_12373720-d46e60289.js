@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Checking and filling hydraulic fluid","shortdesc":"<p class=\"shortdesc\">Checks and adjusts the hydraulic fluid level for the dockable patient table.<\/p>","href":"t_CheckingAndFillingTheHydraulicFluid_2.html","attributes":{"data-id":"id_2020126"},"menu":{"hasChildren":false},"tocID":"id_2020126-d46e60394","topics":[]}]});

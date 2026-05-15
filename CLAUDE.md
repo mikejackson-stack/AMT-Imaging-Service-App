@@ -21,10 +21,7 @@ based in Fort Lauderdale, FL.
 | Item | Location |
 |------|----------|
 | **Main app file** | `index.html` (single file — entire app) |
-<<<<<<< HEAD
-=======
 | **Standalone download** | `AMT-Imaging-App-standalone.html` (must be kept in sync with `index.html`) |
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 | **Live URL** | https://mikejackson-stack.github.io/AMT-Imaging-Service-App/ |
 | **GitHub repo** | https://github.com/mikejackson-stack/AMT-Imaging-Service-App |
 | **Branch** | `main` |
@@ -33,12 +30,9 @@ based in Fort Lauderdale, FL.
 The entire app is **one HTML file** (`index.html`). No build step, no npm, no framework.
 Deploy = upload `index.html` to GitHub repo root.
 
-<<<<<<< HEAD
-=======
 **Important:** `AMT-Imaging-App-standalone.html` is a downloadable copy of the app.
 Any logic change to `index.html` must also be applied to the standalone file.
 
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 ---
 
 ## Architecture
@@ -87,12 +81,8 @@ print(f"Net depth: {net}  (must be exactly 1)")
 ### Google OAuth (Full Access)
 - **Client ID:** `272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com`
 - **Flow:** Implicit (id_token in URL hash `#state=amt_login&id_token=...`)
-<<<<<<< HEAD
-- **Whitelist:** Only these 3 emails get full access:
-=======
 - **Only works from the hosted GitHub Pages URL** — not from local files (file://)
 - **Whitelist:** Only these 3 emails get access:
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
   ```js
   const ALLOWED_EMAILS = {
     'mike.jackson@amtimagingsolutions.com': 'Michael Jackson',
@@ -103,18 +93,6 @@ print(f"Net depth: {net}  (must be exactly 1)")
 - **Entry point:** `triggerGoogleLogin()` → redirects to Google → returns to app with token
 - **Callback handler:** `checkOAuthCallback()` — called on DOMContentLoaded
 - **Session:** Stored in `sessionStorage` as `amt_auth_v29` (JSON)
-<<<<<<< HEAD
-
-### PIN Login (View-Only)
-- Michael: `7591`, Antonio: `0325`, Candelario: `0216`
-- PINs stored as SHA-256 hashes with salt in `localStorage.amt_pin_hashes_v29`
-- View-only mode shows orange banner, all write operations blocked by `writeGuard()`
-
-### Auth State
-```js
-currentUser = { name, method:'Google'|'PIN', viewOnly:false|true, ts }
-```
-=======
 - **Error handling:** Uses `alert()` for access-denied so the rejection is visible
 
 ### PIN Login (Full Access)
@@ -128,7 +106,6 @@ currentUser = { name, method:'Google'|'PIN', viewOnly:false|true, ts }
 currentUser = { name, method:'Google'|'PIN', viewOnly:false, ts }
 ```
 `viewOnly` is always `false` — both login methods have full access.
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 ---
 
@@ -232,11 +209,7 @@ All modals use CSS class `.modal-overlay` + `.open`:
 .modal-overlay.open { display: flex; position: fixed; inset: 0; ... z-index: 900; }
 ```
 
-<<<<<<< HEAD
-**The correct `openModal` pattern** (inline `style="display:none"` beats CSS classes — must remove it first):
-=======
 **The correct `openModal` / `closeModal` pattern:**
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 ```js
 function openModal(id) {
   const el = document.getElementById(id);
@@ -246,16 +219,6 @@ function openModal(id) {
   document.body.style.overflow = 'hidden';
 }
 function closeModal(id) {
-<<<<<<< HEAD
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.classList.remove('open');
-  el.style.display = 'none';
-  document.body.style.overflow = '';
-}
-```
-
-=======
   document.getElementById(id).classList.remove('open');
   // Restore scroll only when no modal remains open
   if(!document.querySelector('.modal-overlay.open'))
@@ -266,7 +229,6 @@ function closeModal(id) {
 A `visibilitychange` listener also clears any stale `overflow:hidden` when the user
 returns to the tab (guards against scroll lock if the user left while a modal was open).
 
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 **Never** use `el.style.display = 'flex'` directly — always use the class system.
 
 ### Modal IDs
@@ -382,15 +344,11 @@ These bugs have been fixed. **Do not reintroduce them.**
 | Duplicate JS functions | Previous patches added functions without removing originals | All functions deduplicated (openGHSettings, saveGHToken, testGHToken, scanGitHubForManuals) |
 | Explorer cache not persisting | `explorerCache = {}` was in-memory only | Now uses `loadExplorerCache()` / `saveExplorerCache()` with localStorage + 24hr TTL |
 | Version label showing v29 | Hardcoded string not updated | Both instances updated to v30 |
-<<<<<<< HEAD
-| App showed v29 label despite v30 code | Cosmetic string only — all v30 functions confirmed loaded | Fixed |
-=======
 | PIN login was view-only | `doLogin(..., true)` passed viewOnly=true for PINs | Changed to `false` — PIN now grants full read/write |
 | Scroll locks after modal / app resume | `closeModal()` never restored `body.style.overflow` | `closeModal()` now restores overflow; `visibilitychange` listener added as safety net |
 | Google login error silent | Access-denied used tiny `loginError` div only | Now uses `alert()` so rejection is impossible to miss |
 | Local file Google login confusing | `showHostingGuide()` used plain `alert()` | Now shows inline styled message with link to hosted app |
 | Standalone file out of sync | Logic fixes applied to `index.html` only | All fixes now applied to both files |
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 ---
 
@@ -401,26 +359,15 @@ These bugs have been fixed. **Do not reintroduce them.**
 triggerGoogleLogin()           // redirect to Google OAuth
 checkOAuthCallback()           // parse token from URL hash on return
 tryAutoLogin()                 // check sessionStorage on load
-<<<<<<< HEAD
-doLogin(email, name, method)   // set currentUser + boot app
-bootApp()                      // show mainApp, init all modules
-logout()                       // clear session, show login screen
-writeGuard()                   // returns true if view-only (blocks writes)
-=======
 doLogin(name, method, viewOnly)// set currentUser + boot app (viewOnly always false now)
 bootApp()                      // show mainApp, init all modules
 logout()                       // clear session, show login screen
 writeGuard(label)              // blocks writes if viewOnly (currently never triggered)
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 // Navigation
 showTab(name)                  // switch panel: 'dash'|'newjob'|'jobs'|'pm'|'money'|'rates'|'manuals'
 setKBTab(name)                 // switch KB sub-tab: 'files'|'parts'|'kb'|'errcodes'
-<<<<<<< HEAD
-openModal(id) / closeModal(id) // show/hide any modal (removes inline style first)
-=======
 openModal(id) / closeModal(id) // show/hide any modal (removes inline style first, restores scroll on close)
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 // GitHub / Manuals
 openGHSettings()               // open GitHub Settings modal
@@ -492,12 +439,8 @@ git config user.name "Michael Jackson"
 4. **FULL_ERROR_DB must be declared at top of `<script>`** before any function that references it (temporal dead zone issue)
 5. **LOGO_B64 is large** (~114KB) — don't accidentally delete it
 6. **One `<script>` tag** for app code — don't split into multiple files without refactoring the build
-<<<<<<< HEAD
-7. **Node.js syntax check** before committing:
-=======
 7. **Always sync both files** — any change to `index.html` must also be applied to `AMT-Imaging-App-standalone.html`
 8. **Node.js syntax check** before committing:
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
    ```bash
    node --check index.html  # won't work directly
    # Extract script block first:

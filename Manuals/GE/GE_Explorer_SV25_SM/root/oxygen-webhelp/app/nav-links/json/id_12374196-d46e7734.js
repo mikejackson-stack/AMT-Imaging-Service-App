@@ -1,1 +1,0 @@
-define({"topics":[{"title":"SmartSnap theory","shortdesc":"<p class=\"shortdesc\">SmartSnap is an automated tool that captures logs, core dumps, memory dumps, and other debugging information.<\/p>","href":"c_Smart_SprSnap_Theory.html","attributes":{"data-id":"id_2025038"},"menu":{"hasChildren":false},"tocID":"id_2025038-d46e7759","topics":[]}]});

@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Receive Chain Theory","href":"c_Receive-Chain-Theory_15682488.html","attributes":{"data-id":"id_13106470"},"menu":{"hasChildren":false},"tocID":"id_13106470-d46e8182","topics":[]}]});
