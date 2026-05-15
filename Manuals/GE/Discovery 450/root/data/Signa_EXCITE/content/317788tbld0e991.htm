@@ -1,0 +1,34 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Gradient Driver Tests</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="ov-1285100272404"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Gradient Driver Tests</SPAN> </P><table summary="Gradient Driver Tests" border="1"><colgroup><col width="23%"><col width="77%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Test Name</td><td valign="">Test Description</td></tr><tr valign="top"><td valign="">Grad Static test</td><td valign="">Test begins with the re-execution of the Power-up memory/register test,
+allowing the user to troubleshoot Power up failures without power-cycling
+the GP board.  Static Test then executes a Local GP Board Reference Voltage
+Check to confirm proper voltages.  In TwinSpeed systems, the user can execute
+both gradient modes.</td></tr><tr valign="top"><td valign="">Fidelity tests</td><td valign="">This test is designed to verify accuracy, stability and symmetry of
+the gradient amplifier outputs.  A ramp-sampled EPI readout waveform is generated
+on each axis, separately for 100 shots with 64 views in each shot.  Output
+values are judged pass or fail.  In the event of a failure, the details of
+the failure can be seen in the error log.  This test exercises only the gradient
+subsystem and the gradient coil.  No RF signals or fiber optic signals are
+used in the analysis.  It is recommended that this test be performed to isolate
+the gradient subsystem from the remainder of the system, specifically to troubleshoot
+SPT failures or IQ artifacts.</td></tr><tr valign="top"><td valign="">Hammer test</td><td valign="">SCP programs the WARP to send out test data.  WARP sends the test data
+to STIF.  STIF forwards data to GP over the fiber link.   GP verifies the
+data and sends test results to SCP via CAN link.</td></tr><tr valign="top"><td valign="">Hysteresis test</td><td valign="">The Hysteresis test will measure the magnitude of the hysteresis produced
+by the current sensor located in the gradient amplifiers.  Hysteresis can
+lead to the perception of unstable gradient DC offsets, and may affect the
+performance of the Supercon Shim coil.   This test generates large currents,
+both positive and negative, and measures the resulting secondary current following
+the pulses.  The difference of the two measurements represents the worst case
+hysteresis window, and thus the total amount of variation that might appear
+as unstable gradient DC offsets.  Outputs are judged as pass/fail.</td></tr><tr valign="top"><td valign="">ECC verification test</td><td valign="">The gradient ECC Verification test provides a means to diagnose hardware
+problems in the GP3 ECC DAC&#8217;s and associated circuitry.  Gain and offset
+of ECC circuitry for each axis is measured and compared to ideal values. 
+A single combination of ECC time constant and gain is loaded.  A simple input
+step function is applied.  The resulting analog output is recorded and compared
+to a computed ideal response model.  All collected data must fall within a
+5% window around the ideal response for a diagnostic success.  The test is
+performed on 3 axes independently.  Gradient Amplifiers are disabled during
+this test.</td></tr></tbody></table></CENTER></DIV></BODY></HTML>

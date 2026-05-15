@@ -1,0 +1,590 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>InSite/IIP</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">GE Exclusive Use Only<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR450 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;12.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;6/22/10</P></td></tr></table><H1 ID="top">InSite/IIP </H1><P CLASS="descriptive">This document contains the following sections:</P><UL><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832022-73580">Section&nbsp;1</A>: InSite Checkout
+- Network</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1935038-73580">Section&nbsp;2</A>: InSite/IIP Overview</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832011-73580">Section&nbsp;3</A>: Customer Features</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1831944-73580">Section&nbsp;4</A>: Modem Access</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832076-73580">Section&nbsp;5</A>: InSite Features
+Descriptions</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832270-73580">Section&nbsp;6</A>: InSite Software
+Disconnect/Hardware De-Installation Process (for USA only)</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832271-73580">Section&nbsp;7</A>: Glossary</P></LI><LI CLASS="bulletlist"><P><A HREF="73580.htm#SL1832272-73580">Section&nbsp;8</A>: InSite Interactive
+Command Summary</P></LI></UL><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832022-73580">1&nbsp;&nbsp;InSite Checkout - Network<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3428901-73580">1.1&nbsp;&nbsp;Software Installation &amp; Prerequisites<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The InSite Interactive software is automatically loaded when
+the Restricted Service CD is loaded from the Installation GUI. (Shown
+below.) It can also be loaded separately (see OW2SCABE Appendix E).</P><DIV CLASS="ILLUSTRATION" id="SL1935009-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Installation GUI</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-403647.jpg" BORDER="0" usemap="#SL403649-73580"></P></DIV><P CLASS="sect2"><B>InSite Checkout Requirements</B></P><OL><LI CLASS="numlist"><P>The product must be on the completed
+compatibility list shown in <A HREF="javascript:winopen('73580tbld0e322.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> of this document.</P></LI><LI CLASS="numlist"><P>The product must be physically connected
+to the hospital network (Ethernet cable plugged in).</P></LI><LI CLASS="numlist"><P>You need to know the scanner's IP address
+and the VPN Gateway address. The VPN Gateway must be determined before
+an InSite checkout can be completed. Your Broadband Specialist or
+the customer's IT department can provide the correct gateway address.</P></LI><LI CLASS="numlist"><P>To establish connectivity to GEMS for
+a checkout, a VPN Gateway must be entered on the scanner. </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e93"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;some older software versions) 
+</B></FONT></SPAN>If
+the scanner's default gateway is not the VPN Gateway, a temporary
+route to the VPN Gateway needs to be added. At the time of a checkout,
+add a temporary route using the command below. This route will be
+removed if the system is rebooted.<p><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;some older software versions) 
+</B></FONT></SPAN><B>Temporary route add command</B></p><OL><LI CLASS="numlist"><P>Log in to the Signa system as Root.</P></LI><LI CLASS="numlist"><P>Open a C shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>route add -net 150.2.0.0
+(gateway) </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (gateway is the hospital
+gateway IP address).</P></LI></OL><p><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;some older software versions) 
+</B></FONT></SPAN><B>Route delete command</B></p><OL><LI CLASS="numlist"><P>Log in to the Signa system as Root.</P></LI><LI CLASS="numlist"><P>Open a C shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>route delete -net 150.2.0.0
+(gateway) </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (gateway is the hospital
+gateway IP address).</P></LI></OL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832028-73580">1.2&nbsp;&nbsp;InSite Checkout<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This section describes the InSite Checkout process.</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3396997-73580">1.2.1&nbsp;&nbsp;Authorize Tab<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL1935004-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Proprietary Authorization Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234800.jpg" BORDER="0" usemap="#SL235174-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Authorization</I></SPAN> tab (shown above) is
+a security confirmation screen. You are prompted to click on <SPAN CLASS="GUIBUTTON">[DECLINE]</SPAN> if not a GE employee, or click <SPAN CLASS="GUIBUTTON">[ACCEPT]</SPAN> three times if you are a GE employee. </P><P CLASS="sect3">Click <SPAN CLASS="GUIBUTTON">[ACCEPT]</SPAN>  three times to initialize
+the main tabs.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3396999-73580">1.2.2&nbsp;&nbsp;ProDiags Tab<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL235935-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Proactive Diagnostics Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234798.jpg" BORDER="0" usemap="#SL235179-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>ProDiags</I></SPAN> tab (shown above) is for the
+configuration of Proactive Diagnostics. Select <SPAN CLASS="GUIBUTTON">[DEFAULT]</SPAN>. </P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e179"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"><SPAN CLASS="GUIBUTTON">[CUSTOM]</SPAN> may be used to configure
+and modify the default ProDiags schedule.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3397000-73580">1.2.3&nbsp;&nbsp;Health Page Tab<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL235938-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Health Page Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234762.jpg" BORDER="0" usemap="#SL235180-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Health Page</I></SPAN> tab (shown above) is for
+the configuration of the Health Page report. </P><OL><LI CLASS="numlist"><P>Enable Health Page Report (note that
+the illustration above shows this feature DISabled) and enter a valid
+e-mail address.</P><UL><LI CLASS="bulletlist"><P>A valid e-mail address is defined as
+a string in the format name @ location.</P></LI><LI CLASS="bulletlist"><P>The standard format for GEMS e-mail
+addresses is:</P><P><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>first name.last name</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">@med.ge.com</FONT></SPAN>. Be careful to enter a correct e-mail address(es).</P></LI><LI CLASS="bulletlist"><P>A check is made for an &#8220;@&#8221;
+only. All e-mail addresses are saved to the<SPAN CLASS="filename"><FONT FACE="COURIER"> /usr/g/config/healthpg.adr</FONT></SPAN> file in the format: user #=email address.</P></LI></UL></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[DEFAULT]</SPAN> (or <SPAN CLASS="GUIBUTTON">[CUSTOM]</SPAN> to configure the Health Page report).</P><P>Selecting the <SPAN CLASS="GUIBUTTON">[DEFAULT]</SPAN> button configures
+the Health Page with the default schedule file.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832006-73580">1.2.4&nbsp;&nbsp;Device Connection Tab<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Some versions of software will default to the &#8220;Modem&#8221;
+selection on the <SPAN CLASS="GUILABEL"><I>Device Connection Type</I></SPAN> menu,
+as shown below. If this is the case, change the selection to <SPAN CLASS="GUIBUTTON">[Network]</SPAN>. </P><DIV CLASS="ILLUSTRATION" id="SL235893-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Device Connection Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234752.jpg" BORDER="0" usemap="#SL235167-73580"></P></DIV><P CLASS="sect3">The Broadband Device Connection screen is shown below. It is
+necessary to define the IP address of the gateway on the network that
+can connect to the OnLine Center.</P><DIV CLASS="ILLUSTRATION" id="SL3433778-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Broadband Device Connection Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1113273.jpg" BORDER="0" usemap="#SL3433738-73580"></P></DIV><P CLASS="sect3">Enter the gateway address that will route to the Hospital's
+VPN appliance. It is recommended to enter the gateway IP address.
+Do not select  &#8220;Use Default Gateway&#8221;. By specifying a
+gateway IP address a route will be created back to GEMS address 150.2,
+after the InSite/iLinq Platform GUI (Graphical User Interface) is
+complete. If &#8220;Use Default Gateway&#8221; is selected the connectivity
+information may not be saved during a save system configuration procedure.
+Even if the gateway IP address is the default gateway, enter the address
+manually to ensure the route is created. </P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e259"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The IP Address can be obtained from your Broadband Specialist
+or from the customer's IT department. <p>For detailed information on the broadband connectivity process,
+refer to the America's Broadband Support Central.</p><UL><LI CLASS="bulletlist"><P>Support Central: <SPAN CLASS="URLLINK"><A HREF="http://supportcentral.ge.com/products/sup_products.asp?prod_id=15634 " TARGET="_blank">http://supportcentral.ge.com/products/sup_products.asp?prod_id=15634 </A></SPAN></P></LI><LI CLASS="bulletlist"><P>Broadband Process doc: <SPAN CLASS="URLLINK"><A HREF="http://data.supportcentral.ge.com/upload/15634/doc_510879.pps" TARGET="_blank">http://data.supportcentral.ge.com/upload/15634/doc_510879.pps</A></SPAN></P></LI></UL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3">After all text is entered, click  <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN>. This will ping the IP address and, once confirmed, update the <SPAN CLASS="filename"><FONT FACE="COURIER">.InSiteINFO</FONT></SPAN> file.</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e283"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Upon completion of a Broadband InSite checkout, a Saveinfo must
+be performed. This is essential to maintaining InSite connectivity
+after later software loads.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3397002-73580">1.2.5&nbsp;&nbsp;InSite Checkout Tab<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL235961-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">InSite Checkout Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234722.jpg" BORDER="0" usemap="#SL235188-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>InSite Checkout </I></SPAN>tab (shown above) allows
+you to complete the InSite configuration process. You have three options:</P><UL><LI CLASS="bulletlist"><P>CHECKOUT NOW</P></LI><LI CLASS="bulletlist"><P>DISABLE INSITE</P></LI><LI CLASS="bulletlist"><P>AUTO CHECKOUT (Requires <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/insite/sclink.cfg</FONT></SPAN> file to exist)</P></LI></UL><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e312"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Call the Connectivity Center BEFORE initiating Checkout Now.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3">The <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN> option configures PPP
+to allow a connection from the OnLine Center. You must call the local
+OnLine Center to complete checkout.</P><P CLASS="sect3">During the Checkout process the OnLine Center will ask for the
+model type. See the table below for model type for software configurations.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL3397592-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Model Types</SPAN> </P><table summary="Model Types" border="1"><colgroup><col width="240" align="center"><col width="192" align="center"><col width="192" align="center"></colgroup><thead valign=""><tr valign="middle"><th style="Font:bold" align="center" valign="middle">Product Name</th><th style="Font:bold" align="center" valign="middle">GSCC Product Type</th><th style="Font:bold" align="center" valign="middle">GSCC Model Type</th></tr></thead><tbody valign=""><tr valign="top"><td align="center" valign="">Brivo MR355</td><td align="center" valign="">Signa-HDv</td><td align="center" valign="">SV-IIP3</td></tr><tr valign="top"><td align="center" valign="">Optima MR360</td><td align="center" valign="">Signa-HDv</td><td align="center" valign="">SV-IIP3</td></tr><tr valign="top"><td align="center" valign="">DVApps (22x)</td><td align="center" valign="">SIGNA-HDv</td><td align="center" valign="">_MGD6-IIP4</td></tr><tr valign="top"><td align="center" valign="">Optima MR450w (21x)</td><td align="center" valign="">SIGNA-HDv</td><td align="center" valign="">_MGD5-IIP3</td></tr><tr valign="top"><td align="center" valign="">Discovery MR450 (20x)</td><td align="center" valign="">SIGNA-HDv</td><td align="center" valign="">_MGD5-IIP3</td></tr><tr valign="top"><td align="center" valign="">Discovery MR750 (20x)</td><td align="center" valign="">SIGNA-HDv</td><td align="center" valign="">_MGD5-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa HDxt (15M4B)</td><td align="center" valign="">SIGNA-HDx</td><td align="center" valign="">_MGD4-IIP4</td></tr><tr valign="top"><td align="center" valign="">Signa HDxt (15M4A and earlier)</td><td align="center" valign="">SIGNA-HDx</td><td align="center" valign="">_MGD4-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa HD 7.0T</td><td align="center" valign="">Lightning</td><td align="center" valign="">MGD3-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Excite HD (12x)</td><td align="center" valign="">Lightning</td><td align="center" valign="">MGD3-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Excite (11x)</td><td align="center" valign="">Lightning</td><td align="center" valign="">MGD2-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Excite (10x)</td><td align="center" valign="">Lightning</td><td align="center" valign="">LXMGD-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Excite 3T</td><td align="center" valign="">Lightning</td><td align="center" valign="">3TMGD-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa (9.1)</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa (8.3)*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP2</td></tr><tr valign="top"><td align="center" valign="">Signa 3T (VH3)*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP2</td></tr><tr valign="top"><td align="center" valign="">Signa 3T (VH2)*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP</td></tr><tr valign="top"><td align="center" valign="">Signa SP*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP</td></tr><tr valign="top"><td align="center" valign="">Signa MRi / CVi / CV / NV*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP2</td></tr><tr valign="top"><td align="center" valign="">Signa LX or Horizon (HiSpeed / EchoSpeed / SmartSpeed)*</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP2</td></tr><tr valign="top"><td align="center" valign="">Signa OpenSpeed Excite (HFO5)</td><td align="center" valign="">Lightning</td><td align="center" valign="">HFO5-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa OpenSpeed Excite (HFO4)</td><td align="center" valign="">Lightning</td><td align="center" valign="">HFO4-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa OpenSpeed (HFO3)</td><td align="center" valign="">Lightning</td><td align="center" valign="">HFO-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa OpenSpeed (HFO2)</td><td align="center" valign="">Lightning</td><td align="center" valign="">LX_IIP2</td></tr><tr valign="top"><td align="center" valign="">Signa Ovation Excite (MFO5)</td><td align="center" valign="">Lightning</td><td align="center" valign="">MFO5-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Ovation Excite (MFO4)</td><td align="center" valign="">Lightning</td><td align="center" valign="">MFO4-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Ovation3 (MFO3)</td><td align="center" valign="">Lightning</td><td align="center" valign="">MFO3-IIP3</td></tr><tr valign="top"><td align="center" valign="">Signa Ovation</td><td align="center" valign="">Lightning</td><td align="center" valign="">OVATION</td></tr><tr valign="top"><td colspan="3" align="left" valign="">* Does
+not support Network connectivity; modem only.</td></tr></tbody></table></div></DIV><P CLASS="sect3">During the checkout process, the OnLine Center will download
+a <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> configuration file and run ConfigLink
+to configure PPP and allow only the OnLine Center to be able to log
+in to the site. A checkout must be done for each mobile system ID
+that has a phone connection. Each mobile system has a unique <SPAN CLASS="GUILABEL"><I>sclink.cfg</I></SPAN> file. After the checkout is complete, reboot
+the computer to make sure there are no system issues.</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e548"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">To disable InSite for checkout at a later date, select <SPAN CLASS="GUIBUTTON">[DISABLE INSITE]</SPAN>. All previously saved information will
+be retained. If you select this option, you MUST return to the IIP
+configuration tool, select the <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> button,
+then select <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN>. After the checkout
+is complete, reboot the computer to make sure there are no system
+issues.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3433645-73580">1.3&nbsp;&nbsp;Back-Office Connection Check<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e563"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/instructionnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Contrary to its name, AUTO CHECKOUT does NOT perform a checkout.
+This process only verifies the scanner's ability to connect to the
+back-office, and vice versa.</b><UL><B><LI CLASS="bulletlistbold"><P><B>This tool will work regardless of the
+connectivity profile in use.</B></P></LI></B><B><LI CLASS="bulletlistbold"><P><B>Auto Checkout must NOT be used in place
+of an InSite Checkout.</B></P></LI></B></UL></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">Select <SPAN CLASS="GUIBUTTON">[AUTO CHECKOUT]</SPAN> to begin the verification
+process.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e578"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The <SPAN CLASS="GUIBUTTON">[AUTO CHECKOUT]</SPAN> option can only
+be used if a <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> file exists, (i.e., the
+site has completed a checkout using the <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN> button at some previous time).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL3434456-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Auto Checkout</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1113384.jpg" BORDER="0" usemap="#SL3434394-73580"></P></DIV><P CLASS="sect2">The Status bar (highlighted in the illustration above) will
+indicate the status of the verification process. An AutoCheckout Cancel
+Box (shown below) will display while the process is running. Let the
+system run until the box disappears.</P><DIV CLASS="ILLUSTRATION" id="SL3434457-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">AutoCheckout Cancel Box</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1113389.jpg" BORDER="0" usemap="#SL3434409-73580"></P></DIV><P CLASS="sect2">When Auto Checkout is complete, the Status bar will display
+the message &#8220;InSite Dial out Check Completed Successfully&#8220;
+(shown below).</P><DIV CLASS="ILLUSTRATION" id="SL3434458-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Auto Checkout Complete</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1113392.jpg" BORDER="0" usemap="#SL3434425-73580"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832044-73580">1.4&nbsp;&nbsp;Saving State of the InSite Configuration<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The configuration files for class M software and InSite features
+are saved to DVD or MOD as part of the SaveINFO process.</P><P CLASS="sect2">Refer to <SPAN CLASS="MODULEREF"><A HREF="1050908.htm#SL1790045-1050908"><I>Save and Restore Tool</I></A></SPAN> for details on the SaveINFO
+process.</P><OL><LI CLASS="numlist"><P>Since the files necessary to back up
+a system prior to update or reload are dynamic, InSite Interactive
+can be backed up by performing Save INFO from the installation GUI.</P></LI><LI CLASS="numlist"><P>The type of files saved are: the license
+files, the setup files for the modem connectivity, the configuration
+settings for the web server, the customer messages files, reports,
+and the identification of download software packages.</P></LI><LI CLASS="numlist"><P>Any updated or downloaded software
+packages will not be included in the backup. In order to restore these
+downloaded files, an update request must be made to the OLC following
+a restore.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832048-73580">1.5&nbsp;&nbsp;Removal of the IIP Software<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">To remove the class M software applications from the system,
+perform a Secure System from the Install GUI under the <SPAN CLASS="GUILABEL"><I>Load
+Services/PictureThis/IIP</I></SPAN> tab.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1935038-73580">2&nbsp;&nbsp;InSite/IIP Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3434459-73580">2.1&nbsp;&nbsp;Introduction<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This document provides the pre-installation requirements and
+steps for installing the Signa InSite/IIP option. It also contains
+information on the InSite Software hardware removal process (for USA
+only).</P><P CLASS="sect2"><B>InSite features</B>: There are two methods
+for connecting a Signa system to InSite. The most common is through Internet Protocol 	 
+(IP)
+ that
+runs over a lower software layer called Point to
+Point Protocol 	 
+(PPP)
+. PPP emulates an
+IP connection method to connect hospital networks, Internet access,
+or another connection method to get to the Internet. Check with your
+installation coordinator to determine your connection type.</P><P CLASS="sect2"><B>Security</B>: The access is controlled by
+an encrypted password system called CHAP secret, part of the PPP protocol.
+The CHAP secret is set up at the first successful InSite connection,
+and is maintained in the database at the OnLine
+Center 	 
+(OLC)
+.</P><P CLASS="sect2"><B>Installation</B>: The InSite software is
+included on the Restricted Service CD-ROM. To enable it, you must
+select &#8220;Configure IIP&#8221; from the Install GUI and select
+the proper modem type. After answering all of the install questions,
+the OnLine Center must do an InSite checkout to complete the process.</P><P CLASS="sect2">At the time of system install, a unique IP address is needed
+for InSite. This is done by calling the OnLine Center, and requesting
+an IP number. This address will be declared in the Support Center's
+database.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e678"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>For Modem Systems &#8211; The InSite IP address must be different
+that the host IP address.  Failure to do this will result in a Host
+Monitor Time-out error during system boot-up to applications after
+an InSite checkout is performed.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3396998-73580">2.2&nbsp;&nbsp;Information Tab<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION" id="SL235890-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;11:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Information Tab, Instructions Sub-Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234766.jpg" BORDER="0" usemap="#SL235166-73580"></P></DIV><P CLASS="sect2">The<SPAN CLASS="GUILABEL"><I> Information</I></SPAN> tab contains five sub-tabs.
+The <SPAN CLASS="GUILABEL"><I>Instructions</I></SPAN> tab (shown above) provides information
+on the IIP Configuration tool. To Configure InSite, select the tabs
+from left to right, and follow the Instructions for executing each
+task. When all tabs are complete, exit the tool.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e697"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The <SPAN CLASS="GUILABEL"><I>Device Connection</I></SPAN> tab provides
+the selection of a network connection. If a <SPAN CLASS="GUILABEL"><I>Modem</I></SPAN> tab is visible instead of the Device Connection tab, then the IIP
+software version needs to be upgraded. Contact the beyond modems checkout
+person to obtain the proper IIP software version.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL1935019-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;12:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Information Tab, Status Message History Sub-Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234770.jpg" BORDER="0" usemap="#SL235176-73580"></P></DIV><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Status Message History</I></SPAN> sub-tab (shown
+above) provides an up-to-date listing of all the status messages that
+have displayed in the Status message line at the bottom of the tool
+window. Text displayed in this window is for the current session only.
+All status messages are tagged with a time-only stamp. When the IIP
+Configuration tool is run using the-debug switch, additional messages
+are displayed here and logged to the <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/insite/logfiles/configdebug.log</FONT></SPAN> file.</P><DIV CLASS="ILLUSTRATION" id="SL1935024-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Information Tab, Last Update Summary Sub-Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234764.jpg" BORDER="0" usemap="#SL235177-73580"></P></DIV><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Last Update Summary</I></SPAN> sub-tab (shown
+above) provides information on when each package was last configured.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e729"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">On this page, the indication &#8220;No File&#8221; means
+that the particular option has not been configured.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL1935029-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;14:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Information Tab, Troubleshooting Tips Sub-Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234772.jpg" BORDER="0" usemap="#SL235178-73580"></P></DIV><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Troubleshooting Tips</I></SPAN> sub-tab (shown
+above) provides basic problem/cause/solution for InSite-related problems.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1831983-73580">2.3&nbsp;&nbsp;Service Features<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">InSite Interactive supports the following service features:</P><OL><LI CLASS="numlist"><P>ProActive Diagnostics (ProDiags)</P></LI><LI CLASS="numlist"><P>HealthPage</P></LI><LI CLASS="numlist"><P>Device Connection</P></LI><LI CLASS="numlist"><P>InSite CheckOut</P></LI></OL><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1831988-73580">2.3.1&nbsp;&nbsp;ProActive Diagnostics (ProDiags)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The InSite ProActive Diagnostics feature monitors diagnostically
+informative parameters of a scanner on a present schedule. If a scanner
+has InSite remote dial-out capabilities, and is located in a pole
+that has the networking infrastructure in place, it can automatically
+dial the Automated Support Center 	 
+(ASC)
+ to report the test results which can cause a
+dispatch to be created.</P><P CLASS="sect3">Each scanner has a schedule when testing can be performed. You
+should determine the normal working hours for the scanner, and when
+and whether ProActive Diagnostics should be run. A default schedule
+is supplied and is suitable for most systems.</P><P CLASS="sect3">Both the field engineer and the OnLine Center engineer can command
+ProDiags to perform these functions:</P><UL><LI CLASS="bulletlist"><P>Schedule tests</P></LI><LI CLASS="bulletlist"><P>Execute tests</P></LI></UL><UL><LI CLASS="bulletlist"><P>Turn tests on and off</P></LI><LI CLASS="bulletlist"><P>Look at test results</P></LI><LI CLASS="bulletlist"><P>Look at the log file</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1831994-73580">2.3.2&nbsp;&nbsp;Health Page<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The Health Page task is a ProDiags application that provides
+quick access to logs and statistics that may be useful during planned
+maintenance and troubleshooting. The system Health Page contains data
+gathered over a specified time period. The OnLine Center will dispatch
+service and retain data for analysis and trending.</P><P CLASS="sect3">The health page report can be acquired from the system in four
+(4) ways:</P><UL><LI CLASS="bulletlist"><P>Automatically</P></LI><LI CLASS="bulletlist"><P>Remotely - via InSite</P></LI><LI CLASS="bulletlist"><P>On Site - via the Common Services Desktop</P></LI><LI CLASS="bulletlist"><P>E-mail request</P></LI></UL><P CLASS="sect3">Selecting the <SPAN CLASS="GUIBUTTON">[CUSTOM]</SPAN> button writes the
+e-mail address file and generates the custom Health Page sub-tabs.
+If you have not previously changed the Health Page schedule, a list
+of planned maintenance (PM) dates is created starting one month from
+the current date.</P><DIV CLASS="ILLUSTRATION" id="SL235941-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;15:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Custom Health Page Instructions Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234742.jpg" BORDER="0" usemap="#SL235181-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Custom Health Page</I></SPAN> sub-tab (shown above)
+provides instructions on changing values in the <SPAN CLASS="GUILABEL"><I>Options</I></SPAN> and <SPAN CLASS="GUILABEL"><I>Dates</I></SPAN> sub-tabs.</P><DIV CLASS="ILLUSTRATION" id="SL235944-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;16:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Custom Health Page Options Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234744.jpg" BORDER="0" usemap="#SL235182-73580"></P></DIV><P CLASS="sect3">In the <SPAN CLASS="GUILABEL"><I>Options</I></SPAN> tab (shown above), you can
+configure Health Page contents. Double-click items in the Health Page
+item list to change from YES to NO or NO to YES. The <SPAN CLASS="GUIBUTTON">[SELECT
+ALL]</SPAN> button will select all of the items. The <SPAN CLASS="GUIBUTTON">[CLEAR SELECTED]</SPAN> button will set all selected items to
+NO. The <SPAN CLASS="GUIBUTTON">[SET SELECTED]</SPAN> button will set all selected
+items to YES.</P><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Other Items</I></SPAN> section contains items
+which are value-based. Click to select an item, then edit the value
+in the field below. Select <SPAN CLASS="GUIBUTTON">[Accept]</SPAN> to change
+the value in the list. Select <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> to write
+the values in the <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/w/config/healthpg.cfg</FONT></SPAN> file.</P><DIV CLASS="ILLUSTRATION" id="SL235947-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;17:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Custom Health Page Dates Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234746.jpg" BORDER="0" usemap="#SL235183-73580"></P></DIV><P CLASS="sect3">In the <SPAN CLASS="GUILABEL"><I>Custom Health Page Dates</I></SPAN> tab (shown
+above), you can configure Health Page planned maintenance dates. Health
+Page reports will be generated several days prior to a PM date and
+e-mailed to the FE.</P><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Enter Start Date</I></SPAN> fields will generate
+a new planned maintenance date list based on the date selected. The <SPAN CLASS="GUIBUTTON">[Update List ]</SPAN> button generates the new list and adds it
+to the <SPAN CLASS="GUILABEL"><I>Health Page Dates </I></SPAN>list.</P><P CLASS="sect3">Select a date in the Health Page list and use the <SPAN CLASS="GUIBUTTON">[MODIFY]</SPAN> or <SPAN CLASS="GUIBUTTON">[DELETE]</SPAN> buttons to change
+the date. The selected dates display in the <SPAN CLASS="GUILABEL"><I>Enter Specific
+Date</I></SPAN> menus. The <SPAN CLASS="GUILABEL"><I>Enter Specific Date</I></SPAN> menus can also be used to add a single date to the list by changing
+the desired date, then selecting <SPAN CLASS="GUIBUTTON">[ADD]</SPAN>.</P><P CLASS="sect3">The <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> button must be selected to
+update the changed dates in the <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/w/config/healthpg.pm</FONT></SPAN> file.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1831999-73580">2.3.3&nbsp;&nbsp;Device Connection<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL1934990-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;18:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Modem Device Connection Tab (Old SW)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234782.jpg" BORDER="0" usemap="#SL3463001-73580"></P></DIV><P CLASS="sect3">The modem configuration is part of the <SPAN CLASS="GUILABEL"><I>InSite Interactive
+Platform Configuration</I></SPAN> tool. This tool allows you to configure
+and set up the serial port and modem. You must set (or accept the
+default configuration) for six items to ensure that the configuration
+is applied:</P><UL><LI CLASS="bulletlist"><P>Dial-out Prefix</P></LI><LI CLASS="bulletlist"><P>Dialing Mode</P></LI><LI CLASS="bulletlist"><P>Modem Type</P></LI><LI CLASS="bulletlist"><P>Country</P></LI><LI CLASS="bulletlist"><P>Serial Port Selection</P></LI><LI CLASS="bulletlist"><P>Serial Port Speed</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832007-73580">2.3.4&nbsp;&nbsp;InSite Checkout<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">InSite checkout is part of the<SPAN CLASS="GUILABEL"><I> InSite Interactive
+Platform Configuration</I></SPAN> tool. InSite checkout allows you
+to complete the InSite configuration process. You have three options
+for performing checkout. These options require a system shut down
+and reboot. These options are:</P><UL><LI CLASS="bulletlist"><P>Checkout Now</P></LI><LI CLASS="bulletlist"><P>Disable InSite</P></LI><LI CLASS="bulletlist"><P>Auto Checkout (available if <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/Insite/sclink.cfg</FONT></SPAN> file exists)</P></LI></UL><P CLASS="sect3">The InSite checkout process for broadband connectivity is described
+in detail in the first section of this document.</P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832011-73580">3&nbsp;&nbsp;Customer Features<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">InSite Interactive supports the following new customer features:</P><UL><LI CLASS="bulletlist"><P>InSite Interactive Platform</P></LI><LI CLASS="bulletlist"><P>InSite Interactive Home Page</P></LI><LI CLASS="bulletlist"><P>Contact GE (One Button Touch)</P></LI><LI CLASS="bulletlist"><P>Customer Messages</P></LI></UL><P CLASS="sect1">InSite Interactive features are only available if the customer
+purchases an InSite Interactive license that includes access to one
+or more of these features. Standard InSite support remains unchanged.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e987"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Older versions of InSite/IIP are only supported in English.
+Generation 4 InSite software adds support for Latin American Spanish
+and Norwegian.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832016-73580">3.1&nbsp;&nbsp;Product Invocation of InSite Interactive Applications<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">An additional icon/button is on the desktop to allow easy access
+to the InSite Interactive web-based applications. In addition, the
+InSite icon displays three pixmap images. (Shown below.)</P><DIV CLASS="ILLUSTRATION" id="SL1934995-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;19:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">InSite Icons displayed to the Operator</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1098613.jpg" BORDER="0" usemap="#SL3013208-73580"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832017-73580">3.2&nbsp;&nbsp;System/Application Startup<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The application startup script performs a check to determine
+if the InSite Interactive package contains a valid Service License
+(supplied by the OLC). If the check is successful, the icon is added
+to the desktop. In addition, during LINUX startup, a script is executed
+to see if the licenses are valid. If the licenses are valid, the web
+browser will start during the LINUX Operating System installation
+as a minimized application. During application startup, the InSite
+desktop manager icon will be enabled and the web browser will be maximized
+only within the InSite desktop environment. Regardless of the licenses'
+validation, the web server is always enabled to allow InSite web server
+access and functionality.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832018-73580">3.3&nbsp;&nbsp;Main InSite Interactive Application (InSite Home Page)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION" id="SL235904-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;20:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">InSite Interactive Home Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-582632.jpg" BORDER="0" usemap="#SL582633-73580"></P><DIV CLASS="INFTABLE"><div align="center"><table border="0"><colgroup><col width="100%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1019"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The user interface will vary with different software
+versions.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr></tbody></table></div></DIV></DIV><P CLASS="sect2">This is the customer's top view of the InSite Interactive Service
+offerings (shown above). From this screen, the customer can access
+services that they are licensed to use. If the customer selects a
+button for a feature they do not have a license for, or have an expired
+license, they will be informed of this condition and instructed in
+how to receive a new license.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832019-73580">3.4&nbsp;&nbsp;Contact GE Application/One-Button Touch<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION" id="SL235907-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;21:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Contact GE Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112146.jpg" BORDER="0" usemap="#SL3396703-73580"></P><DIV CLASS="INFTABLE"><div align="center"><table border="0"><colgroup><col width="100%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1038"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The screen shown above is for generation 4 InSite
+software, as deployed in North America. The user interface will vary
+with different poles and with different software versions.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr></tbody></table></div></DIV></DIV><P CLASS="sect2">The customer can enter a problem report and submit it to GE
+(shown above). This feature provides an easy way to capture important
+information which can result in faster repairs. The customer may also
+use this feature to ask a question of an application specialist. Status
+on the customer request for assistance will be handled by a return
+message via the Customer Messages application.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832020-73580">3.5&nbsp;&nbsp;Customer Messages / Customer Notify<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION" id="SL235910-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;22:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Customer Messages Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112147.jpg" BORDER="0" usemap="#SL3396710-73580"></P><DIV CLASS="INFTABLE"><div align="center"><table border="0"><colgroup><col width="100%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1057"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The screen shown above is for generation 4 InSite
+software. The user interface will vary with different software versions.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr></tbody></table></div></DIV></DIV><P CLASS="sect2">This feature permits GE to deliver a message to the customer
+on the product (shown above). The InSite Interactive feature will
+notify customers when they have a new message. (Notification icon
+displayed in generation 4 software is shown below. Method of notification
+may vary with software version.)</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112148.jpg" BORDER="0" usemap="#SL3396714-73580"></P></DIV><P CLASS="sect2">The customer can access the Customer Messages area by selecting
+the InSite button on the desktop, then selecting <SPAN CLASS="GUIBUTTON">[Get Mail
+Messages]</SPAN> from the main InSite Interactive screen.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3396739-73580">3.6&nbsp;&nbsp;iLinq Chat<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">iLinq Chat is new for generation 4 software.</P><P CLASS="sect2">Once the RFS or Case has been accepted by the OLE.  The preference
+pull down allows the OLE to initiate a CHAT. (Shown below.)</P><DIV CLASS="ILLUSTRATION" id="SL3396740-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;23:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Initiating a Chat</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112150.jpg" BORDER="0" usemap="#SL3396723-73580"></P></DIV><P CLASS="sect2">iLinq Chat OLE Window displays in ISD. At the same time another
+chat window displays for the customer. When the customer accepts Chat,
+then the OLE can proceed to write to the customer.</P><DIV CLASS="ILLUSTRATION" id="SL3396741-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;24:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Example Chat</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112151.jpg" BORDER="0" usemap="#SL3396731-73580"></P></DIV><P CLASS="sect2">The icon shown below will flash to alert the customer that there
+is a chat request.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1112149.jpg" BORDER="0" usemap="#SL3396735-73580"></P></DIV><P CLASS="sect2">When they click the icon then the customer will see the dialogue
+box labeled &#8220;Chat Request.&#8221;   If the customer does not
+respond in 15 minutes, the Chat will end.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1831944-73580">4&nbsp;&nbsp;Modem Setup and Checkout<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section highlights differences for setup and checkout of
+a modem installation (compared to network connectivity).</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3433780-73580">4.1&nbsp;&nbsp;Pre-Installation<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This section explains the items to complete prior to actual
+installation of InSite modem hardware and software on the system.</P><OL><LI CLASS="numlist"><P>Instruct the customer to have a direct
+inward/outward dial voice grade line installed in the interface operator's
+room near the Signa operator work-space. The voice grade line interface
+must use an RJ-11 type phone connector. It is the customer's responsibility
+to have this phone line properly installed and verified.</P></LI><LI CLASS="numlist"><P>Obtain a unique IP address by contacting
+the site's local system administrator or if one is not available,
+contact your local support center (refer to <A HREF="javascript:winopen('73580tbld0e1118.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A>).</P></LI><LI CLASS="numlist"><P>The InSite global modems are shipped
+with the system as catalog number M1000NW. This kit, part number 2245794
+only includes a modem. The serial cable and InSite magnets are part
+of the product.</P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL235879-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">OnLine Center Phone/Fax Numbers</SPAN> </P><table summary="OnLine Center Phone/Fax Numbers" border="1"><colgroup><col width="12%"><col width="33%"><col width="29%"><col width="26%"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" align="center" valign="top"></th><th style="Font:bold" align="center" valign="top">OLC-AMERICAS</th><th style="Font:bold" align="center" valign="top">OLC-EUROPE</th><th style="Font:bold" align="center" valign="top">OLC-ASIA</th></tr></thead><tbody valign=""><tr valign="top"><td valign="">Phone:</td><td valign=""> 1-800-321-7937 </td><td valign="">(33) 1 3920 0007</td><td valign="">81-426-56-0033</td></tr><tr valign="top"><td valign="">FAX: </td><td valign="">(414) 524-5305</td><td valign="">(33) 1 3070 9970</td><td valign="">81-426-56-0053</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3433781-73580">4.2&nbsp;&nbsp;Hardware Installation<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This section explains how to install Signa InSite hardware on
+your system after the pre-install is complete.</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3433782-73580">4.2.1&nbsp;&nbsp;Required Tools and Instruments<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P><B>Item Description</B>: InSite global modem with power supply; the cables and cabinet magnets
+ship with the system.</P></LI><LI CLASS="numlist"><P><B>Part Number</B>:
+2245794, <B>Qty</B>: 1</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL3433783-73580">4.2.2&nbsp;&nbsp;Modem Installation<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Connect the InSite RS232 cable to the
+host computer chassis connector. See <A HREF="javascript:winopen('73580tbld0e1210.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A>.</P></LI><LI CLASS="numlist"><P>Connect the other end to the back of
+the modem.</P></LI><LI CLASS="numlist"><P>Connect the phone line cable to the <B>RJ11</B> jack labeled <B>LINE</B> on the
+back of the modem.</P></LI><LI CLASS="numlist"><P>Connect the other end of the phone
+cable to the wall jack.</P></LI><LI CLASS="numlist"><P>Connect the modem power supply cable
+to the back of the modem.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1207"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Do not install the covers at this time. The covers are
+installed after the functional check.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></OL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL582631-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RS232 Cable Connections Run Numbers</SPAN> </P><table summary="RS232 Cable Connections Run Numbers" border="1"><colgroup><col width="144" align="center"><col width="192" align="center"><col width="144" align="center"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" align="center" valign="middle">Computer Type</th><th style="Font:bold" align="center" valign="middle">System Type</th><th style="Font:bold" align="center" valign="middle">Run Number</th></tr></thead><tbody valign=""><tr valign="middle"><td align="center" valign="middle">Indigo</td><td align="center" valign="middle">Lx and older systems</td><td align="center" valign="middle">806</td></tr><tr valign="middle"><td align="center" valign="middle">Octane</td><td align="center" valign="middle">Lx</td><td align="center" valign="middle">812</td></tr><tr valign="middle"><td align="center" valign="middle">HP</td><td align="center" valign="middle">Excite, HD, HDx, &amp; HDe, HDv</td><td align="center" valign="middle">1066</td></tr><tr valign="top"><td align="center" valign="middle">THTF</td><td align="center" valign="middle">HDsv (Optima MR360 and Brivo MR355)</td><td align="center" valign="middle">E3045</td></tr></tbody></table></div></DIV><DIV CLASS="ILLUSTRATION" id="SL235887-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;25:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Signa InSite Hardware Install Drawing</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234802.jpg" BORDER="0" usemap="#SL235165-73580"></P></DIV></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3397001-73580">4.3&nbsp;&nbsp;Device Connection Tab - Modem Connectivity<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1266"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The Authorize, ProDiags and Health Page tabs are handled
+identically for InSite Checkout of modem and network connected sites.
+Refer to <A HREF="73580.htm#SL1832022-73580">Section&nbsp;1</A> for details on these tabs.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Device Connection</I></SPAN> tab (shown below)
+allows you to configure and set up the serial port and modem or network
+for use with InSite.</P><DIV CLASS="ILLUSTRATION" id="SL235950-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;26:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Modem Device Connection Tab</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234782.jpg" BORDER="0" usemap="#SL235184-73580"></P></DIV><P CLASS="sect2"><B>To use the modem</B> - Set six items for
+the configuration to apply: Dial-out Prefix, Dialing Mode, Modem Type,
+Country, Serial Port Selection, and Serial Port Speed. Indigo computers
+can only support a maximum serial port speed of 38400. To change these
+settings:</P><OL><LI CLASS="numlist"><P>The default settings for CPU Serial
+Port Name and CPU Serial Port Speed should be correct, and should
+not be changed unless troubleshooting. Indigo computers can only support
+a maximum serial port speed of more than 38400.</P></LI><LI CLASS="numlist"><P>Select a Dial-out prefix or enter a
+site specific one if is not in the list. Dial-out prefixes may be
+required on some sites to get a line outside of the hospital. The
+default is &#8220;9,1&#8221; which is the most common.</P></LI><LI CLASS="numlist"><P>Select a dialing mode of Tone or Pulse.
+Tone is the default.</P></LI><LI CLASS="numlist"><P>Select the supported modem type.</P></LI><LI CLASS="numlist"><P>Set the Country of the site. <SPAN CLASS="GUIBUTTON">[Default- All Others]</SPAN> is the default. If the Country is
+not available in the pull-down menu, then select <SPAN CLASS="GUIBUTTON">[Default-
+All Others]</SPAN> .</P></LI></OL><P CLASS="sect2">After all selections are made, select the <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> button to set up the serial port and set up the registers on the
+modem, and store the values to the modem's NVRAM.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1312"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Older Software Versions) 
+</B></FONT></SPAN> When the <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> button is pressed, another screen may display for
+the selected modem type. Click <SPAN CLASS="GUIBUTTON">[OK]</SPAN> to continue.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2"><A HREF="javascript:winopen('73580illd0e1329.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;27</A> reminds you to properly configure any switches or other modem parameters
+and to prepare the modem to accept the programming. Click <SPAN CLASS="GUIBUTTON">[OK]</SPAN> to proceed with programming the modem.</P><DIV CLASS="ILLUSTRATION" id="SL1935034-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;27:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Custom Modem Configuration Screen (Example is for Multitech
+Selection)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234748.jpg" BORDER="0" usemap="#SL235187-73580"></P></DIV><P CLASS="sect2">If you need to make modifications (such as specific changes
+to a modem register or other modem parameter, as directed by your
+local On-Line Center), you MUST change the <SPAN CLASS="GUILABEL"><I>Action</I></SPAN> pull-down to <SPAN CLASS="GUILABEL"><I>Write to NVRAM</I></SPAN>. Click <SPAN CLASS="GUIBUTTON">[EXECUTE]</SPAN> to ensure that the changed values will be applied
+to the modem's registers and stored in the modem's NVRAM. This ensures
+that the changed modem settings will be saved and restored whenever
+the modem's power is cycled.</P><P CLASS="sect2">To exit this screen and return to the previous <SPAN CLASS="GUILABEL"><I>Modem
+Configuration </I></SPAN>screen, click <SPAN CLASS="GUIBUTTON">[BACK]</SPAN>.</P><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Custom Modem </I></SPAN>tab allows you to modify
+the setup registers on the modem. Use <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>extreme caution</B></FONT></SPAN> when changing anything in this tab, as InSite may be disabled if
+improper settings are sent to the modem.</P><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Register </I></SPAN>and <SPAN CLASS="GUILABEL"><I>Register Value </I></SPAN>fields work as a pair. Select an &#8220;S&#8221; register to change
+a value or enter the name of a non-S register to be queried or modified.
+The <SPAN CLASS="GUILABEL"><I>Register Value</I></SPAN> field is where to enter the
+new value of the register you want to change. If an &#8220;S&#8221;
+register is selected from the pull-down menu, a description of that
+register displays in the <SPAN CLASS="GUILABEL"><I>Register Description</I></SPAN>.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Register String</I></SPAN> is a list of registers
+and values set in the modem by default, based on the modem type and
+country. This string updates when a register is modified and the settings
+have been saved to NVRAM from the Custom Modem tab.</P><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Action</I></SPAN> pull-down menu has six actions
+that you can execute using the <SPAN CLASS="GUIBUTTON">[EXECUTE]</SPAN> button:</P><UL><LI CLASS="bulletlist"><P>Update Register</P></LI><LI CLASS="bulletlist"><P>Read Register</P></LI><LI CLASS="bulletlist"><P>Display All</P></LI><LI CLASS="bulletlist"><P>Write to NVRAM</P></LI><LI CLASS="bulletlist"><P> Factory Defaults</P></LI><LI CLASS="bulletlist"><P>Check Modem</P></LI></UL><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Update Register</I></SPAN> attempts to set the value
+in the <SPAN CLASS="GUILABEL"><I>Register</I></SPAN> field to the value defined in
+the <SPAN CLASS="GUILABEL"><I>Register Value</I></SPAN> field.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Read Register</I></SPAN> uses the register defined
+in the <SPAN CLASS="GUILABEL"><I>Register</I></SPAN> field and displays the values
+in the status bar.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Display All </I></SPAN>opens a window with all the
+register settings.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Write to NVRAM </I></SPAN>forces the modem to save
+the temporary modem settings to NVRAM within the modem. These values
+in NVRAM are recalled when the modem's power is cycled. This action
+MUST be selected when changing modem settings, or the next time power
+is cycled to the modem, it will revert to the factory default settings.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Factory Defaults</I></SPAN> resets the modem to factory
+defaults using a hardware flow control template.</P><P CLASS="sect2"><SPAN CLASS="GUILABEL"><I>Check Modem</I></SPAN> is a simple check to see if
+commands can be sent to the modem.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3441534-73580">4.4&nbsp;&nbsp;Checkout Now (Modem)<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1442"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Call the Connectivity Center BEFORE initiating Checkout Now.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">The <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN> option configures PPP
+to allow a connection from the OnLine Center. You must call the local
+OnLine Center to complete checkout.</P><P CLASS="sect2">During the Checkout process, the OnLine Center will ask for
+the system software version or the model type. See <A HREF="javascript:winopen('73580tbld0e322.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> for model type
+for software configurations.</P><P CLASS="sect2">During the checkout process, the OnLine Center will download
+a <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> configuration file and run ConfigLink
+to configure PPP and allow only the OnLine Center to be able to log
+in to the site. A checkout must be done for each mobile system ID
+that has a phone connection. Each mobile system has a unique <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> file. After the checkout is complete, reboot
+the computer to make sure there are no system issues.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL3434460-73580">4.5&nbsp;&nbsp;Back-Office Connection Check - Modem<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1465"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/instructionnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Contrary to its name, AUTO CHECKOUT does NOT perform a checkout.
+This process only verifies the scanner's ability to connect to the
+back-office, and vice versa.</b><UL><B><LI CLASS="bulletlistbold"><P><B>This tool will work regardless of the
+connectivity profile in use.</B></P></LI></B><B><LI CLASS="bulletlistbold"><P><B>Auto Checkout must NOT be used in place
+of an InSite Checkout.</B></P></LI></B></UL></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">The <SPAN CLASS="GUIBUTTON">[AUTO CHECKOUT]</SPAN> option can only be
+used if a <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> file exists, (i.e., the
+site has completed a checkout using the <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN> button at some previous time). AUTO CHECKOUT will run ConfigLink,
+dial the AutoSC, queue a task with the AutoSC to dial back, and wait
+for the AutoSC to dial back and leave a file<SPAN CLASS="filename"><FONT FACE="COURIER"> /tmp/autocheckout</FONT></SPAN>. The IIP configuration tool waits only 10 minutes for the file.
+Typically, the AutoSC will call back in 5-6 minutes.</P><P CLASS="sect2">When the dial-out test is in the process of connecting to the
+AutoSC, the IIP configuration GUI will not update and may seem locked
+up until the connection to the AutoSC is completed or the connection
+times out.</P><DIV CLASS="ILLUSTRATION" id="SL235964-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;28:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Configure InSite Now Requester</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234738.jpg" BORDER="0" usemap="#SL235189-73580"></P></DIV><P CLASS="sect2">When you select <SPAN CLASS="GUIBUTTON">[CHECKOUT NOW]</SPAN>, the <SPAN CLASS="GUILABEL"><I>Configure InSite Now</I></SPAN> (shown above) dialog box displays
+the option to run a dial-out test upon completion of the InSite Checkout
+process. If you select <SPAN CLASS="GUIBUTTON">[OK]</SPAN>  before the InSite
+Checkout process is complete, the IIP configuration tool watches for
+an <SPAN CLASS="filename"><FONT FACE="COURIER">~insite/sclink.cfg</FONT></SPAN> file. The IIP configuration
+tool waits 10 minutes for the <SPAN CLASS="filename"><FONT FACE="COURIER">sclink.cfg</FONT></SPAN> file
+to arrive. When the file is received, the dial-out test starts. This
+test ensures the dial prefix provided and the number of the OnLine
+Center are correct. This also ensures ProActive Diagnostics messages
+and <SPAN CLASS="GUIBUTTON">[Contact GE]</SPAN> requests can be sent to the
+OnLine Center. After the checkout is complete, reboot the computer
+to make sure there are no system issues.</P><DIV CLASS="ILLUSTRATION" id="SL235967-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;29:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Configure InSite Later Requester</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234736.jpg" BORDER="0" usemap="#SL235190-73580"></P></DIV><P CLASS="sect2">When you select <SPAN CLASS="GUIBUTTON">[DISABLE INSITE]</SPAN>, the <SPAN CLASS="GUILABEL"><I>Configure InSite Later</I></SPAN> (shown above) dialog box displays.
+The serial port is disabled and the IIP configuration tool will exit
+after you select <SPAN CLASS="GUIBUTTON">[OK]</SPAN>.</P><P CLASS="sect2">You MUST rerun the IIP configuration tool at a later date, click <SPAN CLASS="GUIBUTTON">[APPLY]</SPAN> on the Modem tab, then click <SPAN CLASS="GUIBUTTON">[CHECKOUT
+NOW]</SPAN> to complete the InSite configuration.</P><DIV CLASS="ILLUSTRATION" id="SL235970-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;30:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Exit Confirmation Requester</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234758.jpg" BORDER="0" usemap="#SL235191-73580"></P></DIV><P CLASS="sect2">The <SPAN CLASS="GUILABEL"><I>Exit Confirmation</I></SPAN> (shown above) dialog
+box displays when you click <SPAN CLASS="GUIBUTTON">[OK]</SPAN> in the lower
+left of the IIP Configuration tool window.</P><P CLASS="sect2">A <SPAN CLASS="GUILABEL"><I>Last Update</I></SPAN> summary is provided. At this
+point, if you configure all InSite functions, a valid date/time displays
+for each function. If any function shows &#8220;<B>NO FILE</B>&#8221;, that function was not properly configured.</P><P CLASS="sect2">Click <SPAN CLASS="GUIBUTTON">[OK]</SPAN> to exit the IIP configuration
+tool or click <SPAN CLASS="GUIBUTTON">[Cancel]</SPAN> to return to the IIP configuration
+tool.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832076-73580">5&nbsp;&nbsp;InSite Features Descriptions<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832077-73580">5.1&nbsp;&nbsp;InSite Dial-in Security Feature<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"> The InSite Dial-in Security feature is for scanners that have
+optional InSite remote dial-in capabilities. This feature provides
+two levels of security:</P><OL><LI CLASS="numlist"><P>The CHAP encryption algorithm.</P></LI><LI CLASS="numlist"><P>A log-in/password for all accounts.</P></LI></OL><P CLASS="sect2">The On-Line Center (OLC) engineer will log in using the InSite
+Dial-in Security feature to call scanners in the field. If the scanner
+detects a failed log-in, it automatically generates an e-mail notice
+to the Automated Support Center (ASC).</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832080-73580">5.2&nbsp;&nbsp;Last Fail Feature<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">To list all failed log-ins, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>lastfail</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter.&gt;</SPAN></P><P CLASS="sect2">To list failed log-in since a given date, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>lastfail</B></FONT></SPAN>, followed by the date or time as in a Unix date command:&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>lastfail Tue Dec 29 14:40:04</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter.&gt;</SPAN></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832081-73580">5.3&nbsp;&nbsp;InSite Proactive Diagnostics Feature<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The InSite Proactive Diagnostics feature is designed for scanners
+that have InSite remote dial-in capabilities. The Proactive Diagnostics
+feature automatically performs diagnostic testing of the scanner on
+a preset schedule . The scanner automatically dials the automated
+support engineers at the OnLine Center.</P><P CLASS="sect2">Each scanner has its own test schedule. You should determine
+the normal working hours for the scanner, and when and whether proactive
+diagnostics should be run. A default schedule is supplied and should
+be fine for most systems. Most of the tests may run in the background
+while the operator is scanning.</P><P CLASS="sect2">Select the dial-out codes for calling the Automated Support
+Center (ASC). For example, find out whether or not you need to dial
+9 for access to an outside phone line. The actual phone number for
+the ASC is downloaded to the scanner during InSite checkout.</P><P CLASS="sect2">Both the filed engineer and the OnLine Center engineer can use
+the prodiag command to perform these functions:</P><UL><LI CLASS="bulletlist"><P>Schedule tests</P></LI><LI CLASS="bulletlist"><P>Execute tests</P></LI><LI CLASS="bulletlist"><P>Turn off or on</P></LI><LI CLASS="bulletlist"><P>Look at test results</P></LI><LI CLASS="bulletlist"><P>Look at the log file</P></LI></UL><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832087-73580">5.3.1&nbsp;&nbsp;Proactive Diagnostics Tests<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">All of these tests may run during normal system operation and
+should have no effect on the scanner. A default schedule is provided
+for these tests. The default schedule should be fine for a site, provided
+the OC is not shutdown or at the boot level. The schedule may be changed.</P><UL><LI CLASS="bulletlist"><P>ChkLogs: informs the ASC when selected
+error messages occur in specific log files.</P></LI><LI CLASS="bulletlist"><P>flog: informs the ASC when there have
+been five attempts to log in with the wrong password.</P></LI><LI CLASS="bulletlist"><P>IIP_DialPrefix: checks system log files
+for errors.</P></LI><LI CLASS="bulletlist"><P>IIP_Housekeeping: cleans up the IIP
+log files.</P></LI><LI CLASS="bulletlist"><P>PassChg: informs the ASC when an important
+password has changed on the system.</P></LI><LI CLASS="bulletlist"><P>dial_out test: dials the ASC to verify
+if the out-going modem connection is working.</P></LI><LI CLASS="bulletlist"><P>helathpg: summarizes several selectable
+system performance parameters. Presents notes from the users.</P></LI><LI CLASS="bulletlist"><P>pd_ASC_Notify: calls the ASC when there
+is information to send.</P></LI><LI CLASS="bulletlist"><P>pd_Housekeeping: deleted older files
+in the prodiags directory, trims the prodiags log.</P></LI><LI CLASS="bulletlist"><P>slprune: prunes the log report.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832098-73580">5.3.2&nbsp;&nbsp;Recommended Schedule<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">It is recommended that pd_ASC_Notify runs hourly.</P><P CLASS="sect3">It is recommended that pd_housekeeping, flog, Chklogs, IIP_DialPrefix,
+IIP_Housekeeping, slprune, and PassChg should be run daily.</P><P CLASS="sect3">The task dialout_test should not be scheduled because it is
+intended to be run only as part of modem checkout.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832099-73580">5.3.3&nbsp;&nbsp;Using the Prodiags Tool<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">This section discusses the prodiags tool. You can use this tool
+to modify the schedule or look at the results. InSite can also use
+this tool. To start the tool, log in as root by typing (<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su -</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> and the root password),
+then type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>prodiags</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>. A menu with these options displays:</P><P CLASS="sect3"><B>View Log</B></P><P CLASS="sect3">This displays the prodiags history log, a record of what tasks
+prodiags started and their success or failure. This log gets automatically
+pruned so that it will never grow beyond a present size. When the
+log is pruned, the earlier entries are deleted.</P><P CLASS="sect3"><B>View Results</B></P><P CLASS="sect3">This allows you to see the result files from a specific task.
+First, select the task that you are interested in, then select the
+proper result file. Some tasks do not create result files, so this
+option will say that no results are available. Note: to save disk
+space, prodiags automatically deletes older result files. You can
+also delete result files be selecting the remove result option from
+the utilities menu.</P><P CLASS="sect3"><B>Execute a task</B></P><P CLASS="sect3">This option allows you to execute a test for a prodiag task
+immediately.  Normally the task is scheduled to execute at a specific
+time in the future. When you select this option, select a task from
+the list. The task will run to completion. You won't see any output
+from the task while it is running, because the tasks are designed
+to run without human activity.</P><P CLASS="sect3"><B>Schedule Management</B></P><P CLASS="sect3">This options allows you to view or modify the time when tasks
+are going to run.</P><P CLASS="sect3"><B>View Schedule</B>-- Shows current schedule.</P><P CLASS="sect3"><B>Modify Schedule</B>-- Allows you to change
+the time for a task. For a background task, you can change the number
+of times a task runs (iterations), the time the task starts, and the
+day of the week that the task runs. You may also specify hourly or
+daily for the tasks to run. For intrusive tasks, you can change the
+time slot wen the task runs. You set up the time slots on the Define
+TimeSlots menu. (A time slot is a period of time when the system is
+supposed to be idle).</P><P CLASS="sect3"><B>Add task to schedule</B>-- Allows you to
+put in another instance of a task to a schedule. You can have a task
+scheduled to run several times, such as Mondays and Fridays. Enter
+the same information as when you modify the tasks. Note: when adding
+an intrusive task, first define the time slot, then add the task.</P><P CLASS="sect3"><B>Remove task from schedule</B>-- Allows you
+to remove a task from the schedule. (The task remains on the disk,
+so it can be added at a later date if desired).</P><P CLASS="sect3"><B>Define time slots</B>-- (Scanner idle time)--
+Allows you to set up time slots when the scanner will be idle, modify
+those slots, remove those slots, and deactivate those slots.</P><P CLASS="sect3"><B>Modify time slots</B>-- Select this to modify
+or add a new time slot. Select a time slot to modify or &#8220;new&#8221;
+to define a new slot. You will be asked for the start and end time
+of the slot.</P><P CLASS="sect3"><B>Activate/Inactivate</B>-- An active time
+slot will execute. An inactive time slot will not run. You can deactivate
+a time slot if you want to keep the tasks in that slot defined, but
+you don't want the slot to run. For example, if the schedule at the
+site temporarily changes.</P><P CLASS="sect3"><B>Delete a time slot</B>-- This removes the
+time slot from the schedule.</P><P CLASS="sect3"><B>Utilities</B>--</P><P CLASS="sect3">These are additional tools for expert users to manually prune
+or delete files (if you need disk space immediately), install a new
+task, remove an existing task, or view configuration files.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL1832661-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Utilities</SPAN> </P><table summary="Utilities" border="1"><colgroup><col width="37%"><col width="63%"></colgroup><tbody valign=""><tr valign="top"><td valign="">View task info</td><td valign="">shows configuration information for the task</td></tr><tr valign="top"><td valign="">View config file</td><td valign="">shows configuration information for the prodiags tool</td></tr><tr valign="top"><td valign="">Install a task</td><td valign="">install a task that was loaded by a patch tape or a software
+download</td></tr><tr valign="top"><td valign="">Setup a task</td><td valign="">add or delete messages to check</td></tr><tr valign="top"><td valign="">Remove a task</td><td valign="">deletes the task from the disk</td></tr><tr valign="top"><td valign="">Prune log</td><td valign="">manually prunes the log</td></tr><tr valign="top"><td valign="">Prune all results</td><td valign="">manually prunes results for all tasks</td></tr><tr valign="top"><td valign="">Prune results for task</td><td valign="">prunes result for a specific task</td></tr><tr valign="top"><td valign="">Delete results</td><td valign="">removes result files from the disk</td></tr></tbody></table></div></DIV></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832109-73580">5.4&nbsp;&nbsp;System Health Page feature<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832110-73580">5.4.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"> The Health Page report provides quick access to logs and statistics
+used during planned maintenance and troubleshooting. It contains a
+collection of logs and statistics, gathered over a specified time
+period (typically 30 days.) The system automatically generates the
+Health Page report and mails it to up to ten users, per a configured
+schedule. Schedule a Health Page report generation every 30 days,
+or customize the schedule to the system planned maintenance dates. </P><P CLASS="sect3">Configure the Health Page during IIP Configuration. Once you
+install the Health Page, the system automatically mails the reports
+to the designated addresses, and requires no additional user interaction.
+The Health Page also has a Customer Service Note Pad to allow them
+ to create messages for the FE. This feature can be used to give the
+FE a reminder of items to check on the scanner.</P><P CLASS="sect3">The system generates the report three days prior to the customized
+dates, in order to mail out the report in time for the planned maintenance.
+If the scanner is down during the scheduled reporting time, the system
+mails the report as soon as it is back up. If you chose to customize
+the schedule, and all the dates you entered have passed, the system
+automatically generates the report every 30 days, until you enter
+new dates into the schedule.</P><P CLASS="sect3">In addition, you may generate the Health Page report by sending
+an e-mail request to the Automated Support Center, asking them to
+send a copy to you. The ASC also retains a copy of the full report
+for future trending purposes.</P><P CLASS="sect3">Use the Health Page tool to set the content of the report, the
+schedule for sending it, designate the report recipients, and generate
+or view a report. The Health Page tool is available on the Common
+Services Desktop under Utilities. Remote users can also use the Health
+Page command.</P><P CLASS="sect3">The Health Page report contains the following information for
+a specific time span (typically 30 days.)</P><UL><LI CLASS="bulletlist"><P>System Hardware and Software Configuration:
+Includes the network addresses, software revisions, system ID, hospital
+name. </P></LI><LI CLASS="bulletlist"><P>Number of computer reboots: The number
+of times the OC software was restarted and the dates of the last five
+system reboots. </P></LI><LI CLASS="bulletlist"><P>Number of TPS resets: The number of
+times scan hardware required a reset, and the number of times the
+reset failed. </P></LI><LI CLASS="bulletlist"><P>Notes for Service: Notes that InSite
+added to the message log or customers added to the message log, to
+inform you about problems that arose since the last report.</P></LI><LI CLASS="bulletlist"><P>Selected errors from Other Logs: The
+results of a search of  the <SPAN CLASS="filename"><FONT FACE="COURIER">/var/adm/messages</FONT></SPAN> logs failures and panics. The last ten are displayed. </P></LI></UL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL1832662-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Other Log Errors</SPAN> </P><table summary="Other Log Errors" border="1"><colgroup><col width="37%"><col width="63%"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" align="center" valign="top">Error</th><th style="Font:bold" align="center" valign="top">Description</th></tr></thead><tbody valign=""><tr valign="top"><td valign="">Applications Core Files</td><td valign="">A list of core files</td></tr><tr valign="top"><td valign="">Temperatures</td><td valign="">Bore temps</td></tr><tr valign="top"><td valign="">Disk Usage</td><td valign="">Disk usage per partition</td></tr><tr valign="top"><td valign="">MPG Stage File</td><td valign="">Letters added to the ipg_stage file</td></tr><tr valign="top"><td valign="">Last Service Test Run</td><td valign="">SPT, TLT, RFT, etc</td></tr><tr valign="top"><td valign="">Disk Full Errors</td><td valign="">Disk full errors</td></tr><tr valign="top"><td valign="">Prescan Failures</td><td valign="">Number of APS failures</td></tr><tr valign="top"><td valign="">RF Faults</td><td valign="">Number of RF amplifier faults</td></tr><tr valign="top"><td valign="">Gradient Errors</td><td valign="">Number of Gradient errors</td></tr><tr valign="top"><td valign="">PSD Errors</td><td valign="">Number of psd generated errors</td></tr><tr valign="top"><td valign="">System Health</td><td valign="">System health check</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832127-73580">5.4.2&nbsp;&nbsp;Accessing the Health Page Report<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">To access the Health Page report:</P><P CLASS="sect3"><B>Automatically</B></P><P CLASS="sect3">Program the scanner to automatically create the Health Page
+report, per the schedule entered during installation, or at a later
+time. The report is e-mailed to the configured addresses. You can
+select and view the report in the Common Services Desktop under the
+Utilities menu.</P><P CLASS="sect3">The automatically generated report covers the time interval
+since the last report.</P><P CLASS="sect3"><B>Remotely - via InSite</B></P><P CLASS="sect3">If you want immediate access to the Health Page report, generate
+it from the scanner by opening a C shell window, and typing <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>. (It can take up
+to 6 minutes for a full report.) The report displays on the screen.
+ </P><P CLASS="sect3">To override the customized report content and display the full
+report, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -f</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P><P CLASS="sect3">To display the previously generated report, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage
+-s</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>. </P><P CLASS="sect3">The manually generated report covers the preceding 30 days (unless
+you configured more or fewer days). </P><P CLASS="sect3"><B>On Site - via the Common Services Desktop</B></P><P CLASS="sect3">If you want immediate access to the Health Page report, generate
+it from the scanner. </P><P CLASS="sect3"> On the <SPAN CLASS="GUILABEL"><I>Common Services Desktop</I></SPAN>, under <SPAN CLASS="GUILABEL"><I>Utilities</I></SPAN>, select System Health Page. This brings up the
+GUI version of the Health Page tool. </P><P CLASS="sect3"><B>Online - via WWW</B></P><P CLASS="sect3">You can view the current healthpage report by accessing the
+&#8220;Mdex Drag-on tool": <SPAN CLASS="URLLINK"><A HREF="http://olcweb.olc.med.ge.com/cgi_bin/ss/dragon/dragon.cgi?tool_name=healthview" TARGET="_blank">http://olcweb.olc.med.ge.com/cgi_bin/ss/dragon/dragon.cgi?tool_name=healthview</A></SPAN>.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832128-73580">5.4.3&nbsp;&nbsp;Using Health Page Tool<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">From the <SPAN CLASS="GUILABEL"><I>Common Services Desktop</I></SPAN>, select <SPAN CLASS="GUILABEL"><I>Utilities</I></SPAN>, highlight Health Page, and click <SPAN CLASS="GUIBUTTON">[Start]</SPAN>.  </P><P CLASS="sect3">The tool has three menu items:  Exit, Report, and Configure.
+See illustration below.</P><DIV CLASS="ILLUSTRATION" id="SL235980-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;31:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HealthPage GUI</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234760.jpg" BORDER="0" usemap="#SL235262-73580"></P></DIV><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Exit </I></SPAN> option quits the tool. </P><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Reports</I></SPAN> menu lists the following options: </P><UL><LI CLASS="bulletlist"><P>Custom Report  </P></LI><LI CLASS="bulletlist"><P>Full Report</P></LI><LI CLASS="bulletlist"><P> Last Report.</P></LI></UL><P CLASS="sect3">The <SPAN CLASS="GUILABEL"><I>Configure</I></SPAN> menu lists the following
+options: </P><UL><LI CLASS="bulletlist"><P>Report Content</P></LI><LI CLASS="bulletlist"><P>Schedule</P></LI><LI CLASS="bulletlist"><P>Email Addresses </P></LI><LI CLASS="bulletlist"><P> Enable/Disable Health Page</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832136-73580">5.4.4&nbsp;&nbsp;Remote Access<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">You can access the Health Page remotely through a C shell interface
+using the following procedure:</P><OL><LI CLASS="numlist"><P>On the host monitor, move the mouse
+cursor over the desktop and. right-click to access the menu.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUILABEL"><I>Service Tools</I></SPAN> then <SPAN CLASS="GUILABEL"><I>Command Window</I></SPAN> to start a C shell window.</P></LI><LI CLASS="numlist"><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI><LI CLASS="numlist"><P>Enter the root password. The default
+is: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>operator </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>.</P></LI></OL><P CLASS="sect3">The following commands can be used in the C shell window:</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Runs the Health Page option, generates the customized report
+and displays it on the screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>health page -q </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Runs the Health Page option, generates the customized report,
+but does not send the report to the screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -f </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Runs the Health Page option, generates the full report and displays
+it on the screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -v </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Displays the latest Health Page report.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -d </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Runs the Health Page option, generates the customized report
+and the trending report, but does not send the report to the screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -h </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Displays usage.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -c </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P> Configures the Health Page.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -on </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Opens the Health Page.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -off </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>Closes the Health Page.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832150-73580">5.4.5&nbsp;&nbsp;Configure the Health Page Report<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">You can customize the content of the Health Page report by turning
+some logs on or off, specifying the e-mail addresses to use, and setting
+the schedule.</P><P CLASS="sect3">During IIP configuration, the system prompts you for information
+to configure the report. The default values and the answers gathered
+during installation should be sufficient to run the report.</P><P CLASS="sect3">After installation, you can modify the Health Page configuration
+by typing <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>healthpage -c </B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to display the following menu:</P><UL><LI CLASS="bulletlist"><P>Configuring Health Page...</P></LI><LI CLASS="bulletlist"><P>Health Page Configuration Main Menu</P></LI><LI CLASS="bulletlist"><P>(P)M Schedule</P></LI><LI CLASS="bulletlist"><P>(E)mail list</P></LI><LI CLASS="bulletlist"><P>(R)eport configuration</P></LI><LI CLASS="bulletlist"><P>(Q)uit</P></LI></UL><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>P</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>p</B></FONT></SPAN> to enter
+or modify dates to generate the report</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>e</B></FONT></SPAN> to enter
+or modify the list of people who will be mailed a report</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>R</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>r</B></FONT></SPAN> to modify
+the report configuration</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>Q</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>q</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to quit</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832157-73580">5.4.6&nbsp;&nbsp;Change the planned maintenance Schedule<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>P</B></FONT></SPAN> from the Health Page Configuration
+main menu to display the following configured planned maintenance
+schedule. The system generates a Health Page report three days prior
+to a planned maintenance date. You do not have to enter planned maintenance
+dates; you can accept the default schedule of every 30 days.</P><UL><LI CLASS="bulletlist"><P>Configured planned maintenance Schedule</P></LI><LI CLASS="bulletlist"><P>(E)dit/Add</P></LI><LI CLASS="bulletlist"><P>(D)elete</P></LI><LI CLASS="bulletlist"><P>(Q)uit</P></LI></UL><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>e</B></FONT></SPAN> to enter
+or modify dates to generate the Health Page report</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>D</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>d</B></FONT></SPAN> to delete
+dates</P><P CLASS="sect3">Typq <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>Q</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>q</B></FONT></SPAN> to quit</P><P CLASS="sect3">If you type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN>, the system displays all
+of the currently configured dates, then prompts you with each of the
+previously configured dates. For example:</P><UL><LI CLASS="bulletlist"><P>The system displays all of the currently
+configured dates, then prompts you with each of the previously configured
+dates. For example:    </P></LI><LI CLASS="bulletlist"><P>planned maintenance date [05/16/99]
+ :</P></LI><LI CLASS="bulletlist"><P> Press <SPAN CLASS="GUIBUTTON">[Enter]</SPAN> to keep this date or enter a different date. </P></LI><LI CLASS="bulletlist"><P>After the last available date, the
+prompt changes to:</P></LI><LI CLASS="bulletlist"><P>PM date [new date] : </P></LI><LI CLASS="bulletlist"><P>Type in the new date or press <SPAN CLASS="GUIBUTTON">[Enter ]</SPAN>to exit. </P></LI><LI CLASS="bulletlist"><P>You may enter as many dates as you
+want.</P></LI><LI CLASS="bulletlist"><P>If you use the <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>d</B></FONT></SPAN> command, the system displays each of the previously entered dates,
+and prompts you to keep or delete it.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832170-73580">5.4.7&nbsp;&nbsp; Change the e-mail address<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Display the Health Page Configuration main menu, and type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>e</B></FONT></SPAN> to change the e-mail address(es). You can send the report
+to up to ten addresses. Enter the addresses during IIP Configuration,
+and use this command to change them.  </P><P CLASS="sect3">You must enter the full e-mail address. Otherwise, the system
+cannot deliver the mail.  </P><P CLASS="sect3">The system displays the list of current e-mail addresses, and
+the following selections:</P><UL><LI CLASS="bulletlist"><P>(E)dit/Add</P></LI><LI CLASS="bulletlist"><P>(D)elete</P></LI><LI CLASS="bulletlist"><P>(Q)uit</P></LI></UL><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>e</B></FONT></SPAN> to enter
+or modify the e-mail addresses.</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>D</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>d</B></FONT></SPAN> Enter
+to delete addresses.</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>Q</B></FONT></SPAN> or <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>q</B></FONT></SPAN> Enter
+to quit.</P><P CLASS="sect3"> If you type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>E</B></FONT></SPAN> , the system displays each
+of the previously entered addresses. For example:</P><UL><LI CLASS="bulletlist"><P>Example: name@ge.com</P></LI><LI CLASS="bulletlist"><P>Enter an address or press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to keep the current value.</P></LI><LI CLASS="bulletlist"><P>address [john.smith@med.ge.com] =</P></LI><LI CLASS="bulletlist"><P>Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+keep this address, or enter a different address.</P></LI><LI CLASS="bulletlist"><P>After the last available address, the
+prompt changes to: addresses [new addresses] :</P></LI><LI CLASS="bulletlist"><P>Type the new addresses, or press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to exit. You can enter up to ten addresses.</P></LI></UL><P CLASS="sect3">If you type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>D</B></FONT></SPAN> , the system displays each
+of the previously entered addresses, and prompts you to keep or delete
+   it.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1832180-73580">5.4.8&nbsp;&nbsp;Configuring the health page report<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">If you configure the report during IIP configuration, you do
+not have to modify it.</P><P CLASS="sect3">The system uses your selections during automatic report generation.</P><P CLASS="sect3">Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>R</B></FONT></SPAN> to display the following menu:</P><OL><LI CLASS="numlist"><P>Number of days to report? 30</P></LI><LI CLASS="numlist"><P>Number of days prior to send report?
+30</P></LI><LI CLASS="numlist"><P>Include system software version? Y</P></LI><LI CLASS="numlist"><P>Include operating system version? Y</P></LI><LI CLASS="numlist"><P>Include ipg stage information? Y</P></LI><LI CLASS="numlist"><P>Include last system calibration? Y</P></LI><LI CLASS="numlist"><P>Include system shutdown? Y</P></LI><LI CLASS="numlist"><P>Include system reboot? Y</P></LI><LI CLASS="numlist"><P>Include system SCSI errors? Y</P></LI><LI CLASS="numlist"><P>Include system SIMM errors? Y</P></LI><LI CLASS="numlist"><P>Include system graphics errors? Y</P></LI><LI CLASS="numlist"><P>Include system tn_lib errors? Y</P></LI><LI CLASS="numlist"><P>Include applications core files? Y</P></LI><LI CLASS="numlist"><P>Include debug applications core files?
+Y</P></LI><LI CLASS="numlist"><P>Include disk usage/free information?
+Y</P></LI><LI CLASS="numlist"><P>Include last time disk full information?
+Y</P></LI><LI CLASS="numlist"><P>Include magnet bore temperature information?</P></LI><LI CLASS="numlist"><P>Include tps reset information? Y</P></LI><LI CLASS="numlist"><P>Include prescan failure information?
+Y</P></LI><LI CLASS="numlist"><P>Include rf fault information? Y</P></LI><LI CLASS="numlist"><P>Include gradient errors? Y</P></LI><LI CLASS="numlist"><P>Include PSD errors? Y</P></LI><LI CLASS="numlist"><P>Include notes for Service? Y</P></LI><LI CLASS="numlist"><P>Include system health check? Y</P></LI><LI CLASS="numlist"><P>Include transient noise filter? Y</P></LI></OL><PRE>'q' to quit  Enter Option:</PRE><P CLASS="sect3">Select the options you want to change. Type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>q</B></FONT></SPAN> to exit this menu.</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832206-73580">5.5&nbsp;&nbsp;Service Notepad<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Service Notepad is a simple line editor accessible through
+a user interface on the error log used to add comments to the error
+log. To access the notepad:</P><OL><LI CLASS="numlist"><P>Click on the &#8220;Error log&#8221;
+arrow shown in <A HREF="javascript:winopen('73580illd0e2485.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;32</A>. The notepad icon displays as
+shown in <A HREF="javascript:winopen('73580illd0e2490.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;33</A>.</P></LI><LI CLASS="numlist"><P>Click on the notepad icon, and the
+notepad editor user interface displays as shown in <A HREF="javascript:winopen('73580illd0e2495.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;34</A></P></LI></OL><P CLASS="sect2">After a message is entered by the operator and save is selected,
+it will be stored into a message log file to be retrieved by the Health
+Page. It will be recorded as a message from the operator.</P><DIV CLASS="ILLUSTRATION" id="SL235983-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;32:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Error Log Entry</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-1098802.jpg" BORDER="0" usemap="#SL3018413-73580"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL235986-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;33:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Notepad Icon</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234792.jpg" BORDER="0" usemap="#SL235325-73580"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL235989-73580"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;34:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Notepad User Interface</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/73580-234794.jpg" BORDER="0" usemap="#SL235326-73580"></P></DIV><P CLASS="sect2">The message in the error log will look like this;</P><PRE>Fri Aug 27 09:50:22 1999                        Error: 0      </PRE><PRE>Host: lx-bay11b                       Process: UNKNOWN        </PRE><PRE>File: Notepad.c                                Line: 43     </PRE><P CLASS="sect2">This message was added by the operator by the OPERATOR to report
+on a problem:</P><P CLASS="sect2">The message the operator types will be there.</P><P CLASS="sect2">The Service Notepad can also be used to leave messages from
+InSite or from field engineers. The table below shows the syntax to
+be used in a command line window to leave messages from the operator,
+InSite, and the FE respectively.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL235992-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Notepad Options From Command Line</SPAN> </P><table summary="Notepad Options From Command Line" border="1"><colgroup><col width="31%"><col width="35%"><col width="34%"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" align="center" valign="top">Command
+Line</th><th style="Font:bold" align="center" valign="top">Message
+Type</th><th style="Font:bold" align="center" valign="top">Log
+Entry</th></tr></thead><tbody valign=""><tr valign="top"><td valign="">SvcNotepad -o</td><td valign="">Operator message</td><td valign="">OPERATOR</td></tr><tr valign="top"><td valign="">Notepad</td><td valign="">Operator message</td><td valign="">OPERATOR</td></tr><tr valign="top"><td valign="">SvcNotepad -i</td><td valign="">InSite message </td><td valign="">InSite</td></tr><tr valign="top"><td valign="">NotePad -SL</td><td valign="">Service message</td><td valign="">Service</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1832255-73580">5.6&nbsp;&nbsp;InSite Logged in Feature<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">When InSite connects, a message is posted to the current messages
+screen.</P><P CLASS="sect2">If the system has the optional InSite Interactive license installed,
+the InSite icon on the desktop will also change.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832270-73580">6&nbsp;&nbsp;InSite Software Disconnect/Hardware De-Installation Process
+(for USA only)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">InSite kit software disconnect and InSite hardware removal processes
+are driven by equipment upgrade, contract terminations, or warranty
+expirations without a follow-on contract</P><P CLASS="sect1">It is the responsibility of the local manager or designate to
+proactively monitor expiring service contracts, equipment warranties
+and upgrade installations of InSite entitled sites to determine whether
+the InSite kit should remain installed or be removed.</P><P CLASS="sect1">First determine whether the InSite hardware is GEMS owned or
+customer owned by using the table shown below.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL235998-73580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Determining if InSite Equipment Belongs to GE or the Customer</SPAN> </P><table summary="Determining if InSite Equipment Belongs to GE or the Customer" border="1"><colgroup><col width="50%"><col width="50%"></colgroup><thead valign=""><tr valign="top"><th style="Font:bold" align="center" valign="top">Customer
+Owned</th><th style="Font:bold" align="center" valign="top">GEMS
+Owned</th></tr></thead><tbody valign=""><tr valign="top"><td valign="">Systems that have a modem kit that belongs to the customer
+(e.g, IIS, MR, Nuclear Genie, or any system shipped with InSite @
+Install</td><td valign="">Systems that have an InSite Kit that is GEMS owned property.</td></tr><tr valign="top"><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e2602"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Any modem shipped as part of InSite @ Install will
+include a white sticker with black letters, indicating &#8220;customer
+property&#8221;.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td><td valign="">For kits being removed*, if another site has been identified
+for reinstall of the InSite hardware, fill out the e-mail common form
+&#8220;InSite Deinstall/Reinstall&#8221; with the appropriate information.
+When the paperwork is processed, the database will be updated accordingly.</td></tr><tr valign="top"><td valign="">The FE is required to notify the OLC of the InSite form, &#8220;Disconnect
+InSite&#8221; and supply required information. The OLC Entitlement
+focal point will then update the database accordingly.</td><td valign="">If no new site has been identified to re-install* the InSite
+hardware, fill out the e-mail common form, &#8220;InLink Kit De-install&#8221;
+with appropriate information. When the paperwork is processed, the
+databases will be updated accordingly.</td></tr><tr valign="top"><td valign="">&nbsp;</td><td valign="">* In order to minimize any confusion or delay in service to
+our customers, please do not send or reinstall the removed kit anywhere
+until you have followed the procedure outlined above.</td></tr><tr valign="top"><td valign="">&nbsp;</td><td valign=""><B>When removing InSite hardware, All kit parts, including
+the modem, MUST stay together. This decreases our rebuild cost and
+simplifies internal tracking processes.</B></td></tr></tbody></table></div></DIV><P CLASS="sect1"><B>Common forms on Microsoft Exchange can be found in
+Public Folders/All Public Folders/Medical Systems/Americas/Forms/Common
+Forms. Be sure to respond to the e-mail address at the bottom of the
+form.</B></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832271-73580">7&nbsp;&nbsp;Glossary<SPAN CLASS="SECT1EFF"> </SPAN></H2><DL><DT><I>AutoSC</I>&nbsp;
+</DT><DD><P CLASS="def">Automated Support Center. The automated support center accepts
+incoming requests from ProDiags or calls out to sites to gather information.</P></DD><DT><I>CPU</I>&nbsp;
+</DT><DD><P CLASS="def">Central Processing Unit.</P></DD><DT><I>daemon</I>&nbsp;
+</DT><DD><P CLASS="def">Disk And Execution Monitor. A UNIX process that continuously
+runs to monitor or process requests or commands of a specific type.</P></DD><DT><I>GUI</I>&nbsp;
+</DT><DD><P CLASS="def">Graphical User Interface.</P></DD><DT><I>HTTP</I>&nbsp;
+</DT><DD><P CLASS="def">Hypertext Transfer Protocol. Advanced protocol for the exchange
+of hypertext documents across the Internet, with destinations of all
+internal and external hyperlinks included.</P></DD><DT><I>II</I>&nbsp;
+</DT><DD><P CLASS="def">InSite Interactive. This is the big program. Parts include the
+InSite Interactive Platform, customer applications provided by modalities,
+and applications and reports provided by the OnLine Center.</P></DD><DT><I>IIP</I>&nbsp;
+</DT><DD><P CLASS="def">InSite Interactive Platform. This includes InSite connectivity,
+Proactive Diagnostics, Web Server, Web Browser, and Customer Applications.</P></DD><DT><I>IP</I>&nbsp;
+</DT><DD><P CLASS="def">Internet Protocol. A layer-three protocol used in a set of protocols
+to support a network. IP provides a connection-less datagram delivery
+service for transport layer protocols such as TCP.</P></DD><DT><I>OLC</I>&nbsp;
+</DT><DD><P CLASS="def">OnLine Center.</P></DD><DT><I>PPP</I>&nbsp;
+</DT><DD><P CLASS="def">Point-to-Point Protocol. A TCP/IP protocol used over a modem
+connection.</P></DD><DT><I>ProDiags</I>&nbsp;
+</DT><DD><P CLASS="def">Proactive Diagnostics. A GEMS proprietary tool that runs small
+diagnostic programs to proactively identify a potential site problem.
+ProDiags notifies the OLC when a diagnostic identifies a "known" error.</P></DD><DT><I>SGI</I>&nbsp;
+</DT><DD><P CLASS="def">Silicon Graphics Inc.</P></DD><DT><I>TCP</I>&nbsp;
+</DT><DD><P CLASS="def">Transmission Control Protocol. TCP is the virtual circuit protocol
+of the Internet protocol family. It is a byte-stream protocol layered
+above the Internet Protocol (IP).</P></DD></DL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1832272-73580">8&nbsp;&nbsp;InSite Interactive Command Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><B>grep uugetty /etc/inittab</B></P><P CLASS="sect1">SGI command to determine the state of the port monitor.</P><P CLASS="sect1">Sample Output:</P><P CLASS="sect1"># for ports with modems. See the getty(1M), uugetty -Nt 60 ttyf1
+dx_115200 # Port 1 PPP (2)</P><P CLASS="sect1"><B>setReg -r</B></P><P CLASS="sect1">InSite command to see if the modem is alive; returns K on success.</P><P CLASS="sect1"><B>licheck</B></P><P CLASS="sect1">InSite command to check license status of II applications.</P><P CLASS="sect1">Sample Output:</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">bad.iip_obt: Not Valid: Hash check failed</FONT></SPAN></td><td valign="">Indicates file changed or file not for that machine</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">iip_cmesg: Valid</FONT></SPAN></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">iip_miia: Valid</FONT></SPAN></td><td valign="">Indicates License is good</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">iip_obt: Valid</FONT></SPAN></td><td valign="">&nbsp;</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">serviceHistory: Not Valid: Expired</FONT></SPAN></td><td valign="">Indicates license expired, past date limit</td></tr><tr valign="top"><td valign=""><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">systemUsage: Not Valid: Expired</FONT></SPAN></td><td valign="">&nbsp;</td></tr></tbody></table></div></DIV><P CLASS="sect1">You might also see a &#8220;java.net.UnknownServiceException:
+no content-type&#8221; message. This message indicates the web server
+is not running.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

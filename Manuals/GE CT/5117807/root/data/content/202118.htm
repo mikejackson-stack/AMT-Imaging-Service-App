@@ -1,0 +1,42 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>SDDA - reconfigScanDisk</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB"><B>GEMS Proprietary Class:</B>&nbsp;&nbsp;C<BR><B>Direction&nbsp;&nbsp;</B>5117807-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;A</P></td></tr></table><H1 ID="top">SDDA - reconfigScanDisk </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The DARC Node mounts the SDDA drives. The SDDA houses two Scan Data
+Disk Drives and the Intercom / Prescribed Tilt Board. This test wipes out
+all Scan Data and reconfigures the Scan Disk. This test shall be run with
+Applications down.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="">2&nbsp;&nbsp;Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Open a Unix Shell and type the following:</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@hostname}</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su -</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI><LI CLASS="bulletlist"><P>Password: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#bigguy</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]#]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># rsh darc</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Last login: Tue Oct  7 14:42:40 from oc</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">You have new mail.</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># cd /usr/g/scripts</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc scripts]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ls reconfig*</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">reconfigScanDisk.log      reconfigScanDisk</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Appears that /raw_data is mounted.Trying to unmount..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Checking if SCSI driver [ aic79xx ] is loaded.. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">SCSI driver is already loaded. Good. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Checking if primary disk is IDE.. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Detected IDE disk as primary.Good. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Detecting other SCSI disks on the system.. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Detected 2 SCSI disk(s) : /dev/sda /dev/sdb </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating primary partition on /dev/sda </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating primary partition on /dev/sdb </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating entries in /etc/raidtab.gre..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Initializing RAID device..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Examining if I created /dev/md0 correctly..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating XFS filesystem..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating mount point directory : /raw_data ..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Verifying what I did.. </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mounting RAID disks at /raw_data..MountDevice </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">/dev/md0 on /raw_data type xfs (rw,nodev) </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Verifying mount , Status =       1 </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[ should be 1 ] </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[Logged by SDDAUtils]  Mounted /dev/md0 at /raw_data. [OK] </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Creating a file /raw_data/test and writing to it..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Deleting file /raw_data/test..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Verification completed successfully </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Changing ownership of /raw_data to ctuser [owner] and ctuser
+[group]..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Applying permissions [777] to /raw_data..OK </FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">All done. Transcript saved in reconfigScanDisk.log</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc scripts]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># df</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI></UL><PRE>Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/hda2              4188164   1238768   2949396  30% /
+/dev/hda1                27296     11488     15808  43% /boot
+none                    967508     16412    951096   2% /dev/shm
+/dev/hda6             30647188     40080  30607108   1% /usr/g
+oc:/usr/g/queue/prospective
+                      14935616   2052336  12883280  14% /usr/g/queue/prospective
+oc:/usr/g             14935616   2052336  12883280  14% /usr/g/oc
+/dev/md0              71673044   2605820  69067224   4% /raw_data</PRE><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e176"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">*** If /raw_data is not present then perform the ./startSDDA and
+df again***</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc scripts]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ./startSDDA</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc scripts]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># df</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI></UL><PRE>Filesystem           1k-blocks      Used Available Use% Mounted on
+/dev/hda2              4188164   1238768   2949396  30% /
+/dev/hda1                27296     11488     15808  43% /boot
+none                    967508     16412    951096   2% /dev/shm
+/dev/hda6             30647188     40080  30607108   1% /usr/g
+oc:/usr/g/queue/prospective
+                      14935616   2052336  12883280  14% /usr/g/queue/prospective
+oc:/usr/g             14935616   2052336  12883280  14% /usr/g/oc
+/dev/md0              71673044   2605820  69067224   4% /raw_data</PRE><UL><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc scripts]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># exit</B></FONT></SPAN><SPAN CLASS="KEYBOARD"> &lt;
+Enter&gt;
+</SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rlogin: connection closed.</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@bayhostname]#</FONT></SPAN></P></LI></UL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

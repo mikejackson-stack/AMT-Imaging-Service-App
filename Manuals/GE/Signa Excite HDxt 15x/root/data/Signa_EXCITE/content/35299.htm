@@ -1,0 +1,47 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>High Order Shim Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5440001-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">High Order Shim Theory </H1><P CLASS="descriptive"><SPAN CLASS="MODULEREF"><A HREF="35334.htm#SL35428-35334"><I>To perform
+High Order Shim Procedure, Click Here.</I></A></SPAN></P><P CLASS="descriptive"><SPAN CLASS="MODULEREF"><A HREF="35404.htm#SL35434-35404"><I>To run
+a functional Check only, Click here</I></A></SPAN>.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289901454388">1&nbsp;&nbsp;INTRODUCTION<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The High Order Shim feature allows the user to shim over a region-of-interest
+(ROI) taking advantage of the High Order Shim (HOS) coils. This feature is
+likely to improve the local field homogeneity for use in applications such
+as fat suppression, spectroscopy, spiral scanning and functional imaging.
+The calculations performed in the High Order Shim procedure require knowledge
+of the change in current behavior of each individual shim coil. Hence the
+contribution of each one is measured using a uniform phantom. This information
+is stored in the Reference Field Maps, which need to be calculated once per
+system installation.  These Field Maps need to be recalculated only if the
+gradient coil or resistive shim coil is moved or replaced.  The Reference
+Field Maps are always saved during SaveInfo sessions. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289901454388-dup.1">2&nbsp;&nbsp;Process Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Reference Field Map creation process requires the user to run a
+localizer scan on a phantom and adjust its position to within 5 mm as prescribed
+in the procedure.  After the phantom is positioned the user then runs a script
+named &#8220;makereference&#8221; which will perform the following operations
+automatically:</P><P CLASS="sect1">Loads the required scan protocol for doing the reference map scans.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e49"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The scan protocol is identical to the scan used in the High Order
+Shim Feature on a uniform phantom.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><UL><LI CLASS="bulletlist"><P>Perturbs the current for each of the coils, one at a time,
+by a prescribed amount.</P></LI><LI CLASS="bulletlist"><P>Allows time for the coil current to stabilize before starting
+the scan.</P></LI><LI CLASS="bulletlist"><P>Reconstructing the data and extracting the phase information
+that reflects the magnetic field variations.</P></LI><LI CLASS="bulletlist"><P>Analyzes the data and checks for phase wrap.  If phase wrap
+is detected the script will repeat the process on each of the coils one more
+time using a lower perturbation current value.</P></LI><LI CLASS="bulletlist"><P>Creates a Reference Field Map file from the scan data that
+can be read by the High Order Shim feature. </P></LI></UL><P CLASS="sect1">The GE Magnet shim coil and the GEMS-Oxford shim coil configurations
+are not the same.  For GEMS-Oxford systems, the ZY Coil and ZX coils behave
+differently, in that the ZY coil affects the ZX harmonic and the ZX coil affects
+the ZY harmonic. </P><P CLASS="sect1">Example: If you adjust the current for the ZY coil it actually affects
+the ZX harmonic that is displayed by LVShim Analysis tool.</P><P CLASS="sect1">For the High Order Shim feature this is NOT an issue, since the adjustment
+of the shim power supply channel is relative to the data collected during
+the reference map generation. This also does not affect the process of manually
+setting the shim currents when using the &#8220;setcurrent&#8221; command.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289901454390-dup.2">3&nbsp;&nbsp;FIELD MAP CREATION<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The High Order Shim application requires the creation of two Reference
+Field maps; one will be generated using the RF Head coil with a 28 cm FOV
+and the other will be generated using the RF Body coil with a 48 cm FOV. </P><P CLASS="sect1">These reference maps are designed to accommodate as many anatomical
+regions as possible.  The 28 cm FOV is designed to cover smaller central regions,
+such as the head, neck and knees whereas the 48 cm FOV is designed for torso,
+spine or off-center regions.</P><P CLASS="sect1">The procedure for building the reference maps is the same for both,
+with the exception of the phantom that is used.  The 27 cm Body TLT Sphere,
+without the loader shell, is used to generate the 28cm FOV reference map whereby
+it will produce the largest usable shim volume possible at this field of view.
+ This is important since only anatomy inside the shim volume selected can
+be shimmed properly.  The 48 cm FOV reference map is generated using the 30
+cm Inner Sphere of the LVShim phantom.  Each reference map is generated separately,
+and does not have to be created in the same session.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

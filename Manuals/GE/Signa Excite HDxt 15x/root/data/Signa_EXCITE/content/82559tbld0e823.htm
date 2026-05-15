@@ -1,0 +1,31 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>SRI TEST DESCRIPTIONS</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL82696-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SRI TEST DESCRIPTIONS</SPAN> </P><table summary="SRI TEST DESCRIPTIONS" border="1"><colgroup><col width="143"><col width="574"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">SRI PWM</td><td valign="">This test verifies that the Pulse Width Modulator is converting pulses
+to analog voltages correctly.</td></tr><tr valign="top"><td valign="">SRI RAM</td><td valign="">SRI RAM Test (Fatal) &#8211; On power up, the last 512 bytes of RAM, locations
+FE00H -FFFFH are tested without destroying the application contents of the
+RAM. The SRI interrupts are disabled for this test. These locations are tested
+one at a time. The contents of a location are read, inverted, and written
+back to the location. The location is read again and compared to the value
+written. The original contents of the location are then written back to the
+location that has been tested.</td></tr><tr valign="top"><td valign="">SRI Encoder</td><td valign="">Encoder Voltage Test &#8211; This test verifies that the voltage across the
+encoder (measured at SRI) is &gt;4.0V.</td></tr><tr valign="top"><td valign="">SRI Loopback</td><td valign="">Test time is approximately 9 seconds. This test verifies the communication
+between the SPI and the SRI and the corresponding serial path. The SPI transfers
+a communication packet to the SRI (via the STIF Board) containing an Invert-and-Loopback
+opcode and 8-bit test patterns (55, AA, 33, 00, FF). The information returned
+by the SRI will be verified by the MGD.</td></tr><tr valign="top"><td valign="">SRI Streamed Loopback</td><td valign="">This diagnostic runs the streamed loop back test with the SRI.  The
+Streamed Loop Back Test opcode is sent to the SRI along with four bytes of
+data.  The expected response is the one&#8217;s complement of each byte of
+data.  The SCP will verify that the data is correct and log an error in the
+case of a data mismatch.</td></tr><tr valign="top"><td valign="">SRI Fiber LoopBack</td><td valign="">Tests the loopback of data on the SCP board.  The test executes in
+these steps:<OL><LI CLASS="numlist">Sets the SCP board I/O path to the STIF in loopback on the
+board.</LI><LI CLASS="numlist">Writes out a packet of data.</LI><LI CLASS="numlist">Verifies receipt of the data.</LI></OL></td></tr><tr valign="top"><td valign="">SCP STIF LoopBack</td><td valign="">Tests the loopback of data across the STIF board. The test executes
+in these steps:<OL><LI CLASS="numlist">User must first connect the fiber optic loopback connector
+across the STIF SRI Tx/Rx connections</LI><LI CLASS="numlist">Sends a packet of data out of the SRI Tx connection</LI><LI CLASS="numlist">Verifies receipt of the data at the SRI Rx connection</LI></OL></td></tr><tr valign="top"><td valign="">SRI Register</td><td valign="">This diagnostic runs the power up Register test resident on the SRI
+PROM.  The Register Test opcode is sent to the SRI.  The expected response
+is the error message opcode.  A passing test will have an ermes of 0.  Any
+other value indicates a failure in the test and causes an error to be logged.</td></tr><tr valign="top"><td valign="">SRI EEPROM</td><td valign="">This diagnostic runs the power up EEPROM test resident on the SRI PROM.
+ The EEPROM Test opcode is sent to the SRI.  The expected response is the
+error message opcode.  A passing test will have an ermes of 0.  Any other
+value indicates a failure in the test and causes an error to be logged.</td></tr></tbody></table></CENTER></DIV></BODY></HTML>

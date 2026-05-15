@@ -1,0 +1,163 @@
+<head>
+<META name="robots" content="NoIndex">
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+
+    <title>
+         &nbsp; 
+    </title>
+<script src="dtSearch_Utilities.js"></script>
+<script src="dtSearch_WebSearchForm.js"></script>
+<LINK REL=StyleSheet HREF="dtSearch_WebSearchForm.css" TITLE="Standard" TYPE="text/css">
+</head>
+<body>
+<!-- BeginInclude -->	<form name="SearchForm" action="/cgi-bin/dtcgi2is.exe" method="POST" class="SearchForm">
+<table class="SearchForm">
+	<tr valign=top>
+		<td class="SearchControl" valign=top><p class="SearchTitle">dtSearch Web Search</p>		</td>
+	</tr>
+	<tr valign=top>
+		<td class="SearchControl" valign=top><br><B>Search for</B><br>
+				<input class="SearchControl" type="edit" name="request" size="30" maxlength="200" align="middle">
+<select name="searchType" size=1 class="SearchControl">
+				<option value="allwords"> all of the words
+				<option value="anywords"> any of the words
+				<option value="phrase"> the exact phrase
+				<option value="bool"> boolean
+			</select>
+<input class="SearchControl" type="button" value="Search" onclick="doSearch()">
+<br>
+			Items per page
+			<select class="SearchControl" name="pageSize" size=1>
+				<option value="10" selected=1> 10
+				<option value="25"> 25
+				<option value="50"> 50
+				<option value="100"> 100
+				<option value="200"> 200
+				<option value="500"> 500
+				<option value="1000"> 1000
+			</select>
+<br>
+			<input class="SearchControl" type="checkbox" name="stemming" value="Yes">Stemming
+<br>
+			<input class="SearchControl" type="checkbox" name="fuzzy" value="Yes">Fuzzy searching
+-- Fuzziness
+	        <select name="fuzziness" size=1 class="SearchControl">
+	            <option value="0" selected=1> 0
+	            <option value="1"> 1
+	            <option value="2"> 2
+	            <option value="3"> 3
+	            <option value="4"> 4
+	            <option value="5"> 5
+	            <option value="6"> 6
+	            <option value="7"> 7
+	            <option value="8"> 8
+	            <option value="9"> 9
+	        </select>
+<br>
+			<input class="SearchControl" type="checkbox" name="phonic">Phonic searching
+<br>
+			<input class="SearchControl" type="checkbox" name="wordNetSynonyms" value="Yes">WordNet synonyms
+<br>
+			<input class="SearchControl" type="checkbox" name="wordNetRelated" value="Yes">WordNet related words
+<br>
+			<input class="SearchControl" type="checkbox" name="userSynonyms" value="Yes">User-defined synonyms
+<br>
+				Sort type
+				<select class="SearchControl" name="sort" size=1>
+					<option value="Hits" selected=1> hits
+					<option value="Date"> date
+					<option value="Name"> name
+					<option value="Size"> size
+				</select>
+<br><b>File date</b><br>
+	            <select name="StartMonth" size=1 onChange="updateDateFilter()" class="SearchControl" >
+	                <option value="" selected=1>
+	                <option value="M01"> Jan
+	                <option value="M02"> Feb
+	                <option value="M03"> Mar
+	                <option value="M04"> Apr
+	                <option value="M05"> May
+	                <option value="M06"> Jun
+	                <option value="M07"> Jul
+	                <option value="M08"> Aug
+	                <option value="M09"> Sep
+	                <option value="M10"> Oct
+	                <option value="M11"> Nov
+	                <option value="M12"> Dec
+	            </select>
+	            <select name="StartYear" size=1 onChange="updateDateFilter()" class="SearchControl" >
+	                <option value="" selected=1>
+	                <option value="Y1990"> 1990
+	                <option value="Y1991"> 1991
+	                <option value="Y1992"> 1992
+	                <option value="Y1993"> 1993
+	                <option value="Y1994"> 1994
+	                <option value="Y1995"> 1995
+	                <option value="Y1996"> 1996
+	                <option value="Y1997"> 1997
+	                <option value="Y1998"> 1998
+	                <option value="Y1999"> 1999
+	                <option value="Y2000"> 2000
+	                <option value="Y2001"> 2001
+	                <option value="Y2002"> 2002
+	                <option value="Y2003"> 2003
+	                <option value="Y2004"> 2004
+	                <option value="Y2005"> 2005
+	            </select>
+	            <B>&nbsp;to&nbsp;</B>
+	
+	            <select name="EndMonth" size=1 onChange="updateDateFilter()" class="SearchControl" >
+	                <option value="" selected=1>
+	                <option value="M01"> Jan
+	                <option value="M02"> Feb
+	                <option value="M03"> Mar
+	                <option value="M04"> Apr
+	                <option value="M05"> May
+	                <option value="M06"> Jun
+	                <option value="M07"> Jul
+	                <option value="M08"> Aug
+	                <option value="M09"> Sep
+	                <option value="M10"> Oct
+	                <option value="M11"> Nov
+	                <option value="M12"> Dec
+	            </select>
+	            <select name="EndYear" size=1  onChange="updateDateFilter()" class="SearchControl">
+	                <option value="" selected=1>
+	                <option value="Y1990"> 1990
+	                <option value="Y1991"> 1991
+	                <option value="Y1992"> 1992
+	                <option value="Y1993"> 1993
+	                <option value="Y1994"> 1994
+	                <option value="Y1995"> 1995
+	                <option value="Y1996"> 1996
+	                <option value="Y1997"> 1997
+	                <option value="Y1998"> 1998
+	                <option value="Y1999"> 1999
+	                <option value="Y2000"> 2000
+	                <option value="Y2001"> 2001
+	                <option value="Y2002"> 2002
+	                <option value="Y2003"> 2003
+	                <option value="Y2004"> 2004
+	                <option value="Y2005"> 2005
+	            </select>
+	            <input type="button" name="alldates" value="all" onclick="clearDateSearch()" class="SearchControl">
+<br>
+				
+				<input type="edit" name="" class="SearchControl" 
+					onchange="updateField(this)">
+		</td>
+	</tr>
+</table>
+
+		<input type="hidden" name="cmd" value="search">
+		<input type="hidden" name="SearchForm" value="%%SearchForm%%">
+		<input type="hidden" name="OrigSearchForm" value="/dtSearch_form.html">
+		<input type="hidden" name="autoStopLimit" value="5000">
+		<input type="hidden" name="autoTermWeight" value="1">
+		<input type="hidden" name="fileConditions" value="">
+		<input type="hidden" name="booleanConditions" value="">
+		<input type="hidden" name="index" value="/dtsearch_index">
+</form>
+<!-- EndInclude -->
+<P class="SearchControl">Powered by <a href="http://www.dtsearch.com">dtSearch</a></body>
+</html>

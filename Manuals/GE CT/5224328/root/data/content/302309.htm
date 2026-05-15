@@ -1,0 +1,25 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>mA Function (RT)</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5224328-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Dir 5224328-800 LightSpeed 5.X HP60 Limited Access Service
+Methods - Adv.</P></td></tr></table><H1 ID="top">mA Function (RT) </H1><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">JEDI Generator / mA Function</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/302311.gif" BORDER="0" usemap="#302311.gif"></P></DIV><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e30"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For a larger version of the above illustration, click on the pdf
+icon below:</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">JEDI Generator / mA Function</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/302314.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV><P CLASS="descriptive">The mA function is mainly controlled by the PPC kV control board CPU
+function.</P><P CLASS="descriptive">After power on, the CPU sends a preheat command to the heater function
+( except for applications where preheat is not used ).</P><P CLASS="descriptive">Then the CPU receives the kV, mA and exposure time commands.</P><P CLASS="descriptive">When the CPU receives the exposure enable signal ( either by a communication
+message or by a real time hardware line both linked to the prep button ),
+it calculates the acquisition filament drive to apply to the filament in order
+to match the required tube mA.</P><P CLASS="descriptive">This calculation is based on:</P><UL><LI CLASS="bulletlist"><P>the filament drive values stored in the tube database</P></LI><LI CLASS="bulletlist"><P>the interpolation to calculate the filament drive for the
+(kV, mA) point selected</P></LI><LI CLASS="bulletlist"><P>the filament aging correction</P></LI></UL><P CLASS="descriptive">Then it either:</P><UL><LI CLASS="bulletlist"><P>calculates the filament boost command to apply to the filament
+to fasten the filament temperature rise and send it to the heater function.
+In this case, the boost duration is 400ms and is followed by the acquisition
+command send to the heater function.</P></LI><LI CLASS="bulletlist"><P>or does not use any boost command and directly sends the acquisition
+command to the heater function</P></LI></UL><P CLASS="descriptive">When exposure command goes in its active state, the CPU:</P><UL><LI CLASS="bulletlist"><P>starts the exposure</P></LI><LI CLASS="bulletlist"><P>measures the mA each 1ms ( start 5ms after exposure start),
+compares it to the mA demand and calculates the filament drive to apply to
+reach the mA demand</P></LI><LI CLASS="bulletlist"><P>sends each 1ms, the new filament drive to the heater function</P></LI><LI CLASS="bulletlist"><P>updates mA demand if required by the system or by generator
+algorithm ( ABC mode, falling load mode, variable mA mode )</P></LI><LI CLASS="bulletlist"><P>checks mA accuracy</P></LI></UL><P CLASS="descriptive">The heater function:</P><UL><LI CLASS="bulletlist"><P>gets the filament drive demand each 1ms</P></LI><LI CLASS="bulletlist"><P>measures the heater inverter RMS current two times per 1ms,
+compares it to the filament drive demand and applies the inverter frequency
+to reach the right filament drive current</P></LI><LI CLASS="bulletlist"><P>checks inverter RMS current to avoid exceeding the max filament
+temperature</P></LI><LI CLASS="bulletlist"><P>sends each 100ms the inverter RMS current measure to the kV
+control CPU</P></LI></UL><P CLASS="descriptive">When the exposure command goes in its inactive state, the CPU either
+stay with the last filament drive demand or goes in preheat mode or stops
+filament drive to allow a fast filament cooling before going preheat. The
+rule depends on the application.</P><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

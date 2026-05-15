@@ -1,0 +1,42 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>CAN Link Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/26/07</P></td></tr></table><H1 ID="top">CAN Link Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984361">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">CAN Link Diagnostics</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984361-dup.1">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The purpose of this diagnostic is to perform a read-write test on any
+available nodes on the CAN network.</P><P CLASS="sect1">The Controller Area Network (CAN) is a communications layer used to
+communicate serially to nodes over a high speed data layer.  The CAN network
+uses a protocol called CANopen to communicate with its peripherals, or nodes.
+ Each node has a unique node Id (1-31) which helps determine where each message
+is intended to arrive.</P><P CLASS="sect1">This test will determine which nodes are available on the link by listening
+in to the network and determining which nodes are available based on their
+Node ID's.  Once the nodes are detected, a walking ones pattern is sent to
+each node and read back to verify the communications link.  The test can be
+set to run several iterations to help find any intermittent failures. </P><P CLASS="sect1">The Force Reset button is available to force a reset of the nodes before
+running the test.  This is used in the case when a reset is required to put
+all the nodes in a known normal state.  The test however, should be first
+run without the reset to determine if any nodes are in a bad state.  The force
+reset button should be used as a fall back to bring the nodes back to a normal
+state.  </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984361-dup.2">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The nodes that are currently available to be detected by this test are
+the following: </P><UL><LI CLASS="bulletlist"><P>PHPS                (Node ID  1) </P></LI><LI CLASS="bulletlist"><P>Driver Module       (Node ID  2)</P></LI><LI CLASS="bulletlist"><P>RRF-DIF Master      (Node ID  4) </P></LI><LI CLASS="bulletlist"><P>RRF-DIF Slave       (Node ID  5) </P></LI><LI CLASS="bulletlist"><P>ASC BB IF Board     (Node ID  6)</P></LI><LI CLASS="bulletlist"><P>ASC NB IF Board     (Node ID  7) </P></LI><LI CLASS="bulletlist"><P>ASC RF Processor 1  (Node ID  8) </P></LI><LI CLASS="bulletlist"><P>ASC RF Processor 2  (Node ID  9)</P></LI><LI CLASS="bulletlist"><P>GP Module (Master)  (Node ID 14)</P></LI><LI CLASS="bulletlist"><P>HOS                 (Node ID 16) </P></LI></UL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e79"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For systems with a single GP module, the GP module is referred
+to as a GP Module (Master).  Systems with 2 GP Modules contain a GP Module
+(Master) and a GP Module (Slave). </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984363-dup.4">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">None</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984363-dup.5">5&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="ov-1285097984364"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">CAN Link For Upgraded Systems</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/476850-519446.gif" BORDER="0" usemap="#SL519448-476850"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984762">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic first detects all the available nodes on the CAN link
+by monitoring the Node Guarding messages.  If Force Reset is checked, all
+CAN nodes are reset prior to monitoring the Node Guarding messages.  Once
+any nodes are detected, they are logged to the screen and then a data path
+test is run on each of them sequentially.  The data path test consists of
+writing a walking one's pattern on the Diagnostic Dictionary Index on the
+node and reading it back.  The received data is checked to ensure its validity.
+ The data path test is repeated three times on each node.  Any errors will
+result in an error message logged and the information written to the screen. </P><P CLASS="sect1">The test can be set to run several iterations to help find any intermittent
+failures. </P><P CLASS="sect1">The Force Reset button is available to force a reset of the nodes before
+running the test. This is used in the case when a reset is required to put
+all the nodes in a known normal state. The test however, should be first run
+without the reset to determine if any nodes are in a bad state. The force
+reset button should be used as a fall back to bring the nodes back to a normal
+state.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984763">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test compares the nodes that are detected against the system configuration
+and emulation settings.  All nodes that are detected, configured, and not
+emulated will be tested and test results will be displayed.</P><P CLASS="sect1">A status message will be displayed for any nodes not tested that are
+detected and/or configured.  Here is a list of reasons a node may not be tested.</P><UL><LI CLASS="bulletlist"><P>Not detected</P></LI><LI CLASS="bulletlist"><P>Not detected - Node configured and emulated</P></LI><LI CLASS="bulletlist"><P>Not tested - Node detected but configured and emulated</P></LI><LI CLASS="bulletlist"><P>Not tested - Node detected but emulated</P></LI><LI CLASS="bulletlist"><P>Not tested - Node detected but not configured</P></LI></UL><P CLASS="sect1">If any configuration or emulation result is seen, verify that the configuration
+of the system is correct and that no emulations exist for that node.</P><P CLASS="sect1">If nodes are not detected, the reason could be</P><UL><LI CLASS="bulletlist"><P>Driver Module powered off</P></LI><LI CLASS="bulletlist"><P>CAN Terminator not installed on the SCP </P></LI><LI CLASS="bulletlist"><P>CAN Terminator not installed on the last node on the CAN link</P></LI><LI CLASS="bulletlist"><P>Not all nodes connected on the CAN link, including SCP, or
+CAN cable disconnected</P></LI><LI CLASS="bulletlist"><P>System configuration incorrect, if only some nodes not detected</P></LI><LI CLASS="bulletlist"><P>SCP or CAN PMC failures.  Run the CAN datapath diagnostic
+to verify SCP to CAN PMC communication</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984765">8&nbsp;&nbsp;Etcetera<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">None</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1285097984765-dup.1">9&nbsp;&nbsp;Links<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">None</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

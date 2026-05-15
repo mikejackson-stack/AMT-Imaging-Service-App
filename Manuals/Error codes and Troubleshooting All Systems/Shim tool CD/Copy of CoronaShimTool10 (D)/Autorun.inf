@@ -1,0 +1,42 @@
+[autorun]
+OPEN=install.cmd /AUTORUN
+ICON=install.cmd,1
+
+shell\configure=&Configure...
+shell\configure\command=install.cmd
+
+shell\install=&Install...
+shell\install\command=install.cmd
+
+[ProductFeatures]
+
+
+[ProductInformation]
+ProductCode={25D240208-10-01}
+DisplayName=GEHC SHimTool Install Package
+Version=1.0.0
+;Make this be 1 to do autorun even if the product is installed.  Default for Shimtool
+;is to not autorun maintenance mode setup if the product is installed.
+;AutorunIfInstalled=1
+
+[ServicePack]
+NTVersion=4
+; 0x300 as a decimal number.
+SPLevel=768
+MessageText=%s cannot be installed on this computer.  This product requires Microsoft Windows NT Version 4.0 Service Pack 3 or higher.  Please download the service pack from www.microsoft.com prior to installing.
+
+[InstallFont]
+
+
+[InstallFontBold]
+
+
+[InstallMSI]
+;Make this be zero to aways suppress installing Windows installer
+;If this is missing or one, we upgrade Windows installer only on systems
+;prior to NT 5.
+;Make this be 2 to upgrade Windows installer even on NT 5 and later.
+;InstMsi=2
+
+[IE]
+

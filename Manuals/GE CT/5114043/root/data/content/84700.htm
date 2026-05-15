@@ -1,0 +1,23 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Error 183316, 185548 - X-Ray Gen: Rotor Ctrl</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5114043-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;9<BR>LightSpeed 3.X Service Methods (Advanced)</P></td></tr></table><H1 ID="top">Error 183316, 185548 - X-Ray Gen: Rotor Ctrl </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864634">1&nbsp;&nbsp;Errors<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">(The HEMRC operating frequency is below the minimum value)</P><PRE>Thu Apr  9 01:19:07 1998                        Error: 183316 
+ Suite: CT01  Host: OBC    Process: Generator         
+ File: hemrc_manager.c 1.14      Method: No Method           Line: 968    
+ Function: XRAY GENERATION : Tube Rotor Control
+ Scan: 0/0/1    Type: Static
+ Exception Level: Pri/Most Severe    Time: 02:37:06:930  Log Series: 30
+The HEMRC failed to reach the Run speed in the allotted time.
+
+Thu Apr  9 01:19:21 1998                        Error: 185548 
+ Suite: CT01  Host: OBC    Process: Diag Exec         
+ File: hemrc_manager.c 1.5       Method: gen_rotor           Line: 859    
+ Function: Diagnostics XRAY GENERATION : Tube Rotor Control
+ Test Name: HEMRC Manual  Unique ID: 11553  Iteration: 1
+ Exc. Level: Hard  Time: 294048  Error Type: Hardware
+The HEMRC operating frequency is below the minimum value.
+Actual frequency: 88.394   Minimum frequency limit: 249.995
+At Frequency signal: Inactive  Expected: Inactive  Rotor State = Run</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864642">2&nbsp;&nbsp;Theory of Errors<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Why the error was reported</P></LI><LI CLASS="numlist"><P>Reference Information</P></LI><LI CLASS="numlist"><P>Proprietary Diagnostics - <SPAN CLASS="GUIBUTTON"> [X-RAY GENERATION] </SPAN><SPAN CLASS="GUIBUTTON"> [ROTOR
+CONTROL] </SPAN></P></LI><LI CLASS="numlist"><P>Schematics or Diagrams</P><UL><LI CLASS="bulletlist"><P>2208043SCH - HEMRC</P></LI><LI CLASS="bulletlist"><P>2145832SCH - HEMRC_IF, HVDC_Sense, Chopper_Cntl, AC_Dist,
+HCB.</P></LI></UL></LI><LI CLASS="numlist"><P>FRUs Involved</P><UL><LI CLASS="bulletlist"><P>HEMRC Interface Board</P></LI><LI CLASS="bulletlist"><P>HEMRC AC DRIVE</P></LI><LI CLASS="bulletlist"><P>HVDC BUS</P></LI><LI CLASS="bulletlist"><P>HEMRC Control Board - HCB</P></LI><LI CLASS="bulletlist"><P>Fuses F1, F2 on interface Bd (would produce a Primary Error
+of &#8220;NO HVDC&#8221;)</P></LI><LI CLASS="bulletlist"><P>Check all the J3Aseries connections</P></LI></UL></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864684">3&nbsp;&nbsp;Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Verify error in log is the primary error and note all pertinent details.
+Troubleshoot HVDC errors.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

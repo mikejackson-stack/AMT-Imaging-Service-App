@@ -1,0 +1,2709 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>Left Navigation Frameset</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <link rel="stylesheet" href="css/css.css" type="text/css">
+      <link rel="stylesheet" href="css/dtree.css" type="text/css"><script language="JavaScript" src="scripts/winopen.js"></script><script language="JavaScript" src="scripts/webmonk.gos"></script><script language="JavaScript" src="scripts/modules_init.js"></script><script language="JavaScript" src="scripts/bookmark.js"></script><script language="JavaScript" src="scripts/efunctions.js"></script><script language="JavaScript" src="scripts/dtree.js"></script><script language="JavaScript"></script><script type="text/javascript">
+	
+		d = new dTree('d');
+	
+</script><script type="text/javascript">var val_lang_collapse_all="Collapse All";var val_lang_expand_all="Expand All";var val_lang_hide_navigation="Hide Navigation";var val_lang_show_navigation="";var val_lang_expand_navigation="Expand Navigation";var val_lang_top_of_the_page="Top of the page";
+	
+	
+		var val_expand_collapse=0;
+		var val_shift_expand_Frame=0;
+		var val_of_url;
+		var val_expand_right_Frame=0;
+		function shift_expand_Frame()
+		{		
+			if(val_expand_right_Frame>0)
+			{
+				if(val_expand_right_Frame==1)
+				{
+					parent.document.getElementById('frame').cols="180,*";
+					val_expand_right_Frame=0;
+				}
+				if(val_expand_right_Frame==100)
+				{
+					parent.document.getElementById('frame').cols="50%,50%";
+					val_expand_right_Frame=1;
+					
+				}
+			}
+			else
+			{
+				if(val_shift_expand_Frame==1)
+				{
+					//window.parent.topleftFrame.body.innerHTML='';
+					parent.document.getElementById('frame').cols="180,*";
+					document.body.style.overflow='Scroll';
+					/*window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+					window.parent.topleftFrame.document.getElementById('img_expand_collapse').style.display="block";*/
+					document.getElementById('td_dtree').style.display="block";
+					document.getElementById('home2').style.display="none";
+					document.getElementById('line1').style.display="none";
+					document.getElementById('search2').style.display="none";
+					document.getElementById('top2').style.display="none";
+					document.getElementById('line2').style.display="none";
+					document.getElementById('line3').style.display="none";
+					document.getElementById('line4').style.display="none";
+					/*window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title=val_lang_hide_navigation;//"Hide Navigation";*/
+					
+					window.parent.topleftFrame.location.reload();
+					
+					/*Hide-Show Navigation Code
+					window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+					document.getElementById('td_dtree').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+					window.parent.topleftFrame.document.getElementById('tbl_id_menu_main').width="180";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title=val_lang_hide_navigation;//"Hide Navigation";
+					Ends here*/
+					
+					val_shift_expand_Frame=0;
+				}
+				else
+				{
+					document.getElementById('home2').style.display="block";
+					document.getElementById('line1').style.display="block";
+					document.getElementById('search2').style.display="block";
+					document.getElementById('top2').style.display="block";
+					document.getElementById('line2').style.display="block";
+					document.getElementById('line3').style.display="block";
+					document.getElementById('line4').style.display="block";
+					document.body.style.overflow='hidden';
+					window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="none";
+					document.getElementById('td_dtree').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="none";
+					//top.frame.cols="3%,*";
+					parent.document.getElementById('frame').cols="3%,*";
+					window.parent.topleftFrame.document.getElementById('tbl_id_menu_main').width="20";
+					//window.parent.topleftFrame.document.getElementById('td_shift_expand_Frame').align="center";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_frwd.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title=val_lang_show_navigation;//"Show Navigation";
+					val_shift_expand_Frame=1;
+				}
+			}
+		}
+		
+		
+		function expand_to_right_Frame()
+		{	
+			if(val_expand_right_Frame==0)
+			{
+				parent.document.getElementById('frame').cols="50%,50%";
+				val_expand_right_Frame=1;
+			}
+			else
+			{
+				parent.document.getElementById('frame').cols="100%,*";
+				val_expand_right_Frame=100;
+			}
+		}
+		
+		
+		function initialCmodule()
+		{
+			document.body.style.overflow='Scroll';
+			parent.document.getElementById('frame').cols="180,*";
+			window.parent.topleftFrame.location.reload();
+			window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_down.gif";
+			window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+			window.parent.topleftFrame.document.getElementById('img_expand_collapse').style.display="block";
+			document.getElementById('td_dtree').style.display="block";
+			document.getElementById('home2').style.display="none";
+			document.getElementById('line1').style.display="none";
+			document.getElementById('line2').style.display="none";
+			document.getElementById('search2').style.display="none";
+			document.getElementById('top2').style.display="none";
+			document.getElementById('line3').style.display="none";
+			document.getElementById('line4').style.display="none";
+			
+			window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+			window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title=val_lang_hide_navigation;//"Hide Navigation";
+			parent.mainFrame.location.href="content/home.htm";
+			d.closeAll();
+			val_shift_expand_Frame=0;
+			val_expand_right_Frame=0;
+			val_expand_collapse=0;
+		}
+		
+		function topofthePage()
+		{
+			var str_url_value=window.top.mainFrame.document.location;
+			var str_test=String(str_url_value);
+			var url_top_index=str_test.indexOf('#');
+			if(!url_top_index<=-1)
+			{
+				var url_of_page=str_url_value.substring(url_top_index);
+				val_of_url=url_of_page;
+				document.location.target="mainFrame";
+				window.top.mainFrame.document.location.href=url_of_page;
+			}
+			else
+			{
+				document.location.target="mainFrame";
+				window.top.mainFrame.document.location.href=window.top.mainFrame.document.location;
+			}
+		}
+		
+		function expand_collapse_all()
+		{
+			
+			if(val_expand_collapse==0)
+			{
+				d.openAll();
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_up.gif";
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').title=val_lang_collapse_all;//"Collapse All";
+				val_expand_collapse=1;
+			}
+			else
+			{
+				d.closeAll();
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_down.gif";
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').title=val_lang_expand_all;//"Expand All";
+				val_expand_collapse=0;
+			}
+		}
+		
+		function fn_table_id_hidden_menu()
+		{	
+			document.getElementById('home2').style.display="none";
+			document.getElementById('line1').style.display="none";
+			document.getElementById('line2').style.display="none";
+			document.getElementById('search2').style.display="none";
+			document.getElementById('top2').style.display="none";
+			document.getElementById('line3').style.display="none";
+			document.getElementById('line4').style.display="none";
+		}
+		
+	
+</script></head>
+   <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" text="#000000" onLoad="fn_table_id_hidden_menu()">
+      <table border="0" cellspacing="0" cellpadding="0" width="100%"><script type="text/javascript">
+	
+		//d.add(0,-1,'');
+		//Start Genpact code for empty div spr SVCge36187 on 21 April 2007
+		d.add('cmod',0,-1,'');
+		//Stop Genpact code for empty div spr SVCge36187 on 21 April 2007
+		var counter=1;
+		var div1_val=0;
+		var div2_val=0;
+		var div3_val=0;
+		var div4_val=0;
+		var div5_val=0;
+		var div6_val=0;
+		var div7_val=0;
+		var div8_val=0;
+	
+	
+	
+		document.write("<tr>");
+		document.write("<td id='td_dtree' colspan='7'>");
+		
+		
+		d.add('div',counter,0,"Readme","Readme");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Revision History","Revision History",'./content/1162068.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Electrical Contractor Statement","Certified Electrical Contractor Statement",'./content/118351.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Damage in Transportation","Damage in Transportation",'./content/118348.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"CT/PET Common Glossary","CT/PET Common Glossary",'./content/1078268.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Help - dtSearch (Version 6.4)","Help - dtSearch (Version 6.4)",'./content/628238.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Help - Navigation Features and Tips","Help - Navigation Features and Tips",'./content/628299.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Language Policy","Language Policy",'./content/69742.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Omissions and Errors","Omissions and Errors",'./content/118363.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Publication Conventions","Publication Conventions",'./content/208479.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"References to Illustrations, Drawings, and Pictures","References to Illustrations, Drawings, and Pictures",'./content/1011444.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Safety","Safety");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Safety Alert Usage","Safety Alert Usage",'./content/295021.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"System Safety Overview","System Safety Overview",'./content/35103.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Normal System Operational Safety","Normal System Operational Safety",'./content/1072103.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Clean-up and Personal Hygiene","Clean-up and Personal Hygiene",'./content/247514.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Chemicals and Materials","Equipment Service - Chemicals and Materials",'./content/35045.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - GOC6 and 6.5 Consoles","Equipment Service - GOC6 and 6.5 Consoles",'./content/1064657.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - GOC6.6 Console","Equipment Service - GOC6.6 Console",'./content/1183337.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Gantry","Equipment Service - Gantry",'./content/1067926.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Gantry Lift Assembly Usage","Equipment Service - Gantry Lift Assembly Usage",'./content/1068101.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Lockout-Tagout-PPE","Equipment Service - Lockout-Tagout-PPE",'./content/35054.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - NGPDU","Equipment Service - NGPDU",'./content/35195.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - FRU Parts Management ","Equipment Service - FRU Parts Management ",'./content/1074056.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Table (Mechanical)","Equipment Service - Table (Mechanical)",'./content/211913.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"ESD Management and Device Handling","ESD Management and Device Handling",'./content/836874.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"ESD Grounding Locations","ESD Grounding Locations",'./content/388070.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Important...X-Ray Protection","Important...X-Ray Protection",'./content/118354.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Lithium Battery Cautionary Statements","Lithium Battery Cautionary Statements",'./content/118360.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Regulatory Clearance Quick Reference Guide","Regulatory Clearance Quick Reference Guide",'./content/825032.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Torque Wrench Information","Torque Wrench Information",'./content/1064056.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Pre-Installation","Pre-Installation");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Pre-Installation Manual: LS 7.X (5116410-100)","Pre-Installation Manual: LS 7.X (5116410-100)",'./content/325741.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Installation","Installation");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Revision History","Revision History",'./content/1102563.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Installation Forms","Installation Forms",'./content/1013447.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Introduction and How To Use This Manual","Introduction and How To Use This Manual",'./content/1099899.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 1 - Work Flow Overview","Chapter 1 - Work Flow Overview"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Mechanical Installation Work Flow","Mechanical Installation Work Flow",'./content/1098032.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Electrical Installation Work Flow","Electrical Installation Work Flow",'./content/1098858.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 2 - Installation Summary","Chapter 2 - Installation Summary"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Mechanical Installation Summary","Mechanical Installation Summary"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 1: Pre-Delivery Activities","STEP 1: Pre-Delivery Activities",'./content/1098121.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 2: Mark Equipment Anchoring Locations","STEP 2: Mark Equipment Anchoring Locations",'./content/1098127.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 3A: Verify Site Readiness","STEP 3A: Verify Site Readiness",'./content/1098408.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 3B: Unload Console and Control Room Lean Cart","STEP 3B: Unload Console and Control Room Lean Cart",'./content/1098412.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 4A: Cut Out Floor Surface Down to Bare Concrete","STEP 4A: Cut Out Floor Surface Down to Bare Concrete",'./content/1098435.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 4B: Unload and Position the PDU","STEP 4B: Unload and Position the PDU",'./content/1098440.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 5A: Install Operator Console, Peripherals, Hard Drives, etc.","STEP 5A: Install Operator Console, Peripherals, Hard Drives, etc.",'./content/1098446.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 5B: PDU Hookup.  Supervise Shippers & Unload All Materials.","STEP 5B: PDU Hookup.  Supervise Shippers & Unload All Materials.",'./content/1098448.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 6: Transport Gantry to Scan Room","STEP 6: Transport Gantry to Scan Room",'./content/1098472.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 7: Move Gantry Into Final Position","STEP 7: Move Gantry Into Final Position",'./content/1098475.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 8: Level the Gantry","STEP 8: Level the Gantry",'./content/1098481.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 9A: Inspect the Gantry Bearing Gap","STEP 9A: Inspect the Gantry Bearing Gap",'./content/1098502.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 9B: Install Gantry Alignment Laser and Bracket","STEP 9B: Install Gantry Alignment Laser and Bracket",'./content/1098512.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 10: Move Table Into Position","STEP 10: Move Table Into Position",'./content/1098505.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 11: Align the Table to the Gantry","STEP 11: Align the Table to the Gantry",'./content/1098639.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 12: Drill Anchor Holes","STEP 12: Drill Anchor Holes",'./content/1098645.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 13A: Anchor the System","STEP 13A: Anchor the System",'./content/1098646.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 13B: Remove Shipping Brackets and Table Dollies","STEP 13B: Remove Shipping Brackets and Table Dollies",'./content/1098651.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 14A: Install Table Footswitch Assembly","STEP 14A: Install Table Footswitch Assembly",'./content/1098649.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 14B: Unroll and Lay Out Cables","STEP 14B: Unroll and Lay Out Cables",'./content/1098647.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 15: Route Power and Control Cables Between System Components","STEP 15: Route Power and Control Cables Between System Components",'./content/1098652.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 16A: Console Cable Connections","STEP 16A: Console Cable Connections",'./content/1098737.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 16B: PDU Cable Connections","STEP 16B: PDU Cable Connections",'./content/1098738.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 17A: Gantry Cable Connections","STEP 17A: Gantry Cable Connections",'./content/1098739.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 18A: Install Customer Options","STEP 18A: Install Customer Options",'./content/1098740.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 18B: UPS Installation and Cable Connections","STEP 18B: UPS Installation and Cable Connections",'./content/1098741.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 19A: Table Cable Connections","STEP 19A: Table Cable Connections",'./content/1098746.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 19B: System/Site Continuity and Ground Checks","STEP 19B: System/Site Continuity and Ground Checks",'./content/1098793.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP 20A: Electrical Power Up","STEP 20A: Electrical Power Up",'./content/1098800.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Electrical Installation Summary","Electrical Installation Summary"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Mechanical-Electrical Transition","Mechanical-Electrical Transition",'./content/1099904.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E1: Inventory System Software and Restore System State","STEP E1: Inventory System Software and Restore System State",'./content/1098863.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E2: System and Console Configuration","STEP E2: System and Console Configuration",'./content/1098866.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E3: Install Software Options and Complete Computer Integration","STEP E3: Install Software Options and Complete Computer Integration",'./content/1098969.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E4: Autovoice/Intercom Checks","STEP E4: Autovoice/Intercom Checks",'./content/1098974.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E5: Alignment Light & Table Height Characterization","STEP E5: Alignment Light & Table Height Characterization",'./content/1098975.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E6: Gantry/Table Interference Test","STEP E6: Gantry/Table Interference Test",'./content/1098976.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E7: Tube Warm Up and Fast Calibration","STEP E7: Tube Warm Up and Fast Calibration",'./content/1098977.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E8: Table/Gantry Alignment","STEP E8: Table/Gantry Alignment",'./content/1098979.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E9: Center Phantom","STEP E9: Center Phantom",'./content/1098987.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E10: Tomographic Plane Indication","STEP E10: Tomographic Plane Indication",'./content/1098995.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E11: Image Quality Test","STEP E11: Image Quality Test",'./content/1099002.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E12: Verify Network Connections","STEP E12: Verify Network Connections",'./content/1099003.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E13: Install and Verify Customer Imaging Options","STEP E13: Install and Verify Customer Imaging Options",'./content/1099010.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E14: System Functional Test","STEP E14: System Functional Test",'./content/1099046.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E15: Administrator Account Configuration in EA3 and Save System State","STEP E15: Administrator Account Configuration in EA3 and Save System State",'./content/1099049.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E16: Patient Touch and System Chassis Leakage Tests","STEP E16: Patient Touch and System Chassis Leakage Tests",'./content/1099053.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E17: Install Service Cabinet","STEP E17: Install Service Cabinet",'./content/1099121.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E18: Install Covers","STEP E18: Install Covers",'./content/1099123.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E19: X-Ray On Indicators, Warning Labels, and Product Locator Cards","STEP E19: X-Ray On Indicators, Warning Labels, and Product Locator Cards",'./content/1099124.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E20: GE and Regulatory Forms","STEP E20: GE and Regulatory Forms",'./content/1099127.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"STEP E21: Final Installation Checklist","STEP E21: Final Installation Checklist",'./content/1099128.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 3 - Position Subsystems","Chapter 3 - Position Subsystems"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Preparation","Preparation"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Pre-Delivery Activities","Pre-Delivery Activities",'./content/1097806.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Mark Equipment Anchoring Locations","Mark Equipment Anchoring Locations",'./content/1096832.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Verify Site Readiness","Verify Site Readiness",'./content/1099316.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Delivery and Console","Delivery and Console"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Install Operator Console, Peripherals, Hard Drives, etc","Install Operator Console, Peripherals, Hard Drives, etc",'./content/1096863.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Start Electrician on PDU Hookup","Start Electrician on PDU Hookup",'./content/1096881.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Supervise Shippers and Unload all Materials","Supervise Shippers and Unload all Materials",'./content/1096861.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Move Gantry into Final Position","Move Gantry into Final Position",'./content/1096864.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Gantry and Table","Gantry and Table"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Level the Gantry","Level the Gantry",'./content/1096866.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Inspect the Gantry Bearing Gap","Inspect the Gantry Bearing Gap",'./content/1096869.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Install Gantry Alignment Laser and Bracket","Install Gantry Alignment Laser and Bracket",'./content/1096871.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Move Table into Position","Move Table into Position",'./content/1096872.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Align the Table to the Gantry","Align the Table to the Gantry",'./content/1096870.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Drilling the Gantry and Table Anchor Holes","Drilling the Gantry and Table Anchor Holes",'./content/1096873.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Anchor the System","Anchor the System",'./content/1096177.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Remove Shipping Brackets and Table Dollies","Remove Shipping Brackets and Table Dollies",'./content/1096868.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Install Table Footswitch Assembly","Install Table Footswitch Assembly",'./content/1096875.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 4 - Power, Ground, and Interconnect Cables","Chapter 4 - Power, Ground, and Interconnect Cables"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Route Power and Control Cables between System Components","Route Power and Control Cables between System Components",'./content/1096877.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cable Connections - GOC6 Series","Console Cable Connections - GOC6 Series",'./content/1096879.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cable Connections - GOC5","Console Cable Connections - GOC5",'./content/1098558.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"PDU Cable Connections","PDU Cable Connections",'./content/1096878.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Cable Connections","Gantry Cable Connections",'./content/1096880.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Customer Options","Install Customer Options",'./content/1096883.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Table Cable Connections","Table Cable Connections",'./content/1096882.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 5 - System Continuity, Grounding, and Power Up","Chapter 5 - System Continuity, Grounding, and Power Up"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System/Site Continuity and Ground Checks","System/Site Continuity and Ground Checks",'./content/1096886.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Electrical Power Up","Electrical Power Up",'./content/1096860.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Mechanical-Electrical Transition Checklist","Mechanical-Electrical Transition Checklist",'./content/1098910.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 6 - Electrical Integration and Safety Verifications","Chapter 6 - Electrical Integration and Safety Verifications"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Inventory System Software and Restore System State","Inventory System Software and Restore System State",'./content/1096935.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System and Console Configuration","System and Console Configuration",'./content/1098022.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Software Options and Complete Computer Integration","Install Software Options and Complete Computer Integration",'./content/1098023.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Autovoice/Intercom Checks","Autovoice/Intercom Checks",'./content/1096952.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Alignment Light and Table Height Characterization","Alignment Light and Table Height Characterization",'./content/1096938.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry/Table Interference Test","Gantry/Table Interference Test",'./content/1098024.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 7 - Calibration, Alignment, and Image Quality","Chapter 7 - Calibration, Alignment, and Image Quality"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Warm Up and Fast Calibration","Tube Warm Up and Fast Calibration",'./content/1096945.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Center Phantom","Center Phantom",'./content/1096943.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tomographic Plane Indication","Tomographic Plane Indication",'./content/1096944.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Image Quality Test","Image Quality Test",'./content/1099717.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 8 - System Level Verification Tests","Chapter 8 - System Level Verification Tests"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Network Connections","Network Connections",'./content/1096949.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install and Verify Customer Imaging Options","Install and Verify Customer Imaging Options",'./content/1096948.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System Functional Test","System Functional Test",'./content/1096946.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Save System State","Save System State",'./content/1096947.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Enclosure Leakage (Patient Touch) and System Chassis Leakage Tests","Enclosure Leakage (Patient Touch) and System Chassis Leakage Tests",'./content/1099787.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Chapter 9 - Installation Finalization","Chapter 9 - Installation Finalization"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Service Cabinet","Install Service Cabinet",'./content/1098026.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"X-Ray On Indicators, Warning Labels, and Product Locator Cards","X-Ray On Indicators, Warning Labels, and Product Locator Cards",'./content/1096937.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GE and Regulatory Forms","GE and Regulatory Forms",'./content/1096950.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Final Installation Checklist","Final Installation Checklist",'./content/1099718.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Appendix A","Appendix A"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Remove Gantry Covers and Scan Window","Remove Gantry Covers and Scan Window",'./content/1097994.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Appendix B","Appendix B"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Covers","Install Covers",'./content/1098025.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Appendix C","Appendix C"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Installation Tools","Installation Tools",'./content/1098903.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Appendix D","Appendix D"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Informational Support Procedures","Informational Support Procedures",'./content/1098879.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Installation Forms","Installation Forms",'./content/1013447.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Table Tilting Dolly Install Guide","Table Tilting Dolly Install Guide",'./content/1104691.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"LightSpeed Family De-Installation","LightSpeed Family De-Installation",'./content/1126629.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Options","Options"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"3-Phase Partial UPS Installation ","3-Phase Partial UPS Installation ",'./content/1068050.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Advantage 4D Respiratory Gating Install (2380690-100)","Advantage 4D Respiratory Gating Install (2380690-100)",'./content/1060658.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ASiR Option Manual (Dir 5436607-1EN)","ASiR Option Manual (Dir 5436607-1EN)",'./content/1164731.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"AWE Connection Option Installation","AWE Connection Option Installation",'./content/1136328.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cardiac Monitor (IVY) Installation","Cardiac Monitor (IVY) Installation",'./content/1106946.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ConnectPRO Software Option Installation and Checkout","ConnectPRO Software Option Installation and Checkout",'./content/324437.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"CT Cardiac Gating Option (Dir 2380526-100)","CT Cardiac Gating Option (Dir 2380526-100)",'./content/681772.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Dual Shot Alpha Option (Install, Parts, PM)","Dual Shot Alpha Option (Install, Parts, PM)",'./content/1064394.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Integrated Injector Option Installation (Dir 5317408-1EN)","Integrated Injector Option Installation (Dir 5317408-1EN)",'./content/1074694.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"MOD Archive & SCSI Card Option Installation","MOD Archive & SCSI Card Option Installation",'./content/1097603.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Monitor In-Room Boom Install (Dir 5323332-1EN)","Monitor In-Room Boom Install (Dir 5323332-1EN)",'./content/1068049.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Remote Monitor Installation (Dir 2390072-100)","Remote Monitor Installation (Dir 2390072-100)",'./content/681769.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Respiratory Gating Option Installation (Dir 5321869-1EN)","Respiratory Gating Option Installation (Dir 5321869-1EN)",'./content/1076819.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SmartStep Option Installation","SmartStep Option Installation",'./content/1127714.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Upgrades","Upgrades"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Series Console - VeRB Upgrade","GOC6 Series Console - VeRB Upgrade",'./content/1085358.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LightSpeed VCT Xtream HD Console Upgrade","LightSpeed VCT Xtream HD Console Upgrade",'./content/1086441.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LS VCT Gantry Options Interface Upgrade Procedure","LS VCT Gantry Options Interface Upgrade Procedure",'./content/1074945.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LightSpeed VCT FREEdom Console Upgrade","LightSpeed VCT FREEdom Console Upgrade",'./content/1188233.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Align, Setup, Calibrations","Align, Setup, Calibrations");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Camera","Camera"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Filming Devices Setup","DICOM Filming Devices Setup",'./content/1061583.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.6)","Console (GOC6.6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Data Privacy (EA3 User Authorization) Configuration","Data Privacy (EA3 User Authorization) Configuration",'./content/1126999.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Dose Check Management and EA3 Configuration","Dose Check Management and EA3 Configuration",'./content/1126252.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Dose SR Compatibility","Evaluation of Dose SR Compatibility",'./content/1071839.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Image Flip and Rotate Compatibility","Evaluation of Image Flip and Rotate Compatibility",'./content/1071840.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GSCB Configuration and Intercom Setup","GSCB Configuration and Intercom Setup",'./content/1204078.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Setup for Z800","LCD Video Monitor Setup for Z800",'./content/1187825.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Product Locator","Product Locator",'./content/1137912.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System Configuration","System Configuration",'./content/1204081.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Z820 Host PC BIOS Setup","Z820 Host PC BIOS Setup",'./content/1189043.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.5)","Console (GOC6.5)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Z400 Host PC BIOS Setup","Z400 Host PC BIOS Setup",'./content/1093970.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Data Privacy (EA3 User Authorization) Configuration","Data Privacy (EA3 User Authorization) Configuration",'./content/1126999.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 BIOS CMOS Settings","DIG2 BIOS CMOS Settings",'./content/1097604.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Dose Check Management and EA3 Configuration","Dose Check Management and EA3 Configuration",'./content/1126252.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Dose SR Compatibility","Evaluation of Dose SR Compatibility",'./content/1071839.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Image Flip and Rotate Compatibility","Evaluation of Image Flip and Rotate Compatibility",'./content/1071840.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Assembly Setup Calibrations","ICOM Assembly Setup Calibrations",'./content/1064660.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Setup for Z800","LCD Video Monitor Setup for Z800",'./content/1187825.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Product Locator","Product Locator",'./content/1137912.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System Configuration","System Configuration",'./content/1071841.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB2 BIOS CMOS Settings","VeRB2 BIOS CMOS Settings",'./content/1097605.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6)","Console (GOC6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC BIOS Setup","xw8400 Host PC BIOS Setup",'./content/1045817.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG BIOS CMOS Settings","DIG BIOS CMOS Settings",'./content/1064658.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Dose SR Compatibility","Evaluation of Dose SR Compatibility",'./content/1071839.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Product Locator","Product Locator",'./content/1137912.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Image Flip and Rotate Compatibility","Evaluation of Image Flip and Rotate Compatibility",'./content/1071840.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Dose Check Management and EA3 Configuration","Dose Check Management and EA3 Configuration",'./content/1126252.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Data Privacy (EA3 User Authorization) Configuration","Data Privacy (EA3 User Authorization) Configuration",'./content/1126999.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Assembly Setup Calibrations","ICOM Assembly Setup Calibrations",'./content/1064660.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Setup","LCD Video Monitor Setup",'./content/299739.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System Configuration","System Configuration",'./content/1071841.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB BIOS CMOS Settings","VeRB BIOS CMOS Settings",'./content/1064659.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC5)","Console (GOC5)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) System Configuration","(12HW14.6) System Configuration",'./content/1159881.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Data Privacy (EA3 User Authorization) Configuration","Data Privacy (EA3 User Authorization) Configuration",'./content/1126999.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Dose Check Management and EA3 Configuration","Dose Check Management and EA3 Configuration",'./content/1126252.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Evaluation of Dose SR Compatibility (for 07MW18.4 SP4.0)","Evaluation of Dose SR Compatibility (for 07MW18.4 SP4.0)",'./content/1181047.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Product Locator","Product Locator",'./content/1137912.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Digital DASM II Settings and LEDs","Digital DASM II Settings and LEDs",'./content/372305.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Intercom Adjustments","Intercom Adjustments",'./content/366374.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Setup","LCD Video Monitor Setup",'./content/299739.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VIG Node Reset","VIG Node Reset",'./content/575713.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"PC BIOS Install & Setup for HP xw8000 Host Computer","PC BIOS Install & Setup for HP xw8000 Host Computer",'./content/929000.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"PC BIOS Install & Setup for HP xw8200 Host Computer","PC BIOS Install & Setup for HP xw8200 Host Computer",'./content/929001.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC BIOS Setup","xw8400 Host PC BIOS Setup",'./content/1045817.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Gantry","Gantry"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Collimator","Collimator"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Collimator Calibration","Collimator Calibration",'./content/376951.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"DAS and Detector","DAS and Detector"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"48V Power Supply Checks","48V Power Supply Checks",'./content/1055926.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Enclosure","Enclosure"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Alignment Light Adjustment","Alignment Light Adjustment",'./content/329432.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Alignment Light Characterization","Alignment Light Characterization",'./content/1065226.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Auto Alignment Light Setting","Auto Alignment Light Setting",'./content/1150026.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Tilt","Tilt"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Tilt Pot Adjustment","Gantry Tilt Pot Adjustment",'./content/1064266.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Hydraulic Tilt Motor Fluid Check and Fill Procedure","Hydraulic Tilt Motor Fluid Check and Fill Procedure",'./content/1064062.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Hydraulic Tilt Motor Speed Adjustment","Hydraulic Tilt Motor Speed Adjustment",'./content/1064061.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Tube","Tube"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Filament Calibration","Filament Calibration",'./content/1070313.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"HOT ISO Alignment","HOT ISO Alignment",'./content/1070317.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Cold ISO Alignment","Cold ISO Alignment",'./content/1070315.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tube Warmup","Tube Warmup",'./content/1064402.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Z-Alignment","Z-Alignment",'./content/372350.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Initialize Generator Database","Initialize Generator Database",'./content/1067167.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Reset TnT","Reset TnT",'./content/1064517.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Save Restore Generator Runtime Parameters","Save Restore Generator Runtime Parameters",'./content/1067168.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tube Install Certification","Tube Install Certification",'./content/1074673.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"CT Belt Tension Check & Adjustment","CT Belt Tension Check & Adjustment",'./content/1067096.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Balance Procedure","Gantry Balance Procedure",'./content/363155.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Rotation Characterization","Gantry Rotation Characterization",'./content/1064573.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Intercom Adjustment","Intercom Adjustment",'./content/1063087.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Resetting the C-Pulse","Resetting the C-Pulse",'./content/781095.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Slip Ring Adjustments","Slip Ring Adjustments",'./content/1085492.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Scan Window Alignment","Scan Window Alignment",'./content/1064575.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"System","System"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Fast Calibration","Fast Calibration",'./content/324567.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Warmup","Tube Warmup",'./content/1064402.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Detailed Calibration","Detailed Calibration",'./content/1067169.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Table","Table"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Characterization Procedures","Cradle Characterization Procedures",'./content/1066426.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Motor and Cradle Drive Belt Tension Adjustment","Cradle Motor and Cradle Drive Belt Tension Adjustment",'./content/1066432.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Elevation Characterization Procedures","Elevation Characterization Procedures",'./content/1066427.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Elevation Inching Adjustment","Elevation Inching Adjustment",'./content/1066428.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Elevation Potentiometer Belt Tension Adjustment","Elevation Potentiometer Belt Tension Adjustment",'./content/1066433.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Bearing Tension Adjustment","IMS Bearing Tension Adjustment",'./content/1066429.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Belt Tension Adjustment","IMS Belt Tension Adjustment",'./content/1066431.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Characterization Procedures","IMS Characterization Procedures",'./content/1066430.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Touch Sensor Positioning","Touch Sensor Positioning",'./content/1066434.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Functional Checks","Functional Checks");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"System Scanning Test","System Scanning Test",'./content/1064641.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Quality Assurance Test","Quality Assurance Test",'./content/1063155.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Enclosure Leakage (Patient Touch) and System Chassis Leakage Tests","Enclosure Leakage (Patient Touch) and System Chassis Leakage Tests",'./content/1099787.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6.6","Console GOC6.6"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GSCB and Intercom Functional Checks","GSCB and Intercom Functional Checks",'./content/1204615.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Peripheral Tower Functional Test (PMT-20/PMT-21)","Peripheral Tower Functional Test (PMT-20/PMT-21)",'./content/1185549.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Recon Data Path Functional Checks","Recon Data Path Functional Checks",'./content/1064663.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6.5","Console GOC6.5"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Recon Data Path Functional Checks","Recon Data Path Functional Checks",'./content/1064663.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM and ICOM Functional Checks","SCIM and ICOM Functional Checks",'./content/1064664.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Peripheral Tower Functional Test","Peripheral Tower Functional Test",'./content/1064665.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6","Console GOC6"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Recon Data Path Functional Checks","Recon Data Path Functional Checks",'./content/1064663.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM and ICOM Functional Checks","SCIM and ICOM Functional Checks",'./content/1064664.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Peripheral Tower Functional Test","Peripheral Tower Functional Test",'./content/1064665.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC5","Console GOC5"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCSI Devices Functional Tests","SCSI Devices Functional Tests",'./content/196636.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Gantry","Gantry"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Alignment Lights Visual Checks","Alignment Lights Visual Checks",'./content/1064576.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Collimator Functional Diagnostic Tests","Collimator Functional Diagnostic Tests",'./content/1067902.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Collimator Aperture Test","Collimator Aperture Test",'./content/1067878.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry and Detector Filter Cleaning","Gantry and Detector Filter Cleaning",'./content/324068.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Balance Hardware Check","Gantry Balance Hardware Check",'./content/1064579.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Rotation Safety Check","Gantry Rotation Safety Check",'./content/1061946.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HHS Scans","HHS Scans",'./content/1064408.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"High Voltage Tank Feedback Resistor Verification","High Voltage Tank Feedback Resistor Verification",'./content/1064413.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Meter Verification","Meter Verification",'./content/1064414.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"zalignmentWizard User Instructions","zalignmentWizard User Instructions",'./content/433852.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Software (GOC6.6)","Software (GOC6.6)");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"AW Direct Connect","AW Direct Connect",'./content/544170.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Configure Product Network Filters","Configure Product Network Filters",'./content/1187882.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Network Time Protocol (NTP) Setup","Network Time Protocol (NTP) Setup",'./content/1088886.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Manually Configuring System INFO","Manually Configuring System INFO",'./content/1204616.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Host Computer Image Database Reset","Host Computer Image Database Reset",'./content/1064662.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Z820 RAID Disk Clear Configuration Procedure","Z820 RAID Disk Clear Configuration Procedure",'./content/1205646.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Software Installation Procedures (LFC)","Software Installation Procedures (LFC)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(13HW31.x) GOC6.6 VCT LFC Quick Guide","(13HW31.x) GOC6.6 VCT LFC Quick Guide",'./content/1204617.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"13HW31.x GOC6.6 VCT Load From Cold","13HW31.x GOC6.6 VCT Load From Cold",'./content/1204386.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System State Save Restore ","System State Save Restore ",'./content/1204618.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val," (13HW31.8) Service Pack 1 Installation Procedure "," (13HW31.8) Service Pack 1 Installation Procedure ",'./content/1209364.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Software Options","Install Software Options",'./content/1072121.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Software (GOC6.5)","Software (GOC6.5)");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"AW Direct Connect","AW Direct Connect",'./content/544170.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Configure Product Network Filters","Configure Product Network Filters",'./content/542025.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Network Time Protocol (NTP) Setup","Network Time Protocol (NTP) Setup",'./content/1088886.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Host Computer Image Database Reset","Host Computer Image Database Reset",'./content/1064662.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Software Installation Procedures (LFC)","Software Installation Procedures (LFC)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) GOC6 and 6.5 Load From Cold","(12HW14.6) GOC6 and 6.5 Load From Cold",'./content/1143284.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) GOC6 and 6.5 System State Save Restore","(12HW14.6) GOC6 and 6.5 System State Save Restore",'./content/1143285.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.0 Installation Procedure","(12HW14.6) Service Pack 1.0 Installation Procedure",'./content/1187527.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.1 Installation Procedure","(12HW14.6) Service Pack 1.1 Installation Procedure",'./content/1202866.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW06.5) GOC6 Series System State Save Restore","(10MW06.5) GOC6 Series System State Save Restore",'./content/1097544.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW06.5) GOC6 Series Load From Cold","(10MW06.5) GOC6 Series Load From Cold",'./content/1096439.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW44.4) GOC6 Series System State Save Restore","(10MW44.4) GOC6 Series System State Save Restore",'./content/1121008.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW44.4) GOC6 Series Load From Cold","(10MW44.4) GOC6 Series Load From Cold",'./content/1120927.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(11HW12.5 or 11MW4.1) GOC6 Series System State Save Restore","(11HW12.5 or 11MW4.1) GOC6 Series System State Save Restore",'./content/1123928.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(11HW12.5 or 11MW4.1) GOC6 Series Load From Cold","(11HW12.5 or 11MW4.1) GOC6 Series Load From Cold",'./content/1123926.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Software Options","Install Software Options",'./content/1072121.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"HV Subsystem Utilities","HV Subsystem Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Usage Statistics (07MWxx.x and later)","Tube Usage Statistics (07MWxx.x and later)",'./content/1012636.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"System Utilities","System Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linux Commands","Linux Commands",'./content/116366.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Software (GOC6)","Software (GOC6)");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"AW Direct Connect","AW Direct Connect",'./content/544170.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Configure Product Network Filters","Configure Product Network Filters",'./content/542025.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Network Time Protocol (NTP) Setup","Network Time Protocol (NTP) Setup",'./content/1088886.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Host Computer Image Database Reset","Host Computer Image Database Reset",'./content/1064662.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Software Installation Procedure (LFC)","Software Installation Procedure (LFC)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Console Information Sheet","GOC6 Console Information Sheet",'./content/1066832.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) GOC6 and 6.5 System State Save Restore","(12HW14.6) GOC6 and 6.5 System State Save Restore",'./content/1143285.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) GOC6 and 6.5 Load From Cold","(12HW14.6) GOC6 and 6.5 Load From Cold",'./content/1143284.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.0 Installation Procedure","(12HW14.6) Service Pack 1.0 Installation Procedure",'./content/1187527.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.1 Installation Procedure","(12HW14.6) Service Pack 1.1 Installation Procedure",'./content/1202866.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(11HW12.5 or 11MW4.1) GOC6 Series System State Save Restore","(11HW12.5 or 11MW4.1) GOC6 Series System State Save Restore",'./content/1123928.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(11HW12.5 or 11MW4.1) GOC6 Series Load From Cold","(11HW12.5 or 11MW4.1) GOC6 Series Load From Cold",'./content/1123926.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW44.4) GOC6 Series System State Save Restore","(10MW44.4) GOC6 Series System State Save Restore",'./content/1121008.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW44.4) GOC6 Series Load From Cold","(10MW44.4) GOC6 Series Load From Cold",'./content/1120927.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW06.5) GOC6 Series System State Save Restore","(10MW06.5) GOC6 Series System State Save Restore",'./content/1097544.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(10MW06.5) GOC6 Series Load From Cold","(10MW06.5) GOC6 Series Load From Cold",'./content/1096439.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(09MW29.14 or Earlier) System State Save Restore","(09MW29.14 or Earlier) System State Save Restore",'./content/1062438.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(09MW29.14 or Earlier) GOC6 Load From Cold","(09MW29.14 or Earlier) GOC6 Load From Cold",'./content/1062440.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Install Software Options","Install Software Options",'./content/1072121.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"HV Subsystem Utilities","HV Subsystem Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Usage Statistics (07MWxx.x and later)","Tube Usage Statistics (07MWxx.x and later)",'./content/1012636.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"System Utilities","System Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linux Commands","Linux Commands",'./content/116366.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Software GOC5","Software GOC5");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Limited Access Patch on 06MW29.7","Limited Access Patch on 06MW29.7",'./content/882489.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Software Installation Procedures (LFC)","Software Installation Procedures (LFC)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) LightSpeed VCT GOC5 System State Save Restore","(12HW14.6) LightSpeed VCT GOC5 System State Save Restore",'./content/1143292.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) LightSpeed VCT GOC5 Load From Cold","(12HW14.6) LightSpeed VCT GOC5 Load From Cold",'./content/1143290.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.0 Installation Procedure","(12HW14.6) Service Pack 1.0 Installation Procedure",'./content/1187527.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"(12HW14.6) Service Pack 1.1 Installation Procedure","(12HW14.6) Service Pack 1.1 Installation Procedure",'./content/1202866.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"07MW18.4 SW LFC (LS7.X)","07MW18.4 SW LFC (LS7.X)",'./content/831045.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"07MW18.4 Service Pack 2.0 Installation (Dir 5309078-1EN)","07MW18.4 Service Pack 2.0 Installation (Dir 5309078-1EN)",'./content/1170270.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"07MW18.4 Service Pack 3.0 Installation (Dir 5234957-30-1EN)","07MW18.4 Service Pack 3.0 Installation (Dir 5234957-30-1EN)",'./content/1170271.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"07MW18.4 Service Pack 4.0/4.1 Installation","07MW18.4 Service Pack 4.0/4.1 Installation",'./content/1181439.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"06MW29.7 SW LFC (LS 7.X)","06MW29.7 SW LFC (LS 7.X)",'./content/762195.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"06MW03.4 SW LFC (LS 7.X)","06MW03.4 SW LFC (LS 7.X)",'./content/383852.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Information Sheet","Console Information Sheet",'./content/384571.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"LFC Related Procedures","LFC Related Procedures"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"(12HW14.6) System Configuration","(12HW14.6) System Configuration",'./content/1159881.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Change VDARC BIOS Boot Order Settings","Change VDARC BIOS Boot Order Settings",'./content/858338.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DARC OS Load Pop-Up Boxes","DARC OS Load Pop-Up Boxes",'./content/404588.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"General Information  (Device Mount, Unmount, Other)","General Information  (Device Mount, Unmount, Other)",'./content/384601.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Network Time Protocol (NTP) Setup","Network Time Protocol (NTP) Setup",'./content/1088886.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VDARC BIOS Telnet Process","VDARC BIOS Telnet Process",'./content/384726.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VDARC/DARC Node OS Load Troubleshooting","VDARC/DARC Node OS Load Troubleshooting",'./content/521776.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"High Voltage Subsystem Utilities","High Voltage Subsystem Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Usage Statistics (07MWxx.x and later)","Tube Usage Statistics (07MWxx.x and later)",'./content/1012636.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"System Utilities","System Utilities"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linux Commands","Linux Commands",'./content/116366.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linux Utilities","Linux Utilities",'./content/545982.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host and Operating System Overview","Host and Operating System Overview",'./content/360967.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Theory","Theory");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.6)","Console (GOC6.6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Functions","DICOM Functions",'./content/35534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Console Theory","GOC6.6 VCT Console Theory",'./content/1204619.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Overview","LCD Video Monitor Overview",'./content/1188329.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.5)","Console (GOC6.5)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Functions","DICOM Functions",'./content/35534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 Theory","DIG2 Theory",'./content/1095779.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.5 Console Theory","GOC6.5 Console Theory",'./content/1095781.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"High Speed Disc Array (HSDA) Theory","High Speed Disc Array (HSDA) Theory",'./content/1064669.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Overview","LCD Video Monitor Overview",'./content/1188329.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB2 Theory","VeRB2 Theory",'./content/1095780.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.5 (HP Z400) Host Computer","GOC6.5 (HP Z400) Host Computer",'./content/1093925.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6","Console GOC6"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Functions","DICOM Functions",'./content/35534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Theory","DIG Theory",'./content/1064667.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Tested Media","DVD Tested Media",'./content/198853.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Console Theory","GOC6 Console Theory",'./content/1064666.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"High Speed Disc Array (HSDA) Theory","High Speed Disc Array (HSDA) Theory",'./content/1064669.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Overview","LCD Video Monitor Overview",'./content/1188329.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB Theory","VeRB Theory",'./content/1064668.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host Computer","xw8400 Host Computer",'./content/1046271.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC5","Console GOC5"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Functions","DICOM Functions",'./content/35534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Digital DASM II Overview","Digital DASM II Overview",'./content/372279.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Digital DASM II Settings and LEDs","Digital DASM II Settings and LEDs",'./content/372305.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Tested Media","DVD Tested Media",'./content/198853.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC5 Theory","GOC5 Theory",'./content/331389.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host Computer","xw8400 Host Computer",'./content/1046271.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Overview","LCD Video Monitor Overview",'./content/1188329.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Serial Over LAN version 2 (5193458) Tutorial","Serial Over LAN version 2 (5193458) Tutorial",'./content/907457.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Gantry","Gantry"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"DAS and Detector","DAS and Detector"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VCT Detector Theory","VCT Detector Theory",'./content/255290.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VCT System DAS Components","VCT System DAS Components",'./content/324419.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VDAS and HDAS Theory","VDAS and HDAS Theory",'./content/255299.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"X-Ray Generation","X-Ray Generation"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Generator Firmware","Generator Firmware",'./content/1064419.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"High Voltage Interface (Pro, RT, VCT)","High Voltage Interface (Pro, RT, VCT)",'./content/307938.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"JEDI - Switches, TPs, Fuses, LEDs (Pro, RT, VCT)","JEDI - Switches, TPs, Fuses, LEDs (Pro, RT, VCT)",'./content/308112.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"X-Ray Generation Components (Pro, RT, VCT)","X-Ray Generation Components (Pro, RT, VCT)",'./content/220601.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"X-Ray Generation Theory (Pro, RT, VCT)","X-Ray Generation Theory (Pro, RT, VCT)",'./content/310583.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Service Balance Theory","Gantry Service Balance Theory",'./content/1064580.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Thermal Theory","Gantry Thermal Theory",'./content/359001.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Table","Table"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Global Table Theory","Global Table Theory",'./content/1066631.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"System Diagrams","System Diagrams");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"LightSpeed 7.X Gantry Interconnect Drawings","LightSpeed 7.X Gantry Interconnect Drawings",'./content/372326.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"VCT DAS Detector Backplane Map","VCT DAS Detector Backplane Map",'./content/361401.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"5121647SCH_rev09 - Global Table Interconnect","5121647SCH_rev09 - Global Table Interconnect",'./content/381109.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"5115335SCH - GOC5 Interconnect","5115335SCH - GOC5 Interconnect",'./content/537854.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"NGPDU Schematic 2326492-4","NGPDU Schematic 2326492-4",'./content/446429.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Series Console Schematic 5212920SCH","GOC6 Series Console Schematic 5212920SCH",'./content/1064670.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Oulet Box Schematic 5272833SCH","GOC6 Oulet Box Schematic 5272833SCH",'./content/1064671.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Troubleshooting","Troubleshooting");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"System Troubleshooting Tool","System Troubleshooting Tool",'./content/1086520.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Camera","Camera"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Check Camera Error Logs","Check Camera Error Logs",'./content/35609.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Check Camera Hardware","Check Camera Hardware",'./content/35606.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Sample Camera Logs","Sample Camera Logs",'./content/35618.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Troubleshooting DICOM Print Camera Problems","Troubleshooting DICOM Print Camera Problems",'./content/35612.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.6)","Console (GOC6.6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Command Line Troubleshooting","Command Line Troubleshooting",'./content/1187850.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 / NIO64 Console Network Switch (CNS) Troubleshooting","GOC6.6 / NIO64 Console Network Switch (CNS) Troubleshooting",'./content/1185990.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"NIO64 Misc. Troubleshooting Information","NIO64 Misc. Troubleshooting Information",'./content/1205507.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Troubleshooting","Power Distribution Box Troubleshooting",'./content/1065171.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Z820 Host PC Troubleshooting","Z820 Host PC Troubleshooting",'./content/1191394.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.5)","Console (GOC6.5)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Z400 Host Computer Troubleshooting","Z400 Host Computer Troubleshooting",'./content/1094016.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Troubleshooting","Console Network Switch Troubleshooting",'./content/1064676.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Command Line Troubleshooting","Command Line Troubleshooting",'./content/1062404.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 Troubleshooting","DIG2 Troubleshooting",'./content/1097766.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Troubleshooting","HSDA Troubleshooting",'./content/1064675.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Troubleshooting","Power Distribution Box Troubleshooting",'./content/1065171.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB2 Troubleshooting","VeRB2 Troubleshooting",'./content/1097767.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6","Console GOC6"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC Troubleshooting","xw8400 Host PC Troubleshooting",'./content/1046703.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Troubleshooting","Console Network Switch Troubleshooting",'./content/1064676.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Command Line Troubleshooting","Command Line Troubleshooting",'./content/1062404.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Troubleshooting","DIG Troubleshooting",'./content/1064673.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Troubleshooting","HSDA Troubleshooting",'./content/1064675.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Troubleshooting","Power Distribution Box Troubleshooting",'./content/1065171.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB Troubleshooting","VeRB Troubleshooting",'./content/1064674.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC5","Console GOC5"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DASM Troubleshooting","DASM Troubleshooting",'./content/63575.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Troubleshooting","DICOM Troubleshooting",'./content/198830.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC5 Message Logs","GOC5 Message Logs",'./content/540448.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Commands and Troubleshooting","Host Commands and Troubleshooting",'./content/1050920.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Host Diagnostics - xw8000","HP Host Diagnostics - xw8000",'./content/191483.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Host Diagnostics - xw8200","HP Host Diagnostics - xw8200",'./content/1044162.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VCT Disk Array Commands and Troubleshooting","VCT Disk Array Commands and Troubleshooting",'./content/1015678.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VDARC Node Commands and Troubleshooting","VDARC Node Commands and Troubleshooting",'./content/1014389.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VIG Node Commands and Troubleshooting","VIG Node Commands and Troubleshooting",'./content/1015200.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC Troubleshooting","xw8400 Host PC Troubleshooting",'./content/1046703.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Diagnostics","Diagnostics"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DAS Tools (VCT VDAS and HDAS)","DAS Tools (VCT VDAS and HDAS)",'./content/326794.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Diagnostic Data Collection Tool","Diagnostic Data Collection Tool",'./content/326968.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Scan Data Path Diagnostic","Scan Data Path Diagnostic",'./content/540114.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Gantry","Gantry"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Assessment of Corrosive Atmospheric Conditions","Assessment of Corrosive Atmospheric Conditions",'./content/1098612.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Common Fan Controller (CFC) Fuse Troubleshooting","Common Fan Controller (CFC) Fuse Troubleshooting",'./content/1126261.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Collimator Cleaning Procedure","Collimator Cleaning Procedure",'./content/381169.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Image Quality","Image Quality"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Artifacts Caused by Collimator Grease","Artifacts Caused by Collimator Grease",'./content/1064516.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Center Phantom","Center Phantom",'./content/511420.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Tilt Verification","Gantry Tilt Verification",'./content/1067789.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"How to Setup Low Signal correction for SmartPrep","How to Setup Low Signal correction for SmartPrep",'./content/1276051.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Quick Snap and IQ Snap Data Archive and Shipping Procedures","Quick Snap and IQ Snap Data Archive and Shipping Procedures",'./content/1011439.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Scan Analysis","Scan Analysis",'./content/1062531.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Streak Test","Streak Test",'./content/1067172.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Band Test","Band Test",'./content/1088319.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Oil Cooling System Air Detection Test","Tube Oil Cooling System Air Detection Test",'./content/1067171.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Table","Table"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Elevation Inverter Error Code List","Elevation Inverter Error Code List",'./content/321843.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GTCB Error Code List (in gesyslog)","GTCB Error Code List (in gesyslog)",'./content/324411.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"X-Ray Generation","X-Ray Generation"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Heater Diagnostic Test (Pro, RT, VCT)","Heater Diagnostic Test (Pro, RT, VCT)",'./content/277442.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Inverter Gate Command Test","Inverter Gate Command Test",'./content/1064534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"JEDI Error Handling","JEDI Error Handling",'./content/277470.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"JEDI Fan Diagnostics","JEDI Fan Diagnostics",'./content/277453.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"No Load kV Test","No Load kV Test",'./content/1064536.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rotor Diagnostic Test","Rotor Diagnostic Test",'./content/1064538.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Shorted Inverter Test (Pro, RT, VCT)","Shorted Inverter Test (Pro, RT, VCT)",'./content/233182.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Oil Cooling System Air Removal","Tube Oil Cooling System Air Removal",'./content/1064406.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Oil Cooling System Flow Rate Measurement","Tube Oil Cooling System Flow Rate Measurement",'./content/1064407.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Tube Oil Cooling System Heat Exchanger Compensation","Tube Oil Cooling System Heat Exchanger Compensation",'./content/1064405.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"X-Ray Generation Error Codes (Gen)","X-Ray Generation Error Codes (Gen)",'./content/309011.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"X-Ray Generation Troubleshooting Overview","X-Ray Generation Troubleshooting Overview",'./content/1064530.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Part List","Part List");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Gantry Parts List","Gantry Parts List",'./content/1087865.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6.6 Parts List (VCT)","GOC6.6 Parts List (VCT)",'./content/1204620.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6.5 Parts list (VCT)","GOC6.5 Parts list (VCT)",'./content/1104414.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Parts List (VCT)","GOC6 Parts List (VCT)",'./content/1067100.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC5 Parts List (VCT)","GOC5 Parts List (VCT)",'./content/1087978.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"NGPDU Part List","NGPDU Part List",'./content/1087864.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Table Parts List","Table Parts List",'./content/1087867.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"VCT Options Part List","VCT Options Part List",'./content/1112344.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"VCT 7.X Misc. Items Parts List","VCT 7.X Misc. Items Parts List",'./content/1087868.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Replacements","Replacements");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Component Replacement Guidance","Certified Component Replacement Guidance",'./content/1067499.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Component Verification Form e4879","Certified Component Verification Form e4879",'./content/1067513.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Standard FE Service Tool Kit Listing","Standard FE Service Tool Kit Listing",'./content/361874.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.6)","Console (GOC6.6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Accessories Replacement","Accessories Replacement",'./content/1062415.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cover Removal and Installation","Console Cover Removal and Installation",'./content/1183336.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Replacement","Console Network Switch Replacement",'./content/1204621.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Peripheral Tower Replacement (Single Bay)","DVD Peripheral Tower Replacement (Single Bay)",'./content/1204622.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) Replacement","GOC6.6 VCT Host Computer (Z820) Replacement",'./content/1204383.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) DVD Drive Replacement","GOC6.6 VCT Host Computer (Z820) DVD Drive Replacement",'./content/1204387.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) FDIP Card Replacement","GOC6.6 VCT Host Computer (Z820) FDIP Card Replacement",'./content/1204388.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) Memory Replacement","GOC6.6 VCT Host Computer (Z820) Memory Replacement",'./content/1204389.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) NIC Card Replacement","GOC6.6 VCT Host Computer (Z820) NIC Card Replacement",'./content/1204390.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) Power Supply Replacement","GOC6.6 VCT Host Computer (Z820) Power Supply Replacement",'./content/1204391.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) RAID Controller Card Replacement","GOC6.6 VCT Host Computer (Z820) RAID Controller Card Replacement",'./content/1204393.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) Scan Data HDD Replacement","GOC6.6 VCT Host Computer (Z820) Scan Data HDD Replacement",'./content/1204394.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.6 VCT Host Computer (Z820) System/Image HDD Replacement","GOC6.6 VCT Host Computer (Z820) System/Image HDD Replacement",'./content/1204395.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GSCB Replacement","GSCB Replacement",'./content/1204623.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GSCB Power Module Replacement","GSCB Power Module Replacement",'./content/1204624.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Monitor Replacement","LCD Monitor Replacement",'./content/1184175.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Replacement","Power Distribution Box Replacement",'./content/1062412.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rear Bulkhead Panel Connector Replacement","Rear Bulkhead Panel Connector Replacement",'./content/1062413.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Upper Bulkhead Panel Connector Replacement","Upper Bulkhead Panel Connector Replacement",'./content/1064700.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6.5)","Console (GOC6.5)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cover Removal and Installation","Console Cover Removal and Installation",'./content/1064679.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Replacement","Console Network Switch Replacement",'./content/1062399.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Power Switch or Cable Replacement","Console Power Switch or Cable Replacement",'./content/1062400.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Rear Cooling Fan Replacement","Console Rear Cooling Fan Replacement",'./content/1062401.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 Replacement","DIG2 Replacement",'./content/1097863.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 GPU Replacement","DIG2 GPU Replacement",'./content/1097864.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 SAS Controller Replacement","DIG2 SAS Controller Replacement",'./content/1097865.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG2 DIP Card Replacement","DIG2 DIP Card Replacement",'./content/1097866.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Peripheral Tower Replacement","DVD Peripheral Tower Replacement",'./content/1062403.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6.5 Host Computer Replacement","GOC6.5 Host Computer Replacement",'./content/1094003.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Computer NIC Exchange-HP Z400","Host Computer NIC Exchange-HP Z400",'./content/1094007.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Chassis Replacement","HSDA Chassis Replacement",'./content/1062406.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA HDD Replacement","HSDA HDD Replacement",'./content/1064691.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Controller Module Replacement","HSDA Controller Module Replacement",'./content/1064694.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA PSU Replacement","HSDA PSU Replacement",'./content/1064698.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Cooling Module Replacement","HSDA Cooling Module Replacement",'./content/1064699.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Replacement","ICOM Replacement",'./content/1062407.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Monitor Replacement","LCD Monitor Replacement",'./content/1184175.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"MOD Peripheral Tower Replacement","MOD Peripheral Tower Replacement",'./content/1062410.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Replacement","Power Distribution Box Replacement",'./content/1062412.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rear Bulkhead Panel Connector Replacement","Rear Bulkhead Panel Connector Replacement",'./content/1062413.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Upper Bulkhead Panel Connector Replacement","Upper Bulkhead Panel Connector Replacement",'./content/1064700.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM Replacement","SCIM Replacement",'./content/1062414.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB2 Replacement","VeRB2 Replacement",'./content/1097783.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB2 GPU Replacement","VeRB2 GPU Replacement",'./content/1097784.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Accessories Replacement","Accessories Replacement",'./content/1062415.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Z400 Lower Level FRU Replacement","HP Z400 Lower Level FRU Replacement",'./content/1097792.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC6","Console GOC6"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cover Removal and Installation","Console Cover Removal and Installation",'./content/1064679.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Replacement","Console Network Switch Replacement",'./content/1062399.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Power Switch or Cable Replacement","Console Power Switch or Cable Replacement",'./content/1062400.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Rear Cooling Fan Replacement","Console Rear Cooling Fan Replacement",'./content/1062401.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Replacement","DIG Replacement",'./content/1062402.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG GPU Replacement","DIG GPU Replacement",'./content/1064683.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG SAS Controller Replacement","DIG SAS Controller Replacement",'./content/1064685.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG DIP Card Replacement","DIG DIP Card Replacement",'./content/1064686.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Peripheral Tower Replacement","DVD Peripheral Tower Replacement",'./content/1062403.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Computer Replacement","Host Computer Replacement",'./content/1062405.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Computer NIC Exchange-HP8400","Host Computer NIC Exchange-HP8400",'./content/1064688.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP xw8400 Lower Level FRU Replacement","HP xw8400 Lower Level FRU Replacement",'./content/1093728.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Chassis Replacement","HSDA Chassis Replacement",'./content/1062406.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA HDD Replacement","HSDA HDD Replacement",'./content/1064691.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Controller Module Replacement","HSDA Controller Module Replacement",'./content/1064694.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA PSU Replacement","HSDA PSU Replacement",'./content/1064698.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Cooling Module Replacement","HSDA Cooling Module Replacement",'./content/1064699.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Replacement","ICOM Replacement",'./content/1062407.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Monitor Replacement","LCD Monitor Replacement",'./content/1062409.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"MOD Peripheral Tower Replacement","MOD Peripheral Tower Replacement",'./content/1062410.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Replacement","Power Distribution Box Replacement",'./content/1062412.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rear Bulkhead Panel Connector Replacement","Rear Bulkhead Panel Connector Replacement",'./content/1062413.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Upper Bulkhead Panel Connector Replacement","Upper Bulkhead Panel Connector Replacement",'./content/1064700.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM Replacement","SCIM Replacement",'./content/1062414.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB Replacement","VeRB Replacement",'./content/1062416.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VeRB GPU Replacement","VeRB GPU Replacement",'./content/1064701.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Accessories Replacement","Accessories Replacement",'./content/1062415.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console GOC5","Console GOC5"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Disk Array (JBOD) FRU Replacements","Disk Array (JBOD) FRU Replacements",'./content/360989.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC4/GOC5 Fan Replacement","GOC4/GOC5 Fan Replacement",'./content/383277.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Host Computer Replacement","HP Host Computer Replacement",'./content/191480.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Host Computer Hard Drive Exchange","HP Host Computer Hard Drive Exchange",'./content/192395.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP Host Computer NIC Exchange","HP Host Computer NIC Exchange",'./content/990084.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP xw8200 Lower Level FRU Replacement","HP xw8200 Lower Level FRU Replacement",'./content/1075066.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HP xw8400 Lower Level FRU Replacement","HP xw8400 Lower Level FRU Replacement",'./content/1093728.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Intercom Board Replacement","Intercom Board Replacement",'./content/359963.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Media Converter Switch Settings","Media Converter Switch Settings",'./content/192231.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCSI Tower Replacement","SCSI Tower Replacement",'./content/360000.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VDARC Replacement or Reload","VDARC Replacement or Reload",'./content/780887.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"VIG Node Replacement","VIG Node Replacement",'./content/360970.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Gantry","Gantry"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"AC Power Distribution and CB Assembly Replacement","AC Power Distribution and CB Assembly Replacement",'./content/1067130.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IPC Board Replacement","IPC Board Replacement",'./content/1068394.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Pan Bulkhead Filter Assembly Replacement","Power Pan Bulkhead Filter Assembly Replacement",'./content/1067116.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LS VCT Gantry Options Interface Upgrade Procedure","LS VCT Gantry Options Interface Upgrade Procedure",'./content/1074945.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Options Interface Power Box Replacement","Gantry Options Interface Power Box Replacement",'./content/1083933.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Gantry Balance Sensor Hardware Replacement","Gantry Balance Sensor Hardware Replacement",'./content/1083659.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Axial","Axial"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"What Axial Drive Do I Have?","What Axial Drive Do I Have?",'./content/1093837.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Drive Conversion","Axial Drive Conversion",'./content/1093311.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"2010 Axial Drive Assembly Replacement","2010 Axial Drive Assembly Replacement",'./content/1093838.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"2010 Axial Drive Brake Resistor Replacement","2010 Axial Drive Brake Resistor Replacement",'./content/1093731.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"2010 Axial Drive Controller Replacement","2010 Axial Drive Controller Replacement",'./content/1093058.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"2010 Axial Drive KIM Board Replacement","2010 Axial Drive KIM Board Replacement",'./content/1093774.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"2010 Axial Drive Power Supply Replacement","2010 Axial Drive Power Supply Replacement",'./content/1093839.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Drive Holding Brake Replacement","Axial Drive Holding Brake Replacement",'./content/1064584.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Drive Module Replacement","Axial Drive Module Replacement",'./content/1064585.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Drive Motor Assembly Replacement","Axial Drive Motor Assembly Replacement",'./content/381697.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Dynamic Braking Module Replacement","Axial Dynamic Braking Module Replacement",'./content/1064586.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Axial Encoder Assembly Replacement","Axial Encoder Assembly Replacement",'./content/803601.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Belt Removal and Installation","Belt Removal and Installation",'./content/905265.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Home Flag Sensor Board Assembly Replacement","Home Flag Sensor Board Assembly Replacement",'./content/781131.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Collimator","Collimator"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Cam Drive Motor and Flex Coupling Replacement","Cam Drive Motor and Flex Coupling Replacement",'./content/1070320.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Collimator Assembly Replacement","Collimator Assembly Replacement",'./content/1070319.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Collimator Control Board (CCB) Replacement","Collimator Control Board (CCB) Replacement",'./content/384194.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Collimator Filter Removal and Replacement","Collimator Filter Removal and Replacement",'./content/387932.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Lexan Removal","Lexan Removal",'./content/837754.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"DAS and Detector","DAS and Detector"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Rotating 48VDC PS and Fuse Board Replacement","Rotating 48VDC PS and Fuse Board Replacement",'./content/326402.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Center Module Adjustment Procedure","Center Module Adjustment Procedure",'./content/545290.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Detector Routing Board and Thermostat Replacement","Detector Routing Board and Thermostat Replacement",'./content/421841.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Detector Thermistor Replacement","Detector Thermistor Replacement",'./content/359941.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DIFB Chassis EMC Strip Replacement","DIFB Chassis EMC Strip Replacement",'./content/331548.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"FRDM Replacement Procedure","FRDM Replacement Procedure",'./content/361560.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heater Controller and Fan Controller Replacement","Heater Controller and Fan Controller Replacement",'./content/324618.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Backplane Replacement Procedure","Backplane Replacement Procedure",'./content/438406.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DAS and Detector Air Filter Replacement","DAS and Detector Air Filter Replacement",'./content/335961.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DAS Fan, Fan Plate Assembly Replacement","DAS Fan, Fan Plate Assembly Replacement",'./content/324057.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DCB and DIFB Replacement","DCB and DIFB Replacement",'./content/324076.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Detector Air Plenum Removal and Installation","Detector Air Plenum Removal and Installation",'./content/323437.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VCT Detector Plenum Upgrade Procedure","VCT Detector Plenum Upgrade Procedure",'./content/618403.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Detector Replacement Procedure","Detector Replacement Procedure",'./content/421872.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Detector Window Replacement","Detector Window Replacement",'./content/788865.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"DAS and Detector Special Tools","DAS and Detector Special Tools",'./content/358477.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"VCT VDAS to HDAS Replacement","VCT VDAS to HDAS Replacement",'./content/896833.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Display","Display"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Breathing Light Assembly Replacement","Breathing Light Assembly Replacement",'./content/1064607.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Operator Control Panel Replacement","Operator Control Panel Replacement",'./content/1064608.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Display Assembly Replacement","Display Assembly Replacement",'./content/326400.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Cover Tilt Sensor Replacement","Gantry Cover Tilt Sensor Replacement",'./content/1064609.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Enclosure","Enclosure"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Service outlet and E-Stop Button Replacement","Service outlet and E-Stop Button Replacement",'./content/1062870.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Front Cover Removal and Re-Install","Gantry Front Cover Removal and Re-Install",'./content/1063291.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Stationary Base Cover Removal and Reinstall","Stationary Base Cover Removal and Reinstall",'./content/1068043.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tilting Bottom Cover Removal and Reinstall","Tilting Bottom Cover Removal and Reinstall",'./content/1067766.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Cooling Fan Replacement","Gantry Cooling Fan Replacement",'./content/483661.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Stationary  (CFC) Fan Control Module Replacement","Gantry Stationary  (CFC) Fan Control Module Replacement",'./content/781149.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Side Covers Removal and Re-Install","Gantry Side Covers Removal and Re-Install",'./content/1063050.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Cover Replacement","Gantry Cover Replacement",'./content/1100180.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Top Covers & Fan Removal (Removable Fans)","Gantry Top Covers & Fan Removal (Removable Fans)",'./content/1062892.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Rear Cover Removal and Re-Install","Gantry Rear Cover Removal and Re-Install",'./content/1063252.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Scan Window Removal and Re-Install","Gantry Scan Window Removal and Re-Install",'./content/1063090.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Heater Replacement","Gantry Heater Replacement",'./content/781153.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Intercom Board Replacement","Intercom Board Replacement",'./content/1063051.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Laser Light Replacement","Laser Light Replacement",'./content/1064612.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"High Voltage","High Voltage"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Auxiliary Box Replacement","Auxiliary Box Replacement",'./content/1062398.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heat Exchanger Fan Replacement","Heat Exchanger Fan Replacement",'./content/1276306.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heat Exchanger Filter Replacement","Heat Exchanger Filter Replacement",'./content/1064548.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heat Exchanger Power Supply Replacement","Heat Exchanger Power Supply Replacement",'./content/1093915.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heat Exchanger Pump Replacement","Heat Exchanger Pump Replacement",'./content/1064550.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Heat Exchanger Replacement","Heat Exchanger Replacement",'./content/1064551.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"High Voltage Tank Replacement","High Voltage Tank Replacement",'./content/1062397.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Inverter Replacement","Inverter Replacement",'./content/1062396.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"JEDI PPC Board Replacement","JEDI PPC Board Replacement",'./content/1064628.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"JEDI PPC Board Battery Replacement","JEDI PPC Board Battery Replacement",'./content/1064552.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Securing HV Cable","Securing HV Cable",'./content/1064553.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"ORP and TGPU","ORP and TGPU"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"ORP Replacement","ORP Replacement",'./content/483848.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"TGPU Power Supply Replacement","TGPU Power Supply Replacement",'./content/781118.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"TGPU Replacement","TGPU Replacement",'./content/781113.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Stationary 48 Volt Power Supply Replacement","Stationary 48 Volt Power Supply Replacement",'./content/781127.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Slipring","Slipring"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Dual Channel Fiber Rx Replacement","Dual Channel Fiber Rx Replacement",'./content/483442.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Dual Channel Tx Replacement","Dual Channel Tx Replacement",'./content/483889.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry GFI Replacement","Gantry GFI Replacement",'./content/483840.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Slipring Brush Block Replacement","Slipring Brush Block Replacement",'./content/1061256.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Slipring HV Capacitor Replacement","Slipring HV Capacitor Replacement",'./content/1051095.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Slip Ring Platter Replacement","Slip Ring Platter Replacement",'./content/1061103.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Slipring Power Supply Replacement","Slipring Power Supply Replacement",'./content/483671.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Tilt","Tilt"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Hydraulic Tilt Motor Assembly Replacement","Hydraulic Tilt Motor Assembly Replacement",'./content/1064065.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tilt Potentiometer Replacement","Tilt Potentiometer Replacement",'./content/1064203.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tilt Potentiometer Replacement (New)","Tilt Potentiometer Replacement (New)",'./content/1192314.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Gantry Tilt/Fan Relay (GTFR) Board Replacement","Gantry Tilt/Fan Relay (GTFR) Board Replacement",'./content/1064059.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"Tube","Tube"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tube Replacement","Tube Replacement",'./content/1062390.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Tube Temperature Verification","Tube Temperature Verification",'./content/1058730.htm'); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Inspect Collimator Filters","Inspect Collimator Filters",'./content/1064554.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Table","Table"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"24V Power Supply Replacement","24V Power Supply Replacement",'./content/1066501.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"5114122 Cable Replacement","5114122 Cable Replacement",'./content/1066502.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"5114124 Cable Replacement","5114124 Cable Replacement",'./content/1066503.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"5114128 Cable Replacement","5114128 Cable Replacement",'./content/1066504.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"5114129 Cable Replacement","5114129 Cable Replacement",'./content/1066505.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Absolute Encoder Replacement","Cradle Absolute Encoder Replacement",'./content/1066506.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Drive Belt Replacement","Cradle Drive Belt Replacement",'./content/1066507.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Encoder Spool Wire Replacement","Cradle Encoder Spool Wire Replacement",'./content/1066508.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Lock Assy Replacement","Cradle Lock Assy Replacement",'./content/1066509.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Motor and Clutch Assy Replacement","Cradle Motor and Clutch Assy Replacement",'./content/1066510.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle Replacement","Cradle Replacement",'./content/1066511.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Cradle/IMS Stepping Motor Driver Replacement","Cradle/IMS Stepping Motor Driver Replacement",'./content/1066512.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Elevation Potentiometer Replacement","Elevation Potentiometer Replacement",'./content/1066513.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Foot Switch End Assy Replacement","Foot Switch End Assy Replacement",'./content/1066514.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GTCB Replacement","GTCB Replacement",'./content/1066515.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GTCN Replacement","GTCN Replacement",'./content/1066516.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Hydraulic Cylinder Replacement","Hydraulic Cylinder Replacement",'./content/1066517.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Hydraulic High Pressure Hose Replacement","Hydraulic High Pressure Hose Replacement",'./content/1066518.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Hydraulic Pump Replacement","Hydraulic Pump Replacement",'./content/1066519.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Hydraulic Return Hose Replacement","Hydraulic Return Hose Replacement",'./content/1066520.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Absolute Encoder Replacement","IMS Absolute Encoder Replacement",'./content/1066521.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Bearing Block Replacement","IMS Bearing Block Replacement",'./content/1066522.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Cable Bear Assy Replacement","IMS Cable Bear Assy Replacement",'./content/1066523.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Drive Belt Replacement","IMS Drive Belt Replacement",'./content/1066524.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Encoder Spool Wire Replacement","IMS Encoder Spool Wire Replacement",'./content/1066525.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"IMS Stepping Motor with Pulley Replacement","IMS Stepping Motor with Pulley Replacement",'./content/1066526.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Inverter Assy Replacement","Inverter Assy Replacement",'./content/1066527.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linear Scale Assy Replacement","Linear Scale Assy Replacement",'./content/1066528.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Linear Scale Tape Replacement","Linear Scale Tape Replacement",'./content/1066529.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Proportional Valve Assy Replacement","Proportional Valve Assy Replacement",'./content/1066530.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rear Touch Sensor Plate Replacement","Rear Touch Sensor Plate Replacement",'./content/1066531.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Removal / Installation of Table Covers","Removal / Installation of Table Covers",'./content/1066532.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"RIM IMS Cover Set Replacement","RIM IMS Cover Set Replacement",'./content/1147795.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Shut Off Valve Replacement","Shut Off Valve Replacement",'./content/1066533.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Touch Sensor L Assy Replacement","Touch Sensor L Assy Replacement",'./content/1066534.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Touch Sensor R Assy Replacement","Touch Sensor R Assy Replacement",'./content/1066535.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"RIM IMS Cover Set Replacement","RIM IMS Cover Set Replacement",'./content/1147795.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Planned Maintenance and Tasks","Planned Maintenance and Tasks");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"4 Times PM / Year","4 Times PM / Year"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule A","Planned Maintenance Schedule A",'./content/1062368.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule B","Planned Maintenance Schedule B",'./content/1067170.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule C","Planned Maintenance Schedule C",'./content/1067497.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule D","Planned Maintenance Schedule D",'./content/1067498.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"PM Data Reports","PM Data Reports"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Planned Maintenance Forms ALL Schedules","Planned Maintenance Forms ALL Schedules",'./content/1071447.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"3 Times PM / Year","3 Times PM / Year"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule A","Planned Maintenance Schedule A",'./content/1292653.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule B","Planned Maintenance Schedule B",'./content/1292654.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Planned Maintenance Schedule C","Planned Maintenance Schedule C",'./content/1292655.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('div',counter,div2_val,"PM Data Reports","PM Data Reports"); counter=counter+1;
+					
+				div4_val=counter;
+				d.add('cmodule',counter,div3_val,"Planned Maintenance Forms ALL Schedules","Planned Maintenance Forms ALL Schedules",'./content/1292928.htm'); counter=counter+1;
+		
+			document.write(d);
+			document.write("</td>");
+		
+		
+		
+		document.write("<td width='1'></td>");
+		
+		
+		
+		document.write("</tr>");
+		
+	
+	</script>
+
+      </table>
+      <table id="table_id_hidden_menu" width="20" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+            <td id="line1" bgcolor="#666666" border="0"><img src="images/line_bar.gif" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="home2" align="right" width="20" height="18" border="0"><a href="#" onClick="JavaScript:window.top.leftFrame.initialCmodule()"><img src="images/home.gif" title="Home" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line2" bgcolor="#666666" border="0"><img src="images/line_bar.gif" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="search2" align="right" width="20" height="18" border="0"><a href="#" onClick="MM_openBrWindow('','Search','scrollbars=yes,width=800, height=600')"><img src="images/search.gif" alt="Search" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line3" bgcolor="#666666" border="0"><img src="images/line_bar" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="top2" align="right" width="20" height="18" border="0"><a href="#" onClick="JavaScript:window.top.leftFrame.topofthePage()"><img src="images/top.gif" title="Top of the page" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line4" bgcolor="#666666" border="0"><img src="images/line_bar" width="1" height="1" border="0"></td>
+         </tr>
+      </table>
+   </body>
+</html>

@@ -1,0 +1,57 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Receive Chain Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR450 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;6.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;7/22/10</P></td></tr></table><H1 ID="top">Receive Chain Theory </H1><P CLASS="descriptive">The following describes Receive Chain Theory.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2095253-1065163">1&nbsp;&nbsp;Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Receive chain takes the low-level analog signal from the
+MR coils starting at the Coil Connectors (A-Port, P1, thru P4, and
+Body) to the RF Switch Board in the RF Hub where it is amplified and
+the R1 value is selected by Auto Prescan. The signal then goes through
+a mixer module where it is converted to a usable Intermediate Frequency.
+The IF is approximately 16 MHz. This IF signal is converted to a differential
+Analog signal to be passed up to the receiver, which is then amplified
+and is converted into a digital signal, decimated and filtered. The
+Digital data via a SFP Fibre Optic transceiver is sent to the VRF
+Board within the VRE Chassis. The VRF does more digital filtering
+and adjusts the R2 Gain stage. The VRE then reconstructs the data
+into an image, transfers it over Ethernet to the GOC where it is displayed
+on the operator monitor.</P><DIV CLASS="ILLUSTRATION" id="SL3483541-1065163"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DV ReceiveChain</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065163-1115384.jpg" BORDER="0" usemap="#SL3483565-1065163"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2095254-1065163">2&nbsp;&nbsp;Hardware<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">MR signals are nominally 127.72 Mhz for 3.0T and 63.86 Mhz for
+1.5T. All coils used in DV Systems must have their own internal preamps.
+There are no preamps in the LPCA.  The only exception is the body
+coil which still uses the gold box external preamp. All coils also
+must have their own coiled chip to be read by the RFCB.</P><P CLASS="sect1">The RF Hub contains:</P><UL><LI CLASS="bulletlist"><P>The RF Switch Select Board&#8217;s
+main function is to route and down convert up to 96 input MR signals
+to 16 channels of IF receivers. The RFSB interfaces to MR coils through
+the coil interface ports and a gain stage. Once the signals reach
+the RFSB, they are routed according to system configuration, and subsequently
+down-converted to the desired Intermediate Frequency. Finally, the
+signals are routed to 16-channel IF receivers</P><UL><LI CLASS="bulletlist"><P>Route contiguous banks of four input
+signals from 16W16 RF connectors to a contiguous group of four available
+IF receivers. The banks of contiguous signals is defined starting
+with the first connector pin as (1,2, 3, 4), (5, 6, 7, 8), etc.</P></LI><LI CLASS="bulletlist"><P>Gain and down convert MR RF signal
+to differential IF frequency signal.</P></LI><LI CLASS="bulletlist"><P>Combine each MC bias from MC driver
+Boards to the RF input connector center pin.</P></LI><LI CLASS="bulletlist"><P>Utilize a loopback signal for receive
+chain diagnostics.</P></LI><LI CLASS="bulletlist"><P>Switch input away from the signal channel
+during the transmit cycle to protect the receive hardware.</P></LI></UL></LI><LI CLASS="bulletlist"><P>The Multi-Coil Driver Board (MCDB)
+is to provide DC Bias for protecting sensitive receive circuitry from
+high RF power during transmit and to couple RF signals during receive.
+Receive coils contain decoupling circuitry which require DC bias to
+control PIN diode circuits in the multi-coil arrays to achieve this
+functionality.</P></LI><LI CLASS="bulletlist"><P>The RF Control Board's (RFCB) main
+function is to provide control and diagnostic information for the
+RF Hub assembly and related interfaces. The RFCB also provides multi-coil
+(MC) bias to the legacy coil port A and preamp bias to the body coil.</P><UL><LI CLASS="bulletlist"><P>Read and validate Coil ID</P></LI><LI CLASS="bulletlist"><P>Control Transmit Switch</P></LI><LI CLASS="bulletlist"><P>Distribute Local Oscillator </P></LI><LI CLASS="bulletlist"><P>Input from Exciter signal for RF Hub
+Loopback</P></LI><LI CLASS="bulletlist"><P>CAN Communication</P></LI></UL></LI><LI CLASS="bulletlist"><P>Power Distribution Board (PDB) in the
+Rear Hub gets its main DC Power from the Scan Room Power Supply. The
+function of the PDB board is to regulate and monitor the various DC
+Supply voltages and disperse the VDC to the RF Hub backplane to be
+used by the other boards. The PDB also contains the Power switch for
+the Rear Hub. You can use this switch to turn off Power to the Rear
+Hub to remove all boards except the PDB. To remove the PDB, you must
+turn off the SRPS.</P></LI><LI CLASS="bulletlist"><P>The Receiver&#8217;s main function
+is to provide analog and digital signal processing and A/D conversion
+for 16 channels of data.</P><UL><LI CLASS="bulletlist"><P>16 Bit Analog to Digial conversion </P></LI><LI CLASS="bulletlist"><P>Digitial Decimation and filtering</P></LI><LI CLASS="bulletlist"><P>Communications to/from RF Hub</P></LI><LI CLASS="bulletlist"><P>Control of TDM module and notching
+of data</P></LI></UL></LI><LI CLASS="bulletlist"><P>The Transient Detection Module (TDM)
+is responsible for transferring DC Power from the Scan Room Power
+Supply to the Receivers. The TDM also detects transient RF noise spikes
+(white pixels) and communicates to the receiver when a spike occurs.
+Data suppression is done in the Receiver, not the TDM.</P></LI></UL><DIV CLASS="ILLUSTRATION" id="SL3483666-1065163"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Signal Flow from Coils to Rear Hub</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065163-1115387.jpg" BORDER="0" usemap="#SL3483572-1065163"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL3483667-1065163"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Signal Flow from Rear Pedestal to GOC</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065163-1115385.jpg" BORDER="0" usemap="#SL3483576-1065163"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL3483668-1065163"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RF Hub Data Flow</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065163-1115386.jpg" BORDER="0" usemap="#SL3483580-1065163"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

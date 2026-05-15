@@ -1,0 +1,54 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Generator Firmware</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/21/09</P></td></tr></table><H1 ID="top">Generator Firmware </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="48%"><col width="52%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Last Revised:</td><td valign="">February 19, 2009</td></tr></tbody></table></div></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068373-1064419">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The generator firmware runs on the kV control board's Power
+PC CPU. Its main functions are:</P><UL><LI CLASS="bulletlist"><P>Console and/or system communication</P></LI><LI CLASS="bulletlist"><P>Exposure sequencing (rotation, heater,
+exposure control, mA regulation, and focal spot deflection control)</P></LI><LI CLASS="bulletlist"><P>Tube calibrations</P></LI><LI CLASS="bulletlist"><P>Tube/generator tracking</P></LI><LI CLASS="bulletlist"><P>Generator diagnostics (application
+background diagnostics and service diagnostics)</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068381-1064419">2&nbsp;&nbsp;System Communication<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The generator communicates via a Controlled Area Network (CAN).
+Each communication path is connected to the application software through
+a communication driver. This mechanism allows:</P><UL><LI CLASS="bulletlist"><P>The same generator behavior regardless
+the communication path used to drive the generator (other types of
+X-Ray systems use CAN in conjunction with other types of communication)</P></LI><LI CLASS="bulletlist"><P>Connecting several interfaces at the
+same time on the generator</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2574812-1064419">3&nbsp;&nbsp;Exposure Sequencing<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">For a detailed discussion of exposure sequencing please refer
+to <SPAN CLASS="MODULEREF"><A HREF="310583.htm#SL2662178-310583"><I>X-Ray Generation Theory</I></A></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068385-1064419">4&nbsp;&nbsp;Tube Spit Counting<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The generator firmware counts the number of tube spits occurring
+during an exposure.</P><P CLASS="sect1">The count generates an error if:</P><UL><LI CLASS="bulletlist"><P>The number of tube spits exceeds the
+maximum number allowed for CT applications this is 32 spits per second</P></LI><LI CLASS="bulletlist"><P>Tube spit rate exceeds the maximum
+allowed. For CT applications this is 20 spits/0.1s.</P></LI></UL><P CLASS="sect1">In both cases, the exposure is stopped and the error is reported
+to the system.</P><P CLASS="sect1">If the count does not exceed the limits, the number of spits
+is reported to the system at the end of the exposure. A cumulative
+count of tube spits is stored in the TnT database, or can be viewed
+using the Real-Time Stats viewer.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068388-1064419">5&nbsp;&nbsp;Filament Aging<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Tube filaments age during tube life leading to mA inaccuracy
+over time. To maintain mA accuracy, the mA accuracy is tracked over
+a tube's life. At the beginning of each exposure, the difference between
+the mA demand and the real mA is measured and the drift is recorded.
+This drift is used with a slow time constant to correct the filament
+drive's initial values. During the generator's life, the generator
+firmware logs the drift on both focal spots in the TnT data.</P><P CLASS="sect1">The filament aging coefficients are stored in the TnT database.
+For serviceability there is nothing to be done with filament aging
+coefficients, other than resetting the TnT data when changing the
+tube.</P><P CLASS="sect1">The filament aging coefficients can be thought of as the fine-tuning
+of tube calibration. The filaments must be properly calibrated before
+the aging parameters are used. Without proper filament calibration,
+the aging parameters will not matter.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068389-1064419">6&nbsp;&nbsp;Database<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Part of the generator firmware includes a database. This database
+consists of two parts: Configuration Data and Run-Time Parameters.
+Configuration Data is used by generator firmware to properly control
+x-ray. It contains default coefficients set for a new tube. When the
+system is used (or when TnT data is reset) the generator uses the
+default coefficients to calculate the heater current. </P><P CLASS="sect1">After every exposure, aging is calculated and saved in the runtime
+data to adapt the heat control to the particular tube/tank combination.
+When the filament is calibrated, new coefficients that better fit
+the tube/tank combination installed are calculated and saved in the
+runtime data. From that point forward, only the runtime coefficients
+are used to calculate the heater current for a specific mA request.
+All Run-Time Parameters update at each scan and the data is stored
+for troubleshooting.</P><P CLASS="sect1">To view Run-Time Parameters launch the <SPAN CLASS="GUIBUTTON">[GENERATOR
+TOOL]</SPAN> from the <SPAN CLASS="GUIBUTTON">[DIAGNOSTICS]</SPAN> tab of
+the Common Service Desktop and select the <SPAN CLASS="GUIBUTTON">[KV AND MA XRAY
+GEN]</SPAN> tool, then click the <SPAN CLASS="GUIBUTTON">[VIEW TNT DATA]</SPAN> button.</P><DIV CLASS="ILLUSTRATION" id="SL2068390-1064419"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">JEDI Database</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064419-220587.jpg" BORDER="0" usemap="#SL220589-1064419"></P></DIV><P CLASS="sect1">Configuration data is changed only when the inverter or kV board
+is replaced.</P><P CLASS="sect1">Run-time parameters are changed when:</P><UL><LI CLASS="bulletlist"><P>Tube TnT data is reset</P></LI><LI CLASS="bulletlist"><P>Generator TnT data is reset</P></LI><LI CLASS="bulletlist"><P>Filament Calibration is successful</P></LI><LI CLASS="bulletlist"><P>Run-time parameters are restored</P></LI><LI CLASS="bulletlist"><P>An exposure has been completed and
+new data is logged</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2068399-1064419">7&nbsp;&nbsp;Tracking and Trending (TnT) data<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The generator tracks both tube and generator usage statistics
+using TnT data and Real Time Statistics (RTS) parameters. TnT data
+can be viewed using the <SPAN CLASS="GUIBUTTON">[KV AND MA XRAY GEN]</SPAN> tool
+as described in the prior section, and RTS parameters can be viewed
+using the Real-Time Stats viewer.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

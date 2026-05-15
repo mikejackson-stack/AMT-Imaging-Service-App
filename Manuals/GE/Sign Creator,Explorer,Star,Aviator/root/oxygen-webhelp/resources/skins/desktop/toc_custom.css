@@ -1,0 +1,512 @@
+/*
+
+Oxygen WebHelp Plugin
+Copyright (c) 1998-2016 Syncro Soft SRL, Romania.  All rights reserved.
+
+*/
+
+@import "../../css/print.css";
+@import url("https://use.typekit.net/sju5kzy.css");
+
+/* Start RTL */
+html[dir="rtl"] #productTitle, html[dir="rtl"] #productToolbar #breadcrumbLinks, html[dir="rtl"] #productTitle h1{
+    float: right;
+}
+
+html[dir="rtl"] .framesLink, html[dir="rtl"] #productToolbar #navigationLinks {
+    float: left;
+}
+
+html[dir="rtl"] #rightPane{
+    float: left;
+}
+
+html[dir="rtl"] #leftPane{
+    float: right;
+}
+
+html[dir="rtl"] .splitbarV{
+    float: right;
+    border-right: solid 1px #eee;
+    border-left: solid 1px #ccc;
+}
+html[dir="rtl"] .splitbuttonV {
+    background: transparent url(../../img/splitter.png) 0 50%;
+}
+html[dir="rtl"] .splitbuttonV.invert {
+    background: transparent url(../../img/splitter.png) 8px 50%;
+}
+/* End RTL */
+
+html, body {
+    overflow: hidden;
+    height: 100%;
+    font-family: "ge-inspira-sans",arial,helvetica,sans-serif;
+}
+
+#splitterContainer #leftPane, #splitterContainer .splitbarV {
+  /*background-color: rgb(242, 245, 250);*/
+   background-color:#E8EDF0;
+}
+
+#expnd {
+    top: -25px;
+    position: relative;
+}
+.breadcrumbwrapper{
+    margin-top:6pt;
+    margin-left:4pt;
+    /* IE10 Consumer Preview */
+    background-image:-ms-linear-gradient(left, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Mozilla Firefox */
+    background-image:-moz-linear-gradient(left, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Opera */
+    background-image:-o-linear-gradient(left, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Webkit (Safari/Chrome 10) */
+    background-image:-webkit-gradient(linear, left top, right top, color-stop(0, #F2F2F2), color-stop(1, #FFFFFF));
+
+    /* Webkit (Chrome 11+) */
+    background-image:-webkit-linear-gradient(left, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* W3C Markup, IE10 Release Preview */
+    background-image:linear-gradient(to right, #F2F2F2 0%, #FFFFFF 100%);
+}
+.breadcrumbwrapper a:link{
+    color:#9797A6;
+} /* unvisited link */
+.breadcrumbwrapper a:visited{
+    color:black;
+} /* visited link */
+.breadcrumbwrapper a:hover{
+    color:#9797A6;
+} /* mouse over link */
+.breadcrumbwrapper a:active{
+    color:#9797A6;
+} /* selected link */
+/*Header*/
+#header {                      
+  width: 100%;
+    border:1px solid #eee;
+    float:left;
+    border:1px solid #E9E3DD;
+    /* sets the border around the header part of the page. Visible mainly on the bottom. */
+  margin: 0;
+  position:relative; 
+} 
+#lHeader{   
+    clear:both;
+  float: right;
+  width: 100%;     
+  position: relative;
+    background-color:#DAE3EE;
+    padding-top:0pt;
+}
+#productTitle{
+    float:right;
+    width:100%;
+    top:0;
+    font-family:"ge-inspira-sans", arial, helvetica, tahoma;
+    display:block;
+    /*background-image:url('../../img/VerticalBar.jpg');*/
+    background-color:#ffffff;
+    border:1px solid #DAE3EE;
+    padding:0px 0px 0px 0px;
+    /*
+    background-color:#d2d9ce;
+     removed the background gradient image and then altered the background color from white
+    to match the light grey shade used at GE. Pat */
+    /* in oxygen-webhelp\resources\skins\desktop, it sets the background image and styles for 
+    the header. The grey to white transparent image is used throughout. */
+}
+#header #productTitle h1{
+    margin:6pt 6pt 0pt 6pt;
+    padding:0 6px 0em 1.5em;
+    float:right;
+}
+
+/* Link to webhelp with frames */
+.framesLink{
+    display:block;
+    float:left;
+    margin:0.5em 0em 0 0.3em;
+    padding:5px;
+    display:none;
+    /*border-radius: 7px;
+  border: 1px solid #ccc;
+  background: #ddd;*/
+}
+.framesLink img{
+  padding: 0 3px 0 3px;
+}
+.framesLink a{
+ text-decoration:none;
+ color:#999999;
+}
+.framesLink a:hover{
+ text-decoration:none;
+ color:#999999;
+}
+#oldFrames {
+display: block;
+width: 16px;
+height: 16px;
+float: right;
+margin-right: 20px;
+background-image: url('../../../../oxygen-webhelp/resources/img/frames.png');
+}
+
+/* Breadcrumb & navigation links */
+#productToolbar{                           
+  width: 100%;
+  float: left;
+  background-color: transparent;
+}
+#productToolbar #breadcrumbLinks{
+  width:auto;
+  clear: both;
+  float: left;    
+}
+.navheader_parent_path{
+  padding: 0 2px 0 2px;
+}
+#productToolbar #navigationLinks{
+  float: right; 
+  padding-right: 15px;
+  margin-right: 5px;
+}
+
+/*#space{
+  background: #D3E1F1;
+  border: 0;
+  height: 2px;
+  clear: both;        
+}*/
+
+#space {
+border-top: 1px solid #D3E1F1;
+background: #D3E1F1;
+border-bottom: 1px solid #D3E1F1;
+clear: both;
+}
+table.tool td{
+  padding: 0;
+  margin:0;
+}
+table.tool{
+  width: 100%;  
+  border-spacing: 0;
+}
+table.tool td:first-child{
+    width:1%;
+}
+/*Left pane TABs*/
+#tocMenu{
+  float: left;
+    background-color:transparent;
+    font-family: "ge-inspira-sans",arial,helvetica,sans-serif;
+
+    margin: 0 auto;
+    padding-left: 13px;
+    white-space: nowrap;
+}
+#tocMenu div.tab{
+    text-decoration:none;
+    color:black;
+    padding:1px 7px 1px 7px;
+    /*    margin-top:-20px;*/
+    margin-bottom:2px;
+    margin-right:2px;
+    cursor:pointer;
+    border:1px solid #90BDEA;
+    border-top-left-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom:1px solid #90BDEA;
+    float:left;
+    min-height:1px;
+    font-family: "ge-inspira-sans", Sans, Regular;
+    font-size: 12px;
+    text-shadow: none;
+    background-color:#304250;
+    /* Appears to affect only the search button. */
+}
+.tab span{
+    float:left;
+    display:inline-block;
+}
+#expnd{
+    float:right;
+    text-align:right;
+    display:inline-block;
+    padding:3px;
+}
+#expnd a{
+    display:none;
+}
+
+#tocMenu div.tab:hover{
+    color:#cc0000;
+}
+
+/*.hasSubMenuClosed{
+    background: url('../img/fc.gif') no-repeat;
+    padding-left: 16px;
+    cursor: pointer;
+
+}
+.hasSubMenuOpened{
+    background: url('../img/fo.gif') no-repeat;
+    padding-left: 16px;
+    cursor: pointer;
+}*/
+
+
+#tocMenu div.selectedTab{
+    text-decoration:none;
+    color:#333;
+    background-color:#EDE379;
+    border:1px solid #ccc;
+    border-top-left-radius:0px;
+    border-top-right-radius:0px;
+    border-bottom:1px solid #ccc;
+    text-shadow:0 1px 0 #fff;
+
+}
+table.nav{
+  width: 100%;      
+}
+table.nav tbody td:last-child{
+  text-align: right;
+}
+
+/* Main splitter element */
+#splitterContainer {
+  height: 95%;
+  width: 100%;
+  margin: 0;
+  padding: 0;        
+  display: block;   
+  background: transparent;
+}
+
+#leftPane {
+  float: left;
+  width: 25%;
+  height: 100%;
+
+
+    /* IE10 Consumer Preview */
+    background-image:-ms-linear-gradient(top, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Mozilla Firefox */
+    background-image:-moz-linear-gradient(top, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Opera */
+    background-image:-o-linear-gradient(top, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* Webkit (Safari/Chrome 10) */
+    background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0, #F2F2F2), color-stop(1, #FFFFFF));
+
+    /* Webkit (Chrome 11+) */
+    background-image:-webkit-linear-gradient(top, #F2F2F2 0%, #FFFFFF 100%);
+
+    /* W3C Markup, IE10 Release Preview */
+    background-image:linear-gradient(to bottom, #F2F2F2 0%, #FFFFFF 100%);
+ /*   overflow:auto;*/
+/*    overflow:hidden;
+    border:1px solid #fff;*/
+}
+
+/*Contains toolbar and horizontal splitter*/
+#rightPane {
+  float: right;
+  width: 74%;
+  height: 100%;
+  background: #ffffff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;  /* do not modify*/
+}
+
+/* Splitbar styles; these are the default class names and required styles */
+.splitbarV {
+  float: left;
+  width: 6px;
+  height: 100%;
+  line-height: 0px;
+  font-size: 0;
+  border-left: solid 1px #eee;
+  border-right: solid 1px #ccc;
+  background: #eee ;
+}
+.splitbuttonV {
+  margin-top: -22px;
+  margin-left: -1px;
+  top: 50%;
+  position: relative;
+  height: 44px;
+  width: 8px;
+  background: transparent url(../../img/splitter.png) 8px 50%;
+}
+.splitbuttonV.invert {
+  margin-left: -1px;
+  background: transparent url(../../img/splitter.png) 0 50%;
+}
+.splitbarV.working,.splitbuttonV.working{
+  opacity: .50;
+  filter: Alpha(opacity = 50);
+}
+.splitterMask
+{
+  position:absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 20000;
+}
+#contentBlock>ul>li{
+  padding: 1px 0 1px 0;
+}
+#contentBlock ul>li ul{
+  display:none;
+}
+#contentBlock ul{
+  margin: 0;
+}
+
+.menuItemSelected,  #splitterContainer .menuItemSelected {
+    font-weight:bolder;
+    /*background:#f2f2f2;*/
+
+    /* controls the color and font for the chosen link in the navigation.  The ccccccc is the heavy grey background color which can now be swapped with a find and replace.*/
+}
+#contentBlock li span{
+    display:block;
+    padding:2px 5px 2px 21px;
+    /*background:#f2f2f2;*/
+}
+#contentBlock,
+#contentBlock ul{
+    padding-left:10px;
+    background:#f2f2f2;
+}
+#contentBlock a,
+a.link,
+a.navheader_parent_path{
+    text-decoration:none;
+    font-size:10pt;
+    color:black;
+    font-family:"ge-inspira-sans", arial, helvetica, tahoma, sans-serif;
+    white-space:nowrap;
+    /* controls the styles of the links in the navigation tree. But there is another layer
+  beneath it that control the background color more fully. */
+
+}
+
+div#searchResults div#webhelp_search_results a {
+  background: none no-repeat;
+}
+
+#bck_toc{
+  background-color:transparent;
+  padding:20px 0 0 0;
+  overflow: auto;
+}
+#rightPane iframe{
+  float: left;
+}      
+#frm{
+  width: 100%;
+  height: 100%;
+  border: 0;    
+  margin: 0;
+  padding-left:0;
+}
+
+.tooltip{
+    box-shadow: 3px 3px 3px #ccc;
+    color:#333;
+    text-shadow:1px 1px 1px #fff;  
+    background-color:#efefef;
+    border-radius: 4px;    
+    padding: 2px 5px 2px 5px;
+    border: 1px solid #999999;
+    position: absolute;            
+    z-index: 10;
+  }
+.navheader_label{
+
+}
+.navheader_linktext, 
+.navheader_separator{
+  display: none;
+}
+.navnext a,.navprev a,.navparent a{
+  padding-left: 15px;
+  display: inline-block;    
+}
+.navparent,.navprev,.navnext{
+  background-repeat: no-repeat;    
+    margin-left: 5px;
+    cursor: pointer;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    line-height: 16px;
+    display: inline-block;
+}
+
+.navparent{
+    background-image:url('../../img/nav_up16.png');
+}
+.navprev{
+    margin-left:6pt;
+    background-image:url('../../img/prev.png');
+    position:absolute;
+    top:10px;
+    left:2.6in;
+    width:100%;
+
+}
+.navnext{
+    background-image:url('../../img/next.png');
+    position:absolute;
+    top:10px;
+    left:3.0in;
+    width:100%;
+}
+
+.highlight{
+  background: #FFFF88;
+}
+span#warningSign{  
+  cursor: pointer;
+}
+div#warning{
+  position: absolute;
+  right: 2%;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px #999999;
+  display: none;
+  padding: 5px;
+  background-color: #ffff99;
+}
+
+@media print{
+  .splitbarV, 
+  #lHeader, 
+  #leftPane{
+    display: none;
+  }
+  #rightPane{
+    display: block;
+    position:absolute;
+    left:0;
+    top:0;
+  }
+}

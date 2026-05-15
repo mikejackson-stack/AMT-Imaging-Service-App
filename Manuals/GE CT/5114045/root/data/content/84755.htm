@@ -1,0 +1,62 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Error 183124, 214335 - X-Ray Gen: Filament Inv</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5114045-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;10<BR>LightSpeed 4.X Service Information (Advanced)</P></td></tr></table><H1 ID="top">Error 183124, 214335 - X-Ray Gen: Filament Inv </H1><P CLASS="descriptive">Estimated Completion Time: Mean time 60 min.; max. time 90 min.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114003516">1&nbsp;&nbsp;Error<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>Wed Mar 5 10:42:53 1997 Error: 183124 
+Suite: TMC2 Host: OBC Process: Generator 
+File: gen_abort.c 1.30 Method: No Method Line: 368 
+Function: XRAY GENERATION : Filament Selection
+Scan: 0/0/1 Type: Static
+Exception Level: Pri/Most Severe Time: 10:42:52:865 Log Series: 32
+FIL/MA fault detected: Inoperative filament inverter. 
+Desired focal spot = 0. (0 = large, 1 = small)
+Fault latch address = ffdf4d hex, Bit = D7
+
+Wed Mar 5 10:53:55 1997 Error: 214335 
+Suite: TMC2 Host: OBC Process: Diag Exec 
+File: isr1_handler.c 1.33 Method: obc_isr1_handler Line: 516 
+Function: Diagnostics XRAY GENERATION : MA Loop
+Test Name: XRay - Manual Unique ID: 52105 Iteration: 1 
+Exc. Level: Hard Time: 85769 Error Type: Hardware
+Filament error.
+A filament inverter error has been detected. 
+MA address: FFDF4DH Bit: D7</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114003519">2&nbsp;&nbsp;Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114003521">2.1&nbsp;&nbsp;Why You Got It<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The address FFDF4D/7 is INV_FLT (Inverter Fault). INV_FLT is toggled
+by INV_Fault on the mA/Filament Control board. INV_Fault compares the Fil_CT
+(Filament Center Tap) to a reference. When the reference voltage versus the
+filament center tap voltage is not correct an error is generated.</P><P CLASS="sect2">The mA Control Board generates a square wave with inductive spikes on
+the center tap. TP27 can be used to look at this square wave.</P><P CLASS="sect2">Most probable cause is that a square wave does not exist at TP27. Check
+the 30 vdc filament power supply, harness, and filament control board.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114003525">2.2&nbsp;&nbsp;Reference Documents<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"> Filament Control Board schematic</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229114003528">2.3&nbsp;&nbsp;FRUs involved<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>mA/Filament Control Board</P></LI><LI CLASS="bulletlist"><P>30 vdc Filament Power Supply</P></LI><LI CLASS="bulletlist"><P>Harness between Power Supply/mA board</P></LI></UL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114003537">3&nbsp;&nbsp;Troubleshooting Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27. Look for
+a wave shape similar to <A HREF="javascript:winopen('84755illd0e225.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.</P></LI><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27. Look for
+a wave shape similar to <A HREF="javascript:winopen('84755illd0e230.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>.</P></LI><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27. Look for
+a wave shape similar to <A HREF="javascript:winopen('84755illd0e235.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>.</P></LI><LI CLASS="numlist"><P>Check TP21 For 30vdc. Use TP29 or TP30 for FGND.</P></LI><LI CLASS="numlist"><P>Check the Filament power Supply for proper voltages.</P></LI><LI CLASS="numlist"><P>Gather all previous data, then escalate</P><UL><LI CLASS="bulletlist"><P>OLC</P></LI><LI CLASS="bulletlist"><P>Zone Support</P></LI></UL></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229114003900">4&nbsp;&nbsp;Troubleshooting Details<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27</P><UL><LI CLASS="bulletlist"><P>Oscilloscope settings: Use 10X probes, time base is 20uS/d,
+voltage is 5v/d. Put the probe on TP27, use TP29 or 30 (FGND) for ground.</P></LI><LI CLASS="bulletlist"><P>System on standby</P></LI><LI CLASS="bulletlist"><P>Look for wave shape similar to <A HREF="javascript:winopen('84755illd0e225.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.</P></LI></UL><P>PASS: Wave shape is similar to <A HREF="javascript:winopen('84755illd0e225.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>. This wave shape indicates that the mA subsystem is operating
+OK. To be at this step doesn&#8217;t make sense. Either the mA Control is
+giving a false indication of this error, or this is not the primary error.
+Suggested action is to reevaluate your detection of the primary error.</P><P>FAIL: Wave shape does not match <A HREF="javascript:winopen('84755illd0e225.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.
+Continue to next step.</P></LI><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27</P><UL><LI CLASS="bulletlist"><P>Oscilloscope settings are similar to step 1</P></LI><LI CLASS="bulletlist"><P>System on standby</P></LI><LI CLASS="bulletlist"><P>Look for a wave shape similar to <A HREF="javascript:winopen('84755illd0e230.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>.</P></LI></UL><P>PASS: Wave shape is similar to <A HREF="javascript:winopen('84755illd0e230.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>. This wave shape indicates that the mA Control circuitry
+is operating ok. The loss of inductive spike on the edges of the square wave
+indicate an open in the filament section of the harness, cathode tank, HV
+cables or tube. IF this is true the primary error in the log should be FILAMENT
+OPEN. Troubleshoot FIL OPEN error first.</P><P>FAIL: Wave shape does not match <A HREF="javascript:winopen('84755illd0e230.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>.
+Continue to next step.</P></LI><LI CLASS="numlist"><P>Observe with an oscilloscope the signal at TP27</P><UL><LI CLASS="bulletlist"><P>Oscilloscope settings are similar to step 1</P></LI><LI CLASS="bulletlist"><P>System on standby</P></LI><LI CLASS="bulletlist"><P>Look for a wave shape similar to <A HREF="javascript:winopen('84755illd0e235.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>.</P></LI></UL><P>FAIL: Wave shape does not match <A HREF="javascript:winopen('84755illd0e235.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>. This step doesn&#8217;t make sense. TP27 MUST match <A HREF="javascript:winopen('84755illd0e225.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>, <A HREF="javascript:winopen('84755illd0e230.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>, or <A HREF="javascript:winopen('84755illd0e235.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A> with
+this error.</P><P>*If you have not properly executed the DETECT phase of your troubleshooting.
+Re-evaluate your detection of the problem, and/or ask for help.</P><P>PASS: Wave shape is similar to <A HREF="javascript:winopen('84755illd0e235.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>.
+This wave shape indicates that the mA Control not working, either because
+the mA Control Bd. Itself is inoperative or critical voltages are missing.
+  CONTINUE to subsequent steps to determine the failed FRU.</P></LI><LI CLASS="numlist"><P>Check TP21 For 30vdc. Use TP29 or TP30 for FGND.</P><P>PASS: TP21 has 30vdc, AND TP27 is flat-lined. This indicated that the
+control board has the proper voltage, but is not creating the filament signal.</P><UL><LI CLASS="bulletlist"><P>Replace the mA Control Bd.</P></LI><LI CLASS="bulletlist"><P>Verify system operation</P></LI><LI CLASS="bulletlist"><P>You are Done</P><P>FAIL: TP21 has no 30vdc. CONTINUE to the next step.</P></LI></UL></LI><LI CLASS="numlist"><P>Check the Filament power Supply for proper voltages.</P><UL><LI CLASS="bulletlist"><P>Check the output of supply for 30vdc. If supply has 30vdc
+here, but not at the mA Control Bd. Troubleshoot harness in between.</P></LI><LI CLASS="bulletlist"><P>If no 30vdc at output verify 120vac at the input to the power
+supply. IF 120vac is ok, replace Filament Power Supply.</P></LI><LI CLASS="bulletlist"><P>ELSE troubleshoot NO 120 vdc</P></LI><LI CLASS="bulletlist"><P>Verify system operation</P></LI><LI CLASS="bulletlist"><P>You are done</P></LI></UL></LI><LI CLASS="numlist"><P>Gather all previous data, then escalate</P><UL><LI CLASS="bulletlist"><P>Zone Support</P></LI><LI CLASS="bulletlist"><P>OLC</P></LI></UL></LI></OL><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">TP27 Waveform</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/84765.jpg" BORDER="0" usemap="#84765.jpg"></P></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">TP27 square wave</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/84768.jpg" BORDER="0" usemap="#84768.jpg"></P></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">TP27 flat-line</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/84762.jpg" BORDER="0" usemap="#84762.jpg"></P></DIV><P CLASS="sect1">END OF PROCEDURE</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

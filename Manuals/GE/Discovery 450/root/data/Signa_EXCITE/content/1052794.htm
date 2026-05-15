@@ -1,0 +1,29 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>IRF3 Fiber Loopback Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR450 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;6/27/08</P></td></tr></table><H1 ID="top">IRF3 Fiber Loopback Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958758-1052794_2">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; RF &gt;&gt; IRF3 Fiber
+Loopback Diagnostic</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; PGR Cabinet &gt;&gt;
+RF &gt;&gt; IRF3 Fiber Loopback Diagnostic</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1958857-1052794_2"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">IRF3 Fiber Loopback Diagnostic</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052794-1060983.jpg" BORDER="0" usemap="#SL1970295-1052794_2"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958759-1052794_2">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The IRF3 Fiber Loopback Diagnostics can be used to test the
+dual fiber connectors of the IRF3 board and the external dual fiber
+cables that connect the IRF3 to the RRX, DTX, and XGD. This diagnostic
+requires the user to manually install a fiber loopback adapter on
+one of the IRF3 fiber jacks or install a fiber loopback adapter and
+duplex sleeve at the far end of the DTX, RRX, or XGD fibers.  Once
+the fiber loopback adapter is in place, the user instructs the system
+to test that single connection.  Data is sent from the IRF3 and is
+verified to arrive back at the IRF3 intact.  This diagnostic cannot
+be used to test the fiber links between the RRX and the ICNs.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958760-1052794_2">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The IRF3 board has five (5) fiber inputs.  Based on the system
+configuration, 3, 4, or 5 will be used.</P><OL><LI CLASS="numlist"><P>The system can have 1 or 2 RRX.  (16
+or 32 channels).</P></LI><LI CLASS="numlist"><P>The system will have 1 XGD.</P></LI><LI CLASS="numlist"><P>The system will have 1 DTX-1.</P></LI><LI CLASS="numlist"><P>The system may have a DTX-2 (Broadband
+Exciter for MNS).</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958761-1052794_2">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>This test should not be run until IRF3
+BLD has completed without errors. </P></LI><LI CLASS="bulletlist"><P>Fiber Loopback Adapter</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958762-1052794_2">5&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Select <SPAN CLASS="GUILABEL"><I>Start Loopback mode</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI><LI CLASS="numlist"><P>Manually disconnect a single fiber
+from the IRF3 board and attach the fiber loopback adapter. </P></LI><LI CLASS="numlist"><P>Select the correct "Test Fiber in J1_"
+button.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI><LI CLASS="numlist"><P>Ensure that the diagnostic passes by
+reviewing the status in the <SPAN CLASS="GUILABEL"><I>Test Results</I></SPAN> table.</P></LI><LI CLASS="numlist"><P>Repeat steps 2 and 3 with other fibers
+as desired.</P></LI><LI CLASS="numlist"><P>Remove the fiber loopback adapter and
+reconnect the normal cables.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUILABEL"><I>Stop Loopback mode</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958763-1052794_2">6&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic has either a passed or failed status. If the
+diagnostic has failed, please review the error log and corresponding
+extended error message for subsequent actions.</P><P CLASS="sect1">In the event that the diagnostic reports a timeout, the diagnostic
+may not have been executed. Retry the test. If it continues to time
+out, complete a TPS Reset and then retry the test.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

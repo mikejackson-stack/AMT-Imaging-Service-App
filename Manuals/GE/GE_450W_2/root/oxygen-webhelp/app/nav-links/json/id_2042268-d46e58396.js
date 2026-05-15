@@ -1,0 +1,1 @@
+define({"topics":[{"title":"XRF Coil Theory","href":"c_XRF-Coil-Theory_2944296.html","attributes":{"data-id":"id_12374404"},"menu":{"hasChildren":false},"tocID":"id_12374404-d46e58500","topics":[]}]});

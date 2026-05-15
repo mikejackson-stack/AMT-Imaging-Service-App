@@ -1,0 +1,659 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>Left Navigation Frameset</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <link rel="stylesheet" href="css/css.css" type="text/css">
+      <link rel="stylesheet" href="css/dtree.css" type="text/css"><script language="JavaScript" src="scripts/winopen.js"></script><script language="JavaScript" src="scripts/webmonk.gos"></script><script language="JavaScript" src="scripts/modules_init.js"></script><script language="JavaScript" src="scripts/bookmark.js"></script><script language="JavaScript" src="scripts/efunctions.js"></script><script language="JavaScript" src="scripts/dtree.js"></script><script language="JavaScript"></script><script type="text/javascript">
+	
+		d = new dTree('d');
+	
+</script><script type="text/javascript">
+	
+		var val_expand_collapse=0;
+		var val_shift_expand_Frame=0;
+		var val_of_url;
+		var val_expand_right_Frame=0;
+		function shift_expand_Frame()
+		{		
+			if(val_expand_right_Frame>0)
+			{
+				if(val_expand_right_Frame==1)
+				{
+					parent.document.getElementById('frame').cols="180,*";
+					val_expand_right_Frame=0;
+				}
+				if(val_expand_right_Frame==100)
+				{
+					parent.document.getElementById('frame').cols="50%,50%";
+					val_expand_right_Frame=1;
+					
+				}
+			}
+			else
+			{
+				if(val_shift_expand_Frame==1)
+				{
+					//window.parent.topleftFrame.body.innerHTML='';
+					parent.document.getElementById('frame').cols="180,*";
+					document.body.style.overflow='Scroll';
+					/*window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+					window.parent.topleftFrame.document.getElementById('img_expand_collapse').style.display="block";*/
+					document.getElementById('td_dtree').style.display="block";
+					document.getElementById('home2').style.display="none";
+					document.getElementById('line1').style.display="none";
+					document.getElementById('search2').style.display="none";
+					document.getElementById('top2').style.display="none";
+					document.getElementById('line2').style.display="none";
+					document.getElementById('line3').style.display="none";
+					document.getElementById('line4').style.display="none";
+					/*window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title="Hide Navigation";*/
+					
+					window.parent.topleftFrame.location.reload();
+					
+					/*Hide-Show Navigation Code
+					window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+					document.getElementById('td_dtree').style.display="block";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+					window.parent.topleftFrame.document.getElementById('tbl_id_menu_main').width="180";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title="Hide Navigation";
+					Ends here*/
+					
+					val_shift_expand_Frame=0;
+				}
+				else
+				{
+					document.getElementById('home2').style.display="block";
+					document.getElementById('line1').style.display="block";
+					document.getElementById('search2').style.display="block";
+					document.getElementById('top2').style.display="block";
+					document.getElementById('line2').style.display="block";
+					document.getElementById('line3').style.display="block";
+					document.getElementById('line4').style.display="block";
+					document.body.style.overflow='hidden';
+					window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_home').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_search').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_empty').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="none";
+					document.getElementById('td_dtree').style.display="none";
+					window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="none";
+					//top.frame.cols="3%,*";
+					parent.document.getElementById('frame').cols="3%,*";
+					window.parent.topleftFrame.document.getElementById('tbl_id_menu_main').width="20";
+					//window.parent.topleftFrame.document.getElementById('td_shift_expand_Frame').align="center";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_frwd.gif";
+					window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title="Show Navigation";
+					val_shift_expand_Frame=1;
+				}
+			}
+		}
+		
+		
+		function expand_to_right_Frame()
+		{	
+			if(val_expand_right_Frame==0)
+			{
+				parent.document.getElementById('frame').cols="50%,50%";
+				val_expand_right_Frame=1;
+			}
+			else
+			{
+				parent.document.getElementById('frame').cols="100%,*";
+				val_expand_right_Frame=100;
+			}
+		}
+		
+		
+		function initialCmodule()
+		{
+			document.body.style.overflow='Scroll';
+			parent.document.getElementById('frame').cols="180,*";
+			window.parent.topleftFrame.location.reload();
+			window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_down.gif";
+			window.parent.topleftFrame.document.getElementById('td_top_of_the_page').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_home').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_search').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_empty').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_collapse_expand_all').style.display="block";
+			window.parent.topleftFrame.document.getElementById('td_expand_to_right_Frame').style.display="block";
+			window.parent.topleftFrame.document.getElementById('img_expand_collapse').style.display="block";
+			document.getElementById('td_dtree').style.display="block";
+			document.getElementById('home2').style.display="none";
+			document.getElementById('line1').style.display="none";
+			document.getElementById('line2').style.display="none";
+			document.getElementById('search2').style.display="none";
+			document.getElementById('top2').style.display="none";
+			document.getElementById('line3').style.display="none";
+			document.getElementById('line4').style.display="none";
+			
+			window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').src="images/btn_arrow_back.gif";
+			window.parent.topleftFrame.document.getElementById('img_shift_expand_Frame').title="Hide Navigation";
+			parent.mainFrame.location.href="toc/home.htm";
+			d.closeAll();
+			val_shift_expand_Frame=0;
+			val_expand_right_Frame=0;
+			val_expand_collapse=0;
+		}
+		
+		function topofthePage()
+		{
+			var str_url_value=window.top.mainFrame.document.location;
+			var str_test=String(str_url_value);
+			var url_top_index=str_test.indexOf('#');
+			if(!url_top_index<=-1)
+			{
+				var url_of_page=str_url_value.substring(url_top_index);
+				val_of_url=url_of_page;
+				document.location.target="mainFrame";
+				window.top.mainFrame.document.location.href=url_of_page;
+			}
+			else
+			{
+				document.location.target="mainFrame";
+				window.top.mainFrame.document.location.href=window.top.mainFrame.document.location;
+			}
+		}
+		
+		function expand_collapse_all()
+		{
+			
+			if(val_expand_collapse==0)
+			{
+				d.openAll();
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_up.gif";
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').title="Collapse All";
+				val_expand_collapse=1;
+			}
+			else
+			{
+				d.closeAll();
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').src="images/btn_arrow_down.gif";
+				window.parent.topleftFrame.document.getElementById('img_expand_collapse').title="Expand All";
+				val_expand_collapse=0;
+			}
+		}
+		
+		function fn_table_id_hidden_menu()
+		{	
+			document.getElementById('home2').style.display="none";
+			document.getElementById('line1').style.display="none";
+			document.getElementById('line2').style.display="none";
+			document.getElementById('search2').style.display="none";
+			document.getElementById('top2').style.display="none";
+			document.getElementById('line3').style.display="none";
+			document.getElementById('line4').style.display="none";
+		}
+		
+	
+</script></head>
+   <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" text="#000000" onLoad="fn_table_id_hidden_menu()">
+      <table border="0" cellspacing="0" cellpadding="0" width="100%"><script type="text/javascript">
+	
+		//d.add(0,-1,'');
+		//Start Genpact code for empty div spr SVCge36187 on 21 April 2007
+		d.add('cmod',0,-1,'');
+		//Stop Genpact code for empty div spr SVCge36187 on 21 April 2007
+		var counter=1;
+		var div1_val=0;
+		var div2_val=0;
+		var div3_val=0;
+		var div4_val=0;
+		var div5_val=0;
+		var div6_val=0;
+		var div7_val=0;
+		var div8_val=0;
+	
+	
+	
+		document.write("<tr>");
+		document.write("<td id='td_dtree' colspan='7'>");
+		
+		
+		d.add('div',counter,0,"Readme","Readme");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Revision History","Revision History",'./content/1067205.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Electrical Contractor Statement","Certified Electrical Contractor Statement",'./content/118351.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Damage in Transportation","Damage in Transportation",'./content/118348.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Glossary of Terms","Glossary of Terms",'./content/363134.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Help - dtSearch (Version 6.4)","Help - dtSearch (Version 6.4)",'./content/628238.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Help - Navigation Features and Tips","Help - Navigation Features and Tips",'./content/628299.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Language Policy","Language Policy",'./content/69742.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Omissions and Errors","Omissions and Errors",'./content/118363.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Publication Conventions","Publication Conventions",'./content/208479.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"References to Illustrations, Drawings, and Pictures","References to Illustrations, Drawings, and Pictures",'./content/1011444.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Safety","Safety");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Safety Alert Usage","Safety Alert Usage",'./content/295021.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"System Safety Overview","System Safety Overview",'./content/35103.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Normal System Operational Safety","Normal System Operational Safety",'./content/1072103.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Clean-up and Personal Hygiene","Clean-up and Personal Hygiene",'./content/247514.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Console","Equipment Service - Console",'./content/1064657.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Equipment Service - Lockout-Tagout-PPE","Equipment Service - Lockout-Tagout-PPE",'./content/35054.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Torque Wrench Information","Torque Wrench Information",'./content/1064056.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Installation","Installation");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Pre-Install Manual Discovery CT750 HD & VCT (5220253-1EN)","Pre-Install Manual Discovery CT750 HD & VCT (5220253-1EN)",'./content/1062569.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Installation Manual Discovery CT750 HD & VCT (5308551-1EN)","Installation Manual Discovery CT750 HD & VCT (5308551-1EN)",'./content/1062567.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Options","Options"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Remote Monitor Installation (Dir 2390072-100)","Remote Monitor Installation (Dir 2390072-100)",'./content/681769.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SmartStep Installation (Dir 2345629-100)","SmartStep Installation (Dir 2345629-100)",'./content/1045374.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"3-Phase Partial UPS Installation ","3-Phase Partial UPS Installation ",'./content/1068050.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Align, Setup and Calibrations","Align, Setup and Calibrations");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Camera","Camera"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DICOM Filming Devices Setup","DICOM Filming Devices Setup",'./content/1061583.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6)","Console (GOC6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC BIOS Setup","xw8400 Host PC BIOS Setup",'./content/1045817.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG BIOS CMOS Settings","DIG BIOS CMOS Settings",'./content/1064658.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Assembly Setup Calibrations","ICOM Assembly Setup Calibrations",'./content/1064660.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Setup","LCD Video Monitor Setup",'./content/299739.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 VCT System Configuration","GOC6 VCT System Configuration",'./content/1064661.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Functional Checks","Functional Checks");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"System Scanning Test","System Scanning Test",'./content/1064641.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Quality Assurance Test","Quality Assurance Test",'./content/1063155.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console","Console"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Recon Data Path Functional Checks","Recon Data Path Functional Checks",'./content/1064663.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM and ICOM Functional Checks","SCIM and ICOM Functional Checks",'./content/1064664.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Peripheral Tower Functional Test","Peripheral Tower Functional Test",'./content/1064665.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Software","Software");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"AW Direct Connect","AW Direct Connect",'./content/544170.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Configure Product Network Filters","Configure Product Network Filters",'./content/542025.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Connecting Laptop to Console","Connecting Laptop to Console",'./content/825087.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"HIPAA Configuration","HIPAA Configuration",'./content/536878.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Host Computer Image Database Reset","Host Computer Image Database Reset",'./content/1064662.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Installation","Installation"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"System State Save Restore","System State Save Restore",'./content/1062438.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Console Information Sheet","GOC6 Console Information Sheet",'./content/1066832.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 LFC Quick Guide","GOC6 LFC Quick Guide",'./content/1062439.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Load From Cold","GOC6 Load From Cold",'./content/1062440.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Theory","Theory");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console","Console"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host Computer","xw8400 Host Computer",'./content/1046271.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Console Theory","GOC6 Console Theory",'./content/1064666.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Theory","DIG Theory",'./content/1064667.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"High Speed Disc Array (HSDA) Theory","High Speed Disc Array (HSDA) Theory",'./content/1064669.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Video Monitor Overview","LCD Video Monitor Overview",'./content/299610.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"System Diagrams","System Diagrams");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Console Schematic 5212920SCH","GOC6 Console Schematic 5212920SCH",'./content/1064670.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Oulet Box Schematic 5272833SCH","GOC6 Oulet Box Schematic 5272833SCH",'./content/1064671.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Troubleshooting","Troubleshooting");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6)","Console (GOC6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"xw8400 Host PC Troubleshooting","xw8400 Host PC Troubleshooting",'./content/1046703.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Autovoice Troubleshooting","Autovoice Troubleshooting",'./content/505508.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"GOC6 Console Diagnostics","GOC6 Console Diagnostics",'./content/1064672.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Troubleshooting","Console Network Switch Troubleshooting",'./content/1064676.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Command Line Troubleshooting","Command Line Troubleshooting",'./content/1062404.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Troubleshooting","DIG Troubleshooting",'./content/1064673.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Troubleshooting","HSDA Troubleshooting",'./content/1064675.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Troubleshooting","Power Distribution Box Troubleshooting",'./content/1065171.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Parts","Parts");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"GOC6 Parts List (VCT64)","GOC6 Parts List (VCT64)",'./content/1067100.htm'); counter=counter+1;
+		
+		d.add('div',counter,0,"Replacement","Replacement");
+		div1_val=counter;
+		counter=counter+1;
+		
+		
+		
+		
+	
+		
+		
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Component Replacement Retest Matrix","Certified Component Replacement Retest Matrix",'./content/1067499.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('cmodule',counter,div1_val,"Certified Component Verification Form e4879","Certified Component Verification Form e4879",'./content/1067513.htm'); counter=counter+1;
+					
+				div2_val=counter;
+				d.add('div',counter,div1_val,"Console (GOC6)","Console (GOC6)"); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Cover Removal and Installation","Console Cover Removal and Installation",'./content/1064679.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Network Switch Replacement","Console Network Switch Replacement",'./content/1062399.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Power Switch or Cable Replacement","Console Power Switch or Cable Replacement",'./content/1062400.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Console Rear Cooling Fan Replacement","Console Rear Cooling Fan Replacement",'./content/1062401.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG Replacement","DIG Replacement",'./content/1062402.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG GPU Replacement","DIG GPU Replacement",'./content/1064683.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG SAS Controller Replacement","DIG SAS Controller Replacement",'./content/1064685.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DIG DIP Card Replacement","DIG DIP Card Replacement",'./content/1064686.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"DVD Peripheral Tower Replacement","DVD Peripheral Tower Replacement",'./content/1062403.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Computer Replacement","Host Computer Replacement",'./content/1062405.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Host Computer NIC Exchange-HP8400","Host Computer NIC Exchange-HP8400",'./content/1064688.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Chassis Replacement","HSDA Chassis Replacement",'./content/1062406.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA HDD Replacement","HSDA HDD Replacement",'./content/1064691.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Controller Module Replacement","HSDA Controller Module Replacement",'./content/1064694.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA PSU Replacement","HSDA PSU Replacement",'./content/1064698.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"HSDA Cooling Module Replacement","HSDA Cooling Module Replacement",'./content/1064699.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"ICOM Replacement","ICOM Replacement",'./content/1062407.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"LCD Monitor Replacement","LCD Monitor Replacement",'./content/1062409.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"MOD Peripheral Tower Replacement","MOD Peripheral Tower Replacement",'./content/1062410.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Power Distribution Box Replacement","Power Distribution Box Replacement",'./content/1062412.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Rear Bulkhead Panel Connector Replacement","Rear Bulkhead Panel Connector Replacement",'./content/1062413.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Upper Bulkhead Panel Connector Replacement","Upper Bulkhead Panel Connector Replacement",'./content/1064700.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"SCIM Replacement","SCIM Replacement",'./content/1062414.htm'); counter=counter+1;
+					
+				div3_val=counter;
+				d.add('cmodule',counter,div2_val,"Accessories Replacement","Accessories Replacement",'./content/1062415.htm'); counter=counter+1;
+		
+			document.write(d);
+			document.write("</td>");
+		
+		
+		
+		document.write("<td width='1'></td>");
+		
+		
+		
+		document.write("</tr>");
+		
+	
+	</script></table>
+      <table id="table_id_hidden_menu" width="20" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+            <td id="line1" bgcolor="#666666" border="0"><img src="images/line_bar.gif" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="home2" align="right" width="20" height="18" border="0"><a href="#" onClick="JavaScript:window.top.leftFrame.initialCmodule()"><img src="images/home.gif" alt="Home" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line2" bgcolor="#666666" border="0"><img src="images/line_bar.gif" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="search2" align="right" width="20" height="18" border="0"><a href="#" onClick="MM_openBrWindow('../../cdrun.exe','Search','scrollbars=yes,width=800, height=600')"><img src="images/search.gif" alt="Search" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line3" bgcolor="#666666" border="0"><img src="images/line_bar" width="1" height="1" border="0"></td>
+         </tr>
+         <tr>
+            <td id="top2" align="right" width="20" height="18" border="0"><a href="#" onClick="JavaScript:window.top.leftFrame.topofthePage()"><img src="images/top.gif" alt="Top of the page" width="15" height="15" border="0"></a></td>
+         </tr>
+         <tr>
+            <td id="line4" bgcolor="#666666" border="0"><img src="images/line_bar" width="1" height="1" border="0"></td>
+         </tr>
+      </table>
+   </body>
+</html>

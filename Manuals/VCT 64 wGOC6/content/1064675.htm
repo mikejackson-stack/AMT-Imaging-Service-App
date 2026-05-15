@@ -1,0 +1,263 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>HSDA Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/17/10</P></td></tr></table><H1 ID="top">HSDA Troubleshooting </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="49%" align="center"><col width="51%" align="center"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">Last Revised: </td><td align="center" valign="">23 April 2010</td></tr></tbody></table></div></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2135070-1064675">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following information will assist in confirming if the HSDA
+is experiencing a hardware fault. Although the following is not a
+complete set of diagnostics, it should be sufficient in determining
+if the HSDA is suffering from hardware issues at the prescribe Field
+Replaceable Unit (FRU) level.</P><DIV CLASS="ILLUSTRATION" id="SL2135071-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">High Speed Disk Array (HSDA)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064669-1065873.jpg" BORDER="0" usemap="#SL2135042-1064675"></P></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e58"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">ELECTROCUTION HAZARD</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">Though the HSDA supports Hot Swapping of HDDs, Cooling Modules,
+and PSU&#8217;s, it is still recommended that one disconnect the AC
+power cords from the HSDA before removing the chassis.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">USE PROPER LOCKOUT / TAGOUT PROCEDURES BEFORE REPLACING
+THE COMPONENTS.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2135072-1064675">2&nbsp;&nbsp;HSDA General Troubleshooting<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Before proceeding with the rest of this guide, use the following
+checklist to find possible solutions for HSDA problems.</P><UL><LI CLASS="bulletlist"><P>Is the HSDA powered on?</P><UL><LI CLASS="bulletlist"><P>Is the HSDA connected to the proper
+electrical outlet on the Power Distribution Box?</P></LI><LI CLASS="bulletlist"><P>Has Circuit Breaker #1 or #2 (CB1 or
+CB2) tripped on Power Distribution Box?</P></LI><LI CLASS="bulletlist"><P>Are the AC Power Cords fully seated
+in the PSU Modules?</P></LI><LI CLASS="bulletlist"><P>Are the rear panel PSU Power LEDs illuminated
+Green?</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e87"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The HSDA has two (2) redundant PSU Modules. The HSDA will
+continue to work with only one functioning PSU.  A failed PSU Module
+should be replaced as soon as possible to prevent a complete failure
+of the HSDA in the event the second PSU Module should malfunction.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL></LI><LI CLASS="bulletlist"><P>Examine all cables for loose or incorrect
+connections.</P><UL><LI CLASS="bulletlist"><P>Network Cable</P></LI><LI CLASS="bulletlist"><P>SAS Controller Cable</P></LI></UL></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2145095-1064675">3&nbsp;&nbsp;HSDA Troubleshooting - WEB Browser (Mozilla)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The HSDA is equipped with Java (WEB) interface functionality
+via the RAID Controller Module and its dedicated Ethernet network
+access.  By utilizing this functionality in the HSDA, an independent
+path for communication and hardware status checking can be established
+without the need of a fully functioning HSDA.</P><P CLASS="sect1">The Java (WEB) functionality of the RAID Controller Module in
+the HSDA provides the means for virtual presence (remote console)
+at the Host Computer.  This presence includes keyboard, video and
+mouse redirection.  As long as the standby power of the HSDA power
+supply is present, the RAID Controller Module will operate and allow
+access from the Host Computer.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e107"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>CAUTION MUST BE OBSERVED WHEN WORKING WITH THE WEB BROWSER FEATURE.
+ SETTINGS AND OPTIONS SHALL NOT BE ALTERED. ONLY ACCESS THOSE FEATURES
+DESCRIBE BELOW. ONLY TRAINED INDIVIDUALS SHOULD UTILIZE THIS FEATURE.</b></TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2145096-1064675">3.1&nbsp;&nbsp;WEB Browser Access<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>To access the HSDA, open a Terminal
+Window, and log on as root:</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>{ctuser@</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>hostname</I></B></FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>}</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>su -</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><P>Type the root password and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P></LI><LI CLASS="numlist"><P>Launch the Mozilla WEB Brower:</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>[root@</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>hostname</I></B></FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>]</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>mozilla</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><P>The Mozilla (Fedora) WEB Browser (<A HREF="1064675.htm#">
+Step&nbsp;</A>) will appear.</P><P><DIV CLASS="ILLUSTRATION" id="SL2144809-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Mozilla WEB Browser</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1097766-1066492.jpg" BORDER="0" usemap="#SL2144818-1064675"></P></DIV></P></LI><LI CLASS="numlist"><P>In the WEB Browser URL Address Bar:</P><P>Type:  <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>darcarray</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e170"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Type:  <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>darcarray2</I></B></FONT></SPAN> for second HSDA
+(for CT750HD Only).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>The WEB Browser will update and display
+the Login page (<A HREF="javascript:winopen('1064675illd0e196.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>) for the HSDA.</P><P>Username:  Type:  <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>Information</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[TAB]</SPAN></P><P>Password Type:   <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>( blank )</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><P><DIV CLASS="ILLUSTRATION" id="SL2143432-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Login Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066638.jpg" BORDER="0" usemap="#SL2144915-1064675"></P></DIV></P></LI><LI CLASS="numlist"><P>The WEB Browser will update and display
+the HSDA Home / Information Page (<A HREF="javascript:winopen('1064675illd0e207.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>) for the HSDA.</P><P><DIV CLASS="ILLUSTRATION" id="SL2143427-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Home / Information Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066639.jpg" BORDER="0" usemap="#SL2144928-1064675"></P></DIV></P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2145098-1064675">3.2&nbsp;&nbsp;HSDA WEB Browser Navigation<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">At the HSDA Home page (defaults to Information page), or by
+clicking on <SPAN CLASS="GUIBUTTON">[Information]</SPAN>, a visual display of
+hardware status will be shown in real time (<A HREF="javascript:winopen('1064675illd0e207.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>). This allows
+the user to view the following:</P><UL><LI CLASS="bulletlist"><P>HSDA Individual HDD Status  -  Green
+(OK)   Red (HDD Failure or Not Present)</P></LI><LI CLASS="bulletlist"><P>HSDA Raid Controller Module Status
+ -  Green (OK)   Red (Failed or Off Line)</P></LI><LI CLASS="bulletlist"><P>HSDA PSU Module Status  -  Green (OK)
+   Red  (Failed)</P></LI><LI CLASS="bulletlist"><P>HSDA Cooling Module Status  -  Green
+(OK)    Red  (Failed)</P></LI></UL><P CLASS="sect2">In addition, key hardware information will be listed including:</P><UL><LI CLASS="bulletlist"><P>Controller Module and Firmware Revisions</P></LI><LI CLASS="bulletlist"><P>Temperature Sensors</P></LI><LI CLASS="bulletlist"><P>Power Supply Voltages</P></LI><LI CLASS="bulletlist"><P>Fan Status</P></LI></UL><DIV CLASS="ILLUSTRATION" id="SL2145107-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Information Page 1</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066644.jpg" BORDER="0" usemap="#SL2145023-1064675"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL2145108-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Information Page 2</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066642.jpg" BORDER="0" usemap="#SL2145045-1064675"></P></DIV><P CLASS="sect2">By clicking <SPAN CLASS="GUIBUTTON">[Event]</SPAN>, the HSDA Event Log
+(<A HREF="javascript:winopen('1064675illd0e267.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;7</A>) can be viewed.</P><DIV CLASS="ILLUSTRATION" id="SL2145084-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Event Page</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066643.jpg" BORDER="0" usemap="#SL2145069-1064675"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2135081-1064675">4&nbsp;&nbsp;HSDA Troubleshooting - LEDs<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The HSDA has numerous status LEDs mounted on the chassis that
+can indicate hardware faults and operational status of the array.
+ These LEDs are visible on either the front or back of the HSDA.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2135082-1064675">4.1&nbsp;&nbsp;Status LEDs (Front)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2135083-1064675">4.1.1&nbsp;&nbsp;HSDA Keypad/LCD Panel Indicators<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL2135084-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Front Keypad/LCD Panel Indicators</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1065874.jpg" BORDER="0" usemap="#SL2135046-1064675"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135085-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Front Keypad/LCD Panel Indicators</SPAN> </P><table summary="Front Keypad/LCD Panel Indicators" border="1"><colgroup><col width="101"><col width="79"><col width="86"><col width="252"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="bottom">Name</th><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">&nbsp;</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td align="center" valign="middle">PWR</td><td rowspan="2" align="center" valign="middle">Blue</td><td align="left" valign="middle">ON</td><td valign="bottom">Indicates that power is supplied to subsystem.</td></tr><tr valign="top"><td align="center" valign="middle">(Power)</td><td align="left" valign="middle">OFF</td><td valign="bottom">Indicates that no power is supplied to the
+subsystem or the subsystem/RAID controller has failed.</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">BUSY</td><td rowspan="2" align="center" valign="middle">White</td><td align="left" valign="middle">FLASHING</td><td valign="bottom">Indicates that there is active traffic on Host/Drive
+channels.</td></tr><tr valign="top"><td align="left" valign="middle">OFF</td><td valign="bottom">Indicates that there is no activity on the
+Host/Drive channels.</td></tr><tr valign="top"><td align="center" valign="middle">ATTEN</td><td rowspan="2" align="center" valign="middle">Red</td><td align="left" valign="middle">ON</td><td valign="bottom">Indicates that a component failure/status event
+has occurred.</td></tr><tr valign="top"><td align="center" valign="middle">(Attention)</td><td align="left" valign="middle">OFF</td><td valign="bottom">Indicates that the subsystem and all its components
+are operating correctly.</td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e352"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">During Power On process, the ATTEN LED will light up steadily.
+ Once the HSDA successfully boots up with no faults, the ATTEN LED
+is turned off.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2135086-1064675">4.1.2&nbsp;&nbsp;HSDA Drive Tray Indicators<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL2135087-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HDD Tray Indicators</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066372.jpg" BORDER="0" usemap="#SL2135051-1064675"></P></DIV><P CLASS="sect3">LED indicators are located on the right side of each of the
+HDD trays.  When notified by a drive failure message, one should check
+the drive tray indicators to find the correct location of the failed
+drive.  Replacing the incorrect drive can fatally fail a logical drive
+array.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135088-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">HDD Tray Indicators</SPAN> </P><table summary="HDD Tray Indicators" border="1"><colgroup><col width="90"><col width="88"><col width="77"><col width="242"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="bottom">Name</th><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">&nbsp;</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td rowspan="3" align="center" valign="middle">Drive
+Busy</td><td rowspan="3" align="center" valign="middle">Blue/Purple</td><td align="center" valign="bottom">FLASHING</td><td align="justify" valign="middle">Flashing BLUE indicates the
+RAID controller is accessing the disk drive.  The drive is busy.</td></tr><tr valign="top"><td align="center" valign="middle">&nbsp;</td><td align="justify" valign="middle">Flashing PURPLE indicates the
+drive is in a spin-up state.  The drive is not ready.</td></tr><tr valign="top"><td align="center" valign="bottom">OFF</td><td align="justify" valign="bottom">Indicates that there is not
+activity on the drive.</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">Power
+Status</td><td rowspan="2" align="center" valign="middle">Green
+/ Red</td><td align="center" valign="bottom">GREEN</td><td align="justify" valign="bottom">Indicates that a drive is installed
+in the drive tray.</td></tr><tr valign="top"><td align="center" valign="bottom">RED</td><td align="justify" valign="bottom">Indicates that a drive has
+failed or is missing.</td></tr></tbody></table></div></DIV></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2135089-1064675">4.2&nbsp;&nbsp;Status LEDs  (Rear)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2135090-1064675">4.2.1&nbsp;&nbsp;HSDA Controller Module Indicators<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL2135091-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Controller Module Indicators</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066373.jpg" BORDER="0" usemap="#SL2135056-1064675"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135092-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SAS Port Indicators</SPAN> </P><table summary="SAS Port Indicators" border="1"><colgroup><col width="113"><col width="64"><col width="301"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="bottom">Name</th><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td rowspan="3" align="center" valign="middle">SAS
+Link Status</td><td rowspan="3" align="center" valign="middle">Green</td><td align="justify" valign="middle">Steady Green indicates that
+all PHYs are validly linked to SAS Controller in DIG Computer.</td></tr><tr valign="top"><td align="justify" valign="middle">Blinking indicates one of the
+PHY links has failed.</td></tr><tr valign="top"><td align="justify" valign="middle">OFF   Indicates that all PHYs
+are off line.</td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e455"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">&#8220;PHY&#8221; is a term used with Serial Attached
+SCSI (SAS) interfaces to describe the lower physical layers of the
+SAS Protocol.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135093-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Controller Status Indicators</SPAN> </P><table summary="Controller Status Indicators" border="1"><colgroup><col width="61"><col width="84"><col width="93"><col width="263"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="">LED</th><th align="center" valign="bottom">Name</th><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td rowspan="2" align="center" valign="middle">1</td><td rowspan="2" align="center" valign="middle">Ctrl
+Status</td><td rowspan="2" align="center" valign="middle">Green
+/ Amber</td><td align="left" valign="middle">Green    Indicates
+that the controller is active and operating normally.</td></tr><tr valign="top"><td align="left" valign="middle">Amber   Indicates the controller
+is being initialized or has failed.  The controller is not ready.</td></tr><tr valign="top"><td align="center" valign="middle">2</td><td align="center" valign="middle">C_Dirty</td><td align="center" valign="middle">Amber</td><td align="left" valign="middle">ON   Indicates that data is currently
+cached in memory or is supported by the BBU during a power loss.</td></tr><tr valign="top"><td align="center" valign="middle">3</td><td align="center" valign="middle">Temp.</td><td align="center" valign="middle">Amber</td><td align="left" valign="middle">ON   Indicates that one of the
+preset temperature thresholds is violated.</td></tr><tr valign="top"><td align="center" valign="middle">4 *</td><td align="center" valign="middle">BBU Link</td><td align="center" valign="middle">Green</td><td align="left" valign="middle">ON   Indicates that the BBU is
+present.</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">5</td><td rowspan="2" align="center" valign="middle">Hst
+Busy</td><td rowspan="2" align="center" valign="middle">Green</td><td align="left" valign="middle">FLASHING   Indicates
+there is active traffic through the Host Port.  (SAS Controller in
+DIG)</td></tr><tr valign="top"><td align="left" valign="middle">OFF   Indicates there is no activity
+on the Host Port.</td></tr><tr valign="top"><td rowspan="2" align="center" valign="middle">6</td><td rowspan="2" align="center" valign="middle">Drv
+Busy</td><td rowspan="2" align="center" valign="middle">Green</td><td align="left" valign="middle">FLASHING   Indicates
+there is active traffic on the drive channels.</td></tr><tr valign="top"><td valign="middle">OFF   Indicates there is no activity on the
+drive channels.</td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e540"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">* The Battery Backup Unit (BBU) is not utilized in the
+HSDA.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135094-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">NIC Port Indicators</SPAN> </P><table summary="NIC Port Indicators" border="1"><colgroup><col width="103"><col width="75"><col width="285"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="bottom">Name</th><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td align="center" valign="middle">Link Status</td><td align="center" valign="middle">Green</td><td align="justify" valign="middle">ON   Indicates the management
+port is connected to a node  (Console Network Switch - CNS).</td></tr><tr valign="top"><td align="center" valign="middle">LAN Activity</td><td align="center" valign="middle">Green</td><td align="justify" valign="middle">Blinking   indicates active
+transmission.</td></tr></tbody></table></div></DIV><P CLASS="sect3">Restore Default LED</P><P CLASS="sect3">A Restore Default LED is located above the Restore Default push
+button on the lower right corner of the HSDA Controller Module.  To
+restore firmware defaults, press and hold the button down before turning
+on the HSDA.  Once the factory defaults are successfully restored,
+release the button after the Restore Default LED lights green.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2135095-1064675">4.2.2&nbsp;&nbsp;HSDA PSU Module Indicators<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL2135096-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;11:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA PSU Module Indicators</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066374.jpg" BORDER="0" usemap="#SL2135061-1064675"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135097-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">PSU Indicators</SPAN> </P><table summary="PSU Indicators" border="1"><colgroup><col width="120"><col width="300"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="bottom">Color</th><th align="center" valign="bottom">Status</th></tr></thead><tbody valign=""><tr valign="top"><td align="center" valign="middle">Intermittent           Flashing
+Green</td><td align="justify" valign="middle">The power supply has not been
+turned on.  The PSU LED flashes when the HSDA is connected to a power
+source but not yet turned on.</td></tr><tr valign="top"><td align="center" valign="middle">Steady Green</td><td align="justify" valign="middle">The power supply is operating
+normally</td></tr><tr valign="top"><td align="center" valign="middle">Steady Red</td><td align="justify" valign="middle">The power supply has failed
+and is unable to provide power to the HSDA.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2135098-1064675">4.2.3&nbsp;&nbsp;HSDA Fan Cooling Module Indicators<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="ILLUSTRATION" id="SL2135099-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;12:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSDA Cooling Module Indicators</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1066375.jpg" BORDER="0" usemap="#SL2135066-1064675"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2135100-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Cooling Module Indicators</SPAN> </P><table summary="Cooling Module Indicators" border="1"><colgroup><col width="128"><col width="206"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="bottom">Color</td><td align="center" valign="bottom">Status</td></tr><tr valign="top"><td align="center" valign="middle">Steady Green</td><td align="center" valign="middle">Cooling Fan is functioning</td></tr><tr valign="top"><td align="center" valign="middle">Steady Red</td><td align="center" valign="middle">The Cooling Fan has failed</td></tr></tbody></table></div></DIV><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e643"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When temperature sensors detect an elevated temperature
+reading or the failure of any cooling fan, firmware in the HSDA will
+instruct the remaining cooling fans to operate at a high speed. Once
+the temperature falls back within the safe range or the fault condition
+is corrected, cooling fans will resume the low speed.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2702228-1064675">5&nbsp;&nbsp;HSDA Command Mode Troubleshooting<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following describes the Command Mode method for troubleshooting
+the HSDA. By using a Terminal Window on the Host Computer and the
+operator console's network interface, HSDA hardware and event status
+can be obtained.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2703675-1064675">5.1&nbsp;&nbsp;Java &#8220;raidcmd2&#8221; Tool<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2703676-1064675">5.1.1&nbsp;&nbsp;Tool Access<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>To access the HSDA from the Host Computer,
+open a Terminal Window, and log on as root:</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>{ctuser@</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>hostname</I></B></FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>}</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>su -</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><P>Type the root password and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P></LI><LI CLASS="numlist"><P>Launch the Java &#8220;raidcmd2&#8221;
+Tool:</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>[root@</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>hostname</I></B></FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>]</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>java -jar /usr/g/scripts/raidcmd2.jar</I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P></LI><LI CLASS="numlist"><P>Then connect to the HSDA hostname you
+want to look at:</P><P>Type:  <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>connect darcarray </I></B></FONT></SPAN> and press <SPAN CLASS="GUIBUTTON">[ENTER]</SPAN></P><P></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2703680-1064675">5.1.2&nbsp;&nbsp;Commands<SPAN CLASS="SECT1EFF"> </SPAN></H4><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2703681-1064675"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Java &#8220;raidcmd2&#8221; Tool Commands</SPAN> </P><table summary="Java &#8220;raidcmd2&#8221; Tool Commands" border="1"><colgroup><col width="39%" align="center"><col width="61%" align="left"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN></td><td align="left" valign="">The <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN> command displays information
+about the disk drives in the enclosure.</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show ld</I></B></FONT></SPAN></td><td align="left" valign="">The <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show ld</I></B></FONT></SPAN> command displays information
+for the logical drive.</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN></td><td align="left" valign="">The <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN> command displays information
+on all partitions/LDs mapped to specific host channels.</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show event </I></B></FONT></SPAN></td><td align="left" valign="">The <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show event</I></B></FONT></SPAN> command displays the event
+log.</td></tr><tr valign="top"><td align="center" valign="middle"><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show enclosure</I></B></FONT></SPAN></td><td align="left" valign="">The <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show enclosure</I></B></FONT></SPAN> command displays HSDA
+enclosure/chassis hardware information, voltages, and fans status.</td></tr></tbody></table></div></DIV><P CLASS="sect3"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2703682-1064675">5.1.3&nbsp;&nbsp;Command Details and Result Examples<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN></P><P CLASS="sect3">Example of <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN> command output:</P><PRE>[root@rsna1 ~]# java -jar /usr/g/scripts/raidcmd2.jar 
+RAIDCmd:&gt; connect darcarray
+Primary Agent Version 4.0@
+ 
+1: Device(UID:233913)
+ 
+device Device(UID:233913, Name:, Model:S12S-G1030) selected.
+ 
+RAIDCmd:&gt; show disk
+index   Slot    ID      Size    Speed   LG_DRV          Status          Vendor             Serial
+------------------------------------------------------------------------------------------------------
+0       1       0       238470  300MB   54F19433        On-Line         ST3250310NS        9SF04D7R
+1       2       1       238470  300MB   54F19433        On-Line         ST3250310NS        9SF05EKZ
+2       3       2       238470  300MB   54F19433        On-Line         ST3250310NS        9SF04CW3
+3       4       3       238470  300MB   54F19433        On-Line         ST3250310NS        9SF05AHX
+4       5       4       238470  300MB   54F19433        On-Line         ST3250310NS        9SF05E7J
+5       6       5       238470  300MB   54F19433        On-Line         ST3250310NS        9SF0563G
+6       7       6       238470  300MB   54F19433        On-Line         ST3250310NS        9SF05JS3
+7       8       7       238470  300MB   54F19433        On-Line         ST3250310NS        9SF05KNM
+8       9       8                                       Absent
+9       10      9                                       Absent
+10      11      10                                      Absent
+11      12      11                                      Absent
+------------------------------------------------------------------------------------------------------
+Total: 12
+ 
+</PRE><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN> Slot Definitions:</P><P CLASS="sect3"><DIV CLASS="ILLUSTRATION" id="SL2729530-1064675"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Slot Definition to Physical Location on HSDA</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1064675-1089602.jpg" BORDER="0" usemap="#SL2729525-1064675"></P></DIV></P><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN> Status Definitions:</P><UL><LI CLASS="bulletlist"><P>On-Line</P><P>Hard Disk Drive is functioning and included in Logical Disk
+of array.</P></LI><LI CLASS="bulletlist"><P>Used</P><P>Hard Disk Drive is no longer included in Logical Disk, but is
+detected. This may be due a drive failure, read/write errors, or a
+new drive added since the last logical disk creation and reboot. Requires
+service attention!</P></LI><LI CLASS="bulletlist"><P>Absent</P><P>Hard Disk Drive is not physically present or failure to detect
+the presence of drive.</P></LI></UL><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show ld</I></B></FONT></SPAN></P><P CLASS="sect3">Example of <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show ld</I></B></FONT></SPAN> Command Output:</P><PRE>RAIDCmd:&gt; show ld
+        ID      RAID    Size    Stripe  Max Size        Status  LV
+---------------------------------------------------------------------------
+P[0] 54F19433   RAID5   523264  128KB   1667498         Good
+[Member Disk]---------------------------------------------------------------------------------
+Slot    ID      Size    Speed   LG_DRV          Status                  Vendor
+----------------------------------------------------------------------------------------------
+1       0       238214  300MB   54F19433        On-Line         ST3250310NS             
+2       1       238214  300MB   54F19433        On-Line         ST3250310NS             
+3       2       238214  300MB   54F19433        On-Line         ST3250310NS             
+4       3       238214  300MB   54F19433        On-Line         ST3250310NS             
+5       4       238214  300MB   54F19433        On-Line         ST3250310NS             
+6       5       238214  300MB   54F19433        On-Line         ST3250310NS             
+7       6       238214  300MB   54F19433        On-Line         ST3250310NS             
+8       7       238214  300MB   54F19433        On-Line         ST3250310NS             
+----------------------------------------------------------------------------------------------
+ Total: 8
+ 
+</PRE><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN></P><P CLASS="sect3">Example of <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN> Command Output:</P><PRE>RAIDCmd:&gt; show map
+[Ch:0][ID:0][Lun:0] type:LD ID:54F19433 P0      RAID:RAID5      Size(MB):523264 Status:Good
+ 
+</PRE><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN> Status Definitions</P><UL><LI CLASS="bulletlist"><P>Good</P><P>Disk Array is functioning and all Hard Disk Drives are included
+in Logical Disk.</P></LI><LI CLASS="bulletlist"><P>Degraded</P><P>Disk Array is functioning, but at least one Hard Disk Drive
+is no longer included in Logical Disk. Requires service attention!</P></LI></UL><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show event </I></B></FONT></SPAN></P><P CLASS="sect3">Example of <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show event </I></B></FONT></SPAN> Command Output:</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e862"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Event Log is maintained on the RAID Controller of HSDA.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>RAIDCmd:&gt; show map
+[Ch:0][ID:0][Lun:0] type:LD ID:54F19433 P0      RAID:RAID5      Size(MB):523264 Status:Good
+ 
+RAIDCmd:&gt; show event
+&lt;1, 2008/07/10 16:19:33&gt;: NOTICE:NVRAM Factory Defaults Restored
+&lt;2, 2008/07/10 16:20:47&gt;: Controller Initialization Completed
+&lt;3, 2008/07/10 16:24:33&gt;: ID:61C5928 Logical Drive NOTICE: Starting Creation
+&lt;4, 2008/07/10 16:24:38&gt;: ID:61C5928 Logical Drive NOTICE: Creation of Logical Drive Completed
+&lt;5, 2008/07/10 16:24:38&gt;: ID:61C5928 Logical Drive NOTICE: Starting On-Line Initialization
+&lt;6, 2008/07/10 10:41:31&gt;: ID:61C5928 Logical Drive NOTICE: On-Line Initialization of Logical Drive Completed
+&lt;7, 2008/07/10 14:09:44&gt;: Controller Initialization Completed
+&lt;8, 2008/07/24 10:31:23&gt;: Controller Initialization Completed
+&lt;9, 2008/07/24 10:48:09&gt;: Controller Initialization Completed
+&lt;10, 2008/07/24 10:59:07&gt;: Controller Initialization Completed
+&lt;11, 2008/07/24 11:17:11&gt;: Controller Initialization Completed
+&lt;12, 2008/07/24 11:27:41&gt;: Controller Initialization Completed
+&lt;13, 2008/07/24 12:22:02&gt;: Controller Initialization Completed
+&lt;14, 2008/10/02 19:05:18&gt;: LG:0 Logical Drive ALERT: Incomplete Array
+&lt;15, 2008/10/02 19:05:18&gt;: Controller Initialization Completed
+&lt;16, 2008/10/08 17:03:33&gt;: LG:0 Logical Drive ALERT: Incomplete Array
+&lt;17, 2008/10/08 17:03:33&gt;: Controller Initialization Completed
+&lt;18, 2008/10/09 08:18:18&gt;: LG:0 Logical Drive ALERT: Incomplete Array
+&lt;19, 2008/10/09 08:18:18&gt;: Controller Initialization Completed
+&lt;20, 2008/10/09 08:30:10&gt;: LG:0 Logical Drive ALERT: Incomplete Array
+&lt;21, 2008/10/09 08:30:10&gt;: Controller Initialization Completed
+&lt;22, 2008/10/09 08:34:55&gt;: ID:54F19433 Logical Drive NOTICE: Starting Creation
+&lt;23, 2008/10/09 08:34:56&gt;: ID:54F19433 Logical Drive NOTICE: Creation of Logical Drive Completed
+&lt;24, 2008/10/09 08:34:57&gt;: ID:54F19433 Logical Drive NOTICE: Starting On-Line Initialization
+&lt;25, 2008/10/09 08:52:03&gt;: ID:54F19433 Logical Drive NOTICE: On-Line Initialization of Logical Drive Completed
+&lt;26, 2008/10/09 09:05:09&gt;: Controller Initialization Completed
+&lt;27, 2008/10/09 11:34:44&gt;: Controller Initialization Completed
+&lt;28, 2008/10/10 20:27:37&gt;: Controller Initialization Completed
+&lt;29, 2008/10/13 00:22:36&gt;: Controller Initialization Completed
+&lt;30, 2008/10/13 05:01:43&gt;: Controller Initialization Completed
+&lt;31, 2008/10/13 05:07:10&gt;: Controller Initialization Completed
+&lt;32, 2008/10/13 05:29:36&gt;: Controller Initialization Completed
+&lt;33, 2008/10/13 19:23:29&gt;: Controller Initialization Completed
+&lt;34, 2008/10/13 19:37:14&gt;: Controller Initialization Completed
+&lt;35, 2008/10/23 14:24:59&gt;: Controller Initialization Completed
+&lt;36, 2008/10/28 13:32:18&gt;: Controller Initialization Completed
+</PRE><P CLASS="sect3"></P><P CLASS="sect3">Command <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show enclosure</I></B></FONT></SPAN></P><P CLASS="sect3">Example of <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show enclosure</I></B></FONT></SPAN> Command Output:</P><PRE>RAIDCmd:&gt; show enclosure
+-------------------------------------------------------------------------------------------------------------
+Vendor id- HwVer- SwVer- LUId-S12S-G1030 Type-CUSTOMABLE_I2C_PERIPHERAL_DEVICE
+-------------------------------------------------------------------------------------------------------------
+ObjId   Device      attribute capability UnitType Type   Index  Vendor value             status
+-------------------------------------------------------------------------------------------------------------
+7     PSU0 status       0       1      POWER_SUPPLY    PSU0 status   1  PSU0 status functioning normally
+8     PSU1 status       0       1      POWER_SUPPLY    PSU1 status   2  PSU1 status functioning normally
+15    Cooling fan0      0       1      FAN             Cooling fan0  1  Cooling fan0 is in low speed
+16    Cooling fan1      0       1      FAN             Cooling fan1  2  Cooling fan1 is in low speed
+17    Cooling fan2      0       1      FAN             Cooling fan2  3  Cooling fan2 is in low speed
+18    Cooling fan3      0       1      FAN             Cooling fan3  4  Cooling fan3 is in low speed
+19   Middle Backplane Inner 0      1    TEMPERATURE_SENSOR  Middle Backplane Inner Temp 0   1  24.0 C Temp. within safe range
+9     PSU0 +3.3V        0       1      VOLTAGE_SENSOR  PSU0 +3.3V    3  3.4V  Voltage within acceptable range
+10    PSU0 +5V          0       1      VOLTAGE_SENSOR  PSU0 +5V      4  5.0V  Voltage within acceptable range
+11    PSU0 +12V         0       1      VOLTAGE_SENSOR  PSU0 +12V     5  12.1V Voltage within acceptable range
+12    PSU1 +3.3V        0       1      VOLTAGE_SENSOR  PSU1 +3.3V    6  3.4V  Voltage within acceptable range
+13    PSU1 +5V          0       1      VOLTAGE_SENSOR  PSU1 +5V      7  5.1V  Voltage within acceptable range
+14    PSU1 +12V         0       1      VOLTAGE_SENSOR  PSU1 +12V     8  12.3V  Voltage within acceptable range
+--------------------------------------------------------------------------------------------------------------
+Total: 13
+--------------------------------------------------------------------------------------------------------------
+Vendor id- HwVer- SwVer- LUId- Type-CONTROLLER_PERIPHERAL_DEVICE
+--------------------------------------------------------------------------------------------------------------
+ObjId   Device       attribute capability UnitType Type   Index   Vendor  value            status
+--------------------------------------------------------------------------------------------------------------
+3     CPU Temp Sensor    0      1    TEMPERATURE_SENSOR   CPU Temp Sensor    1  54.0 C  Temp. within safe range
+4     Board1 Temp Sensor 0      1    TEMPERATURE_SENSOR   Board1 Temp Sensor 2  39.0 C  Temp. within safe range
+5     Board2 Temp Sensor 0      1    TEMPERATURE_SENSOR   Board2 Temp Sensor 3  49.0 C  Temp. within safe range
+0     +3.3V Value        0      1    VOLTAGE_SENSOR  +3.3V Value    1  3.32 V  Voltage within acceptable range
+1     +5V Value          0      1    VOLTAGE_SENSOR  +5V Value      2  5.153 V Voltage within acceptable range
+2     +12V Value         0      1    VOLTAGE_SENSOR  +12V Value     3  12.32 V Voltage within acceptable range
+--------------------------------------------------------------------------------------------------------------
+Total: 7
+ 
+</PRE></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2703690-1064675">5.2&nbsp;&nbsp;HSDA and System Configuration (&#8220;reconfig&#8221;) Utility<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">In the event that HSDA is shown to be &#8220;degraded&#8221;
+(<SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show map</I></B></FONT></SPAN> command) or an individual disk drive
+is shown as &#8220;used&#8221; (<SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show disk</I></B></FONT></SPAN> or <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>show ld</I></B></FONT></SPAN> commands), service attention is needed. In these
+conditions, one of the disk drives is no longer included in the logical
+disk array. The RAID 5 aspect (redundancy) of the array is no longer
+applicable and risk of losing scan data is increased. In the event
+a second disk drive failure, they entire HSDA will fail.</P><P CLASS="sect2">In the event a disk drive is listed as &#8220;used&#8221;, replace
+the disk drive. Follow the instructions for replacing a Disk Drive
+found in <SPAN CLASS="MODULEREF"><A HREF="1064691.htm#SL2077427-1064691"><I>HSDA HDD Replacement Procedure</I></A></SPAN></P><P CLASS="sect2">In the HSDA HDD Replacement Procedure, the System Configuration
+(&#8220;reconfig&#8221;) Utility is used for repairing the logical
+disk array.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e903"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">System Configuration (&#8220;reconfig&#8221;), System
+Tab Options<UL><LI CLASS="bulletlist"><P>Regenerate Scan Database</P><P>Destructive! Creates new Scan Database on the HSDA/s. Use only
+if Scan Data corruption is suspected and HSDA hardware appears to
+be operational. All Scan Data presently on HSDA will be lost. (In
+case of the CT750HD system this includes both HSDAs.)</P><P></P></LI><LI CLASS="bulletlist"><P>Recreate Scan Disk Array</P><P>Destructive! Creates new Logical Disk on HSDA/s. Use only if
+replacing multiple disk drives or replacement of entire HSDA. All
+data will be lost. (In case of the CT750HD system this includes both
+HSDAs.)</P><P></P></LI><LI CLASS="bulletlist"><P>Rebuild Scan Disk Array</P><P>Non-Destructive. Used for including one new disk drive in the
+array. The logical disk is rebuilt to include new disk drive by using
+the redundancy aspect of the RAID 5 feature of the HSDA. Will take
+approximately 20 minutes to perform. This Option only appears on the
+System Tab when a degraded array is detected.</P></LI></UL></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

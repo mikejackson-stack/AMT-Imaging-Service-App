@@ -1,0 +1,169 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Common Slip Ring Checks</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5114045-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;10<BR>LightSpeed 4.X Service Information (Advanced)</P></td></tr></table><H1 ID="top">Common Slip Ring Checks </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113658697">1&nbsp;&nbsp;Visual Checks<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>Ensure cable connections are securely fastened.</P></LI><LI CLASS="bulletlist"><P>Terminator boards mounted correctly with correct screws.</P></LI><LI CLASS="bulletlist"><P>Fiber-optic cables connected and locked.</P></LI><LI CLASS="bulletlist"><P>Damaged components/ring/brushes.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL46797-46541">2&nbsp;&nbsp;Power and Grounding Checks<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>Ground screws on ring # 6.</P></LI><LI CLASS="bulletlist"><P>Frame bonding ground on unused ring # 3.</P></LI><LI CLASS="bulletlist"><P>Ground and filter connections on back side of platter.</P></LI><LI CLASS="bulletlist"><P>Harness shield ground connections.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113658719">3&nbsp;&nbsp;Ping<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">To isolate rough spots in the rotation, execute an extended version
+of the ping command while the FE manually rotates the gantry. The output will
+demonstrate where the rough spots exist. Any cleaning efforts should be concentrated
+in those areas. This test requires two people: the FE and a person at the
+console end to indicate where the rough spots occur.</P><P CLASS="sect1">Perform the following command:</P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">insite @ HSA1_SBC0 130: </FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ping obcr</B></FONT></SPAN></P><PRE>24 bytes from 192.9.224.2: icmp_seq=27. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=28. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=29. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=30. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=31. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=32. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=33. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=34. time=1600. ms
+24 bytes from 192.9.224.2: icmp_seq=35. time=18120. ms
+24 bytes from 192.9.224.2: icmp_seq=36. time=27180. ms
+24 bytes from 192.9.224.2: icmp_seq=37. time=31260. ms
+24 bytes from 192.9.224.2: icmp_seq=38. time=35260. ms
+24 bytes from 192.9.224.2: icmp_seq=39. time=34260. ms
+24 bytes from 192.9.224.2: icmp_seq=40. time=33300. ms
+24 bytes from 192.9.224.2: icmp_seq=41. time=22320. ms
+24 bytes from 192.9.224.2: icmp_seq=42. time=11320. ms
+24 bytes from 192.9.224.2: icmp_seq=43. time=1360. ms
+24 bytes from 192.9.224.2: icmp_seq=44. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=45. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=46. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=47. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=48. time=20. ms
+24 bytes from 192.9.224.2: icmp_seq=49. time=20. ms</PRE><P CLASS="sect1">EXPLANATION</P><P CLASS="sect1">The packet internet groper is used to determine if another user is still
+active. The ping command works by sending out an internet control message
+protocol (ICMP) echo request. If the destination user is reachable, then an
+ICMP echo will be returned immediately. The sending user will continue to
+send this ping/ICMP request until terminated or it times out. Pay particular
+attention to the response time of the packet to determine network response.
+In this case, problems with the rings were discovered and marked by the FE
+during rotation.</P><P CLASS="sect1">SOLUTION</P><P CLASS="sect1">Clean/clear slip rings of debris in vicinity where network response
+rate degraded.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113658730">4&nbsp;&nbsp;Using nbsClient<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658732">4.1&nbsp;&nbsp;nbsClient to the OBC<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>On the Host Controller, type<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> nbsClient obcr</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>While in nbsClient type<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> s sr0</B></FONT></SPAN> (0 = zero).</P></LI><LI CLASS="numlist"><P>At the bottom of the response:</P></LI></OL><PRE>&nbsp;&nbsp;sr0: Timeout Error Statistics:
+&nbsp;  INIT timeouts          =        1   DATA timeouts           = 0
+&nbsp;&nbsp;sr0: Interrupt Statistics:
+ &nbsp; Level 6 interrupts     =      171   DAS/AP FIFO full        = 0</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;TAXI link failures&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 </FONT></SPAN>(Violations)</P><PRE>&nbsp;&nbsp;sr0: Miscellaneous Statistics:
+  &nbsp;Black hole occurrences =        0   Total words thrown away = 0
+  &nbsp;Most words thrown away =        0   Errored DATA frames     = 0</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;sr0: TAXI link failure types: </FONT></SPAN>(violations
+categorized)</P><PRE>  &nbsp;Idle TAXI link failures  = 0
+  &nbsp;Rx TAXI link failures    = 0
+  &nbsp;Tx TAXI link failures    = 0
+  &nbsp;Tx/Rx Taxi link failures = 0
+
+&nbsp;&nbsp;***********************************************
+&nbsp;&nbsp;*          LS Slip-Ring Statistics            *
+&nbsp;&nbsp;***********************************************</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Words received&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+15599259</FONT></SPAN> (Multiply by 22 to get bits transferred)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Voting stats&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Brush Disconnects:</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;medium
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2">Type <SPAN CLASS="KEYBOARD">&lt;CTRL + C&gt;</SPAN> to get out of nbsClient.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658781">4.2&nbsp;&nbsp;nbsClient to the STC<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>On the Host Controller, type<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> nbsClient stc</B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>While in nbsClient type<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> s sr0 </B></FONT></SPAN>(0 = zero).</P></LI><LI CLASS="numlist"><P>At the bottom of the response:</P></LI></OL><PRE>&nbsp;&nbsp;sr0: Timeout Error Statistics:
+&nbsp;  INIT timeouts          =        1   DATA timeouts           = 0
+&nbsp;&nbsp;sr0: Interrupt Statistics:
+ &nbsp; Level 6 interrupts     =      171   DAS/AP FIFO full        = 0</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;TAXI link failures&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 </FONT></SPAN>(Violations)</P><PRE>&nbsp;&nbsp;sr0: Miscellaneous Statistics:
+  &nbsp;Black hole occurrences =        0   Total words thrown away = 0
+  &nbsp;Most words thrown away =        0   Errored DATA frames     = 0</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;sr0: TAXI link failure types: </FONT></SPAN>(violations
+categorized)</P><PRE>  &nbsp;Idle TAXI link failures  = 0
+  &nbsp;Rx TAXI link failures    = 0
+  &nbsp;Tx TAXI link failures    = 0
+  &nbsp;Tx/Rx Taxi link failures = 0
+
+&nbsp;&nbsp;***********************************************
+&nbsp;&nbsp;*          LS Slip-Ring Statistics            *
+&nbsp;&nbsp;***********************************************</PRE><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Words received&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+15599259</FONT></SPAN> (Multiply by 22 to get bits transferred)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Voting stats&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;Brush Disconnects:</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;medium
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;long
+= 0</FONT></SPAN> (see below theory description)</P><P CLASS="sect2">Type <SPAN CLASS="KEYBOARD">&lt;CTRL + C&gt;</SPAN> to get out of nbsClient.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113658830">5&nbsp;&nbsp;Basic Theory of Operation of LSCOM Boards<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">3-wire serial communication:</P><UL><LI CLASS="bulletlist"><P>Inbound</P></LI><LI CLASS="bulletlist"><P>Outbound</P></LI><LI CLASS="bulletlist"><P>Reference</P></LI></UL><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658839">5.1&nbsp;&nbsp;Violations<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">A violation is created in one of three ways:</P><UL><LI CLASS="bulletlist"><P>An invalid command is received.</P></LI><LI CLASS="bulletlist"><P>The 2 command/data bits do not match for a byte.</P></LI><LI CLASS="bulletlist"><P>The parity bit is not correct.</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658848">5.2&nbsp;&nbsp;Brush Disconnects<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The serial communication is +5V to -5V during normal operation. If the
+line is disconnected or if the brushes are bouncing then the serial line will
+be at 0V compared to the reference line. The three types of disconnects indicate
+different times for the line at 0V.</P><P CLASS="sect2">(75ns &lt; short &lt; 200ns &lt; medium &lt; 4.4us &lt; long)</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658853">5.3&nbsp;&nbsp;Voting Stat<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Each cell is 400ns wide and that cell is measured 5 times in the middle
+of the cell time (sampled every 25ns from 125ns to 275ns). If all seven samples
+are not alike then the voting stats are incremented. Should indicate system
+health, more empirical data is required to determine correlation to BER.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113658856">5.4&nbsp;&nbsp;RCOM/SCOM Statistics Defined<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following output is an example of RCOM/SCOM output. Service personnel
+should be interested in the &#8220;number*&#8221; items (e.g. 1*, 2*) as the
+critical parameters. These items are defined below. Refer to <A HREF="46541.htm#SL46792-46541">Section 5.4.1</A>for explanations of these parameters.</P><PRE>	No. of Rot COM FIFO overruns transmitted		: 0
+	No. of Stat COM FIFO overruns transmitted		: 0
+	No. of Rot COM INIT frames transmitted		: 1
+	No. of Stat COM INIT frames transmitted		: 2
+	No. of Rot COM INITACK frames transmitted		: 1
+	No. of Stat COM INITACK frames transmitted		: 1
+	No. of Rot COM DATA frames transmitted		: 412
+	No. of Stat COM DATA frames transmitted		: 419
+	No. of Rot COM ACK frames transmitted		: 420
+	No. of Stat COM ACK frames transmitted		: 412
+	No. of Rot COM NAK frames transmitted		: 0
+	No. of Stat COM NAK frames transmitted		: 0
+	No. of Rot COM FIFO overruns received		: 0
+	No. of Stat COM FIFO overruns received		: 0
+	No. of Rot COM FIFO underruns		: 3
+	No. of Stat COM FIFO underruns		: 2
+	No. of Rot COM INIT frames received		: 1
+	No. of Stat COM INIT frames received		: 2
+	No. of Rot COM INITACK frames received		: 1
+	No. of Stat COM INITACK frames received		: 1
+	No. of Rot COM DATA frames received		: 420
+	No. of Stat COM DATA frames received		: 412
+	No. of Rot COM ACK frames received		: 412
+	No. of Stat COM ACK frames received		: 419
+	No. of Rot COM NAK frames received		: 0
+	No. of Stat COM NAK frames received		: 0
+	No. of Rot COM frame header checksum errors 		: 0
+	No. of Stat COM frame header checksum errors		: 0
+	No. of Rot COM user data checksum errors		: 0
+	No. of Stat COM user data checksum errors		: 0
+	No. of Rot COM DATA frames revd with bad seq number		: 0
+	No. of Stat COM DATA frames revd with bad seq number		: 0
+	No. of Rot COM INIT frame timeouts		: 0
+	No. of Stat COM INIT frame timeouts		: 0
+	No. of Rot COM DATA frame timeouts		: 0
+	No. of Stat COM DATA frame timeouts		: 0
+	No. of Rot COM output errors because intf down		: 0
+	No. of Stat COM output errors because intf down		: 0
+	No. of Rot COM DAS/AP FIFO full conditions		: 0
+	No. of Stat COM DAS/AP FIFO full conditions		: 0
+	No. of Rot COM level 6 interrupts received		: 820
+	No. of Stat COM level 6 interrupts received		: 812
+	No. of Rot COM total data read from FIFO and discarded		: 0
+	No. of Stat COM total data read from FIFO and discarded		: 0
+	No. of Rot COM occurrences of throwing away data		: 0
+	No. of Stat COM occurrences of throwing away data		: 0</PRE><P CLASS="sect2">1*  No. of OBC link violations : 3</P><PRE>	No. of STC link violations		: 0
+	No. of Rot COM black hole occurrences		: 0
+	No. of Stat COM black hole occurrences		: 0
+	No. of Rot COM link failures when idle		: 0
+	No. of Stat COM link failures when idle		: 0
+	No. of Rot COM link failures when receiver busy		: 0
+	No. of Stat COM link failures when receiver busy		: 0</PRE><P CLASS="sect2">2*  No. of Rot COM link failures when transmitter busy : 2</P><PRE>	No. of Stat COM link failures when transmitter busy		: 0
+	No. of Rot COM link failures when recvr and trans busy		: 0
+	No. of Stat COM link failures when recvr and trans busy		: 0</PRE><P CLASS="sect2">3*  No. of Rot COM bytes received LSW : 163826088</P><P CLASS="sect2">4*  No. of Stat COM bytes received LSW : 81211069</P><PRE>	No. of Rot COM bytes received MSW		: 0
+	No. of Stat COM bytes received MSW		: 0
+	LED    Rot COM   Status		: 2031
+	LED    Stat COM   Status		: 2043</PRE><P CLASS="sect2">5*  No. of Rot COM short link disconnects : 59</P><PRE>	No. of Stat COM short link disconnects 		: 0</PRE><P CLASS="sect2">6*  No. of Rot COM medium link disconnects : 196605</P><PRE>	No. of Stat COM medium link disconnects		: 0</PRE><P CLASS="sect2">7*  No. of Rot COM long link disconnects : 133251</P><PRE>	No. of Stat COM long link disconnects		: 0</PRE><P CLASS="sect2">8*  No. of Rot COM voting errors : 65738</P><P CLASS="sect2">9* No. of Stat COM voting errors : 931</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL46792-46541">5.4.1&nbsp;&nbsp;Error Log: Rot Com / Stat Com Statistics (LSCom)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">1* No. of OBC link violations                                : 3</P><P CLASS="sect3">Link Violations are detected by the receiver of the data only - the
+transmitter of the data has no idea whether the data is good or bad. Most
+data corruptions are caused by the weakest link in the data transmission medium,
+typically the slipring. In this case, the rotating LSCOM receiver is picking
+bad data bits, so the corrupted data path is from the stationary LSCOM, across
+signal rings #11 and #12 (ref: Slipring Functional Drawing), and received
+by the rotating LSCOM. Violations are only counted when real data is being
+sent across the interface. Violations may be retried by firmware, and may
+cause &#8220;black-hole&#8221; occurrences to be logged. Errors that are sensed
+when there is no data transmission are not counted. In this example, there
+are no errors detected on the stationary side of the interface.</P><P CLASS="sect3">2* No. of Rot COM link failures when transmitter busy        : 2</P><P CLASS="sect3">Of the 3 violations encountered, 2 of those data corruptions were received
+when the OBC LSCOM was sending data to the stationary side.</P><P CLASS="sect3">3* No. of Rot COM bytes received LSW                         : 163826088</P><P CLASS="sect3">4* No. of Stat COM bytes received LSW                        : 81211069</P><P CLASS="sect3">Typically, there is approximately twice as much data sent by the stationary
+side as received by the stationary side. Keep this in mind when determining
+&#8220;rates of failure occurrence&#8221; between the rotating and stationary
+sides. We can expect 2x as many failures on the rotating side of the system
+if the bit-error-rates of the inbound and outbound links are equal.</P><P CLASS="sect3">5* No. of Rot COM short link disconnects                     : 59</P><P CLASS="sect3">6* No. of Rot COM medium link disconnects                    : 196605</P><P CLASS="sect3">7* No. of Rot COM long link disconnects                      : 133251</P><P CLASS="sect3">The scanner has the ability to detect and count disconnects on the contact
+communications rings without necessarily corrupting the data transferred.
+Short link disconnects are typically within a bit cell (&lt;200nS), Medium
+link disconnects are between (200nS) and (4400nS), and long link disconnects
+are above (4400nS). When present, medium and long link disconnects are almost
+always present because of poor electrical interface between the sliding brass
+ring surface and the surfaces of the carbon-silver brush tips. Look for excessive
+brush dust, oils contamination on the ring (oils can seep into the porous
+brush tips as well), worn brushes, ring scratches, loose cable connections.</P><P CLASS="sect3">8* No. of Rot COM voting errors                              : 65738</P><P CLASS="sect3">9* No. of Stat COM voting errors                             : 931</P><P CLASS="sect3">The scanner&#8217;s LSCOM circuitry has the ability to take multiple
+samples within every 400nS bit cell. Each cell is sampled 5 times. Majority
+vote wins the decision. Non-unanimous &#8220;elections&#8221; are counted
+and logged for both the rotating and stationary sides. On a normally operating
+system, we would expect to see the inbound and outbound link voting stats
+to ratio accordingly - i.e.: inbound to OBC LSCOM should have about 2x the
+number of non-unanimous &#8220;elections&#8221; as the outbound link to the
+STC LSCOM. The voting errors here show a much higher occurrence on the inbound
+path to the OBC LSCOM.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113659012">5.4.2&nbsp;&nbsp;This section intentionally left blank<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL46802-46541">5.5&nbsp;&nbsp;Address Space<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">FF7F00 - FF7F1E</P><P CLASS="sect2">FF8000 - FF8032</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113659020">6&nbsp;&nbsp;Minimum Operational System Set<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There is no minimum system for the STC.</P><P CLASS="sect1">The minimum system set for the OBC is the LSCOM and CPU.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1229113659023">7&nbsp;&nbsp;Slipring Bypass Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e351"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For a larger version of this illustration, click on the pdf icon
+below.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">Full Size Illustration: Normal Indications for Slipring Bypass Procedure</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/46806.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Normal Indications for Slipring Bypass Procedure</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/46543.gif" BORDER="0" usemap="#46543.gif"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

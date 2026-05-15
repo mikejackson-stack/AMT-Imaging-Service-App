@@ -1,0 +1,65 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Message Log</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5133315-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;14<BR>Signa EXCITE HD 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/27/07</P></td></tr></table><H1 ID="top">Message Log </H1><P CLASS="descriptive">This material explains the Signa message log. The message log is a disk
+file that contains a history, or log, of all errors or messages that have
+occurred while the Signa system was running.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294268194792">1&nbsp;&nbsp;Types of Errors<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section describes the format of messages/errors, and how they are
+displayed and logged.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294268194793">1.1&nbsp;&nbsp;Classes of Errors<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Four classes of error codes can occur. Each class is handled in a different
+manner, as described below.</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268194793-dup.1">1.1.1&nbsp;&nbsp;Operator Error<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">If the operator's response to a question is incorrect, a standard error
+message is displayed on the touch screen, along with a list of responses (if
+appropriate). These errors are not logged.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268194793-dup.2">1.1.2&nbsp;&nbsp;Soft Errors<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Soft errors can be recovered by issuing corrective commands without
+having to interrupt the flow of normal operation (e.g., during reconstruction,
+an AP error occurs. The reconstruction process can retry the operation with
+or without notifying the operator). These errors are logged.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268194794">1.1.3&nbsp;&nbsp;Recoverable Error<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">This class of errors can be recovered by issuing additional corrective
+commands, except that the normal flow of operation is interrupted. Since normal
+flow is interrupted, operator interaction is required. Suppose, for example,
+that a hardware failure that occurs during data collection aborts the scanning
+sequence. The fault can be corrected by sending a Reset command to the subsystem
+but, because the scan was interrupted, the operator must retry or abort the
+scan. These error messages recommend what action to take; they are logged.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268194794-dup.1">1.1.4&nbsp;&nbsp;Non-recoverable Errors<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">These are the most serious. They have the potential of bringing down
+a subsystem, or the whole system. All non-recoverable errors require an operator
+acknowledgement or correction before normal operation can resume. If, for
+example, an array processor fault exists, and cannot be corrected as described
+above, the operator is prompted to acknowledge the error. The subsystem is
+taken out of service, and the system returns to "normal" operation. The scan
+process is not disabled, but when the process is requested, it checks on whether
+or not the AP (and other required subsystems) is functional; if not, the process
+is not allowed. Non-recoverable errors are logged.</P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e59"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">During normal operation, messages are logged that do not report
+error status. Examples of these include: process output files, termination
+messages and some types of status. Most of these messages do not have error
+codes associated with them and they can be ignored.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294268194794-dup.2">1.2&nbsp;&nbsp;Priority of Errors<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There are two priority levels associated with messages/errors: normal
+and high. These priorities are assigned by the process that generates them,
+and is used for the purpose of displaying the errors. The definition of priority
+is given below:</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268194795">1.2.1&nbsp;&nbsp;High-Priority Messages<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">These messages involve safety-related conditions and usually require
+immediate attention. Priority messages are logged, and require operator acknowledgement
+or correction. They also override all other messages on the touch screen.
+(Refer to <A HREF="46788.htm#SL52826-46788">Section&nbsp;2</A>- Format of
+Error Messages on the touch screen.) A typical high priority message is:</P><P CLASS="sect3"><SPAN CLASS="KEYBOARD">&lt;OXYGEN LEVEL LOW IN EXAM ROOM&gt;</SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1294268195194">1.2.2&nbsp;&nbsp;Normal-Priority Messages<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">These messages include those relating to software/hardware errors, operator
+errors, recoverable errors, and soft errors.</P><P CLASS="sect3">Normal-priority messages are displayed on a first-come, first-serve
+basis. High-priority messages are not stacked behind normal-priority messages,
+but are displayed immediately, in which case, normal-priority messages are
+then placed on the "More Messages" screen.</P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL52826-46788">2&nbsp;&nbsp;Format of Error Messages<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The monitor screen has certain areas designated for system error and
+status reporting. The message area on the monitor screen, in the upper left
+corner, displays the most recent high-priority message.</P><P CLASS="sect1">See the User Interface Tutorial for an example of what the message log
+looks like on the Signa Horizon LX system.</P><P CLASS="sect1">Clicking on the <SPAN CLASS="GUIBUTTON">[&gt;&gt;]</SPAN> in the message area box opens
+a window that displays the high-priority messages. See <A HREF="javascript:winopen('46788illd0e98.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>. Messages are displayed in chronological
+order in this window. Also, the most recent high-priority message is still
+displayed in the message area box. If additional messages arrive while the
+message window is displayed, an [Update] button appears at the bottom of the
+screen. Clicking on this button displays the recently arrived messages. </P><DIV CLASS="ILLUSTRATION" id="SL52823-46788"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Message Log Entry Screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/46788-46586.jpg" BORDER="0" usemap="#SL46811-46788"></P></DIV><P CLASS="sect1">Messages can be removed from the attention area in two ways. One way
+is if the reported error condition is corrected, and the software clears the
+message. The second way is when the operator clicks on <SPAN CLASS="GUIBUTTON">[CLEAR]</SPAN>;
+note, however, that clearing messages has little effect if the condition is
+not corrected.</P><P CLASS="sect1">Operator input errors are displayed beneath their respective application
+window on the monitor screen.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294268195762">2.1&nbsp;&nbsp;Extended Error Message Format<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If the Error Message has an extended error message, as is the case with
+most of the error messages generated by the Gradient Driver Tests, then an
+arrow (-<SPAN CLASS="SUB"><SUB>&gt;</SUB></SPAN>) is the last character in the error message.
+This denotes an extended error message is available with additional service-relevant
+information.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1294268195762-dup.1">2.2&nbsp;&nbsp;Extended Error Message Availability<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Extended Error Messages are available only for error messages relating
+to the Gradient Driver subsystem in Signa Horizon systems. Refer to the .</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1294268195763">3&nbsp;&nbsp;Format and Interpretation of Error Codes<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Lower-priority messages like operator, soft, and recoverable errors
+are recorded in the Message Log. Error messages are stored in the Message
+Log, which is a text file that can be viewed from the monitor screen.</P><P CLASS="sect1">The majority of the messages logged (i.e., those supplied by the application
+programs) have the format shown in <A HREF="javascript:winopen('46788illd0e135.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>.
+(The time, always shown in the 24-hour format, is supplied by the MR System
+Executive.)</P><DIV CLASS="ILLUSTRATION" id="SL52820-46788"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Typical Message Format</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/46788-46658.jpg" BORDER="0" usemap="#SL46813-46788"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

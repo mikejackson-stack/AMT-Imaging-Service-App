@@ -1,0 +1,58 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Error 183183, 183185 - X-Ray Gen: kV Lp Imbalance</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5114043-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;9<BR>LightSpeed 3.X Service Methods (Advanced)</P></td></tr></table><H1 ID="top">Error 183183, 183185 - X-Ray Gen: kV Lp Imbalance </H1><P CLASS="descriptive">Estimated Completion Time:</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864161">1&nbsp;&nbsp;Error<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>Wed Jun 21 16:59:42 1995
+Suite: CT02 Host: OBC Proc:
+Generator Error: 183183
+File: Method: No
+950621 1713 03294 Method Line: 571
+Function: XRAY GENERATION : KV Loop
+Scan: 16922 1 1 Type: Scout
+Exception Level: Sec Soft Time: 16:59:39:810
+Log Series: 38
+kV out of 3 % tol
+Selected technic: 80 kV, 40 mA 
+Tot. samples = 2
+Tot. kV samples above tol. = 0, below tol. = 2
+950621 1712 03294 Avg. of kV samples above tol. = 0.000 kV, below tol. = 
+40.000 kV
+Avg. of tot. kV = 40.000 kV
+Wed Jun 21 16:59:42 1995
+Suite: CT02 Host: OBC Proc:
+Generator Error: 183185
+File: Method: No
+Method Line: 661
+950621 1712 03294 Function: XRAY GENERATION : KV Loop 
+Scan: 16922 1 1 Type: Scout
+Exception Level: Sec Soft Time: 16:59:39:810
+Log Series: 38
+kV imbalance over 10 % tolerance.
+Selected technic: 80 kV, 40 mA
+Imbalance threshold = 8.000 kV
+Average anode kV = 0.000 kV.
+Average cathode kV = 40.049 kV</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864172">2&nbsp;&nbsp;Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780864174">2.1&nbsp;&nbsp;Why You Got It<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">KV is regulated by the KV board which monitors the KV from the feedback
+sensed by the voltage dividers in each HV Tank. KV is maintained by adjusting
+the operating frequency and duty cycle of each Inverter. If the KV is not
+within 3% of each other, a error will be posted to the operator but scanning
+can continue. When the KV is different by 5% or more the scan will abort (diagnostics
+will not abort).</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e41"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">KV reported to the screen does not necessarily indicate what the
+actual kv is due to potential kv gain calibration. KV imbalance is usually
+due to the result of a component being &#8220;opened&#8221;.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780864181">2.2&nbsp;&nbsp;Reference Documents<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">KV Loop Functional Interconnect Drawings</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780864185">2.3&nbsp;&nbsp;Software Tools<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>KV Loop, for Light Speed, select: Service, X-Ray Generation,
+KV Loop under Test Selection, select HV MANUAL</P></LI><LI CLASS="bulletlist"><P>KV &amp; mA Test</P></LI><LI CLASS="bulletlist"><P>for Light Speed Select: Service, X-Ray Generation, KV &amp;
+mA (X-Ray)]</P></LI><LI CLASS="bulletlist"><P>Fiber Optics Test</P></LI></UL><P CLASS="sect2">For Light Speed Select: Service, X-Ray Generation, KV Loop under Test
+Selection, select HV Fiber Optics</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780864200">2.4&nbsp;&nbsp;FRUs Involved<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>KV Board</P></LI><LI CLASS="bulletlist"><P>Both Inverters</P></LI><LI CLASS="bulletlist"><P>Both Tanks</P></LI><LI CLASS="bulletlist"><P>OBC Quad Power Supply</P></LI><LI CLASS="bulletlist"><P>Fiber Optics Sequencing</P></LI><LI CLASS="bulletlist"><P>OBC Backplane Wiring</P></LI><LI CLASS="bulletlist"><P>X-Ray Tube</P></LI><LI CLASS="bulletlist"><P>DCRGS or HVDC</P></LI></UL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864223">3&nbsp;&nbsp;Troubleshooting Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Verify that this is the primary error.</P></LI><LI CLASS="numlist"><P>Determine which KV board is installed in system.</P></LI><LI CLASS="numlist"><P>Run KV LOOP test and use result screens to determine FRU -
+This is the diagnostics you want to fail because the tube can be verified/eliminated
+as the problem.</P></LI><LI CLASS="numlist"><P>IF KV LOOP does NOT fail, run KV &amp; mA test and use result
+screens to determine FRU.</P></LI><LI CLASS="numlist"><P>Scope KVp.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780864239">4&nbsp;&nbsp;Troubleshooting Details<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Verify that this is the primary error</P><UL><LI CLASS="bulletlist"><P>This is necessary because different KV bd's regulate KV in
+a different manner.</P></LI><LI CLASS="bulletlist"><P>Examine error log and determine if this is the primary error.
+If associated with overcurrents or Shoot-Throughs, troubleshoot those errors
+first.</P></LI></UL></LI><LI CLASS="numlist"><P>Determine which KV board is installed in your system.</P><UL><LI CLASS="bulletlist"><P>The easiest way to do this is to look at the result screen
+of either KV Loop or KV &amp; mA Test. The two newest boards will have two
+additional lines: Cathode/Anode Inverter Duty Cycle. The old KV Bd will NOT
+have any 'Duty Cycle' displayed.</P></LI><LI CLASS="bulletlist"><P>Oldest KV Control Bd 46-321064</P></LI><LI CLASS="bulletlist"><P>Middle generation KV Control Bd 46-321198</P></LI><LI CLASS="bulletlist"><P>Newest KV Control Bd <SPAN CLASS="PARTNUM" TITLE="FRU 1">2143147</SPAN></P></LI></UL></LI><LI CLASS="numlist"><P>Use KV Loop Test and Result Screens</P><UL><LI CLASS="bulletlist"><P>This is the diagnostics where the system can be high potted.
+The x-ray tube and/or HV cables can be replaced by a High Voltage Bleeder,
+thus eliminating (or confirming) the x-ray tube and/or HV cables as a cause.</P></LI><LI CLASS="bulletlist"><P>Use Job Card &#8220;RESULTS SCREEN FOR PERFORMIX KV LOOP&#8221;</P><P>FAIL: RESULTS SCREEN FOR PERFORMIX</P><UL><LI CLASS="bulletlist"><P>Repair / Replace as needed.</P></LI><LI CLASS="bulletlist"><P>Verify System Operation.</P></LI><LI CLASS="bulletlist"><P>YOU ARE DONE.</P></LI></UL><P>PASS: RESULTS SCREEN FOR PERFORMIX KV LOOP ok, then proceed
+to Step 4.</P></LI></UL></LI><LI CLASS="numlist"><P>Use KV &amp; mA Test and Results screens. See &#8220;Explanation
+of kV/mA Results Screen,&#8221; in <SPAN CLASS="MODULEREF"><I><A HREF="53440.htm">kV Troubleshooting Theory</A></I></SPAN>.</P><P>FAIL: RESULTS SCREEN FOR PERFORMIX</P><UL><LI CLASS="bulletlist"><P>Repair / Replace as needed.</P></LI><LI CLASS="bulletlist"><P>Verify System Operation.</P></LI><LI CLASS="bulletlist"><P>YOU ARE DONE.</P></LI></UL><P>PASS: RESULTS SCREEN FOR PERFORMIX KV &amp;mA ok, then
+proceed to Step 5.</P></LI><LI CLASS="numlist"><P>Scope the KVp waveform</P><UL><LI CLASS="bulletlist"><P>Scope TP-1 to TP-18 on the measurement board of each HV Tank.
+This is a 10,000/1 divider, so 2VDC Vertical and 50msec/div Horizontal are
+good starting points.</P></LI><LI CLASS="bulletlist"><P>Scope the KVp waveform using the HV Bleeder. See <SPAN CLASS="MODULEREF"><I><A HREF="53440.htm">kV Troubleshooting Theory</A></I></SPAN>.</P><P>FAIL: &#8220;KVp Waveform&#8221;</P><UL><LI CLASS="bulletlist"><P>Repair / Replace as needed.</P></LI><LI CLASS="bulletlist"><P>Verify System Operation.</P></LI><LI CLASS="bulletlist"><P>YOU ARE DONE.</P></LI></UL><P>PASS: KVp Waveform OK.</P></LI></UL></LI></OL><P CLASS="sect1">END OF PROCEDURE</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

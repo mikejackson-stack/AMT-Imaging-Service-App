@@ -1,0 +1,78 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Filament Heater Errors</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Filament Heater Errors</SPAN> </P><table summary="Filament Heater Errors" border="1"><colgroup><col width="11%"><col width="11%"><col width="20%"><col width="20%"><col width="35%"></colgroup><thead><tr><th align="left" valign="top">Error code (hex)</th><th align="left" valign="top">Error code (dec)</th><th align="left" valign="top">Message/explanation</th><th align="left" valign="top">Potential cause</th><th align="left" valign="top">Recommended action/Troubleshooting
+guide</th></tr></thead><tbody><tr><td align="left" valign="top">50-0201h</td><td align="left" valign="top">513d or 4609d</td><td align="left" valign="top">No CAN message received within
+5 sec&#8217;s The Heater board has not received any command from the PPC kV
+control main software for the last 5 sec., interpreted as a loss of communication</td><td align="left" valign="top">PPC kV control main software
+lost PPC kV control or Heater board CAN driver failure Bad contact on one
+of the pin on the CAN bus line connector</td><td align="left" valign="top">Check internal CAN bus cable
+between PPC kv ctl and Rotation board. </td></tr><tr><td align="left" valign="top">50-0202h</td><td align="left" valign="top">514d or 4610d</td><td align="left" valign="top">Database not correct. The firmware
+of the heater board has detected that the data base received from the PPC
+kV control board has wrong data.</td><td align="left" valign="top">Wrong PPC kV control data base.
+It can only happen at power up.</td><td align="left" valign="top"> - Reload Jedi database. - If
+error persists, replace Heater board </td></tr><tr><td align="left" valign="top">50-0203h</td><td align="left" valign="top">515d or 4611d</td><td align="left" valign="top">Heater inverter permanent over
+current.(SW limit) Issued by the heater board when an over current has been
+detected and 3 restarts have been tried without success within 100 ms</td><td align="left" valign="top">Heater board</td><td align="left" valign="top">Replace Heater board</td></tr><tr><td align="left" valign="top">50-0204h</td><td align="left" valign="top">516d or 4612d</td><td align="left" valign="top">Filament permanent open circuit.
+Issued by the heater board when an open circuit has been detected and 3 restarts
+have been tried without success within 100 ms</td><td align="left" valign="top">X-ray tube filament open Heater
+to HV tank cable Cathode HV cable or pin contacts Heater board Open circuit
+in filament transformer inside HV Tank.</td><td align="left" valign="top"> - Unplug cathode HV cable on
+generator side. Measure impedance between pins on HV cable. If open circuit,
+check connection between cathode HV cable and tube, and impedance between
+pins of tube HV receptacle.  - Replace tube or HV cable. - If no open circuit,
+check Heater to HV tank cable (3 wires) - If cable OK, then replace heater
+board. - If open circuit error is reported on the other filament, replace
+heater board. - If open circuit error is reported on the same filament, check
+HV Tank heater transformers (cable connector on top of JEDI inverter for primary
+winding, cathode HV receptacle for secondary. Replace HV tank.</td></tr><tr><td align="left" valign="top">50-0205h</td><td align="left" valign="top">517d or 4613d</td><td align="left" valign="top">Heater Inverter permanent short
+circuit (HW limit) Issued by the heater board when a short circuit has been
+detected and 3 restarts have been tried without success within 100 ms</td><td align="left" valign="top">Heater board</td><td align="left" valign="top">Reset. If error persists, replace
+Heater board</td></tr><tr><td align="left" valign="top">50-0206h</td><td align="left" valign="top">518d or 4614d</td><td align="left" valign="top">Filament overload Pre-Heat This
+is the result of an integrated value of the RMS current meas on Heater board
+comparison with max. Tube value in dbase.</td><td align="left" valign="top">Tube data base or calibration
+Heater board </td><td align="left" valign="top"> - Reload database and perform
+a tube filament calibration - Reset and try an exposure - If error persists,
+replace Heater board.</td></tr><tr><td align="left" valign="top">50-0207h</td><td align="left" valign="top">519d or 4615d</td><td align="left" valign="top">Filament overload Boost Same
+as above</td><td align="left" valign="top">Tube data base or calibration
+Heater board </td><td align="left" valign="top"> - Reload database and perform
+a tube filament calibration  - Reset and try an exposure  - If error persists,
+replace Heater board.</td></tr><tr><td align="left" valign="top">50-0208h</td><td align="left" valign="top">520d or 4616d</td><td align="left" valign="top">Filament overload Heat Same
+as above</td><td align="left" valign="top">Tube data base or calibration
+Heater board </td><td align="left" valign="top"> - Reload database and perform
+a tube filament calibration  - Reset and try an exposure  - If error persists,
+replace Heater board.</td></tr><tr><td align="left" valign="top">50-0209h</td><td align="left" valign="top">521d or 4617d</td><td align="left" valign="top">Heater : Command error</td><td align="left" valign="top">Software problem</td><td align="left" valign="top">No action.</td></tr><tr><td align="left" valign="top">50-0210h</td><td align="left" valign="top">528d or 4624d</td><td align="left" valign="top">PWM rate too low RMS filament
+current measurement (every 0.5 m sec.) on heater board is too low</td><td align="left" valign="top">Heater board</td><td align="left" valign="top"> - Verify that 160V is present
+on Heater board (DS1 on heater board, see block diagrams)   - Check cabling
+from LVPS board. - If 160V ok, replace heater board.</td></tr><tr><td align="left" valign="top">50-0211h</td><td align="left" valign="top">529d or 4625d</td><td align="left" valign="top">PWM rate too high RMS filament
+current measurement (every 0.5 msec.) on heater board is too high</td><td align="left" valign="top">X-ray tube filament open Heater
+to HV tank cable open Cathode HV cable or pin contacts open Open circuit in
+filament transformer inside HV Tank.</td><td align="left" valign="top"> - Unplug cathode HV cable on
+generator side. Measure impedance between pins.  If open circuit, check connection
+between cathode HV cable and tube, and impedance between pins of tube HV receptacle.
+Replace tube or HV cable. If no open circuit, check Heater to HV tank cable
+(3 wires) - If cable OK, check HV Tank heater transformers (cable connector
+on top of JEDI inverter for primary winding, cathode HV receptacle for secondary.
+Replace HV tank.</td></tr><tr><td align="left" valign="top">50-0212h</td><td align="left" valign="top">530d or 4626d</td><td align="left" valign="top">MAINS_DROP detected. The firmware
+of the Heater board has detected the mains drop signal activation and has
+transmitted error to PPC kV control</td><td align="left" valign="top">Mains drop Cable or connector
+between LVPS and heater board LVPS board</td><td align="left" valign="top"> - Check if LVPS power supply
+is abnormally down.  - Reset system. If error persists, check flat cable between
+LVPS and heater board. - If cable is OK, replace LVPS board</td></tr><tr><td align="left" valign="top">50-0213h</td><td align="left" valign="top">531d or 4627d</td><td align="left" valign="top">PRD error Firmware checksum,
+RAM test and EPLD access are performed at power up or reset.</td><td align="left" valign="top">Heater board</td><td align="left" valign="top">Reset. If error persists, replace
+Heater board.</td></tr><tr><td align="left" valign="top">50-0214h</td><td align="left" valign="top">532d or 4628d</td><td align="left" valign="top">Boost too long Boost command
+stayed longer than 400ms</td><td align="left" valign="top">Loss of communication during
+boost.</td><td align="left" valign="top">Error followed by another communication
+error. Troubleshoot comm error.</td></tr><tr><td align="left" valign="top">50-0215h</td><td align="left" valign="top">533d or 4629d</td><td align="left" valign="top">Filament selection error The
+relay on the Heater board selecting the filament is in the wrong position
+with respect to the selection</td><td align="left" valign="top">Heater board</td><td align="left" valign="top">Replace heater board</td></tr><tr><td align="left" valign="top">50-0216h</td><td align="left" valign="top">534d or 4630d</td><td align="left" valign="top">Current feedback not null when
+inverter OFF Inverter current has been measured while the inverter was not
+commanded</td><td align="left" valign="top">Heater board</td><td align="left" valign="top">Replace heater board</td></tr><tr><td align="left" valign="top">50-0217h</td><td align="left" valign="top">535d or 4631d</td><td align="left" valign="top">Current not zero through a not
+selected filament Residual current of unselected filament at heater output
+(for Heater V6 version only) </td><td align="left" valign="top">Heater board </td><td align="left" valign="top">Replace heater board</td></tr><tr><td align="left" valign="top">50-0221h 0222h 0223h 0224h</td><td align="left" valign="top">545d 546d 547d 548d or 4641d
+4642d 4643d 4644d</td><td align="left" valign="top">Filament Database not correct
+The firmware of the heater board has detected that the Received Data base
+from PPC kV control contains erroneous data for Tube 1, 2, 3, or 4.</td><td align="left" valign="top">Wrong PPC kV control data base.
+It can only happen at power up.</td><td align="left" valign="top">Reload Jedi database. If error
+persists, replace Heater board.</td></tr><tr><td align="left" valign="top">50-0248h</td><td align="left" valign="top">584d or 4680d</td><td align="left" valign="top">Heater large focus error The
+main software received an error from heater board with no error code associated</td><td align="left" valign="top">software problem</td><td align="left" valign="top">No action </td></tr><tr><td align="left" valign="top">50-0249h</td><td align="left" valign="top">585d or 4681d</td><td align="left" valign="top">Heater small focus error The
+main software received an error from heater board with no error code associated</td><td align="left" valign="top">software problem</td><td align="left" valign="top">No action </td></tr></tbody></table></CENTER></DIV></BODY></HTML>
