@@ -356,6 +356,9 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
 .color-red{color:var(--red)}.fw-700{font-weight:700}.text-center{text-align:center}
 .divider{height:1px;background:var(--gray2);margin:12px 0}
+.photo-thumb{max-width:100%;max-height:220px;border-radius:8px;object-fit:cover;margin-top:8px;display:block}
+.photo-upload-area{border:2px dashed var(--gray2);border-radius:8px;padding:14px;text-align:center;cursor:pointer;color:var(--text2);font-size:.82rem;transition:border-color .2s}
+.photo-upload-area:hover{border-color:var(--blue2)}
 #toastContainer{position:fixed;bottom:calc(var(--bot-h,60px) + 12px);left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{background:#1f2937;color:#fff;padding:10px 18px;border-radius:10px;font-size:.85rem;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.35);opacity:0;transform:translateY(10px);transition:opacity .22s,transform .22s;pointer-events:none}
 .toast.show{opacity:1;transform:translateY(0)}
@@ -526,6 +529,12 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     </div>
     <div class="form-group"><label class="form-label">Work Performed / Notes</label><textarea class="form-control" id="nj_notes" placeholder="Describe work performed…"></textarea></div>
     <div class="form-group"><label class="form-label">Parts / Materials Used</label><textarea class="form-control" id="nj_parts" style="min-height:70px" placeholder="Part name, part #, qty…"></textarea></div>
+    <div class="form-group">
+      <label class="form-label">Job Photo (optional)</label>
+      <div class="photo-upload-area" onclick="document.getElementById('nj_photo_input').click()">📷 Tap to attach a photo</div>
+      <input type="file" id="nj_photo_input" accept="image/*" style="display:none" onchange="previewJobPhoto(this)">
+      <div id="jobPhotoPreview"></div>
+    </div>
     <div id="mileageDisplay" style="display:none;background:linear-gradient(135deg,#e8f5e9,#f0fdf4);border:1.5px solid var(--green);border-radius:var(--r2);padding:12px 14px">
       <div style="font-weight:700;font-size:.82rem;color:var(--green);margin-bottom:4px">🚗 Mileage Reimbursement</div>
       <div id="mileageBreakdown" style="font-size:.84rem;color:var(--text2);line-height:1.8"></div>
@@ -1006,7 +1015,10 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div id="kbp-kb" style="display:none">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
       <strong style="font-size:.88rem">🧠 Saved Knowledge Entries</strong>
-      <button class="btn btn-success btn-sm" onclick="openKBEntryModal()">+ Add Entry</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-outline btn-sm" onclick="openImportDocModal()" style="font-size:.75rem">📥 Import File</button>
+        <button class="btn btn-success btn-sm" onclick="openKBEntryModal()">+ Add Entry</button>
+      </div>
     </div>
     <div class="filter-bar" id="kbCatFilter">
       <div class="filter-chip active" onclick="setKBCatFilter('')" data-kbcat="">All</div>
@@ -2024,7 +2036,9 @@ function saveJob(){
     field:document.getElementById('nj_field').value,type,status:document.getElementById('nj_status').value,date,
     po:document.getElementById('nj_po').value,hours:document.getElementById('nj_hours').value,
     miles:document.getElementById('nj_miles').value,notes:document.getElementById('nj_notes').value,
-    parts:document.getElementById('nj_parts').value,createdBy:currentUser?currentUser.name:'',created:new Date().toISOString()};
+    parts:document.getElementById('nj_parts').value,createdBy:currentUser?currentUser.name:'',created:new Date().toISOString(),
+    photo:window._jobPendingPhoto||undefined};
+  window._jobPendingPhoto = null;
   jobs.unshift(j);saveJobs();clearJobForm();
   alert('✅ Job saved!');
   if(j.type==='PM'&&confirm('Open PM Checklist for this job now?')){ loadPMForJob(j.id);showTab('pm');return; }
@@ -2041,6 +2055,9 @@ function clearJobForm(){
   document.getElementById('nj_date').value=new Date().toISOString().slice(0,10);
   document.getElementById('pmAlert').style.display='none';
   const md=document.getElementById('mileageDisplay');if(md)md.style.display='none';
+  window._jobPendingPhoto = null;
+  const pi=document.getElementById('nj_photo_input'); if(pi) pi.value='';
+  const jp=document.getElementById('jobPhotoPreview'); if(jp) jp.innerHTML='';
 }
 
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
@@ -2055,7 +2072,8 @@ function viewJob(id){
     dr('📄 PO/WO',j.po)+dr('⏱ Hours',j.hours?j.hours+' hrs':'—')+dr('🚗 Miles',j.miles ? j.miles+' mi'+(getMileageCharge(j.miles)>0?' → <strong style="color:var(--green)">$'+getMileageCharge(j.miles).toFixed(2)+' billable</strong>':'') : '—')+
     dr('👤 Logged by',j.createdBy)+
     (j.notes?`<div style="margin-top:10px"><strong>📝 Notes:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem;line-height:1.5">${j.notes}</div></div>`:'')+
-    (j.parts?`<div style="margin-top:8px"><strong>🔩 Parts:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem">${j.parts}</div></div>`:'');
+    (j.parts?`<div style="margin-top:8px"><strong>🔩 Parts:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem">${j.parts}</div></div>`:'')+
+    (j.photo?`<div style="margin-top:10px"><strong>📷 Photo:</strong><img src="${j.photo}" class="photo-thumb"></div>`:'');
   openModal('viewModal');
 }
 
@@ -2492,8 +2510,10 @@ function renderKBEntries(){
           ${e.problem?`<div style="margin-top:8px;font-size:.82rem;white-space:pre-wrap"><strong>Problem:</strong> ${e.problem}</div>`:''}
           ${e.solution?`<div style="margin-top:6px;font-size:.82rem;white-space:pre-wrap"><strong>Fix:</strong> ${e.solution}</div>`:''}
           ${e.parts?`<div style="margin-top:6px;font-size:.82rem"><strong>Parts used:</strong> ${e.parts}</div>`:''}
+          ${e.photo?`<img src="${e.photo}" class="photo-thumb">`:''}
           <button onclick="kbToggleFull('${uid}')" style="margin-top:6px;background:none;border:none;color:var(--blue2);font-size:.78rem;cursor:pointer;padding:0;font-weight:600">▲ Show less</button>
         </div>
+        ${e.photo&&!isLong?`<img src="${e.photo}" class="photo-thumb">`:''}
         ${e.tags&&e.tags.length?'<div style="margin-top:8px">'+e.tags.map(t=>'<span style="background:var(--gray);padding:2px 8px;border-radius:12px;font-size:.66rem;margin-right:4px;font-weight:600">'+t+'</span>').join('')+'</div>':''}
       </div>
     </div>`;
@@ -2511,8 +2531,10 @@ function kbToggleFull(uid){
 
 function openKBEntryModal(id){
   editingKBId = id||null;
-  const today = new Date().toISOString().slice(0,10);
   populateKBJobDropdown();
+  window._kbPendingPhoto = null;
+  document.getElementById('kb_photo_input').value = '';
+  document.getElementById('kbPhotoPreview').innerHTML = '';
   if(id){
     const e = kbEntries.find(x=>x.id===id); if(!e) return;
     document.getElementById('kbModalTitle').textContent = '✏️ Edit Knowledge Entry';
@@ -2525,9 +2547,10 @@ function openKBEntryModal(id){
     document.getElementById('kb_parts').value = e.parts||'';
     document.getElementById('kb_job').value = e.jobId||'';
     document.getElementById('kb_tags').value = (e.tags||[]).join(', ');
+    if(e.photo){ window._kbPendingPhoto = e.photo; document.getElementById('kbPhotoPreview').innerHTML = kbPhotoHTML(e.photo); }
   } else {
     document.getElementById('kbModalTitle').textContent = '🧠 Add Knowledge Entry';
-    ['kb_title','kb_model','kb_error','kb_problem','kb_solution','kb_parts','kb_tags'].forEach(id=>{document.getElementById(id).value='';});
+    ['kb_title','kb_model','kb_error','kb_problem','kb_solution','kb_parts','kb_tags'].forEach(fid=>{document.getElementById(fid).value='';});
     document.getElementById('kb_cat').value = 'General';
     document.getElementById('kb_job').value = '';
   }
@@ -2552,12 +2575,14 @@ function saveKBEntry(){
     tags: document.getElementById('kb_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
     date: new Date().toISOString().slice(0,10),
     created: editingKBId ? undefined : new Date().toISOString(),
-    updated: new Date().toISOString()
+    updated: new Date().toISOString(),
+    photo: window._kbPendingPhoto || (editingKBId ? kbEntries.find(x=>x.id===editingKBId)?.photo : null) || undefined
   };
+  window._kbPendingPhoto = null;
   if(editingKBId){ const i=kbEntries.findIndex(x=>x.id===editingKBId); if(i>=0) kbEntries[i]={...kbEntries[i],...entry}; }
   else kbEntries.unshift(entry);
   saveKBData(); closeModal('kbEntryModal'); renderKBEntries();
-  alert('✅ Knowledge entry saved!');
+  showToast('✅ Knowledge entry saved!');
 }
 
 function deleteKBEntry(id){
@@ -4214,6 +4239,177 @@ async function askKBAI(id){
   }
 }
 
+// ── PHOTO UTILITIES ──
+function compressImage(file, maxPx, quality, cb){
+  const r = new FileReader();
+  r.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      let w=img.width, h=img.height;
+      if(w>maxPx||h>maxPx){ const s=maxPx/Math.max(w,h); w=Math.round(w*s); h=Math.round(h*s); }
+      c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      cb(c.toDataURL('image/jpeg', quality||0.75));
+    };
+    img.src = ev.target.result;
+  };
+  r.readAsDataURL(file);
+}
+
+function kbPhotoHTML(src){
+  return `<img src="${src}" class="photo-thumb">
+    <button onclick="window._kbPendingPhoto=null;document.getElementById('kbPhotoPreview').innerHTML='';document.getElementById('kb_photo_input').value=''" style="background:none;border:none;color:var(--red);font-size:.78rem;cursor:pointer;padding:2px 0;display:block">✕ Remove photo</button>`;
+}
+
+function previewKBPhoto(input){
+  if(!input.files[0]) return;
+  compressImage(input.files[0], 900, 0.78, b64 => {
+    window._kbPendingPhoto = b64;
+    document.getElementById('kbPhotoPreview').innerHTML = kbPhotoHTML(b64);
+  });
+}
+
+function previewJobPhoto(input){
+  if(!input.files[0]) return;
+  compressImage(input.files[0], 900, 0.78, b64 => {
+    window._jobPendingPhoto = b64;
+    document.getElementById('jobPhotoPreview').innerHTML =
+      `<img src="${b64}" class="photo-thumb">
+       <button onclick="window._jobPendingPhoto=null;document.getElementById('jobPhotoPreview').innerHTML='';document.getElementById('nj_photo_input').value=''" style="background:none;border:none;color:var(--red);font-size:.78rem;cursor:pointer;padding:2px 0;display:block">✕ Remove photo</button>`;
+  });
+}
+
+// ── DOCUMENT IMPORT ──
+let _importFileText = '';
+
+function openImportDocModal(){
+  _importFileText = '';
+  document.getElementById('importFileInput').value = '';
+  document.getElementById('importFileName').textContent = '';
+  document.getElementById('importDropArea').textContent = '📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)';
+  document.getElementById('importParseBtn').style.display = 'none';
+  document.getElementById('importResults').style.display = 'none';
+  document.getElementById('importResultsList').innerHTML = '';
+  document.getElementById('importConfirmBtn').style.display = 'none';
+  document.getElementById('importStatus').textContent = '';
+  openModal('importDocModal');
+}
+
+function importFileSelected(input){
+  const file = input.files[0]; if(!file) return;
+  document.getElementById('importFileName').textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
+  document.getElementById('importDropArea').textContent = '📄 ' + file.name;
+  document.getElementById('importResults').style.display = 'none';
+  document.getElementById('importConfirmBtn').style.display = 'none';
+  document.getElementById('importStatus').textContent = 'Reading file…';
+  const r = new FileReader();
+  r.onload = e => {
+    _importFileText = e.target.result;
+    if(_importFileText.length < 10){
+      document.getElementById('importStatus').textContent = '⚠️ File appears empty or is a binary PDF (try copy-pasting text instead)';
+      return;
+    }
+    document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length} chars extracted`;
+    document.getElementById('importParseBtn').style.display = 'block';
+  };
+  r.onerror = () => { document.getElementById('importStatus').textContent = '⚠️ Could not read file'; };
+  r.readAsText(file);
+}
+
+async function importParseWithClaude(){
+  const apiKey = localStorage.getItem('amt_claude_key');
+  if(!apiKey){
+    const k = prompt('Enter your Anthropic API key to use AI parsing:');
+    if(!k) return;
+    localStorage.setItem('amt_claude_key', k.trim());
+    updateClaudeKeyBtn();
+  }
+  const target = document.getElementById('importTarget').value;
+  const text = _importFileText.substring(0, 12000);
+  document.getElementById('importStatus').textContent = '⏳ Claude is parsing the document…';
+  document.getElementById('importParseBtn').querySelector('button').disabled = true;
+
+  const prompt = target === 'kb'
+    ? `Extract repair knowledge base entries from this field service document. Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
+    : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':localStorage.getItem('amt_claude_key'),'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,messages:[{role:'user',content:prompt}]})
+    });
+    if(!resp.ok){ const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||`HTTP ${resp.status}`); }
+    const data = await resp.json();
+    const raw = data.content[0].text.trim();
+    const match = raw.match(/\[[\s\S]*\]/);
+    if(!match) throw new Error('No JSON array found in response');
+    const entries = JSON.parse(match[0]);
+    if(!entries.length) throw new Error('No entries extracted');
+    importShowResults(entries, target);
+    document.getElementById('importStatus').textContent = `Found ${entries.length} entries — review and select below`;
+  } catch(err){
+    document.getElementById('importStatus').textContent = '⚠️ ' + err.message;
+  } finally {
+    const btn = document.getElementById('importParseBtn').querySelector('button');
+    if(btn) btn.disabled = false;
+  }
+}
+
+function importShowResults(entries, target){
+  const list = document.getElementById('importResultsList');
+  list.innerHTML = entries.map((e,i) => {
+    const summary = target === 'kb'
+      ? `<strong>${e.title||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.cat||'General'}</span>${e.model?'<span style="font-size:.75rem;color:var(--text2);margin-left:6px">'+e.model+'</span>':''}<div style="font-size:.78rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,120)}</div>`
+      : `<strong style="color:var(--red)">${e.code||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.brand||'Other'}</span><div style="font-size:.78rem;color:var(--text2);margin-top:2px">${(e.desc||'').substring(0,120)}</div>`;
+    return `<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray2);cursor:pointer">
+      <input type="checkbox" checked data-idx="${i}" style="margin-top:3px;flex-shrink:0">
+      <div>${summary}</div>
+    </label>`;
+  }).join('');
+  list.dataset.target = target;
+  list.dataset.entries = JSON.stringify(entries);
+  document.getElementById('importResults').style.display = 'block';
+  document.getElementById('importConfirmBtn').style.display = 'inline-flex';
+}
+
+function importConfirmSelected(){
+  const list = document.getElementById('importResultsList');
+  const target = list.dataset.target;
+  const entries = JSON.parse(list.dataset.entries||'[]');
+  const checked = [...list.querySelectorAll('input[type=checkbox]:checked')].map(cb=>parseInt(cb.dataset.idx));
+  const selected = checked.map(i=>entries[i]).filter(Boolean);
+  if(!selected.length){ showToast('No entries selected'); return; }
+
+  if(target === 'kb'){
+    selected.forEach(e => {
+      kbEntries.unshift({
+        id:'kb_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
+        title:e.title||'Imported Entry', cat:e.cat||'General',
+        model:e.model||'', error:e.error||'',
+        problem:e.problem||'', solution:e.solution||'',
+        parts:e.parts||'', tags:[], date:new Date().toISOString().slice(0,10),
+        created:new Date().toISOString()
+      });
+    });
+    saveKBData();
+    renderKBEntries();
+  } else {
+    selected.forEach(e => {
+      if(!FULL_ERROR_DB.find(x=>x.code===e.code)){
+        FULL_ERROR_DB.push({code:e.code||'CUSTOM',brand:e.brand||'Other',desc:e.desc||'',manual:''});
+      }
+    });
+    renderErrCodeList();
+    showToast(`✅ ${selected.length} error code(s) added (session only — will reset on reload)`);
+  }
+
+  closeModal('importDocModal');
+  showToast(`✅ ${selected.length} ${target==='kb'?'KB entr':'error code'}${selected.length>1?(target==='kb'?'ies':'s'):(target==='kb'?'y':'')} added`);
+  if(target==='kb') setKBTab('kb'); else setKBTab('errcodes');
+}
+
 function formatAIText(text){
   return text
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -4231,6 +4427,42 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 <!-- KB Entry Modal -->
+<div class="modal-overlay" id="importDocModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header"><h3>📥 Import File to Knowledge Base</h3><button class="modal-close" onclick="closeModal('importDocModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="alert alert-info" style="margin-bottom:12px;font-size:.82rem">Upload a service document, repair log, or CSV. Claude will extract KB entries or error codes for you to review before adding.</div>
+      <div class="form-group">
+        <label class="form-label">File</label>
+        <div class="photo-upload-area" onclick="document.getElementById('importFileInput').click()" id="importDropArea">📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)</div>
+        <input type="file" id="importFileInput" accept=".txt,.csv,.pdf,.md,.log,.htm,.html" style="display:none" onchange="importFileSelected(this)">
+        <div id="importFileName" style="font-size:.78rem;color:var(--text2);margin-top:4px"></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Import as</label>
+        <select class="form-control" id="importTarget">
+          <option value="kb">Knowledge Base entries</option>
+          <option value="errcodes">Error Codes</option>
+        </select>
+      </div>
+      <div id="importParseBtn" style="display:none;margin-bottom:12px">
+        <button class="btn btn-primary" onclick="importParseWithClaude()" style="width:100%">🤖 Parse with Claude AI</button>
+      </div>
+      <div id="importResults" style="display:none">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">Review extracted entries — uncheck any you don't want to add:</div>
+        <div id="importResultsList"></div>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:space-between">
+      <span id="importStatus" style="font-size:.78rem;color:var(--text2)"></span>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" onclick="closeModal('importDocModal')">Cancel</button>
+        <button class="btn btn-success" id="importConfirmBtn" style="display:none" onclick="importConfirmSelected()">✅ Add Selected</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="kbEntryModal">
   <div class="modal"><div class="modal-header"><h3 id="kbModalTitle">🧠 Add Knowledge Entry</h3><button class="modal-close" onclick="closeModal('kbEntryModal')">✕</button></div>
   <div class="modal-body">
@@ -4253,6 +4485,12 @@ document.addEventListener('DOMContentLoaded',()=>{
       <div class="form-group"><label class="form-label">Link to Job</label><select class="form-control" id="kb_job"><option value="">— None —</option></select></div>
     </div>
     <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="kb_tags" placeholder="RF amp, cooling, E305"></div>
+    <div class="form-group">
+      <label class="form-label">Photo (optional)</label>
+      <div class="photo-upload-area" onclick="document.getElementById('kb_photo_input').click()">📷 Tap to attach a photo</div>
+      <input type="file" id="kb_photo_input" accept="image/*" style="display:none" onchange="previewKBPhoto(this)">
+      <div id="kbPhotoPreview"></div>
+    </div>
   </div>
   <div class="modal-footer"><button class="btn btn-success" onclick="saveKBEntry()">💾 Save Entry</button><button class="btn btn-outline" onclick="closeModal('kbEntryModal')">Cancel</button></div></div>
 </div>
