@@ -2731,6 +2731,7 @@ function confirmKBSuggest(){
 }
 
 // ── UNIFIED SEARCH ──
+let _aiErrEntries = [];
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
   if(!q||q.length<2){ res.innerHTML=''; renderErrCodeList(); return; }
@@ -4239,7 +4240,6 @@ document.addEventListener('DOMContentLoaded',()=>{
 // ════════════════════════════════════════════════════
 // AI FIX RECOMMENDATION (Claude API — Haiku)
 // ════════════════════════════════════════════════════
-let _aiErrEntries = [];
 
 function setupClaudeKey(){
   const existing = localStorage.getItem('amt_claude_key');
