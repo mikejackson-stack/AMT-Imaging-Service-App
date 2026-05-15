@@ -2484,7 +2484,10 @@ function renderKBEntries(){
     return;
   }
   const catColors={GE:'#1565c0',Siemens:'#e65100',Philips:'#6a1b9a',Injector:'#2e7d32',CT:'#006064','Error Code':'#c62828',General:'#546e7a'};
-  list.innerHTML = entries.map(e=>`
+  list.innerHTML = entries.map(e=>{
+    const isLong = (e.problem&&e.problem.length>200)||(e.solution&&e.solution.length>200);
+    const uid = e.id;
+    return `
     <div style="background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;border-left:4px solid ${catColors[e.cat]||'var(--gray3)'}">
       <div style="padding:12px 14px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
@@ -2497,15 +2500,36 @@ function renderKBEntries(){
             </div>
           </div>
           <div style="display:flex;gap:5px;flex-shrink:0">
-            <button class="btn btn-sm btn-warning" style="padding:5px 9px;min-height:0" onclick="editKBEntry('${e.id}')">✏️</button>
-            <button class="btn btn-sm btn-danger" style="padding:5px 9px;min-height:0" onclick="deleteKBEntry('${e.id}')">🗑</button>
+            <button class="btn btn-sm" style="padding:5px 9px;min-height:0;background:#0a1628;color:white;border:none" onclick="askKBAI('${uid}')">🤖</button>
+            <button class="btn btn-sm btn-warning" style="padding:5px 9px;min-height:0" onclick="editKBEntry('${uid}')">✏️</button>
+            <button class="btn btn-sm btn-danger" style="padding:5px 9px;min-height:0" onclick="deleteKBEntry('${uid}')">🗑</button>
           </div>
         </div>
-        ${e.problem?'<div style="margin-top:8px;font-size:.82rem"><strong>Problem:</strong> '+e.problem.substring(0,120)+(e.problem.length>120?'…':'')+'</div>':''}
-        ${e.solution?'<div style="margin-top:4px;font-size:.82rem"><strong>Fix:</strong> '+e.solution.substring(0,120)+(e.solution.length>120?'…':'')+'</div>':''}
-        ${e.tags&&e.tags.length?'<div style="margin-top:6px">'+e.tags.map(t=>'<span style="background:var(--gray);padding:2px 8px;border-radius:12px;font-size:.66rem;margin-right:4px;font-weight:600">'+t+'</span>').join('')+'</div>':''}
+        <div id="kb-body-${uid}">
+          ${e.problem?`<div style="margin-top:8px;font-size:.82rem"><strong>Problem:</strong> ${isLong?e.problem.substring(0,200)+'…':e.problem}</div>`:''}
+          ${e.solution?`<div style="margin-top:4px;font-size:.82rem"><strong>Fix:</strong> ${isLong?e.solution.substring(0,200)+'…':e.solution}</div>`:''}
+          ${e.parts?`<div style="margin-top:4px;font-size:.82rem;color:var(--text2)"><strong>Parts:</strong> ${isLong?e.parts.substring(0,100)+'…':e.parts}</div>`:''}
+          ${isLong?`<button onclick="kbToggleFull('${uid}')" id="kb-toggle-${uid}" style="margin-top:6px;background:none;border:none;color:var(--blue2);font-size:.78rem;cursor:pointer;padding:0;font-weight:600">▼ Show full entry</button>`:''}
+        </div>
+        <div id="kb-full-${uid}" style="display:none">
+          ${e.problem?`<div style="margin-top:8px;font-size:.82rem;white-space:pre-wrap"><strong>Problem:</strong> ${e.problem}</div>`:''}
+          ${e.solution?`<div style="margin-top:6px;font-size:.82rem;white-space:pre-wrap"><strong>Fix:</strong> ${e.solution}</div>`:''}
+          ${e.parts?`<div style="margin-top:6px;font-size:.82rem"><strong>Parts used:</strong> ${e.parts}</div>`:''}
+          <button onclick="kbToggleFull('${uid}')" style="margin-top:6px;background:none;border:none;color:var(--blue2);font-size:.78rem;cursor:pointer;padding:0;font-weight:600">▲ Show less</button>
+        </div>
+        ${e.tags&&e.tags.length?'<div style="margin-top:8px">'+e.tags.map(t=>'<span style="background:var(--gray);padding:2px 8px;border-radius:12px;font-size:.66rem;margin-right:4px;font-weight:600">'+t+'</span>').join('')+'</div>':''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+}
+
+function kbToggleFull(uid){
+  const short = document.getElementById('kb-body-'+uid);
+  const full = document.getElementById('kb-full-'+uid);
+  if(!short||!full) return;
+  const isHidden = full.style.display==='none';
+  short.style.display = isHidden ? 'none' : 'block';
+  full.style.display = isHidden ? 'block' : 'none';
 }
 
 function openKBEntryModal(id){
@@ -2681,11 +2705,27 @@ function kbSearch(q){
   }
   if(kbMatches.length){
     html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🧠 Knowledge Base ('+kbMatches.length+')</div>'+
-      kbMatches.slice(0,5).map(e=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
-        <strong style="font-size:.9rem">${e.title||'—'}</strong>
-        ${e.error?'<span class="badge br" style="margin-left:6px;font-size:.64rem">'+e.error+'</span>':''}
-        <div style="font-size:.8rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,120)}</div>
-      </div>`).join('')+'</div>';
+      kbMatches.slice(0,8).map(e=>{
+        const uid = 'sr-'+e.id;
+        const preview = (e.solution||e.problem||'').substring(0,150);
+        const hasFull = (e.solution||e.problem||'').length > 150 || e.parts;
+        return `<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
+            <strong style="font-size:.88rem">${e.title||'—'}</strong>
+            ${e.error?'<span class="badge br" style="font-size:.62rem">'+e.error+'</span>':''}
+            <button onclick="askKBAI('${e.id}')" style="margin-left:auto;background:#0a1628;color:white;border:none;padding:3px 9px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 Ask AI</button>
+          </div>
+          <div id="${uid}-short" style="font-size:.8rem;color:var(--text2)">${preview}${hasFull?'…':''}
+            ${hasFull?`<button onclick="document.getElementById('${uid}-short').style.display='none';document.getElementById('${uid}-full').style.display='block'" style="background:none;border:none;color:var(--blue2);font-size:.76rem;cursor:pointer;padding:0;font-weight:600">Show full ▼</button>`:''}
+          </div>
+          <div id="${uid}-full" style="display:none;font-size:.8rem">
+            ${e.problem?`<div style="white-space:pre-wrap"><strong>Problem:</strong> ${e.problem}</div>`:''}
+            ${e.solution?`<div style="margin-top:4px;white-space:pre-wrap"><strong>Fix:</strong> ${e.solution}</div>`:''}
+            ${e.parts?`<div style="margin-top:4px"><strong>Parts:</strong> ${e.parts}</div>`:''}
+            <button onclick="document.getElementById('${uid}-short').style.display='block';document.getElementById('${uid}-full').style.display='none'" style="background:none;border:none;color:var(--blue2);font-size:.76rem;cursor:pointer;padding:0;font-weight:600;margin-top:4px">Show less ▲</button>
+          </div>
+        </div>`;
+      }).join('')+'</div>';
   }
   if(errMatches.length){
     _aiErrEntries = errMatches;
@@ -4131,6 +4171,56 @@ async function getAIFix(code){
         max_tokens:1024,
         messages:[{role:'user',content:
           `You are an expert MRI/CT field service engineer. Provide specific troubleshooting steps for this fault:\n\nSystem: ${e.brand}\nError/Fault: ${e.code}\nDescription: ${e.desc}\n\nGive 5-7 numbered diagnostic and repair steps ordered from quickest check to deeper investigation. Include specific component names, test points, measurements, or part numbers where known. Be concise and technical.`
+        }]
+      })
+    });
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({}));
+      throw new Error(err.error?.message||`HTTP ${resp.status}`);
+    }
+    const data = await resp.json();
+    document.getElementById('aiFixContent').innerHTML = formatAIText(data.content[0].text);
+  } catch(err){
+    document.getElementById('aiFixContent').innerHTML =
+      `<div class="alert alert-danger">⚠️ ${err.message}</div>
+       <div style="font-size:.8rem;color:var(--text2);margin-top:8px">Verify your API key has credits. <button class="btn btn-sm btn-outline" onclick="clearClaudeKey()">Reset Key</button></div>`;
+  }
+}
+
+async function askKBAI(id){
+  const e = kbEntries.find(x=>x.id===id);
+  if(!e) return;
+  let apiKey = localStorage.getItem('amt_claude_key');
+  if(!apiKey){
+    apiKey = prompt('Enter your Anthropic API key (stored locally on this device):');
+    if(!apiKey) return;
+    localStorage.setItem('amt_claude_key', apiKey.trim());
+    updateClaudeKeyBtn();
+    apiKey = apiKey.trim();
+  }
+  const catColors={GE:'#1565c0',Siemens:'#e65100',Philips:'#6a1b9a',Injector:'#2e7d32',CT:'#006064','Error Code':'#c62828',General:'#546e7a'};
+  document.getElementById('aiFixContext').innerHTML =
+    `<strong style="color:${catColors[e.cat]||'var(--navy)'}">${e.title||'KB Entry'}</strong>
+     ${e.cat?'<span class="badge" style="margin-left:6px;font-size:.64rem;background:'+catColors[e.cat]+';color:white">'+e.cat+'</span>':''}
+     ${e.model?'<span style="margin-left:6px;font-size:.75rem;color:var(--text2)">'+e.model+'</span>':''}
+     ${e.error?'<div style="margin-top:4px"><strong style="color:var(--red)">Error:</strong> '+e.error+'</div>':''}`;
+  document.getElementById('aiFixContent').innerHTML =
+    '<div style="text-align:center;padding:24px;color:var(--text2)">⏳ Analyzing KB entry…</div>';
+  openModal('aiFixModal');
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'x-api-key': apiKey,
+        'anthropic-version':'2023-06-01',
+        'content-type':'application/json',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:1024,
+        messages:[{role:'user',content:
+          `You are an expert MRI/CT field service engineer reviewing a knowledge base repair entry. Provide expanded analysis.\n\nTitle: ${e.title||''}\nSystem/Model: ${e.model||'Unknown'} (${e.cat||''})\nError Code: ${e.error||'N/A'}\nProblem: ${e.problem||'(not recorded)'}\nFix Applied: ${e.solution||'(not recorded)'}\nParts Used: ${e.parts||'None noted'}\n\nProvide:\n1. Whether this fix approach is correct and complete\n2. Additional verification steps to confirm the repair held\n3. Root cause analysis if not already described\n4. Related failures to watch for after this repair\n5. Preventive maintenance tips to avoid recurrence\n\nBe concise and technical. Use numbered steps.`
         }]
       })
     });
