@@ -3971,8 +3971,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 // ── Email Signature ──
 const EMAIL_SIG_PEOPLE = {
   michael: { name:'Michael Jackson', title:'Field Service Engineer / Co-Owner', phone:'754-263-6089', email:'mike.jackson@amtimagingsolutions.com' },
-  antonio: { name:'Antonio Jackson', title:'Field Service Engineer / Co-Owner', phone:'754-263-6089', email:'antonio.jackson@amtimagingsolutions.com' },
-  candelario: { name:'Candelario Juarez', title:'Field Service Engineer', phone:'754-263-6089', email:'candelario.juarez@amtimagingsolutions.com' }
+  antonio: { name:'Antonio Jackson', title:'Field Service Engineer / Co-Owner', phone:'754-263-6089', email:'antonio@amtimagingsolutions.com' },
+  candelario: { name:'Candelario Juarez', title:'Field Service Engineer / Co-Owner', phone:'754-263-6089', email:'tito@amtimagingsolutions.com' }
 };
 let _emailSigCurrentHTML = '';
 
@@ -3981,7 +3981,7 @@ function toggleEmailSig(){
   if(!sec) return;
   const showing = sec.style.display !== 'none';
   sec.style.display = showing ? 'none' : 'block';
-  if(!showing) buildEmailSig('michael');
+  if(!showing){ buildEmailSig('michael'); setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'nearest'}),50); }
 }
 
 function buildEmailSig(key){
@@ -4328,7 +4328,7 @@ async function callAI(messages, maxTokens){
     const resp = await fetch('https://api.x.ai/v1/chat/completions',{
       method:'POST',
       headers:{'Authorization':'Bearer '+key.trim(),'Content-Type':'application/json'},
-      body:JSON.stringify({model:'grok-beta',max_tokens:maxTokens,messages})
+      body:JSON.stringify({model:'grok-3-mini',max_tokens:maxTokens,messages})
     });
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Grok HTTP ${resp.status}`);}
     const data = await resp.json();
