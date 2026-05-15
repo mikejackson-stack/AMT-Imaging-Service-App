@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Establishing the SSH port","shortdesc":"<p class=\"shortdesc\">Establish Port 22 for SSH on system with software version <span class=\"ph\">DV29<\/span> and later.<\/p>","href":"t_SSHHardeningEstablishingSSHPort.html","attributes":{"data-id":"id_2029134"},"menu":{"hasChildren":false},"tocID":"id_2029134-d46e32809","topics":[]}]});

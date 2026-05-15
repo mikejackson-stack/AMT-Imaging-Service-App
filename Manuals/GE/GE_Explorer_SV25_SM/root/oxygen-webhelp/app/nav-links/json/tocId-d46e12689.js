@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Replacing the gradient filter","shortdesc":"<p class=\"shortdesc\">Follow this procedure to replace the gradient filter.<\/p>","href":"t_ReplacingTheGradientFilter_Starter_Parent.html","attributes":{"data-id":"id_2010127"},"menu":{"hasChildren":true},"tocID":"id_2010127-d46e12691","next":"id_2010127-d46e12691"}]});

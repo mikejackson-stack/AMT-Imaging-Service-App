@@ -1,1 +1,0 @@
-define({"topics":[{"title":"System BIOS settings for HP Z4 G5","shortdesc":"<p class=\"shortdesc\"\/>","href":"r_SystemBIOSSettingsForHPZ4G5.html","attributes":{"data-id":"id_2061991"},"menu":{"hasChildren":false},"tocID":"id_2061991-d46e89290","topics":[]}]});

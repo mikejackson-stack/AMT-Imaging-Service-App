@@ -1,1 +1,0 @@
-define({"topics":[{"title":"Doing the coil datapath diagnostic (RRx)","href":"r_diag_DoingTheCoilDatapathDiagnostic_RRX_15566714.html","attributes":{"data-id":"id_13106456"},"menu":{"hasChildren":false},"tocID":"id_13106456-d46e68155","topics":[]}]});
