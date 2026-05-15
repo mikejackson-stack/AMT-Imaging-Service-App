@@ -1376,6 +1376,7 @@ function bootApp(){
   renderDashboard();
   // Set today on date fields
   ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=now.toISOString().slice(0,10);});
+  updateClaudeKeyBtn();
 }
 
 function logout(){
@@ -1617,6 +1618,7 @@ function showTab(t){
   if(t==='manuals'){
     setKBTab('files');
     setTimeout(initManuals, 50);
+    updateClaudeKeyBtn();
   }
   // Populate job dropdowns when money tab opens
   if(t==='money')populateMoneyJobDropdowns();
@@ -2460,9 +2462,10 @@ function setKBTab(t){
     if(el) el.style.display = s===t ? 'block' : 'none';
   });
   if(t==='kb') renderKBEntries();
-  if(t==='errcodes'){ renderErrCodeList(); updateClaudeKeyBtn(); }
+  if(t==='errcodes') renderErrCodeList();
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
   if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
+  updateClaudeKeyBtn();
 }
 
 function setKBCatFilter(cat){
@@ -2691,7 +2694,7 @@ function kbSearch(q){
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
           <strong style="color:var(--red)">${e.code}</strong>
           <span class="badge bc" style="font-size:.64rem">${e.brand}</span>
-          <button onclick="getAIFix(${i})" style="margin-left:auto;background:var(--navy);color:white;border:none;padding:3px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button>
+          <button onclick="getAIFix('${e.code}')" style="margin-left:auto;background:var(--navy);color:white;border:none;padding:3px 10px;border-radius:6px;font-size:.72rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button>
         </div>
         <div style="font-size:.82rem;color:var(--text2);margin-top:4px">${e.desc}</div>
         ${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
@@ -2713,7 +2716,7 @@ function renderErrCodeList(){
       <td><span class="badge bc" style="font-size:.62rem">${e.brand}</span></td>
       <td style="font-size:.8rem">${e.desc}</td>
       <td>${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
-      <td><button onclick="getAIFix(${i})" style="background:var(--navy);color:white;border:none;padding:3px 8px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button></td>
+      <td><button onclick="getAIFix('${e.code}')" style="background:var(--navy);color:white;border:none;padding:3px 8px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button></td>
     </tr>`).join('')+'</tbody></table></div>';
 }
 
@@ -4098,8 +4101,8 @@ function updateClaudeKeyBtn(){
   btn.style.background = has ? '#16a34a' : '#0a1628';
 }
 
-async function getAIFix(idx){
-  const e = _aiErrEntries[idx];
+async function getAIFix(code){
+  const e = FULL_ERROR_DB.find(x=>x.code===code);
   if(!e) return;
   let apiKey = localStorage.getItem('amt_claude_key');
   if(!apiKey){
