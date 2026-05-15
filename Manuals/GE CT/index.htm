@@ -1,0 +1,132 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>Home Page</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" href="css/css.css" type="text/css"><script language="JavaScript">
+	
+		if (top.menu==1)
+		self.location="content.htm"
+	
+</script>
+		<csactions>
+			<csaction name="15FD761" class="Goto Link" type="onevent" val0="toc/toc_dvd.htm" val1="" urlparams="1"></csaction>
+			<csaction name="15FD763" class="Close Window" type="onevent"></csaction>
+		</csactions>
+		<csscriptdict>
+			<script type="text/javascript"><!--
+function CSClickReturn () {
+	var bAgent = window.navigator.userAgent; 
+	var bAppName = window.navigator.appName;
+	if ((bAppName.indexOf("Explorer") >= 0) && (bAgent.indexOf("Mozilla/3") >= 0) && (bAgent.indexOf("Mac") >= 0))
+		return true; // dont follow link
+	else return false; // dont follow link
+}
+CSStopExecution=false;
+function CSAction(array) {return CSAction2(CSAct, array);}
+function CSAction2(fct, array) { 
+	var result;
+	for (var i=0;i<array.length;i++) {
+		if(CSStopExecution) return false; 
+		var aa = fct[array[i]];
+		if (aa == null) return false;
+		var ta = new Array;
+		for(var j=1;j<aa.length;j++) {
+			if((aa[j]!=null)&&(typeof(aa[j])=="object")&&(aa[j].length==2)){
+				if(aa[j][0]=="VAR"){ta[j]=CSStateArray[aa[j][1]];}
+				else{if(aa[j][0]=="ACT"){ta[j]=CSAction(new Array(new String(aa[j][1])));}
+				else ta[j]=aa[j];}
+			} else ta[j]=aa[j];
+		}			
+		result=aa[0](ta);
+	}
+	return result;
+}
+CSAct = new Object;
+function CSGotoLink(action) {
+	if (action[2].length) {
+		var hasFrame=false;
+		for(i=0;i<parent.frames.length;i++) { if (parent.frames[i].name==action[2]) { hasFrame=true; break;}}
+		if (hasFrame==true)
+			parent.frames[action[2]].location = action[1];
+		else
+			window.open (action[1],action[2],"");
+	}
+	else location = action[1];
+}
+function CSCloseWindow() { 
+if (self.parent.frames.length != 0) {
+	self.parent.close()	
+	} else {
+	window.close()
+	}
+}
+
+// --></script>
+		</csscriptdict>
+		<csactiondict>
+			<script type="text/javascript"><!--
+CSAct[/*CMP*/ '15FD761'] = new Array(CSGotoLink,/*URL*/ 'toc/system/home.htm','');
+CSAct[/*CMP*/ '15FD763'] = new Array(CSCloseWindow);
+
+// --></script>
+		</csactiondict>
+	</head>
+   <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" text="#000000">
+		<table width="775" border="0" cellspacing="5" cellpadding="0">
+			<tr>
+				<td class="sideBar">&nbsp;</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<CENTER>
+						<hr width="75%">
+						<h2><font color="#094cad">Direction 2360027-300, Rev 15<br>Service Documentation for the LightSpeed Family of CT Scanners</font></h2>
+						<hr width="75%">
+					</CENTER>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<div align="center">
+						<h3><b><font color="#000000">The Content of this Material is Rated Class M, For GE Exclusive Use Only.</font></b><br>
+						</h3>
+						<p>Permission for the use of this software and related documentation (Herein called &quot;Material&quot;) by persons other than GE Healthcare employees is NOT GRANTED. A license to use operating and basic service software does NOT extend to or cover this Material. Also, a license to use Advanced Service material does NOT extend to or to cover this Material. If you are a GE Healthcare employee, you are authorized to use this material. If you are not a GE Healthcare employee, you DO NOT have permission from GE Healthcare to load, list, execute, copy alter, decompile, reverse assemble the software or copy the related documentation. This material is protected by Copyright and Trade Secret laws, the violation of which can result in civil damages and criminal prosecution.<br>
+						</p>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<table width="784" border="0" cellspacing="5" cellpadding="0">
+			<tr>
+				<td colspan="2" align="center">
+					<p><button onclick="CSAction(new Array(/*CMP*/'15FD761'));" name="buttonName" type="button" csclick="15FD761">I am a GE Healthcare Employee.</button></p>
+					<center>
+						<p><button onclick="CSAction(new Array(/*CMP*/'15FD763'));" name="buttonName" type="button" csclick="15FD763">I am NOT a GE Healthcare Employee.</button></p>
+					</center>
+				</td>
+			</tr>
+			<tr>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+			 	<td align="left" width="50%">
+					<p><font size="-2" color="#565656"><I><a href="readme.txt">DVD &quot;Readme&quot;</I></font></a></p>
+				</td>
+				<td align="right">
+					<p><font size="-2" color="#565656"><I><a href="lang/language.htm">Important Language Information</a></I></font></p>
+				</td>
+			</tr>
+		  	<tr>
+				<td align="center" colspan="2">
+					<hr width="75%">
+					<font color="#565656">&copy; 2002 General Electric Company. All Rights Reserved.</font>
+				</td>
+		     </tr>
+		</table>
+   </body>
+</html>

@@ -1,0 +1,1 @@
+define({"topics":[{"title":"Checking and aligning the laser light<span class=\"ph\"> for IPM Magnet<\/span>","shortdesc":"<p class=\"shortdesc\">Check and adjust the alignment of the laser light.<\/p>","href":"t_CheckingAndAligningTheLaserLight.html","attributes":{"data-id":"id_2004318"},"menu":{"hasChildren":true},"tocID":"id_2004318-d46e7999","next":"id_2004318-d46e7999"}]});

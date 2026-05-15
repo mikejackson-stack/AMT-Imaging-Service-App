@@ -1,0 +1,220 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Install and Verify Customer Imaging Options</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;2/10/15</P></td></tr></table><H1 ID="top">Install and Verify Customer Imaging Options </H1><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e30"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"><B>Only use the Installation manual that arrives
+with your system for installation. Any other revisions of this manual
+may not exactly match your system.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2970876-1096948">1&nbsp;&nbsp;DICOM Network<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970877-1096948">1.1&nbsp;&nbsp;Introduction<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">LightSpeed systems support two basic Networking Protocols:</P><UL><LI CLASS="bulletlist"><P>Advantage NET (IC, Signa 4.X, CT-HLA,
+CT/I &#8230;)</P></LI><LI CLASS="bulletlist"><P>DICOM (CT/I, CT Synergy, Advantage
+Workstations, &#8230;)</P></LI></UL><P CLASS="sect2">DICOM networks operate on the <B>tasks </B>or
+services that various devices on the network use or provide. These
+services are labeled as Application Entity Titles (AE Titles). The
+CT scanner system is uses six DICOM Network Services and is provides
+two DICOM Services:</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970880-1096948">1.1.1&nbsp;&nbsp;As a DICOM Service User:<SPAN CLASS="SECT1EFF"> </SPAN></H4><UL><LI CLASS="bulletlist"><P>Send or <B>&#8220;Push&#8221;</B> images to another network device.</P></LI><LI CLASS="bulletlist"><P>Send or <B>&#8220;Push&#8221;</B> images to a DICOM Printer.</P></LI><LI CLASS="bulletlist"><P>Review image database on another device
+and retrieve or <B>&#8220;Pull&#8221;</B> selected
+images from that device (Query/Retrieve User).</P></LI><LI CLASS="bulletlist"><P>Send or <B>&#8220;Push&#8221; </B>images to a an image storage device and obtain confirmation that
+the images were archived (Storage Commitment).</P></LI><LI CLASS="bulletlist"><P>Obtain Patient Worklist Information
+from the Hospital HIS/RIS System.</P></LI><LI CLASS="bulletlist"><P>Store images on MOD media.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970887-1096948">1.1.2&nbsp;&nbsp;As a DICOM Service Provider:<SPAN CLASS="SECT1EFF"> </SPAN></H4><UL><LI CLASS="bulletlist"><P>Receive <B>&#8220;Pushed&#8221;</B> images from another network device.</P></LI><LI CLASS="bulletlist"><P>Allow another network device to review
+the image database and to retrieve or <B>&#8220;Pull&#8221;</B> selected images (Query/Retrieve Provider).</P></LI></UL><P CLASS="sect3">For each DICOM Service that the CT system is a <B>User</B> (except for storing images on MOD media), you must <B>declare</B> this device on the CT system using three menu selections. For some
+devices, you must declare not only the device, but each service (AE
+Title) that the device provides.</P><P CLASS="sect3">For example, you may need to declare a PACS System twice on
+the CT system: once as a destination to <B>push</B> images and, second, as destination that provides storage commitment
+capability after images have been <B>pushed</B>.</P><P CLASS="sect3">For each DICOM Service that the CT system is a <B>Provider</B>, you must <B>declare</B> the CT system on the network
+device that is using these services.</P><P CLASS="sect3">Information required to complete configuring a hospital DICOM
+network is provided by:</P><UL><LI CLASS="bulletlist"><P>The hospital network administrator
+(hostnames, IP Addresses)</P></LI><LI CLASS="bulletlist"><P>The DICOM Conformance Statement document
+(AE Titles, Port Numbers), provided with each DICOM compatible network
+device on the network.</P></LI></UL></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970892-1096948">1.2&nbsp;&nbsp;Preparation<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970893-1096948">1.2.1&nbsp;&nbsp;Network Physical Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Before setting up the CT scanner system on the hospital network,
+verify the following physical items are complete:</P><UL><LI CLASS="bulletlist"><P>Scanner console, monitor, keyboard,
+and mouse are installed and connected.</P></LI><LI CLASS="bulletlist"><P>CT system power is ON.</P></LI><LI CLASS="bulletlist"><P>Hospital Ethernet network RJ45 Class
+IV twisted pair cable is connected to the scanner console network
+receptacle.</P></LI><LI CLASS="bulletlist"><P>Hospital network connection is operational
+and is running 10baseT or 100baseT.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970898-1096948">1.2.2&nbsp;&nbsp;Network Identity Information<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">You need to gather network identity information to do the following
+tasks:</P><UL><LI CLASS="bulletlist"><P>Declare the CT system on the network</P></LI><LI CLASS="bulletlist"><P>Declare the DICOM remote hosts (PACS
+systems, archival devices, review workstations) on the CT system.</P></LI><LI CLASS="bulletlist"><P>Declare the DICOM Hospital HIS/RIS
+Interface devices (Mitra and others) on the CT system.</P></LI><LI CLASS="bulletlist"><P>Declare the DICOM on the CT System.</P></LI></UL><P CLASS="sect3">Ensure the following network identity information is available:</P><UL><LI CLASS="bulletlist"><P>From the Hospital Network Administrator:</P><UL><LI CLASS="bulletlist"><P>Hostname (No more than 16 Characters).</P></LI><LI CLASS="bulletlist"><P>Internet Protocol (IP) Address.</P></LI><LI CLASS="bulletlist"><P>Subnet Net Mask IP Address (if applicable).</P></LI><LI CLASS="bulletlist"><P>Broadcast Address (if applicable).</P></LI><LI CLASS="bulletlist"><P>Network Protocol (DICOM for CT Systems)</P></LI></UL></LI><LI CLASS="bulletlist"><P>From the Remote Host Device DICOM Conformance
+Statement Document:</P><UL><LI CLASS="bulletlist"><P>DICOM Application Entity Title or AE
+Title (DICOM service that remote host provides or uses).</P></LI><LI CLASS="bulletlist"><P>DICOM Listening Port Number.</P></LI></UL></LI><LI CLASS="bulletlist"><P>From the HIS/RIS Interface Device DICOM
+Conformance Statement Document:</P><UL><LI CLASS="bulletlist"><P>DICOM Application Entity Title or AE
+Title (DICOM Service that the HIS/RIS interface provides).</P></LI><LI CLASS="bulletlist"><P>DICOM Listening Port Number.</P></LI></UL></LI><LI CLASS="bulletlist"><P>From the Printer DICOM Conformance
+Statement Document:</P><UL><LI CLASS="bulletlist"><P>DICOM Application Entity Title or AE
+Title (DICOM service that remote host provides or uses).</P></LI><LI CLASS="bulletlist"><P>DICOM Listening Port Number.</P></LI></UL></LI></UL></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970918-1096948">1.3&nbsp;&nbsp;Procedures<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970919-1096948">1.3.1&nbsp;&nbsp;Enter Configuration Routine<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>On the operator&#8217;s console, open
+a shell window.</P></LI><LI CLASS="numlist"><P>Enter root as a superuser:</P><P>At the prompt, type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su</B></FONT></SPAN> - <SPAN CLASS="KEYBOARD">&lt;ENTER&gt;</SPAN></P><P>At the password prompt: type the password; press <SPAN CLASS="KEYBOARD">&lt;ENTER&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Change directory to scripts.</P><P>Type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /user/g/scripts</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;ENTER&gt;</SPAN> at the root prompt.</P></LI><LI CLASS="numlist"><P>Launch the Install Utility:</P><P>At the prompt, type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>reconfig</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;ENTER&gt;</SPAN></P><P>The OC displays the Install Utility Window as shown in <A HREF="javascript:winopen('1096948illd0e275.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.<DIV CLASS="ILLUSTRATION" id="SL2970838-1096948"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Install Utility Window</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1098022-1097434.jpg" BORDER="0" usemap="#SL2970833-1096948"></P></DIV></P></LI><LI CLASS="numlist"><P>Enter the Configuration Routine:</P><P>Click the <SPAN CLASS="GUIBUTTON">[CONFIG]</SPAN> button.</P><P>The OC displays the System Configuration - System Settings screen,
+as shown in <A HREF="javascript:winopen('1096948illd0e294.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>.<DIV CLASS="ILLUSTRATION" id="SL2970847-1096948"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System Settings Screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1098022-1097437.jpg" BORDER="0" usemap="#SL3167071-1096948"></P></DIV></P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970925-1096948">1.3.2&nbsp;&nbsp;Configure Network Settings<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">This screen allows you to declare the CT system on a hospital
+network. Key information such as Host Name, IP Address, Net Mask (for
+CT systems on a subnet) must be obtained from the hospital network
+administrator.</P><OL><LI CLASS="numlist"><P>Select the <SPAN CLASS="GUIBUTTON">[NETWORK]</SPAN> button to display the Network Settings screen as shown in <A HREF="javascript:winopen('1096948illd0e315.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>.<DIV CLASS="ILLUSTRATION" id="SL2970856-1096948"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Networks Settings Screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1098022-1097435.jpg" BORDER="0" usemap="#SL2970851-1096948"></P></DIV></P></LI><LI CLASS="numlist"><P>Enter the <SPAN CLASS="GUILABEL"><I>Suite Name</I></SPAN>.</P><P>The Suite Name identifies this particular CT system as a part
+of a group of CT Systems in a suite configuration. This Suite Name
+appears on all image headers.</P><P>The Suite Name must start with a letter, followed by three alphanumeric
+characters (total MUST be four characters long). The name of the OC
+interface is <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;Suite Name&gt;_oc</I></B></FONT></SPAN> and the SBC interface
+is <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;Suite Name&gt;_sbc</I></B></FONT></SPAN>.</P></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>Host Name</I></SPAN>.</P><P>The Host Name identifies the network hostname and AE Title of
+the CT system.</P><P>The Host Name:</P><UL><LI CLASS="bulletlist"><P><B>MUST NOT</B> be <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;Suite Name&gt;_oc</I></B></FONT></SPAN> or <SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>&lt;SUITE NAME&gt;_OC</I></B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P><B>MUST NOT</B> exceed
+16 characters.</P></LI><LI CLASS="bulletlist"><P><B>MUST</B> only contain
+the following characters: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>A</B></FONT></SPAN> through <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>Z</B></FONT></SPAN>, <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>a</B></FONT></SPAN> through <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>z</B></FONT></SPAN>, <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>0</B></FONT></SPAN> through <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>9</B></FONT></SPAN>, <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>-</B></FONT></SPAN> and <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>_</B></FONT></SPAN></P></LI></UL></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>IP Address</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>Net Mask</I></SPAN> (if the CT system is on a subnet).</P></LI><LI CLASS="numlist"><P>Enter the <SPAN CLASS="GUILABEL"><I>Broadcast Address</I></SPAN></P><P>The Broadcast Address should be the same as the IP Address,
+except for the bits of the host ID portion (last digit group) set
+to 1&#8217;s or 0&#8217;s, depending on the configuration of the network.
+The standard default is 1&#8217;s but older SunOS machines used 0&#8217;s.</P><P>Example: If the IP Address is 192.100.9.17, the Broadcast Address
+should be 192.100.9.255 if the network is configured to use 1's to
+specify the broadcast address.</P><P>If the network contains genesis-based scanners or other SunOS
+3.5 or 4.1 computers, the Broadcast Address should be 192.100.9.0.</P></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>Default Gateway</I></SPAN> IP Address (if applicable). If the site
+network does not use a default gateway, leave the field blank.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[NIS]</SPAN> (Yellow
+Pages database) <SPAN CLASS="GUILABEL"><I>Advanced Option</I></SPAN> only if requested
+by the hospital network administrator as follows:</P><UL><LI CLASS="bulletlist"><P>Select <SPAN CLASS="GUIBUTTON">[ADVANCED OPTIONS]</SPAN> button on the Network Settings screen.</P></LI><LI CLASS="bulletlist"><P>Select <SPAN CLASS="GUIBUTTON">[USE NIS?]</SPAN> button.</P></LI><LI CLASS="bulletlist"><P>Enter the hospital-provided Domain
+Name.</P></LI></UL></LI><LI CLASS="numlist"><P>Record all the Network parameters in
+the <SPAN CLASS="pubref"><I>Software Installation Procedures</I></SPAN> document, or
+on the worksheet in <SPAN CLASS="MODULEREF"><A HREF="1098022.htm#SL3083770-1098022"><I>System Configuration Data Sheets</I></A></SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970941-1096948">1.3.3&nbsp;&nbsp;Initiate System Reconfiguration<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[ACCEPT]</SPAN> on the System Configuration Screen.</P><P>The system loads the application software, OS patches, and kernal
+changes, and configures the system on both the OC and the SBC.</P><P>This loading process takes approximately 15 minutes. While the
+load is going on, the results are displayed in a shell window, which
+closes when the loading process is complete. All the window output
+is logged to a file named:</P><P><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>/var/adm/install.log.YYYYMMDDWWWHHMMSS</I></FONT></SPAN>.</P><P>(Where YYYYMMDDWWWHHMMSS is the Date/Time that the loading process
+was started.)</P></LI><LI CLASS="numlist"><P>When the loading process and configuration
+changes are complete, the system displays a prompt to reboot. Click <SPAN CLASS="GUIBUTTON">[YES]</SPAN>.</P></LI><LI CLASS="numlist"><P>The system automatically logs in as
+ctuser after the reboot. Select <SPAN CLASS="GUIBUTTON">[OK]</SPAN> on the Autostart
+Disabled popup message.</P></LI><LI CLASS="numlist"><P>To startup Applications, in the console
+shell window, type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>startup</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;ENTER&gt;</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970946-1096948">1.3.4&nbsp;&nbsp;Declaring Remote Hosts on the CT System<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>On the OC, select the <SPAN CLASS="GUIBUTTON">[IMAGE
+WORKS]</SPAN> icon.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[NETWORK]</SPAN>.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970949-1096948">1.3.5&nbsp;&nbsp;Declaring Advantage NET Remote Hosts on the Scanner<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Use Advantage NET Protocol networks to communicate with older
+CT Systems (CT-HLA, CT/I Systems, and Workstations that support the
+Advantage NET protocol). Advantage NET Protocol does not offer full
+compatibility with LightSpeed DICOM formats.</P><P CLASS="sect3">Repeat the following procedure for each Advantage NET Remote
+Host device that the customer expects to have this CT system communicating
+with.</P><OL><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[REMOTE HOSTS]</SPAN> from the pull down menu. The system displays the Remote Host Parameter
+Screen as shown in <A HREF="javascript:winopen('1096948illd0e528.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>.<DIV CLASS="ILLUSTRATION" id="SL2970865-1096948"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Advantage Net Network Protocol Parameter Settings</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1096948-1097438.jpg" BORDER="0" usemap="#SL2970860-1096948"></P></DIV></P></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>Host name</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Enter the hospital-provided <SPAN CLASS="GUILABEL"><I>Network Address</I></SPAN> (IP Address).</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[ADVANTAGE NET]</SPAN> as the <SPAN CLASS="GUILABEL"><I>Network Protocol</I></SPAN>.</P><P>The system automatically removes the highlighting from the remaining
+parameter fields on the Remote Host parameter selection screen. These
+are dedicated DICOM protocol parameters and do not apply to Advantage
+NET type devices.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[SAVE]</SPAN> to
+store the parameter settings of the remote host.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970955-1096948">1.3.6&nbsp;&nbsp;Declaring DICOM Remote Hosts on the CT Scanner<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Use DICOM protocol networks to communicate to DICOM devices
+such as CT/i, CT Synergy, DLX, MR Lx, and third party hosts.</P><P CLASS="sect3">Repeat the following procedure for each DICOM remote host device
+that the customer expects to have this CT system communicating with.</P><OL><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[REMOTE HOSTS]</SPAN> from the pull down menu. The system displays the Remote Host Parameter
+screen as shown in <A HREF="javascript:winopen('1096948illd0e580.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;5</A>.<DIV CLASS="ILLUSTRATION" id="SL2970957-1096948"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DICOM Network Setting Protocol Parameter Settings</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1096948-1097432.jpg" BORDER="0" usemap="#SL2971106-1096948"></P></DIV></P></LI><LI CLASS="numlist"><P>Enter the hospital provided <SPAN CLASS="GUILABEL"><I>Host name</I></SPAN>.</P></LI><LI CLASS="numlist"><P>Enter the hospital provided <SPAN CLASS="GUILABEL"><I>Network Address</I></SPAN> (IP Address).</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[DICOM]</SPAN> as the <SPAN CLASS="GUILABEL"><I>Network Protocol</I></SPAN>.</P><P>The system automatically highlights the remaining parameter
+fields on the Remote Host parameter selection screen. These are dedicated
+DICOM Protocol parameters.</P></LI><LI CLASS="numlist"><P>Enter the TCP/IP Listening <SPAN CLASS="GUILABEL"><I>Port Number</I></SPAN> from the DICOM Conformance Statement provided
+with the device.</P></LI><LI CLASS="numlist"><P>Enter the <SPAN CLASS="GUILABEL"><I>AE Title</I></SPAN> from the DICOM Conformance Statement provided with the device.</P><P>Application Entity Titles (also known as ACR-Nema or Dicom Name)
+refer to the DICOM Network Services that a device provides to the
+CT System. For most devices, the AE Title is the same as the hostname
+(CT systems are equipped with this feature).</P><P>However, some devices such as PACS systems may have separate
+AE Titles and port numbers for each of the services that the PACS
+system provides. In these cases, you must enter a separate remote
+host (same hostname and IP Address) for each of the independent AE
+Title Services that the host provides (one host as an image <B>push-to</B> destination, another host as a <B>query/retrieve</B> provider, and another host as a <B>storage/commitment</B> provider).</P><P>Be sure to review the DICOM Conformance Statement for each device
+that will provide a remote host network service for the CT system
+(image <B>push-to</B> or store destination, Query/
+Retrieve, and Storage Commitment) to ensure that each service is correctly
+configured.</P></LI><LI CLASS="numlist"><P>Select the correct <SPAN CLASS="GUILABEL"><I>Archive
+Node</I></SPAN> choice for the device. The Archive Node selection
+field defines the ability of the remote host to act as a DICOM Storage/Commitment
+provider and indicate to the operator that a study/series/image was
+archived. Select:</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="GUIBUTTON">[AUTO]</SPAN> to have
+the CT system automatically check to see if the designated remote
+host is a DICOM Storage/Commitment Provider.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUIBUTTON">[YES]</SPAN> if the device
+is the hospital designated DICOM Storage/Commitment Provider. During
+an Application Study Archive process, the local browser screen will
+indicate <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Archive Status = Y</FONT></SPAN> to the operator.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUIBUTTON">[NO]</SPAN> if the device
+is not a DICOM Storage/Commitment Provider.</P></LI></UL></LI><LI CLASS="numlist"><P>Select the correct <SPAN CLASS="GUILABEL"><I>Access
+to local host:</I></SPAN> settings. These two selections allow you
+to selectively block the remote host from using the LightSpeed DICOM
+services as a provider (image <B>push-to</B> destination,
+and a <B>Query/Retrieve</B> provider).</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Send Images?</I></SPAN> Set
+to <SPAN CLASS="GUIBUTTON">[YES]</SPAN> if the customer wants the CT system
+to be able to have images <B>pushed</B> to the system
+from the applicable remote host. Set to NO if the customer wants to
+block an image <B>push</B> from the applicable remote
+host.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Query/retrieve images?</I></SPAN> Set to <SPAN CLASS="GUIBUTTON">[YES]</SPAN> if the customer wants the remote
+host to be able to review the image database (query) and <B>pull</B> selected images from the database. Set to <SPAN CLASS="GUIBUTTON">[NO]</SPAN> if the customer does not want the remote host to have
+this ability.</P></LI></UL></LI><LI CLASS="numlist"><P>Select the correct <SPAN CLASS="GUILABEL"><I>Custom
+search?</I></SPAN> setting. This selection allows the CT scanner to
+selectively search through the remote host's image database when the
+operator is using remote browser screen to <B>query</B> the remote host. The search parameters that the CT system allows
+the customer to use are: last name contains, patient ID, exam number,
+accession number, and exam date.</P><UL><LI CLASS="bulletlist"><P>Select <SPAN CLASS="GUIBUTTON">[ON]</SPAN> if
+the device supports custom searches as part of the devices Query/Retrieve
+DICOM Provider service.</P></LI><LI CLASS="bulletlist"><P>Select <SPAN CLASS="GUIBUTTON">[OFF]</SPAN> if
+the device does not support custom searches.</P></LI></UL></LI><LI CLASS="numlist"><P>Record all the remote host network
+parameters for each remote host in the <SPAN CLASS="pubref"><I>Software Installation
+Procedures</I></SPAN> document.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[SAVE]</SPAN> to
+store the parameter settings of the remote host.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL2970975-1096948">1.3.7&nbsp;&nbsp;Declaring the CT System on Remote Hosts<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970976-1096948">1.4&nbsp;&nbsp;Declaring the Scanner on Advantage NET Protocol Devices/Systems<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Refer to the appropriate service manual provided with the Advantage
+NET Protocol device or system to find instructions how to declare
+the CT System as an Advantage NET remote host.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970977-1096948">1.5&nbsp;&nbsp;Declaring the Scanner on DICOM Protocol Devices/Systems<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Refer to the appropriate Service Manual provided with the DICOM
+protocol device or system to find instructions how to declare the
+CT System as a DICOM remote host.</P><P CLASS="sect2">The CT System provides two DICOM Services as a provider to remote
+hosts:</P><UL><LI CLASS="bulletlist"><P>A remote host can <B>push</B> images to the CT image database.</P></LI><LI CLASS="bulletlist"><P>A remote host can review the CT image
+database (query) and <B>pull</B> selected images (retrieve).</P></LI></UL><P CLASS="sect2">Use the following parameter information to configure the DICOM
+device/system to either <B>push</B> images to the
+CT scanner and/or perform a <B>Query/Retrieve</B> operation:</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Hostname:</I></SPAN> Provided
+by the Hospital Network Administrator. Exactly the same scanner assigned
+hostname entered in Network Configuration Screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Application Entity Title:</I></SPAN> Exactly the same entry as the Hostname.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Network Address:</I></SPAN> Provided by the Hospital Network Administrator. Exactly the same
+scanner assigned IP Address entered in Network Configuration Screen.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Network Protocol:</I></SPAN> DICOM 3.0.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Port Number:</I></SPAN> For
+all DICOM service that the CT System provides, use 4006.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Provider Type:</I></SPAN> This field concerns the LightSpeed DICOM <B>Query/Retrieve</B> provider capability. All CT systems are wtudy root systems, which
+allow queries at the exam, series, and image level.</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="GUILABEL"><I>Support Worklist:</I></SPAN> This field concerns whether a DICOM <B>Query/Retrieve</B> provider capable device or system supports a filter search of the
+image database. All CT systems support a filtered search of the image
+database as part of the LightSpeed DICOM <B>Query/ Retrieve</B> provider capability.</P></LI></UL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2970987-1096948">2&nbsp;&nbsp;DICOM HIS/RIS Setup<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970988-1096948">2.1&nbsp;&nbsp;Prerequisites<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Most hospital HIS/RIS systems are not DICOM compatible and require
+a DICOM HIS/RIS Worklist Interface to provide patient scheduling information
+to the CT system. Contact your local HNS support engineer to determine
+exactly what DICOM HIS/RIS Interface is appropriate for the customer.</P><P CLASS="sect2">In addition, the CT system must have the ConnectPRO software
+option installed to utilize the DICOM Protocol Worklist capability.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2970989-1096948">2.2&nbsp;&nbsp;Loading ConnectPRO Software Option on the CT System<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Refer to <SPAN CLASS="MODULEREF"><A HREF="324437.htm#SL326484-324437"><I>ConnectPRO Software
+Option Installation and Checkout</I></A></SPAN> procedure.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2971009-1096948">2.3&nbsp;&nbsp;Troubleshooting Tips<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following is a summary of troubleshooting information for
+DICOM print that was gathered during software testing and validation
+of the DICOM print feature.</P><P CLASS="sect2">There is also a significant amount of additional troubleshooting
+procedures, and the theory of the DICOM print feature in the System
+Service Manual. Should you have problems installing a DICOM print
+camera, first read the information in System Service Manual.</P><P CLASS="sect2"><B>ERROR BRINGING UP THE CAMERA INSTALLATION/FILMING
+APPLICATION</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> After
+creating/modifying the DICOM print camera the install camera interface
+does not come up and the filming application indicates it cannot bring
+up the film composer.</P><P><B>Cause:</B> The configuration field contains
+invalid information such as a backslash (<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">\</FONT></SPAN>) as
+the final character in the field or brackets (<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{}</FONT></SPAN>).</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> The
+camera.dev file in <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">~ctuser/app-defaults/devices</FONT></SPAN> must be manually edited to remove the offending characters in the
+set configuration line. Invalid characters include <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">\{}</FONT></SPAN></P></LI></UL><P CLASS="sect2"><B>CONFIGURATION INFORMATION FIELD</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> Cannot
+view the entire configuration field (&gt; 25 characters)</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Hold
+down the middle mouse button and move the field contents</P></LI></UL><P CLASS="sect2"><B>NEED TO SET DICOM PRINT ATTRIBUTES NOT SUPPORTED
+BY SOFTWARE</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> User
+wants the white border around each image box ON/OFF permanently for
+this system and it cannot be set as the default for the camera.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Using
+your favorite editor, add the following line to the camera.dev file
+located in <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">~ctuser/app-defaults/devices</FONT></SPAN> after the
+DICOM print device has been otherwise configured.</P><UL><LI CLASS="bulletlist"><P>For Trim Off - set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TRIM NO</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>For Trim On - set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TRIM YES</FONT></SPAN></P></LI></UL></LI><LI CLASS="bulletlist"><P><B>Symptom:</B> DICOM
+print camera supports multiple film sizes and the user only wants
+to print if the film size is correct for LightSpeed 7.X (14x17). [Otherwise
+the camera will queue the films or return an error causing the queue
+to pause (based upon the DICOM print camera specifications).]</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Using
+your favorite editor, add the following line to the camera.dev file
+located in <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">~ctuser/app-defaults/devices</FONT></SPAN> after the
+DICOM print device has been otherwise configured.</P><P>To force a 14x17 film size - set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">filmSize 14INX17IN</FONT></SPAN></P></LI></UL><P CLASS="sect2"><B>NEED TO PREVENT DICOM PRINT ATTRIBUTES FROM BEING
+SENT TO DICOM PRINT CAMERA</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> Some
+DICOM print attributes are optional, and may result in fatal errors.
+For example, the Fuji camera does not support the Empty Image Density
+parameter for the film box.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Using
+your favorite editor, add the following line(s) to the camera.dev
+file located in <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">~ctuser/app-defaults/devices</FONT></SPAN> after
+the DICOM print device has been otherwise configured.</P><UL><LI CLASS="bulletlist"><P>To prevent sending the Smoothing Parameter
+set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">FB_Smooth FALSE</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>To prevent sending the Border Density
+set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">FB_Border FALSE</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>To prevent sending the Empty Image
+Density set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">FB_EID FALSE</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>To prevent sending the Minimum Density
+set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">FB_MinD FALSE</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>To prevent sending the Trim Parameter
+set <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">FB_Trim FALSE</FONT></SPAN></P></LI></UL></LI></UL><P CLASS="sect2"><B>ERROR TRYING TO CONNECT TO THE DICOM PRINT CAMERA</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> DICOM
+print server can be reached (ping), but Application error indicates <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">"Unable to start filming interface"</FONT></SPAN> and the help message
+talks about running the install.dasm (Association Error)</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> The
+system is unable to complete the association. Check the <SPAN CLASS="GUILABEL"><I>AE Title</I></SPAN> and the <SPAN CLASS="GUILABEL"><I>Port number</I></SPAN> of the
+DICOM print server and correct them through the Install Camera procedure.</P></LI></UL><P CLASS="sect2"><B>FILM COMPOSER ERROR NOT USABLE</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> Film
+composer error says <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&#8220;unrecognized status - code 0&#8221;</FONT></SPAN></P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Review
+the log file, the attention and status windows. These areas have the
+correct filming status (for example, <B>film jam</B> and <B>supply empty</B>).</P></LI></UL><P CLASS="sect2"><B>DEBUGGING CONNECTION ISSUES DIFFICULT</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> The
+timeouts for the DICOM print are very long, which means one needs
+to wait a long time before you know the application is not working.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> The
+timeouts for the DICOM print were setup to ensure that the system
+would work regardless of whether the DICOM print camera was on a LAN
+or a WAN halfway around the world. The DICOM print timeouts for the
+association and DIMSE classes (for example, <B>N-GET</B>, <B>N-DELETE</B>) can be modified within the DICOM
+print camera installation. They can be reduced down to 90 seconds.</P></LI></UL><P CLASS="sect2"><B>DICOM PRINT ERROR ON N-GET TIMEOUT CONFUSING</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> When
+the N-GET timeout goes off, the error message in the prslog file will
+be <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&#8220;Could not get printer status, invalid command sequence
+for N-GET&#8221;</FONT></SPAN>.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> When
+the user sees the above error they may want to consider that the issue
+may be an inactivity timer on the N-GET DIMSE service.</P></LI></UL><P CLASS="sect2"><B>DICOM PRINT CAMERA SLIDE SUPPORT</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> Current
+implementation of DICOM print does not allow selection of slide format.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B> Feature
+not currently supported. Possibly in future releases.</P></LI></UL><P CLASS="sect2"><B>CONFUSION ON FILM FORMAT NOTATION</B></P><UL><LI CLASS="bulletlist"><P><B>Symptom:</B> GE
+Healthcare Laser Camera and DICOM Print film format notations are
+opposite.</P></LI><LI CLASS="bulletlist"><P><B>Solution:</B></P><UL><LI CLASS="bulletlist"><P>GE Healthcare Laser Camera film format
+notation has always been row x col (for example, 12 on 1 = 4x3)</P></LI><LI CLASS="bulletlist"><P>DICOM Print Standard film format notation
+is col x row (for example, 12 on 1 = 3x4)</P></LI></UL></LI></UL></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

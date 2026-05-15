@@ -1,0 +1,417 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Diagnostic Tests</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5440001-3,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">Diagnostic Tests </H1><P CLASS="descriptive">Diagnostics are available to check most parts of the system.  The following
+sections describe these tests.  This information is also available from the
+hyper-linked test names on the MR system (see Section 1 of <SPAN CLASS="MODULEREF"><A HREF="82446.htm#SL82582-82446"><I>Running Diagnostics</I></A></SPAN>).
+ </P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899340624">1&nbsp;&nbsp;MGD BLD Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These diagnostics allow individual testing of the DRF (1-4), TRF, SRF
+and , IRF Boards, and the AP Board(s) in the MGD Chassis.  See <A HREF="javascript:winopen('82559illd0e42.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.  Test options are provided on the right
+side of the screen.  Refer to <A HREF="javascript:winopen('82559tbld0e47.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> for
+test descriptions.  </P><DIV CLASS="ILLUSTRATION" id="SL82585-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">MGD BLD MENU</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82466.jpg" BORDER="0" usemap="#SL82589-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82588-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">MGD BLD DIAGNOSTIC TESTS</SPAN> </P><table summary="MGD BLD DIAGNOSTIC TESTS" border="1"><colgroup><col width="182"><col width="533"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">DRF 1 BLD</td><td valign="">Tests the first DRF1 Board found.  This is right-most board in slots
+4-7.  In an MGD Chassis configured for 4 receive channels this will be the
+DRF1 Board in slot 2.  In an MGD Chassis configured for 8 receive channels
+this will be the DRF1 Board in slot 7.  The APS tests the onboard memory and
+HPI interface.  It also performs a test of the DMA.  </td></tr><tr valign="top"><td valign="">DRF 2 BLD </td><td valign="">Tests the second DRF1 Board found.  This is the board directly to the
+left of the DRF1 Board designated DRF 1.  The APS tests the onboard memory
+and HPI interface.  It also performs a test of the DMA.</td></tr><tr valign="top"><td valign="">DRF 3 BLD</td><td valign="">Tests the third DRF1 Board found.  This is the board directly to the
+left of the DRF1 Board designated DRF 2.  The APS tests the onboard memory
+and HPI interface.  It also performs a test of the DMA.  </td></tr><tr valign="top"><td valign="">DRF 4 BLD</td><td valign="">Tests the fourth DRF1 Board found.  This is the board directly to the
+left of the DRF1 Board designated DRF 3.  Because there are only 4 slots for
+the DRF1 Boards and this is the fourth board DRF 4 should normally be located
+in slot 4.  The APS tests the onboard memory and HPI interface.  It also performs
+a test of the DMA.</td></tr><tr valign="top"><td valign="">TRF BLD</td><td valign="">The APS or AGP tests functionality of the TRF hardware.  </td></tr><tr valign="top"><td valign="">SRF BLD</td><td valign="">The AGP tests the functionality of the onboard memory, and various
+registers.   </td></tr><tr valign="top"><td valign="">IRF BLD</td><td valign="">The AGP tests the functionality of the onboard memory, various registers,
+Xmit attenuation Look-Up Table, and the various board FIFOs.    </td></tr><tr valign="top"><td valign="">AP RECON</td><td valign="">The test sends a raw image test file through the image reconstruction
+process and compares the result to a known good processed image file.  If
+the output &#8220;image&#8221; does not match the known good &#8220;image&#8221;
+bit-for-bit then the test fails.  The &#8220;image&#8221; is not reconstructable
+and will not be displayed.  The process is as follows:<OL><LI CLASS="numlist">Read a 256 x 256 bit test raw image file from the hard disk.</LI><LI CLASS="numlist">Load this file into AP memory.</LI><LI CLASS="numlist">Run several image reconstruction routines on the raw image.</LI><LI CLASS="numlist">Read the processed image back and compare it to a known good
+image file from the hard disk.</LI><LI CLASS="numlist">Repeat the process with a 512 x 512 image.</LI></OL></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899341079-dup.5">2&nbsp;&nbsp;MGD Datapath Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e124.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>.  These
+diagnostics allow the testing of the communication paths between various boards
+in the MGD Chassis.  Data paths diagnostics are tests, which transfer data
+from one FRU to another for the purpose of validating the hardware.  This
+is accomplished where possible by utilizing the application code in a similar
+manner, as it would be used for patient scanning.  This serves two purposes.
+ The first is to detect the same errors as the application code does.  The
+added advantage here is the canned data, which can be validated once it reaches
+its destination.  The second advantage is the ability to validate the software
+as well as the hardware.  The intensity at which the diagnostic works can
+speed up the detection of timing related problems.  Test Results and Test
+Status are reported at the bottom of the window.  Refer to <A HREF="javascript:winopen('82559tbld0e129.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A> for test descriptions.  </P><DIV CLASS="ILLUSTRATION" id="SL82566-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">MGD DATAPATH TESTS</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82489.jpg" BORDER="0" usemap="#SL82590-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82572-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">MGD DATAPATH TESTS</SPAN> </P><table summary="MGD DATAPATH TESTS" border="1"><colgroup><col width="161"><col width="555"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">IRF -&gt; DRF</td><td valign="">Tests data path between the IRF and the DRF Boards.  The test executes
+in these steps:<OL><LI CLASS="numlist">AGP writes test data to a direct send port on the IRF Board.</LI><LI CLASS="numlist">The IRF forwards the data to the receiver bus.</LI><LI CLASS="numlist">The DRF decodes the receiver bus and stores the data internally.
+ The APS reads this stored data.</LI><LI CLASS="numlist">The APS sends the test data to the AGP through the Bridge
+Board.  </LI></OL></td></tr><tr valign="top"><td valign="">IRF -&gt; IRF I/O </td><td valign="">Tests data path between the IRF Board and the IRF I/O (rear MGD). 
+The test executes in these steps:<OL><LI CLASS="numlist">The AGP writes test data to a direct send port on the IRF
+Board.  </LI><LI CLASS="numlist">The IRF sends the test data to the IRF I/O board.  </LI><LI CLASS="numlist">The IRF I/O Board loops the data back to the IRF.  The IRF
+captures the data in a bypass FIFO queue.  </LI><LI CLASS="numlist">The AGP reads the test data out of the bypass FIFO and compares
+it to the original test data.   </LI></OL></td></tr><tr valign="top"><td valign="">SRF -&gt; DRF</td><td valign="">Tests data path between the SRF and the DRF Boards.  The test executes
+in these steps:<OL><LI CLASS="numlist">The AGP configures the SRF to play out a Pulse Sequence Database
+(PSD) with a test data pattern.  </LI><LI CLASS="numlist">The SRF sends the test data out on to the sequence bus.  </LI><LI CLASS="numlist">The IRF captures the data and forwards it to the receiver
+bus.</LI><LI CLASS="numlist">The DRF decodes the receiver bus and stores the data internally.
+ The APS reads this data store.  </LI><LI CLASS="numlist">The APS sends the test data to the AGP through the Bridge
+Board.</LI></OL></td></tr><tr valign="top"><td valign="">SRF -&gt; IRF</td><td valign="">Tests data path between the SRF and the IRF Boards.  The test executes
+in these steps:<OL><LI CLASS="numlist">The AGP configures the SRF to play out a PSD with a test data
+pattern.  </LI><LI CLASS="numlist">The SRF sends the test data out on to the sequence bus.  </LI><LI CLASS="numlist">The IRF captures the data and stores it in a bypass FIFO queue.
+ </LI><LI CLASS="numlist">The AGP reads the data in the FIFO queue and compares it to
+the original data.</LI></OL></td></tr><tr valign="top"><td valign="">SRF -&gt; TRF</td><td valign="">Tests data path between the SRF and the TRF Boards.  Note that the
+SRF and TRF Boards are physically included in one assembly and are one board
+(SRF/TRF Board).  The test executes in these steps:<OL><LI CLASS="numlist">The AGP configures SRF to play out a PSD with a test data
+pattern.</LI><LI CLASS="numlist">The SRF sends the test data and the TRF recaptures it in a
+monitor FIFO.</LI><LI CLASS="numlist">The AGP reads the monitor FIFO and compares the data to the
+original data.</LI></OL></td></tr><tr valign="top"><td valign="">APS -&gt; Bridge</td><td valign="">Tests communication path between the APS Board and the Bridge Board
+(rear MGD).  This tests the ability of the Bridge Board to be accessed and
+configured and its ability to provide communications to/from the primary and
+secondary interfaces.  The Bridge Boards 21554 scratchpad registers, which
+reside in the Control/Status Register map, are used for this test. These registers
+are non-invasive to the operation of the 21554. The master processor (AGP
+or APS) that is selected by the operator executes the diagnostic. The slave
+processor is not used for this diagnostic.</td></tr><tr valign="top"><td valign="">AGP -&gt; Bridge</td><td valign="">Tests communication path between the AGP Board and the Bridge Board
+(rear MGD).  See test explanation above.</td></tr><tr valign="top"><td valign="">APS -&gt; AP</td><td valign="">Tests communication path between the APS Board and the AP Board. </td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899341787">3&nbsp;&nbsp;RRF BLD Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e255.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>.  These
+diagnostics allow individual testing of the DIF, Receiver, Exciter, and UTNS
+Boards.  Options can be selected from the right side of the window as described
+earlier.  Refer to <A HREF="javascript:winopen('82559tbld0e260.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;3</A> for
+test descriptions.  </P><DIV CLASS="ILLUSTRATION" id="SL82593-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RRF BLD TESTS WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82491.jpg" BORDER="0" usemap="#SL82597-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82596-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DCB DIAGNOSTIC TESTS</SPAN> </P><table summary="DCB DIAGNOSTIC TESTS" border="1"><colgroup><col width="161"><col width="555"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">DIF BLD </td><td valign=""><OL><LI CLASS="numlist">The AGP sends data command to IRF queue.</LI><LI CLASS="numlist">IRF forwards command via IRF I/O to RRF-DIF.</LI><LI CLASS="numlist">RRF replies to IRF via IRF I/O and this is stored in IRF Board
+status memory.</LI><LI CLASS="numlist">AGP waits 2 status memory cycles (about 512 usec) and then
+reads the IRF status memory. </LI></OL></td></tr><tr valign="top"><td valign="">Receiver BLD</td><td valign=""><OL><LI CLASS="numlist">The AGP sends data command to IRF queue.</LI><LI CLASS="numlist">IRF forwards command via IRF I/O to RRF-DIF.</LI><LI CLASS="numlist">RRF-DIF queries Receiver Board over bus.</LI><LI CLASS="numlist">RRF replies to IRF via IRF I/O and this is stored in IRF Board
+status memory.  </LI><LI CLASS="numlist">AGP waits 2 status memory cycles (about 512 usec) and then
+reads the IRF status memory.</LI></OL></td></tr><tr valign="top"><td valign="">Exciter BLD</td><td valign=""><OL><LI CLASS="numlist">The AGP sends data command to IRF queue.</LI><LI CLASS="numlist">IRF forwards command via IRF I/O to RRF-DIF.</LI><LI CLASS="numlist">RRF-DIF queries Exciter Board over bus.</LI><LI CLASS="numlist">RRF replies to IRF via IRF I/O and this is stored in IRF Board
+status memory.  </LI><LI CLASS="numlist">AGP waits 2 status memory cycles (about 512 usec) and then
+reads the IRF status memory.</LI></OL></td></tr><tr valign="top"><td valign="">UTNS BLD</td><td valign=""><OL><LI CLASS="numlist">The AGP sends data command to IRF queue.</LI><LI CLASS="numlist">IRF forwards command via IRF I/O to RRF-DIF.</LI><LI CLASS="numlist">RRF-DIF queries UTNS Board over bus.</LI><LI CLASS="numlist">RRF replies to IRF via IRF I/O and this is stored in IRF Board
+status memory.  </LI><LI CLASS="numlist">AGP waits 2 status memory cycles (about 512 usec) and then
+reads the IRF status memory.</LI></OL></td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899342208-dup.2">4&nbsp;&nbsp;APS, AGP, and SCP Board Level Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e358.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>.  These
+diagnostics allow individual testing of the AGP, APS, and SCP Boards.  Options
+can be selected from the right side of the window as described earlier.  Refer
+to <A HREF="javascript:winopen('82559tbld0e387.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;4</A> for test descriptions.
+  </P><DIV CLASS="ILLUSTRATION" id="SL82600-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE"> MOTOROLA POWERPC BLD TESTS WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82493.jpg" BORDER="0" usemap="#SL82604-82559"></P></DIV><P CLASS="sect1">Once the selections are made, the test is started by selecting the <SPAN CLASS="GUIBUTTON">[RUN]</SPAN> button
+in the middle of the window.  The tests can be ended by selecting the <SPAN CLASS="GUIBUTTON">[STOP]</SPAN> button
+located to the right of the <SPAN CLASS="GUIBUTTON">[RUN]</SPAN> button.  </P><UL><LI CLASS="bulletlist"><P>When selected, the <SPAN CLASS="GUIBUTTON">[ALL]</SPAN> button enables
+testing on all 3 boards.</P></LI><LI CLASS="bulletlist"><P>When selected, the <SPAN CLASS="GUIBUTTON">[Clear]</SPAN> button disables
+testing on all 3 boards.</P></LI></UL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82603-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DCB DIAGNOSTIC TESTS</SPAN> </P><table summary="DCB DIAGNOSTIC TESTS" border="1"><colgroup><col width="143"><col width="574"></colgroup><tbody valign=""><tr valign="top"><td valign="">TEST NAME</td><td valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">APS </td><td valign=""><OL><LI CLASS="numlist">Host resets APS Board to PPC diag mode (Motorola's proprietary
+debugger) through the serial port.</LI><LI CLASS="numlist">Host sends diagnostic commands to the board to invoke the
+test.  The test set exercises the SRAM, PCI Bridge, and the internal board
+register.  </LI><LI CLASS="numlist">Host parses the test status sent back from the boards and
+determines if the test passed/failed.</LI></OL></td></tr><tr valign="top"><td valign="">AGP</td><td valign="">Functions for AGP the same way as APS test except AGP is tested.  See
+description for APS above.  </td></tr><tr valign="top"><td valign="">SCP</td><td valign="">Functions for SCP the same way as APS test except SCP is tested.  See
+
+description for APS above.  </td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899342627-dup.2">5&nbsp;&nbsp;CAN Link Diagnostic<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic tests the functionality of the CAN Board daughter card
+that resides on the SCP Board in the MGD Chassis.  This diagnostic first detects
+all the available nodes (in this case the Driver Control Module) on the CAN
+link by monitoring the Node Guarding messages.  Once any nodes are detected,
+they are logged to the screen and then a data path test is run on each of
+them sequentially.  The data path test consists of writing a walking one&#8217;s
+pattern on the Diagnostic Dictionary Index on the node and reading it back.
+ The received data is checked to ensure its validity.  The data path test
+is repeated three times on each node.  Any errors will result in an error
+message logged and the information written to the screen.  See <A HREF="javascript:winopen('82559illd0e430.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;5</A>.</P><DIV CLASS="ILLUSTRATION" id="SL82607-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">CAN LINK DIAGNOSTIC TEST</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82495.jpg" BORDER="0" usemap="#SL82608-82559"></P></DIV><UL><LI CLASS="bulletlist"><P>The <SPAN CLASS="GUIBUTTON">[Force Reset]</SPAN> button will reset the
+CAN Link.</P></LI><LI CLASS="bulletlist"><P>The <SPAN CLASS="GUIBUTTON">[Run]</SPAN> button will start the execution
+of the diagnostic.</P></LI><LI CLASS="bulletlist"><P>The <SPAN CLASS="GUIBUTTON">[Stop]</SPAN> button will end execution
+of the diagnostic. </P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899342907-dup.1">6&nbsp;&nbsp;Driver Control Module BLD Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These diagnostics provide the ability to test the functionality of the
+Driver Control Module and components within this module.  See <A HREF="javascript:winopen('82559illd0e463.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;6</A>.  Refer to<A HREF="javascript:winopen('82559tbld0e510.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A> for test descriptions.  </P><DIV CLASS="ILLUSTRATION" id="SL82611-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DCB DIAGNOSTIC WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82497.jpg" BORDER="0" usemap="#SL82612-82559"></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1289899343369">6.1&nbsp;&nbsp;DCB Power Supply Data<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"><A HREF="javascript:winopen('82559illd0e474.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;7</A> provides a display
+of what results should normally be seen, when running this diag in Product
+Configuration (the default selection).  Note that all passing results are
+displayed in blue.  Failing results are displayed in red.  Product Configuration
+does not display the results from parts of the Driver Module that are not
+yet utilized.  All results should be displayed in blue.  </P><DIV CLASS="ILLUSTRATION" id="SL82615-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SAMPLE PRODUCT CONFIGURATION DCB POWER SUPPLY DATA OUTPUT SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82499.jpg" BORDER="0" usemap="#SL82616-82559"></P></DIV><P CLASS="sect2"><A HREF="javascript:winopen('82559illd0e482.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;8</A> provides a display
+of what results should be seen when running this in Full Configuration.  
+Full Configuration tests all parts of the Driver Module, including those parts
+not yet used.  Notice the failing items displayed in red (NEG Drive 15V, POS
+Drive 12V, MC2 POS 10V, and MC2 NEG 10V).  Also notice that while the High
+Volt parameter is colored blue, the Value number is very low.  This is due
+to the fact that the limits are set very wide.  Obviously, the High Volt parameter
+is for future use.  Since none of the functions indicated by the failing red
+parameters are currently performed by the Driver Module, it is normal and
+expected to see these failures.  </P><DIV CLASS="ILLUSTRATION" id="SL82620-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SAMPLE DCB POWER SUPPLY DATA OUTPUT SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82501.jpg" BORDER="0" usemap="#SL82617-82559"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1289899344045">6.2&nbsp;&nbsp;DCB IO Status <SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"><A HREF="javascript:winopen('82559illd0e493.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> provides an example
+display of what should be seen when running this diagnostic in Product Configuration.
+ Again, normally all the results should be displayed in blue.  Any failing
+results will be displayed in red.  Don&#8217;t assume that failures reported
+here automatically mean that the Driver Module should be replaced.  Try removing
+output cables to the Driver Module and run the diagnostic again.  See if the
+results have changed.  If they have, the problem may be external to the Driver
+Module.  </P><DIV CLASS="ILLUSTRATION" id="SL82624-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SAMPLE DCB IO STATUS OUTPUT SCREEN IN PRODUCT CONFIGURATION</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82503.jpg" BORDER="0" usemap="#SL82621-82559"></P></DIV><P CLASS="sect2"><A HREF="javascript:winopen('82559illd0e493.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> provides an example
+display of what should be seen when running this diagnostic in Full Configuration.
+ Notice the failing items displayed in red (High Speed Cable, MCD 2, TR/DD,
+and MCD 2 Cable).  Again, these failures are normal in Full Configuration
+since these functions are for future use.  Note the items in the Test Results
+window marked with an arrow.  These items are detected on the Driver Module
+TR/DD Board.  Since Driver Modules in systems with an SSM do not have a TR/DD
+Board (the SSM performs these functions), the status of these parameters is
+not valid.  A failure of Fan 1 or Fan 2 on the front of a Driver Module without
+a TR/DD Board will not result in a change in the Fan 1 or Fan 2 parameter.
+ The operation of these fans should be confirmed by visual inspection.  The
+Head, Body, and MNS Overtemp parameters are determined from the temperature
+of the driver transistors on the Driver Module TR/DD Board.  Again, if the
+system has an SSM, then the Driver Module will not have a TR/DD Board and
+these values are therefore not valid.  Finally, be aware that if the CAN Communication
+Core (CCC) Board fails then a message indicating that the CAN Link has failed
+will be displayed in the Test Results window instead of the IO Data.  </P><DIV CLASS="ILLUSTRATION" id="ov-1289899344519"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SAMPLE DCB IO STATUS OUTPUT SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82505.jpg" BORDER="0" usemap="#SL82627-82559"></P></DIV><P CLASS="sect2">See a description of the remaining tests in <A HREF="javascript:winopen('82559tbld0e510.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;5</A>.  </P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82847-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DCB DIAGNOSTIC TESTS</SPAN> </P><table summary="DCB DIAGNOSTIC TESTS" border="1"><colgroup><col width="117"><col width="199"><col width="201"><col width="199"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td colspan="3" align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">Power Supply Data</td><td colspan="3" valign="">This diagnostic reads the Power Supply
+information from the DCB board every 5 seconds for the specified Test Duration
+(max 300 secs).  The values are checked against the tolerances listed in the <SPAN CLASS="filename"><FONT FACE="COURIER">DcbConfig.cfg</FONT></SPAN> file.
+ Any failing values will be printed out in red.  Passing values will be printed
+out in blue.  No error messages will be logged for failing power supplies
+since the Applications Code will be logging these errors automatically.  See
+sample screen and comments in <A HREF="82559.htm#SL82773-82559">Section&nbsp;12</A>.</td></tr><tr valign="top"><td rowspan="25" valign="">I/O Status</td><td colspan="3" valign="">This diagnostic reads the I/O Bit map
+information from the DCB board every 5 seconds for the specified Test Duration
+(max 300 secs).  Each polled item and its status is printed in the window.
+ Status messages displayed in red indicate an abnormal condition.  See sample
+screen and comments in <A HREF="82559.htm#SL82773-82559">Section&nbsp;12</A> and
+descriptions in the table below.</td></tr><tr valign="top"><td align="center" valign="">Test</td><td align="center" valign="">Test Purpose</td><td align="center" valign="">Nominal Result</td></tr><tr valign="top"><td valign="">Multi-Coil Switch</td><td valign="">Check position of Switch SW 4 MC ENABLE</td><td valign="">FAULTS ENABLED</td></tr><tr valign="top"><td valign="">Dynamic Drive Switch</td><td valign="">Check position of Switch SW 3 DD ENABLE (not used on Driver Modules
+(DMs) in systems with an SSM)</td><td valign="">FAULTS ENABLED</td></tr><tr valign="top"><td valign="">T/R Switch</td><td valign="">Check position of Switch SW 2 TR ENABLE (not used on DMs in systems
+with an SSM)</td><td valign="">FAULTS ENABLED</td></tr><tr valign="top"><td valign="">Power Status</td><td valign="">Check incoming power to DCB Board</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">High Speed Cable</td><td valign="">Check for external cable connected to J4.  Future use.</td><td valign="">NOT PRESENT</td></tr><tr valign="top"><td valign="">Front Panel Interface</td><td valign="">Check internal ribbon cable to Front Panal I/F</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">Un-Blank Cable</td><td valign="">Check for external cable connected to J19</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">Un-Blank Harness</td><td valign="">Check connection of internal cable connection</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">High Voltage Switch</td><td valign="">Check position of Switch SW 1 HV ENABLE (not used on DMs in systems
+with an SSM)</td><td valign="">FAULTS ENABLED</td></tr><tr valign="top"><td valign="">Fan 1</td><td valign="">Fan 1 operation status; monitored only in DMs equipped with a TR/DD
+Board.  Not currently monitored.</td><td valign="">OPERATIONAL</td></tr><tr valign="top"><td valign="">Fan 2</td><td valign="">Fan 2 operation status; monitored only in DMs equipped with a TR/DD
+Board.  Not currently monitored.</td><td valign="">OPERATIONAL</td></tr><tr valign="top"><td valign="">MCD 1</td><td valign="">Check for presence of MCD 1 Board.</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">MCD 2</td><td valign="">Check for presence of MCD 2 Board.  Future use.</td><td valign="">NOT PRESENT</td></tr><tr valign="top"><td valign="">TR/DD</td><td valign="">Check for presence of TR/DD Board.  Future use.</td><td valign="">NOT PRESENT</td></tr><tr valign="top"><td valign="">MCD 1 Cable</td><td valign="">Check for external cable connected to J5 (MC1).</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">MCD 2 Cable</td><td valign="">Check for external cable connected to J10 (MC2).  Future use.</td><td valign="">NOT PRESENT</td></tr><tr valign="top"><td valign="">Head Overtemp</td><td valign="">Check temp. of TR/DD Board transistors.  Future use.</td><td valign="">NORMAL</td></tr><tr valign="top"><td valign="">Body Overtemp</td><td valign="">Check temp. of TR/DD Board transistors.  Future use.</td><td valign="">NORMAL</td></tr><tr valign="top"><td valign="">MNS Overtemp</td><td valign="">Check temp. of TR/DD Board transistors.  Future use.</td><td valign="">NORMAL</td></tr><tr valign="top"><td valign="">CCC Board</td><td valign="">Check for presence of CCC Board.</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">CCC ISO 5 Volts</td><td valign="">Check for presence of CCC Board ISO 5 Volts.</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">CCC Flash 5 Volts</td><td valign="">Check for presence of CCC Flash 5 Volts.</td><td valign="">PRESENT</td></tr><tr valign="top"><td valign="">DCB Reset State</td><td valign="">Report state of Digital Control Board inside DM.</td><td valign="">NO RESET</td></tr><tr valign="top"><td valign="">Xpt Switch</td><td colspan="3" valign="">This diagnostic runs the following patterns
+on the Cross Point Switch LED&#8217;s every 5 seconds for the specified Test
+Duration (max 300 secs):<UL><LI CLASS="bulletlist">Walking one from 0 to 7.</LI><LI CLASS="bulletlist">Walking one from 7 to 0.</LI></UL></td></tr><tr valign="top"><td valign="">MCD Volt Test</td><td colspan="3" valign="">This diagnostic outputs the multicoil
+TR bias voltages listed below to the specified driver channels for measure
+at MC1 J5 and MC2 J10 (future use only) on the rear of the Driver Module.
+ This test is helpful for dynamically checking the TR voltages using a DMM
+or oscilloscope.  See  below for J5
+and J10 connection pinouts.  The voltages will be present in the time interval
+specified in Test Delay and unblanked for the period of time specified in
+Un-blank Time.  An Internal or External Un-blank signal can be specified for
+use.  The Internal Un-blank is generated inside the DM but cannot be used
+outside the DM.  The External Un-blank (RS-422 differential signal) can be
+supplied by the FE between pins 1 and 6 at the J19, 9-pin, sub-D port. :<UL><LI CLASS="bulletlist">Disable all multi-coil channels</LI><LI CLASS="bulletlist">Set all Driver channels to 3 Volts</LI><LI CLASS="bulletlist">Set all Driver channels to 5 Volts</LI><LI CLASS="bulletlist">Set all Driver channels to 7 Volts</LI><LI CLASS="bulletlist">Set all channels to 5 volts</LI><LI CLASS="bulletlist">Set each channel to 3 volts then back to 5 volts</LI><LI CLASS="bulletlist">Set all channels to 7 volts</LI><LI CLASS="bulletlist">Set each channel to 5 volts then back to 7 volts</LI><LI CLASS="bulletlist">Set all channels to 3 volts</LI><LI CLASS="bulletlist">Set each channel to 7 volts then back to 3 volts</LI><LI CLASS="bulletlist">Enable all multi-coil channels</LI><LI CLASS="bulletlist">Set all channels to 5 volts</LI><LI CLASS="bulletlist">Set each channel to 3 volts then back to 5 volts</LI><LI CLASS="bulletlist">Set all channels to 7 volts</LI><LI CLASS="bulletlist">Set each channel to 5 volts then back to 7 volts</LI><LI CLASS="bulletlist">Set all channels to 3 volts</LI><LI CLASS="bulletlist">Set each channel to 7 volts then back to 3 volts</LI></UL>At this point the test ends.</td></tr><tr valign="top"><td valign="">MCD Channel Disable Test</td><td colspan="3" valign="">This diagnostic outputs a positive TR
+bias voltage to the specified driver channels for measure at MC1 J5 and MC2
+J10 (future use only) on the rear of the Driver Module.  This test is helpful
+for dynamically checking the disable TR voltage using a DMM or oscilloscope.
+ See  below for J5 and J10 connection
+pinouts.  The voltage will be present in the time interval specified in Test
+Delay and unblanked for the period of time specified in Un-blank Time.  An
+Internal or External Un-blank signal can be specified for use.  The Internal
+Un-blank is generated inside the DM but cannot be used outside the DM.  The
+External Un-blank (RS-422 differential signal) can be supplied by the FE between
+pins 1 and 6 at the J19, 9-pin, sub-D port.</td></tr><tr valign="top"><td valign="">MCD Channel Enable Test</td><td colspan="3" valign="">This diagnostic outputs a negative TR
+bias voltage to the specified driver channels for measure at MC1 J5 and MC2
+J10 (future use only) on the rear of the Driver Module.  This test is helpful
+for dynamically checking the enable TR voltage using a DMM or oscilloscope.
+ See  below for J5 and J10 connection
+pinouts.  The voltage will be present in the time interval specified in Test
+Delay and unblanked for the period of time specified in Un-blank Time.  An
+Internal or External Un-blank signal can be specified for use.  The Internal
+Un-blank is generated inside the DM but cannot be used outside the DM.  The
+External Un-blank (RS-422 differential signal) can be supplied by the FE between
+pins 1 and 6 at the J19, 9-pin, sub-D port.</td></tr><tr valign="top"><td valign="">Gather Load Data</td><td colspan="3" valign="">This test checks the current draw on the
+multicoil TR bias lines.  It also has the capability to check the Dynamic
+Disable, Direct Drive Disable, head and body TR bias current draw, although
+the Driver Module does not yet support these functions.  The data is sampled
+5 times each for each line and then written to 3 separate text files in /usr/g/service/log.
+ One can then use the more or cat commands to view the contents of these files.
+The data in each file is reported in Open (forward bias) and Short-circuit
+(reverse bias) modes.  These modes refer to the fault conditions for which
+the Driver Module is always monitoring.  Only the multicoil (mc) file will
+contain any useful data in EXCITE systems equipped with an SSM.  In the multicoil
+data file the Open mode displays the current measured when reverse bias (always
+&#8211;5VDC irregardless of selected voltage) is applied to the LPCA circuitry and
+the circuitry of any coil attached to the LPCA.  Short mode displays the current
+measured when forward bias (in this case the selected voltage of +3, +5, or
++7VDC) is applied to the LPCA circuitry and the circuitry of any coil attached
+to the LPCA.  The measured currents will vary based on the coil type and selected
+voltage.  If no coils are connected to the LPCA and this test is run there
+are, however, typical measured currents that one can expect to see.  In this
+state, as long as +5 VDC is the selected voltage, one should expect to see
+from &#8211;130ma to &#8211;150ma in the Short mode and between +155ma to +175ma in the
+Open mode.  Values much greater than the typical values may indicate circuit
+damage or a short-circuit condition somewhere in the bias path while values
+much less than the typical values may indicate circuit damage or an open-circuit
+(maybe a disconnected cable?) condition somewhere in the bias path. Refer
+to the  to help isolate
+the fault if troubleshooting one of these two scenarios.  Run this test to
+troubleshoot intermittent problems and collect baseline data on any new surface
+coil.  Stored surface coil data can be retrieved in the future and compared
+to current values for troubleshooting purposes.  Connect any surface or phased-array
+coil to the LPCA adapter.  Select the TR voltage normally used with the coil
+(5 Volts is typical but picking the wrong voltage won&#8217;t cause damage),
+specify a unique file name (if desired) in the Output File Name box that matches
+the name of the coil, and then run the test.  The files are saved to /usr/g/service/log.
+ The path and filenames are reported in the status window after the test is
+completed.  An Internal or External Un-blank signal can be specified for use.
+ The Internal Un-blank is generated inside the DM but cannot be used outside
+the DM.  The External Un-blank (RS-422 differential signal) can be supplied
+by the FE between pins 1 and 6 at the J19, 9-pin, sub-D port.<TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e806"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Please
+be aware that the test can only check as many multicoil lines as the site
+is equipped to support (typically 8; 0 - 7).  The files report values for
+up to 32 channels but only the values that correspond to an actual line are
+valid.  The remaining lines are for future use and the values listed for these
+are invalid.  Also, be aware that, even with no coil connected, the multicoil
+switching hardware draws between &#8211;130ma to &#8211;150ma of current in Short mode
+and between +155ma to +175ma of current in Open mode when 5 volts is selected.
+ The Short mode currents will not match the typical stated values if +3 or
++7VDC is selected instead.  Current flows (it is much greater than zero) during
+the Short mode (reverse bias) portion of the test due to the diode switching
+scheme used in the LPCA hardware.  Remember that the measured current values
+will tend to vary from coil to coil.  Baselining a new coil for future reference
+is a good practice.  Individual coils in an array generally have current draws
+that are somewhat similar and usually, but not always, can be compared one
+to another.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr></tbody></table></div></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899345210">7&nbsp;&nbsp;SRI Datapath Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e818.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;11</A>.  These
+diagnostics test the communication paths between the internal sections of
+the SRI.  Refer to <A HREF="javascript:winopen('82559tbld0e823.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;6</A> for
+test descriptions.   </P><DIV CLASS="ILLUSTRATION" id="SL82693-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;11:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SRI DATAPATHS WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82507.jpg" BORDER="0" usemap="#SL82697-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82696-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SRI TEST DESCRIPTIONS</SPAN> </P><table summary="SRI TEST DESCRIPTIONS" border="1"><colgroup><col width="143"><col width="574"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">SRI PWM</td><td valign="">This test verifies that the Pulse Width Modulator is converting pulses
+to analog voltages correctly.</td></tr><tr valign="top"><td valign="">SRI RAM</td><td valign="">SRI RAM Test (Fatal) &#8211; On power up, the last 512 bytes of RAM, locations
+FE00H -FFFFH are tested without destroying the application contents of the
+RAM. The SRI interrupts are disabled for this test. These locations are tested
+one at a time. The contents of a location are read, inverted, and written
+back to the location. The location is read again and compared to the value
+written. The original contents of the location are then written back to the
+location that has been tested.</td></tr><tr valign="top"><td valign="">SRI Encoder</td><td valign="">Encoder Voltage Test &#8211; This test verifies that the voltage across the
+encoder (measured at SRI) is &gt;4.0V.</td></tr><tr valign="top"><td valign="">SRI Loopback</td><td valign="">Test time is approximately 9 seconds. This test verifies the communication
+between the SPI and the SRI and the corresponding serial path. The SPI transfers
+a communication packet to the SRI (via the STIF Board) containing an Invert-and-Loopback
+opcode and 8-bit test patterns (55, AA, 33, 00, FF). The information returned
+by the SRI will be verified by the MGD.</td></tr><tr valign="top"><td valign="">SRI Streamed Loopback</td><td valign="">This diagnostic runs the streamed loop back test with the SRI.  The
+Streamed Loop Back Test opcode is sent to the SRI along with four bytes of
+data.  The expected response is the one&#8217;s complement of each byte of
+data.  The SCP will verify that the data is correct and log an error in the
+case of a data mismatch.</td></tr><tr valign="top"><td valign="">SRI Fiber LoopBack</td><td valign="">Tests the loopback of data on the SCP board.  The test executes in
+these steps:<OL><LI CLASS="numlist">Sets the SCP board I/O path to the STIF in loopback on the
+board.</LI><LI CLASS="numlist">Writes out a packet of data.</LI><LI CLASS="numlist">Verifies receipt of the data.</LI></OL></td></tr><tr valign="top"><td valign="">SCP STIF LoopBack</td><td valign="">Tests the loopback of data across the STIF board. The test executes
+in these steps:<OL><LI CLASS="numlist">User must first connect the fiber optic loopback connector
+across the STIF SRI Tx/Rx connections</LI><LI CLASS="numlist">Sends a packet of data out of the SRI Tx connection</LI><LI CLASS="numlist">Verifies receipt of the data at the SRI Rx connection</LI></OL></td></tr><tr valign="top"><td valign="">SRI Register</td><td valign="">This diagnostic runs the power up Register test resident on the SRI
+PROM.  The Register Test opcode is sent to the SRI.  The expected response
+is the error message opcode.  A passing test will have an ermes of 0.  Any
+other value indicates a failure in the test and causes an error to be logged.</td></tr><tr valign="top"><td valign="">SRI EEPROM</td><td valign="">This diagnostic runs the power up EEPROM test resident on the SRI PROM.
+ The EEPROM Test opcode is sent to the SRI.  The expected response is the
+error message opcode.  A passing test will have an ermes of 0.  Any other
+value indicates a failure in the test and causes an error to be logged.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899346392-dup.2">8&nbsp;&nbsp;WIM Data Path Test<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e909.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;12</A>.  These
+diagnostics test the communication paths between the WIM and its peripheral&#8217;s
+(the Hard Key Processor inside the keyboard assembly and the PC).  Refer to <A HREF="javascript:winopen('82559tbld0e914.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;7</A> for test descriptions.  </P><DIV CLASS="ILLUSTRATION" id="SL82710-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;12:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">WIM DATA PATH TESTS WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82468.jpg" BORDER="0" usemap="#SL82714-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82713-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">WIM DATA PATH TESTS</SPAN> </P><table summary="WIM DATA PATH TESTS" border="1"><colgroup><col width="171"><col width="545"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">WIM Loopback</td><td valign="">This diagnostic runs a loop back between the SCP and the WIM processor.
+ The loop back opcode is sent to the WIM with four bytes of data. The response
+opcode is then pended upon and the data is checked to ensure that the one&#8217;s
+complement of the sent data is received.</td></tr><tr valign="top"><td valign="">IWS Loopback</td><td valign="">This diagnostic runs a loop back between the SCP and the PC.  The loop
+back opcode is sent to the WIM with four bytes of data. The WIM will then
+send the opcode to the PC and wait for the response.  Once the response is
+received, the WIM sends it on to the SCP.  The SCP then waits for the return
+opcode and the data is checked to ensure that the one&#8217;s complement of
+the sent data is received.</td></tr><tr valign="top"><td valign="">HKP Loopback</td><td valign="">This diagnostic runs a loop back between the SCP and the HKP processor.
+ The SCP requests the button status from the HKP and checks the response to
+ensure that it is equal to zero.  If any other value is received, then the
+test fails. <TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e941"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the test is run while any button is pressed, the
+test will fail.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></td></tr><tr valign="top"><td valign="">WIM Reset</td><td valign="">This diagnostic sends the reset opcode to the WIM processor and waits
+on the WIM to come back out of reset.</td></tr><tr valign="top"><td valign="">HKP Reset</td><td valign="">This diagnostic sends the reset opcode to the HKP processor and waits
+on the HKP to come back out of reset.</td></tr><tr valign="top"><td valign="">HKP Audio</td><td valign="">This diagnostic sends an audio command to the HKP processor commanding
+it to make a quick sound.  The SCP will only check for a response to the command
+to check for pass or fail status.  The operator will have to ensure that the
+sound is actually heard.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899347010">9&nbsp;&nbsp;MGD Host Data Path Tests<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('82559illd0e968.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;13</A>.  These
+tests permit the Host to repeatedly &#8220;ping&#8221; the selected component(s)
+within the MGD with patterns of data via the individual 100 BaseT Ethernet
+link(s).  Be aware that if the Ping -&gt; APS test is passing then it is normal
+for the Ping -&gt; 750 test to fail.  Likewise, if the Ping -&gt; AGP test is passing
+then it is normal for the Ping -&gt; 750V test to fail.  The Ping -&gt; 750 and
+Ping -&gt; 750V tests should only be run if the APS and AGP tests fail.  Refer
+to <A HREF="javascript:winopen('82559tbld0e973.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;8</A> for test descriptions.
+ </P><DIV CLASS="ILLUSTRATION" id="SL82718-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">MGD HOST DATA PATH TEST WINDOW</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82473.jpg" BORDER="0" usemap="#SL85666-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82722-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">WIM DATA PATH TESTS</SPAN> </P><table summary="WIM DATA PATH TESTS" border="1"><colgroup><col width="182"><col width="533"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">Ping -&gt; APS</td><td valign="">This checks that the host is able to successfully &#8220;ping&#8221;
+the APS via the Ethernet link. </td></tr><tr valign="top"><td valign="">Ping -&gt; AGP</td><td valign="">This checks that the host is able to successfully &#8220;ping&#8221;
+the AGP via the Ethernet link. </td></tr><tr valign="top"><td valign="">Ping -&gt; SCP</td><td valign="">This checks that the host is able to successfully &#8220;ping&#8221;
+the SCP via the Ethernet link. </td></tr><tr valign="top"><td valign="">Ping -&gt; MCP750</td><td valign="">This test should only be run if the Ping -&gt; APS test fails.  If the
+Bridge Board does not successfully initialize the APS then it will default
+to a 750 configuration.  This test confirms that the APS is functional if
+it was not properly initialized by the Bridge Board.  It is normal for this
+test to fail if the Ping -&gt; APS test passes.   </td></tr><tr valign="top"><td valign="">Ping -&gt; MCP750V</td><td valign="">This test should only be run if the Ping -&gt; AGP test fails.  If the
+Bridge Board does not successfully initialize the AGP then it will default
+to a 750V configuration.  This test confirms that the AGP is functional if
+it was not properly initialized by the Bridge Board.  It is normal for this
+test to fail if the Ping -&gt; AGP test passes.   </td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899347448">10&nbsp;&nbsp;AP Board Level Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These tests check the functionality of the AP Board(s).  The AP Recon
+test reconstructs &#8220;canned&#8221; data from a file on the system.  The
+data is not image data and so no image will be displayed after the reconstruction
+completes.  See <A HREF="javascript:winopen('82559illd0e1019.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;14</A>.  Notice
+that the tests are explained in the top of the screen.  Refer to <A HREF="javascript:winopen('82559tbld0e1024.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;9</A> for test descriptions.</P><DIV CLASS="ILLUSTRATION" id="SL82726-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;14:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">AP BOARD LEVEL DIAGNOSTICS</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82475.jpg" BORDER="0" usemap="#SL82723-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82729-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">AP BOARD LEVEL DIAGNOSTICS DESCRIPTIONS</SPAN> </P><table summary="AP BOARD LEVEL DIAGNOSTICS DESCRIPTIONS" border="1"><colgroup><col width="165"><col width="552"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">APS -&gt; AP Datapath</td><td valign="">APS writes and reads data into AP memory and verifies that bits are
+not lost.  APS also verifies that AP responds to simple memory data transformation
+commands.</td></tr><tr valign="top"><td valign="">AP Recon Test</td><td valign="">The test sends a raw image test file through the image reconstruction
+process and compares the result to a known good processed image file.  If
+the output &#8220;image&#8221; does not match the known good &#8220;image&#8221;
+bit-for-bit then the test fails.  The &#8220;image&#8221; is not reconstructable
+and will not be displayed.  The process is as follows:<OL><LI CLASS="numlist">Read a 256 x 256 bit test raw image file from the hard disk.</LI><LI CLASS="numlist">Load this file into AP memory.</LI><LI CLASS="numlist">Run several image reconstruction routines on the raw image.</LI><LI CLASS="numlist">Read the processed image back and compare it to a known good
+image file from the hard disk.</LI><LI CLASS="numlist">Repeat the process with a 512 x 512 image.</LI></OL></td></tr><tr valign="top"><td valign="">Single Board AP Mem</td><td rowspan="2" valign="">The user must select the test that corresponds to the
+number of AP boards present. If the test sees a different number of boards,
+it logs an error. The test confirms that the correct number of CPUs and the
+memory length is correct.   The memory is then run through a reasonably complete
+memory test.  Allowing for Single versus Dual Board configurations was done
+in an attempt to cover the case where the system has 2 AP boards but one of
+them is unresponsive.   An unresponsive board may be mistaken for an empty
+slot in a one-test scenario. <P CLASS="entry">Long memory tests are more thorough than
+short memory tests but execution time is also longer.  The short selection
+is adequate for most testing.  </P></td></tr><tr valign="top"><td valign="">Dual Board AP Mem</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899347886-dup.1">11&nbsp;&nbsp;SSM Board Level Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These diagnostics check various functions and registers on the CPD Board
+inside the SSM.  These tests do not check hardware external to the SSM.  Be
+aware that all multicoil functions are now controlled by the Driver Module.
+ The system still writes to the SSM Multicoil Register and so this diagnostic
+is still provided.  See <A HREF="javascript:winopen('82559illd0e1079.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;15</A> below. </P><DIV CLASS="ILLUSTRATION" id="SL82732-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;15:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">SYSTEM SUPPORT MODULE DIAGNOSTICS</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82477.jpg" BORDER="0" usemap="#SL82733-82559"></P></DIV><P CLASS="sect1">See <A HREF="javascript:winopen('82559tbld0e1088.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;10</A> for an overview
+of each of the tests.  </P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL82736-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SYSTEM SUPPORT MODULE DIAGNOSTICS DESCRIPTIONS</SPAN> </P><table summary="SYSTEM SUPPORT MODULE DIAGNOSTICS DESCRIPTIONS" border="1"><colgroup><col width="229"><col width="487"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">RF Amp</td><td valign="">Test time is ~6 seconds. This test verifies the operation of the MDS
+Link and the presence of the RFI and Analogic amplifiers. To verify the presence
+of these items, the Command Register is addressed and read by the SPI via
+the MDS. No additional tests are used.</td></tr><tr valign="top"><td valign="">Spectro RF Amp</td><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1109"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This test is present only on systems with the spectroscopy
+option.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P>Test time is ~6 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the Spectro RF Amplifier
+Interface register on the SSM CPD Board.  The Command Register is addressed
+and read by the SPI on the SCP Board via the MDS.  The functionality of the
+Spectro RF Amplifier register is confirmed by reading the register for a specific
+pattern.  </td></tr><tr valign="top"><td valign="">Multicoil</td><td valign="">Test time is ~5 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the Multicoil hardware
+on the CPD Board. To verify its presence, the Command Register of the CPD
+Board is read. To verify the functionality of the registers, a set of Multicoil
+Register tests are run simultaneously with patterns AA, 55, 33, 0F.  Any errors
+are logged to indicate the failing register.  Be aware that Multicoil driver
+signals and MC TR bias are now provided by the Driver Module.  Except for
+data that the system writes to this register, the SSM does not perform any
+of the other multicoil functions.  This test does not check the Driver Module
+Hardware.  </td></tr><tr valign="top"><td valign="">TR Dynamic Disable &amp; Power Supply</td><td rowspan="2" valign="">Test time is ~9 seconds. This test verifies that the CPD
+Board is attached to the MDS Fiber Optic Link and is in working order. This
+test is comprised of the following subtests:<P CLASS="entry">Presence Test The SPI on
+the SCP Board addresses the command register on the CPD Board. If the board
+is not present, an error is logged. </P><P CLASS="entry">Coil Configuration Register
+Test  The coil configuration register is tested by writing/readback of patterns
+AAH, 55H, 33H, and 0FH.</P><P CLASS="entry">Fault Reporting Disable Register Test
+ The Fault Reporting Disable Register is tested by writing/readback of patterns
+AAH, 55H, 33H, and 0FH.</P><P CLASS="entry">TR Command Register Test  The TR Command
+Register is tested by writing/readback of bits 00 (Enable), 01 (Service),
+02 (Reset), and 07 (Reset Status Registers). After each bit is read, the bit
+is checked to see if it has been reset.</P><P CLASS="entry">Register Reset Tests 
+The CPD Board has two status registers: the TR/ID Status Register and the
+Dynamic Disable Status Register. These status registers are reset to 00H by
+setting bit 07 of the TR Command Register. After bit 07 of the TR Command
+Register is set, the Status Registers are checked to see if they are reset.
+Also, the Coil Configuration and Fault Reporting Disable Registers are each
+written with pattern FFH. Then, bit 02 of the TR Command Register is set,
+and these registers are checked to see if they have gone to 00H.</P><P CLASS="entry">The
+power supply tests verify the operation of the three power supplies (+15V,
+&#8211;15V, and +1000V) associated with the CPD Board. The status of these power
+supplies is indicated by the fault register bits 05 (+15V), 06 (&#8211;15V), and
+07 (+1000V). These bits are each sampled five times (with approximately 65
+milliseconds between each sample).  A failure is displayed if one of the power
+supplies is indicated as having failed five times in a row.</P></td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Power Monitor</td><td valign="">Test time is ~5 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the CPD Board. To verify
+its presence, the Command Register of the CPD Board is read. To verify the
+functionality of the registers, a set of Multicoil Register tests are run
+simultaneously with patterns AA, 55, 33, 0F. Any errors are logged to indicate
+the failing register.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL82773-82559">12&nbsp;&nbsp;Gradient Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The functionality of the Gradient hardware is directly exercised through
+running these diagnostics.  Select Whole, Zoom, or Both for TwinSpeed Systems
+only.  See <A HREF="javascript:winopen('82559illd0e1149.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;16</A> below. </P><DIV CLASS="ILLUSTRATION" id="SL82765-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;16:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">GRADIENT DIAGNOSTICS SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82479.jpg" BORDER="0" usemap="#SL82766-82559"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899348617">13&nbsp;&nbsp;RRF-DIF Diagnostic<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These tests, run from the SCP, verify features of the RRF through the
+CAN-Link.  See <A HREF="javascript:winopen('82559illd0e1161.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;17</A> below. </P><DIV CLASS="ILLUSTRATION" id="SL82783-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;17:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RRF &#8211; DIF DIAGNOSTIC SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82481.jpg" BORDER="0" usemap="#SL82790-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="ov-1289899348914"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;11:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RRF-DIF BOARD DIAGNOSTICS</SPAN> </P><table summary="RRF-DIF BOARD DIAGNOSTICS" border="1"><colgroup><col width="175"><col width="541"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">IO Status</td><td valign="">Verifies various RRF values, states: RF Out switch state, 20Mhz clock,
+ Rx Signal detect, Tx Ready, Link Ready, GB State, 3.3V present, 5.0V present,
+Feeder Diag state, Loopback DIag state,  and FPGA reset state.</td></tr><tr valign="top"><td valign="">Reset FPGA</td><td valign="">This tests that the FPGA can be reset.  </td></tr><tr valign="top"><td valign="">Feeder Test</td><td valign="">Mult-Coil Voltage test done in Driver Module.</td></tr><tr valign="top"><td valign="">Loop Back Test</td><td valign="">This places the RRF-DIF Link FPGA into loopback mode.  No data is transferred
+and nothing else is tested.  This mechanism, in the future, will be used by
+another diagnostic to perform a loopback test.  </td></tr><tr valign="top"><td valign="">Query A2D Values</td><td valign="">Verifies the RRF-DIF Analog to Digital 3.3V and 5.0V levels.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899348916">14&nbsp;&nbsp;RRF Datapath Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These diagnostics will check the functionality and communication paths
+of the listed RRF components.  See <A HREF="javascript:winopen('82559illd0e1210.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;18</A> below. </P><DIV CLASS="ILLUSTRATION" id="SL82834-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;18:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RRF DATAPATHS DIAGNOSTIC SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82483.jpg" BORDER="0" usemap="#SL82831-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="ov-1289899349247"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;12:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RRF-DIF BOARD DIAGNOSTICS</SPAN> </P><table summary="RRF-DIF BOARD DIAGNOSTICS" border="1"><colgroup><col width="150"><col width="566"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">RRF Calib</td><td valign="">Actually perform ADC, ADC Offset, Exciter calibration, and receiver
+calibration.... just as though you were doing a <SPAN CLASS="GUIBUTTON">[Save Series]</SPAN>.
+ The difference is that the validation flags (more extensive validation) and
+logging flags (additional files are created which show the calibration results)
+are set.</td></tr><tr valign="top"><td valign="">Ex &#8211; Rx Signal</td><td valign="">These are actually four related subtests.  (1) Ex-Rx verifies the presence
+of the RF Out and LO signals to the receiver(s) from the exciter.  (2) Exciter
+blanking verifies no signal is present when the exciter is blanked.  (3) Receiver
+Blanking verifies no signal is present when the receiver is blanked. (4) Anti-Alias
+test verifies the Receiver filter range and "flatness".</td></tr><tr valign="top"><td valign="">IRF -&gt; RRF</td><td valign="">This test verifies the checksum feature of data returning from the
+RRF to the IRF.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899349249">15&nbsp;&nbsp;MDS Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test provides a means for check the functionality of the Multi-Drop
+Serial (MDS) Link.  See <A HREF="javascript:winopen('82559illd0e1252.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;19</A> below.
+ The MDS Link is currently the primary means of communication between the
+System Cabinet and the other cabinets in the MR system.  </P><DIV CLASS="ILLUSTRATION" id="SL82839-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;19:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">MDS DIAGNOSTICS SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82485.jpg" BORDER="0" usemap="#SL82841-82559"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="ov-1289899349580"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">RRF-DIF BOARD DIAGNOSTICS</SPAN> </P><table summary="RRF-DIF BOARD DIAGNOSTICS" border="1"><colgroup><col width="168"><col width="548"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">MDS Link &amp; Polling Tests</td><td valign="">Test time is ~17 seconds. These tests verify that the MDS fiber optic
+circuit is complete, and it checks the initial status of the peripherals presently
+on the link. The test first checks the serial port on the SPI processor by
+transmitting test patterns (AAH, 55H, 33H, 0fH) and verifying them as they
+return from the loopback. Next, the SPI sends out four data bytes in succession
+to ensure that the MDS link is complete. An error message is logged if either
+test fails.  The polling test verifies the operation of the GP Board on the
+MDS Fiber Optic Link. The SPI addresses only two MDS Fiber Optic Link boards
+at a time. If the GP does not transmit an error packet back to the SPI within
+two seconds, the test fails, and an error is logged.</td></tr><tr valign="top"><td valign="">MDS STIF Loopback Test</td><td valign="">Checks that the data received by the STIF from the MDS Link is the
+same data that was initially transmitted out on the MDS Link.  </td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1289899349582">16&nbsp;&nbsp;Image Transfer Bus Board Level Diagnostic<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">These diagnostics check the integrity of the Image Transfer fiber optic
+link.  The diagnostics are explained as in the screen below in <A HREF="javascript:winopen('82559illd0e1286.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;20</A>.  </P><DIV CLASS="ILLUSTRATION" id="SL82830-82559"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;20:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">IT BUS BOARD LEVEL DIAGNOSTIC SCREEN</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/82559-82487.jpg" BORDER="0" usemap="#SL82842-82559"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

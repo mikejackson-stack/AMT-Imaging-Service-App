@@ -1,0 +1,198 @@
+
+<!DOCTYPE html
+  PUBLIC "" "about:legacy-compat">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" stringName="id_13105824">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+      <meta name="copyright" content="(C) Copyright 2020" /><meta name="DC.rights.owner" content="(C) Copyright 2020" /><meta name="DC.Type" content="reference" /><meta name="DC.Title" content="XFD Power-Up Diagnostics" /><meta name="DC.Coverage" content="" /><meta name="prodname" content="" /><meta name="version" content="0" /><meta name="brand" content="" /><meta name="component" content="" /><meta name="featnum" content="Service Operations" /><meta name="featnum" content="" /><meta name="prognum" content="" /><meta name="platform" content="" /><meta name="DC.Creator" content="" /><meta name="DC.Publisher" content="7182020" /><meta name="DC.Format" content="XHTML" /><meta name="DC.Identifier" content="id_13105824" /><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/commonltr.css"><!----></link><title>XFD Power-Up Diagnostics</title><meta name="description" content=" " /><meta name="keywords" content=" " /><meta name="author" content=" " /><meta name="header_prop" content="Basic Service Documentation. Copyright General Electric Company." /><meta name="header_marketing" content="" /><meta name="header_field" content="" /><meta name="header_platform" content="" /><meta name="header_topic" content="id_13105824" /><!--  Generated with Oxygen version 18.1, build number 2016102619.  --><link rel="stylesheet" type="text/css" href="oxygen-webhelp/resources/css/webhelp_topic.css"><!----></link><script type="text/javascript"><!--
+
+            var prefix = "index.html";
+
+            --></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-1.11.3.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.cookie.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery-ui.custom.min.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/resources/js/jquery.highlight-3.js"><!----></script><script type="text/javascript" charset="utf-8" src="oxygen-webhelp/resources/js/webhelp_topic.js"><!----></script><script type="text/javascript" src="oxygen-webhelp/twisty/twisty.js"><!----></script></head>
+<div style="float:right;padding: 6px 6px 0 0;"><a id="oldFrames" target="_blank" href="index_frames.html" title="Open with frames" class="openFrame" style="background-repeat: no-repeat;"></a> <a HREF="javascript:window.print()" title="Print this page" class="printTopic"></a> <script>
+          document.write('<a href="mailto:SIMS_Admin@gehealthcare.com?subject=XFD Power-Up Diagnostics&amp;body='+window.location.href+'" title="Email" class="mail" target="_blank"></a>');
+        </script></div><body onload="highlightSearchTerm()" id="id_13105824">
+<header role="banner"><table class="nav"><tbody><tr><td colspan="2"><div id="printlink"><a href="javascript:window.print();" title="Print this page"></a></div><div id="permalink"><a href="#" title="Link to this page"></a></div></td></tr><tr><td style="width:75%;"><span class="topic_breadcrumb_links"></span></td><td><span id="topic_navigation_links" class="navheader"></span></td></tr></tbody></table></header><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+<h1 class="title topictitle1" id="emailsubject">XFD Power-Up Diagnostics</h1></header>
+<div class="body refbody"><section class="section">
+      <p id="id_13105824__id_14904057" class="p">Gradient Power-up tests are contained in both GP4 boot code
+and application code. The Power-up tests are run during boot sequence
+to verify the integrity of hardware components in the gradient subsystem.
+The boot sequence occurs every time the system is rebooted, every
+time there is a TPS Reset. The following sections describe the basic
+processing involved with each test.</p>
+
+    </section>
+</div>
+<article class="topic reference nested1" aria-labelledby="ariaid-title2" id="id_SL2895988-1210945"><h2 class="title topictitle2" id="ariaid-title2">1 GP4 Board Status LEDs</h2>
+<div class="body refbody"><section class="section" id="id_SL2895988-1210945__SL2895988-1210945">
+        <p id="id_SL2895988-1210945__id_14904058" class="p">The GP4 board has two status LEDs located on the front panel.
+One, labeled POWER, is always on when the GP board has power. The
+second one labeled HEARTBEAT LED flashes on and off with a period
+of five seconds and a 50 percent duty cycle, to indicate that the
+GP4 is executing application code. During boot mode, when there is
+a checksum failure (that is when the checksum in the flash for DSP1
+application code does not match the checksum in the header), the HEARTBEAT
+LED flashes ON and OFF rapidly three times in a row.  The boot code
+does not use any other blink code other than three blinks for checksum
+failure. See <a class="xref" href="#id_SL2895988-1210945__SL321740-1210945"><span>Table 1</span></a>.</p>
+
+        <aside>
+<div class="tablenoborder"><span class="orgID" id="SL321740-1210945"></span><table id="id_SL2895988-1210945__SL321740-1210945" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 1. GP4 Board Status LED Flash Sequence</span></caption><colgroup><col style="width:17.204470019836204%" /><col style="width:20.818194316240156%" /><col style="width:61.97733566392365%" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904059" style="text-align:center;vertical-align:top;">LED</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904060" style="text-align:center;vertical-align:top;">System Status</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904061" style="text-align:center;vertical-align:top;">Flash Sequence</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904062" style="text-align:center;vertical-align:top;">Heartbeat</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904063" style="text-align:center;vertical-align:top;">System is OK</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904064" style="text-align:center;vertical-align:top;">Single Flash On/Single flash Off with a period
+of 5 seconds and a 50% duty cycle</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904065" style="text-align:center;vertical-align:top;">Heartbeat</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904066" style="text-align:center;vertical-align:top;">DSP1 Application code checksum failure</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904067" style="text-align:center;vertical-align:top;">3 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904068" style="text-align:center;vertical-align:top;">Power</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904069" style="text-align:center;vertical-align:top;">+5V Indicator</td>
+<td class="entry cellrowborder" id="id_SL2895988-1210945__id_14904070" style="text-align:center;vertical-align:top;">When lit, this indicates that +5V is present.
+If it is not lit, +5V is not getting to the GP4.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside>
+      </section>
+</div>
+</article>
+<article class="topic reference nested1" aria-labelledby="ariaid-title3" id="id_SL2895989-1210945"><h2 class="title topictitle2" id="ariaid-title3">2 GP4 Board CAN LEDs</h2>
+<div class="body refbody"><section class="section" id="id_SL2895989-1210945__SL2895989-1210945">
+        <p id="id_SL2895989-1210945__id_14904071" class="p">The CAN Status LED will indicate the CANOpen software state.
+The CAN status LED will blink two times during normal DSP1 application
+code execution. During boot mode when the boot code is downloading
+application code through CAN the CAN status LED will blink only once
+since the CAN will be in Pre-operational state. See <a class="xref" href="#id_SL2895989-1210945__SL321743-1210945"><span>Table 2</span></a>.</p>
+
+        <aside>
+<div class="tablenoborder"><span class="orgID" id="SL321743-1210945"></span><table id="id_SL2895989-1210945__SL321743-1210945" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 2. CAN Status LED Blink Codes</span></caption><colgroup><col style="width:38.39015787705745%" /><col style="width:61.60984212294256%" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904072" style="text-align:center;vertical-align:top;">CONDITION</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904073" style="text-align:center;vertical-align:top;">LED FLASH SEQUENCE</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904074" style="vertical-align:top;">Pre-Operational State</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904075" style="vertical-align:top;">1 Blink</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904076" style="vertical-align:top;">Operational State</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904077" style="vertical-align:top;">2 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904078" style="vertical-align:top;">Stopped State</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904079" style="vertical-align:top;">3 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904080" style="vertical-align:top;">Boot State</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904081" style="vertical-align:top;">4 Blinks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside>
+        <p id="id_SL2895989-1210945__id_14904082" class="p">The CAN Error LED will indicate any CAN network or hardware
+error.  CAN Power Off error is a special case.  CAN Power Off will
+not be indicated if CAN power was never detected since the last reset.
+ More information on CAN States can be found in the USSS Communication
+Core SDD. See <a class="xref" href="#id_SL2895989-1210945__SL321746-1210945"><span>Table 3</span></a>.</p>
+
+        <aside>
+<div class="tablenoborder"><span class="orgID" id="SL321746-1210945"></span><table id="id_SL2895989-1210945__SL321746-1210945" cellpadding="4" cellspacing="0" style="margin-top:12pt;" frame="border" border="1" rules="all" class="table"><caption><span class="tablecap">Table 3. CAN Network or Hardware Error</span></caption><colgroup><col style="width:32.171545635883334%" /><col style="width:67.82845436411667%" /></colgroup><tbody class="tbody"><tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904083" style="text-align:center;vertical-align:top;">CONDITION</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904084" style="text-align:center;vertical-align:top;">LED FLASH SEQUENCE</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904085" style="vertical-align:top;">No Error</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904086" style="vertical-align:top;">OFF; No Flashing sequence</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904087" style="vertical-align:top;">CAN Bus Off Detected</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904088" style="vertical-align:top;">1 Blink</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904089" style="vertical-align:top;">CAN Warning State Detected</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904090" style="vertical-align:top;">2 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904091" style="vertical-align:top;">CAN Receive Message Lost</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904092" style="vertical-align:top;">3 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904093" style="vertical-align:top;">CAN Node Guard Timeout</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904094" style="vertical-align:top;">4 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904095" style="vertical-align:top;">CAN Power Off</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904096" style="vertical-align:top;">5 Blinks</td>
+</tr>
+<tr><td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904097" style="vertical-align:top;">CAN Self Test Error</td>
+<td class="entry cellrowborder" id="id_SL2895989-1210945__id_14904098" style="vertical-align:top;">6 Blinks</td>
+</tr>
+</tbody>
+</table>
+</div>
+</aside>
+      </section>
+</div>
+</article>
+<article class="topic reference nested1" aria-labelledby="ariaid-title4" id="id_SL2895990-1210945"><h2 class="title topictitle2" id="ariaid-title4">3 Boot Code Flash Memory Checksum Test</h2>
+<div class="body refbody"><section class="section" id="id_SL2895990-1210945__SL2895990-1210945">
+        <p id="id_SL2895990-1210945__id_14904099" class="p">This test performs the checksum test of the DSP1 application
+code present in flash memory. The checksum is computed for the DSP1
+application code and is compared with the checksum field present in
+the header. If the checksum test passes the application code is started,
+otherwise the HEARTBEAT LED starts flashing three times and the boot
+code starts downloading DSP1 application code through CAN. It should
+take about a minute to complete the downloading. After the download
+the GP4 board gets reset and the HEARTBEAT LED should flash on and
+off with a period of five seconds and a 50 percent duty cycle, to
+indicate that the GP4 is executing application code.</p>
+
+        <p id="id_SL2895990-1210945__id_14904100" class="p">If the HEARTBEAT LED continues to have three blinks for more
+than a minute then the boot code flashing failed. In that case, verify
+that the CAN cabling is in place including the terminators and the
+CAN Power supply on the Drive Module is ON. If it keeps blinking three
+times even after verifying that the cables are in place, make sure
+the SCP is up in running and that the rest of the CAN link diagnostics
+pass. If none of these solve the issue, replace the GP4 board. </p>
+
+        <p id="id_SL2895990-1210945__id_14904101" class="p">The CAN Error LED should remain OFF during the flash download.
+ If it blinks with any of the above-mentioned sequence wait for at
+least a minute and then power cycle the GP4. This will force another
+download. If the CAN Error LED still remains ON for a minute even
+after the power cycle check that the CAN cable is connected including
+the terminator and make sure the CAN Power supply in the driver module
+is ON. Also verify that the rest of the CAN link diagnostics pass.
+Else, replace the GP4 board.</p>
+
+      </section>
+</div>
+</article>
+<article class="topic reference nested1" aria-labelledby="ariaid-title5" id="id_SL2895991-1210945"><h2 class="title topictitle2" id="ariaid-title5">4 Power-up FPGA Test</h2>
+<div class="body refbody"><section class="section" id="id_SL2895991-1210945__SL2895991-1210945">
+        <p id="id_SL2895991-1210945__id_14904102" class="p">At power-up DSP1 application code checks if the FPGA has valid
+code in it. If it does not have valid code an error message is reported
+to the message log and the application code does not go to ready.
+ In this case replace the GP4.</p>
+
+      </section>
+</div>
+</article>
+<article class="topic reference nested1" aria-labelledby="ariaid-title6" id="id_SL2895992-1210945"><h2 class="title topictitle2" id="ariaid-title6">5 Power-up Register Test </h2>
+<div class="body refbody"><section class="section" id="id_SL2895992-1210945__SL2895992-1210945">
+        <p id="id_SL2895992-1210945__id_14904103" class="p">The Power-up Register Test checks several registers on the GP4
+board. At the start of the register test, the contents of all registers
+used during the test are saved. Likewise, these registers are restored
+at the conclusion of the test. The register test begins with a rigorous
+pattern test. Each register is tested with all possible patterns in
+a counting sequence:0000,0001, … 1111. Because some registers on each
+board have bits that are read only, only read/write registers are
+tested. Bits that are read only or should not be altered are not changed
+via this test. Errors discovered through this test are logged to the
+message log. If any error is found, the Power-up Tests will abort
+and the application code will not go to ready.  If an error message
+is logged, power cycle the GP4 once and if the problem persists replace
+the GP4.</p>
+
+      </section>
+</div>
+</article>
+</article></main><footer role="contentinfo"><div class="navfooter"><div class="ftrcustom"><p><span class="ph">
+						Basic Service Documentation. Copyright General Electric Company. 
+						
+						
+					</span></p><p align="center"><span> 5543247-2EN</span> | <span>Revision  7</span> | <span>en-US</span> | <span><a href="legal.html">Legal Notice</a> | <a target="_blank" href="http://www.ge.com">ge.com</a></span></p><img src="oxygen-webhelp/resources/img/GEmeatball.png" alt="GE Logo" width="50pt" height="50pt" /></div></div></footer></body>
+</html>

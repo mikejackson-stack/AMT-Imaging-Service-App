@@ -1,0 +1,47 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>RF Calibration Data Path Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;11/4/09</P></td></tr></table><H1 ID="top">RF Calibration Data Path Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958758-1052811_3">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; RF &gt;&gt; Transmitter
+Diagnostics</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; RF &gt;&gt; Receiver Diagnostics</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; PEN Cabinet &gt;&gt;
+Transmitter Diagnostics</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; Magnet Room &gt;&gt;
+Receiver Diagnostics</I></SPAN></P><DIV CLASS="ILLUSTRATION" id="SL1958857-1052811_3"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RF Calibration Data Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052811-1060980.jpg" BORDER="0" usemap="#SL1969981-1052811_3"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958759-1052811_3">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The RF Calibration data path diagnostic performs and tests the
+following calibrations: Transmit Gain (TG) calibration for the narrowband
+and broadband Exciters (DTX-1 and DTX-2), DC offset adjustments for
+the RRX modules, and R1 Gain measurements for the switch boards in
+the RF Hub. All of these calibrations are performed each time a TPS
+reset is performed on the system. The RF Calibration data path diagnostic
+re-runs the same calibrations, but adds some additional tests that
+are too time consuming to run during a TPS reset. </P><P CLASS="sect1">During the DC offset adjustment of the RRX channels, the RRX
+input channels are blanked and the A/D converters are adjusted until
+there is no DC offset. This calibration can fail if excessive DC bias
+is found in any channel. This calibration generates the log file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log/rrxZeroOffset_&lt;date&gt;.log</FONT></SPAN>, which
+contains the offset value required to zero each channel. Any RRX module
+that fails this calibration <B>must</B> be replaced.</P><P CLASS="sect1">The Transmit Gain (TG) calibration generates a table of data
+for each Exciter needed to set the DTX&#8217;s output attenuator to
+any point from 0.0 db to 39.9 dB in 0.1 dB steps. The attenuator circuit
+in DTX-1 and DTX-2 has a coarse and fine control. The TG calibration
+determines the correct coarse and fine setting needed to achieve each
+of the 400 TG points that can be commanded during a scan. The results
+of the DTX-1 TG calibration are saved to the log file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/dtx1_cal_I_&lt;date&gt;.log</FONT></SPAN>. The results of the DTX-2 TG calibration are saved to the log file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/dtx2_cal_I_&lt;date&gt;.log</FONT></SPAN>.</P><P CLASS="sect1">The TG calibration is followed by a TG validation.  During validation,
+the Exciter output level is measured at each of the 400 precalculated
+points, and verified to be within 0.1 dB of the intended signal strength.
+An inaccurate TG table will result in poor control of flip angle during
+a scan. The results of the DTX-1 TG validation are saved to the log
+file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/dtx1_val_I_&lt;date&gt;.log</FONT></SPAN>. The results of the DTX-2 TG validation are saved to the log file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/dtx2_val_I_&lt;date&gt;.log</FONT></SPAN>.</P><P CLASS="sect1">The R1 Gain calibration measures the 13 R1 Gain steps for each
+channel of each RF Hub switch board. The measured gains must be within
+the specifications for those boards for this calibration to pass.
+The difference in gain between channels for each R1 step must also
+be within specification. During this calibration, the DTX-1 output
+is sent to the RF Hub control board, which sends the signal through
+each channel of each switch board. The DTX-1 signal is left alone
+while the R1 gain steps in the switch boards are changed. The results
+of this calibration are saved in the log file: <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log/r1GainCal_&lt;date&gt;.dat</FONT></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958760-1052811_3">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>RRX</P></LI><LI CLASS="bulletlist"><P>DTX-1 (Narrowband Exciter)</P></LI><LI CLASS="bulletlist"><P>DTX-2 (Broadband Exciter - If MNS option
+installed)</P></LI><LI CLASS="bulletlist"><P>RF Hub</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958761-1052811_3">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Run and pass the IRF3, DTX, and RRX Board Level Diagnostics.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1970064-1052811_3">5&nbsp;&nbsp;Block Diagrams<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="SL1970065-1052811_3"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RF Calibration DP Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1052811-1060982.jpg" BORDER="0" usemap="#SL1970001-1052811_3"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958762-1052811_3">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Select the <B>RF Calibration
+DP</B> test.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI><LI CLASS="numlist"><P>Ensure that the diagnostic passes by
+reviewing the status in the <SPAN CLASS="GUILABEL"><I>Test Results</I></SPAN> table.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1958763-1052811_3">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic has either a passed or failed status. If the
+diagnostic has failed, review the error log and corresponding extended
+error message for subsequent actions. In the event the diagnostic
+reports a time out, the diagnostic may not have been executed. Retry
+the test. If it continues to time out, complete a TPS Reset and retry
+the test.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

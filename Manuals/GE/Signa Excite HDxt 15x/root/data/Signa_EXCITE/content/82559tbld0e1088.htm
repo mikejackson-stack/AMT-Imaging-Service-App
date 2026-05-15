@@ -1,0 +1,52 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>SYSTEM SUPPORT MODULE DIAGNOSTICS DESCRIPTIONS</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL82736-82559"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SYSTEM SUPPORT MODULE DIAGNOSTICS DESCRIPTIONS</SPAN> </P><table summary="SYSTEM SUPPORT MODULE DIAGNOSTICS DESCRIPTIONS" border="1"><colgroup><col width="229"><col width="487"></colgroup><tbody valign=""><tr valign="top"><td align="center" valign="">TEST NAME</td><td align="center" valign="">TEST DESCRIPTION</td></tr><tr valign="top"><td valign="">RF Amp</td><td valign="">Test time is ~6 seconds. This test verifies the operation of the MDS
+Link and the presence of the RFI and Analogic amplifiers. To verify the presence
+of these items, the Command Register is addressed and read by the SPI via
+the MDS. No additional tests are used.</td></tr><tr valign="top"><td valign="">Spectro RF Amp</td><td valign=""><TABLE CLASS="ADMONentry" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1109"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This test is present only on systems with the spectroscopy
+option.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P>Test time is ~6 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the Spectro RF Amplifier
+Interface register on the SSM CPD Board.  The Command Register is addressed
+and read by the SPI on the SCP Board via the MDS.  The functionality of the
+Spectro RF Amplifier register is confirmed by reading the register for a specific
+pattern.  </td></tr><tr valign="top"><td valign="">Multicoil</td><td valign="">Test time is ~5 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the Multicoil hardware
+on the CPD Board. To verify its presence, the Command Register of the CPD
+Board is read. To verify the functionality of the registers, a set of Multicoil
+Register tests are run simultaneously with patterns AA, 55, 33, 0F.  Any errors
+are logged to indicate the failing register.  Be aware that Multicoil driver
+signals and MC TR bias are now provided by the Driver Module.  Except for
+data that the system writes to this register, the SSM does not perform any
+of the other multicoil functions.  This test does not check the Driver Module
+Hardware.  </td></tr><tr valign="top"><td valign="">TR Dynamic Disable &amp; Power Supply</td><td rowspan="2" valign="">Test time is ~9 seconds. This test verifies that the CPD
+Board is attached to the MDS Fiber Optic Link and is in working order. This
+test is comprised of the following subtests:<P CLASS="entry">Presence Test The SPI on
+the SCP Board addresses the command register on the CPD Board. If the board
+is not present, an error is logged. </P><P CLASS="entry">Coil Configuration Register
+Test  The coil configuration register is tested by writing/readback of patterns
+AAH, 55H, 33H, and 0FH.</P><P CLASS="entry">Fault Reporting Disable Register Test
+ The Fault Reporting Disable Register is tested by writing/readback of patterns
+AAH, 55H, 33H, and 0FH.</P><P CLASS="entry">TR Command Register Test  The TR Command
+Register is tested by writing/readback of bits 00 (Enable), 01 (Service),
+02 (Reset), and 07 (Reset Status Registers). After each bit is read, the bit
+is checked to see if it has been reset.</P><P CLASS="entry">Register Reset Tests 
+The CPD Board has two status registers: the TR/ID Status Register and the
+Dynamic Disable Status Register. These status registers are reset to 00H by
+setting bit 07 of the TR Command Register. After bit 07 of the TR Command
+Register is set, the Status Registers are checked to see if they are reset.
+Also, the Coil Configuration and Fault Reporting Disable Registers are each
+written with pattern FFH. Then, bit 02 of the TR Command Register is set,
+and these registers are checked to see if they have gone to 00H.</P><P CLASS="entry">The
+power supply tests verify the operation of the three power supplies (+15V,
+&#8211;15V, and +1000V) associated with the CPD Board. The status of these power
+supplies is indicated by the fault register bits 05 (+15V), 06 (&#8211;15V), and
+07 (+1000V). These bits are each sampled five times (with approximately 65
+milliseconds between each sample).  A failure is displayed if one of the power
+supplies is indicated as having failed five times in a row.</P></td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">Power Monitor</td><td valign="">Test time is ~5 seconds. This test verifies the operation of the MDS
+Fiber Optic Link and the presence and operation of the CPD Board. To verify
+its presence, the Command Register of the CPD Board is read. To verify the
+functionality of the registers, a set of Multicoil Register tests are run
+simultaneously with patterns AA, 55, 33, 0F. Any errors are logged to indicate
+the failing register.</td></tr></tbody></table></CENTER></DIV></BODY></HTML>

@@ -1,0 +1,78 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Smudge-like Artifacts Reduction</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5196839-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;6<BR>RT16 and Xtra Service Info Adv</P></td></tr></table><H1 ID="top">Smudge-like Artifacts Reduction </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1579117-1014627">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This module describes the phenomenon and cause of smudge-like
+artifacts in some LightSpeed RT16 and Xtra systems, the design changes
+made to reduce the artifacts and service procedure changes.</P><P CLASS="sect1"><A HREF="1014627.htm#SL1578531-1014627">Section 2</A> Feature/Problem
+Description</P><P CLASS="sect1"><A HREF="1014627.htm#SL1578533-1014627">Section 3</A> System
+and Service Procedure Changes</P><P CLASS="sect1"><A HREF="1014627.htm#SL1578534-1014627">Section 3.1</A> System
+Changes</P><P CLASS="sect1"><A HREF="1014627.htm#SL1578535-1014627">Section 3.2</A> Service
+Procedure Changes</P><P CLASS="sect1"><A HREF="1014627.htm#SL1582423-1014627">Section 4</A> Center
+Smudge Identification</P><P CLASS="sect1">If smudge-like artifacts appears, you can perform procedures
+directly in <A HREF="1014627.htm#SL1582423-1014627">Section 4</A>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1578531-1014627">2&nbsp;&nbsp;Feature/Problem Description<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">In some LightSpeed RT16 and Xtra systems with Hercules tube,
+the QA phantom images acquired at tube &#8220;cold&#8221; state sometimes
+show center smudge-like artifacts (see image in <A HREF="javascript:winopen('1014627illd0e58.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.)  The degree of center smudge
+is directly related to tube thermal x-drift from &#8220;hot&#8221;
+when air calibration is done vs.  &#8220;cold&#8221; when the phantom
+is scanned. </P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Smudge-like Artifacts</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1014628.jpg" BORDER="0" usemap="#1014628.jpg"></P></DIV><P CLASS="sect1">RT16 and Xtra system is more sensitive to the tube x-drift due
+to its unique gantry geometry. For RT16 and Xtra widebore geometry,
+the detector is shifted farther away from the ISO to keep the magnification
+factor the same as the regular 16-slice system. Therefore, the tube
+focal spot is no longer at the center of the detector curvature  
+To reduce the smudge-like artifact, the most important measure is
+to reduce the focal spot x-drift between &#8220;hot&#8221; and &#8220;cold&#8221;
+thermal states. For most LightSpeed scanners, the calibration is usually
+done at tube &#8220;hot&#8221; state after multiple tube warmup protocols
+are executed. So the aircal vectors are created when tube is relatively
+&#8220;hot&#8221; compared to normal scanning condition. Therefore,
+it is very critical that all clinical sites perform tube warmup after
+certain period of cooling time (~1.5 to 3 hrs) to minimize the tube
+focal spot drift between the calibration and when the patient is scanned,
+to maximally reduce the smudge artifacts.   However, in practice,
+some hospitals often skip the tube warmup even though the system displays
+a warning message when the tube is cold after several hours idle time.
+Poor image quality with artifacts like center smudge is the direct
+result of skipping the cold tube warm-up.</P><P CLASS="sect1">For RT16 and Xtra systems, to ensure good image quality, an
+air ratio cal is added in cal procedure and Daily Prep. The air ratio
+cal vector is used to generate air gain ratios of different tube temperature
+points to reference air cal points during patient scan. Such air ratio
+is used to compensate the air gain variation caused by cold tube temperature.
+Hence the center smudge will be reduced.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1578533-1014627">3&nbsp;&nbsp;System and Service Procedure Changes<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1578534-1014627">3.1&nbsp;&nbsp;System Changes<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Air ratio cal in Scan Utilities </P><P>A new function of &#8220;air ratio cal&#8221; is added in Scan
+Utilities, it must be done after collimator cal and before detail
+cal. (see image in <A HREF="javascript:winopen('1014627illd0e82.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  2</A>) This function is used to update the air ratio
+cal vector, which is used to compensate the air gain variation caused
+by tube focal drift. </P><P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Air ratio cal in Scan Utilities</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1060958.jpg" BORDER="0" usemap="#1060958.jpg"></P></DIV></P><P>The air ratio cal must be begun with cold tube temperature.
+After collimator cal, the system should not do x-ray exposure to make
+to the tube cool down to 160&deg;C. The longest waiting time is 2hours
+45 minutes.</P></LI><LI CLASS="numlist"><P>FastCal scan set change</P><P>The air ratio cal, which is a kind of compensation to air cal,
+is also required in customer site. It must be updated within 5 weeks.
+Otherwise small focal spot will be limited to use. Only large focal
+spot is available for patient scan.</P><P>The air ratio cal in customer site will use the same button
+of FastCal. If the air ratio cal vector wasn&#8217;t updated after
+4 weeks, when the user press FastCal button in Daily Prep, the user
+can choose normal FastCal or this SPECIAL FastCal by a pop up attention
+message. </P></LI><LI CLASS="numlist"><P>Request SPECIAL FastCal after 4 weeks</P><P>After 4 weeks air ratio cal vector updated, the warning message
+to remind user to do SPECIAL FastCal now or within this 5th week popes.
+At the same time, it also reminds user small focal spot will be forbidden
+to use if this SPECIAL FastCal isn&#8217;t done within this 5th week.</P></LI><LI CLASS="numlist"><P>Request SPECIAL FastCal after 5 weeks
+if it isn&#8217;t performed during the 5th week</P><P>If the air ratio cal isn&#8217;t updated with 5 weeks, the small
+focal spot will be forbidden to use. The system will remind user to
+do SPECIAL FastCal right now to release the limitation of small focal
+spot. </P></LI><LI CLASS="numlist"><P>User Interface Changes</P><P>There are UIF changes to reflect the design changes described
+above include adding new function in Scan Utilities, adding warning
+messages or modifying current one.</P></LI><LI CLASS="numlist"><P>New messages pop up</P><P>All the message boxes are designed not to pop up under the UIF
+of &#8220;New Patient&#8221;. If the user wants to do Special Fast
+cal and wait for tube cool down, the warm-up message every 3 hours
+should be ignored.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1578535-1014627">3.2&nbsp;&nbsp;Service Procedure Changes<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1968419-1014627">3.2.1&nbsp;&nbsp;A new air ratio cal process is added in Cal. <SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The air ratio cal should be done before detail cal and after
+collimator cal. After collimator cal, the user must wait for mostly
+2hours 45minutes without any x-ray exposure to let tube cool down.
+ Totally it takes 3hours 15minutes to complete this cal, including
+waiting time.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1968420-1014627">3.2.2&nbsp;&nbsp;There are two changes to the current service manual. <SPAN CLASS="SECT1EFF"> </SPAN></H4><UL><LI CLASS="bulletlist"><P>Add Air Ratio Cal in calibration process. This includes
+new system installation, software loading, tube replacement and detector
+replacement, and any component change which requires detailed calibration
+in the service manual.</P></LI><LI CLASS="bulletlist"><P>Deleted old solution procedures which may require
+mandatory tube cooling or tube replacement.</P></LI></UL><P CLASS="sect3">The modules related with Air Ratio Cal in this Service Methods
+document have already been modified to meet the 2 requirements above.
+Follow the procedures in the modified modules to service LightSpeed
+RT16 and Xtra system.</P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1582423-1014627">4&nbsp;&nbsp;Solution Procedures<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Please Refer to <SPAN CLASS="MODULEREF"><I><A HREF="1017628.htm">Center Smudge Check</A></I></SPAN> for detail procedure of defining Center Smudge specification.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

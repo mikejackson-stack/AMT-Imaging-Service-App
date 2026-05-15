@@ -1,0 +1,98 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Gradient Coil Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">GE Exclusive Use Only<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;7.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;12/8/09</P></td></tr></table><H1 ID="top">Gradient Coil Theory </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2219275-1065020">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The XRMB and XRMW gradient subsystems are a key component of
+any MR imaging subsystem. The gradient subsystem produces a high precision
+time and spatially varying magnetic field. The main subsystem components
+are the gradient amplifier, which produces a time varying current
+waveform, and the gradient coil, which converts this current into
+a time and spatially varying magnetic field. This gradient field adds
+to the main magnetic field, allowing the location of any signal producing
+tissue or sample to be determined. Spatially, the fields vary linearly
+with location, so they have a constant gradient; this gives the gradient
+subsystem its name.</P><P CLASS="sect1">The gradients are a dominant subsystem on many accounts. It
+is the second most expensive subsystem (second to the magnet). It
+is the largest power consumer at almost 30 kW, consuming at least
+half of the total system power while scanning; and it is the second
+largest subsystem (second to the magnet) in terms of size and weight,
+at least 1500 kg between a full size Gradient Cabinet and the Gradient
+Coil.</P><P CLASS="sect1">The gradient subsystem also determines many of the critical
+performance parameters of the system. It is key in determining the
+field of view, image resolution, and imaging speed. It is also the
+main source of two patient safety-related issues, dB/dt and acoustic
+noise. Given these important qualities, it is no surprise that the
+gradient subsystem has been a primary area of technology development
+from the first MR system to the present time. The concepts behind
+the gradient subsystem are relatively simple, but the implementation
+requires sophisticated engineering.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2219276-1065020">2&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The gradient subsystem consists of a gradient driver and a gradient
+coil. The major components are shown in <A HREF="javascript:winopen('1065020illd0e45.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P><DIV CLASS="ILLUSTRATION" id="SL2147984-1065020"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Subsystem Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065020-1099868.jpg" BORDER="0" usemap="#SL3068472-1065020"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2219277-1065020">3&nbsp;&nbsp;Gradient Amplifiers<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Gradient amplifiers transform digital waveforms from the system&#8217;s
+pulse generation into high current waveforms suitable for driving
+the gradient coil. GEHC uses &#8220;gradient driver&#8221; to describe
+package of the gradient amplifiers and their supporting functionality.</P><P CLASS="sect1">Each XGA is a current source, converting the digital inputs
+to current outputs. A digital input waveform is converted to a high
+current waveform. The gradient coil converts the current from the
+amplifier to a magnetic field.</P><P CLASS="sect1">The voltage waveform will be very different from the current
+waveform. A current source will deliver the voltage necessary to maintain
+an output current that closely follows the digital input. Since a
+typical gradient coil is a series inductor/resistor combination, the
+voltage waveform has inductive and resistive components in it. Using
+a current source reduces issues related to coil impedance, which is
+frequency dependent.</P><DIV CLASS="ILLUSTRATION" id="SL2148100-1065020"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Gradient Current and Voltage Waveforms</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065020-1066740.jpg" BORDER="0" usemap="#SL2148054-1065020"></P></DIV><P CLASS="sect1"><A HREF="javascript:winopen('1065020illd0e61.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> shows a typical trapezoidal current waveform, and
+the voltage waveform needed to produce it into a gradient coil. The
+current pulse is 200A peak, with 500&#956;s rise and fall times. The
+gradient coil is assumed to be a series 1.0 mH inductance and a 0.25&#8486;
+resistance. During the ramps in the current waveform, the voltage
+waveform must overcome both the resistive load (since v=iR, this is
+a scaled copy of the current waveform) and the additional inductive
+load (since v=L di/dt), this matches the current&#8217;s.</P><P CLASS="sect1">Note that the inductance of the coil dominates the voltage waveform
+characteristics.</P><P CLASS="sect1">Understanding how energy is stored and dissipated in the coil
+is key to understanding gradients. Any time there is current, power
+is dissipated in the coil resistance: this is the familiar i<SPAN CLASS="SUP"><SUP>2</SUP></SPAN>R term. For example, the 200 A pulse would dissipate
+10 KW. </P><P CLASS="sect1">Energy storage is more complex. During ramp up, energy is added
+to (or stored in) the coil inductance. During the plateaus, inductive
+energy is constant, neither increasing or decreasing. During downward
+ramps, energy actually flows out of the coil inductance and back into
+the amplifier (since current and voltage have opposite polarities).
+In the example, the peak energy storage is &frac12;Li<SPAN CLASS="SUP"><SUP>2</SUP></SPAN> or 20 J. This energy must be delivered to the coil
+in 500 &#956;s, so the power required is 40KW averaged over the ramp.
+As with the voltage waveform, the inductive nature of the coil dominates
+the peak energy requirements of the gradient amplifiers. </P><P CLASS="sect1">Most recent amplifier designs are high voltage switching amplifiers,
+combining the advantages of high current and voltage capability with
+high efficiency.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2219278-1065020">4&nbsp;&nbsp;Gradient Coil<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">A gradient coil transforms the gradient amplifier output current
+into a magnetic field. The shape of the field gives the gradient subsystem
+its name: in MR imaging, linear gradient fields are used to encode
+the MR signal, allowing spatial localization. For example, an x-gradient
+field would be positive on the left side of the imaging volume, negative
+on the right, and would vary linearly between the two sides, passing
+thru zero at the center of the imaging volume. When an x-gradient
+field is applied, MR spins on the left side of the bore resonate at
+a different frequency from those on the right, allowing us to separate
+left from right. </P><P CLASS="sect1">MRI gradient coils have three separate windings, corresponding
+to the x, y, and z-axes. <A HREF="javascript:winopen('1065020illd0e99.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A> shows an x-gradient field and
+a z-gradient field, as seen from looking down the y-axis.</P><DIV CLASS="ILLUSTRATION" id="SL2148101-1065020"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">X- and Z- Gradient Fields</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065020-1066736.jpg" BORDER="0" usemap="#SL2157334-1065020"></P></DIV><P CLASS="sect1">The gradient fields shown are the z component of the field.
+This is because only the z-components are useful to MR imaging, in
+that they add or subtract directly from the main magnetic field.</P><P CLASS="sect1">The real gradient field cannot have only z-directed components.
+Even though the x- and y-components are of no use to MR, and may hurt
+performance (e.g. by increasing dB/dt), we cannot get rid of them.
+Transverse components (x- or y-directed components) are required by
+electromagnetic laws.</P><P CLASS="sect1">The gradient coil&#8217;s shape will be matched to the magnet
+it is designed for. Cylindrical gradient coils are used in the superconducting
+cylindrical bore magnets used in 1.5T and 3.0T scanners. The z-winding
+of a cylindrical coil looks like a variable rate helix or spring that
+reverses winding direction in the middle; the x- and y-windings look
+like a set of four thumbprints wrapped around the coil.</P><P CLASS="sect1">Most modern gradient coil designs are self shielded designs.
+These designs use separate inner and outer coils. The inner coil primarily
+creates the gradient fields, while the outer coil creates a reverse
+polarity gradient field designed to cancel the primary field in regions
+outside the gradient coil assembly. This greatly reduces the interaction
+of the gradient coil with the magnet it is mounted in; the effects
+are seen as reduced magnet vibration and lower induced eddy currents.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2219279-1065020">5&nbsp;&nbsp;Other Subsystem Functions<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2219281-1065020">5.1&nbsp;&nbsp;Gradient Filters<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The gradient filters attenuate RF frequency (10MHz and above)
+noise from being carried into the RF shielded scan room. The filters
+pass only low frequency differential signals, while attenuating both
+common mode and differential RF transmission. </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2219282-1065020">5.2&nbsp;&nbsp;High Order Shim Supply<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The high order shim supply supplies current to the high order
+shim windings built into the gradient coil. (As above, shim windings
+produce spatially varying fields used to improve the homogeneity of
+the main magnetic field.) In this application, a compact six channel
+supply is used. Each supply is &plusmn;4 amps at &plusmn;30 volts.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2219283-1065020">5.3&nbsp;&nbsp;Heat Exchanger Cabinet<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The heat exchanger cabinet provides cooling water to the gradient
+coil.</P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

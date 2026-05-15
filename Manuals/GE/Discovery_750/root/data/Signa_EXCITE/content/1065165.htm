@@ -1,0 +1,71 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Patient Handling Power Supply Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;7/7/08</P></td></tr></table><H1 ID="top">Patient Handling Power Supply Troubleshooting </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2108317-1065165">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The PHPS2 consists of two (2) multiple output power supply modules,
+a Motion Control Power Distribution Board (MCPDB), and a pulse width
+modulated servo amplifier. One of the power supplies, Magnet supply,
+provides DC power to the following modules:</P><UL><LI CLASS="bulletlist"><P>SRI-4 (Scan Room Interface)</P></LI><LI CLASS="bulletlist"><P>In-Room Monitor</P></LI><LI CLASS="bulletlist"><P>1-Wire Secondary Diagnostic Network</P></LI><LI CLASS="bulletlist"><P>PAC (Physiological Acquisition Controller)</P></LI><LI CLASS="bulletlist"><P>CFB (CAN Fiber Optic Board)</P></LI></UL><P CLASS="sect1">The second power supply, Table Supply, provides DC power to:</P><UL><LI CLASS="bulletlist"><P>MCPDB</P></LI><LI CLASS="bulletlist"><P>Dock motor for vertical movement of
+the Patient Table</P></LI><LI CLASS="bulletlist"><P>Servo Amplifier</P></LI></UL><P CLASS="sect1">The servo amplifier switches 60VDC to a brushless DC motor to
+control longitudinal table motion. Switching is based on CAN control
+commands sent over fiber from the SRI4. The CFB can communicate with
+the servo amplifier as well, via RS-232 over copper. An enable signal,
+sent by the SRI4, switches a solid-state relay onboard the MCPDB.
+This allows power switched by the servo amplifier to pass through
+to the motor output connector.</P><P CLASS="sect1">The power provided to the MCPDB by the Table Power Supply is
+regulated to 5V for use on the board. The primary functions of this
+board are:</P><UL><LI CLASS="bulletlist"><P>Patient Comfort Fan control</P></LI><LI CLASS="bulletlist"><P>Longitudinal motor drive control</P></LI><LI CLASS="bulletlist"><P>Communication of status of both power
+supplies and the servo amplifier to the CFB</P></LI><LI CLASS="bulletlist"><P>PHPS2 ambient temperature monitoring</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2138245-1065165">2&nbsp;&nbsp;Specifications<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section describes assorted Patient Handling specifications:</P><UL><LI CLASS="bulletlist"><P><B>Precautions</B>&#8212;<SPAN CLASS="GUILABEL"><I>208VAC</I></SPAN>, connector J1 will have 208VAC on it when power
+is supplied to the PHPS2.  The Bore Vent Fan connector (J44) may have
+208VAC on it depending on the status of the Bore Vent Fan Control
+signal from the SRI. <SPAN CLASS="GUILABEL"><I>60VDC</I></SPAN>, beware of 60VDC on
+both J35 and J36.</P></LI><LI CLASS="bulletlist"><P><B>Power Supply Requirements</B>&#8212;The AC power applied to the module shall be dual-phase, 208VAC +/-
+10%.  The PHPS2 pulls less than 9 Amps (circuit breaker = 10A) when
+utilized at its full capacity.</P></LI><LI CLASS="bulletlist"><P><B>Initial Module Conditions</B>&#8212;The UUT shall be fully assembled and meet the following conditions: </P><P>&#8658; Motion Controller pre-programmed with correct firmware
+(*.CFF) and configuration (*.CCX) file. Reference 5260554INS.</P><P>&#8658; Thermal Rocker switch on front panel is in the &#8220;OFF&#8221;
+position.</P></LI><LI CLASS="bulletlist"><P><B>Test Equipment/Fixturing</B>&#8212;The testing procedure requires:</P><P>&#8658; UUT Test Interface Board with appropriate connector interfaces
+&amp; loads.</P><P>&#8658; Host PC with Serial Communication Port &amp; CAN Communication
+Interface.</P><P>&#8658; Longitudinal drive motor and gearbox assembly (GE Part
+Number 5140863) provided by GEHC.</P><P>&#8658; DVM capable of DC voltage measurements as well as AC
+voltages up to 228.8VAC (208VAC + 10%).</P><P>&#8658; 208VAC Source at a minimum of 9A.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2108318-1065165">3&nbsp;&nbsp;Test Points<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There are 18 test points on the equipment room side of the PHPS2.
+ All test points are clearly marked with their voltages and description.
+ See <A HREF="javascript:winopen('1065165illd0e131.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A></P><DIV CLASS="ILLUSTRATION" id="SL2137003-1065165"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Front Panel</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065165-1066415.jpg" BORDER="0" usemap="#SL2136878-1065165"></P></DIV><P CLASS="sect1">A 10-Amp circuit breaker designated &#8220;PHPS2 Power&#8221;
+with indicator light is located on the front panel of the PHPS2. 
+Additionally, a small push-to-reset fuse resides on the equipment
+room side of the PHPS2.  This small fuse interrupts the Patient Comfort
+Fan circuit and is normally in the on position.  It will open up under
+fault conditions and can be manually reset provided the fault is removed.
+ During all testing, the circuit breaker &#8220;PHPS2 Power&#8221;
+must be in the &#8220;ON&#8221; position unless otherwise specified.</P><DIV CLASS="ILLUSTRATION" id="SL2137004-1065165"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Rear Panel</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065165-1066416.jpg" BORDER="0" usemap="#SL2136882-1065165"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2108320-1065165">4&nbsp;&nbsp;Connector Definitions<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><B>I/O Connectors: Front Panel</B></P><UL><LI CLASS="bulletlist"><P><B>J1 - AC Input Power</B>&#8212;Derives power from the PDU.</P></LI><LI CLASS="bulletlist"><P><B>J8 - SRPS Connector</B>&#8212;The SRPS Connector shall deliver the following signals into the
+PHPS2. It shall be a 9-pin socket Panel-Mount Sub-D Connector.</P></LI><LI CLASS="bulletlist"><P><B>J9 - Host E-Stop Connector</B>&#8212;The Host E-stop Connector shall deliver the following signals into
+the PHPS2. It shall be a 9-pin socket Panel-Mount Sub-D Connector.</P></LI><LI CLASS="bulletlist"><P><B>J10 - CAN Fiber Optic Board
+Connector</B>&#8212;This connector deliver the following control
+signals to the CAN Fiber Optic Board (CFB). The interface shall be
+a 25-pin Plug Panel-Mount Sub-D Connector.</P></LI><LI CLASS="bulletlist"><P><B>J11 - PDU E-Stop Connector</B>&#8212;The PDU ESTOP connector shall distribute the following signals into
+the PHPS2. The interface shall be a 15-pin Panel-Mount Socket Sub-D
+Connector.</P></LI><LI CLASS="bulletlist"><P><B>J12 - Host Connector</B>&#8212;The Host Input connector shall distribute the following signals
+into the PHPS2.  The interface shall be a 15-pin Plug Panel-Mount
+Sub-D Connector.</P></LI></UL><P CLASS="sect1"><B>I/O Connectors: Rear Panel</B></P><UL><LI CLASS="bulletlist"><P><B>J35 - Dock Power Connector</B>&#8212;The Dock Power Connector shall be a 37-pin Sub-D Right-Angle Socket
+Connector.</P></LI><LI CLASS="bulletlist"><P><B>J36 - Motor Power Connector</B>&#8212;The Motor Output Connector shall be a 25-pin Plug Right-Angle Sub-D
+Connector.</P></LI><LI CLASS="bulletlist"><P><B>J37 - CAN TX Fiber Optic
+Connector</B>&#8212;The CAN TX fiber optic connector sends CAN signals
+to the SRI4.</P></LI><LI CLASS="bulletlist"><P><B>J38 - CAN RX Fiber Optic
+Connector</B>&#8212;The CAN RX fiber optic connector receives CAN
+signals from the SRI4.</P></LI><LI CLASS="bulletlist"><P><B>J39 - SRI4 Interface Connector</B>&#8212;The SRI4 Interface connector shall be a 37 Pin Plug Right-Angle
+Sub-D Connector and shall supply interface signals between the Copley
+controller and SRI4. The interface connector shall be the top connector
+on a stacked sub-D.</P></LI><LI CLASS="bulletlist"><P><B>J40 - SRI4 Power Connector</B>&#8212;The SRI4 Output connector shall be a stacked 37-Pin Right-Angle
+Socket Sub-D Connector and shall supply power and signals to the SRI4.
+The power connector shall be the lower connector on the stacked connector.</P></LI><LI CLASS="bulletlist"><P><B>J41 - PAC Power Connector</B>&#8212;The PAC Output Connector shall be a 25-pin Socket Right-Angle Sub-D
+Connector.</P></LI><LI CLASS="bulletlist"><P><B>J42 - Display Power Connector</B>&#8212;The Display Power Connector shall be a 15-Pin Socket Sub-D Right-Angle
+Connector.</P></LI><LI CLASS="bulletlist"><P><B>J43 - 1-Wire Spare Connector</B>&#8212;The Spare Output Connector shall provide 1-Wire connectivity to
+the Scan Room through a stacked 9-Pin Plug Right-Angle Sub-D connector.
+This shall be the lower connector on the stacked connector.</P></LI><LI CLASS="bulletlist"><P><B>J44 - Bore Vent Fan Connector</B>&#8212;The Bore Vent Fan connector supplies AC Power to the Bore Fan for
+Multi-Speed Bore Fan Control. This connector is an external connector
+on the PHPS2 enclosure. This shall be a 1x5 Panel-Mount Mate-N-Lock
+Socket Connector. Note: Line Voltage from FAN_HIGH, FAN_MED, or FAN_LOW
+with respect to FAN_120_NEUTRAL will provide 208VAC to the Bore Vent
+Fan.</P></LI><LI CLASS="bulletlist"><P><B>J54 - Commutation Signals
+Connector</B>&#8212;The commutation encoder signal shall be the
+upper connector of a 9-pin stacked sub-D. It sends Digital Hall signals
+to the servo amplifier for motor phasing.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2138267-1065165">5&nbsp;&nbsp;E-Stop Circuit<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION" id="SL2138268-1065165"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">E-Stop Circuit</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1065165-1066447.jpg" BORDER="0" usemap="#SL2138074-1065165"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

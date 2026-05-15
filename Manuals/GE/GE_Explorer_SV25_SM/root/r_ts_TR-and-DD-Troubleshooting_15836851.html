@@ -1,0 +1,682 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.oxygenxml.com/webhelp/components" xml:lang="en" lang="en" whc:version="22.0">
+
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><link rel="icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta name="description" content="Dynamic Disable (DD) switching bias is used to tune and detune the RF body coil. Dual and separate DD bias levels are generated inside the Driver Module and then routed through special high voltage ..."/><meta charset="UTF-8"/><meta name="copyright" content="(C) Copyright 2023"/><meta name="DC.rights.owner" content="(C) Copyright 2023"/><meta name="DC.type" content="reference"/><meta name="DC.coverage" content=""/><meta name="prodname" content=""/><meta name="version" content="0"/><meta name="brand" content=""/><meta name="component" content=""/><meta name="featnum" content="Service Operations"/><meta name="featnum" content=""/><meta name="prognum" content=""/><meta name="platform" content=""/><meta name="DC.creator" content=""/><meta name="DC.publisher" content="11.0482023"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="id_13106512"/><title>T/R and DD Troubleshooting</title><!--  Generated with Oxygen version 23.1, build number 2021121412.  --><meta name="wh-path2root" content=""/><meta name="wh-source-relpath" content="r_ts_TR-and-DD-Troubleshooting_15836851.dita"/><meta name="wh-out-relpath" content="r_ts_TR-and-DD-Troubleshooting_15836851.html"/>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="./oxygen-webhelp/lib/jquery-ui/jquery-ui.min.css"/>
+    
+    <!-- Template default styles  -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/app/topic-page.css?buildId=2021121412"/>
+    
+    
+    <script type="text/javascript" src="./oxygen-webhelp/lib/jquery/jquery-3.5.1.min.js"><!----></script>
+    
+    <script data-main="./oxygen-webhelp/app/topic-page.js" src="./oxygen-webhelp/lib/requirejs/require.js"></script>
+<link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/notes.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/GEHealthCare.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/print.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/footer-fix.css?buildId=2021121412"/><script src="./oxygen-webhelp/lib/scripts/Remove_LSEP.js"></script></head>
+    <body id="id_13106512" class="wh_topic_page frmBody">
+        <!--US578: WHR - Move search to line up with manual title-->
+        <div class="SupressSearch">
+            <!--Search form 
+                Removed class for DE238: Double search fields when webhelp is viewed on
+            <whc:webhelp_search_input class="navbar-form wh_topic_page_search search" role="form">-->
+            <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input " role="form">
+                
+                
+                <div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div>
+                
+                
+            </div>
+        </div>
+        <a href="#topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
+        
+        
+        
+        <header class="navbar navbar-default wh_header" whc:version="23.1">
+    <div class="container-fluid">
+        <!-- GEDev US509 Webhelp: expandable navbar icon invisible changed to navbar-light -->
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-light">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <!--
+                            This component will be generated when the next parameters are specified in the transformation scenario:
+                            'webhelp.logo.image' and 'webhelp.logo.image.target.url'.
+                            See: http://oxygenxml.com/doc/versions/17.1/ug-editor/#topics/dita_webhelp_output.html.
+                    -->
+                    <!-- GE Dev US464 change logo link to blank target -->
+                    <a href="https://www.gehealthcare.com/" class=" wh_logo d-none d-sm-block " target="_blank"><img src="oxygen-webhelp\template\img\GE-HLTHCR_Webhelp_CMYK-CompPrpl.svg" alt="SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ AviatorService Manual"/></a>
+                    <div class=" wh_publication_title "><a href="index.html"><span class="booktitle"><span class="ph mainbooktitle"><span class="ph">SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ Aviator</span><span class="ph"></span></span><span class="ph booktitlealt">Service Manual</span></span></a></div>
+                    <!--* DE224: WHR: Link under the search field is missing -->
+                    <div class="search_container">
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input "><div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div></div><whc:search_field></whc:search_field>
+                        <div class="search_link">
+                             
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- The menu button for mobile devices is copied in the output only when the 'webhelp.show.top.menu' parameter is set to 'yes' -->
+                <button type="button" data-target="#wh_top_menu_and_indexterms_link" id="wh_menu_mobile_button" data-toggle="collapse" class="navbar-toggler collapsed wh_toggle_button" aria-expanded="false" aria-label="Toggle menu" aria-controls="wh_top_menu_and_indexterms_link">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+            </div>
+            
+            
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                <nav class=" wh_top_menu " aria-label="Menu Container"><ul role="menubar" aria-label="Menu"><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033906-d46e66-mi" data-tocid="id_2033906-d46e66" data-state="not-ready" class=" topicref " data-id="id_2033906"><span class="title"><a href="c_Safety_WebhelpLandingPage.html">Safety and General Information</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033907-d46e619-mi" data-tocid="id_2033907-d46e619" data-state="not-ready" class=" topicref " data-id="id_2033907"><span class="title"><a href="c_PreInstallation_WebhelpLandingPage.html">Pre-Installation</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033908-d46e667-mi" data-tocid="id_2033908-d46e667" data-state="not-ready" class=" topicref " data-id="id_2033908"><span class="title"><a href="c_InstallationAndUpgrade_WebhelpLandingPage.html">Installation and Upgrade</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033902-d46e773-mi" data-tocid="id_2033902-d46e773" data-state="not-ready" class=" topicref " data-id="id_2033902"><span class="title"><a href="c_AdjustmentsAndCalibrations_WebhelpLandingPage.html">Adjustments/Calibrations</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033910-d46e1889-mi" data-tocid="id_2033910-d46e1889" data-state="not-ready" class=" topicref " data-id="id_2033910"><span class="title"><a href="c_FunctionalChecks_WebhelpLandingPage.html">Functional Checks</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033911-d46e2714-mi" data-tocid="id_2033911-d46e2714" data-state="not-ready" class=" topicref " data-id="id_2033911"><span class="title"><a href="c_Software_WebhelpLandingPage.html">Software</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033912-d46e7942-mi" data-tocid="id_2033912-d46e7942" data-state="not-ready" class=" topicref " data-id="id_2033912"><span class="title"><a href="c_Theory_WebhelpLandingPage.html">Theory</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033914-d46e8205-mi" data-tocid="id_2033914-d46e8205" data-state="not-ready" class=" topicref " data-id="id_2033914"><span class="title"><a href="c_PlannedMaintenance_WebhelpLandingPage.html">Planned Maintenance</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033916-d46e8464-mi" data-tocid="id_2033916-d46e8464" data-state="not-ready" class=" topicref " data-id="id_2033916"><span class="title"><a href="c_Parts_WebhelpLandingPage.html">Parts</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033903-d46e8512-mi" data-tocid="id_2033903-d46e8512" data-state="not-ready" class=" topicref " data-id="id_2033903"><span class="title"><a href="c_OEMAndOtherManuals_WebhelpLandingPage.html">OEM and Other Manuals</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033917-d46e8584-mi" data-tocid="id_2033917-d46e8584" data-state="not-ready" class=" topicref " data-id="id_2033917"><span class="title"><a href="c_Replacements_WebhelpLandingPage.html">Replacements</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033904-d46e15711-mi" data-tocid="id_2033904-d46e15711" data-state="not-ready" class=" topicref " data-id="id_2033904"><span class="title"><a href="c_Coils_WebhelpLandingPage.html">Coils</a></span></span></li><li role="menuitem"><span id="id_2033918-d46e15759-mi" data-tocid="id_2033918-d46e15759" data-state="leaf" class=" topicref " data-id="id_2033918"><span class="title"><a href="c_OptionalFeatures_WebhelpLandingPage.html">Optional Features</a></span></span></li></ul></nav>
+                <div class=" wh_indexterms_link "><a href="indexTerms.html" title="Index" aria-label="Go to index terms page"><span>Index</span></a></div>
+                <!--whc:include_html href="${webhelp.fragment.after.top_menu}"/-->
+                
+            </div>
+            
+        </div>
+    </div>
+</header>
+        
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+
+                        <!-- External resource link -->
+                        
+
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page" class="oxy-icon oxy-icon-print"></button></div>
+
+                        <!-- Expand/Collapse publishing TOC 
+                             The menu button for mobile devices is copied in the output only when the publication TOC is available
+                        -->
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+
+            <!--whc:include_html href="${webhelp.fragment.before.main.content.area}"/>
+           
+            <whc:include_html href="${webhelp.fragment.before.main.content.area.topic.page}"/-->
+
+
+            <div class="wh_content_area">
+                <!-- US616 - TOC toggle buttons -->
+                <div class="row" id="topic_body">
+                    
+                    <div id="pub_toc_button">
+                        <button type="button" data-target="#wh_publication_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc"></button>
+                    </div>
+                    
+                    <!--  DE234:  Spacing irregularities with flexible TOCS in Webhelp 
+                    Moved related links out 2 divs, moved topic tocs into topic body-->
+                    <div id="wh_topic_body">
+                        
+                        <div id="body_grid"><!-- DE234:  Added Body grid to fix issue with related links-->
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+        <div class="topicMeta"><ul class="- topic/title title"><li> </li><li></li><li></li><li><span class="metalabel">Object ID: </span>00000018WIA30B64E20GYZ</li><li><span class="metalabel">Topic ID: </span>id_13106512<span class="metalabel"> Version: </span>3.4</li><li><span class="metalabel">Date: </span>Mar 23, 2023 12:20:58 PM</li></ul></div><h1 class="- topic/title title topictitle1" id="ariaid-title1">T/R and DD Troubleshooting</h1></header>
+        <div class="- topic/body reference/refbody body refbody"><section class="- topic/section section">
+      
+    </section></div><article class="- topic/topic reference/reference topic reference nested1 yes id_SL4154501-1178795" aria-labelledby="ariaid-title2" id="id_SL4154501-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4154501-1178795</header><h2 class="- topic/title title topictitle2" id="ariaid-title2">Dynamic Disable Fault Troubleshooting</h2><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4154501-1178795__SL4154501-1178795" data-ofbid="id_SL4154501-1178795__SL4154501-1178795">
+        <p class="- topic/p p" id="id_SL4154501-1178795__id_14918739" data-ofbid="id_SL4154501-1178795__id_14918739">Dynamic Disable (DD) switching bias is used to tune and detune
+the RF body coil. Dual and separate DD bias levels are generated inside
+the Driver Module and then routed through special high voltage coaxial
+lines to the DTRSW. </p>
+        <p class="- topic/p p" id="id_SL4154501-1178795__id_14918740" data-ofbid="id_SL4154501-1178795__id_14918740">Inside the DTRSW module each DD bias level is introduced onto
+its respective RF transmission line and then routed to the RF body
+coil channel 1 and 2 tuning circuits. DD bias must be applied to both
+ports of the RF body coil prior to pulsing either with RF energy from
+the RF amplifier. </p>
+        <p class="- topic/p p" id="id_SL4154501-1178795__id_14918741" data-ofbid="id_SL4154501-1178795__id_14918741">Use the illustration and steps below to troubleshoot DD bias
+faults.</p>
+        <figure class="- topic/fig fig fignone" id="id_SL4154501-1178795__SL4172793-1178795" data-ofbid="id_SL4154501-1178795__SL4172793-1178795"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">1. </span></span><span class="fig--title">Transmit/Receive and DD Signal Path</span></figcaption><img class="- topic/image image" id="id_SL4154501-1178795__id_14918742" src="13820959.jpg"/></figure>
+      </section></div><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4172809-1178795" aria-labelledby="ariaid-title3" id="id_SL4172809-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4172809-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title3">DD Short-Circuit Fault – Body Drive 1 (BD1)</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4172809-1178795__SL4172809-1178795" data-ofbid="id_SL4172809-1178795__SL4172809-1178795">
+          <ol class="- topic/ol ol" id="id_SL4172809-1178795__id_14918743" data-ofbid="id_SL4172809-1178795__id_14918743"><li class="- topic/li li" id="id_SL4172809-1178795__SL4172810-1178795" data-ofbid="id_SL4172809-1178795__SL4172810-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918744" data-ofbid="id_SL4172809-1178795__id_14918744">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172811-1178795" data-ofbid="id_SL4172809-1178795__SL4172811-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918745" data-ofbid="id_SL4172809-1178795__id_14918745">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm that the
+results indicate a BD1 short-circuit fault.</p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172812-1178795" data-ofbid="id_SL4172809-1178795__SL4172812-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918746" data-ofbid="id_SL4172809-1178795__id_14918746">Remove the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 1</span> transmission line cable from <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J2</span> at the bottom
+of DTRSW module located on the right side of the magnet inside the
+RF screen room.</p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172813-1178795" data-ofbid="id_SL4172809-1178795__SL4172813-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918747" data-ofbid="id_SL4172809-1178795__id_14918747">Repeat the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4172809-1178795__id_14918748" data-ofbid="id_SL4172809-1178795__id_14918748"><li class="- topic/li li" id="id_SL4172809-1178795__SL4172814-1178795" data-ofbid="id_SL4172809-1178795__SL4172814-1178795">
+                  <p class="- topic/p p" id="id_SL4172809-1178795__id_14918749" data-ofbid="id_SL4172809-1178795__id_14918749">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit Fault present</span>: The fault condition is between the DTRSW and the Driver Module.
+See <a class="- topic/xref xref" href="#id_SL4154501-1178795__SL4172793-1178795"><span>Figure 1</span></a>. Starting at the DTRSW and working your way back to the Driver
+Module, remove the DD bias connection at each point in the circuit
+and repeat the diagnostic until an open-circuit fault instead of a
+short-circuit fault condition is reported.  If you get all the way
+back to the Driver Module and the short-circuit fault remains, then
+replace the Driver Module.</p>
+                </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172815-1178795" data-ofbid="id_SL4172809-1178795__SL4172815-1178795">
+                  <p class="- topic/p p" id="id_SL4172809-1178795__id_14918750" data-ofbid="id_SL4172809-1178795__id_14918750">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault present</span>: Reconnect the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 1</span> transmission
+line cable at bottom of DTRSW module at <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J2</span> and
+disconnect the other end at the RF body coil</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4172809-1178795__id_14918751" data-ofbid="id_SL4172809-1178795__id_14918751"><li class="- topic/li li" id="id_SL4172809-1178795__SL4172816-1178795" data-ofbid="id_SL4172809-1178795__SL4172816-1178795">
+                      <p class="- topic/p p" id="id_SL4172809-1178795__id_14918752" data-ofbid="id_SL4172809-1178795__id_14918752">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault present</span>: There is a short-circuit inside the RF body coil. Please repair
+or replace the coil</p>
+                    </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172817-1178795" data-ofbid="id_SL4172809-1178795__SL4172817-1178795">
+                      <p class="- topic/p p" id="id_SL4172809-1178795__id_14918753" data-ofbid="id_SL4172809-1178795__id_14918753">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit fault present</span>: There is a short-circuit inside the transmission line. Please repair
+or replace the line.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172818-1178795" data-ofbid="id_SL4172809-1178795__SL4172818-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918754" data-ofbid="id_SL4172809-1178795__id_14918754">Reconnect the cables to their normal
+configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172819-1178795" data-ofbid="id_SL4172809-1178795__SL4172819-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918755" data-ofbid="id_SL4172809-1178795__id_14918755">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172820-1178795" data-ofbid="id_SL4172809-1178795__SL4172820-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918756" data-ofbid="id_SL4172809-1178795__id_14918756">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>. </p>
+            </li><li class="- topic/li li" id="id_SL4172809-1178795__SL4172821-1178795" data-ofbid="id_SL4172809-1178795__SL4172821-1178795">
+              <p class="- topic/p p" id="id_SL4172809-1178795__id_14918757" data-ofbid="id_SL4172809-1178795__id_14918757">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4172822-1178795" aria-labelledby="ariaid-title4" id="id_SL4172822-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4172822-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title4">DD Short-Circuit Fault – Body Drive 2 (BD2)</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4172822-1178795__SL4172822-1178795" data-ofbid="id_SL4172822-1178795__SL4172822-1178795">
+          <ol class="- topic/ol ol" id="id_SL4172822-1178795__id_14918758" data-ofbid="id_SL4172822-1178795__id_14918758"><li class="- topic/li li" id="id_SL4172822-1178795__SL4172823-1178795" data-ofbid="id_SL4172822-1178795__SL4172823-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918759" data-ofbid="id_SL4172822-1178795__id_14918759">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172824-1178795" data-ofbid="id_SL4172822-1178795__SL4172824-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918760" data-ofbid="id_SL4172822-1178795__id_14918760">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm that the
+results indicate a BD2 short-circuit fault.</p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172825-1178795" data-ofbid="id_SL4172822-1178795__SL4172825-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918761" data-ofbid="id_SL4172822-1178795__id_14918761">Remove the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 2</span> transmission line cable from <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J3</span> at the bottom
+of DTRSW module located on the right side of the magnet inside the
+RF screen room.</p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172826-1178795" data-ofbid="id_SL4172822-1178795__SL4172826-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918762" data-ofbid="id_SL4172822-1178795__id_14918762">Repeat the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4172822-1178795__id_14918763" data-ofbid="id_SL4172822-1178795__id_14918763"><li class="- topic/li li" id="id_SL4172822-1178795__SL4172827-1178795" data-ofbid="id_SL4172822-1178795__SL4172827-1178795">
+                  <p class="- topic/p p" id="id_SL4172822-1178795__id_14918764" data-ofbid="id_SL4172822-1178795__id_14918764">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit fault present</span>: The fault condition is between the DTRSW and the Driver Module.
+See <a class="- topic/xref xref" href="#id_SL4154501-1178795__SL4172793-1178795"><span>Figure 1</span></a>. Starting at the DTRSW and working your way back to the Driver
+Module, remove the DD bias connection at each point in the circuit
+and repeat the diagnostic until an open-circuit fault instead of a
+short-circuit fault condition is reported.  If you get all the way
+back to the Driver Module and the short-circuit fault remains, then
+replace the Driver Module.</p>
+                </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172828-1178795" data-ofbid="id_SL4172822-1178795__SL4172828-1178795">
+                  <p class="- topic/p p" id="id_SL4172822-1178795__id_14918765" data-ofbid="id_SL4172822-1178795__id_14918765">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault present</span>: Reconnect the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 2</span> transmission
+line cable at bottom of DTRSW module at <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J3</span> and
+disconnect the other end at the RF body coil</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4172822-1178795__id_14918766" data-ofbid="id_SL4172822-1178795__id_14918766"><li class="- topic/li li" id="id_SL4172822-1178795__SL4172829-1178795" data-ofbid="id_SL4172822-1178795__SL4172829-1178795">
+                      <p class="- topic/p p" id="id_SL4172822-1178795__id_14918767" data-ofbid="id_SL4172822-1178795__id_14918767">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault present</span>: There is a short-circuit inside the RF body coil. Please repair
+or replace the coil.</p>
+                    </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172830-1178795" data-ofbid="id_SL4172822-1178795__SL4172830-1178795">
+                      <p class="- topic/p p" id="id_SL4172822-1178795__id_14918768" data-ofbid="id_SL4172822-1178795__id_14918768">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit Fault present</span>: There is a short-circuit inside the transmission line. Please repair
+or replace the line.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172831-1178795" data-ofbid="id_SL4172822-1178795__SL4172831-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918769" data-ofbid="id_SL4172822-1178795__id_14918769">Reconnect the cables to their normal
+configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172832-1178795" data-ofbid="id_SL4172822-1178795__SL4172832-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918770" data-ofbid="id_SL4172822-1178795__id_14918770">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172833-1178795" data-ofbid="id_SL4172822-1178795__SL4172833-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918771" data-ofbid="id_SL4172822-1178795__id_14918771">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4172822-1178795__SL4172834-1178795" data-ofbid="id_SL4172822-1178795__SL4172834-1178795">
+              <p class="- topic/p p" id="id_SL4172822-1178795__id_14918772" data-ofbid="id_SL4172822-1178795__id_14918772">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4172835-1178795" aria-labelledby="ariaid-title5" id="id_SL4172835-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4172835-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title5">DD Open-Circuit Fault – Body Drive 1 (BD1)</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4172835-1178795__SL4172835-1178795" data-ofbid="id_SL4172835-1178795__SL4172835-1178795">
+          <ol class="- topic/ol ol" id="id_SL4172835-1178795__id_14918773" data-ofbid="id_SL4172835-1178795__id_14918773"><li class="- topic/li li" id="id_SL4172835-1178795__SL4172836-1178795" data-ofbid="id_SL4172835-1178795__SL4172836-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918774" data-ofbid="id_SL4172835-1178795__id_14918774">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172837-1178795" data-ofbid="id_SL4172835-1178795__SL4172837-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918775" data-ofbid="id_SL4172835-1178795__id_14918775">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm that the
+results indicate a BD1 open-circuit fault.</p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172838-1178795" data-ofbid="id_SL4172835-1178795__SL4172838-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918776" data-ofbid="id_SL4172835-1178795__id_14918776">Swap the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 1</span> and <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 2</span> transmission line cables
+at the bottom of DTRSW module located on the right side of the magnet
+inside the RF screen room.</p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172839-1178795" data-ofbid="id_SL4172835-1178795__SL4172839-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918777" data-ofbid="id_SL4172835-1178795__id_14918777">Repeat the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4172835-1178795__id_14918778" data-ofbid="id_SL4172835-1178795__id_14918778"><li class="- topic/li li" id="id_SL4172835-1178795__SL4172840-1178795" data-ofbid="id_SL4172835-1178795__SL4172840-1178795">
+                  <p class="- topic/p p" id="id_SL4172835-1178795__id_14918779" data-ofbid="id_SL4172835-1178795__id_14918779">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault remains
+on BD1</span>: The fault condition is between the DTRSW and the
+Driver Module. See <a class="- topic/xref xref" href="#id_SL4154501-1178795__SL4172793-1178795"><span>Figure 1</span></a>. Starting at the DTRSW and working your way
+back to the Driver Module, swap the DD bias connections at each point
+in the circuit and repeat the diagnostic until the open-circuit fault
+moves from BD1 to BD4. If you get all the way back to the driver module
+and the fault remains on BD1, replace the Driver Module.</p>
+                </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172841-1178795" data-ofbid="id_SL4172835-1178795__SL4172841-1178795">
+                  <p class="- topic/p p" id="id_SL4172835-1178795__id_14918780" data-ofbid="id_SL4172835-1178795__id_14918780">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault reported
+on BD4</span>: Swap the RF Channel 1 and RF Channel 2 transmission
+line cables at the RF body coil connectors and repeat the diagnostic.</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4172835-1178795__id_14918781" data-ofbid="id_SL4172835-1178795__id_14918781"><li class="- topic/li li" id="id_SL4172835-1178795__SL4172842-1178795" data-ofbid="id_SL4172835-1178795__SL4172842-1178795">
+                      <p class="- topic/p p" id="id_SL4172835-1178795__id_14918782" data-ofbid="id_SL4172835-1178795__id_14918782">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault remains
+on BD4</span>: The RF Channel 1 transmission line appears faulty.
+Please repair or replace the line.</p>
+                    </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172843-1178795" data-ofbid="id_SL4172835-1178795__SL4172843-1178795">
+                      <p class="- topic/p p" id="id_SL4172835-1178795__id_14918783" data-ofbid="id_SL4172835-1178795__id_14918783">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault moves
+to BD1</span>: The RF body coil appears faulty. Please repair
+or replace the coil.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172844-1178795" data-ofbid="id_SL4172835-1178795__SL4172844-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918784" data-ofbid="id_SL4172835-1178795__id_14918784">Reconnect cables to their normal configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172845-1178795" data-ofbid="id_SL4172835-1178795__SL4172845-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918785" data-ofbid="id_SL4172835-1178795__id_14918785">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172846-1178795" data-ofbid="id_SL4172835-1178795__SL4172846-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918786" data-ofbid="id_SL4172835-1178795__id_14918786">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4172835-1178795__SL4172847-1178795" data-ofbid="id_SL4172835-1178795__SL4172847-1178795">
+              <p class="- topic/p p" id="id_SL4172835-1178795__id_14918787" data-ofbid="id_SL4172835-1178795__id_14918787">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4172848-1178795" aria-labelledby="ariaid-title6" id="id_SL4172848-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4172848-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title6">DD Open-Circuit Fault – Body Drive 2 (BD2)</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4172848-1178795__SL4172848-1178795" data-ofbid="id_SL4172848-1178795__SL4172848-1178795">
+          <ol class="- topic/ol ol" id="id_SL4172848-1178795__id_14918788" data-ofbid="id_SL4172848-1178795__id_14918788"><li class="- topic/li li" id="id_SL4172848-1178795__SL4172849-1178795" data-ofbid="id_SL4172848-1178795__SL4172849-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918789" data-ofbid="id_SL4172848-1178795__id_14918789">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on front of DTX-1 Exciter module in the down (disable) position
+to disable RF output. </p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172850-1178795" data-ofbid="id_SL4172848-1178795__SL4172850-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918790" data-ofbid="id_SL4172848-1178795__id_14918790">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm that
+the results indicate a BD2 open-circuit fault.</p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172851-1178795" data-ofbid="id_SL4172848-1178795__SL4172851-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918791" data-ofbid="id_SL4172848-1178795__id_14918791">Swap the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 1</span> and <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF Channel 2</span> transmission line cables
+at the bottom of DTRSW module located on the right side of the magnet
+inside the RF screen room.</p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172852-1178795" data-ofbid="id_SL4172848-1178795__SL4172852-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918792" data-ofbid="id_SL4172848-1178795__id_14918792">Repeat the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4172848-1178795__id_14918793" data-ofbid="id_SL4172848-1178795__id_14918793"><li class="- topic/li li" id="id_SL4172848-1178795__SL4172853-1178795" data-ofbid="id_SL4172848-1178795__SL4172853-1178795">
+                  <p class="- topic/p p" id="id_SL4172848-1178795__id_14918794" data-ofbid="id_SL4172848-1178795__id_14918794">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault remains
+on BD4</span>: The fault condition is between the DTRSW and the
+Driver Module. See <a class="- topic/xref xref" href="#id_SL4154501-1178795__SL4172793-1178795"><span>Figure 1</span></a>. Starting at the DTRSW and working your way
+back to the Driver Module, swap the DD bias connections at each point
+in the circuit and repeat the diagnostic until the open-circuit fault
+moves from BD1 to BD4. If you get all the way back to the driver module
+and the fault remains on BD4, replace the Driver Module.</p>
+                </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172854-1178795" data-ofbid="id_SL4172848-1178795__SL4172854-1178795">
+                  <p class="- topic/p p" id="id_SL4172848-1178795__id_14918795" data-ofbid="id_SL4172848-1178795__id_14918795">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault reported
+on BD1</span>: Swap the RF Channel 1 and RF Channel 2 transmission
+line cables at the RF body coil connectors and repeat the diagnostic.</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4172848-1178795__id_14918796" data-ofbid="id_SL4172848-1178795__id_14918796"><li class="- topic/li li" id="id_SL4172848-1178795__SL4172855-1178795" data-ofbid="id_SL4172848-1178795__SL4172855-1178795">
+                      <p class="- topic/p p" id="id_SL4172848-1178795__id_14918797" data-ofbid="id_SL4172848-1178795__id_14918797">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault remains
+on BD1</span>: The RF Channel 1 transmission line appears faulty.
+Please repair or replace the line.</p>
+                    </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172856-1178795" data-ofbid="id_SL4172848-1178795__SL4172856-1178795">
+                      <p class="- topic/p p" id="id_SL4172848-1178795__id_14918798" data-ofbid="id_SL4172848-1178795__id_14918798">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit Fault moves
+to BD2</span>: The RF body coil appears faulty. Please repair
+or replace the coil.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172857-1178795" data-ofbid="id_SL4172848-1178795__SL4172857-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918799" data-ofbid="id_SL4172848-1178795__id_14918799">Reconnect cables to their normal configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172858-1178795" data-ofbid="id_SL4172848-1178795__SL4172858-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918800" data-ofbid="id_SL4172848-1178795__id_14918800">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172859-1178795" data-ofbid="id_SL4172848-1178795__SL4172859-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918801" data-ofbid="id_SL4172848-1178795__id_14918801">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4172848-1178795__SL4172860-1178795" data-ofbid="id_SL4172848-1178795__SL4172860-1178795">
+              <p class="- topic/p p" id="id_SL4172848-1178795__id_14918802" data-ofbid="id_SL4172848-1178795__id_14918802">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure
+to confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article></article><article class="- topic/topic reference/reference topic reference nested1 yes id_SL4154502-1178795" aria-labelledby="ariaid-title7" id="id_SL4154502-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4154502-1178795</header><h2 class="- topic/title title topictitle2" id="ariaid-title7">TR Fault Troubleshooting</h2><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4154502-1178795__SL4154502-1178795" data-ofbid="id_SL4154502-1178795__SL4154502-1178795">
+        <p class="- topic/p p" id="id_SL4154502-1178795__id_14918803" data-ofbid="id_SL4154502-1178795__id_14918803">Body and head TR bias is always applied to the respective circuits
+irrespective of whether those circuits are in use. A fault condition
+on an unused head or body circuit can inhibit scanning. While the
+RF body coil is in use (system in body mode) the head TR bias is not
+monitored for open circuit conditions. Body and head TR switching
+bias is applied during transmit and receive modes to ensure the RF
+transmit and receive signal is directed through the proper body and
+head RF circuit paths. See <a class="- topic/xref xref" href="#id_SL4154502-1178795__SL4173138-1178795"><span>Table 1</span></a> for summary of various biasing levels.</p>
+        <table class="- topic/table table" id="id_SL4154502-1178795__SL4173138-1178795" data-ofbid="id_SL4154502-1178795__SL4173138-1178795"><caption class="- topic/title title tablecap" caption-side="top" is-repeated="true"><span class="table--title-label">Table<span class="table--title-label-number"> 1</span><span class="table--title-label-punctuation">. </span></span><span class="table--title">TR and DD Bias Levels</span></caption><colgroup><col style="width:16.666666666666664%"/><col style="width:16.666666666666664%"/><col style="width:16.666666666666664%"/><col style="width:16.666666666666664%"/><col style="width:16.666666666666664%"/><col style="width:16.666666666666664%"/></colgroup><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918804" colspan="3">
+                  RF Amp Input Bias (Loaded)</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918805" colspan="3">
+                  Dynamic Disable Bias</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918806" rowspan="2">
+                  TR Bias</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918807" colspan="2">
+                  Mode</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918808" rowspan="2">
+                  DD Bias</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918809" colspan="2">
+                  Mode</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918810">Transmit</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918811">Receive</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918812">BD1</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918813">BD2</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918814">Head</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918815">+8.2 V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918816">-14.4 V</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918817">Head</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918818">+150.0 V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918819">+150.0 V</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918820">Body</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918821">+2.9V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918822">-14.4 V</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918823">Body</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918824">-15.0 V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918825">-15.0 V</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918826" colspan="3">
+                  Driver Module Output Bias (Loaded)</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918827" colspan="3">
+                  Driver Module Output Bias (Unloaded)</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918828" rowspan="2">
+                  TR Bias</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918829" colspan="2">
+                  Mode</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918830" rowspan="2">
+                  TR Bias</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918831" colspan="2">
+                  Mode</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918832">Transmit</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918833">Receive</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918834">Transmit</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918835">Receive</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918836">Head</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918837">+8.3 V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918838">-14.4 V</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918839">Head</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918840">+8.4 V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918841">-14.4 V</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918842">Body</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918843">+4.3V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918844">-14.4 V</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918845">Body</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918846">+5.0V</td><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-bottom" id="id_SL4154502-1178795__id_14918847">-14.4 V</td></tr></tbody>
+        </table>
+        <p class="- topic/p p" id="id_SL4154502-1178795__id_14918848" data-ofbid="id_SL4154502-1178795__id_14918848">Head TR bias is supplied by the Driver Module to the XRFD amplifier
+where it is introduced, along with the head RF transmit signal, onto
+the head RF transmission line. At the ISC PW, the Head RF Transmit
+switch routes the TR bias and RF signals down transmission lines to
+ connectors P1. This bias is not used and is not monitored for open
+circuit conditions (but is monitored for short-circuit conditions)
+until a transmit/receive coil is attached to one of these connectors.
+As explained earlier, the head TR bias is then used by circuitry inside
+the coils to insure proper routing of transmit and receive RF signals.</p>
+        <p class="- topic/p p" id="id_SL4154502-1178795__id_14918849" data-ofbid="id_SL4154502-1178795__id_14918849">Body TR bias is supplied by the Driver Module to the XRFD amplifier
+where it is split and then introduced, along with the channel 1 &amp;
+2 RF transmit signals, onto the channel 1 and 2 RF transmission lines.
+The body TR bias and channel 1 &amp; 2 RF signals are routed down
+the channel 1 &amp; 2 transmission lines to the DTRSW module. As explained
+earlier the body TR bias is then used by channel 1 and 2 circuitry
+inside the DTRSW module to insure proper routing of transmit and receive
+RF signals. The body TR bias does not exit the DTRSW module and is
+not applied to the RF body coil. </p>
+        <p class="- topic/p p" id="id_SL4154502-1178795__id_14918850" data-ofbid="id_SL4154502-1178795__id_14918850">Because the TR bias is split and shared between channels 1 &amp;
+2 inside the XRFD amplifier, the system cannot isolate a fault to
+either channel 1 or 2. It can report only that a body TR fault occurred.
+If the location of the fault is between the XRFD amplifier and RF
+body coil then you must use the processes described in following sections
+to determine on which transmission channel the fault is located. </p>
+      </section></div><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4173596-1178795" aria-labelledby="ariaid-title8" id="id_SL4173596-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4173596-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title8">TR Short-Circuit Fault – Head</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4173596-1178795__SL4173596-1178795" data-ofbid="id_SL4173596-1178795__SL4173596-1178795">
+          <ol class="- topic/ol ol" id="id_SL4173596-1178795__id_14918851" data-ofbid="id_SL4173596-1178795__id_14918851"><li class="- topic/li li" id="id_SL4173596-1178795__SL4173597-1178795" data-ofbid="id_SL4173596-1178795__SL4173597-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918852" data-ofbid="id_SL4173596-1178795__id_14918852">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173598-1178795" data-ofbid="id_SL4173596-1178795__SL4173598-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918853" data-ofbid="id_SL4173596-1178795__id_14918853">Remove all coils from the  <span class="+ topic/ph ui-d/uicontrol ph uicontrol">P2</span> connectors.  </p>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173599-1178795" data-ofbid="id_SL4173596-1178795__SL4173599-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918854" data-ofbid="id_SL4173596-1178795__id_14918854">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4173596-1178795__id_14918855" data-ofbid="id_SL4173596-1178795__id_14918855"><li class="- topic/li li" id="id_SL4173596-1178795__SL4173600-1178795" data-ofbid="id_SL4173596-1178795__SL4173600-1178795">
+                  <p class="- topic/p p" id="id_SL4173596-1178795__id_14918856" data-ofbid="id_SL4173596-1178795__id_14918856">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">No fault present</span>: The removed coil appears faulty. Please repair or replace the coil.</p>
+                </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173601-1178795" data-ofbid="id_SL4173596-1178795__SL4173601-1178795">
+                  <p class="- topic/p p" id="id_SL4173596-1178795__id_14918857" data-ofbid="id_SL4173596-1178795__id_14918857">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit Fault present</span>: The fault condition is between the P2 and the Driver Module. Starting
+at the P2 and working your way back to the Driver Module, remove the
+head transmission line connections at each point in the circuit and
+repeat the diagnostic until the fault condition stops. If you get
+all the way back to the Driver Module and the fault remains, replace
+the Driver Module.</p>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173602-1178795" data-ofbid="id_SL4173596-1178795__SL4173602-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918858" data-ofbid="id_SL4173596-1178795__id_14918858">Reconnect all cables to their normal
+configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173603-1178795" data-ofbid="id_SL4173596-1178795__SL4173603-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918859" data-ofbid="id_SL4173596-1178795__id_14918859">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173604-1178795" data-ofbid="id_SL4173596-1178795__SL4173604-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918860" data-ofbid="id_SL4173596-1178795__id_14918860">If you replaced any components in the
+body transmit circuit, perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4173596-1178795__SL4173605-1178795" data-ofbid="id_SL4173596-1178795__SL4173605-1178795">
+              <p class="- topic/p p" id="id_SL4173596-1178795__id_14918861" data-ofbid="id_SL4173596-1178795__id_14918861">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure
+to confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4173606-1178795" aria-labelledby="ariaid-title9" id="id_SL4173606-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4173606-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title9">TR Open-Circuit Fault – Head</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4173606-1178795__SL4173606-1178795" data-ofbid="id_SL4173606-1178795__SL4173606-1178795">
+          <ol class="- topic/ol ol" id="id_SL4173606-1178795__id_14918862" data-ofbid="id_SL4173606-1178795__id_14918862"><li class="- topic/li li" id="id_SL4173606-1178795__SL4173607-1178795" data-ofbid="id_SL4173606-1178795__SL4173607-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918863" data-ofbid="id_SL4173606-1178795__id_14918863">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173608-1178795" data-ofbid="id_SL4173606-1178795__SL4173608-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918864" data-ofbid="id_SL4173606-1178795__id_14918864">Connect a transmit/receive coil (such
+as Knee TR PA Coil) to the  <span class="+ topic/ph ui-d/uicontrol ph uicontrol">P2</span> connector. Do
+not connect coils to both connectors at same time. Troubleshoot one
+connector at a time.</p>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173609-1178795" data-ofbid="id_SL4173606-1178795__SL4173609-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918865" data-ofbid="id_SL4173606-1178795__id_14918865">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the results.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4173606-1178795__id_14918866" data-ofbid="id_SL4173606-1178795__id_14918866"><li class="- topic/li li" id="id_SL4173606-1178795__SL4173610-1178795" data-ofbid="id_SL4173606-1178795__SL4173610-1178795">
+                  <p class="- topic/p p" id="id_SL4173606-1178795__id_14918867" data-ofbid="id_SL4173606-1178795__id_14918867">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">No fault present</span>:</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4173606-1178795__id_14918868" data-ofbid="id_SL4173606-1178795__id_14918868"><li class="- topic/li li" id="id_SL4173606-1178795__SL4173611-1178795" data-ofbid="id_SL4173606-1178795__SL4173611-1178795">
+                      <p class="- topic/p p" id="id_SL4173606-1178795__id_14918869" data-ofbid="id_SL4173606-1178795__id_14918869">Confirm the attached coil is one that
+was reported faulting. Review the error log for past messages indicating
+faults and the coil in use when faults were reported.</p>
+                    </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173612-1178795" data-ofbid="id_SL4173606-1178795__SL4173612-1178795">
+                      <p class="- topic/p p" id="id_SL4173606-1178795__id_14918870" data-ofbid="id_SL4173606-1178795__id_14918870">Intermittent faults like this may be
+due to a faulty coil. Please repair or replace the coil.  </p>
+                    </li></ol>
+                </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173622-1178795" data-ofbid="id_SL4173606-1178795__SL4173622-1178795">
+                  <p class="- topic/p p" id="id_SL4173606-1178795__id_14918871" data-ofbid="id_SL4173606-1178795__id_14918871">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Fault present on P connector</span>:</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4173606-1178795__id_14918872" data-ofbid="id_SL4173606-1178795__id_14918872"><li class="- topic/li li" id="id_SL4173606-1178795__SL4173623-1178795" data-ofbid="id_SL4173606-1178795__SL4173623-1178795">
+                      <p class="- topic/p p" id="id_SL4173606-1178795__id_14918873" data-ofbid="id_SL4173606-1178795__id_14918873">At the rear of the Driver Module relocate <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J6</span> head TR cable to <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J7</span> body TR
+port at the rear of the Driver Module. <span class="+ topic/ph ui-d/uicontrol ph uicontrol">LEAVE BODY J7 CABLE
+OPEN AND UNCONNECTED</span>. Repeat the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and carefully review
+the reported failing current value.</p>
+                    </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173624-1178795" data-ofbid="id_SL4173606-1178795__SL4173624-1178795">
+                      <p class="- topic/p p" id="id_SL4173606-1178795__id_14918874" data-ofbid="id_SL4173606-1178795__id_14918874">If the failing current value is less
+than <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">100 mA</samp> and the Driver Module body TR circuit
+has been functional up to this point,  then it appears that an open
+condition exists somewhere in the P1 connector transmit circuit between
+the Driver Module and the P1 connector inside the cradle. Check all
+the cable connections until the poor connection is found and repaired.</p>
+                    </li><li class="- topic/li li" id="id_SL4173606-1178795__SL13822391-1178795" data-ofbid="id_SL4173606-1178795__SL13822391-1178795">
+                      <p class="- topic/p p" id="id_SL4173606-1178795__id_14918875" data-ofbid="id_SL4173606-1178795__id_14918875">If the failing current value is greater
+than <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">100 mA</samp> then power cycle the Driver Module
+and try again. If the problem remains then replace the Driver Module.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173631-1178795" data-ofbid="id_SL4173606-1178795__SL4173631-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918876" data-ofbid="id_SL4173606-1178795__id_14918876">Reconnect cables to their normal configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173632-1178795" data-ofbid="id_SL4173606-1178795__SL4173632-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918877" data-ofbid="id_SL4173606-1178795__id_14918877">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173633-1178795" data-ofbid="id_SL4173606-1178795__SL4173633-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918878" data-ofbid="id_SL4173606-1178795__id_14918878">If you replaced any components in the
+body transmit circuit, perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4173606-1178795__SL4173634-1178795" data-ofbid="id_SL4173606-1178795__SL4173634-1178795">
+              <p class="- topic/p p" id="id_SL4173606-1178795__id_14918879" data-ofbid="id_SL4173606-1178795__id_14918879">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4173635-1178795" aria-labelledby="ariaid-title10" id="id_SL4173635-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4173635-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title10">TR Short-Circuit Fault – Body</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4173635-1178795__SL4173635-1178795" data-ofbid="id_SL4173635-1178795__SL4173635-1178795">
+          <ol class="- topic/ol ol" id="id_SL4173635-1178795__id_14918880" data-ofbid="id_SL4173635-1178795__id_14918880"><li class="- topic/li li" id="id_SL4173635-1178795__SL4173636-1178795" data-ofbid="id_SL4173635-1178795__SL4173636-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918881" data-ofbid="id_SL4173635-1178795__id_14918881">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173637-1178795" data-ofbid="id_SL4173635-1178795__SL4173637-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918882" data-ofbid="id_SL4173635-1178795__id_14918882">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm the report
+of a short-circuit fault.</p>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173638-1178795" data-ofbid="id_SL4173635-1178795__SL4173638-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918883" data-ofbid="id_SL4173635-1178795__id_14918883">Disconnect both of the Channel 1 &amp;
+2 RF transmission line cables at <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J4</span> and <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J22</span> from the front of the RF amplifier and repeat the
+diagnostic.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4173635-1178795__id_14918884" data-ofbid="id_SL4173635-1178795__id_14918884"><li class="- topic/li li" id="id_SL4173635-1178795__SL4173639-1178795" data-ofbid="id_SL4173635-1178795__SL4173639-1178795">
+                  <p class="- topic/p p" id="id_SL4173635-1178795__id_14918885" data-ofbid="id_SL4173635-1178795__id_14918885">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault seen but
+no short-circuit fault present</span>: Reconnect each RF transmission
+line alone, one at a time, and repeat the diagnostic until the short-circuit
+fault appears. Using the cable diagram, advance to the next interconnection
+on the failing line, disconnect, and repeat diagnostic.  Repeat this
+process until short-circuit fault is isolated to the faulty cable
+or component.</p>
+                </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173640-1178795" data-ofbid="id_SL4173635-1178795__SL4173640-1178795">
+                  <p class="- topic/p p" id="id_SL4173635-1178795__id_14918886" data-ofbid="id_SL4173635-1178795__id_14918886">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit fault present</span>: Disconnect the body TR input cable from <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J10</span> on the front of RF amplifier and repeat the diagnostic.</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4173635-1178795__id_14918887" data-ofbid="id_SL4173635-1178795__id_14918887"><li class="- topic/li li" id="id_SL4173635-1178795__SL4173641-1178795" data-ofbid="id_SL4173635-1178795__SL4173641-1178795">
+                      <p class="- topic/p p" id="id_SL4173635-1178795__id_14918888" data-ofbid="id_SL4173635-1178795__id_14918888">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Short-circuit fault remains</span>: Check the condition of the cable between RF amplifier <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J10</span> and Driver Module <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J7</span> and all
+interconnections in between. Next check Driver Module. Repair or replace
+as necessary.</p>
+                    </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173642-1178795" data-ofbid="id_SL4173635-1178795__SL4173642-1178795">
+                      <p class="- topic/p p" id="id_SL4173635-1178795__id_14918889" data-ofbid="id_SL4173635-1178795__id_14918889">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Open-circuit fault reported</span>: Check the condition of the cable connection at RF amplifier <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J10</span>, then check RF amplifier. Please repair or replace.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173643-1178795" data-ofbid="id_SL4173635-1178795__SL4173643-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918890" data-ofbid="id_SL4173635-1178795__id_14918890">Reconnect cables to their normal configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173644-1178795" data-ofbid="id_SL4173635-1178795__SL4173644-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918891" data-ofbid="id_SL4173635-1178795__id_14918891">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173645-1178795" data-ofbid="id_SL4173635-1178795__SL4173645-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918892" data-ofbid="id_SL4173635-1178795__id_14918892">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4173635-1178795__SL4173646-1178795" data-ofbid="id_SL4173635-1178795__SL4173646-1178795">
+              <p class="- topic/p p" id="id_SL4173635-1178795__id_14918893" data-ofbid="id_SL4173635-1178795__id_14918893">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article><article class="- topic/topic reference/reference topic reference nested2 yes id_SL4173647-1178795" aria-labelledby="ariaid-title11" id="id_SL4173647-1178795"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL4173647-1178795</header><h3 class="- topic/title title topictitle3" id="ariaid-title11">TR Open-Circuit Fault – Body</h3><div class="- topic/body reference/refbody body refbody"><section class="- topic/section section" id="id_SL4173647-1178795__SL4173647-1178795" data-ofbid="id_SL4173647-1178795__SL4173647-1178795">
+          <ol class="- topic/ol ol" id="id_SL4173647-1178795__id_14918894" data-ofbid="id_SL4173647-1178795__id_14918894"><li class="- topic/li li" id="id_SL4173647-1178795__SL4173648-1178795" data-ofbid="id_SL4173647-1178795__SL4173648-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918895" data-ofbid="id_SL4173647-1178795__id_14918895">Perform the <a class="- topic/xref xref" href="c_TR-DD-System-Path-Check_12457725.html" title="The Transmit Receive (TR) Dynamic Disable and Direct Drive (DD) system path check helps the field engineer in troubleshooting faults related to the T/R and DD system paths.">TR DD System Path Check</a> and confirm the report
+of an open-circuit fault.</p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4173647-1178795__id_14918896" data-ofbid="id_SL4173647-1178795__id_14918896"><li class="- topic/li li" id="id_SL4173647-1178795__SL4173649-1178795" data-ofbid="id_SL4173647-1178795__SL4173649-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918897" data-ofbid="id_SL4173647-1178795__id_14918897">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Fault not present or only
+happens during certain scans</span>: Perform testing and to see
+if the fault still happens with no RF and no gradient energy present.
+Contact OLC and discuss conditions under which the fault happens and
+work with them to plan out the next troubleshooting steps.</p>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173650-1178795" data-ofbid="id_SL4173647-1178795__SL4173650-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918898" data-ofbid="id_SL4173647-1178795__id_14918898">
+                    <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Fault present</span>:
+Note and record the reported failing current value. Proceed with the
+next steps.</p>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173651-1178795" data-ofbid="id_SL4173647-1178795__SL4173651-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918899" data-ofbid="id_SL4173647-1178795__id_14918899">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the down (disable)
+position to disable RF output.  </p>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173652-1178795" data-ofbid="id_SL4173647-1178795__SL4173652-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918900" data-ofbid="id_SL4173647-1178795__id_14918900">If the reported failing current value
+is <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">100 mA</samp> or less, an open condition appears to
+exist between the Driver Module and the RF amplifier. Check the cable
+connection at RF amplifier <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J10</span> and all interconnections
+back to Driver Module <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J7</span>. Power cycle the Driver
+Module and check its operation.</p>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173655-1178795" data-ofbid="id_SL4173647-1178795__SL4173655-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918901" data-ofbid="id_SL4173647-1178795__id_14918901">If the failing current value is greater
+than <samp class="+ topic/ph sw-d/systemoutput ph systemoutput sysout">100 mA</samp>:  </p>
+              <ol class="- topic/ol ol" type="a" id="id_SL4173647-1178795__id_14918902" data-ofbid="id_SL4173647-1178795__id_14918902"><li class="- topic/li li" id="id_SL4173647-1178795__SL4173656-1178795" data-ofbid="id_SL4173647-1178795__SL4173656-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918903" data-ofbid="id_SL4173647-1178795__id_14918903">Disconnect the channel 1 cable from <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J4</span> on the front of the RF amplifier and perform the diagnostic.
+Record the reported channel 2 failing current value.</p>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173657-1178795" data-ofbid="id_SL4173647-1178795__SL4173657-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918904" data-ofbid="id_SL4173647-1178795__id_14918904">Reconnect the channel 1 cable to <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J4</span> on front of the RF amplifier.</p>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173658-1178795" data-ofbid="id_SL4173647-1178795__SL4173658-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918905" data-ofbid="id_SL4173647-1178795__id_14918905">Disconnect the channel 2 cable from <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J22</span> on the front of the RF amplifier and perform the
+diagnostic. Record the reported channel 1 failing current value.</p>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173659-1178795" data-ofbid="id_SL4173647-1178795__SL4173659-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918906" data-ofbid="id_SL4173647-1178795__id_14918906">Compare the reported current values.
+The channel with the smaller value is the one that has the failure.
+Note the failing channel.</p>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173660-1178795" data-ofbid="id_SL4173647-1178795__SL4173660-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918907" data-ofbid="id_SL4173647-1178795__id_14918907">Relocate the cable for the failing
+channel to the opposite RF channel port on the front of the RF amplifier
+and perform the diagnostic.</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4173647-1178795__id_14918908" data-ofbid="id_SL4173647-1178795__id_14918908"><li class="- topic/li li" id="id_SL4173647-1178795__SL4173661-1178795" data-ofbid="id_SL4173647-1178795__SL4173661-1178795">
+                      <p class="- topic/p p" id="id_SL4173647-1178795__id_14918909" data-ofbid="id_SL4173647-1178795__id_14918909">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Reported current value increases
+by more than 10%</span>: Re-check 7/16 RF connection between the
+failing channel transmission line cable and the failing channel port
+on the front of the RF amplifier. If these are o.k., then the RF amplifier
+may be faulty. Please consult with OLC FE Support before ordering
+a FRU RF amplifier.</p>
+                    </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173662-1178795" data-ofbid="id_SL4173647-1178795__SL4173662-1178795">
+                      <p class="- topic/p p" id="id_SL4173647-1178795__id_14918910" data-ofbid="id_SL4173647-1178795__id_14918910">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Reported current value does
+not change by more than 10%</span>:  Return all cables to their
+normal locations and proceed with next steps.</p>
+                    </li></ol>
+                </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173663-1178795" data-ofbid="id_SL4173647-1178795__SL4173663-1178795">
+                  <p class="- topic/p p" id="id_SL4173647-1178795__id_14918911" data-ofbid="id_SL4173647-1178795__id_14918911">At the top of the DTRSW module on the
+right side of the magnet, move the failing transmission line at <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J1</span> or <span class="+ topic/ph ui-d/uicontrol ph uicontrol">J4</span> to the opposite channel.
+Leave the other line open and disconnected so that the failing channel
+on DTRSW module is also open and unconnected. Perform the diagnostic.</p>
+                  <ol class="- topic/ol ol" type="i" id="id_SL4173647-1178795__id_14918912" data-ofbid="id_SL4173647-1178795__id_14918912"><li class="- topic/li li" id="id_SL4173647-1178795__SL4173664-1178795" data-ofbid="id_SL4173647-1178795__SL4173664-1178795">
+                      <p class="- topic/p p" id="id_SL4173647-1178795__id_14918913" data-ofbid="id_SL4173647-1178795__id_14918913">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Reported current value increases
+by more than 10%</span>: Re-check the 7/16 RF connection between
+the failing channel transmission line cable and the failing channel
+port on the DTRSW Module. If these are o.k., then replace the DTRSW
+Module.</p>
+                    </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173665-1178795" data-ofbid="id_SL4173647-1178795__SL4173665-1178795">
+                      <p class="- topic/p p" id="id_SL4173647-1178795__id_14918914" data-ofbid="id_SL4173647-1178795__id_14918914">
+                        <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Reported current value does
+not change by more than 10%</span>: The failing channel transmission
+line appears to have a faulty connection.  Please inspect the 7/16
+connector connections at both ends and repair or replace.</p>
+                    </li></ol>
+                </li></ol>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173666-1178795" data-ofbid="id_SL4173647-1178795__SL4173666-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918915" data-ofbid="id_SL4173647-1178795__id_14918915">Reconnect cables to their normal configuration.</p>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173667-1178795" data-ofbid="id_SL4173647-1178795__SL4173667-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918916" data-ofbid="id_SL4173647-1178795__id_14918916">Set the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">RF ENB</span> switch on the front of the DTX-1 Exciter module in the up (enable)
+position to enable RF output.</p>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173668-1178795" data-ofbid="id_SL4173647-1178795__SL4173668-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918917" data-ofbid="id_SL4173647-1178795__id_14918917">If you replaced the RF body coil then run the <a class="- topic/xref xref" href="c_Dual-Drive-Quadrature-Tool_16504235.html" title="The dual drive (DD) quadrature tool is used to compensate for the amplitude and phase differences in the transmit channels.">Dual drive quadrature tool</a>. If any other components in the transmit circuit replaced then perform the <a class="- topic/xref xref" href="t_Forward-Reverse-Quadrature-Check_14416203.html">Forward Reverse Quadrature Check</a>.</p>
+            </li><li class="- topic/li li" id="id_SL4173647-1178795__SL4173669-1178795" data-ofbid="id_SL4173647-1178795__SL4173669-1178795">
+              <p class="- topic/p p" id="id_SL4173647-1178795__id_14918918" data-ofbid="id_SL4173647-1178795__id_14918918">Run the <a class="- topic/xref xref" href="r_ts_DQA-II-Tool-and-Troubleshooting_16032464.html" title="If problems are encountered while using the Daily Quality Assurance (DQA) calibration procedure, refer to the following guidelines for troubleshooting.">DQA II Tool and Troubleshooting</a> procedure to
+confirm the system is in normal working order.</p>
+            </li></ol>
+        </section></div></article></article></article></main></div>
+                        
+                        
+                        
+                        </div>
+                        
+                        
+                        <!--<whc:webhelp_related_links class="d-print-none"/> -->
+                        
+                        
+                        
+                        
+                        <!-- GEDev US503: next/previous buttons on bottom -->
+                        
+                            
+                            <nav id="wh_topic_toc" class="d-print-none collapsible" aria-label="On this page">
+                                <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#id_SL4154501-1178795" data-tocid="id_SL4154501-1178795">Dynamic Disable Fault Troubleshooting</a><ul><li class="topic-item"><a href="#id_SL4172809-1178795" data-tocid="id_SL4172809-1178795">DD Short-Circuit Fault – Body Drive 1 (BD1)</a></li><li class="topic-item"><a href="#id_SL4172822-1178795" data-tocid="id_SL4172822-1178795">DD Short-Circuit Fault – Body Drive 2 (BD2)</a></li><li class="topic-item"><a href="#id_SL4172835-1178795" data-tocid="id_SL4172835-1178795">DD Open-Circuit Fault – Body Drive 1 (BD1)</a></li><li class="topic-item"><a href="#id_SL4172848-1178795" data-tocid="id_SL4172848-1178795">DD Open-Circuit Fault – Body Drive 2 (BD2)</a></li></ul></li><li class="topic-item"><a href="#id_SL4154502-1178795" data-tocid="id_SL4154502-1178795">TR Fault Troubleshooting</a><ul><li class="topic-item"><a href="#id_SL4173596-1178795" data-tocid="id_SL4173596-1178795">TR Short-Circuit Fault – Head</a></li><li class="topic-item"><a href="#id_SL4173606-1178795" data-tocid="id_SL4173606-1178795">TR Open-Circuit Fault – Head</a></li><li class="topic-item"><a href="#id_SL4173635-1178795" data-tocid="id_SL4173635-1178795">TR Short-Circuit Fault – Body</a></li><li class="topic-item"><a href="#id_SL4173647-1178795" data-tocid="id_SL4173647-1178795">TR Open-Circuit Fault – Body</a></li></ul></li></ul></div>
+                            </nav>
+                            <!--whc:include_html href="${webhelp.fragment.after.topic.toc}"/-->
+                        
+                        <div id="topic_toc_button">
+                            <button type="button" data-target="#wh_topic_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle topic table of content" aria-controls="contain-topic_toc"></button>
+                        </div>
+                        <!--whc:include_html href="${webhelp.fragment.toggle.toc}"/-->
+                        
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <div class="row">
+            <div id="wh_tools">
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    <div class="wh_right_tools">
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+                    </div>
+                </nav>
+            </div>
+            </div>
+            </div>
+        <!-- webhelp.fragment.after.main.content.area and webhelp.fragment.after.main.content.area.topic.page moved out of div to try and fix scrolling issue -->
+        
+        
+        <footer class="navbar navbar-default wh_footer" whc:version="23.1">
+  <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="ftrcustom"><span>5756356-2EN</span> | <span>Revision  11.0</span> | <span>en | </span><span><a target="_blank" href="https://www.gehealthcare.com/">gehealthcare.com</a></span></div><div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="copyright_info"><span class="copyright_years"> ©2016-2023</span> GE HealthCare Proprietary<div class="GETradmark"><span>GE is a trademark of General Electric Company used under trademark license.</span></div></div>
+</footer>
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        <!-- The modal container for images -->
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="modal-img" alt=""/>
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+        
+        
+    </body>
+</html>

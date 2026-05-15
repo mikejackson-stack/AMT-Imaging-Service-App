@@ -1,0 +1,29 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Xtream (GOC3) Console Tips</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5224328-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Dir 5224328-800 LightSpeed 5.X HP60 Limited Access Service
+Methods - Adv.</P></td></tr></table><H1 ID="top">Xtream (GOC3) Console Tips </H1><UL><LI CLASS="bulletlist"><P>On Linux systems, the &#8593;&#8595;(up and down arrows) scroll
+forward and backward through the most recent commands. Shortcut to history. </P></LI><LI CLASS="bulletlist"><P>The power switch on the back of the IG or DARC is not the
+same as the power switch on the front. The switch on the front leaves the
+device in a standby state, similar to the way your television switch works.
+The standby state allows either the Host or DARC to reach it via the Serial
+Over LAN connection. The switch on the back is a hard power off switch that
+turns all power to the box OFF. It is recommended that the power switch on
+the back NOT be used.</P></LI><LI CLASS="bulletlist"><P>If you shut down the console and it is at the Power Down prompt,
+you can restart the system by using <SPAN CLASS="KEYBOARD">&lt;CTRL-ALT-DELETE&gt;</SPAN> rather
+than turning power off and then on.</P></LI><LI CLASS="bulletlist"><P>Remote terminal should be set to VT 100 compatibility.</P></LI><LI CLASS="bulletlist"><P>It is okay to use telnet localhost 623 with applications running.</P></LI><LI CLASS="bulletlist"><P>It was observed that with multiple users all logged into ig1
+simultaneously that the connection locked up. It is not recommended that more
+than one user use telnet localhost 623 to a device at any given time.</P></LI><LI CLASS="bulletlist"><P>hinv is currently not available on DARC or IG. May become
+available in the future.</P></LI><LI CLASS="bulletlist"><P>scsistat is currently not available on the DARC. IG has no
+SCSI devices.</P></LI><LI CLASS="bulletlist"><P>The SCSI bus on the DARC is running at half of the speed of
+possible maximum speed. The speed is sufficient for our data transfer needs
+and running at the lower speed creates a more stable bus.</P></LI><LI CLASS="bulletlist"><P>The network ports on the HOST, DARC and IG are dedicated.
+This is because of the Serial Over LAN configuration. You cannot swap the
+connections around and expect the system to operate. </P></LI><LI CLASS="bulletlist"><P>Intercom / Tilt diagnostics are currently not available. They
+are scheduled to be included in a future release of software. The board inside
+the SDDA is not replaceable. If the board is bad, replace the SDDA assembly.</P></LI><LI CLASS="bulletlist"><P>The <SPAN CLASS="filename"><FONT FACE="COURIER">/var/log/messages</FONT></SPAN> file can get very
+long and pose a barrier to performance. So whenever the file size exceeds
+a certain limit (or by number of days expired), the Linux OS saves the current <SPAN CLASS="filename"><FONT FACE="COURIER">messages</FONT></SPAN> file
+into a file called <SPAN CLASS="filename"><FONT FACE="COURIER">messages.1</FONT></SPAN>, <SPAN CLASS="filename"><FONT FACE="COURIER">messages.2</FONT></SPAN> etc.,
+and write fresh on the <SPAN CLASS="filename"><FONT FACE="COURIER">messages</FONT></SPAN> file. So you may see
+files like <SPAN CLASS="filename"><FONT FACE="COURIER">messages</FONT></SPAN>, <SPAN CLASS="filename"><FONT FACE="COURIER">messages.1</FONT></SPAN>, <SPAN CLASS="filename"><FONT FACE="COURIER">messages.2</FONT></SPAN> on
+the system.</P></LI></UL><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -1,0 +1,17 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE></TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Geometry for CBF/ISO Adjustment</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/80962.gif" BORDER="0" usemap="#80962.gif"></P></DIV><P CLASS="stepdetails">The scans required for ISO are the following:</P><OL><LI CLASS="numlist"><P>Air scans:</P><OL TYPE="a"><LI CLASS="numlist"><P>80 kV/40 mA/ 4x500 FET Setting/4x500 aperture /4 sec/small
+spot/air filter/ rotating</P></LI><LI CLASS="numlist"><P>80 kV/40 mA/ 4x500 FET Setting/4x500 aperture/4 sec/large
+spot/air filter/ rotating</P></LI></OL></LI><LI CLASS="numlist"><P>Pin scans:</P><OL TYPE="a"><LI CLASS="numlist"><P>80 kV/40 mA/ 4x500 FET Setting/4x500 aperture/4 sec/small
+spot/air filter/ rotating</P></LI><LI CLASS="numlist"><P>80 kV/40 mA/ 4x500 FET Setting/4x500 aperture/4 sec/large
+pot/air filter/ rotating.</P></LI></OL></LI></OL><P CLASS="stepdetails">For all above ISO/CBF scans, DAS gain should be set to its default
+level for that technique. After the scans are taken, the following
+computational steps should be carried out:</P><OL><LI CLASS="numlist"><P>Normalize scan data 3 &amp; 4 using air scans 1 and
+2 respectively.</P></LI><LI CLASS="numlist"><P>Compute centroid using data from scans 3 and 4 and
+average over all rows.</P></LI><LI CLASS="numlist"><P>Average the two numbers obtained in step 2 for large
+and small spots. This is our average centroid value.</P></LI><LI CLASS="numlist"><P>If the average value is at DAS Channel 389.75 &plusmn;.02
+channels, the adjustment is done. Else move the tube by the following:
+move = (average value - IsoChan) *dischan* (FO/OD) mm</P><UL><LI CLASS="bulletlist"><P>Where: IsoChan = 389.75</P></LI><LI CLASS="bulletlist"><P>Dischan = channel to channel distance 1.0239 mm</P></LI><LI CLASS="bulletlist"><P>FO = source to iso center distance 541 mm</P></LI><LI CLASS="bulletlist"><P>OD = Iso center to detector distance 408 mm</P></LI></UL></LI></OL><P CLASS="stepdetails">Take scans 3 and 4 and repeat centroid computation. Please note
+that if the computed ISO channel is out more than 1 channel, all four
+scans must be taken for each successive iteration.</P><P CLASS="stepdetails">Please note that the ISO values for small and large focal spots
+must be saved for use by the reconstruction process.</P><P>&nbsp;</P></BODY></HTML>

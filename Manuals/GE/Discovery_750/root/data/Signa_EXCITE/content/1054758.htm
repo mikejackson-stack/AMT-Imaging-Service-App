@@ -1,0 +1,50 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Coil ID Stress Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR750 3.0T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;8/19/08</P></td></tr></table><H1 ID="top">Coil ID Stress Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027607-1054758_1">1&nbsp;&nbsp;Diagnostic Links<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; System Function &gt;&gt; RF &gt;&gt; Coil ID Stress
+Diagnostic</I></SPAN></P><P CLASS="sect1"><SPAN CLASS="GUILABEL"><I>Diagnostics &gt;&gt; Hardware Location &gt;&gt; Magnet Room &gt;&gt;
+Coil ID Stress Diagnostic</I></SPAN><DIV CLASS="ILLUSTRATION" id="SL2027665-1054758_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Coil ID Stress Diagnostic</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1054758-1062860.jpg" BORDER="0" usemap="#SL2027632-1054758_1"></P></DIV></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027608-1054758_1">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This diagnostic tests the communication path for retrieving
+and displaying coil ID information. It is intended to be used to troubleshoot
+intermittent coil detection or ID problems.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027609-1054758_1">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>RF Hub</P></LI><LI CLASS="bulletlist"><P>RF Hub to LPCA Port A 37 pin cable</P></LI><LI CLASS="bulletlist"><P>RF Hub to LPCA Port P1 and P2 25 pin
+cables</P></LI><LI CLASS="bulletlist"><P>RF Hub to Table Port P3 and P4 25 pin
+cables</P></LI><LI CLASS="bulletlist"><P>Coil connected to Port A, P1-P4</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027615-1054758_1">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">One or more coils plugged into the system.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027666-1054758_1">5&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><DIV CLASS="ILLUSTRATION" id="SL2027667-1054758_1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Coil ID Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1054757-1062667.jpg" BORDER="0" usemap="#SL2027618-1054758_1"></P></DIV></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027668-1054758_1">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Navigate to <SPAN CLASS="GUILABEL"><I>Coil ID Stress
+Diagnostic</I></SPAN>.</P></LI><LI CLASS="numlist"><P>To perform something other than the
+number of test iterations shown, enter a different value in the <SPAN CLASS="GUILABEL"><I>Total iterations (1-100)</I></SPAN> field.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P></LI></OL><P CLASS="sect1">When the Coil ID Stress Diagnostic runs, the following operations
+are performed:</P><UL><LI CLASS="bulletlist"><P>The SCP commands the RF Hub RFCB to
+re-read all coils connected.</P></LI><LI CLASS="bulletlist"><P>The RFCB checks the coil present pins
+on the coil port cables (RFCB J1 &#8211; J4, J6).</P></LI><LI CLASS="bulletlist"><P>For each coil port cable with the coil
+present pins shorted, the RFCB starts a 1-wire read of the coil ID
+information from the 1-wire coil ID chip(s) in the coil.</P></LI><LI CLASS="bulletlist"><P>When the 1-wire operations complete,
+the RFCB sends the coil ID information to the SCP.</P></LI><LI CLASS="bulletlist"><P>The SCP communicates to the Host to
+get the coil information from the coil database.</P></LI><LI CLASS="bulletlist"><P>After all the coil connectors with
+a coil have been read, the sequence is run again until it reaches
+the number of iterations given.</P></LI><LI CLASS="bulletlist"><P>After the Host responds with the coil
+information, or if the Host communication is down, the SCP displays
+the coil ID information to the diagnostic screen.</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2027679-1054758_1">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">To be able to run the stress test, one or more coils must be
+detected. If no coils are detected, the diagnostic fails.</P><P CLASS="sect1">For each iteration, the stress test prints out the coil information
+read and error indications. Check the display for any differences
+in coil information between iterations. If any differences are noted
+between iterations, this could indicate an intermittent system problem.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL2015696-1054758_1"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Diagnostic Results</SPAN> </P><table summary="Diagnostic Results" border="1"><colgroup><col width="22%"><col width="35%"><col width="43%"></colgroup><tbody valign=""><tr valign="top"><td valign=""><B>Result</B></td><td valign=""><B>Description</B></td><td valign=""><B>GE Field Action</B></td></tr><tr valign="top"><td valign="">RF Hub communication failure</td><td valign="">The SCP cannot communicate to the RF Hub over the CAN link.</td><td valign="">Run the <SPAN CLASS="MODULEREF"><A HREF="1054771.htm#SL1872111-1054771"><I>RF Hub CAN Fiber Loopback</I></A></SPAN> diagnostic.</td></tr><tr valign="top"><td valign="">Coil ID read failure</td><td valign="">The RF Hub reports a failure to read the coil ID information
+over the 1-wire line to the coil ID chip.</td><td valign=""><OL><LI CLASS="numlist">Check the coil ID 1-wire pins on the
+coil to make sure they are not bent.</LI><LI CLASS="numlist">Try plugging in a different coil to
+the same port to check if the problem is internal to the coil. Or,
+use the  <SPAN CLASS="MODULEREF"><A HREF="1058719.htm#SL2037944-1058719"><I>Coil Datapath Diagnostics</I></A></SPAN> to troubleshoot the failure.</LI><LI CLASS="numlist">Check the coil ID 1-wire line in the
+cabling between the coil port and the RFCB.</LI><LI CLASS="numlist">If every item checks out successfully,
+try replacing the RFCB.</LI></OL></td></tr><tr valign="top"><td valign="">Body transmit enable mismatch; coil invalid</td><td valign="">The body transmit enable state detected by the RFCB from the
+coil is different than expected. All coils except proton transmit
+coils are expected to have the body transmit enable pins shorted..</td><td valign=""><OL><LI CLASS="numlist">Check the body transmit enable pins
+on the coil to make sure that they are in the expected state, either
+opened or shorted.</LI><LI CLASS="numlist">Check the body transmit enable lines
+in the cabling between the coil connector and the RFCB.</LI><LI CLASS="numlist">If necessary, use the <SPAN CLASS="MODULEREF"><A HREF="1058719.htm#SL2037944-1058719"><I>Coil Datapath
+Diagnostics</I></A></SPAN> to troubleshoot the
+body transmit enable failures.</LI><LI CLASS="numlist">If every item checks out successfully,
+try replacing the RFCB.</LI></OL></td></tr><tr valign="top"><td valign="">Coil invalid failure</td><td valign="">There is a problem with the information in the coil ID chip
+or coil database.</td><td valign="">Check that the coil is installed in the coil database.</td></tr><tr valign="top"><td valign="">No coils detected with coils connected</td><td valign="">The RF Hub is not reporting that a coil is connected. This
+means that the coil present lines are broken between the coil and
+the RFCB.</td><td valign=""><OL><LI CLASS="numlist">Check the coil present pins on the
+coil to make sure they are shorted, or plug in a different coil to
+the same port. Or, use the <SPAN CLASS="MODULEREF"><A HREF="1058719.htm#SL2037944-1058719"><I>Coil Datapath Diagnostics</I></A></SPAN> to troubleshoot
+the failure.</LI><LI CLASS="numlist">Check the coil present lines in the
+cabling between the coil connector and the RFCB.</LI><LI CLASS="numlist">If every item checks out successfully,
+try replacing the RFCB.</LI></OL></td></tr></tbody></table></div></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

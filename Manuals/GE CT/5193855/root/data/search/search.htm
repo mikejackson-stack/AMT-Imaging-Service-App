@@ -1,0 +1,124 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>Home Page</title>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link rel="stylesheet" href="../css/css.css" type="text/css">
+		<script language="JavaScript">
+	
+		if (top.menu==1)
+		self.location="content.htm"
+	
+</script>
+		<csactions>
+			<csaction name="1D2A6CB1" class="Goto Link" type="onevent" val0="../../../cdrun.exe" val1="" urlparams="1"></csaction>
+			<csaction name="1D2A6CB3" class="Close Window" type="onevent"></csaction>
+		</csactions>
+		<csscriptdict>
+			<script type="text/javascript"><!--
+CSStopExecution=false;
+function CSAction(array) {return CSAction2(CSAct, array);}
+function CSAction2(fct, array) { 
+	var result;
+	for (var i=0;i<array.length;i++) {
+		if(CSStopExecution) return false; 
+		var aa = fct[array[i]];
+		if (aa == null) return false;
+		var ta = new Array;
+		for(var j=1;j<aa.length;j++) {
+			if((aa[j]!=null)&&(typeof(aa[j])=="object")&&(aa[j].length==2)){
+				if(aa[j][0]=="VAR"){ta[j]=CSStateArray[aa[j][1]];}
+				else{if(aa[j][0]=="ACT"){ta[j]=CSAction(new Array(new String(aa[j][1])));}
+				else ta[j]=aa[j];}
+			} else ta[j]=aa[j];
+		}			
+		result=aa[0](ta);
+	}
+	return result;
+}
+CSAct = new Object;
+function CSGotoLink(action) {
+	if (action[2].length) {
+		var hasFrame=false;
+		for(i=0;i<parent.frames.length;i++) { if (parent.frames[i].name==action[2]) { hasFrame=true; break;}}
+		if (hasFrame==true)
+			parent.frames[action[2]].location = action[1];
+		else
+			window.open (action[1],action[2],"");
+	}
+	else location = action[1];
+}
+function CSCloseWindow() { 
+if (self.parent.frames.length != 0) {
+	self.parent.close()	
+	} else {
+	window.close()
+	}
+}
+
+// --></script>
+		</csscriptdict>
+		<csactiondict>
+			<script type="text/javascript"><!--
+CSAct[/*CMP*/ '1D2A6CB1'] = new Array(CSGotoLink,/*URL*/ '../../../cdrun.exe','');
+CSAct[/*CMP*/ '1D2A6CB3'] = new Array(CSCloseWindow);
+
+// --></script>
+		</csactiondict>
+	</head>
+   <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" text="#000000">
+		<table width="775" border="0" cellspacing="5" cellpadding="0">
+			<tr >
+				<td class="sideBar">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>
+					<CENTER>
+						<hr width="75%">
+						<h2><a name="top"></a>dtSearch</h2>
+						<hr width="75%">
+					</CENTER>
+				</td>
+			</tr>
+			<tr >
+				<td><font face="arial" size="2">The search tool that is included on this CD-ROM is <b>dtSearch</b>. It allows the user to search both HTML and PDF files by keyword. </font>
+					<p><font face="arial" size="2"><b>IMPORTANT!</b> Read the instructions below, <i>before</i> launching dtSearch.</font></p>
+					<ol>
+						<li><font face="arial" size="2">When you click the &quot;Launch dtSearch&quot; button (bottom of this page), this window will close and you will see the following dialog:<br>
+								<br>
+								<img src="../../../support/dtSearch_01.gif"><br>
+								<br>
+							</font>
+						<li><font face="arial" size="2">Select &quot;Run this program from its current location,&quot; then click &quot;OK.&quot; A second dialog, shown below, will appear.<br>
+								<br>
+						<img src="../../../support/dtSearch_02.gif"><br>
+								<br>
+							</font>
+						<li>Click &quot;Yes.&quot; The dtSearch form will open in a new browser window. You may now search all of the HTML and PDF files on this CD-ROM.<br>
+							<br>
+						<p><font face="arial" size="2"><a onmousedown="CSAction(new Array(/*CMP*/'1D2A6CB1'));return true;" onmouseup="CSAction(new Array(/*CMP*/'1D2A6CB3'));return true;" href="../../../cdrun.exe" csmup="1D2A6CB3" csmdown="1D2A6CB1"><img src="../../../support/launch_button.jpg"></a></font></p>
+						<p><a href="#top" target="_self">back to top</a></p>
+					
+				</td>
+			</tr>
+		</table>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+            <td background="../images/lowerbar_bg.gif">
+               <table width="95%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                     <td valign="middle"><span class="sideBar">Copyright 2004 General Electric Company. All rights reserved.</span></td>
+                     <td align="right"><img src="../images/transparent.gif" width="1" height="20"></td>
+                  </tr>
+               </table>
+            </td>
+         </tr>
+      </table>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <tr bgcolor="#F5F4F">
+            <td valign="top" align="right"><img src="../images/logo_bot.gif" width="123" height="26" align="left"></td>
+         </tr>
+      </table>
+	</body>
+</html>

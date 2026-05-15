@@ -1,0 +1,52 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Auto Test and Manual Test</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script><script language="JavaScript" src="../scripts/cgmhotspot.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193574-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;22<BR>LightSpeed 7.X Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;3.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/17/10</P></td></tr></table><H1 ID="top">Auto Test and Manual Test </H1><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="45%"><col width="55%"></colgroup><tbody valign=""><tr valign="top"><td valign="">Last Revised: </td><td valign="">September 29, 2009</td></tr></tbody></table></div></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2912595-326827">1&nbsp;&nbsp;Background<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Auto Test contains the tests necessary during the manufacturing
+state of the system. This test may call for multiple iterations of
+some sub-tests.</P><P CLASS="sect1">The Manual Test contains all the DAS Tools tests, with some
+flexibility. The operator can choose to enter a number of iterations
+for a sub-test, and can change some sub-test conditions through an
+option button menu.</P><P CLASS="sect1">There is no difference in data processing and specification
+for a sub-test launched from Auto Test of Manual Test. The Manual
+Test offers more sub-tests and more flexibility for troubleshooting
+purposes.</P><P CLASS="sect1">Depending on the system configuration and software release,
+the Auto Test and the list of sub-tests in the Manual Test may differ
+(i.e.: Rotating Noise Band and Ring test is not available in the VDAS
+configuration, but is available on later software releases of the
+HDAS configuration). Below is an example screen shot of an Auto Test/Manual
+Test start up window.<DIV CLASS="ILLUSTRATION" id="SL2912603-326827"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Example Auto Test / Manual Test Screens</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/326827-1095462.jpg" BORDER="0" usemap="#SL2912599-326827"></P></DIV></P><P CLASS="sect1">Failures of these tests will typically only show up in low signal
+applications, unless the failure is severe.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1941572-326827">2&nbsp;&nbsp;DC Noise, Offsets, and Structured Noise<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Noise single. This test looks at the
+standard deviation by channels of non-offset corrected views.</P><P>A failure of this test will show up as a ring artifact</P></LI><LI CLASS="numlist"><P>Noise Module Average: This test looks
+at the average of noise for each 16-module channel.</P><P>A failure of this test will show up as a band artifact.</P></LI><LI CLASS="numlist"><P>Offset: This test looks at the mean
+by channel of the non-offset corrected views.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e84"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The next two (2) items may or may not be available depending
+on system configuration/SW release.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Structure Noise: This test looks at
+the difference between noise (rolling median) of four (4) consecutive
+channels and next four (4) channels.</P><P>A failure of this test will show up as a band artifact.</P></LI><LI CLASS="numlist"><P>Electronic Noise: This test looks at
+the median of noise by row.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1941573-326827">3&nbsp;&nbsp;Pop/Noise and Microphonics<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Microphonic 1s rotation: This test
+looks at the standard deviation by channels of the non-offset corrected
+views.</P><P>Failure of a microphonic test will result in a ring or band
+artifact.</P></LI><LI CLASS="numlist"><P>Pop Noise 1s rotation: This test looks
+at the maximum delta between two (2) consecutive views across all
+views.</P><P>Failure of a pop noise test will result in a streak artifact.</P></LI><LI CLASS="numlist"><P>Microphonic 0.4s rotation: This test
+looks at the standard deviation by channels of the non-offset corrected
+views.</P></LI><LI CLASS="numlist"><P>Pop Noise 0.4s rotation: This test
+looks at the maximum delta between two (2) consecutive views across
+all views.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1941574-326827">4&nbsp;&nbsp;Offset Drift<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Offset Drift: This test looks at the delta between offset vectors
+of two (2) scans taken 60 seconds apart.</P><P CLASS="sect1">A failure of this test will show up as a ring or band artifact.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2912613-326827">5&nbsp;&nbsp;Plateau Noise<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e125"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The next item may or may not be available depending on
+system configuration/SW release.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">Plateau Noise: This test looks at the noise profile of nine
+(9) consecutive channels (rolling median) folded in quadrature around
+ISO.</P><P CLASS="sect1">A failure of this test will show up as a  band artifact</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e132"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Plateau Noise test has been designed as a detector-level
+test, not a system-level test. Due to the folding of the data around
+ISO, the correlation of reported failure to physical detector channel
+is very difficult to achieve. DO NOT use this test for troubleshooting
+unless specifically directed to by engineering support.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2912614-326827">6&nbsp;&nbsp;Rotating Noise Band and Ring<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e138"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The next four (4) items may or may not be available depending
+on system configuration/SW release.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Ring 1s: This test looks at the standard
+deviation by channels of the non-offset corrected views. 1-second
+rotation speed.</P><P>Failure of a ring test will show up as a ring artifact.</P></LI><LI CLASS="numlist"><P>Band 1s: This test looks at the average
+of noise for four (4) consecutive rolling channels. 1-second rotation
+speed.</P><P>Failure of a band test will show up as a band artifact.</P></LI><LI CLASS="numlist"><P>Ring 0.4s: This test looks at the standard
+deviation by channels of the non-offset corrected views. 0.4-second
+rotation speed.</P></LI><LI CLASS="numlist"><P>Band 0.4s: This test looks at the average
+of noise for four (4) consecutive rolling channels. 0.4-second roation
+speed.</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

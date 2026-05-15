@@ -1,0 +1,372 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:whc="http://www.oxygenxml.com/webhelp/components" xml:lang="en" lang="en" whc:version="22.0">
+
+    <head><link rel="shortcut icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><link rel="icon" href="oxygen-webhelp\template\img\favicon-32x32.webp"><!----></link><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/><meta name="description" content="System Health tool, sys_health, checks the existence, validity, and consistency of selected fields in system configuration and calibration files. Check status, along with field values, are displayed ..."/><meta charset="UTF-8"/><meta name="copyright" content="(C) Copyright 2023"/><meta name="DC.rights.owner" content="(C) Copyright 2023"/><meta name="DC.type" content="concept"/><meta name="DC.coverage" content=""/><meta name="prodname" content=""/><meta name="version" content="0"/><meta name="brand" content=""/><meta name="component" content=""/><meta name="featnum" content="Service Operations"/><meta name="featnum" content=""/><meta name="prognum" content=""/><meta name="platform" content=""/><meta name="DC.creator" content=""/><meta name="DC.publisher" content="11.0482023"/><meta name="DC.format" content="HTML5"/><meta name="DC.identifier" content="id_13106992"/><title>System Health Check</title><!--  Generated with Oxygen version 23.1, build number 2021121412.  --><meta name="wh-path2root" content=""/><meta name="wh-source-relpath" content="c_System-Health-Check_3320456.dita"/><meta name="wh-out-relpath" content="c_System-Health-Check_3320456.html"/>
+    <!-- Latest compiled and minified Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/lib/bootstrap/css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="./oxygen-webhelp/lib/jquery-ui/jquery-ui.min.css"/>
+    
+    <!-- Template default styles  -->
+    <link rel="stylesheet" type="text/css" href="./oxygen-webhelp/app/topic-page.css?buildId=2021121412"/>
+    
+    
+    <script type="text/javascript" src="./oxygen-webhelp/lib/jquery/jquery-3.5.1.min.js"><!----></script>
+    
+    <script data-main="./oxygen-webhelp/app/topic-page.js" src="./oxygen-webhelp/lib/requirejs/require.js"></script>
+<link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/notes.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/GEHealthCare.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/print.css?buildId=2021121412"/><link rel="stylesheet" type="text/css" href="oxygen-webhelp/template/footer-fix.css?buildId=2021121412"/><script src="./oxygen-webhelp/lib/scripts/Remove_LSEP.js"></script></head>
+    <body id="id_13106992" class="wh_topic_page frmBody">
+        <!--US578: WHR - Move search to line up with manual title-->
+        <div class="SupressSearch">
+            <!--Search form 
+                Removed class for DE238: Double search fields when webhelp is viewed on
+            <whc:webhelp_search_input class="navbar-form wh_topic_page_search search" role="form">-->
+            <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input " role="form">
+                
+                
+                <div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div>
+                
+                
+            </div>
+        </div>
+        <a href="#topic_body" class="sr-only sr-only-focusable">
+            Jump to main content
+        </a>
+        
+        
+        
+        <header class="navbar navbar-default wh_header" whc:version="23.1">
+    <div class="container-fluid">
+        <!-- GEDev US509 Webhelp: expandable navbar icon invisible changed to navbar-light -->
+        <div class="wh_header_flex_container navbar-nav navbar-expand-md navbar-light">
+            <div class="wh_logo_and_publication_title_container">
+                <div class="wh_logo_and_publication_title">
+                    
+                    <!--
+                            This component will be generated when the next parameters are specified in the transformation scenario:
+                            'webhelp.logo.image' and 'webhelp.logo.image.target.url'.
+                            See: http://oxygenxml.com/doc/versions/17.1/ug-editor/#topics/dita_webhelp_output.html.
+                    -->
+                    <!-- GE Dev US464 change logo link to blank target -->
+                    <a href="https://www.gehealthcare.com/" class=" wh_logo d-none d-sm-block " target="_blank"><img src="oxygen-webhelp\template\img\GE-HLTHCR_Webhelp_CMYK-CompPrpl.svg" alt="SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ AviatorService Manual"/></a>
+                    <div class=" wh_publication_title "><a href="index.html"><span class="booktitle"><span class="ph mainbooktitle"><span class="ph">SIGNA™ Creator / SIGNA™ Explorer / SIGNA™ Creator DL / SIGNA™ Explorer DL / SIGNA™ Star / SIGNA™ Aviator</span><span class="ph"></span></span><span class="ph booktitlealt">Service Manual</span></span></a></div>
+                    <!--* DE224: WHR: Link under the search field is missing -->
+                    <div class="search_container">
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_search_input "><div class="search_form_container"><form id="searchForm_A" method="get" role="search" action="search.html"><div><input type="search" placeholder="Search " class="wh_search_textfield" id="textToSearch" name="searchQuery" aria-label="Search query" required="required"/><button type="submit" class="wh_search_button" aria-label="Search"><span class="search_input_text">Search</span></button></div></form></div></div><whc:search_field></whc:search_field>
+                        <div class="search_link">
+                             
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- The menu button for mobile devices is copied in the output only when the 'webhelp.show.top.menu' parameter is set to 'yes' -->
+                <button type="button" data-target="#wh_top_menu_and_indexterms_link" id="wh_menu_mobile_button" data-toggle="collapse" class="navbar-toggler collapsed wh_toggle_button" aria-expanded="false" aria-label="Toggle menu" aria-controls="wh_top_menu_and_indexterms_link">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+            </div>
+            
+            
+            <div class="wh_top_menu_and_indexterms_link collapse navbar-collapse" id="wh_top_menu_and_indexterms_link">
+                
+                <nav class=" wh_top_menu " aria-label="Menu Container"><ul role="menubar" aria-label="Menu"><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033906-d46e66-mi" data-tocid="id_2033906-d46e66" data-state="not-ready" class=" topicref " data-id="id_2033906"><span class="title"><a href="c_Safety_WebhelpLandingPage.html">Safety and General Information</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033907-d46e619-mi" data-tocid="id_2033907-d46e619" data-state="not-ready" class=" topicref " data-id="id_2033907"><span class="title"><a href="c_PreInstallation_WebhelpLandingPage.html">Pre-Installation</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033908-d46e667-mi" data-tocid="id_2033908-d46e667" data-state="not-ready" class=" topicref " data-id="id_2033908"><span class="title"><a href="c_InstallationAndUpgrade_WebhelpLandingPage.html">Installation and Upgrade</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033902-d46e773-mi" data-tocid="id_2033902-d46e773" data-state="not-ready" class=" topicref " data-id="id_2033902"><span class="title"><a href="c_AdjustmentsAndCalibrations_WebhelpLandingPage.html">Adjustments/Calibrations</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033910-d46e1889-mi" data-tocid="id_2033910-d46e1889" data-state="not-ready" class=" topicref " data-id="id_2033910"><span class="title"><a href="c_FunctionalChecks_WebhelpLandingPage.html">Functional Checks</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033911-d46e2714-mi" data-tocid="id_2033911-d46e2714" data-state="not-ready" class=" topicref " data-id="id_2033911"><span class="title"><a href="c_Software_WebhelpLandingPage.html">Software</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033912-d46e7942-mi" data-tocid="id_2033912-d46e7942" data-state="not-ready" class=" topicref " data-id="id_2033912"><span class="title"><a href="c_Theory_WebhelpLandingPage.html">Theory</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033914-d46e8205-mi" data-tocid="id_2033914-d46e8205" data-state="not-ready" class=" topicref " data-id="id_2033914"><span class="title"><a href="c_PlannedMaintenance_WebhelpLandingPage.html">Planned Maintenance</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033916-d46e8464-mi" data-tocid="id_2033916-d46e8464" data-state="not-ready" class=" topicref " data-id="id_2033916"><span class="title"><a href="c_Parts_WebhelpLandingPage.html">Parts</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033903-d46e8512-mi" data-tocid="id_2033903-d46e8512" data-state="not-ready" class=" topicref " data-id="id_2033903"><span class="title"><a href="c_OEMAndOtherManuals_WebhelpLandingPage.html">OEM and Other Manuals</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033917-d46e8584-mi" data-tocid="id_2033917-d46e8584" data-state="not-ready" class=" topicref " data-id="id_2033917"><span class="title"><a href="c_Replacements_WebhelpLandingPage.html">Replacements</a></span></span></li><li role="menuitem" aria-haspopup="true" aria-expanded="false" class="has-children"><span id="id_2033904-d46e15711-mi" data-tocid="id_2033904-d46e15711" data-state="not-ready" class=" topicref " data-id="id_2033904"><span class="title"><a href="c_Coils_WebhelpLandingPage.html">Coils</a></span></span></li><li role="menuitem"><span id="id_2033918-d46e15759-mi" data-tocid="id_2033918-d46e15759" data-state="leaf" class=" topicref " data-id="id_2033918"><span class="title"><a href="c_OptionalFeatures_WebhelpLandingPage.html">Optional Features</a></span></span></li></ul></nav>
+                <div class=" wh_indexterms_link "><a href="indexTerms.html" title="Index" aria-label="Go to index terms page"><span>Index</span></a></div>
+                <!--whc:include_html href="${webhelp.fragment.after.top_menu}"/-->
+                
+            </div>
+            
+        </div>
+    </div>
+</header>
+        
+        
+        <div class="container-fluid" id="wh_topic_container">
+            <div class="row">
+
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    
+                    
+                    <div class="wh_right_tools">
+                        <button class="wh_hide_highlight" aria-label="Toggle search highlights" title="Toggle search highlights"></button>
+                        <button class="webhelp_expand_collapse_sections" data-next-state="collapsed" aria-label="Collapse sections" title="Collapse sections"></button>
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+
+                        <!-- External resource link -->
+                        
+
+                        <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class=" wh_print_link print d-none d-md-inline-block "><button onClick="window.print()" title="Print this page" aria-label="Print this page" class="oxy-icon oxy-icon-print"></button></div>
+
+                        <!-- Expand/Collapse publishing TOC 
+                             The menu button for mobile devices is copied in the output only when the publication TOC is available
+                        -->
+                        
+                    </div>
+                    
+                </nav>
+            </div>
+
+            <!--whc:include_html href="${webhelp.fragment.before.main.content.area}"/>
+           
+            <whc:include_html href="${webhelp.fragment.before.main.content.area.topic.page}"/-->
+
+
+            <div class="wh_content_area">
+                <!-- US616 - TOC toggle buttons -->
+                <div class="row" id="topic_body">
+                    
+                    <div id="pub_toc_button">
+                        <button type="button" data-target="#wh_publication_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle publishing table of content" aria-controls="wh_publication_toc"></button>
+                    </div>
+                    
+                    <!--  DE234:  Spacing irregularities with flexible TOCS in Webhelp 
+                    Moved related links out 2 divs, moved topic tocs into topic body-->
+                    <div id="wh_topic_body">
+                        
+                        <div id="body_grid"><!-- DE234:  Added Body grid to fix issue with related links-->
+                        <div class=" wh_topic_content body "><main role="main"><article role="article" aria-labelledby="ariaid-title1"><header class="contentHead">
+        <div class="topicMeta"><ul class="- topic/title title"><li> </li><li></li><li></li><li><span class="metalabel">Object ID: </span>00000018WIA308A8F20GYZ</li><li><span class="metalabel">Topic ID: </span>id_13106992<span class="metalabel"> Version: </span>2.0</li><li><span class="metalabel">Date: </span>Jul 19, 2019 11:00:54 AM</li></ul></div><h1 class="- topic/title title topictitle1" id="ariaid-title1">System Health Check</h1></header>
+        <div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_13106992__id_14892865" data-ofbid="id_13106992__id_14892865">System Health tool, sys_health, checks the existence, validity,
+and consistency of selected fields in system configuration and calibration
+files. Check status, along with field values, are displayed on the
+screen and in an output file named system_health.log in the <kbd class="+ topic/ph sw-d/userinput ph userinput">/usr/g/service/log</kbd> directory. The tool is used to identify
+possible configuration file corruptions, incorrect parameter settings,
+bad or missing calibration procedures, and calibration failures. Since
+it serves to identify and isolate possible problems and eliminate
+redundancy in the calibration process, the sys_health tool helps shorten
+the length of a troubleshooting session and provides the operator
+with a quick summary of the system health.</p></div><article class="- topic/topic concept/concept topic concept nested1 yes id_SL227400-1101525" aria-labelledby="ariaid-title2" id="id_SL227400-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL227400-1101525</header><h2 class="- topic/title title topictitle2" id="ariaid-title2"> Running the Tool From the Service Browser</h2><div class="- topic/body concept/conbody body conbody"><div class="- topic/note note note note_note" id="id_SL227400-1101525__id_14892866" data-ofbid="id_SL227400-1101525__id_14892866"><span class="note__title">Note:</span> 
+        <p class="- topic/p p" id="id_SL227400-1101525__id_14892867" data-ofbid="id_SL227400-1101525__id_14892867">The service key should be inserted  before running the
+system health check and reading the system health report. </p>
+      </div><figure class="- topic/fig fig fignone" id="id_SL227400-1101525__SL63708-1101525" data-ofbid="id_SL227400-1101525__SL63708-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">1. </span></span><span class="fig--title">Starting the Health Page</span></figcaption><img class="- topic/image image" id="id_SL227400-1101525__id_14892868" src="225280.jpg"/></figure><ol class="- topic/ol ol" id="id_SL227400-1101525__id_14892869" data-ofbid="id_SL227400-1101525__id_14892869"><li class="- topic/li li" id="id_SL227400-1101525__SL3129391-1101525" data-ofbid="id_SL227400-1101525__SL3129391-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892870" data-ofbid="id_SL227400-1101525__id_14892870">To start System Health Tool, at the
+host computer, go to the Service Desktop. Start the Service Browser,
+if it is not already running, by clicking the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Service Browser</span> button on the left side of the screen. Refer to <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63708-1101525"><span>Figure 1</span></a>.</p>
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892871" data-ofbid="id_SL227400-1101525__id_14892871">Starting the tool will bring up the System Health tool. Refer
+to <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63711-1101525"><span>Figure 2</span></a> .</p>
+        </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129392-1101525" data-ofbid="id_SL227400-1101525__SL3129392-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892872" data-ofbid="id_SL227400-1101525__id_14892872">To run the a regular pass of system
+health, click on [Configure] and if it is available, select [Enable
+Health Page].  To run any variation of the other system health, make
+a selection based on the options in the [Configure] and [Report] windows
+(see step 4, <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63711-1101525"><span>Figure 2</span></a> and <a class="- topic/xref xref" href="#id_SL227400-1101525__SL225313-1101525"><span>Table 1</span></a>).</p>
+        </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129393-1101525" data-ofbid="id_SL227400-1101525__SL3129393-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892873" data-ofbid="id_SL227400-1101525__id_14892873">Click on [Report] and select [Full
+Report] (or for any other variation of System Health, (see step 4, <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63711-1101525"><span>Figure 2</span></a> and <a class="- topic/xref xref" href="#id_SL227400-1101525__SL225313-1101525"><span>Table 1</span></a>). </p>
+        </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129394-1101525" data-ofbid="id_SL227400-1101525__SL3129394-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892874" data-ofbid="id_SL227400-1101525__id_14892874">Menu items at the top of the window
+represent the controls available for this tool.</p>
+        </li></ol><ul class="- topic/ul ul" id="id_SL227400-1101525__id_14892875" data-ofbid="id_SL227400-1101525__id_14892875"><li class="- topic/li li" id="id_SL227400-1101525__SL3129395-1101525" data-ofbid="id_SL227400-1101525__SL3129395-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892876" data-ofbid="id_SL227400-1101525__id_14892876">
+            <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Exit</span> closes
+the System Health Window.</p>
+        </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129396-1101525" data-ofbid="id_SL227400-1101525__SL3129396-1101525">
+          <p class="- topic/p p" id="id_SL227400-1101525__id_14892877" data-ofbid="id_SL227400-1101525__id_14892877">
+            <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Report</span> opens
+a menu of three items:</p>
+          <ul class="- topic/ul ul" id="id_SL227400-1101525__id_14892878" data-ofbid="id_SL227400-1101525__id_14892878"><li class="- topic/li li" id="id_SL227400-1101525__SL3129397-1101525" data-ofbid="id_SL227400-1101525__SL3129397-1101525">
+              <p class="- topic/p p" id="id_SL227400-1101525__id_14892879" data-ofbid="id_SL227400-1101525__id_14892879">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Custom Report</span> generates a report that is a subset of a full report. This subset
+is set up in the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Configure</span> pull-down menu.</p>
+            </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129398-1101525" data-ofbid="id_SL227400-1101525__SL3129398-1101525">
+              <p class="- topic/p p" id="id_SL227400-1101525__id_14892880" data-ofbid="id_SL227400-1101525__id_14892880">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Full Report</span> gives
+a report of all items System Health is designed to look at.</p>
+            </li><li class="- topic/li li" id="id_SL227400-1101525__SL3129399-1101525" data-ofbid="id_SL227400-1101525__SL3129399-1101525">
+              <p class="- topic/p p" id="id_SL227400-1101525__id_14892881" data-ofbid="id_SL227400-1101525__id_14892881">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Last Report</span> displays
+the last System Health report generated. You can also view the last
+report run from the Service Browser. See <a class="- topic/xref xref" href="#id_SL122366-1101525">Viewing System Health in the Service Browser</a>.</p>
+            </li></ul>
+        </li></ul><figure class="- topic/fig fig fignone" id="id_SL227400-1101525__SL63711-1101525" data-ofbid="id_SL227400-1101525__SL63711-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">2. </span></span><span class="fig--title">System Health Tool</span></figcaption><img class="- topic/image image" id="id_SL227400-1101525__id_14892882" src="57694.gif"/></figure><div class="- topic/note note note note_note" id="id_SL227400-1101525__id_14892883" data-ofbid="id_SL227400-1101525__id_14892883"><span class="note__title">Note:</span> 
+        <p class="- topic/p p" id="id_SL227400-1101525__id_14892884" data-ofbid="id_SL227400-1101525__id_14892884">Reports will take several minutes to run.</p>
+      </div><p class="- topic/p p" id="id_SL227400-1101525__id_14892885" data-ofbid="id_SL227400-1101525__id_14892885">Clicking <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Configure</span> opens a menu of four
+items:</p><table class="- topic/table table" id="id_SL227400-1101525__SL225313-1101525" data-ofbid="id_SL227400-1101525__SL225313-1101525"><caption class="- topic/title title tablecap" caption-side="top" is-repeated="true"><span class="table--title-label">Table<span class="table--title-label-number"> 1</span><span class="table--title-label-punctuation">. </span></span><span class="table--title">System Health Tool Custom Menu</span></caption><colgroup><col style="width:2.50in"/><col style="width:4.97in"/></colgroup><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892886">Enable/Disable Health Page</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892887">This is a toggle selection. Which state appears when you open
+the menu is the current state of Health Page. Click the entry to change
+it.</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892888">Edit Schedule</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892889">System Health can be set to automatically run on a periodic
+basis. See Illustration 2-3. Specific dates can be set up or a routine
+run set up to run on a regular basis. If e-mail addresses are set
+up, reports can be automatically sent to those addresses. </td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892890">Edit E-Mail Addresses</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892891">E-mail addresses can be added to System Health to e-mail result
+files. See <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63720-1101525"><span>Figure 4</span></a>.</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892892">Edit Report Content</td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL227400-1101525__id_14892893">Use this tool to modify the checks that System Health makes.
+See <a class="- topic/xref xref" href="#id_SL227400-1101525__SL63723-1101525"><span>Figure 5</span></a>. Click the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Select All</span> button (which is the default) to select everything. Or click the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Clear</span> button to change Include to <span class="+ topic/ph ui-d/uicontrol ph uicontrol">No</span> and then double-click the entries for which you want to change Include
+to <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Yes</span>. Click the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Accept</span> button when done. </td></tr></tbody>
+        </table><figure class="- topic/fig fig fignone" id="id_SL227400-1101525__SL3129400-1101525" data-ofbid="id_SL227400-1101525__SL3129400-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">3. </span></span><span class="fig--title">Auto Report Setup</span></figcaption><img class="- topic/image image" id="id_SL227400-1101525__id_14892894" src="57692.gif"/></figure><figure class="- topic/fig fig fignone" id="id_SL227400-1101525__SL63720-1101525" data-ofbid="id_SL227400-1101525__SL63720-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">4. </span></span><span class="fig--title">Edit E-Mail Addresses</span></figcaption><img class="- topic/image image" id="id_SL227400-1101525__id_14892895" src="57704.gif"/></figure><figure class="- topic/fig fig fignone" id="id_SL227400-1101525__SL63723-1101525" data-ofbid="id_SL227400-1101525__SL63723-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">5. </span></span><span class="fig--title">System Health Report Content</span></figcaption><img class="- topic/image image" id="id_SL227400-1101525__id_14892896" src="57700.gif"/></figure><p class="- topic/p p" id="id_SL227400-1101525__id_14892897" data-ofbid="id_SL227400-1101525__id_14892897">To toggle the “Include field between “Yes”
+and “No”, double click on the item.</p></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL3129401-1101525" aria-labelledby="ariaid-title3" id="id_SL3129401-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129401-1101525</header><h2 class="- topic/title title topictitle2" id="ariaid-title3"> Results File</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129401-1101525__id_14892898" data-ofbid="id_SL3129401-1101525__id_14892898">The output (system_health.log) file can be displayed in a C-Shell
+by typing:</p><p class="- topic/p p" id="id_SL3129401-1101525__id_14892899" data-ofbid="id_SL3129401-1101525__id_14892899">
+        <kbd class="+ topic/ph sw-d/userinput ph userinput">cd  /usr/g/service/log</kbd> and press <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Enter</span></p><p class="- topic/p p" id="id_SL3129401-1101525__id_14892900" data-ofbid="id_SL3129401-1101525__id_14892900">
+        <kbd class="+ topic/ph sw-d/userinput ph userinput">|more  system_health.log</kbd> and press <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Enter</span></p><p class="- topic/p p" id="id_SL3129401-1101525__id_14892901" data-ofbid="id_SL3129401-1101525__id_14892901">Press the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Spacebar</span> to view additional information
+until the end of the file is reached. Refer to <a class="- topic/xref xref" href="c_Sample-System_Health-log-Output-Format_60278.html">sample System Health output</a>.</p></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL122366-1101525" aria-labelledby="ariaid-title4" id="id_SL122366-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL122366-1101525</header><h2 class="- topic/title title topictitle2" id="ariaid-title4"> Viewing System Health in the Service Browser</h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL122366-1101525__id_14892902" data-ofbid="id_SL122366-1101525__id_14892902">To view the last System Health that was run on the system, go
+to the Error Log tab of the Service Browser. See <a class="- topic/xref xref" href="#id_SL122366-1101525__SL63726-1101525"><span>Figure 6</span></a>.</p><figure class="- topic/fig fig fignone" id="id_SL122366-1101525__SL63726-1101525" data-ofbid="id_SL122366-1101525__SL63726-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">6. </span></span><span class="fig--title">Accessing the Health Page Log</span></figcaption><img class="- topic/image image" id="id_SL122366-1101525__id_14892903" src="225276.jpg"/></figure><figure class="- topic/fig fig fignone" id="id_SL122366-1101525__SL3129402-1101525" data-ofbid="id_SL122366-1101525__SL3129402-1101525"><figcaption class="- topic/title title figcap"><span class="figtitleprefix fig--title-label">Figure <span class="fig--title-label-number">7. </span></span><span class="fig--title">System Health Page</span></figcaption><img class="- topic/image image" id="id_SL122366-1101525__id_14892904" src="225285.jpg"/></figure></div></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL3129403-1101525" aria-labelledby="ariaid-title5" id="id_SL3129403-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129403-1101525</header><h2 class="- topic/title title topictitle2" id="ariaid-title5"> Miscellaneous System Data</h2><div class="- topic/body concept/conbody body conbody"></div><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129404-1101525" aria-labelledby="ariaid-title6" id="id_SL3129404-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129404-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title6">Software Revision</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129404-1101525__id_14892905" data-ofbid="id_SL3129404-1101525__id_14892905">The sys_health software determines the software revision on
+the current system by invoking the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">getver</span> command. </p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129405-1101525" aria-labelledby="ariaid-title7" id="id_SL3129405-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129405-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title7">MGD Emulation Mode </h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129405-1101525__id_14892906" data-ofbid="id_SL3129405-1101525__id_14892906">The sys_health software determines which system device is emulated
+by reading the mgd_stage file in the /usr/g/w/config directory. It
+extracts the line which starts with <span class="+ topic/ph ui-d/uicontrol ph uicontrol">a</span>. Each letter
+on that line indicates a device mode or status. See <a class="- topic/xref xref" href="#id_SL3129405-1101525__SL756533-1101525"><span>Table 2</span></a>.</p><table class="- topic/table table" id="id_SL3129405-1101525__SL756533-1101525" data-ofbid="id_SL3129405-1101525__SL756533-1101525"><caption class="- topic/title title tablecap" caption-side="top" is-repeated="true"><span class="table--title-label">Table<span class="table--title-label-number"> 2</span><span class="table--title-label-punctuation">. </span></span><span class="table--title">MGD_STAGE File Emulation Codes</span></caption><colgroup><col style="width:14.878048780487804%"/><col style="width:85.1219512195122%"/></colgroup><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892907">A</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892908">emulate PAC.  This command causes the SPU to
+generate canned cardiac and      respiratory waveforms and to generate
+cardiac triggers.  This should be      used when no PAC is present,
+or if no cardiac simulator is available.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892909">B</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892910">emulate System Monitoring.  This command disables
+monitoring of the PDU status, RF Door, and Coil overtemp.  Commands
+are still sent to the IRF, so the alignment lights, fan, and bore
+lights will still work if the IRF is connected.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892911">C</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892912">emulate SCIM (Hardkeys).  This disables the
+SCP to SCIM interface. If this is done the start scan, stop scan,
+pause scan, adv to scan, stop table buttons on the SCIM hardkeys will
+not work.  This should only be used to allow scanning to continue
+if the SCP to SCIM link is not functioning correctly.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892913">E</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892914"> Emulate the Driver Module on the CAN linkCAN
+T/R driver. When this is emulated, the SCP will not monitor the DCB
+board or set any values to it. It will also not initialize it as a
+valid node on the CANopen network. Any diagnostics that require the
+Driver Module will fail if emulated. If this emulation is chosen,
+RF Amp emulation (H) will automatically be set to protect hardware. </td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892915">F</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892916">emulate IRDs. This is intended for targets
+that do not have DTX, RRX, or XGD modules.  When this flag is present,
+AGP will simulate any missing modules and will not fail TPS_reset
+because the modules are missing.  The IRF3 board must be present.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892917">G</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892918">emulate gradient amps.  The SCP will connect
+to XGD if it is present. There will be no error reporting or status
+monitoring.  Debug commands may still be sent to XGD with this emulation
+on.  No file updates or tuning parameters (including ECC) will be
+downloaded automatically.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892919">H</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892920">emulate RF amp(s).  When this is emulated,
+the SCP will not send commands to the RF amplifiers (ERBTEC narrow
+band and spectroscopy's ENI broad band), and SCP will not monitor
+their state.  Therefore, the ERBTEC RF amp will stay in standby, and
+no RF will be put out.  The ENI amp has no standby state, and therefore
+will put out RF, but the correct filter will not be set.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892921">J</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892922">emulate entire CAN network.  This disables
+communication to all devices on the CAN link.  It will not setup the
+CAN PMC board and thus all of the devices on the CAN link will not
+communicate on the link.  When this emulation is present, the CAN
+T/R driver, RF amp(s), Shim CAN node, SRI, bore wall temperature sensor,
+table, CAN fiber board, UPM, and RF Hub      will all automatically
+be emulated as well.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892923">N</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892924">emulate Shim CAN node. This disables communications
+to the CAN DSP on the Shim Supply. The shim currents will not be updated
+by the host under this condition.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892925">R</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892926">emulate SRI.  This disables SCP communication
+to the SRI.  It disables magnet shroud annunciators, the scan time
+display, and landmarking. The alignment lights, fan, and bore light
+will not work.  However, if the SRI has had code downloaded at least
+once, then table positioning will still work.  When this emulation
+is present, the bore wall temperature sensor and table will automatically
+b emulated.  If the autoemulation override option key is not present,
+the gradient amp(s) will be automatically emulated as well.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892927">S</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892928">emulate bore wall temperature sensor, gradient
+coil temperature sensors, and the airflow sensors.  If the autoemulation
+override option key is not present, the gradient amp(s) will be automatically
+emulated.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892929">T</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892930">emulate table. This emulates SRI cradle control
+and the LPCA. Therefore, the table positioning will not work.  This
+eliminates the need to establish a landmark.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892931">a</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892932"> dummy place holder</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892933">b</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892934">emulate RRX with the ERF board.  Causes the
+ERF board to look like a RRX. The F flag must also be present.  The
+Irf3 &amp; ERF boards must be present. The ERF board must be cabled
+to the IRF3 board.  Only good for 16 ch.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892935">c </td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892936">Emulate Coil ID.  Any coil can be selected
+and used if this emulation is set, but only for a target or show system.
+If any coils are connected, they will be checked as if coil ID was
+     not emulted. The RF amp(s) and RF Hub will automatically be 
+emulated to protect hardware.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892937">f</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892938">emulate the CAN fiber optic board.  If this
+emulation is selected, the SCP will not set up the CFB and communication
+to the nodes connected to the CFB may not be allowed, including the
+SRI, PAC, and RF Hub. When this emulation is selected, the bore temperature
+sensor, SRI, table, RF Hub, and PAC will automatically be emulated
+as well. </td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892939">g</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892940">disable gradient processor application loading.
+ The SCP will not load the application if this emulation is selected,
+which can take 30 minutes to complete. </td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892941">I</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892942">emulate the Cooling Cabinet monitoring.  Both
+Ethernet and serial connections with the Cooling Cabinet will be ignored,
+alarms will not be reported, and feedback variables will not be logged.
+When the autoemulation override option key is not present, the gradient
+amp(s) and RF amp(s) will be automatically emulated.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892943">p</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892944">disable UPM.  This will disable the power monitoring
+of the CAN Power Monitor and will allow scanning without the presence
+of the power monitor.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892945">r</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892946">emulate the RF Hub.  If this emulation is selected,
+the SCP will not communicate to the RF Hub.  Any diagnostics that
+     require the RF Hub will fail if emulated.  When the autoemulation
+override option key is not present, the RF amp(s) will automatically
+be emulated to protect hardware.</td></tr><tr class="- topic/row"><td class="- topic/entry entry align-center colsep-0 rowsep-0 valign-middle" id="id_SL3129405-1101525__id_14892947">s</td><td class="- topic/entry entry colsep-0 rowsep-0 valign-bottom" id="id_SL3129405-1101525__id_14892948">emulate airflow sensor.  This will disable
+monitoring of the closed loop airflow control between the SRI and
+the Heat Exchanger.</td></tr></tbody>
+        </table><div class="- topic/note note note note_note" id="id_SL3129405-1101525__id_14892949" data-ofbid="id_SL3129405-1101525__id_14892949"><span class="note__title">Note:</span> 
+          <p class="- topic/p p" id="id_SL3129405-1101525__id_14892950" data-ofbid="id_SL3129405-1101525__id_14892950">Entries are case sensitive.</p>
+        </div><p class="- topic/p p" id="id_SL3129405-1101525__id_14892951" data-ofbid="id_SL3129405-1101525__id_14892951">When no components are emulated, then sys_health also reports
+this to the screen and the system_health.log file.</p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129406-1101525" aria-labelledby="ariaid-title8" id="id_SL3129406-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129406-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title8">Disk Space Report</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129406-1101525__id_14892952" data-ofbid="id_SL3129406-1101525__id_14892952">The sys_health tool reports the number of free disk blocks on
+the current system. </p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129407-1101525" aria-labelledby="ariaid-title9" id="id_SL3129407-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129407-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title9">Install Options</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129407-1101525__id_14892953" data-ofbid="id_SL3129407-1101525__id_14892953">The sys_health tool checks for installed options.</p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129408-1101525" aria-labelledby="ariaid-title10" id="id_SL3129408-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129408-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title10">Host HW Inventory</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129408-1101525__id_14892954" data-ofbid="id_SL3129408-1101525__id_14892954">The sys_health tool lists the hardware components on the host
+computer and reports all SCSI devices on the host that are powered
+up. </p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129409-1101525" aria-labelledby="ariaid-title11" id="id_SL3129409-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129409-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title11">File Checksum</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129409-1101525__id_14892955" data-ofbid="id_SL3129409-1101525__id_14892955">The sys_health tool checks file checksums. This feature is used
+to determine whether or not any software or patches have been loaded
+onto the system. </p></div></article><article class="- topic/topic concept/concept topic concept nested2 yes id_SL3129410-1101525" aria-labelledby="ariaid-title12" id="id_SL3129410-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL3129410-1101525</header><h3 class="- topic/title title topictitle3" id="ariaid-title12">TNS Status</h3><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL3129410-1101525__id_14892956" data-ofbid="id_SL3129410-1101525__id_14892956">The sys_health tools reads the Transient Noise Suppresion (TNS)
+status, which reports the spike noise count data. </p></div></article></article><article class="- topic/topic concept/concept topic concept nested1 yes id_SL225296-1101525" aria-labelledby="ariaid-title13" id="id_SL225296-1101525"><header class="topic-id"><span class="metalabel">Topic ID: </span>id_SL225296-1101525</header><h2 class="- topic/title title topictitle2" id="ariaid-title13"> Advanced System Health Commands </h2><div class="- topic/body concept/conbody body conbody"><p class="- topic/p p" id="id_SL225296-1101525__id_14892957" data-ofbid="id_SL225296-1101525__id_14892957">For advanced usage, from a c-shell execute the following command
+to see available options with system health: </p><p class="- topic/p p" id="id_SL225296-1101525__id_14892958" data-ofbid="id_SL225296-1101525__id_14892958">
+        <kbd class="+ topic/ph sw-d/userinput ph userinput">/usr/g/service/cclass/sys_health -h</kbd>, then
+click <kbd class="+ topic/ph sw-d/userinput ph userinput">Enter</kbd>. </p><p class="- topic/p p" id="id_SL225296-1101525__id_14892959" data-ofbid="id_SL225296-1101525__id_14892959">Some of the optional keys are defined in Table 1.</p><table class="- topic/table table" id="id_SL225296-1101525__SL3129411-1101525" data-ofbid="id_SL225296-1101525__SL3129411-1101525"><caption class="- topic/title title tablecap" caption-side="top" is-repeated="true"><span class="table--title-label">Table<span class="table--title-label-number"> 3</span><span class="table--title-label-punctuation">. </span></span><span class="table--title">Optional Keys</span></caption><colgroup><col style="width:26.5%"/><col style="width:73.5%"/></colgroup><tbody class="- topic/tbody tbody"><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892960">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Key</span>
+              </td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892961">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">Definition</span>
+              </td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-middle" id="id_SL225296-1101525__id_14892962">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-p</span>
+              </td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892963">Allows the user to display plots of selected data sets. You
+will be prompted for confirmation before plotting the selected data
+set</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-middle" id="id_SL225296-1101525__id_14892964">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-nf</span>
+              </td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892965">Do not terminate a program when a FATAL error is encountered</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-middle" id="id_SL225296-1101525__id_14892966">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-h</span>
+              </td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892967">Help option which displays the command options</td></tr><tr class="- topic/row"><td class="- topic/entry entry colsep-0 rowsep-0 valign-middle" id="id_SL225296-1101525__id_14892968">
+                <span class="+ topic/ph ui-d/uicontrol ph uicontrol">more</span>
+              </td><td class="- topic/entry entry colsep-0 rowsep-0" id="id_SL225296-1101525__id_14892969">The data display will stop at the bottom of the screen until
+you press the spacebar to display another screen of data</td></tr></tbody>
+        </table><div class="- topic/note note note note_note" id="id_SL225296-1101525__id_14892970" data-ofbid="id_SL225296-1101525__id_14892970"><span class="note__title">Note:</span> 
+        <p class="- topic/p p" id="id_SL225296-1101525__id_14892971" data-ofbid="id_SL225296-1101525__id_14892971">Only one option at a time can be selected (i.e., enter <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-p</span>,<span class="+ topic/ph ui-d/uicontrol ph uicontrol"> -nf</span>, or <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-h</span>; do not include the “<span class="+ topic/ph ui-d/uicontrol ph uicontrol"></span>” characters
+or the command will not work). In most cases, the <span class="+ topic/ph ui-d/uicontrol ph uicontrol">-nf</span> option is used.</p>
+      </div></div></article></article></main></div>
+                        
+                        
+                        
+                        </div>
+                        
+                        
+                        <!--<whc:webhelp_related_links class="d-print-none"/> -->
+                        
+                        
+                        
+                        
+                        <!-- GEDev US503: next/previous buttons on bottom -->
+                        
+                            
+                            <nav id="wh_topic_toc" class="d-print-none collapsible" aria-label="On this page">
+                                <div class=" wh_topic_toc "><div class="wh_topic_label">On this page</div><ul><li class="topic-item"><a href="#id_SL227400-1101525" data-tocid="id_SL227400-1101525"> Running the Tool From the Service Browser</a></li><li class="topic-item"><a href="#id_SL3129401-1101525" data-tocid="id_SL3129401-1101525"> Results File</a></li><li class="topic-item"><a href="#id_SL122366-1101525" data-tocid="id_SL122366-1101525"> Viewing System Health in the Service Browser</a></li><li class="topic-item"><a href="#id_SL3129403-1101525" data-tocid="id_SL3129403-1101525"> Miscellaneous System Data</a><ul><li class="topic-item"><a href="#id_SL3129404-1101525" data-tocid="id_SL3129404-1101525">Software Revision</a></li><li class="topic-item"><a href="#id_SL3129405-1101525" data-tocid="id_SL3129405-1101525">MGD Emulation Mode </a></li><li class="topic-item"><a href="#id_SL3129406-1101525" data-tocid="id_SL3129406-1101525">Disk Space Report</a></li><li class="topic-item"><a href="#id_SL3129407-1101525" data-tocid="id_SL3129407-1101525">Install Options</a></li><li class="topic-item"><a href="#id_SL3129408-1101525" data-tocid="id_SL3129408-1101525">Host HW Inventory</a></li><li class="topic-item"><a href="#id_SL3129409-1101525" data-tocid="id_SL3129409-1101525">File Checksum</a></li><li class="topic-item"><a href="#id_SL3129410-1101525" data-tocid="id_SL3129410-1101525">TNS Status</a></li></ul></li><li class="topic-item"><a href="#id_SL225296-1101525" data-tocid="id_SL225296-1101525"> Advanced System Health Commands </a></li></ul></div>
+                            </nav>
+                            <!--whc:include_html href="${webhelp.fragment.after.topic.toc}"/-->
+                        
+                        <div id="topic_toc_button">
+                            <button type="button" data-target="#wh_topic_toc" data-toggle="collapse" class=" custom-toggler navbar-toggler collapsed navbar-light" aria-expanded="false" aria-label="Toggle topic table of content" aria-controls="contain-topic_toc"></button>
+                        </div>
+                        <!--whc:include_html href="${webhelp.fragment.toggle.toc}"/-->
+                        
+                    </div>
+
+                </div>
+
+                
+            </div>
+            <div class="row">
+            <div id="wh_tools">
+                <nav class="wh_tools d-print-none navbar-expand-md" aria-label="Tools">
+                    <div data-tooltip-position="bottom" class=" wh_breadcrumb "></div>
+                    <div class="wh_right_tools">
+                        <div class=" wh_navigation_links "><span id="topic_navigation_links" class="navheader"></span></div>
+                    </div>
+                </nav>
+            </div>
+            </div>
+            </div>
+        <!-- webhelp.fragment.after.main.content.area and webhelp.fragment.after.main.content.area.topic.page moved out of div to try and fix scrolling issue -->
+        
+        
+        <footer class="navbar navbar-default wh_footer" whc:version="23.1">
+  <div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="ftrcustom"><span>5756356-2EN</span> | <span>Revision  11.0</span> | <span>en | </span><span><a target="_blank" href="https://www.gehealthcare.com/">gehealthcare.com</a></span></div><div xmlns:oxy="http://www.oxygenxml.com/functions" xmlns:oxyf="http://www.oxygenxml.com/functions" xmlns:dita2html="http://dita-ot.sourceforge.net/ns/200801/dita2html" xmlns:related-links="http://dita-ot.sourceforge.net/ns/200709/related-links" xmlns:oxygen="http://www.oxygenxml.com/functions" xmlns:astC="http://www.astoriasoftware.com/compose" xmlns="" class="copyright_info"><span class="copyright_years"> ©2016-2023</span> GE HealthCare Proprietary<div class="GETradmark"><span>GE is a trademark of General Electric Company used under trademark license.</span></div></div>
+</footer>
+        <div id="go2top" class="d-print-none">
+            <span class="oxy-icon oxy-icon-up"></span>
+        </div>
+        <!-- The modal container for images -->
+        <div id="modal_img_large" class="modal">
+            <span class="close oxy-icon oxy-icon-remove"></span>
+            <!-- Modal Content (The Image) -->
+            <img class="modal-content" id="modal-img" alt=""/>
+            <!-- Modal Caption (Image Text) -->
+            <div id="caption"></div>
+        </div>
+        
+        
+    </body>
+</html>

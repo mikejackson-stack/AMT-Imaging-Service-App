@@ -1,0 +1,451 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VDARC Node Commands and Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193575-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>LightSpeed 7.X Service Information - Adv</P></td></tr></table><H1 ID="top">VDARC Node Commands and Troubleshooting </H1><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="43%"><col width="57%"></colgroup><tbody><tr><td>Last Revised:</td><td>21 March 2008</td></tr></tbody></table></CENTER></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1568347-1014389">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This document provides manual commands for VDARC Node troubleshooting.
+Not every available command is listed. The first step is to verify
+communication between the Host and the VDARC Node. After verifying
+that the communication exists to the VDARC Node, VDIP diagnostics
+may be performed. Memory size is important and may be checked: however,
+exact memory values expected are not discussed as this memory size
+value may change over time and with different types of VDARC Nodes
+offered. It is currently (July, 2006) around 6 GBytes for Main memory.</P><P CLASS="sect1">Application software can be started to verify that Image Generation
+is running on each VIG Node present and configured in the Operator
+Console. The VDARC Node contains the software and hardware that controls
+the VIG Nodes. The Image Generation check assists by determining if
+the VIG Node(s) is up (as we determine up and ready for recon) and
+under VDARC Control. Refer to the Ethernet Diagrams to understand
+connections between Nodes. Refer to the command list to determine
+which commands can be performed.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e56"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">It is important to understand that the VDARC Node may
+not boot up properly due to a Disk Array issue.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1568348-1014389">1.1&nbsp;&nbsp;Video Cable<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">A VDARC / VIG Node Troubleshooting Video cable is shipped with
+every VCT Operator Console. Utilize this cable whenever attempting
+to troubleshoot the VDARC and VIG Nodes. The cable should not be connected
+at either end when the system is operating normally, since the video
+may take over the monitor and cause Customer confusion. Additionally,
+connecting only the Node end of the cable will result in EMC violations.
+Sometimes the VDARC Node requires a keyboard connection (such as pressing <SPAN CLASS="GUIBUTTON"> [Enter] </SPAN> to view VDARC output). It is permitted to use the
+Operator Console keyboard when troubleshooting the VDARC Node.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1568349-1014389">1.2&nbsp;&nbsp;Repower Process<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The VIG Nodes require a manual re-power process so each VIG
+Node present and configured (via LFC or a reconfig) can be initialized
+by the VDARC Node. The Application software should be down during
+VIG Node initialization. The VDARC must successfully remote shell
+from the Host (rsh darc). LAN LED activity should be verified on each
+VIG Node to ensure that an Ethernet communication between the VDARC
+and VIG Node is present. Then the front panel re-power sequence is
+performed for any VIG Nodes that have been swapped (physical Node
+swap, or one end of the Ethernet cable between the Nodes), installed,
+or are having issues. The user should wait for the VIG Nodes to successfully
+boot up. The user should then verify that each VIG Node can be communicated
+with via the VDARC Node (rsh ig#). If the remote shell to each VIG
+Node is successful, the user may decide to verify lhinv Main memory
+and perform vrac_flash_update, then the vrac_menu &#8211;a diagnostic tool.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1568350-1014389">1.3&nbsp;&nbsp;Application Software<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Application software may be started and Image Generation should
+be verified as running. Verify that the prompt returned for each rsh
+ig# is as expected. If the prompt is not correct it is usually a software
+issue with the VDARC Node, and a VDARC software reload is the first
+step to correct the issue. If image_generation is not running on a
+specific VIG Node, physically swap one end of the Ethernet cable and
+re-power the VIG Nodes with Application software down. If the issue
+follows the VIG Node, then a replacement VIG Node may be ordered.
+Always verify the part number on the replacement hardware upon receipt
+of a FRU. The labels on shipping boxes can be incorrect (a PAR looks
+just like a VIG Node but does not contain a vrac board).</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1568351-1014389">1.4&nbsp;&nbsp;Host Software<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Host software cannot be loaded (OS and Apps) after the VDARC
+software. If the Host software was started, the VDARC software must
+follow. Failure to perform procedures in the specified order may result
+in startup issues. In this case, the ssh (Security Shell) command
+from Host to VDARC will fail and Application software will not launch
+properly or may shutdown.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1568352-1014389">1.5&nbsp;&nbsp;Document Updating<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Updating documents in a timely manner is sometimes impossible.
+Always verify that all Service Packs or patches are loaded after any
+VDARC software reload. In the past, certain patches were specifically
+targeted to correct recon issues and they needed to be reloaded. The
+setdate command is performed during an LFC twice. Verify that the
+Host setdate time is entered from a reliable source (laptop) anytime
+it is updated.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1568353-1014389">2&nbsp;&nbsp;Ethernet Interconnect Diagrams<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following illustrations show the Ethernet connections between
+the various Nodes&#8211;Host, VDARC, and VIG. Two versions are provided
+and are specifically referenced to the particular VDARC Node version
+(Westville or Jarrell). The Westville VDARC Node rear panel has 6
+Ethernet ports available for connection between the Host (1 port)
+and the VIG Nodes (5 ports available, although only 3 are used). The
+Jarrell VDARC Node rear panel has 4 Ethernet ports available for connection
+between the Host (1 port) and the VIG Nodes (3 ports). The VDARC Node
+Ethernet address associated with the Host or with each VIG Node is
+not the same specifically because the number of ports available for
+each VDARC Node version is different.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Westville VDARC Node Ethernet Interconnect Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1014398.jpg" BORDER="0" usemap="#1014398.jpg"></P></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Jarrell VDARC Node Ethernet Interconnect Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1014399.jpg" BORDER="0" usemap="#1014399.jpg"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1568356-1014389">3&nbsp;&nbsp;Command List<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The following is a list of manual input commands.</P><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="42%" align="left"><col width="57%" align="left"></colgroup><tbody><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ifconfig</B></FONT></SPAN></td><td align="left" valign="top">Allows the user to determine what the Host understands
+in relation to the Ethernet Address / port for the DARC Node. When
+a VDARC Node is configured /active in the system, look for RUNNING
+and verify that the address is correct. The connection is always port
+C on the Host. Even if you see RUNNING, there still could be a swapped
+connection (like DARC cable connected to Gantry and Gantry connected
+to DARC). Also, if the Host Apps is not loaded, there will only be
+the l/O present.</td></tr><tr><td rowspan="2" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -I lan -H darc -A NONE
+chassis power status</B></FONT></SPAN></P><P CLASS="entry"></P></td><td rowspan="2" align="left" valign="top">The ipmitool may be available.
+This command allows the user to determine what the Host understands
+in relation to the power state for the VDARC Node.</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td rowspan="3" align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p eth#</B></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p eth#</B></FONT></SPAN>&nbsp;<P CLASS="entry"></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@ig#]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p eth#</B></FONT></SPAN></td><td rowspan="3" align="left">The ethtool command allows the user
+to visually verify that the NIC is working. After the command is entered,
+the user will visually verify that one LED at the NIC is blinking
+much faster. To stop the process, press <SPAN CLASS="KEYBOARD">&lt;Ctrl-C&gt;</SPAN>. This can be performed on the host, VDARC, or VIG Node. Replace
+the number symbol <B>#</B> with the Ethernet port
+(eth1 is ig1 on the darc).</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service darcpower start</B></FONT></SPAN></td><td align="left">Restarts the VDARC Node power. This is useful when the Host
+is up but the VDARC was re-powered and does not seem to come up and
+ping in a timely manner.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service darcpower stop</B></FONT></SPAN></td><td align="left">Turns off the VDARC Node power.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>halt</B></FONT></SPAN></td><td align="left">Halts the VDARC Node so power can be turned off without losing
+files on the VDARC or hardware.</td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="6" align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc ~]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>smartctl -a/dev/sd*</B></FONT></SPAN><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>(where * = sda thru sdh)</B></FONT></SPAN></P></td><td rowspan="6" align="left"><P CLASS="entry">Verifies the &#8220;SMART Health
+Status&#8221; output for potential failing disk(s) in the Disk Array
+(JBOD).</P><P CLASS="entry">Perform this with Application software down. The
+issue presents itself as the VDARC not booting. By performing a telnet
+from Host to VDARC Node, the user can perform the reset, then console
+commands, and then 'hit any key' to boot the VDARC Node and mount
+the Disak Array (if possible). The smart control command will provide
+a predictive failure message. All disks must be checked and any disks
+with a predictive failure must be replaced. See the GOC5 Disk Array
+T/S guide for more detailed information.</P></td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service cliservice
+start</B></FONT></SPAN></td><td align="left"><P CLASS="entry">Restarts or verifies that the cliservice dpcproxy server
+is running on the Host to allow for Serial Over LAN (SOL). Returning
+message will be either: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The dpcproxy is running</FONT></SPAN>, or <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpcproxy cliservice has been restarted</FONT></SPAN>.</P><P CLASS="entry">Hint: Try reloading the SOL CD into the DARC Node and then
+pressing <SPAN CLASS="GUILABEL"><I>Reset</I></SPAN> or cycling power, as needed, with
+Apps down.</P></td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><PRE>telnet localhost 623
+Server: darc
+Username: &lt;Enter&gt;
+Password: &lt;Enter&gt;
+Login successful
+dpccli&gt; reset
+ok
+console
+</PRE></td><td align="left" valign="top">Verifies dpcproxy server running / SOL connection.
+Resets the VDARC Node. Allows the user to watch the VDARC Node boot
+up.<P CLASS="entry">Hint: If a T/S monitor cable is available, connect this cable
+between the Host and VDARC. (Use the keyboard and press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to prompt the DARC response if needed.)</P></td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ping darc</FONT></SPAN></td><td align="left">Press <SPAN CLASS="KEYBOARD">&lt;Ctrl-C&gt;</SPAN> to stop the ping process.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">rsh darc</FONT></SPAN></td><td align="left">OS and Apps software must be loaded on the VDARC Node.</td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="7" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ssh darc</FONT></SPAN><P CLASS="entry"></P><P CLASS="entry">Commands to fix ssh:</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN></P><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rm -rf
+/usr/g/ctuser/.ssh/known_hosts</B></FONT></SPAN></P><P CLASS="entry"></P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>config_sshd</B></FONT></SPAN></P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service
+sshd start</B></FONT></SPAN></P><P CLASS="entry"></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>chkconfig sshd on</B></FONT></SPAN></td><td rowspan="7" align="left" valign="top">OS and Apps software must
+be loaded on the Host first, then the VDARC Node for Security Shell
+(ssh) to work. If you cannot ssh darc then Apps will eventually shutdown.
+See commands to fix ssh.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td rowspan="8" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN><P CLASS="entry"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rm -rf /usr/g/ctuser/.ssh/known_hosts</B></FONT></SPAN></P><P CLASS="entry"></P><P CLASS="entry">upon failure, start:</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@</FONT></SPAN><SPAN CLASS="SCRNVAR"><FONT FACE="COURIER"><I>hostname</I></FONT></SPAN><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>config_sshd</B></FONT></SPAN></P><P CLASS="entry"></P><P CLASS="entry">if start fails, config:</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>service sshd start</B></FONT></SPAN></P><P CLASS="entry"></P><P CLASS="entry">if config
+fails, check:</P><P CLASS="entry"></P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>chkconfig sshd on</B></FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</td><td rowspan="8" align="left" valign="top">Additional ssh related
+commands.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cd /var/log more messages</FONT></SPAN></td><td align="left">A status log on the VDARC Node can assist in determining issues
+(used in conjunction with the log on the Host).</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">lhinv</FONT></SPAN></td><td align="left">Lists devices, memory.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">lhinv | grep Main</FONT></SPAN></td><td align="left">Lists memory size.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cat /proc/mdstat</FONT></SPAN></td><td align="left">Displays md0 and active devices for the RAID.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><PRE>telnet localhost 623
+Server: darc
+Username: &lt;Enter&gt;
+Password: &lt;Enter&gt;
+Login successful
+dpccli&gt; help
+</PRE></td><td align="left" valign="top">Shows the Help menu for commands / options.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><PRE>telnet localhost 623
+Server: darc
+Username: &lt;Enter&gt;
+Password: &lt;Enter&gt;
+Login successful
+dpccli&gt; console
+</PRE></td><td align="left" valign="top">Verifies dpcproxy server running / SOL connection.
+Lists the VDARC Node information and current OS and kernel information.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">See &#8221;DARC Fiber Optic Test&#8221;
+document</FONT></SPAN></td><td align="left">Assists with a visual indicator for the VDIP path from the
+Gantry to the VDARC Node.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>lsmod | grep vdip</B></FONT></SPAN></td><td align="left">Checks the existence of a VDIP in the VDARC Node.</td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="3" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>vdip_menu -A</B></FONT></SPAN><P CLASS="entry">or</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>vdip_menu -A -r 1</B></FONT></SPAN></P></td><td rowspan="3" align="left" valign="top">No Loopback Cable installed.
+One pass (-r 1) of all (-a) VDIP diagnostics performed on VDARC Node.
+The pass value can be changed to a greater value for more iterations,
+or for a single pass, it may be excluded all together (vdip_menu &#8211;A).</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td rowspan="3" align="left" valign="top"><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>vdip_menu -a</B></FONT></SPAN></P><P CLASS="entry">or</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>vdip_menu -a -r 1</B></FONT></SPAN></P></td><td rowspan="3" align="left">Loopback Cable installed between each
+respective RX and TX port. Both ports must be connected with the loopback
+cable, and the fiber connection must be fully clicked into place.
+A flashlight may be used to verify a good cable path. One pass (-r)
+of all (-a) VDIP diagnostics performed on VDARC Node. The pass value
+can be changed to a greater value for more iterations, or for a single
+pass, it may be excluded all together (vdip_menu &#8211;a).</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td rowspan="3" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dmidecode | grep &#8211;i version</B></FONT></SPAN><P CLASS="entry">or</P><P CLASS="entry"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dmidecode
+| grep Ver</B></FONT></SPAN></P></td><td rowspan="3" align="left" valign="top">Shows VDARC Node BIOS
+version as loaded by the vendor.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">uname -a</FONT></SPAN></td><td align="left">Displays kernel name, hostname, kernel release and version,
+machine hardware name, and hardware platform.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">free -m</FONT></SPAN></td><td align="left">Does not adequately display VDARC Node total memory information,
+but does display used memory.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cat /proc/meminfo</FONT></SPAN></td><td align="left">Displays detailed memory information.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">df &#8211;h</FONT></SPAN></td><td align="left">Displays partition information.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">cat /proc/devices</FONT></SPAN></td><td align="left">Lists all devices detected by the system.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>dmidecode | less</B></FONT></SPAN></td><td align="left">Shows the Motherboard version.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -I lan -H darc -P '' sel</B></FONT></SPAN></td><td align="left">Basic comm. over SOL, and log status.</td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="2" align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN><P CLASS="entry"></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -H darc -P '' chassis power status</B></FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</td><td rowspan="2" align="left" valign="top">Check chassis power behavior
+at boot.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -H darc -P '' fru</B></FONT></SPAN></td><td align="left">Lists board components.</td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="2" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN><P CLASS="entry"></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -H darc -P '' sdr type temp</B></FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</td><td rowspan="2" align="left" valign="top">Component temperature
+checks.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td rowspan="2" align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN><P CLASS="entry"></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -H darc -P '' sel list last 15</B></FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</td><td rowspan="2" align="left" valign="top">Lists all board sensors.
+Many details. Look for OKs.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">{ctuser@host}</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ipmitool -H darc -P '' sdr</B></FONT></SPAN></td><td align="left">Simplified board sensors. Look for OKs.<P CLASS="entry">This has replaced
+sensors &#8211;v.</P></td><td class="auto-generated">&nbsp;</td></tr><tr><td rowspan="2" align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@ig#]</FONT></SPAN><P CLASS="entry"></P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ps &#8211;leaf | grep &#8211;v grep | grep image_generation</B></FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;</td><td rowspan="2" align="left" valign="top">With APPS Up ONLY, provides
+a clue that recon is up and running on the specific VIG Node. (Do
+not perform this command on the VDARC Node &#8211; it is not updated properly
+there.)</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>safte-monitor -p | grep -I power</B></FONT></SPAN></td><td align="left">Displays if both power supplies are operational for the VCT
+Disk Array.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>safte-monitor -p | grep -I fan</B></FONT></SPAN></td><td align="left">Displays if both fans are operational for the VCT Disk Array.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>grep -ic nstor /proc/scsi/scsi</B></FONT></SPAN></td><td align="left">A return of #2 verifies that the VDARC Node can see the VCT
+Disk Array. If #2 is not returned, SCSI cables may be suspect.</td><td class="auto-generated">&nbsp;</td></tr><tr><td align="left" valign="top"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc bin]</FONT></SPAN>&nbsp;&nbsp;&nbsp;&nbsp;<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>./gre-file-perf -s 15 /raw_data</B></FONT></SPAN></td><td align="left" valign="top">With Apps up, should display success for the VCT
+Disk Array and properly created and assembled.</td><td class="auto-generated">&nbsp;</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1776627-1014389">4&nbsp;&nbsp;VDARC Log File Discussion<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">In the following output, we can clearly see that the Jarrell
+VIG (referred to a virgin because it came from the vendor &#8211; not initialized)
+was installed into IG1 (eth1) and the IG1 came up and successfully
+ran vrac_flash_update. Then Apps is started and that process shows
+image_generation will be good.</P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Sep 29 00:49:35 darc in.tftpd[9011]: tftp: client does
+not accept options</FONT></SPAN></P><P CLASS="sect1">This message will go away after several files are authenticated
+(<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">authenticated mount request from ig#</FONT></SPAN>).</P><P CLASS="sect1">The &#8220;martian&#8221; messages are present because all Jarrell
+VIG&#8217;s are set to 172 base address &#8211; the same as the VDARC address.
+These messages will go away one the VIG is initialized (power cycle
+the VIG Node with VDARC up but Apps down) to the VDARC.</P><PRE>Sep 28 21:18:48 darc kernel: martian source 172.16.0.2 from 172.16.0.2, on dev eth1</PRE><P CLASS="sect1">This message will go away after several files are authenticated.</P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">(authenticated mount request from ig#) Sep 29 00:49:35
+darc in.tftpd[9011]: tftp: client does not accept options </FONT></SPAN></P><P CLASS="sect1">The eth1 is finally initialized.</P><P CLASS="sect1">The link for eth1 goes up and down until it hits <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">1000
+Mbps</FONT></SPAN>.</P><P CLASS="sect1">Then we get the <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">DHCPACK</FONT></SPAN>.</P><P CLASS="sect1">Then the various files are loaded in: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">authenticated
+mount request from ig1</FONT></SPAN></P><P CLASS="sect1">And the tftp <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">client does not accept options</FONT></SPAN> message goes away because of prior message shown above.</P><P CLASS="sect1">The eth1 was finally initialized.</P><P CLASS="sect1">Then we see: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">started check of VRAC FLASH; argv=['ig1',
+'ig2', 'ig3']</FONT></SPAN>.</P><P CLASS="sect1">And finally vrac_flash_update has completed successfully.</P><PRE>Sep 28 21:36:28 darc vrac_flash_update[9242]: FLASHed 3 of 3 IGs
+Sep 28 21:36:28 darc vrac_flash_update[9242]: all IGs FLASHed
+</PRE><P CLASS="sect1">Apps is started up and all IG Nodes respond and report that
+recon control is up:</P><PRE>Sep 28 21:38:25 darc logger: is_IG_up 3 ig1 called
+Sep 28 21:38:25 darc logger: is_IG_up 3 ig2 called
+Sep 28 21:38:25 darc logger: is_IG_up 3 ig3 called
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10834]: ig1 is up
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10840]: ig3 is up
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10837]: ig2 is up
+</PRE><P CLASS="sect1"><B>Example of a darc log</B></P><PRE>Sep 28 21:27:30 darc kernel: martian source 172.16.0.2 from 172.16.0.2, on dev eth1
+Sep 28 21:27:30 darc kernel: ll header: ff:ff:ff:ff:ff:ff:00:04:23:de:26:10:08:06
+Sep 28 21:27:34 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 21:31:05 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 21:32:36 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 21:32:38 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 21:32:53 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 21:32:54 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 21:33:11 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 21:33:13 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 21:33:15 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 21:33:19 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 1000 Mbps Full Duplex
+Sep 28 21:33:26 darc dhcpd: DHCPDISCOVER from 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:27 darc dhcpd: DHCPOFFER on 10.0.1.2 to 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:28 darc dhcpd: DHCPREQUEST for 10.0.1.2 (10.0.1.1) from 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:28 darc dhcpd: DHCPACK on 10.0.1.2 to 00:0e:0c:9f:36:52 via eth1
+Sep 29 01:33:28 darc in.tftpd[9204]: tftp: client does not accept options 
+Sep 28 21:33:38 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+**
+Sep 28 21:33:40 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 1000 Mbps Full Duplex
+Sep 28 21:33:44 darc dhcpd: DHCPDISCOVER from 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:44 darc dhcpd: DHCPOFFER on 10.0.1.2 to 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:44 darc dhcpd: DHCPDISCOVER from 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:44 darc dhcpd: DHCPOFFER on 10.0.1.2 to 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:44 darc dhcpd: DHCPREQUEST for 10.0.1.2 (10.0.1.1) from 00:0e:0c:9f:36:52 via eth1
+Sep 28 21:33:44 darc dhcpd: DHCPACK on 10.0.1.2 to 00:0e:0c:9f:36:52 via eth1
+**
+Sep 28 21:33:44 darc mountd[3293]: authenticated mount request from ig1:1005 for /tftpboot/root/ig1 (/tftpboot/root/ig1)
+Sep 28 21:33:44 darc mountd[3293]: authenticated mount request from ig1:1010 for /bin (/bin)
+Sep 28 21:33:44 darc mountd[3293]: authenticated mount request from ig1:1011 for /sbin (/sbin)
+Sep 28 21:33:44 darc mountd[3293]: authenticated mount request from ig1:1012 for /lib (/lib)
+Sep 28 21:33:44 darc mountd[3293]: authenticated mount request from ig1:1013 for /usr (/usr)
+Sep 28 21:34:02 darc mountd[3293]: authenticated mount request from ig1:846 for /usr/g (/usr/g)
+Sep 28 21:35:55 darc pam_rhosts_auth[9225]: allowed to ctuser@oc as ctuser
+Sep 28 21:35:55 darc rsh(pam_unix)[9225]: session opened for user ctuser by (uid=0)
+**
+Sep 28 21:35:57 darc vrac_flash_update[9242]: started check of VRAC FLASH; argv=['ig1', 'ig2', 'ig3'] 
+Sep 28 21:35:58 darc vrac_flash_update[9242]: ig1: IPMI status 0
+Sep 28 21:35:58 darc vrac_flash_update[9242]: ig1: set SOL baud rate to 57600
+Sep 28 21:35:59 darc vrac_flash_update[9242]: checking/updating FLASH ig1
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1:  
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: *** num loads   = 3 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: *** region size = 0x140000 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1:  
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: Board ID: 2395084 G 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: File contains VRAC1 bpp 355 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: File contains VRAC1 pbc 452 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: File contains VRAC1 image 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: done reading file '/etc/vrac.elf' 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: bank 0 checksum okay 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: bank 1 checksum okay 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: checking 2621440 bytes starting at region 0 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: FLASH image already matches the input file 
+Sep 28 21:36:03 darc vrac_flash_update[9242]: ig1: status=0 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1:  
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: *** num loads   = 3 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: *** region size = 0x140000 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1:  
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: Board ID: 2395084 G 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: File contains VRAC1 pbc 2002 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: File contains VRAC1 bpp 2004 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: File contains VRAC1 image 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: done reading file '/etc/vrac_thin.elf' 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: bank 0 checksum okay 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: bank 1 checksum okay 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: checking 2621440 bytes starting at region 2 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: FLASH image already matches the input file 
+Sep 28 21:36:07 darc vrac_flash_update[9242]: ig1: status=0 
+Sep 28 21:36:08 darc vrac_flash_update[9242]: ig2: IPMI status 0
+Sep 28 21:36:09 darc vrac_flash_update[9242]: ig2: set SOL baud rate to 57600
+Sep 28 21:36:10 darc vrac_flash_update[9242]: checking/updating FLASH ig2
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2:  
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: *** num loads   = 3 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: *** region size = 0x140000 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2:  
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: Board ID: 2395084 G 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: File contains VRAC1 bpp 355 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: File contains VRAC1 pbc 452 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: File contains VRAC1 image 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: done reading file '/etc/vrac.elf' 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: bank 0 checksum okay 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: bank 1 checksum okay 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: checking 2621440 bytes starting at region 0 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: FLASH image already matches the input file 
+Sep 28 21:36:14 darc vrac_flash_update[9242]: ig2: status=0 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2:  
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: *** num loads   = 3 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: *** region size = 0x140000 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2:  
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: Board ID: 2395084 G 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: File contains VRAC1 pbc 2002 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: File contains VRAC1 bpp 2004 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: File contains VRAC1 image 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: done reading file '/etc/vrac_thin.elf' 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: bank 0 checksum okay 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: bank 1 checksum okay 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: checking 2621440 bytes starting at region 2 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: FLASH image already matches the input file 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig2: status=0 
+Sep 28 21:36:18 darc vrac_flash_update[9242]: ig3: IPMI status 0
+Sep 28 21:36:19 darc vrac_flash_update[9242]: ig3: set SOL baud rate to 57600
+Sep 28 21:36:20 darc vrac_flash_update[9242]: checking/updating FLASH ig3
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3:  
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: *** num loads   = 3 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: *** region size = 0x140000 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3:  
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: Board ID: 2395084 G 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: File contains VRAC1 bpp 355 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: File contains VRAC1 pbc 452 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: File contains VRAC1 image 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: done reading file '/etc/vrac.elf' 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: bank 0 checksum okay 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: bank 1 checksum okay 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: checking 2621440 bytes starting at region 0 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: FLASH image already matches the input file 
+Sep 28 21:36:24 darc vrac_flash_update[9242]: ig3: status=0 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3:  
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: *** num loads   = 3 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: *** region size = 0x140000 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3:  
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: VRAC_FLASH_IMAGE_SIZE=0x140000 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: Board ID: 2395084 G 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: File contains VRAC1 pbc 2002 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: File contains VRAC1 bpp 2004 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: File contains VRAC1 image 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: done reading file '/etc/vrac_thin.elf' 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: bank 0 checksum okay 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: bank 1 checksum okay 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: checking 2621440 bytes starting at region 2 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: FLASH image already matches the input file 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: ig3: status=0 
+Sep 28 21:36:28 darc vrac_flash_update[9242]: FLASHed 3 of 3 IGs
+Sep 28 21:36:28 darc vrac_flash_update[9242]: all IGs FLASHed
+</PRE><P CLASS="sect1">A bit later at 9:38 PM we see:</P><PRE>Sep 28 21:38:25 darc logger: is_IG_up 3 ig1 called
+Sep 28 21:38:25 darc logger: is_IG_up 3 ig2 called
+Sep 28 21:38:25 darc logger: is_IG_up 3 ig3 called
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10834]: ig1 is up
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10840]: ig3 is up
+Sep 28 21:38:25 darc is_IG_up:[recon_control:10837]: ig2 is up
+
+
+Almost an hour has passed and the console is being shutdown.
+After talking to Thony the site FE:
+Here it looks to me like the user shutdown and probably removed the Jarrell VIG Node from IG1 position and replaced the intermittent Westville VIG Node into (eth1) lowest slot 1!!!
+</PRE><P CLASS="sect1">Then restarted and brought the console UP.</P><PRE>Sep 28 22:22:10 darc darc_init: terminated on signal 15
+Sep 28 22:22:15 darc shutdown: shutting down for system halt
+
+Sep 28 22:22:17 darc igpower2: ##### IGPOWER2 #####
+Sep 28 22:22:18 darc igpower: ig2 Chassis Power Control: Down/Off
+Sep 28 22:22:22 darc kernel: e1000: eth0: e1000_watchdog_task: NIC Link is Down
+Sep 28 22:22:24 darc kernel: e1000: eth0: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 22:22:26 darc igpower: ig2 Chassis Power is Off
+Sep 28 22:22:26 darc igpower3: ##### IGPOWER3 #####
+Sep 28 22:22:26 darc igpower: ig3 Chassis Power Control: Down/Off
+Sep 28 22:22:31 darc kernel: e1000: eth3: e1000_watchdog_task: NIC Link is Down
+Sep 28 22:22:32 darc kernel: e1000: eth3: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 22:22:34 darc igpower: ig3 Chassis Power is Off
+
+Sep 28 23:08:30 darc syslogd 1.4.1: restart.
+
+
+Sep 28 23:08:33 darc kernel: e1000: eth0: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:33 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:33 darc kernel: e1000: eth3: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:33 darc kernel: e1000: eth4: e1000_watchdog_task: NIC Link is Up 1000 Mbps Full Duplex
+
+
+Sep 28 23:08:35 darc igpower: ig1 Chassis Power is Off
+Sep 28 23:08:36 darc igpower: ig1 Chassis Power Control: Up/On
+Sep 28 23:08:37 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Down
+Sep 28 23:08:39 darc kernel: e1000: eth1: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:40 darc igpower: ig1 Chassis Power is On
+Sep 28 23:08:40 darc igpower2: ##### IGPOWER2 #####
+Sep 28 23:08:41 darc igpower: ig2 Chassis Power is Off
+Sep 28 23:08:42 darc igpower: ig2 Chassis Power Control: Up/On
+Sep 28 23:08:43 darc kernel: e1000: eth0: e1000_watchdog_task: NIC Link is Down
+Sep 28 23:08:44 darc kernel: e1000: eth0: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:45 darc igpower: ig2 Chassis Power is On
+Sep 28 23:08:46 darc igpower3: ##### IGPOWER3 #####
+Sep 28 23:08:47 darc igpower: ig3 Chassis Power is Off
+Sep 28 23:08:48 darc igpower: ig3 Chassis Power Control: Up/On
+Sep 28 23:08:49 darc kernel: e1000: eth3: e1000_watchdog_task: NIC Link is Down
+Sep 28 23:08:50 darc kernel: e1000: eth3: e1000_watchdog_task: NIC Link is Up 100 Mbps Full Duplex
+Sep 28 23:08:51 darc igpower: ig3 Chassis Power is On
+</PRE><P CLASS="sect1">Looks like Apps start up is mounting md0 disk array:</P><PRE>Sep 28 23:09:03 darc kernel: XFS mounting filesystem md0</PRE><P CLASS="sect1">Still later:</P><PRE>Sep 28 23:10:18 darc logger: is_IG_up 3 ig1 called
+Sep 28 23:10:18 darc logger: is_IG_up 3 ig2 called
+Sep 28 23:10:18 darc logger: is_IG_up 3 ig3 called
+Sep 28 23:10:21 darc is_IG_up:[recon_control:7975]: ig2 is up
+Sep 28 23:10:21 darc is_IG_up:[recon_control:7972]: ig1 is up
+Sep 28 23:10:21 darc is_IG_up:[recon_control:7978]: ig3 is up
+</PRE><P CLASS="sect1">And that pretty much ends this log file &#8211; system sat idle!</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1771095-1014389">5&nbsp;&nbsp;IPMITOOL<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The ipmitool should be available (without the need to activate
+it manually) on all CT / PET systems. The ipmitool command allows
+the user to look at the DARC Node using the Ethernet Cable from the
+Host to the DARC Node, but does not utilize the NIC. The ipmitool
+command requirements are that the:</P><UL><LI CLASS="bulletlist"><P>AC Line-in Power Cord be connected
+and good.</P></LI><LI CLASS="bulletlist"><P>Rear-panel DARC Node power switch be
+turned on.</P></LI><LI CLASS="bulletlist"><P>Ethernet Cable between the Host and
+DARC Node be good and be properly connected in the correct ports.</P></LI></UL><P CLASS="sect1">To turn on the ipmitool:</P><PRE>[root@hostname]# cd /usr/g/DARC_RPM
+[root@hostname]# ls</PRE><PRE>ipmitool-1.8.2-1.rhel3.i386.rpm</PRE><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e782"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Type the following command up to and including <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>replacesfiles</B></FONT></SPAN> and the <SPAN CLASS="KEYBOARD">&lt;spacebar&gt;</SPAN>. Then
+copy and paste the latest version of the ipmitool version command,
+as shown. The ipmitool version command contains the number one and
+the lower case letter L which can be easy misread.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># rpm -i -U --nodeps
+--hash --replacefiles ipmitool-1.8.2-1.rhel3.i386.rpm</B></FONT></SPAN></P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e796"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Then ipmitool will display output that it has installed,
+or it may already have been installed and will display an output.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">########################################### [100%] </P><P CLASS="sect1">package ipmitool-1.8.2-1.rhel3 is already installed </P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1894158-1014389">5.1&nbsp;&nbsp;Sensor State<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following example (<A HREF="javascript:winopen('1014389illd0e811.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  3</A>) shows the current sensor state (in/out of spec)
+of the host described by the "-H" option. The sensors &#8211;v command has
+been replaced due to garbled output in 07MWxx.x software. </P><P CLASS="sect2"><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Current Sensor State of the Host Described by the "-H" Option</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1057207.jpg" BORDER="0" usemap="#1057207.jpg"></P></DIV></P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1894159-1014389">5.2&nbsp;&nbsp;Chassis Power Status<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following example (<A HREF="javascript:winopen('1014389illd0e824.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  4</A>) shows the current chassis power status or state
+of the host described by the "-H" option with 07MWxx.x software.</P><P CLASS="sect2"><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Current Chassis Power Status or State of the Host Described
+by the "-H" Option</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1057208.jpg" BORDER="0" usemap="#1057208.jpg"></P></DIV></P><PRE>[root@hostname]# rsh darc
+Last login: Mon Aug  6 19:35:00 from oc
+You have new mail.
+[root@darc ~]# ipmitool -I lan -H ig1 -A NONE chassis power status
+Chassis Power is on
+
+[root@darc ~]# ipmitool -I lan -H ig1 -A NONE chassis power status
+Chassis Power is off
+[root@darc ~]# service igpower1 start
+Starting ig1:                                              [  OK  ]
+
+To remove power to the chassis, perform the following command:
+[root@darc ~]# service igpower1 stop
+Stopping ig1:                                              [  OK  ]
+</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1894160-1014389">5.3&nbsp;&nbsp;System Event Log<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following example (<A HREF="javascript:winopen('1014389illd0e840.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  5</A>) shows the current System Event Log (lots of
+noise!) of the host described by the "-H" option with 07MWxx.x software
+and the command to select a record ID.</P><P CLASS="sect2"><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Current System Event Log of the Host Described by the "-H"
+Option</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1057206.jpg" BORDER="0" usemap="#1057206.jpg"></P></DIV></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1894161-1014389">6&nbsp;&nbsp;VDARC Node DPCPROXY SERVER and CLISERVICE<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>{ctuser@hostname} su -
+Password: &lt;password&gt;
+[root@hostname]# telnet localhost 623
+Trying 127.0.0.1...
+Failed to connect to localhost.
+[root@hostname]# rsh darc
+Last login: Mon Aug  6 19:35:00 from oc
+You have new mail.
+[root@darc ~]# ps -aef |grep dpcproxy
+root      3836  3817  0 15:07 pts/10   00:00:00 grep dpcproxy
+</PRE><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e852"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the /usr/local/cli/dpcproxy information is not displayed
+then restart the cliservice. .<p>Alternate command: ps -aef | grep &#8211;v grep | grep dpcproxy </p><p>When this command is performed (ignore grep) then there will
+not be any output at all if the dpcproxy server is not running</p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>[root@hostname]# service cliservice start
+The dpcproxy is running
+dpcproxy cliservice has been restarted
+[root@hostname]# ps -aef |grep dpcproxy
+root      2891     1  0 14:51 ?        00:00:00 /usr/local/cli/dpcproxy
+root      3836  3817  0 15:07 pts/10   00:00:00 grep dpcproxy
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1894162-1014389">7&nbsp;&nbsp;dmidecode Command<SPAN CLASS="SECT1EFF"> </SPAN></H2><PRE>Password: &lt;password&gt;
+[root@hostname]# telnet localhost 623
+[root@darc ~]# rsh darc
+Last login: Mon Aug  6 19:35:00 from oc
+You have new mail.
+[root@darc ~]# dmidecode | grep -i version
+                Version: SWV25.86B.0218.P28.0405111912 (example ONLY)
+[root@darc ~]# rsh ig1
+</PRE><P CLASS="sect1">(ignore the following messages)</P><PRE>connect to address 10.0.1.2: Connection refused 
+Trying krb4 rlogin...
+connect to address 10.0.1.2: Connection refused
+trying normal rlogin (/usr/bin/rlogin)
+Last login: Mon Aug  6 19:35:00 from darc
+[root@ig1 ~]# dmidecode | grep  -i  version
+                Version: SWV25.86B.0218.P28.0405111912 (example ONLY)
+[root@ig1 ~]# exit
+logout
+rlogin: connection closed.
+[root@darc ~]# exit
+logout
+rlogin: connection closed.
+</PRE></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

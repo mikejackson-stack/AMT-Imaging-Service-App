@@ -1,0 +1,51 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Case History: Faults When Using MRI PA Extrem SM Coil </TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5500113,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;3<BR>Discovery MR450 1.5T Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">Case History: Faults When Using MRI PA Extrem SM Coil  </H1><P CLASS="descriptive">Background: This is a 4-channel coil that uses channels 3 - 6.   Here&#8217;s
+what the error log says:</P><DIV CLASS="INFTABLE"><div align="center"><table border="1"><colgroup><col width="673"></colgroup><tbody valign=""><tr valign="top"><td valign=""><PRE>Tue Feb 18 15:11:33 2003       Error: 2252303
+ Host: lx-mr                                    Process: NSP               
+ File: SCP:DCB                                  Line: 944    
+Multicoil Bias Fault Detected - Short Circuit.
+Try re-seating all coil connectors.
+MCD1    Channel 6 of 16, counting from 1
+Value: -475 mA    Limit: -301 mA
+Mask of all failed channels: 0x20-&gt;
+</PRE></td></tr></tbody></table></div></DIV><P CLASS="descriptive">Note the last line Mask of all failed channels: 0x20-&gt;.  The last number
+is a hexidecimal representation of the failing channels.  Convert 20 hex to
+binary.  This is 00100000.  The Least Significant Bit (LSB) on the far right
+signifies channel 1 and the MSB on the far left signifies channel 8.  The
+&#8216;1&#8217; marks a failed channel.  We see from the message text and
+the binary code that channel 6 has failed.  The system only reports the first
+channel that failed in the error log.  So you&#8217;d expect to see the same
+error text as above if channel 6 and any of the other channels greater than
+6 (i.e. 7 and/or 8) also failed.  What would tell you that not only 6 but
+7 and/or 8 failed would be the hexidecimal number reported in the last line.
+ A 0x60 (ch 6 &amp; 7), 0xA0 (ch 6 &amp; 8), or 0xE0 (ch 6 - 8) value would
+tell you this.  Convert the hex code to binary and you know which lines are
+failing.  Remember that since each hexidecimal character can only represent
+up to 4 binary bits (hexidecimal A is decimal 15 is 1111 binary), and 1 bit
+is represented for each channel (8 bits total) in the LPCA, then two hexidecimal
+characters will always be needed to represent the Mask.  This is true irrespective
+of whether the system has 8 or 4 receive channels in the MGD because all systems
+have 8 channels in the LPCA.  If, for example, none of channels 5 - 8 have
+failed but channels 2 and 4 in the LPCA report a fault then the system will
+omit the leading 0 (zero) and just display the Mask value as 0xA.  A Mask
+of 0xA converts to 00001010 binary.  When reading the Mask value you have
+to remember that since two hexidecimal characters are required, because 1
+bit is needed to represent each of the 8 channels in the LPCA, if only one
+hexidecimal value is displayed then there is a leading 0 (zero) ahead of the
+displayed value.  The system doesn&#8217;t display a leading 0 (zero).  </P><P CLASS="descriptive">Situation:  The FE ran Gather Load Data with the coil connected.  The
+channels are listed counting from 0 (which is really physical channel 1) to
+31 (really physical channel 32).  We currently only use channels 0 (1) to
+7 (8).  The others are for future use.   The resultant file, XXXX_mc.txt (where
+FE specifies XXXX in output box before test is run) was generated and stored
+in /usr/g/service/log.  The resultant file is shown in <A HREF="javascript:winopen('149217illd0e45.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>:</P><DIV CLASS="ILLUSTRATION" id="SL149226-149217"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Resultant Load Data</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/149217-149221.jpg" BORDER="0" usemap="#SL149223-149217"></P></DIV><DIV CLASS="ILLUSTRATION" id="ov-1285100425285"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Resultant Load Data (Continued)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/149217-158052.jpg" BORDER="0" usemap="#SL158056-149217"></P></DIV><DIV CLASS="ILLUSTRATION" id="ov-1285100425687"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Resultant Load Data (Continued)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/149217-158054.jpg" BORDER="0" usemap="#SL158058-149217"></P></DIV><P CLASS="descriptive">Epilogue: FE ran Gather Load Data test again, this time without any
+coil connected to the LPCA.  No short-circuit condition was seen on channel
+5 (6).  Channels 0 (1) - 7 (8) all looked about the same. The LPCA electronics
+and everything else in the Multicoil TR biasing path appeared to be in good
+working order. The coil had a shorted channel 6.  Replacing the coil fixed
+the problem.  The same process of troubleshooting is used for troubleshooting
+open-circuit conditions except that now we would expect to see obvious problems
+in the Open_Section of the result file and perhaps less obvious signs of trouble
+in the Short_Section.  </P><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

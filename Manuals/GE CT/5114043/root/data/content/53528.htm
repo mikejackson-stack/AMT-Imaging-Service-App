@@ -1,0 +1,61 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>mA Troubleshooting Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5114043-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;9<BR>LightSpeed 3.X Service Methods (Advanced)</P></td></tr></table><H1 ID="top">mA Troubleshooting Theory </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780908529">1&nbsp;&nbsp;mA Meter Verification Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The purpose of mA Meter Verification is to ensure that the mA Measurement
+Electronics has a gain of one between actual tube current and reporting to
+the firmware. This firmware value would then be reported to the console.</P><P CLASS="sect1">The method outlined in various GEMS documents is to install an ISO compliant,
+calibrated ammeter across two test points. This meter effectively shorts out
+a 680ohm resistor. The next step is to install a 62ohm resistor from one side
+of the ammeter to the mA test point (TP5) on the measurement Bd.</P><P CLASS="sect1">TP5 is a voltage representation of tube current. This voltage is feed
+to the mA Control Bd. in the OBC and the resultant mA is fed to the firmware
+and can be read from a mA test point. This is where the gain of one is needed,
+between the Measurement Bd. TP5 and the mA Control Bd. mA Test Point.</P><P CLASS="sect1">When <SPAN CLASS="GUIBUTTON"> [ACCEPT] </SPAN> is touched on the console screen
+and after a time delay Q1 is turned on (+)15vdc (0r -15vdc) is applied through
+the ammeter (not the shorted out 680ohm resistor), through the 68ohm resistor
+to TP5. 15vdc over 62ohm comes out to 242mA, add in the other resistances
+in the measurement circuit an it comes out to be about 140mA to 200mA.</P><P CLASS="sect1">It really doesn&#8217;t matter what the actual mA is, all that matters
+is that the console reading (firmware value from the mA Test Points) MATCHES
+what the ISO compliant, calibrated ammeter says.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780908538">2&nbsp;&nbsp;SW and HW Tools Available for Troubleshooting<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780908540">2.1&nbsp;&nbsp;Schematics<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>mA/Filament Control Bd. Schematics 2154834SCH</P></LI><LI CLASS="bulletlist"><P>OBC Backplane list</P></LI><LI CLASS="bulletlist"><P>Gantry Rotating Member Block Diagram</P></LI><LI CLASS="bulletlist"><P>Gantry_Rotating_Interconnect</P></LI><LI CLASS="bulletlist"><P>X-Ray Tube 120 VAC</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1228780908554">2.2&nbsp;&nbsp;Equipment<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>Multi-meter</P></LI><LI CLASS="bulletlist"><P>Oscilloscope</P></LI></UL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780908561">3&nbsp;&nbsp;Explanation of Cathode &amp; Anode mA Results Screen<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="275"><col width="118"><col width="115"><col width="122"></colgroup><tbody><tr><td align="left" valign="top">Cathode mA:</td><td align="left" valign="top">193.7mA</td><td align="left" valign="top">200.0mA</td><td align="left" valign="top">193.7mA</td></tr></tbody></table></CENTER></DIV><P CLASS="sect1">This value comes from the mA Control Bd. <SPAN CLASS="PARTNUM" TITLE="FRU 1">2154834</SPAN> TP4,
+through the backplane and Gentry I/O bd. Since the cathode is in series with
+the anode, TP4 should be the same value as the TP10 (anode mA, they are in
+series). The scale is 1v/100mA.</P><P CLASS="sect1">In closed loop mode TP4 should be commanded mA. In open loop mode the
+value should be less (whatever is in GenCalSeed). TP4 is actually the cathode
+high voltage tank secondary amperage, the x-ray tube is the load for the secondary.
+mA Meter Verification verifies that the measurement electronics have a gain
+of one and that reported mA is actual mA.</P><P CLASS="sect1">Cathode high voltage tank secondary amperage (and x-ray tube mA) is
+the direct result of filament heating, for improper mA include filament function
+while troubleshooting. If mA is out of tolerance (3%), check kV values for
+large errors, verify mA metering, and run the Filament Functional test. BLDs
+can help also.</P><P CLASS="sect1">If cathode and anode mA are different, suspect mA measurement electronics
+(use mA Meter Test), or suspect a shattered x-ray tube insert shorting out
+the filament (cathode) or the anode.</P><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="275"><col width="117"><col width="119"><col width="117"></colgroup><tbody><tr><td align="left" valign="top">Anode mA:</td><td align="left" valign="top">193.7mA</td><td align="left" valign="top">200.0mA</td><td align="left" valign="top">193.7mA</td></tr></tbody></table></CENTER></DIV><P CLASS="sect1">This value comes from the mA Control Bd. <SPAN CLASS="PARTNUM" TITLE="FRU 1">2154834</SPAN> TP10,
+through the backplane and Gentry I/O bd. Since the cathode is in series with
+the anode, TP10 should be the same value as the TP4 (cathode mA, they are
+in series). The scale is 1v/100mA.</P><P CLASS="sect1">In closed loop mode TP10 should be commanded mA. In open loop mode the
+value should be less (whatever is in GenCalSeed). TP10 is actually the anode
+high voltage tank secondary amperage, the x-ray tube is the load for the secondary.
+mA Meter Verification verifies that the measurement electronics have a gain
+of one and that reported mA is actual mA.</P><P CLASS="sect1">Anode high voltage tank secondary amperage (and x-ray tube mA) is the
+direct result of filament heating, for improper mA include filament function
+while troubleshooting. If mA is out of tolerance (3%), check kV values for
+large errors, verify mA metering, and run the Filament Functional test. BLDs
+can help also.</P><P CLASS="sect1">If cathode and anode mA are different, suspect mA measurement electronics
+(use mA Meter Test), or suspect a shattered x-ray tube insert shorting out
+the filament (cathode) or the anode.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1228780908618">4&nbsp;&nbsp;Reference Material<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Simplified schematic</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/53531.jpg" BORDER="0" usemap="#53531.jpg"></P></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Normal mA waveshape for 80kV, 100mA.</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/53534.jpg" BORDER="0" usemap="#53534.jpg"></P></DIV><UL><LI CLASS="bulletlist"><P>Channel A:0.5 v Board: mA Control <SPAN CLASS="PARTNUM" TITLE="FRU 1">2154834</SPAN> scope:
+TEK 224</P></LI><LI CLASS="bulletlist"><P>Vert: 0.5v Horz:5mS TP 10 to TP 2</P></LI><LI CLASS="bulletlist"><P>80KV 100mA CLOSED LOOP mA TP10 (anma) to TP2 (sgnd)</P></LI></UL><P CLASS="sect1">This is a picture of the mA feedback read off of the mA Control Bd,
+with CLOSED LOOP mA selected. There should not be a great difference between
+CLOSED LOOP mA and OPEN LOOP mA. IF there is, it indicates that CLOSED LOOP
+is trying to make up for a problem, investigate for root cause.</P><P CLASS="sect1">Anode and cathode mAs are in series. Therefore anode and cathode mA
+waveshapes are duplicates.</P><P CLASS="sect1">Comment: If not, either Ohm&#8217;s law has been redefined for series
+circuits, or there is a problem. Verify for a measurement problem first.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Normal mA waveshape for 80kV, 320mA.</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/53539.jpg" BORDER="0" usemap="#53539.jpg"></P></DIV><UL><LI CLASS="bulletlist"><P>Channel A: 1v=5mS Board: mA control <SPAN CLASS="PARTNUM" TITLE="FRU 1">2154834</SPAN> scope:TEK
+244 B:1v=5mS Vert:1v Horz:5mS.</P></LI><LI CLASS="bulletlist"><P>Ch 1 (a)= 80KV 320mA CLOSED LOOP mA TP10 (ANMA) to TP2 (sgnd)</P></LI><LI CLASS="bulletlist"><P>Ch 2 (b)= 80KV 320mA CLOSED LOOP mA TP4 (CAMA) to TP2 (sgnd)</P></LI></UL><P CLASS="sect1">This is a picture of the mA feedback read off of the mA control bd.</P><P CLASS="sect1">There should not be a great difference between CLOSED LOOP mA and Open
+loop mA. If there is, it indicates that CLOSED LOOP is trying to make up for
+a problem, investigate for root cause.</P><P CLASS="sect1">Anode and cathode mAs are in series. Therefore anode and cathode mA
+waveshapes are duplicates. If not, either Ohm&#8217;s law has been redefined
+for series circuits, or there is a problem. [I would verify for a measurement
+problem first.]</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Normal mA waveshape for 80kV, 320mA OPEN LOOP MODE</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/53542.jpg" BORDER="0" usemap="#53542.jpg"></P></DIV><UL><LI CLASS="bulletlist"><P>channel a:1v=50mS Board scpoe:TEK 224</P></LI><LI CLASS="bulletlist"><P>b:1v=50mS mA control Vert:1v</P></LI><LI CLASS="bulletlist"><P>2154834 Horz: 50mS</P></LI><LI CLASS="bulletlist"><P>ch1 (a) =80KV 320mA OPEN LOOP mA TP10 (anma) to TP2 (sgnd)</P></LI><LI CLASS="bulletlist"><P>ch2 (b) =80KV 320mA OPEN LOOP mA TP4 (cama) to Tp2 (sgnd)</P></LI></UL><P CLASS="sect1">In open Loop Mode, there is a possibility of exceeding 400mA. DO NOT
+RUN the mA HIGHER THAN 350mA IN OPEN LOOP MODE. Exceeding 400mA WILL DAMAGE
+the H.V. subsystem.</P><P CLASS="sect1">This is a picture of the mA feedback read off of the mA Control Bd,
+with OPEN LOOP mode selected.</P><P CLASS="sect1">Compare this picture with CLOSED LOOP mA at the same technique. Note
+that in OPEN LOOP mode the mA is not regulated to a perfect 320 mA.</P><P CLASS="sect1">There should not be a great difference between CLOSED LOOP mA and OPEN
+LOOP mA. If there is, it indicates that CLOSED LOOP is trying to make up for
+a problem. Investigate for root cause.</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

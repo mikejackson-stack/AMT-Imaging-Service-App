@@ -1,0 +1,914 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Console Diagnostics (07MW18.4) - GOC3/GOC4</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric<BR><B>Direction&nbsp;&nbsp;</B>5193855-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;4<BR>LS 5.X RT Ltd. Access Service Information Adv</P></td></tr></table><H1 ID="top">Console Diagnostics (07MW18.4) - GOC3/GOC4 </H1><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="49%"><col width="50%"></colgroup><tbody><tr><td>Last Revised:</td><td>19 November, 2007</td></tr></tbody></table></CENTER></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444659-1012224_1">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Console Diagnostics are a series of hardware specific scripts
+that utilize common commands automatically. This allows the user to
+test and or retest consistently without the need for manual keyboard
+entry. The commands used are basic. The scripts verify communication
+as required from one Node to another. Additionally, the Node type
+is identified (as xw8000 or xw8200 for Hosts, and as Jarrell or non-Jarrell
+for DARC and IG Nodes). When applicable the script will perform memory,
+BIOS and Disk Drive existence. Diagnostics commands that were loaded
+during the software installation are called up to run and will exercise
+the DARC DIP Board, the IG Node RAC and the Disk Array (2 raw data
+disks). Console Diagnostics verify the basic ability for performance
+in both a manufacturing and field service environment.</P><P CLASS="sect1">This tutorial addresses the Console Diagnostic tests available
+on the Class C CD for GOC3 and GOC4 Operator Consoles with 07MW18.4
+software release. This software also supports the release of Jarrell
+(DARC2 Node and IG Node) hardware.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e47"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The word Jarrell is spelled incorrectly (Jarrell) in the
+IG Node RAC output window(s) for this Pathfinder software release.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">To access the Common Service Desktop, click on the <SPAN CLASS="GUIBUTTON"> [Service] </SPAN> icon, then <SPAN CLASS="GUIBUTTON"> [Diagnostics] </SPAN>, then <SPAN CLASS="GUIBUTTON"> [Console Diagnostics] </SPAN>. (See <A HREF="javascript:winopen('1012224illd0e63.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A>.) Instructions
+are provided to shut down applications and perform manual entry in
+a Unix shell to invoke the diagnostic tool. </P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Console Diagnostics Screen</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/1012433.jpg" BORDER="0" usemap="#1012433.jpg"></P></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e68"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Class C must be loaded and the Service Key installed to
+perform Console Diagnostics.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444660-1012224_1">2&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Application Software must be brought down with one
+of the following methods:</P><UL><LI CLASS="bulletlist"><P>CSD (Common Service Desktop) via the Utilities / Application
+Shutdown selection</P></LI><LI CLASS="bulletlist"><P>Unix Shell: {ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cleanMon</B></FONT></SPAN></P></LI></UL></LI><LI CLASS="numlist"><P>The Operator Console should be rebooted before starting
+Auto-Console Diagnostics.</P><P>If a failure occurs during the testing and the Operator Console
+has not been rebooted prior to performing the diagnostic test selections,
+then reboot and retest the Auto-Console Diagnostics.</P></LI><LI CLASS="numlist"><P>Before performing Auto-Console Diagnostic testing
+open a Unix Shell and verify the following to insure hardware [DARC
+or DARC2 Node and IG Node(s)] readiness. If the hardware is not ready,
+the diagnostic may be able to assist in determining the issue.</P><UL><LI CLASS="bulletlist"><P>{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  darc</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  ig1</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@ig1} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  ig2</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@ig2} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  ig3</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@ig3} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@ hostname }</P></LI></UL></LI><LI CLASS="numlist"><P>Media Failures: New (approved) media should be reserved
+for the SCSI Tower testing. Media should be formatted in advance and
+not write-protected.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444661-1012224_1">3&nbsp;&nbsp;Issues<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Media Failures: during the SCSI Tower testing (MOD
+and DVD) the media content will be destroyed. There may be content
+/ data on media that may cause the DVD and MOD tests to fail. Whenever
+possible, new or specific media should be reserved for the SCSI Tower
+testing. Additionally, if the MOD or DVD tests fail, repeat the test
+and it may pass (and continue to pass). This may be a timing issue.</P><P>All system or customer media must be removed from the SCSI Tower
+before performing Auto-Console Diagnostics. This is done to avoid
+overwriting the DVD System State or any Customer MOD content. SCSI
+Tower (MOD/DVD) tests are always destructive to the content of the
+media installed in the SCSI Tower.</P></LI><LI CLASS="numlist"><P>Test anomalies: The Auto-Console Diagnostic script
+output may report a failure when attempting to ping or rsh (the VDARC
+or DARC2 and or the IG Nodes). However, the test continues and other
+checks or diagnostics pass. This may be a timing issue.</P></LI><LI CLASS="numlist"><P>Test menu selection 8 is for Installation or for testing
+after a LFC (Load From Cold) or a DARC or DARC2 replacement. Test
+selection #8 was designed to recreate or repartition the Disk Array
+(2 raw disks located in the DARC2 Node or the SDDA) and erase all
+serial numbers. A pop-up informs the user that the repartition will
+occur. The script shall perform the erase/create, assemble and query
+commands (with application software down ONLY).</P><UL><LI CLASS="bulletlist"><P>{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rsh  darc</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo  gre-raid  -z  -c    </B></FONT></SPAN>(erase all disk s/n and create)</P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>yes</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo  gre-raid  -a</B></FONT></SPAN>	      (assemble the Disk Array)</P></LI><LI CLASS="bulletlist"><P>{ctuser@darc} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sudo  gre-raid  -q</B></FONT></SPAN>	 (query the Disk Array)</P></LI></UL></LI><LI CLASS="numlist"><P>Try not to move the mouse around in the pop-up windows.
+ Wait until the tests are completed to view the results.</P></LI><LI CLASS="numlist"><P>Test #1, #2. #7 or #8 will allow selection of the
+DARC or DARC2 Test and the subsequent DIP Test script is performed
+with or without loopback capability. If loopback capability is selected
+(Yes, run the loopback test ) the DIP Board diagnostic will test the
+RX/TX ports.</P><P>If the test fails when loopback capability is selected, the
+site problem may be one of the following issues:</P><UL><LI CLASS="bulletlist"><P>The Console's internal Fiber Optic Cable is faulty.
+Isolate the DIP from the internal fiber optic cabling and re-run the
+DIP loopback test.</P><P></P></LI><LI CLASS="bulletlist"><P>The loopback cabling is not installed, it is bad,
+or it is not fully installed (clicked in)</P></LI><LI CLASS="bulletlist"><P>The DIP board is faulty and must result in a DARC
+or DARC2 Node replacement</P></LI></UL></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444662-1012224_1">4&nbsp;&nbsp;Invoking Console Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Install the Service Key.</P></LI><LI CLASS="numlist"><P>If the user cannot perform the required reboot , then
+shutdown Application software to run diagnostics. Open a Unix Shell
+from the Toolchest and bring down Application software if necessary:</P><P>{ ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cleanMon</B></FONT></SPAN></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e218"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Console Diags requires an Operator Console reboot for
+optimal performance.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Close this Unix Shell.</P></LI><LI CLASS="numlist"><P>With Application Software down, open a Unix Shell
+and type the following:</P><UL><LI CLASS="bulletlist"><P>{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd  /usr/g/bin</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ls  *onsole*</B></FONT></SPAN></P><P>console*  ConsoleDiags@  consolediagsgui.py*  HartConsoleCollect*</P></LI><LI CLASS="bulletlist"><P>{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ConsoleDiags</B></FONT></SPAN></P></LI></UL></LI><LI CLASS="numlist"><P>A Pink Pop-Up Box appears. Click on the <SPAN CLASS="GUIBUTTON"> [ENTER] </SPAN> box to continue. The message below is displayed:</P><P>====================================================</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Starting console diagnostics...</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Console diags tool must be run as root.</FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Enter the root password when prompted.</FONT></SPAN></P><P>====================================================</P></LI><LI CLASS="numlist"><P>Input the required root Password: </P><P>Password: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#bigguy</B></FONT></SPAN></P></LI><LI CLASS="numlist"><P>The Auto-Configuration Screen appears describing the
+Console Type and the number of IG Nodes presently configured.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward. The <SPAN CLASS="GUIBUTTON"> [Previous] </SPAN> button allows the
+user to return to a previous screen. The <SPAN CLASS="GUIBUTTON"> [Cancel] </SPAN> button cancels the Auto-Console diagnostic script and allows the
+script to perform the clean-up process. The <SPAN CLASS="GUIBUTTON"> [Start Over] </SPAN> button places the user at the Auto-Configuration Screen.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e289"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The number of IG Nodes is based on the value selected
+during the LFC on the Hardware Screen. If this number is incorrect,
+perform a reconfig as root on the Host. Select the correct number
+of IG Nodes and then Accept.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>The next Screen (after the Auto-Configuration Screen)
+is additional information describing the Operator Console hardware
+and software present. This information is mainly pulled from the cat
+/usr/g/config/INFO file. The number of IG Nodes is pulled from a recon
+hardware file.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444666-1012224_1">5&nbsp;&nbsp;Menu Selections for Console Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Menu Screen provides the selection methodology for testing
+the various hardware residing within the Operator Console when performing
+Auto-Console Diagnostics.</P><OL><LI CLASS="numlist"><P>Recon Hardware: DARC, Disk Array, IG Node(s)</P></LI><LI CLASS="numlist"><P>DARC</P></LI><LI CLASS="numlist"><P>Disk Array (2 raw disks located in either the DARC2
+Node or the SDDA)</P></LI><LI CLASS="numlist"><P>IG Node(s) &#8211; all present in the config file</P></LI><LI CLASS="numlist"><P>SCSI Tower &#8211; MOD and DVD (destructive to media content)</P></LI><LI CLASS="numlist"><P>Host Computer</P></LI><LI CLASS="numlist"><P>All Non-Destructive Tests (excludes the SCSI Tower
+tests)</P></LI><LI CLASS="numlist"><P>Installation/LFC Tests &#8211; Destructive!: DARC, Disk
+Array (destructive disk array data), IG Node(s), SCSI Tower (destructive
+to media content), Host Computer</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444668-1012224_1">6&nbsp;&nbsp;Running Console Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Click on a test menu selection.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Repetitive Screen.</P></LI></OL><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444669-1012224_1">6.1&nbsp;&nbsp;Repetitive Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>The next screen (not shown) is repetitive information
+of the test selection.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Contact Screen (or the Repartition Warning Screen
+Test selection #8 ONLY).</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444670-1012224_1">6.2&nbsp;&nbsp;Repartition Screen for Test #8 Only <SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Whenever Test #8 (Installation/LFC Tests &#8211; Destructive!)
+is selected the repartition Scan Disk warning screen will be present.
+This screen informs the user that Patient Data will be lost/destroyed.
+Test #7 will be the standard selection for all non-destructive tests.
+Test #5 will be the standard selection for all SCSI Tower tests</P></LI><LI CLASS="numlist"><P>Click the button: Yes, I understand.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Contact screen.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444672-1012224_1">6.3&nbsp;&nbsp;Contact Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>The Contact Screen allows the user to inform other
+service personnel and Customers that the Operator Console is in use
+and provides important Contact Information.</P></LI><LI CLASS="numlist"><P>	If necessary, position the cursor in the Name
+entry block and click.</P></LI><LI CLASS="numlist"><P>Enter your Name or the on-call contact.</P></LI><LI CLASS="numlist"><P>Press the Tab keyboard selection.</P></LI><LI CLASS="numlist"><P>Enter the Phone number you can be reached at or the
+on-call contact number.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Iteration Screen (or the Loopback Screen for Test
+selections #1, #2, #7 or #8 ONLY).</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444674-1012224_1">6.4&nbsp;&nbsp;Iteration Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>The Iteration Screen allows the user to select the
+number of passes or iterations required to determine the present failure.
+Normally, a single (1) iteration is usually adequate to determine
+a failure, however, intermittent failures may require extensive iterations.</P></LI><LI CLASS="numlist"><P>In the Iterations entry field block, input the number
+of iterations to be performed.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e408"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">One iteration of all available tests will take an average
+of 11 minutes for the 07MWxx.xsoftware release.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Loopback or Start Screen</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444676-1012224_1">6.5&nbsp;&nbsp;Loopback Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Whenever Test #1, #2. #7 or #8 is run the DARC or
+DARC2Node is selected. This test script allows for a choice to test
+the DIP Board in a stand-alone manner or with a loopback capability.
+If loopback capability is selected the DIP Board diagnostic will test
+the RX/TX ports when the loopback cable is installed.</P></LI><LI CLASS="numlist"><P>Click the button</P><UL><LI CLASS="bulletlist"><P>Yes, run the loopback test</P></LI><LI CLASS="bulletlist"><P>No, do not run the loopback test</P></LI></UL></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Start or Media Screen.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444678-1012224_1">6.6&nbsp;&nbsp;Media Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>Whenever Test #8 is selected the media inserted/ warning
+screen will appear. This screen informs the user that the content
+/data of any media installed in the SCSI Tower (MOD or DVD) will be
+lost/destroyed. Additionally, the user is informed that the System
+State should or write-protected media should not be used. Some users
+may have issues with media containing DICOM.</P></LI><LI CLASS="numlist"><P>Insert the media (MOD and DVD) into the SCSI Tower
+drives.</P></LI><LI CLASS="numlist"><P>Wait one minute or until the media inserted has completed
+initializing.</P></LI><LI CLASS="numlist"><P>Click the button: Yes, the media has been inserted.</P></LI><LI CLASS="numlist"><P>Click on the <SPAN CLASS="GUIBUTTON"> [Next] </SPAN> button to
+move forward to the Start Screen.</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444680-1012224_1">6.7&nbsp;&nbsp;Start Screen<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Start Screen allows the user the choice of starting the
+Auto-Console Diagnostic Tests at any time.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e467"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When the <SPAN CLASS="GUIBUTTON"> [Start] </SPAN> button is selected
+the user may no longer select the <SPAN CLASS="GUIBUTTON"> [Previous] </SPAN> button
+to adjust test selection set-up.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2">Click on the <SPAN CLASS="GUIBUTTON"> [Start] </SPAN> button to begin testing.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444682-1012224_1">7&nbsp;&nbsp;Test Log Files<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Auto-Console Diagnostic log files are overwritten with each
+time the script is run.</P><P CLASS="sect1">{ctuser@hostname} <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>su  -</B></FONT></SPAN></P><P CLASS="sect1">Password: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#bigguy</B></FONT></SPAN></P><P CLASS="sect1">[root@hostname] <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd  /usr/g/bin</B></FONT></SPAN></P><P CLASS="sect1">[root@hostname] <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ls  *_test*.log</B></FONT></SPAN></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444683-1012224_1">8&nbsp;&nbsp;Example Output for Console Diagnostics<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">In this section, examples are provided to assist the user in
+determining potential output. To view a selection, click on a link
+below. When you have finished viewing the output, click the Back button
+to return to this point.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e507"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Not every example of output can be provided (failing vs.
+passing). However, different output may be expected for Westville
+and Jarrell hardware.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><UL><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1491995-1012224_1">Section 10.1</A> - Host Test - xw8000</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444684-1012224_1">Section 10.2</A> - Host Test - xw8200</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444685-1012224_1">Section 10.3</A> - Non-Destructive Disk Array Test</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444686-1012224_1">Section 10.4</A> - DARC Test for a Jarrell DARC Node</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444686-1012224_1">Section 10.4</A> - RAC Test for a Jarrell IG Node</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444687-1012224_1">Section 10.5</A> - MOD Test</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444688-1012224_1">Section 10.6</A> - DVD Test with Failing Output</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444689-1012224_1">Section 10.7</A> - DVD Test with Passing Output</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444690-1012224_1">Section 10.8</A> - DARC Test with Loopback selected but no loopback
+cable installed</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444691-1012224_1">Section 10.9</A> - DARC Test with Loopback Cable Installed</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1444692-1012224_1">Section 10.10</A> - Destructive Disk Array Test with &#8211;c Command</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1444694-1012224_1">9&nbsp;&nbsp;Additional Information<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444697-1012224_1">9.1&nbsp;&nbsp;Power on Console or Reboot Console &#8211; Apps Down<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This section attempts to discuss the usage of manual commands
+and show output for clarity.</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444698-1012224_1">9.1.1&nbsp;&nbsp;Checking DARC Power State and Connection From Host<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The ipmitool is actively available on PET systems. On a CT system
+this tool may need to be activated for use on the Host to the DARC
+Node for the power check. The ipmitool command allows the user to
+look at the DARC Node using the Ethernet Cable from the Host to the
+DARC Node but does not utilize the NIC. The ipmitool command requirements
+are: the AC Line-in Power Cord must be good and properly connected,
+the rear-panel DARC Node power switch (if present) must be set to
+the <B>ON</B> position, and the Ethernet Cable between
+the Host and DARC Node must be good and properly connected in the
+correct ports.</P><P CLASS="sect3">/usr/g/DARC_RPM</P><P CLASS="sect3">[root@hostname]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># cd /usr/g/DARC_RPM</B></FONT></SPAN></P><P CLASS="sect3">root@hostname]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ls</B></FONT></SPAN></P><P CLASS="sect3">ipmitool-1.8.2-1.rhel3.i386.rpm</P><OL><LI CLASS="numlist"><P>Type the following command (including the spacebar
+at the end):</P><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>[root@hostname]# rpm -i -U --nodeps --hash &#8211;replacefiles</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;spacebar&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Then copy and paste the current latest version as
+shown of the ipmitool version.  The ipmitool version command contains
+the number one and the lower case letter L which can be easy misread.</P><P>[root@hostname]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># rpm -i -U --nodeps --hash --replacefiles
+ipmitool-1.8.2-1.rhel3.i386.rpm</B></FONT></SPAN></P><P>Then ipmitool will display output that it has installed &#8211; or
+it may already be installed previously and will display an output.</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">########################################### [100%]
+        package ipmitool-1.8.2-1.rhel3 is already installed</FONT></SPAN></P></LI></OL><P CLASS="sect3">Example of ipmitool usage:</P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ipmitool &#8211;I lan
+&#8211;H darc &#8211;A NONE chassis power status</B></FONT></SPAN></P><P CLASS="sect3">Chassis Power is on.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444699-1012224_1">9.1.2&nbsp;&nbsp;FE To Do List - Error Correction for No Ping to DARC<SPAN CLASS="SECT1EFF"> </SPAN></H4><OL><LI CLASS="numlist"><P>Ensure the DARC power cord is inserted and has rear
+DARC Node power switch (if present) is set to the <B>ON</B> position.</P></LI><LI CLASS="numlist"><P>Ensure the Host to DARC Ethernet cable is fully inserted.</P></LI><LI CLASS="numlist"><P>Try <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p eth#</B></FONT></SPAN> command as
+root, where <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>#</B></FONT></SPAN> is the Ethernet numerical identifier.</P></LI><LI CLASS="numlist"><P>Try another Ethernet Cable.</P></LI><LI CLASS="numlist"><P>Verify Ethernet Cable is inserted into the correct
+port on the Host and DARC Node.</P></LI><LI CLASS="numlist"><P>If the problem persists, reload sw for DARC Node.</P></LI><LI CLASS="numlist"><P>If the problem persists, perform LFC.</P><P> [root@hostname]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ping darc</B></FONT></SPAN></P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">PING darc (172.16.0.2) 56(84) bytes of data. 64 bytes from darc (172.16.0.2): icmp_seq=0 ttl=64 time=0.156 ms 64 bytes from darc (172.16.0.2): icmp_seq=1 ttl=64 time=0.292
+ms 64 bytes from darc (172.16.0.2): icmp_seq=2 ttl=64
+time=0.230 ms</FONT></SPAN></P><P>Select <SPAN CLASS="KEYBOARD">&lt;Ctrl-C &gt;</SPAN>on the keyboard to stop ping
+process </P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">--- darc ping statistics --- 3 packets
+transmitted, 3 received, 0% packet loss, time 1999ms rtt min/avg/max/mdev = 0.156/0.226/0.292/0.055 ms, pipe 2</FONT></SPAN></P></LI><LI CLASS="numlist"><P>If the ping darc process fails verify your Host Type
+sees the DARC.</P></LI><LI CLASS="numlist"><P>Try the Host specific ifconfig command below (could
+be confusing).  So perform the ifconfig command (for your Host type)
+and verify the address is correct.</P></LI><LI CLASS="numlist"><P>Try the telnet command.</P><UL><LI CLASS="bulletlist"><P>DARC Node NIC port for Host Type xw8000</P><P>[root@hostname]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ifconfig eth2 | grep MTU</B></FONT></SPAN></P><P>Does running show up and correct address&#8230;?</P><P>If NO for Running, then check network cable.</P><P>Try using the command: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p &#8211;eth2</B></FONT></SPAN> on the HOST for that NIC port address
+and visually verify blinking port LED,, then <SPAN CLASS="KEYBOARD">&lt;Ctrl-C&gt;</SPAN> to stop. </P><P>OR</P></LI><LI CLASS="bulletlist"><P>DARC Node NIC port for Host Type xw8200</P><P><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># ifconfig eth0
+| grep MTU</B></FONT></SPAN></P><P>Does running show up and correct address&#8230;?</P><P>If NO for Running, then check network cable.</P><P>Try using the command: <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>ethtool &#8211;p &#8211;eth0</B></FONT></SPAN> on the HOST for that NIC port address
+and visually verify blinking port LED,, then <SPAN CLASS="KEYBOARD">&lt;Ctrl-C&gt;</SPAN> to stop. </P></LI></UL></LI></OL></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444700-1012224_1">9.2&nbsp;&nbsp;Host ifconfig command<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The ifconfig command as run on the 8000 or 8200 Host Computer
+(outputs are different for each Host type) from ctuser will verify
+if there is any type of active connection &#8211; but not necessarily the
+correct active connection.  Active connections can be verified using
+the ping process.  Look for running.  Remember that running is a moment
+in time and does not mean the connection is still active for the next
+moment in time.  </P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e733"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The DARC Subnet may have been changed from 172.16.0.xx
+ to 169 base ONLY if there was a 172.16.0.xx Hospital Network conflict.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444701-1012224_1">9.2.1&nbsp;&nbsp;For Host Type xw8000<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">{ctuser@hostname} <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ifconfig</FONT></SPAN></P><P CLASS="sect3">Here are links to sample output:</P><UL><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460189-1012224_1">Section 11.1.1</A> - Eth0 is the Hospital backbone- port &#8220;A&#8221;</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460194-1012224_1">Section 11.1.2</A> - Eth2 is the HOST to DARC connection - port
+&#8220;C&#8221;</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460199-1012224_1">Section 11.1.3</A> - Eth3 is the Gantry TGP connection - port &#8220;D&#8221;</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460220-1012224_1">Section 11.1.4</A> - Eth4 AW/Host Main Connection</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460225-1012224_1">Section 11.1.5</A> - Under Unix/Linux this is the local device
+that is the local system (Software pseudo device)</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444702-1012224_1">9.2.2&nbsp;&nbsp;For Host Type xw8200<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">{ctuser@hostname} <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">ifconfig</FONT></SPAN></P><P CLASS="sect3">Here are links to sample output:</P><UL><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460316-1012224_1">Section 11.2.1</A> - Eth0 is the HOST to DARC connection - port
+&#8220;C&#8221;</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460231-1012224_1">Section 11.2.2</A> - Eth1 is the Gantry TGP connection - port &#8220;D&#8221;</P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460236-1012224_1">Section 11.2.3</A> - Eth2 is the Hospital backbone- port &#8220;A </P></LI><LI CLASS="bulletlist"><P><A HREF="1012224.htm#SL1460241-1012224_1">Section 11.2.4</A> - Eth4 AW/Host Main Connection</P></LI></UL><P CLASS="sect3">FE To Do List - Error Correction for No Running status on Host
+(to DARC) NIC:</P><OL><LI CLASS="numlist"><P>If the ifconfig command does not see the DARC as running
+&#8211; verify the Host NIC is not loose or partially skewed in the Host
+PCI Motherboard Connector.</P></LI><LI CLASS="numlist"><P>If the NIC was installed correctly verify the Host
+Computer NIC port C using the ethtool &#8211;p eth# tool as root on the
+Host (ethtool &#8211;p eth2 for xw8000 ----- ethtool &#8211;p eth0 for xw8200).</P></LI><LI CLASS="numlist"><P>If NIC was installed correctly and the Host NIC port
+to the DARC LED was blinking during the ethtool process - verify the
+Ethernet Cable between the Host and DARC is good (properly inserted
+and in the correct location).  Try swapping in another Ethernet Cable
+to see if the cable is the issue.</P></LI><LI CLASS="numlist"><P>If the ifconfig command does not see the DARC as running
+&#8211; verify the Host Verify the &#8216;telnet localhost 623&#8217; command
+is able to &#8216;Login successful&#8217;. The dpcproxy service must
+be running.</P></LI><LI CLASS="numlist"><P>For Apps UP issues verify the ssh darc command is
+successful. This is the security shell command and checks for unknown
+hosts.</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444703-1012224_1">9.2.3&nbsp;&nbsp;TELNET Command From Host to DARC Node<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># service cliservice
+start</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The dpcproxy is running</FONT></SPAN></P><P CLASS="sect3">********** OR ***********</P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">restarted dpcproxy</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@hostname]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># telnet localhost
+623</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Trying 127.0.0.1...</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Connected to localhost.</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Escape character is '^]'.</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Server: darc</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username: &lt;select the Enter key on keyboard&gt;</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password: &lt;select the Enter key on keyboard&gt;</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>power -state</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The power is on</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt;</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B> exit</B></FONT></SPAN></P><P CLASS="sect3">FE To Do List - Error Correction for No telnet from Host to
+DARC:</P><OL><LI CLASS="numlist"><P>If the telnet process fails, ensure that the SOL is
+OK, then halt the DARC Node as root on darc. Wait 2 &#8211; 3 minutes, then
+remove DARC Node power at the front of the DARC Node. Then load the
+SOL CD into the front of the DARC Node and power on the DARC Node.
+The SOL CD will automatically eject when completed.</P></LI><LI CLASS="numlist"><P>Verify the DARC power cord has power and is inserted
+properly into the DARC and the rear power switch is turned ON.</P></LI><LI CLASS="numlist"><P>If the Power State command fails visually verify DARC
+power switch at the front is turned on.  Visually verify the DARC
+LAN LED is illuminated and not burnt out.  If telnet is successful
+and the LAN LED is not illuminated then it is burnt out &#8211; replace
+the DARC when time permits.</P></LI><LI CLASS="numlist"><P>Try restarting the DARC Node as root on the host:
+service darcpower start</P></LI><LI CLASS="numlist"><P>Retry another Ethernet Cable between the Host and
+DARC (properly inserted and in the correct location).</P></LI><LI CLASS="numlist"><P>Move the Ethernet Cable at the DARC NIC to see if
+the DARC NIC is loose &#8211; and therefore the issue.</P></LI><LI CLASS="numlist"><P>Move the Host to DARC Ethernet Cable to another port
+on the DARC NIC and see if there is DARC NIC activity.</P></LI><LI CLASS="numlist"><P>If the problem persists, replace DARC Node</P></LI></OL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444704-1012224_1">9.2.4&nbsp;&nbsp;DARC ifconfig Command to IG Nodes<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">[root@darc ~]<SPAN CLASS="SCRNFIX"><FONT FACE="COURIER"># ifconfig</FONT></SPAN></P><P CLASS="sect3">See<A HREF="1012224.htm#SL1460273-1012224_1">Section 11.3</A> for sample output.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444705-1012224_1">9.2.5&nbsp;&nbsp;TELNET Command From DARC Node to IG Node:<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">[root@darc]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># service cliservice start</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The dpcproxy is running</FONT></SPAN></P><P CLASS="sect3">********** OR ***********</P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">restarted dpcproxy</FONT></SPAN></P><P CLASS="sect3">[root@darc]<SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># telnet localhost 623</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Trying 127.0.0.1...</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Connected to localhost.</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Trying 127.0.0.1...</FONT></SPAN></P><P CLASS="sect3">Server: ig#</P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Username: &lt;select the Enter key on keyboard&gt;</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Password: &lt;select the Enter key on keyboard&gt;</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Login successful</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt; </FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>power -state</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">The power is on</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">dpccli&gt; </FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>exit</B></FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444706-1012224_1">9.2.6&nbsp;&nbsp;DARC /VAR/LOG<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc log]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># cd /var/log</B></FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">[root@darc log]</FONT></SPAN><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B># cd /var/log</B></FONT></SPAN></P><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e976"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">At the bottom of the page where you see <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">--More--(0%)</FONT></SPAN>type a command as follows to see a pattern or output on that page,
+otherwise, if it is not there <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">&#8211;&#8216;Pattern not found&#8217;</FONT></SPAN> is displayed!</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>/dazed</B></FONT></SPAN>		(for NMI Errors)</P><P CLASS="sect3"><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>/Parity</B></FONT></SPAN>		(for Parity issues)</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444707-1012224_1">9.2.7&nbsp;&nbsp;/ACK<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">10:12:13 darc dhcpd: DHCPDISCOVER from 00:0e:0c:9f:46:ce
+via eth0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mar 13 10:12:13 darc dhcpd: DHCPOFFER on 10.0.2.2 to
+00:0e:0c:9f:46:ce via eth0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mar 13 10:12:13 darc dhcpd: DHCPDISCOVER from 00:0e:0c:9f:46:ce
+via eth0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mar 13 10:12:13 darc dhcpd: DHCPOFFER on 10.0.2.2 to
+00:0e:0c:9f:46:ce via eth0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mar 13 10:12:13 darc dhcpd: DHCPREQUEST for 10.0.2.2
+(10.0.2.1) from 00:0e:0c:9f:46:ce via eth0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Mar 13 10:12:13 darc dhcpd: DHCPACK on 10.0.2.2 to
+00:0e:0c:9f:46:ce via eth0</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1444708-1012224_1">9.2.8&nbsp;&nbsp;/O error<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">May 12 11:01:19 darc kernel: end_request: I/O error,
+dev hda, sector 115260346</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">May 12 11:01:19 darc kernel: I/O error in filesystem
+("hda9") meta-data dev hda9 block 0x5618d28       ("xfs_trans_read_buf")
+error 5 buf count 4096</FONT></SPAN></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1459852-1012224_1">10&nbsp;&nbsp;Output Examples<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1491995-1012224_1">10.1&nbsp;&nbsp;Host Test - xw8000<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1029"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 6, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting Host Test----
+started on: 2007-02-05 16:25:53
+----Number of Iterations: 1----
+
+
+
+Starting to run the Host diagnostic...
+Each iteration of this diagnostic will take a maximum of 2
+minutes to complete.
+1 iterations were selected.
+
+Computer type is... 8000
+
+====================================================
+Iteration 1 of 1 starting...
+
+*** Testing for drive existance ***
+
+
+-------- Output of scsistat -------
+
+ Device 0 02    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 1 00    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 1 01    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 2 03    Optical Device  SONY SMO-F551-SD FW Rev: 1.05 
+ Device 2 04    CD-ROM  MATSHITA        DVD-RAM SW-9574S FW Rev:
+AZX8 
+
+-----------------------------------
+OK.
+Drive existance test passed.
+
+*** Testing BIOS status ***
+
+Checking host for BIOS version...
+
+
+
+Ok.
+BIOS Test passed.
+
+*** Testing memory ***
+
+Checking host for available memory...
+
+Main memory size: 2048 Mbytes
+
+Ok.
+Memory Test passed.
+
+*** Testing Image Disk RAID ***
+Image Disk RAID test passed.</PRE><PRE></PRE><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1037"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This test will only fail if Image Disk 1 is not present
+in the RAID on the Host Computer!</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>*** Testing IDE interface ***
+OK.
+Host IDE interface test passed.
+
+1 1
+
+
+The Host test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/host_test.log
+
+All iterations have passed.
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444684-1012224_1">10.2&nbsp;&nbsp;Host Test - xw8200<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1046"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 6, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting Host Test----
+started on: 2007-01-23 18:36:06
+----Number of Iterations: 1----
+
+
+
+Starting to run the Host diagnostic...
+Each iteration of this diagnostic will take a maximum of 2
+minutes to complete.
+1 iterations were selected.
+
+Computer type is... 8200
+
+====================================================
+Iteration 1 of 1 starting...
+
+*** Testing for drive existance ***
+
+
+-------- Output of scsistat -------
+
+ Device 0 02    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 1 00    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 1 01    Direct-Access   FUJITSU MAX3073NP FW Rev: HPF1 
+ Device 2 03    Optical Device  SONY SMO-F551-SD FW Rev: 1.05 
+ Device 2 04    CD-ROM  MATSHITA        DVD-RAM SW-9574S FW Rev:
+AZX8 
+
+-----------------------------------
+OK.
+Drive existance test passed.
+
+*** Testing BIOS status ***
+
+Checking host for BIOS version...
+
+
+
+Ok.
+BIOS Test passed.
+
+*** Testing memory ***
+
+Checking host for available memory...
+
+Main memory size: 4096 Mbytes
+
+Ok.
+Memory Test passed.
+
+*** Testing Image Disk RAID ***
+Image Disk RAID test passed.</PRE><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1052"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">This test will only fail if Image Disk 1 is not present
+in the RAID on the Host Computer!</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>*** Testing IDE interface ***
+OK.
+Host IDE interface test passed.
+
+1 1
+
+
+The Host test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/host_test.log
+
+All iterations have passed.
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444685-1012224_1">10.3&nbsp;&nbsp;Non-Destructive Disk Array Test<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1061"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 1, 3, and 7.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting Disk Array Test----
+started on: 2007-02-02 20:07:03
+----Number of Iterations: 1----
+
+
+
+Starting to run the Disk Array diagnostic...
+Each iteration of this diagnostic will take a maximum of 5
+minutes to complete.
+1 iterations were selected.
+Product type is GRE
+
+====================================================
+Iteration 1 of 1 starting...
+
+
+Performing rsh to DARC...
+
+OK.
+Successful rsh to DARC
+
+
+Checking raid configuration...
+
+      rsh darc /usr/g/bin/gre-raid -q
+
+Checking raid partition...
+
+      rsh darc df /raw_data
+
+Checking raid performance...
+
+      rsh darc gre-file-perf -s 15 /raw_data
+
+1 1
+
+
+The Disk Array test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/diskarray_test.log
+
+All iterations have passed.
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444686-1012224_1">10.4&nbsp;&nbsp;DARC Test for a Jarrell DARC Node<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1070"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 1, 2, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>Information: Jarrell DARC 
+----Starting DARC Diagnostics----
+started on: 2007-02-02 20:07:02
+----Number of Iterations: 1----
+
+
+
+Starting to run the DARC diagnostic...
+Each iteration of this diagnostic will take a maximum of 60
+seconds to complete.
+1 iterations were selected.
+
+====================================================
+Iteration 1 of 1 starting...
+
+Performing ping/rsh to DARC...
+OK
+
+Performing ssh to DARC...
+ssh from Host to darc was successful.
+
+OK.
+
+Verifying the DIP exists...
+... Executing command : rsh darc lsmod | grep pci_dip ...
+
+OK.
+
+Verifying DIP diagnostics are not already running...
+... Executing command : rsh darc ps -ef | grep -v grep | grep Dip
+Diag ...
+
+OK.
+... Executing command : check_config ...
+  Elapsed time: 00 minutes 07 seconds 
+... Executing command : rsh darc /usr/sbin/dmidecode | grep -A5 "
+Base Board Information" | grep "Product Name" | awk --field-separ
+ator ': ' '{print $2}' ...
+
+
+Information: Jarrell DARC
+
+====================================================
+Iteration 1 of 1 starting...
+... Executing command : tail -1 /tmp/stopstatus.log ...
+
+
+
+Checking darc for available memory...
+
+Main memory size: 2048 Mbytes
+
+Ok.
+
+Checking darc for BIOS version...
+
+                Version: SE7520JR23.86B.P.10.00.0087.120820051348
+
+Ok.
+
+Running DIP diagnostics...
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 1,2,3,4,
+5,6 ...
+  Elapsed time: 00 minutes 20 seconds 
+
+
+1 1
+
+
+The DIP test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/dip_test.log
+
+All iterations have passed.
+PASSED
+</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444687-1012224_1">10.5&nbsp;&nbsp;RAC Test for a Jarrell IG Node<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1079"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 1, 4, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting IG1 RAC Diagnostics----
+started on: 2007-02-02 20:07:04
+----Number of Iterations: 1----
+
+
+
+Starting to run the IG1 RAC diagnostic...
+
+Each iteration of this diagnostic will take a maximum of 45
+seconds to complete.
+1 iterations were selected.
+
+Performing rsh to DARC...
+
+OK.
+Successful rsh to DARC
+
+
+Performing ping/rsh to IG1...
+
+Verifying the IG1 RAC exists...
+OK.
+
+Prepping rac for IG1
+
+SE7520JR23D
+
+Information: Jerrell IG
+
+====================================================
+Iteration 1 of 1 starting...
+
+Checking ig1 for available memory...
+
+Main memory size: 2048 Mbytes
+
+Ok.
+
+Checking ig1 for BIOS version...
+
+                Version: SE7520JR23.86B.P.11.10.0089.042620061840
+
+Ok.
+
+Running RAC self tests...
+
+1 1
+
+
+The RAC test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file: /tmp/rac_test1.log
+
+All iterations have passed.
+PASSED
+</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444688-1012224_1">10.6&nbsp;&nbsp;MOD Test<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1088"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 5 and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1091"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Try turning the MOD media over to other side and see if
+it passes. Or try a new MOD media that is formatted.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>Initializing the test data...
+
+
+
+-------Starting MOD Test--------
+----Number of Iterations: 1----
+
+Executing scsistat command...
+
+MOD drive was detected during the last boot.
+
+Verifying MOD is not mounted...
+
+Checking for MOD media...
+Ok.
+
+Placing a filesystem on the MOD media...
+Filesystem created.
+
+Starting to test the MOD...
+Each iteration of the diagnostic will take a maximum of 45
+seconds to complete.
+1 iterations were selected.
+Running ...
+====================================================
+Iteration 1 of 1 starting...
+Mounting...
+Copying test data...
+Comparing test data...
+The MOD test passed 1 of 1 total iterations.
+
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444689-1012224_1">10.7&nbsp;&nbsp;DVD Test with Failing Output<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1100"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 5 and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1103"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Whenever a SCSI Tower diagnostic fails, always retest.
+If it fails again, try a new media.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>-------Starting DVD Test--------
+----Number of Iterations: 1----
+
+Executing scsistat command...
+
+DVD drive was detected during the last boot.
+
+Verifying DVD is not mounted...
+
+Checking for DVD media...
+Ok.
+
+Placing a filesystem on the DVD media...
+Filesystem created.
+
+Checking to see if DVD drive is already mounted...
+
+Executing e2fsck check...
+Error: e2fsck check detected errors.
+
+Reason: e2fsck 1.38 (30-Jun-2005)
+e2fsck: Attempt to read block from filesystem resulted in short read while trying to open /dev/dvd
+Could this be a zero-length partition?
+
+ *** Error Detected ***
+
+DVD test failed
+View error(s) above.
+Creating report... : /tmp/dvd_test.log
+
+FAILED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444690-1012224_1">10.8&nbsp;&nbsp;DVD Test with Passing Output<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1112"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 5 and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1115"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Try turning the DVD media over to other side and see if
+it passes. Or try a new DVD media that is formatted.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>-------Starting DVD Test--------
+----Number of Iterations: 1----
+
+Executing scsistat command...
+
+DVD drive was detected during the last boot.
+
+Verifying DVD is not mounted...
+
+Checking for DVD media...
+Ok.
+
+Placing a filesystem on the DVD media...
+Filesystem created.
+
+Checking to see if DVD drive is already mounted...
+
+Executing e2fsck check...
+The e2fsck /dev/dvd/status is: clean.
+
+Starting to test the DVD...
+Each iteration of the diagnostic will take a maximum of 45
+seconds to complete.
+1 iterations were selected.
+Running and only failures are displayed.
+====================================================
+Iteration 1 of 1 starting...
+Mounting...
+Copying test data...
+Comparing test data...
+The DVD test passed 1 of 1 total iterations.
+
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444691-1012224_1">10.9&nbsp;&nbsp;DARC Test with Loopback selected but no loopback cable installed<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1124"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 1, 2, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>... Executing command : whoami ...
+
+You must be 'root' to run this diagnostic.
+Application software must be down to run diagnostics.
+
+
+
+----Starting DARC Diagnostic----
+started on: 2007-02-02 20:21:59
+----Number of Iterations: 1----
+
+
+
+Starting to run the DARC diagnostic...
+Each iteration of this diagnostic will take a maximum of 60
+seconds to complete.
+1 iterations were selected.
+
+Performing ping/rsh to DARC...
+OK.
+
+Performing ssh to DARC...
+ssh from Host to darc was successful.
+OK.
+
+Verifying the DIP exists...
+... Executing command : rsh darc lsmod | grep pci_dip ...
+
+OK.
+
+Verifying DIP diagnostics are not already running...
+... Executing command : rsh darc ps -ef | grep -v grep | grep Dip
+Diag ...
+
+OK.
+... Executing command : check_config ...
+  Elapsed time: 00 minutes 06 seconds 
+... Executing command : rsh darc /usr/sbin/dmidecode | grep -A5 "Base B
+oard Information" | grep "Product Name" | awk --field-separator ': ' '{
+print $2}' ...
+
+
+Information: Jarrell DARC
+
+====================================================
+Iteration 1 of 1 starting...
+... Executing command : tail -1 /tmp/stopstatus.log ...
+
+
+Checking darc for available memory...
+
+Main memory size: 2048 Mbytes
+
+Ok.
+
+Checking darc for BIOS version...
+
+                Version: SE7520JR23.86B.P.10.00.0087.120820051348
+
+Ok.
+
+Running DIP Diag External LoopBack Test #7...
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 7 ...
+  Elapsed time: 00 minutes 02 seconds 
+
+----------------------------------------------------------
+Error: DIP External LoopBack Test #7 response was not acceptable.
+
+      Expected: ' All tests passed '
+      Actual  : ' 09:41:35 opening LINUX device /dev/dip
+creating H16 dip interface
+DIP PN : 2326523 C
+error - failed in select
+test 7 Failed External LoopBack Test
+1 loops 1 failures
+1 tests failed
+'
+----------------------------------------------------------
+
+Running DIP Diag External LoopBack Test #8...
+
+If errors are encountered, this test could take approximately 3.5 minut
+es to complete !!
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 8 ...
+  Elapsed time: 00 minutes 03 seconds 
+
+----------------------------------------------------------
+Error: DIP External LoopBack Test #8 response was not acceptable.
+
+      Expected: ' All tests passed '
+      Actual  : ' 09:41:35 opening LINUX device /dev/dip
+creating H16 dip interface
+DIP PN : 2326523 C
+gdip_dma_test(3,8388608,1,2048,0)
+error - Timeout waiting for DMA interrupt
+
+test 8 Failed DMA Test
+1 loops 1 failures
+1 tests failed
+'
+----------------------------------------------------------
+
+----------------------------------------------------------
+Error: Loopback failing test 7 and test 8
+Loopback cable is missing or damaged, bad path, or the DIP board
+is damaged.
+  1. Check the loopback cable and path with a flashlight.
+  2. If the loopback cable is good, reinsert and verify fiber
+     optic connections are fully snapped in.
+  3. Run DIP test with loopback.
+     If loopback tests 7 and 8 still fail, replace the DARC.
+      Expected: ' 0 '
+      Actual  : ' -1 '
+----------------------------------------------------------
+
+Status= -600
+
+
+Loopback cable testing is failed, continue with other testcases.
+
+Running DIP diagnostics...
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 1,2,3,4,5,6 ..
+.
+  Elapsed time: 00 minutes 20 seconds 
+
+Error: iteration 1 of 1 failed.
+
+1 0
+
+
+The DIP test passed 0 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/dip_test.log
+
+There were one or more iterations that failed.
+FAILED
+
+
+
+2007-02-02 20:22:36
+
+
+
+EOF</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444692-1012224_1">10.10&nbsp;&nbsp;DARC Test with Loopback Cable Installed<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1133"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via menu
+selections 1, 2, 7, and 8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting DARC Diagnostic----
+started on: 2007-02-05 16:19:58
+----Number of Iterations: 1----
+
+
+
+Starting to run the DARC diagnostic...
+Each iteration of this diagnostic will take a maximum of 60
+seconds to complete.
+1 iterations were selected.
+
+Performing ping/rsh to DARC...
+OK.
+
+Performing ssh to DARC...
+ssh from Host to darc was successful.
+OK.
+
+Verifying the DIP exists...
+... Executing command : rsh darc lsmod | grep pci_dip ...
+
+OK.
+
+Verifying DIP diagnostics are not already running...
+... Executing command : rsh darc ps -ef | grep -v grep | grep Dip
+Diag ...
+
+OK.
+... Executing command : check_config ...
+  Elapsed time: 00 minutes 07 seconds 
+... Executing command : rsh darc /usr/sbin/dmidecode | grep -A5 "Base Board Information" | grep "Product Name" | awk --field-separator ': ' '{print $2}' ...
+
+
+Information: Jarrell DARC
+
+====================================================
+Iteration 1 of 1 starting...
+... Executing command : tail -1 /tmp/stopstatus.log ...
+
+
+Checking darc for available memory...
+
+Main memory size: 2048 Mbytes
+
+Ok.
+
+Checking darc for BIOS version...
+
+                Version: SE7520JR23.86B.P.10.00.0087.120820051348
+
+Ok.
+
+Running DIP Diag External LoopBack Test #7...
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 7 ...
+
+
+Running DIP Diag External LoopBack Test #8...
+
+If errors are encountered, this test could take approximately 3.5 minutes to complete !!
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 8 ...
+  Elapsed time: 00 minutes 03 seconds 
+
+Running DIP diagnostics...
+... Executing command : rsh darc /usr/g/bin/DipDiag --ex 1,2,3,4,5,6 ...
+  Elapsed time: 00 minutes 20 seconds 
+
+1 1
+
+
+The DIP test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/dip_test.log
+
+All iterations have passed.
+PASSED</PRE></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1444693-1012224_1">10.11&nbsp;&nbsp;Destructive Disk Array Test with &#8211;c Command<SPAN CLASS="SECT2EFF"> </SPAN></H3><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1142"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Per Section 5 of this document, &#8220;Menu Selections
+for Console Diagnostics,&#8221; this test can be performed via selection
+8.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><PRE>----Starting Disk Array Test----
+started on: 2007-02-02 20:07:03
+----Number of Iterations: 1----
+
+
+
+Starting to run the Disk Array diagnostic...
+Each iteration of this diagnostic will take a maximum of 5
+minutes to complete.
+1 iterations were selected.
+Product type is GRE
+
+====================================================
+Iteration 1 of 1 starting...
+
+
+Performing rsh to DARC...
+
+OK.
+Successful rsh to DARC
+
+
+Checking raid configuration...
+
+      rsh darc /usr/g/bin/gre-raid -q
+
+Checking raid partition...
+
+      rsh darc df /raw_data
+
+Checking raid performance...
+
+      rsh darc gre-file-perf -s 15 /raw_data
+
+1 1
+
+
+The Disk Array test passed 1 of 1 total iterations.
+
+ *** Testing complete ***
+Creating report...
+Please review the log file : /tmp/diskarray_test.log
+
+All iterations have passed.
+PASSED</PRE></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1460313-1012224_1">11&nbsp;&nbsp;Additional Information (Section 9) Output Samples<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1460314-1012224_1">11.1&nbsp;&nbsp;For Host Type xw8000<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460189-1012224_1">11.1.1&nbsp;&nbsp;Eth0 is the Hospital backbone- port &#8220;A&#8221;<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1157"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Hospital Backbone cannot be 172.16.0.x unless DARC is
+changed to the169 base.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:07:E9:0D:03:24</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:3.231.48.2  Bcast:3.231.48.0  Mask:255.255.252.0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:16497 errors:0 dropped:0 overruns:0 frame:0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:450 errors:0 dropped:0 overruns:0 carrier:0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:100 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:1596730 (1.5 Mb)  TX bytes:66981 (65.4 Kb) </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Interrupt:28 Base address:0x2800 Memory:da140000-0</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460194-1012224_1">11.1.2&nbsp;&nbsp;Eth2 is the HOST to DARC connection - port &#8220;C&#8221;<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1187"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">DARC could be set to 169 base if Hospital Backbone Subnet
+Site IP is 172.16.0.x).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:07:E9:0D:06:DC </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:172.16.0.1  Bcast:172.16.0.255  Mask:255.255.255.0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:8721 errors:0 dropped:0 overruns:0 frame:0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:7041 errors:0 dropped:0 overruns:0 carrier:0 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:100 </FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:4921088 (4.6 Mb)  TX bytes:7502277 (7.1 Mb)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Interrupt:24 Base address:0x2880 Memory:da180000-0</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460199-1012224_1">11.1.3&nbsp;&nbsp;Eth3 is the Gantry TGP connection - port &#8220;D&#8221;<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:07:E9:0D:06:DD</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:192.9.220.1  Bcast:192.9.220.255  Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:6047 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:6022 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:10 txqueuelen:100</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:801454 (782.6 Kb)  TX bytes:846248 (826.4
+Kb)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Interrupt:25 Base address:0x28c0 Memory:da1a0000-0</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460220-1012224_1">11.1.4&nbsp;&nbsp;Eth4 AW/Host Main Connection<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:11:85:AE:36:CE</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:10.44.22.20  Bcast:10.44.22.255  Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::211:85ff:feae:36ce/64 Scope:Link</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:0 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:9 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:0 (0.0 b)  TX bytes:654 (654.0 b)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x3000 Memory:d8100000-d8120000</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460225-1012224_1">11.1.5&nbsp;&nbsp;Under Unix/Linux this is the local device that is the local
+system (Software pseudo device)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Local Loopback</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:127.0.0.1  Mask:255.0.0.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP LOOPBACK RUNNING  MTU:16436  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:173978 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:173978 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:76737700 (73.1 Mb)  TX bytes:76737700 (73.1
+Mb)</FONT></SPAN></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1460315-1012224_1">11.2&nbsp;&nbsp;For Host Type xw8200<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460316-1012224_1">11.2.1&nbsp;&nbsp;Eth0 is the HOST to DARC connection - port &#8220;C&#8221;<SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1301"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">DARC could be set to 169 base if Hospital Backbone Subnet
+Site IP is 172.16.0.x).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3">(Could be 169 Hospital Backbone Subnet if Site IP is 172.16.0.x)</P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:04:23:AD:B1:36</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:172.16.0.1  Bcast:172.16.0.255  Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fead:b136/64 Scope:Link</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:633021 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:415771 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:467396451 (445.7 Mb)  TX bytes:37262665 (35.5
+Mb)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x6000 Memory:dbf80000-dbfa0000</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460231-1012224_1">11.2.2&nbsp;&nbsp;Eth1 is the Gantry TGP connection - port &#8220;D&#8221;<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:04:23:AD:B1:37</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:192.9.220.1  Bcast:192.9.220.255  Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fead:b137/64 Scope:Link</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:150523 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:151295 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:2905 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:20372243 (19.4 Mb)  TX bytes:19661489 (18.7
+Mb)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x6040 Memory:dbfa0000-dbfc0000</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460236-1012224_1">11.2.3&nbsp;&nbsp;Eth2 is the Hospital backbone- port &#8220;A <SPAN CLASS="SECT1EFF"> </SPAN></H4><TABLE CLASS="ADMONsect3" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1366"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">(Hospital Backbone cannot be 172.16.0.x unless DARC is
+changed).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:04:23:AD:A8:46</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:3.57.255.56  Bcast:3.57.255.255  Mask:255.255.252.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fead:a846/64 Scope:Link</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:405810 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:132895 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:75616972 (72.1 Mb)  TX bytes:132493964 (126.3
+Mb)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x4000 Memory:db180000-db1a0000</FONT></SPAN></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1460241-1012224_1">11.2.4&nbsp;&nbsp;Eth4 AW/Host Main Connection<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Link encap:Ethernet  HWaddr 00:11:85:AE:36:CE</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:10.44.22.20  Bcast:10.44.22.255  Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::211:85ff:feae:36ce/64 Scope:Link</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:0 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:9 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:0 (0.0 b)  TX bytes:654 (654.0 b)</FONT></SPAN></P><P CLASS="sect3"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x3000 Memory:d8100000-d8120000</FONT></SPAN></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1460273-1012224_1">11.3&nbsp;&nbsp;DARC ifconfig Command to IG Nodes<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2"><B>Eth0 is IG2</B></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">eth0 Link encap:Ethernet HWaddr 00:04:23:C5:1C:FA</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:10.0.2.1 Bcast:10.0.2.255 Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fec5:1cfa/64 Scope:Link</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:557550 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:1332798 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:133840675 (127.6 Mb) TX bytes:1861340939 (1775.1
+Mb)</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x38c0 Memory:fe760000-fe780000</FONT></SPAN></P><P CLASS="sect2"><B>Eth1 is IG1</B></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">eth1 Link encap:Ethernet HWaddr 00:04:23:C5:1C:FB</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:10.0.1.1 Bcast:10.0.1.255 Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fec5:1cfb/64 Scope:Link</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:639259 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:1639674 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:150135518 (143.1 Mb) TX bytes:2321327901 (2213.7
+Mb)</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x3880 Memory:fe880000-fe8a0000</FONT></SPAN></P><P CLASS="sect2"><B>Eth3 is IG3</B></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">eth3 Link encap:Ethernet HWaddr 00:04:23:C0:63:83</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:10.0.3.1 Bcast:10.0.3.255 Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::204:23ff:fec0:6383/64 Scope:Link</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:456280 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:959392 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:118257572 (112.7 Mb) TX bytes:1297399457 (1237.2
+Mb)</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x3800 Memory:fe9c0000-fe9e0000</FONT></SPAN></P><P CLASS="sect2"><B>Eth2 is DARC Node</B></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1523"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">DARC could be set to 169 base if Hospital Backbone Subnet
+Site IP is 172.16.0.x. </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">eth2 Link encap:Ethernet HWaddr 00:0E:0C:9F:3F:26</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:172.16.0.2 Bcast:172.16.0.255 Mask:255.255.255.0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: fe80::20e:cff:fe9f:3f26/64 Scope:Link</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:256365 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:373751 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:1000</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:130411067 (124.3 Mb) TX bytes:308118657 (293.8
+Mb)</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">Base address:0x2040 Memory:fe1a0000-fe1c0000</FONT></SPAN></P><P CLASS="sect2"><B>lo (motherboard)</B></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">lo Link encap:Local Loopback</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet addr:127.0.0.1 Mask:255.0.0.0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">inet6 addr: ::1/128 Scope:Host</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">UP LOOPBACK RUNNING MTU:16436 Metric:1</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX packets:86554 errors:0 dropped:0 overruns:0 frame:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">TX packets:86554 errors:0 dropped:0 overruns:0 carrier:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">collisions:0 txqueuelen:0</FONT></SPAN></P><P CLASS="sect2"><SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">RX bytes:4501904 (4.2 Mb) TX bytes:4501904 (4.2 Mb)</FONT></SPAN></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

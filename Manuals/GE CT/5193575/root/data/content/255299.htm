@@ -1,0 +1,413 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>VDAS and HDAS Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193575-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>LightSpeed 7.X Service Information - Adv</P></td></tr></table><H1 ID="top">VDAS and HDAS Theory </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL1453019-255299">1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The VCT Digital DAS is a new architecture compared to the MDAS-16,
+MDAS-8 and SDAS. It has distributed power architecture and is scalable
+from 32 to 64 slices. The VCT DAS and Detector is comprised of the
+following components:</P><UL><LI CLASS="bulletlist"><P>Field Replaceable Detector Module (FRDM)<A HREF="255299.htm#SL255609-255299">Section 2</A>)</P><P>The FRDM is a single detector module attached via flex connection
+to two A/D boards for 64 slice or a single A/D board for 32 slice
+systems. The detector module and A/D board(s) along with the digital
+cable to the backplane are a single FRU. There are 57 FRDM's that
+make up the analog portion of the DAS and Detector.</P></LI><LI CLASS="bulletlist"><P>Digital Interface Boards (DIFB) (<A HREF="255299.htm#SL255612-255299">Section 3</A>)</P><P>The DIFB's are the Digital interface boards that take the FRDM
+digital output signals and send them to the DCB. There are 29 DIFB's
+for the 64 slice VDAS system and 15 for the 32 slice VDAS system.
+The HDAS 64 system only has 15 DIFB boards as it is a cost reduced
+and consolidated version of the VDAS 64 slice system.</P></LI><LI CLASS="bulletlist"><P>DAS Control Board (DCB) (<A HREF="255299.htm#SL255615-255299">Section 4</A>)</P><P>The DCB is the main control board for the VDAS. It packages
+all the interface card data into a single high-speed serial data stream,
+compatible with the receive function on the VCT DAS Interface Processor
+(VDIP)</P></LI><LI CLASS="bulletlist"><P>Backplane (<A HREF="255299.htm#SL255618-255299">Section 5</A>)</P><P>The DAS Backplane is comprised of 2 boards that are passive
+components only. The backplanes route an ASIC reference signal from
+the DIFB to the FRDM's and power supply voltages as well as transmitting
+digital signals.</P></LI><LI CLASS="bulletlist"><P>Air Plenum (<A HREF="255299.htm#SL255621-255299">Section 6</A>)</P><P>The Air plenum is comprised of 5 fans, filter assembly, Heater
+Control board, Fan control board, thermal sensors, and air flow sensors.</P></LI><LI CLASS="bulletlist"><P>48V Power supply (<A HREF="255299.htm#SL255624-255299">Section 7</A>)</P><P>The 48V power supply is a single power supply on the rotating
+assembly that powers most all of the components. This supply is not
+specific to the DAS. All voltages used by the DAS and Detector are
+generated via on board regulators on the DCB and DIFB's. The FRDM
+power is supplied by regulators on the DIFB's.</P></LI><LI CLASS="bulletlist"><P>The Common Fan Control (CFC) and Detector Heater Control
+(DHC) board theory can be found in the <SPAN CLASS="MODULEREF"><I><A HREF="359001.htm">Gantry
+Thermal Theory</A></I></SPAN> document. These boards are a part
+of the detector subsystem in VCT systems.</P></LI></UL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e80"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The 64 slice HDAS VCT system looks like the 32 slice VDAS
+system in that it has only 15 DIFB boards but has both A and B side
+A/D boards on the digital modules like the 64 slice VDAS.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255609-255299">2&nbsp;&nbsp;Field Replaceable Detector Modules (FRDM)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The FRDM is made up of a Detector module, and A/D board set
+along with a digital cable attached to the A/D boards which is then
+connected to the DAS backplane. For the VCT system, the detector is
+no longer a single assembly. The detector is now 57 individually replaceable
+detector modules and associated A/D functional components. For more
+details about this part see <SPAN CLASS="MODULEREF"><I><A HREF="255290.htm">VCT Detector Theory</A></I></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255612-255299">3&nbsp;&nbsp;DAS Interface Boards (DIFB)<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453020-255299">3.1&nbsp;&nbsp;General<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DAS interface board that is abbreviated as IFB is to act
+as an interface bridge between the FRDM and the DAS control board
+(DCB). The IFB processes multiple low speed data from the A/D module
+boards and then sends high-speed data to the DCB in a serial stream.
+The IFB is used for both 32-slice and 64-slice CT systems.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453021-255299">3.2&nbsp;&nbsp;I/O signals<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">A/D Module Interface Signals</SPAN> </P><table summary="A/D Module Interface Signals" border="1"><colgroup><col width="25%"><col width="25%"><col width="14%"><col width="16%"><col width="17%"></colgroup><tbody><tr><td>SIgnal</td><td>Description</td><td>Signal Level</td><td>From</td><td>To</td></tr><tr><td>ADM_RST_N</td><td>A/D board reset, active low</td><td>3.3VLVTTL</td><td>IFB</td><td>A/D</td></tr><tr><td>ADM_TX_CLK(1:0)</td><td>Transmission clock to the A/D</td><td>LVDS</td><td>IFB</td><td>A/D</td></tr><tr><td>ADM_TX_DAT(3:0)</td><td>4 LVDS pairs of transmission data buses</td><td>LVDS</td><td>IFB</td><td>A/D</td></tr><tr><td>ADM_RX_CLK(3:0)</td><td>4 LVDS pairs of receiving clocks from each A/D board.</td><td>LVDS</td><td>A/D</td><td>IFB</td></tr><tr><td>ADM_RX_DAT(3:0)</td><td>4 LVDS pairs receiving data buses</td><td>LVDS</td><td>A/D</td><td>IFB</td></tr><tr><td>ADM_PRESENT(3:0)</td><td>A/D module presence flag. The signal is tied to DGND on the
+A/D board.</td><td>LVDS</td><td>IFB</td><td>A/D</td></tr><tr><td>I2C_SDA_ADM</td><td>Data input/output for I2C interface on A/D</td><td>3.3VLVTTL</td><td>Bidirectional</td><td>Bidirectional</td></tr><tr><td>I2C_SCL</td><td>Clock input pin for I2C interface on A/D</td><td>3.3VLVTTL</td><td>IFB</td><td>A/D</td></tr><tr><td>P1V5_FPGA</td><td>A/D FPGA core voltage</td><td>1.5VLVTTL</td><td>IFB</td><td>A/D</td></tr><tr><td>P2V5_FPGA(3:0)(P2V5_DIG)</td><td>A/D FPGA I/O voltage</td><td>2.5VLVTTL</td><td>IFB</td><td>A/D</td></tr><tr><td>P2V5_ANA(3:0)</td><td>+2.5V analog voltage for GDAS ASIC</td><td>2.5V</td><td>IFB</td><td>A/D</td></tr><tr><td>N2V5(3:0)</td><td>-2.5V analog/digital voltage for GDAS ASIC</td><td>-2.5V</td><td>IFB</td><td>A/D</td></tr><tr><td>P2V5_DIG(3:0)</td><td>+2.5V digital voltage for GDAS ASIC</td><td>2.5V</td><td>IFB</td><td>A/D</td></tr><tr><td>P3V3_DIG</td><td>+3.3V digital voltage for I2C, EEPROM</td><td>3.3V</td><td>IFB</td><td>A/D</td></tr><tr><td>P3V3_ANA</td><td>+3.3V analog voltage for the current reference</td><td>3.3V</td><td>IFB</td><td>A/D</td></tr><tr><td>AGND(3:0)</td><td>Analog ground to the A/D board </td><td>AGND</td><td>IFB</td><td>A/D</td></tr><tr><td>DGND(7:0)</td><td>Digital ground to the A/D board (ASIC, FPGA)</td><td>DGND</td><td>IFB</td><td>A/D</td></tr><tr><td>P2V5_ANA_FB(3:0)</td><td>+2.5V analog voltage feedback </td><td>2.5V</td><td>A/D</td><td>IFB</td></tr><tr><td>N2V5_FB(3:0)</td><td>-2.5V feedback </td><td>-2.5V</td><td>A/D</td><td>IFB</td></tr><tr><td>P2V5_DIG_FB(3:0)</td><td>+2.5V digital voltage feedback </td><td>3.3V</td><td>A/D</td><td>IFB</td></tr><tr><td>DCLK_ADM(3:0)</td><td>Configuration clock. </td><td>3.3V</td><td>IFB</td><td>A/D</td></tr><tr><td>DATA0</td><td>Configuration data</td><td>3.3V</td><td>IFB</td><td>A/D</td></tr><tr><td>nSTATUS</td><td>Configuration status</td><td>3.3V</td><td>A/D</td><td>IFB</td></tr><tr><td>CONFIG_DONE</td><td>Configuration done</td><td>3.3V</td><td>A/D</td><td>IFB</td></tr><tr><td>nCONFIG</td><td>Restart configuration</td><td>3.3V</td><td>IFB</td><td>A/D</td></tr></tbody></table></CENTER></DIV><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DCB Interface Signals</SPAN> </P><table summary="DCB Interface Signals" border="1"><colgroup><col width="24%"><col width="26%"><col width="14%"><col width="16%"><col width="17%"></colgroup><tbody><tr><td>Signal</td><td>Description</td><td>SIgnal Level</td><td>From</td><td>To</td></tr><tr><td>IFB_RST_N</td><td>(1). Reset DSP and FPGA during power up. (2). Whenever the
+IFB has a problem or a system error happens, DCB asserts a reset signal
+to the IFB.</td><td>3.3VLVTTL</td><td>DCB</td><td>IFB</td></tr><tr><td>IFB_TRIG</td><td>Trigger signal from DCB</td><td>LVDS</td><td>DCB</td><td>IFB</td></tr><tr><td>IFB_CLK</td><td>IFB clock for FPGA and GDAS</td><td>LVDS</td><td>DCB</td><td>IFB</td></tr><tr><td>IFB_SDAT</td><td>High speed serial output data to DCB</td><td>LVDS</td><td>  IFB</td><td>DCB</td></tr><tr><td>CAN_HI</td><td>CAN transceiver high signal</td><td>3.3VLVTTL</td><td>  Bi-directional</td><td>Bi-directional</td></tr><tr><td>CAN_LO</td><td>CAN transceiver low signal </td><td>3.3VLVTTL</td><td>  Bi-directional</td><td>Bi-directional</td></tr><tr><td>IFB_FLT_N</td><td>Fault line. The line goes low when a failure occurs</td><td>3.3VLVTTL</td><td>  IFB</td><td>DCB</td></tr><tr><td>POWER_SYNC_IN</td><td>DC/DC synchronous signal from the DCB. Make all 29 IFB boards
+sync.</td><td>3.3VLVTTL</td><td>DCB</td><td>IFB</td></tr></tbody></table></CENTER></DIV><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Hard Wired SIgnal (From Backplane)</SPAN> </P><table summary="Hard Wired SIgnal (From Backplane)" border="1"><colgroup><col width="24%"><col width="26%"><col width="15%"><col width="16%"><col width="17%"></colgroup><tbody><tr><td>Signal</td><td>Description</td><td>Signal Level</td><td>From</td><td>To</td></tr><tr><td>IFB_ADDR</td><td>IFB address</td><td>3.3VLVTTL</td><td>BP</td><td>IFB</td></tr><tr><td>COM_GND_TIE</td><td>Common ground tie</td><td>GND</td><td>IFB</td><td>BP</td></tr><tr><td>SHD_GND</td><td>LVDS shielding/Chassis ground</td><td>GND</td><td>IFB</td><td>BP</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453025-255299">3.3&nbsp;&nbsp;Processing<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The IFB performs the following functions:</P><UL><LI CLASS="bulletlist"><P>Voltage Regulation</P></LI><LI CLASS="bulletlist"><P>Power Supply Sensing</P></LI><LI CLASS="bulletlist"><P>Voltage Monitoring</P></LI><LI CLASS="bulletlist"><P>Level Translation</P></LI><LI CLASS="bulletlist"><P>CAN Interface to DCB</P></LI><LI CLASS="bulletlist"><P>Data Formatting (FFP)</P></LI><LI CLASS="bulletlist"><P>Serial Interface with the A/D module.</P></LI><LI CLASS="bulletlist"><P>ASIC Control</P></LI><LI CLASS="bulletlist"><P>Point-To-Point Data Transmission to DCB</P></LI><LI CLASS="bulletlist"><P>Compensation &#8211; Gain Tracking</P><P>Internal &#8211; ASIC channel to channel; External &#8211; Using a compensation
+signal</P></LI><LI CLASS="bulletlist"><P>Offset Compensation</P></LI><LI CLASS="bulletlist"><P>Linearization</P></LI><LI CLASS="bulletlist"><P>Temperature Sensing</P></LI><LI CLASS="bulletlist"><P>Diagnostics</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453026-255299">3.4&nbsp;&nbsp;Interface Specifications<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This section defines the interface between the IFB and the external
+devices with which it communicates.</P><P CLASS="sect2">The 32-slice and 64-slice VDAS system architectures are scalable.<A HREF="javascript:winopen('255299illd0e621.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A> shows the 32-slice and 64-slice interfaces between the IFBs and
+A/D modules. The HDAS 64 slice system has only 1 DIFB for each set
+of 4 digital modules like the 32 slice VDAS configuration but it still
+has 2 A/D boards per digital module so each DIFB talks to 8 A/D boards.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">IFB and A/D Module Interface Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/255387.jpg" BORDER="0" usemap="#255387.jpg"></P></DIV><P CLASS="sect2"><A HREF="javascript:winopen('255299illd0e621.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  1</A> is showing both 32-slice and 64-slice interfaces
+between the IFB and the A/D module. Both interfaces share a common
+backplane. Only the odd number IFBs are populated for the 32-slice
+CT. For instance, the 32 slice VDAS and 64 slice HDAS versions only
+have IFB's numbered 1,3,5, etc. The 32-slice CT requires 15 IFBs.
+Each of the first 14 IFBs is connected to 32 ASICs, and the last IFB
+is only connected to 8 ASICs. The 64-slice CT requires 29 IFBs. Each
+of the first 28 IFB is connected to 32 ASICs, and the last IFB is
+connected to only 16 ASICs. To maintain gantry balance, blank cards
+are inserted for the even numbered DIFB slots for a 32 slice system.
+Blank cards are also used for the &#8220;B&#8221; side A/D board since
+the 32 slice detector module only speaks to a single A/D board for
+each of the 57 FRDM's.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453027-255299">3.5&nbsp;&nbsp;A/D board Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><UL><LI CLASS="bulletlist"><P>One IFB communicates with four A/D boards. The IFB
+has separate transmitting and receiving lines for each A/D boards.
+The data lines are Low Voltage Digital Signals (LVDS).</P></LI><LI CLASS="bulletlist"><P>It is a source synchronous design. Both transmitting
+and receiving data are transmitted with their clocks. The clocks are
+LVDS signals.</P></LI><LI CLASS="bulletlist"><P>Due to the consideration of the saving the IFB backplane
+connector pin counts, the IFB only sends two TX clocks to four A/D
+boards (Star clock distribution).</P></LI><LI CLASS="bulletlist"><P>There is a separate reset signal (ADM_RST_N) from
+the IFB to the A/D boards. The reset signal will reset GDAS ASICs
+and FPGA. The reset signal is derived from either DCB reset signal
+or DSP soft reset.</P></LI><LI CLASS="bulletlist"><P>The IFB will supply power to the A/D boards (Analog
++2.5V, Analog &#8211;2.5V, Digital +2.5V, -2.5V, Analog +3.3V, Digital +3.3V,
+and Digital 1.5V). Due to the long trace between the IFB and the A/D
+modules, the GDAS ASIC power will be sensed at the FRDM's backplane
+connectors, so that the GDAS ASICs will get more accurate power by
+regulating the outputs of the Source voltage on the IFB. The sense
+lines do not go through the digital cable onto the A/D board itself
+due to a lack of available signal lines on the digital interface cable.</P></LI><LI CLASS="bulletlist"><P>ADM_PRESENT_N(3:0) are the present signals to specify
+if the A/D boards are present or not. The signal is an active low
+signal.</P></LI><LI CLASS="bulletlist"><P>There are five signals (DCLK, CONFIG_DONE, nCONFIG,
+nSTATUS, DATA0) for the IFB to remotely configure four A/D boards.
+The DCLK will be controlled by the DSP. Only odd numbered IFB's can
+configure the A/D board FPGA. The even numbered IFB cannot configure
+the A/D board FPGA, but it monitors the CONFIG_DONE signal from the
+odd numbered IFB. This was necessary to be completely compatible with
+the 32 slice architecture.</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453028-255299">3.6&nbsp;&nbsp;Serial Data Format<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The FRDM shall be responsible for the following functions:</P><UL><LI CLASS="bulletlist"><P>Single Access Read or Write from/to GDAS ASIC register.
+This operation is used to read and write control data to and from
+the many individually addressable ASIC control registers. It also
+includes dynamic write.</P></LI><LI CLASS="bulletlist"><P>Sequential Access Read or Write from/to GDAS ASIC
+register. This operation is used to read or write trim code registers
+for all 64 channels in one sequential operation. </P></LI><LI CLASS="bulletlist"><P>Channel data read is also a kind of the sequential
+read operation. The IFB reads 4 serial data buses at the same time
+with a burst mode. </P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453029-255299">3.7&nbsp;&nbsp;DCB Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following diagram shows the 32-slice / 64-slice interface
+between the IFBs and the DCB. For the 32-slice CT, only odd numbered
+IFBs are populated. For the 64-slice VDAS CT, all 29 IFBs are populated,
+only odd numbered IFB's for 64 slice HDAS. For VDAS, the odd numbered
+IFBs are always connected to the slice1 to slice32, and even numbered
+IFBs are always connected to the slice 33 to slice 64.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">IFB and DCB Interface Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/255421.jpg" BORDER="0" usemap="#255421.jpg"></P></DIV><P CLASS="sect2">The interface between the IFB and DCB is a point-to-point connection.
+A serial data output signal (IFB_SDAT) is a pair of low voltage differential
+signal. The signal is 480 Mbps for both 32-slice and 64-slice CTs.
+The serial data is a LVDS signal which is generated through a True
+LVDS transmitter in FPGA. The input clock of the transmitter is a
+40 MHz LVDS signal (IFB_CLK) from the DCB. The clock is synthesized
+by a transmitter PLL to generate one 60 MHz clock for the True LVDS
+transmitter and another 60 MHz for the A/D module interface. The trig
+signal (IFB_TRIG) from the DCB is a LVDS pair signal as well. The
+signal initiates a view collection.  During the initialization, the
+IFB sends a series of the training patterns to the DCB. At the DCB
+side, a Dynamic Phase Alignment (DPA) block aligns the clock to the
+incoming data (IFB_SDAT). The DPA will avoid the clock to the data
+skew issue. A Byte Aligner at the DCB will guarantee the parallelization
+boundary or byte boundary for each data stream at the DCB. A Channel
+Aligner (Word Aligner) at the DCB will also make all serial data streams
+from 15 or 29 IFBs to get aligned. Once the IFB is ready to send channel
+data to the DCB, the IFB sends a 16-bit word header (0xF628), the
+1040 (32-slice) or 2080 (64-slice) data channels, and 16 auxiliary
+data for temperature signals and diagnostic data. Between the each
+view, the training pattern will be transmitted.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453031-255299">3.8&nbsp;&nbsp;Channel Output Sequence<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The 32-slice and 64-slice have same channel output sequences.
+For the 32-slice CT, only odd number of the IFB will be populated
+(IFB1, IFB3, IFB5, &#8230;, IFB29). For the 64-slice CT, all 29 IFB's will
+be populated. In both cases, each IFB is connected to four A/D boards,
+and is responsible to the 64 channels in X-axis and 32-slice in Z-axis.
+The odd number IFBs will be responsible to the 1-32 slices and even
+number IFBs will be responsible to the 33-64 slices. This makes the
+Slipring transmission channel scalable. For the 32-slice CT, only
+one Slipring transmission channel is used. For 64-slice CT, two Slipring
+transmission channels are be used. The following table shows the channel
+out sequence for both 32-slice and 64-slice CT from the IFB to the
+DCB.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Channel Output Sequence</SPAN> </P><table summary="Channel Output Sequence" border="1"><colgroup><col width="29%"><col width="29%"><col width="41%"></colgroup><tbody><tr><td>Channel Output Sequence</td><td>Channel Number</td><td>Slice Number Odd/Even IFB</td></tr><tr><td>0</td><td>View Header</td><td>&nbsp;</td></tr><tr><td>1</td><td>1</td><td>1/33</td></tr><tr><td>2</td><td>2</td><td>1/33</td></tr><tr><td>sequence continues</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>65</td><td>65</td><td>1/33</td></tr><tr><td>66</td><td>1</td><td>2/34</td></tr><tr><td>sequence continues</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>2079</td><td>64</td><td>32/64</td></tr><tr><td>2080</td><td>65</td><td>32/64</td></tr><tr><td>2081</td><td>Auxiliary Data 1</td><td> Temp 1  (A/D M_1)  </td></tr><tr><td>2082</td><td>Auxiliary Data 2</td><td> Temp 2 (A/D M_1)  </td></tr><tr><td>2083</td><td>Auxiliary Data 3</td><td>Temp 1  (A/D M_2)  </td></tr><tr><td>2084</td><td>Auxiliary Data 4</td><td>Temp 2 (A/D M_2) </td></tr><tr><td>2085</td><td>Auxiliary Data 5</td><td>Temp 1  (A/D M_3) </td></tr><tr><td>2086</td><td>Auxiliary Data 6</td><td>Temp 2 (A/D M_3)</td></tr><tr><td>2087</td><td>Auxiliary Data 7</td><td> Temp 1  (A/D M_4) </td></tr><tr><td>2088</td><td>Auxiliary Data 8</td><td>Temp 2 (A/D M_4)</td></tr><tr><td>2089</td><td>Auxiliary Data 9</td><td>Temp (IFB) </td></tr><tr><td>2090-2096</td><td>Auxiliary Data 10-16</td><td>Reserved</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453033-255299">3.9&nbsp;&nbsp;CAN Bus Serial Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The CAN bus is used to communicate with the DCB and other IFBs
+through a CAN transceiver. There are only two serial lines to be connected
+on CAN bus: CAN_Hi and CAN_Lo (Differential , bi-directional signal
+pair). The bus will be implemented as a multi-master configuration.
+ Either the IFB or DCB can arbitrate on the bus to become the master.
+ Communication is accomplished through a command/acknowledge protocol,
+rather than a register-access protocol.  This maximizes bus utilization
+and interface flexibility.</P><P CLASS="sect2">Each IFB connected to the bus is software addressable by an
+unique address and each IFB shall have its own unique address, known
+as its slave address. This address is determined by the IFB backplane
+connection and the unique address is determined by the IFB's location
+in the backplane.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453034-255299">3.10&nbsp;&nbsp;I2C interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The IFB and FRDMs have separate I2C data lines (SDA). A multiplex
+in the FPGA will select which I2C bus (SDA) will be used.</P><P CLASS="sect2">Besides one I2C temperature sensor for itself, the IFB also
+writes to and reads from two temperature sensors and one serial EEPROM
+for each FRDM. The IFB board is connected to 4 A/D boards, so one
+IFB board shall interact with nine temperature sensors and four serial
+EEPROMs. All sensors and EEPROMs are tied through a 2-wire serial
+interface (I2C bus).</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453035-255299">3.11&nbsp;&nbsp;LED's and Test Points<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following test points and LED's are available on the DIFB.
+There are no adjustable power supplies in the DAS subsystem. Only
+the single 48V power supply feeding the DAS and most other components
+on the rotating assembly.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">LED's</SPAN> </P><table summary="LED's" border="1"><colgroup><col width="61"><col width="86"><col width="228"><col width="227"></colgroup><tbody><tr><td valign="bottom">LED</td><td valign="bottom">Function</td><td valign="bottom">Condition: Blinking Green</td><td valign="bottom">Condition: OFF</td></tr><tr><td valign="bottom">DS1</td><td valign="bottom">Error</td><td valign="bottom">Error code</td><td valign="bottom">No errors</td></tr><tr><td valign="bottom">DS2</td><td valign="bottom">Trigger </td><td valign="bottom">Trigger occuring</td><td valign="bottom">No trigger activity</td></tr><tr><td valign="bottom">DS3</td><td valign="bottom">CAN Activity</td><td valign="bottom">CAN activity present</td><td valign="bottom">No CAN traffic</td></tr><tr><td valign="bottom">DS4</td><td valign="bottom">Not used</td><td valign="bottom">Not used</td><td valign="bottom">Not used</td></tr></tbody></table></CENTER></DIV><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Test Points</SPAN> </P><table summary="Test Points" border="1"><colgroup><col width="26%"><col width="24%"><col width="48%"></colgroup><tbody><tr><td>Label</td><td>Name</td><td>Description (used on)</td></tr><tr><td>TP6</td><td>P3v3</td><td>+3.3 V (IFB, A/D Module)</td></tr><tr><td>TP7</td><td>N3v3</td><td>-3.3 V </td></tr><tr><td>TP4</td><td>P3v3D</td><td>+3.3V digital</td></tr><tr><td>TP1</td><td>P1v8D</td><td>+1.8V Digital (IFB)</td></tr><tr><td>TP3</td><td>P1v5F</td><td>+1.5V Digital (IFB, A/D Module)</td></tr><tr><td>TP5</td><td>GND</td><td>Analog Ground</td></tr><tr><td>TP9</td><td>GND</td><td>Digital Ground</td></tr></tbody></table></CENTER></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255615-255299">4&nbsp;&nbsp;DAS Control Board (DCB)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The DCB is the main control board for the VCT, 32/64-Slice Data
+Acquisition System (DAS).  It packages all the interface card data
+into a single high-speed serial data stream, compatible with the receive
+function on the 32/64-Slice DAS Interface Processor (DIP).</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453038-255299">4.1&nbsp;&nbsp;Inputs<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">From Interface Boards (DIFB):</P><UL><LI CLASS="bulletlist"><P>Serial Data Streams, for an 32- or a 64-slice system</P></LI><LI CLASS="bulletlist"><P>IFB CAN Bus communication for status, faults, chassis
+temperature readings, and serial number information</P></LI><LI CLASS="bulletlist"><P>Interface Board Fault Line</P></LI></UL><P CLASS="sect2">From On-Rotating Processor (ORP):</P><UL><LI CLASS="bulletlist"><P>Input View Triggers</P></LI><LI CLASS="bulletlist"><P>RCIB CAN Bus communication for scan prescription information
+and FLASH download</P></LI><LI CLASS="bulletlist"><P>RCIB CAN Fault Signal</P></LI></UL><P CLASS="sect2">From Detector Heater Control board (DHC):</P><UL><LI CLASS="bulletlist"><P>RS-232 Bus communication for status, faults, detector
+temperature readings, and detector identification information</P></LI><LI CLASS="bulletlist"><P></P></LI></UL><P CLASS="sect2">From Generator:</P><P CLASS="sect2"> - KV &amp; MA analog signals</P><P CLASS="sect2">From Backplane:</P><P CLASS="sect2"> - Power supply voltages</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453039-255299">4.2&nbsp;&nbsp;Outputs<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">To Interface Boards:</P><UL><LI CLASS="bulletlist"><P>Shift Clock</P></LI><LI CLASS="bulletlist"><P>Trigger Signal</P></LI><LI CLASS="bulletlist"><P>Converter CAN Bus communication for control information </P></LI><LI CLASS="bulletlist"><P>Reset signal </P></LI><LI CLASS="bulletlist"><P>External reference current</P></LI></UL><P CLASS="sect2">To On-Rotating Processor (ORP):</P><UL><LI CLASS="bulletlist"><P>RCIB CAN Bus communication for DAS status, error,
+or scan complete information</P></LI><LI CLASS="bulletlist"><P>RCIB CAN Fault Signal</P></LI></UL><P CLASS="sect2">To Detector Heater Control board (DHC):</P><UL><LI CLASS="bulletlist"><P>RS-232 Bus communication for control information</P></LI><LI CLASS="bulletlist"><P></P></LI></UL><P CLASS="sect2">To Detector:</P><P CLASS="sect2"> - FET Control signals</P><P CLASS="sect2">To Slip-ring (and then on to the Scan Reconstruction Unit (SRU)
+):</P><P CLASS="sect2"> - High-speed serial data stream containing the view data with
+embedded FEC CRC.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453040-255299">4.3&nbsp;&nbsp;Processing<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DCB will perform the following functions:</P><UL><LI CLASS="bulletlist"><P>Interfaces with the On-Rotating Processor (ORP) for
+Rx reception and scan completion via CAN bus.</P></LI><LI CLASS="bulletlist"><P>Sets up gain and offset trim and controls the interface
+boards, via the IFB CAN interface.</P></LI><LI CLASS="bulletlist"><P>Receives triggers and starts acquisitions with the
+interface cards.</P></LI><LI CLASS="bulletlist"><P>Performs serial-to-parallel conversion on data streams
+from the interface boards, does parity checking on the data, and formats
+the data for view transmission.</P></LI><LI CLASS="bulletlist"><P>Adds Forward Error Correction (FEC) to the channel
+data and sends it across the slip-ring to the Scan Reconstruction
+Unit (SRU) via the high-speed serial data interface.</P></LI><LI CLASS="bulletlist"><P>Detects jitter and timeouts in the view trigger signal.</P></LI><LI CLASS="bulletlist"><P>Controls the operation of the Detector Heater Control
+board and monitors the subsystem for faults.</P></LI><LI CLASS="bulletlist"><P>Monitors the power supply voltages to make sure they
+are within the software programmable limits.</P></LI><LI CLASS="bulletlist"><P>Acquires the kV and mA values for each scan.</P></LI><LI CLASS="bulletlist"><P>Controls the FET switch array in the detector to change
+the number and thickness of scan slices (32-slice only).</P></LI><LI CLASS="bulletlist"><P>Monitors the DAS subsystem for various faults.</P></LI><LI CLASS="bulletlist"><P>Stores &amp; sums the z-axis reference channels, and
+performs calculations that control the collimator cam positioning.
+ This is used to track the x-ray beam and keep it centered on the
+detector.</P></LI><LI CLASS="bulletlist"><P>Provides a current reference to the interface boards
+for A/D boards.</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453041-255299">4.4&nbsp;&nbsp;Control Signals<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Two broadcast signals from the DCB is used to control the sequencing
+of data onto the data streams.  The serial clock (IFB_CLK) is used
+primarily to set the bit transmission rate.  The serial clock is a
+80 MHz LVDS pair signal.  The trigger signal (IFB_TRIG) is used to
+initiate the sampling and transmission of all the channels on the
+IFB.  The trigger signal is also a LVDS pair signal.</P><P CLASS="sect2">IFB_CLK is a 50% duty cycle clock driven by the DCB.  IFB_CLK
+ is sent to all of the interface boards differentially through the
+chassis backplane.  To reduce loading, the signal is replicated on
+the DCB with a BUS LVDS driver chip such that any single differential
+pair will drive eight or less loads.  IFB_CLK will be valid before
+the IFB&#8217;s are taken out of reset, and will remain valid while
+the IFB boards are not in reset.</P><P CLASS="sect2">The trigger signal (IFB_TRIG) will be used to initiate the sampling
+and transmission of all the channels on the IFB.  The trigger signal
+is also a Bus LVDS pair signal.  Like IFB_CLK, this signal is replicated
+on the DCB with a BUS LVDS driver chip such that any single differential
+pair will drive eight or less loads.</P><P CLASS="sect2">In response to an external or internal view trigger, DCB will
+generate an IFB_TRIG pulse to all of the interface boards through
+the chassis backplane.  The IFB shall treat the IFB_TRIG signal as
+an asynchronous signal.  Both external and internal view triggers
+have the same effect on the DCB.</P><P CLASS="sect2">The only mechanism to reset the converter boards will be to
+assert the IFB_RST signal.  This active high, single-ended signal
+is set by the DCB and sent to all interface boards through the chassis
+backplane.  DCB sets the IFB reset as long as one of the following
+two conditions is true.</P><UL><LI CLASS="bulletlist"><P>During DCB reset</P></LI><LI CLASS="bulletlist"><P>Interface Board Reset Register on DCB is set by firmware</P></LI></UL><P CLASS="sect2">The period of assertion is the same as the length of the condition
+causing the reset. </P><P CLASS="sect2">An active low signal, IFB_FLT_n, is generated by an interface
+board to notify the DCB in the event of a fault condition.  Any one
+or more interface boards can assert this signal at anytime.  When
+the signal is asserted, the DCB will interrogate all interface boards
+via the Interface Board CAN bus to determine the cause and report
+an error condition when appropriate.  The actual interrogation is
+done by firmware.  In the event of an error condition where IFB_FLT_n
+is stuck low on power-up, the DCB will detect this via a level-sensitive
+interrupt in the control FPGA.</P><P CLASS="sect2">The DCB produces an external reference current, IREF_EXT, to
+the interface boards for diagnostic purposes.  The 1.0 uA signal is
+generated by a current source that is resident on the DCB.  The test
+current is sent to all interface boards.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453042-255299">4.5&nbsp;&nbsp;CAN Bus Signals In/Out<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The CAN bus used between the DCB and the converter boards is
+a low-cost, 8-bit oriented, bi-directional serial communications bus
+which requires only two serial lines: serial CAN data high (CANH)
+and serial CAN data low (CANL).  Communication is accomplished through
+a command/acknowledge protocol, rather than a register-access protocol.
+ This maximizes bus utilization and interface flexibility.</P><P CLASS="sect2">Using a CAN bus to implement DCB / IFB control allows the interface
+boards to be autonomous, smart nodes.  Each interface card will be
+responsible for its own diagnostic and setup, alleviating any unproductive
+communication between the DCB and the interface cards.</P><P CLASS="sect2">The maximum baud rate of the CAN bus is determined by the number
+of nodes on the bus, which contribute to the overall bus impedance.
+ The programmable data rate can be up to 1Mbps.  The CAN data rate
+shall be compatible with at least baud rate of 250 Kbps.</P><P CLASS="sect2">Each device connected to the bus is software addressable by
+a unique address and each interface card will have its own unique
+address, known as its slave address. This address is determined by
+the interface card backplane connection and the unique address is
+determined by the card's location in the backplane.  The CAN  bus
+will operate at a baud rate of 500 Kbps.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453043-255299">4.6&nbsp;&nbsp;Data Signals In<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DCB will accept DAS channel data from the converter boards,
+per the following definition. The Interface Board processes digital
+channel data from the GDAS ASIC&#8217;s resident on the A/D boards.
+This data is combined with temperature measurements into a single
+point-to-point serial data stream to the DCB.  In a 64-slice configuration,
+29 interface boards are installed providing 29 point-to-point serial
+streams into the DCB.  In a 32-slice configuration, only 15 interface
+boards are installed and only 15 serial streams are used.  Each serial
+stream will utilize a single LVDS differential pair to minimize radiated
+noise and enhance signal integrity.  This LVDS pair will run at a
+rate between 180 and 240 Mbps.</P><P CLASS="sect2">During DAS initialization, the IFB shall send a training pattern
+to the DCB in order to lock the DCB receiver circuitry onto the serial
+stream.  At the DCB,  a Dynamic Phase Alignment (DPA) block will align
+the sampling clock phase to the incoming data phase.  If the Byte
+Aligner is not able to guarantee the byte boundary within specifications,
+the DCB will report a serial data stream communication error.</P><P CLASS="sect2">When the IFB receives a trigger signal from the DCB, the IFB
+starts to send its channel data.  During the each view period, there
+will be some idle time, during which the IFB will send alternating
+1&#8217;s and 0&#8217;s (1 0 1 0 1 0 &#8230;) to maintain the DPA&#8217;s
+lock.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453044-255299">4.7&nbsp;&nbsp;Slipring Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The interface from the DCB to the DIP in the SRU is designed
+to run at 2.488 Gbaud per link, where each link represents a physical
+channel on the slipring.  The design requires one 2.488 Gbaud channel
+for a 32-slice system and two 2.488 Gbaud channels for a 64-slice
+system.  The DCB will be designed for up to four 2.488 Gbaud channels
+for 128-slice scalability.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453045-255299">4.8&nbsp;&nbsp;Host CAN Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DCB Host Interface will be used to control DAS operation
+and to communicate DAS status.  The following sections describe the
+control interface. The DCB Host Interface makes use of Controller
+Area Network (CAN) technology. The DCB&#8217;s use of this technology
+including the physical interface conforms to all CAN specifications.
+ All CAN signals are optically isolated between the DCB and the network.
+ The DCB provides a port to interface with a CAN controller.  </P><P CLASS="sect2">The DCB has a fault interface, called RCIB_CAN_FLT, consisting
+of a twisted pair wire signal that is bi-directional to the DAS. 
+Both input and output are optically isolated.  The DAS will use this
+interface to detect an abort condition from other controllers and
+to initiate an abort to other controllers.  When a fault is initiated
+or detected, the DAS will go into its fault sequence.</P><P CLASS="sect2">There are two methods to reset the DAS, via CAN message or reset
+bus.  Both methods cause the DAS to go through the same reset sequence
+and timing.  All DAS hardware is in a known and safe state upon exiting
+reset.  The reset bus uses a twisted pair wire signal, called RCIB_CAN_RST,
+that is optically isolated from the DAS.  The DAS can only monitor
+but not drive the reset bus.</P><P CLASS="sect2">The DCB receives the external view trigger input, called E_TRIG,
+from the ORP via a twisted pair wire.  This input signal is optically
+isolated from the DAS and causes the DAS to begin view data collection.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453046-255299">4.9&nbsp;&nbsp;Generator Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Measured scan kV and mA are read by the X-ray Generation Subsystem
+and fed back to the DAS so they can be inserted into the view data
+stream.  The Generator Interface is implemented on a connector located
+on the backplane and signals are routed to the DCB via the backplane.
+ These signals are differentially driven by X-ray Generation and received
+by the DCB.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453047-255299">4.10&nbsp;&nbsp;Detector FET Control Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DCB generates a maximum of 18 signals to configure the detector
+FET MUX circuitry.  These lines are used only for the 32-slice system.
+ Each of the following 3 groups of detector modules uses a maximum
+of 6 of these signals for their MUX configurations:  Z-axis Upper
+(ZUFET), Data Channel Detector (DFET), and Z-axis Lower (ZLFET). 
+These signals are set to 0 volts and &#8211;2.5 volts when they are in the
+OFF and ON states respectively.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453048-255299">4.11&nbsp;&nbsp;Detector Heater Control board Interface<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DCB ommunicates with the Detector Heater Control board (DHC)
+using an RS-232 serial communication interface.  This interface provides
+the path for the DCB to setup and control DHC operation, to monitor
+the DHC subsystem for faults, and to obtain detector temperature readings
+for inclusion in the view data stream.  The serial interface is a
+simplified 2-wire RS-232 implementation (with no hardware handshake
+capability) operating at 19.2 kBaud.  The setup includes 8-bit word
+length, no parity, and one stop bit.</P><P CLASS="sect2">On power-up the DCB detects the presence of the DHC in the system
+using a resistor located on the DHC.  The DCB will convert the resistance
+proportionally and compare the value to a pair of setpoint registers.
+ If the presence of the DHC is detected, the DCB will begin to communicate
+with the DHC via the RS-232 interface.  The Detector Heater Control
+board Interface is implemented on a connector located on the backplane.
+ Signals are routed from the DCB to this connector via the backplane.
+ The signal voltages are a minimum of +/- 5VDC.  Signal currents are
+on the order of 10mA.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453049-255299">4.12&nbsp;&nbsp;Push Button Rest<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The push button reset will initiate a hard reset to all the
+board logic.  This initializes all the hardware to a known state,
+and causes the Nios processor to reboot.  The DCB Control FPGA will
+also be reset via this push button switch; however, it will only re-configured
+from FLASH PROM at board power-up.  This reset is provided for debug
+and bring-up purposes only.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453050-255299">4.13&nbsp;&nbsp;Test Points and LED's<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Below are the test points and LED's available on the DCB.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">LED's</SPAN> </P><table summary="LED's" border="1"><colgroup><col width="61"><col width="86"><col width="228"><col width="227"></colgroup><tbody><tr><td valign="bottom">DS #</td><td valign="bottom">Function</td><td valign="bottom">Green</td><td valign="bottom">Yellow</td></tr><tr><td valign="bottom">1</td><td valign="bottom">PWR</td><td valign="bottom">Board has 3.3V digital power</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">2</td><td valign="bottom">RESET</td><td valign="bottom">Lit while in reset</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">3</td><td valign="bottom">FPGA</td><td valign="bottom">FPGA loaded(No light = error)</td><td valign="bottom">Loading</td></tr><tr><td valign="bottom">4</td><td valign="bottom">B/A CODE</td><td valign="bottom">Application code loaded(No light = error)</td><td valign="bottom">Boot code loaded</td></tr><tr><td valign="bottom">5</td><td valign="bottom">HRTBEAT</td><td valign="bottom">Heartbeat</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">8</td><td valign="bottom">GCAN_FLT</td><td valign="bottom">&nbsp;</td><td valign="bottom">RCIB can bus fault</td></tr><tr><td valign="bottom">6</td><td valign="bottom">GCAN_RX</td><td valign="bottom">Receiving data from RCIB can bus.</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">7</td><td valign="bottom">CCAN_RX</td><td valign="bottom">Receiving data from converter card can bus</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">9</td><td valign="bottom">Optlink</td><td valign="bottom">&nbsp;</td><td valign="bottom">Not implemented.</td></tr><tr><td valign="bottom">14</td><td valign="bottom">APP&lt;0&gt;</td><td valign="bottom">Application code controlled</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">15</td><td valign="bottom">APP&lt;1&gt;</td><td valign="bottom">Application code controlled</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">16</td><td valign="bottom">APP&lt;2&gt;</td><td valign="bottom">Application code controlled</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">17</td><td valign="bottom">APP&lt;3&gt;</td><td valign="bottom">Application code controlled</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">10</td><td valign="bottom">FLT_SENS_EN</td><td valign="bottom">Fault line is EnabledOFF: Fault line is Disabled</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">11</td><td valign="bottom">FLT_YES</td><td valign="bottom">&nbsp;</td><td valign="bottom">In Fault Condition  OFF: Not in Fault Condition)</td></tr><tr><td valign="bottom">12</td><td valign="bottom">HCOM_ACT</td><td valign="bottom">Connected to Host(Off = Not connected)</td><td valign="bottom">&nbsp;</td></tr><tr><td valign="bottom">13</td><td valign="bottom">ERR_CODE</td><td valign="bottom">Error code indicator</td><td valign="bottom">&nbsp;</td></tr></tbody></table></CENTER></DIV><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DCB Test Points</SPAN> </P><table summary="DCB Test Points" border="1"><colgroup><col width="95"><col width="140"><col width="378"></colgroup><thead><tr><th align="center" valign="top">Test Point</th><th align="center" valign="top">Label</th><th valign="top">Description</th></tr></thead><tbody><tr><td align="center">TP3, TP4, TP6, TP7, TP16, TP17, TP18, TP19</td><td align="center">GND</td><td>Digital Logic Ground</td></tr><tr><td align="center">TP10</td><td align="center">P12V</td><td>Positive 12V supply from 48V to +-12V supply</td></tr><tr><td align="center">TP14</td><td align="center">N12V</td><td>Negative 12V supply from 48V to +-12V supply</td></tr><tr><td align="center">TP5</td><td align="center">3V3</td><td>3.3V digital supply</td></tr><tr><td align="center">TP8</td><td align="center">1V5</td><td>1.5V digital supply</td></tr><tr><td align="center">TP1</td><td align="center">3V3_ISO</td><td>3.3V isolated supply, used for optical isolation circuitry</td></tr><tr><td align="center">TP2</td><td align="center">GND_ISO</td><td>Isolated ground, used for optical isolation circuitry</td></tr><tr><td align="center">TP12</td><td align="center">P5VA</td><td>Positive 5V analog supply</td></tr><tr><td align="center">TP11</td><td align="center">N5VA</td><td>Negative 5V analog supply</td></tr><tr><td align="center">TP13</td><td align="center">P_VARIABLE</td><td>Variable analog supply (+10V analog supply)</td></tr><tr><td align="center">TP9, TP15</td><td align="center">AGND</td><td>Analog GND.</td></tr></tbody></table></CENTER></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255618-255299">5&nbsp;&nbsp;Backplane<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There are two backplanes for the Digital DAS.  One backplane
+is a  &#8220;Low Channel&#8221; backplane that has one DCB slot, 14
+DIFB slots, an inter-backplane connector, two power connectors and
+sub-miniature D style connectors for Common Fan Controller (CFC),
+Generator Inputs and RCIB connections.  This backplane interfaces
+to the lower numbered detector modules.  The other backplane is a
+&#8220;High Channel&#8221; backplane and it consists of 15 DIFB slots,
+an inter-backplane connector and two power connectors.  Unlike previous
+DAS backplanes, the main power comes to each backplane separately
+and does not distribute between backplanes. The backplanes do not
+have any active components on them.</P><P CLASS="sect1">The backplanes for the VCT Digital DAS:</P><UL><LI CLASS="bulletlist"><P>Convey the power to the Field Replaceable Detector
+Modules (FRDM), the DIFBs and the DCB.</P></LI><LI CLASS="bulletlist"><P>Provide mechanical attachment and support for the
+DIFBs and DCB</P></LI><LI CLASS="bulletlist"><P>Act as an interface between the FRDM's A/D boards
+and the DIFBs to transfer the Digital data and control signals.</P></LI><LI CLASS="bulletlist"><P>Provide for data and control transfer between the
+DCB and the DIFB cards.</P></LI><LI CLASS="bulletlist"><P>Provide connectors for interfacing the DCB CAN bus
+communications to/from the Rotating Controller Interface Bus (CT-RCIB),
+an optical data link to the slip ring interface boards and for interfacing
+the DCB with the Detector Heater Control Board, and the generator
+kV and mA signals.</P></LI><LI CLASS="bulletlist"><P>Provide diagnostic LEDs for displaying the state of
+the detector FET control signals. (For use on 32-slice only)</P></LI><LI CLASS="bulletlist"><P>Provide FET Command  and bias lines (For use on 32-slice
+only).  These are pass through signals from the DCB to the FRDM's
+Detector module flex connections.</P></LI><LI CLASS="bulletlist"><P>Have chassis ground planes on the outer layers for
+EMC control purposes and these are &#8220;stitched&#8221; at regular
+intervals along the edges.</P></LI></UL><P CLASS="sect1">Configurations: The DAS is designed to work as a 32 and 64 slice
+DAS without any hardware configuration other than the number of DIFB
+cards inserted into the DAS backplanes.  The backplanes do not change
+between configurations.</P><P CLASS="sect1">The DCB clock and trigger signals as well as the 48V power is
+routed on the backplane to groups of DIFB's (1-8, 9-14, 15-22, and
+23-29).</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255621-255299">6&nbsp;&nbsp;DAS Air Plenum<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453053-255299">6.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DAS air plenum is comprised of the plenum housing, filter
+assembly, 5 fans with rotational feedback, three temperature sensors,
+a fan control board and heater control board. </P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453054-255299">6.2&nbsp;&nbsp;Fans<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There are 5 variable speed fans mounted to a fan plate on the
+front of the Air plenum. Each fan is individually controlled from
+the Common Fan Control Board.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453055-255299">6.3&nbsp;&nbsp;Temperature sensors<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There are three temperature sensors within the air plenum that
+send data back to the CFC for use in fan speed control.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453056-255299">6.4&nbsp;&nbsp;Filters<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There is a single filter with honeycomb EMC shield integrated
+onto the back side of the filter. With the fan plate off the front
+of the air plenum, the filter side can be seen. The EMC shield is
+susceptible to damage so care must be taken when handling the filter
+assembly.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453057-255299">6.5&nbsp;&nbsp;Common Fan Control Board (CFC)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453058-255299">6.5.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">By using variable-speed fans, this design both mitigates the
+effects of air temperature on the detector with the plenum (rotating)
+and minimizes the gantry air temperature variation (stationary). The
+external firmware control allows the CFC to be used on both the rotating
+and stationary sides without different programming for each application.</P><P CLASS="sect3">The fan control algorithm is run in firmware on the DCB using
+feedback data from the CFC and the A/D board temperatures read through
+the DIFBs to the DCB. The CFC passes the plenum fan speed feedback
+and digital temperature measurements to the DCB firmware and will
+receive fan speed control signals via RS232. The CFC communicates
+to the Heater Controller via RS232 to receive heater-rail temperatures.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DHC and CFC Block diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/333875.gif" BORDER="0" usemap="#333875.gif"></P></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453060-255299">6.5.2&nbsp;&nbsp;Inputs/Outputs<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Inputs:</P><UL><LI CLASS="bulletlist"><P>5 Digital tach signals (2 pulses per revolution) from
+fan</P></LI><LI CLASS="bulletlist"><P>3 Thermistor temperature sensor inputs.</P></LI><LI CLASS="bulletlist"><P>5 Velocity sensors</P></LI></UL><P CLASS="sect3">Outputs:</P><UL><LI CLASS="bulletlist"><P>5 Fan 0-10V analog voltage output for speed control.
+Fans begin to spin at ~1.25V Control Voltage</P></LI><LI CLASS="bulletlist"><P>48VDC for each of the 5 fans.</P></LI><LI CLASS="bulletlist"><P>12VDC control for stationary heater solid state relay
+(SSR) - Not to exceed 30mA at 12Vdc</P></LI></UL><P CLASS="sect3">Inputs/Outputs:</P><UL><LI CLASS="bulletlist"><P>Digital heater feedback from Detector Heater via Heater
+Controller board through an RS232 connection (isolated on the Heater
+Controller board).</P></LI><LI CLASS="bulletlist"><P>Firmware communications from the DCB/TGPU firmware
+via an electrically isolated RS232 connection.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453061-255299">6.5.3&nbsp;&nbsp;Operational Functionality<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Detault Mode:</P><P CLASS="sect3">All fans will run at 1/2 speed, the gantry heater shall be in
+the &#8220;Off&#8221; state, and the board will be ready for communication.
+The amber Default Mode LED will be lit. The system will stay in this
+state until a control communication from the host is received and
+the hardware watchdog circuit is enabled.</P><P CLASS="sect3">Hardware Watchdog:</P><P CLASS="sect3">A &#8220;watchdog&#8221; function exists in hardware that will
+set and hold the board in &#8220;Default Mode&#8221; within 1 second
+on power up. The CPU, once initialized will write to the watchdog
+register continuously, which will allow variable fan speed and heater
+control from host. If CPU does not continuously refresh watchdog within
+1 second, the board will enter Default Mode with the heater disabled,
+and the fans set at &frac12; speed via hardware without any firmware
+interaction. The host is able to determine that the hardware watchdog
+failed.</P><P CLASS="sect3">Runtime diagnostic self test:</P><UL><LI CLASS="bulletlist"><P>Detect and report open thermistors</P></LI><LI CLASS="bulletlist"><P>Detect and report shorted thermistors</P></LI><LI CLASS="bulletlist"><P>Detect and report Stationary Heater over-temp (open
+circuit when it should be closed)</P></LI><LI CLASS="bulletlist"><P>Memory Checksum or CRC check</P></LI></UL><P CLASS="sect3">The diagnostic self test will run on power on and also during
+regular operation at regular intervals timed at 1.15 seconds between
+tests. Test results will be communicated to host on request. This
+method allows the host to query diagnostic results multiple times
+at multiple gantry positions while rotating. This will simplify diagnosis
+of rotation-related intermittent problems.</P><P CLASS="sect3">Unconnected/Unused:</P><P CLASS="sect3">Unconnected fans, thermistors and airflow sensors will be reported
+along with the connected ones. The host firmware will determine if
+the component is connected and reporting an error or not connected
+at all based on system configuration.</P><P CLASS="sect3">48V Power supply monitor circuit:</P><P CLASS="sect3">The CFC will monitor the 48V input at an accuracy of &plusmn;500mV
+and store the information in memory to be read by the host for diagnostic
+reporting.</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453062-255299">6.6&nbsp;&nbsp;Detector Heater Control board (DHC)<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453063-255299">6.6.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The detector heater controller is designed to maintain rails
+at a uniform temperature which is critical for controlling the photodiode
+and preventing any changes to the rail temperature profile. Changes
+in the rail temperature or the temperature profile can both lead to
+IQ errors due to poor diode temperature control. By using variable
+speed fans, this design will mitigate the effects of air temperature
+variation (rotating). The DHC is used on the rotating side with an
+RS232 interface to the common fan control (CFC) and the external firmware
+control. </P><P CLASS="sect3">The heater controller provides PID control for up to 5 independent
+heater zones but the Sherlock detector is only using 3 zones. PID
+control is required to accommodate the wide range of heat fluxes(duty
+cycle) that will be encountered in operation. In order to prevent
+EMI issue, the heater controller provides a constant filtered DC voltage
+to the rail heater zones. All PWM chopping of the input voltage is
+done within the controller. Also the communication of the temperature
+measurements of the rails, will be done to the Common Fan Controller
+(CFC) via the RS232 protocol. </P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453064-255299">6.6.2&nbsp;&nbsp;Signals<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Inputs:</P><UL><LI CLASS="bulletlist"><P>3 Thermistor temperature sensors from rails on detector
+assembly.</P></LI><LI CLASS="bulletlist"><P>48V DC power supply.</P></LI></UL><P CLASS="sect3">Outputs:</P><P CLASS="sect3"> - Voltage to the 3heater zones between 0 to 48V.</P><P CLASS="sect3">Input/Outputs:</P><UL><LI CLASS="bulletlist"><P>Digital heater feedback from Detector Heater via Heater
+Controller board through an electrically isolated RS232 connection.</P></LI><LI CLASS="bulletlist"><P>3 digitized thermistor sensors.</P></LI><LI CLASS="bulletlist"><P>Thermistor flag informing about the functionality.</P></LI><LI CLASS="bulletlist"><P>Heater health flag.</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="SL1453065-255299">6.6.3&nbsp;&nbsp;Operational Functionality<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Boot up sequence and default mode: Upon POWER ON, all heaters
+will start heating the detector and measurement will be made constantly
+by the DHC at every 5 seconds. The heater will stay in ON mode until
+a communication with DHC specifies otherwise.</P><P CLASS="sect3">Diagnostic self test </P><UL><LI CLASS="bulletlist"><P>Detect and report open thermistors</P></LI><LI CLASS="bulletlist"><P>Detect and report shorted thermistors</P></LI><LI CLASS="bulletlist"><P>Detect and report open heaters</P></LI><LI CLASS="bulletlist"><P>Detect and report shorted heaters</P></LI><LI CLASS="bulletlist"><P>Memory Checksum or CRC check</P></LI></UL><P CLASS="sect3">The diagnostic self test will run on POWER ON and also during
+regular operation at regular intervals timed at 1.15 seconds between
+tests. Test results will be communicated to the DHC on request. This
+method will allow the DHC to query diagnostic results multiple times
+at multiple gantry positions while rotating.</P><P CLASS="sect3">The 48V power to the DHC is run through a thermistat on each
+end of the detector rails. The thermistats are used for over temperature
+protection for the detector and will cut off power to the DHC if the
+temperature of the rails reaches 45 +/- 2 degrees C and will not close
+until the rails have cooled down to 39 +/- 1 degree C.</P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL255624-255299">7&nbsp;&nbsp;Power Supply<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453066-255299">7.1&nbsp;&nbsp;48V power supply<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The 48V power supply is a single power supply on the rotating
+assembly that powers the DAS, Detector subsystem, Collimator, ORP,
+Heater control bd, Fan control bd and Slipring Transmitter. All voltages
+used by the DAS and Detector are generated via on board regulators
+on the DCB and DIFB's. The A/D board power is supplied by regulators
+on the DIFB's. There are no voltage adjustments for the DAS components.</P><P CLASS="sect2">The Power supply has an internal fan for cooling.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL1453067-255299">7.2&nbsp;&nbsp;Fuse board<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The VCT 48Vdc Fuse Board provides a central point for fuse protection
+and distribution of 48Vdc power to the rotating  harnesses and loads
+on the VCT gantry.  The board is powered by the main rotating 48Vdc
+power supply.  The loads served by this board are: DAS, Collimator,
+DHC, CFC, ORP &amp; Slip-Ring Transmitter.  The board also provides
+an indicating LED and a switch for service personnel to disable the
+48Vdc power supply.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">LEDs and Test Points</SPAN> </P><table summary="LEDs and Test Points" border="1"><colgroup><col width="23%"><col width="23%"><col width="52%"></colgroup><tbody><tr><td>Label</td><td>Name</td><td>Description</td></tr><tr><td>S1	  </td><td>Disable		Toggle Switch.</td><td>Intended for use by service personnel to disable the power
+supply  and facilitate servicing the connected loads.</td></tr><tr><td>TP1			</td><td>LGND</td><td>Logic Ground.</td></tr><tr><td>TP2			</td><td>CM</td><td>0-5V analog signal proportional to % full current output of
+the supply.</td></tr><tr><td>TP3			</td><td>+48Vdc</td><td>48Vdc reference.</td></tr><tr><td>DS 1		</td><td>PWR ON</td><td>Green LED to indicate power supply OK.</td></tr><tr><td>DS 2</td><td>48V_A</td><td>Power to Low channel backplane DIFBs 1 - 8</td></tr><tr><td>DS 3</td><td>48V_B</td><td>Power to Low channel backplane DIFBs 9 -14 and DCB</td></tr><tr><td>DS 4</td><td>48V_C</td><td>Power to Low channel backplane DIFBs 15 - 22</td></tr><tr><td>DS 5</td><td>48V_D</td><td>Power to Low channel backplane DIFBs 23 - 29</td></tr><tr><td>DS 6</td><td>48V_E</td><td>Power to the Collimator</td></tr><tr><td>DS 7</td><td>48V_F</td><td>Power to the DHC</td></tr><tr><td>DS 8</td><td>48V_G</td><td>Power to the CFC</td></tr><tr><td>DS 9</td><td>48V_H</td><td>Power to the ORP</td></tr></tbody></table></CENTER></DIV></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

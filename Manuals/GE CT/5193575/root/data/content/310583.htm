@@ -1,0 +1,133 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>X-Ray Generation Theory (Pro, RT, VCT)</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5193575-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>LightSpeed 7.X Service Information - Adv</P></td></tr></table><H1 ID="top">X-Ray Generation Theory (Pro, RT, VCT) </H1><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody><tr><td>Last Revised:</td><td>February 2005</td></tr></tbody></table></CENTER></DIV><P CLASS="descriptive">This module contains the following information:</P><UL><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310593-310583">Section 1</A> -
+Introduction</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310596-310583">Section 2</A> -
+kV Function</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310599-310583">Section 3</A> -
+mA Function</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310602-310583">Section 4</A> -
+Rotation Function</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310605-310583">Section 5</A> -
+Thermal Management</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310608-310583">Section 6</A> -
+Power-On</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310612-310583">Section 7</A> -
+Components</P><P> (see <SPAN CLASS="MODULEREF"><I><A HREF="220601.htm"> X-Ray
+Generation Components (Pro 16)</A></I></SPAN>)</P></LI><LI CLASS="bulletlist"><P><A HREF="310583.htm#SL310616-310583">Section 8</A> -
+Generator Firmware</P></LI></UL><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310593-310583">1&nbsp;&nbsp;Introduction<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The X-Ray generation subsystem for LightSpeed 5.x systems comes with
+completely different packaging compared to previous LightSpeed products. This
+system is based on the &#8220;Jedi&#8221; platform. Jedi is an engineering
+name given to a family of compact high frequency X-Ray generators. This generator
+family covers a wide range of applications from mobile equipment RAD/RF up
+to this state of the art CT system. The X-Ray generator in this system is
+capable of operating at a peak power of 100kW.</P><P CLASS="sect1">This X-Ray generation subsystem is a mono-polar design requiring only
+one High Voltage Transformer to deliver kV to the X-Ray tube. In this case,
+the anode is grounded. Thus it follows that there is only one High Voltage
+Cable.</P><P CLASS="sect1">The PPC control board (stands for Power PC) is the master controller
+of the subsystem. This board is responsible for controlling kV and mA, directing
+other circuit boards in the subsystem, and collecting and storing operating
+data and reporting it to the CT scanner's host computer. It is operated by
+its own internal firmware and also utilizes an internal database to store
+data.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">JEDI Overview Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/310677.jpg" BORDER="0" usemap="#310677.jpg"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310596-310583">2&nbsp;&nbsp;kV Function<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091365">2.1&nbsp;&nbsp;kV Function Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The PPC control board controls the kV function.</P><P CLASS="sect2">After power on, the CPU downloads the exposure control configuration
+stored in FPGA DSP. </P><P CLASS="sect2">The FPGA then:</P><UL><LI CLASS="bulletlist"><P>configures the real-time lines to the ORP</P></LI><LI CLASS="bulletlist"><P>drives the inverter gate drive supply to provide the right
+voltage for the IGBT gates</P></LI><LI CLASS="bulletlist"><P>monitors the DC bus voltage </P></LI><LI CLASS="bulletlist"><P>monitors the IGBT gates voltage</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091379">2.2&nbsp;&nbsp;Exposure Sequence<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">When the CPU receives the kV, mA, exposure time commands from the ORP.
+   When the CPU receives the exposure enable signal it drives the filament
+drive and starts anode rotation and prepares the generator for exposure. Once
+all functions are ready, the CPU informs the exposure control firmware that
+the generator is ready for an exposure.</P><P CLASS="sect2">When exposure command goes active:</P><P CLASS="sect2">the CPU:</P><UL><LI CLASS="bulletlist"><P>starts the exposure time counter</P></LI><LI CLASS="bulletlist"><P>starts the mAs and brightness counters (for RAD AEC cut-off,
+not used in CT) </P></LI><LI CLASS="bulletlist"><P>measures kV demand, kV measure, DC bus, gate voltage, HV tank
+temperature each 16ms during the exposure</P></LI><LI CLASS="bulletlist"><P>calculates new kV, mA reference in RAD tomography or ABC</P></LI><LI CLASS="bulletlist"><P>applies new kV, mA reference if the system/operator changes
+the parameters</P></LI></UL><P CLASS="sect2">the FPGA:</P><UL><LI CLASS="bulletlist"><P>starts the HV power inverter by driving the IGBTs</P></LI><LI CLASS="bulletlist"><P>put X-ray on in its active state</P></LI><LI CLASS="bulletlist"><P>regulates the inverter</P></LI><LI CLASS="bulletlist"><P>monitors the hardware safeties: tube spits, no kV, over kV,
+HV inverter over current, kV regulation error</P></LI></UL><P CLASS="sect2">When any of the following occur: </P><UL><LI CLASS="bulletlist"><P>exposure command goes down</P></LI><LI CLASS="bulletlist"><P>exposure enable goes down</P></LI><LI CLASS="bulletlist"><P>a fatal safety error occurs </P></LI><LI CLASS="bulletlist"><P>a timer reaches its final count:</P></LI></UL><P CLASS="sect2">the FPGA:</P><UL><LI CLASS="bulletlist"><P>stops the inverter</P></LI><LI CLASS="bulletlist"><P>puts X-ray on in its inactive state</P></LI></UL><P CLASS="sect2">the CPU:</P><UL><LI CLASS="bulletlist"><P>stores tube spit count, exposure count, exposure parameters</P></LI><LI CLASS="bulletlist"><P>computes the generator thermal status</P></LI></UL><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">kV Function</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/310642.jpg" BORDER="0" usemap="#310642.jpg"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091554">2.3&nbsp;&nbsp;System Errors<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229533091555">2.3.1&nbsp;&nbsp;Tube Spit Error<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">If a Tube Spit Error occurs during the exposure:</P><P CLASS="sect3">The FPGA stops the inverter for 100us and informs the CPU which then
+reads and stores the error and calculates if the max number of spits is reached.
+If the max number of spits is not reached, the generator allows the system
+to continue scanning.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229533091559">2.3.2&nbsp;&nbsp;Hardware Safety Error<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">If a Hardware Safety Error occurs during the exposure:</P><P CLASS="sect3">The FPGA stops the exposure and reports the error to the CPU which then
+reports the error to the host computer. When a measurement goes out of range,
+the CPU stops the exposure and reports the error to the system.</P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310599-310583">3&nbsp;&nbsp;mA Function<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091566">3.1&nbsp;&nbsp;mA Function Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The PPC control board's CPU in conjunction with the heater board controls
+the mA function. After power on, the CPU sends a preheat command to the heater
+board.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091569">3.2&nbsp;&nbsp;Exposure Sequence<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">First the CPU receives the kV, mA and exposure time commands from the
+ORP. When the CPU receives the exposure enable signal, it calculates the acquisition
+filament drive to apply to the filament in order to match the required tube
+mA.</P><P CLASS="sect2">This calculation is based on:</P><UL><LI CLASS="bulletlist"><P>the filament drive values stored in the tube database </P></LI><LI CLASS="bulletlist"><P>interpolation for calculating the filament drive for the (kV,
+mA) point selected</P></LI><LI CLASS="bulletlist"><P>the filament aging correction</P></LI></UL><P CLASS="sect2">Then it either:</P><UL><LI CLASS="bulletlist"><P>calculates a boost command to apply to the filament to accelerate
+the filament temperature rise and sends it to the heater board. In this case,
+the boost duration is up to 400ms and is followed by a &#8220;go&#8221; command
+sent to the heater board.</P></LI><LI CLASS="bulletlist"><P>or does not use any boost command and directly sends a &#8220;go&#8221;
+command to the heater board</P></LI></UL><P CLASS="sect2">When the exposure command goes active, the CPU:</P><UL><LI CLASS="bulletlist"><P>starts the exposure</P></LI><LI CLASS="bulletlist"><P>measures the mA every 1ms (beginning 5ms after exposure starts),
+compares it to the mA demand and continuously calculates the filament drive
+to apply to reach the mA demand</P></LI><LI CLASS="bulletlist"><P>sends every 1ms, the new filament drive to the heater function</P></LI><LI CLASS="bulletlist"><P>updates the mA demand if required by the system or by generator
+algorithm (ABC mode, falling load mode, variable mA mode)</P></LI><LI CLASS="bulletlist"><P>checks mA accuracy</P></LI></UL><P CLASS="sect2">The heater board:</P><UL><LI CLASS="bulletlist"><P>selects the proper filament as commanded by the CPU.</P></LI><LI CLASS="bulletlist"><P>receives the filament drive demand each 1ms as sent from the
+CPU</P></LI><LI CLASS="bulletlist"><P>measures the heater inverter RMS current two times per 1ms,
+compares it to the filament drive demand and applies the inverter frequency
+to reach the right filament drive current</P></LI><LI CLASS="bulletlist"><P>checks inverter RMS current to avoid exceeding the max filament
+temperature</P></LI><LI CLASS="bulletlist"><P>sends each 100ms the inverter RMS current measure to the PPC
+board's CPU</P></LI></UL><P CLASS="sect2">When the exposure command goes to the inactive state, the CPU either
+stays with the last filament drive demand, goes into preheat mode or stops
+the filament drive to allow a fast filament cooling before going into preheat.
+This rule depends on the application.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">mA Function</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/310659.gif" BORDER="0" usemap="#310659.gif"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310602-310583">4&nbsp;&nbsp;Rotation Function<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091740">4.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The PPC control board's CPU in conjunction with the Rotation Board controls
+the X-Ray tube's anode rotation.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091743">4.2&nbsp;&nbsp;Exposure Sequence<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">When the CPU receives the exposure enable signal it sends the anode
+speed reference to the rotation board.</P><P CLASS="sect2">Upon receiving this command, the rotation drive:</P><UL><LI CLASS="bulletlist"><P>compares this reference to the present anode speed. If the
+present speed is lower:</P></LI><LI CLASS="bulletlist"><P>gets from the tube database the current required to accelerate
+the anode and the acceleration time to apply</P></LI><LI CLASS="bulletlist"><P>drives the inverter with the frequency required for the speed
+selected</P></LI><LI CLASS="bulletlist"><P>measures the phase currents, compares them to the current
+demand, and applies the modulation rate to supply the proper stator current</P></LI><LI CLASS="bulletlist"><P>counts the acceleration time</P></LI><LI CLASS="bulletlist"><P>monitors rotation safeties</P></LI><LI CLASS="bulletlist"><P>sends back each 100ms the speed to the PPC control board CPU </P></LI></UL><P CLASS="sect2">The speed feedback is used by the PPC control CPU to authorize the exposure </P><P CLASS="sect2">Once the acceleration time is complete, the rotation drive applies the
+inverter current required to maintain anode speed.</P><P CLASS="sect2">When the exposure command goes to its inactive state, the CPU either:</P><UL><LI CLASS="bulletlist"><P>sends a speed=0 command to the rotation to stop the anode
+rotation</P></LI><LI CLASS="bulletlist"><P>applies a &#8220;hold&#8221; time to maintain the anode rotation
+speed before stopping it</P></LI><LI CLASS="bulletlist"><P>applies a &#8220;hold&#8221; time to maintain the anode rotation
+speed before going to a low speed mode</P></LI></UL><P CLASS="sect2">depending on the application.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Rotation Function</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/310662.jpg" BORDER="0" usemap="#310662.jpg"></P></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310605-310583">5&nbsp;&nbsp;Thermal Management<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091903">5.1&nbsp;&nbsp;Tube Cooling<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The host computer controls the thermal management of the X-Ray Generation
+subsystem. It uses an algorithmic predictive approach to ensure that the system
+is capable of completing all scans necessary for a given prescription. The
+generator provides protection of components.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091906">5.2&nbsp;&nbsp;Heat Exchanger<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Just as previous LightSpeed systems the X-Ray tube utilizes a Heat Exchanger.
+However, LightSpeed 5.X systems come with a separate heat exchanger unit on
+the gantry.</P><P CLASS="sect2">The tube coolant depends on tube type. Currently, Performix Pro 80 X-Ray
+tubes are filled with a Propylene Glycol / Water solution and Performix Pro
+100 tubes are filled with tube oil. The MSDS should be consulted when necessary.</P><P CLASS="sect2">The heat exchanger can hold either coolant, and the hose connections
+have been reversed to prevent inadvertent connection of one type to the other.</P><P CLASS="sect2">As a result of LightSpeed 5.x having separate a heat exchanger and X-Ray
+tube units, the possibility that the amount of coolant present in the system
+can change over time. For example, consider the case of removing a tube while
+it is very hot. The temperature of the tube forces the coolant to expand and
+thus forcing fluid out of the tube. The volume of the heat exchanger is fixed,
+as it cannot allow air in its chamber. Thus there is an overflow bellows located
+on the heat exchanger. When the new tube is added to the system, it arrives
+with its original factory specified amount of oil, which means that the oil
+contained in the overflow bellows is now extra oil. Therefore we must ensure
+that the oil level is periodically checked and appropriate measures are taken
+if needed.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091911">5.3&nbsp;&nbsp;Tube Protection<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The Inverter detects an over-pressure or tube over-temperature and under-temperature
+states using switches. The over-pressure switch is located on the heat exchanger
+unit, while the tube temperature switch is located on the X-Ray tube and plugs
+into the Heat Exchanger's Power Interface board. The feedback from these sensors
+is sent to the JEDI Inverter via the CAN cable from the Power Interface board.</P><P CLASS="sect2">It is also possible, though not required, for X-Ray tubes to have a
+fluid bleeder to protect itself from overpressure. Fluid lost due to this
+is generally minimal.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091915">5.4&nbsp;&nbsp;Generator Thermal Protection<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The PPC control board measures the temperature of the tank and the inverter.
+The inverter temperature inputs are a parallel inductor temperature sensor,
+and a temperature sensor on the DC Discharge board. Tank temperature feedback
+is obtained through a sensor in the tank oil and sent to the PPC board via
+the tank's kV measure board.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310608-310583">6&nbsp;&nbsp;Power-On<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091921">6.1&nbsp;&nbsp;Power-On Diagnostics<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">At power-up the Power PC performs its own initialization, checks its
+memory integrity (checksum of program and NVRAM) and starts the communication
+with its peripherals as well as the system. Communication is permanently checked
+afterwards. It then initializes the Rotation board and Heater board with their
+respective database parameters and loads PPC control board's FPGA. During
+power-on, the Heater board and the Rotation board CPUs are initialized and
+checked their memory integrity and hardware. If a problem is encountered,
+a PRD error is reported to the PPC board. Eight LEDs (S7&#8230;S0) on the PPC control
+board shows software status and/or error conditions. More information is contained
+in the Troubleshooting section.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229533091924">6.2&nbsp;&nbsp;Power-On Sequence<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Generator power on starts when input phases are applied to the generator.
+In the case of a CT system, this is anytime 120VAC is applied to the gantry,
+hence power is applied to the LVPS400 board. The low voltage power supply
+starts providing the +15V/-15V bus. The +15V rise triggers the 5V rise on
+the PPC control board, heater, and rotation boards. The PPC CTRL board then
+sends the signal to the LVPS400 to activate the other outputs (160VDC for
+Heater board, 24V for fans, etc.). </P><P CLASS="sect2">At this stage, many actions take place in parallel:</P><UL><LI CLASS="bulletlist"><P>PPC Control Board</P><UL><LI CLASS="bulletlist"><P>software starts running the PRDs (1s)</P></LI><LI CLASS="bulletlist"><P>software downloads the control FPGA which starts regulating
+the inverter gate drivers supply</P></LI><LI CLASS="bulletlist"><P>PPC CTRL board software downloads the DSP</P></LI><LI CLASS="bulletlist"><P>software checks the hardware configuration:</P><UL><LI CLASS="bulletlist"><P>reads inverter identification</P></LI><LI CLASS="bulletlist"><P>reads HV tank identification</P></LI><LI CLASS="bulletlist"><P>reads CT system interface identification</P></LI><LI CLASS="bulletlist"><P>talks via Control Bus to identify that all functions are present</P></LI><LI CLASS="bulletlist"><P>The software monitor the DC Bus pre load and full load through
+low voltage power supply (LVPS400) board. The sequence is the following:</P><UL><LI CLASS="bulletlist"><P>Check that the DC Voltage value=0</P></LI><LI CLASS="bulletlist"><P>Monitor pre-load relay on ACDC board during 15 seconds</P></LI><LI CLASS="bulletlist"><P>Check DC Bus voltage over 400V</P></LI><LI CLASS="bulletlist"><P>Monitor load contactor for full charge</P></LI><LI CLASS="bulletlist"><P>Remove pre-load Relay after 5 seconds</P></LI><LI CLASS="bulletlist"><P>Check the DC Bus voltage over 450VDC min and under 850VDC
+max</P></LI><LI CLASS="bulletlist"><P>Errors are reported if something is wrong</P></LI></UL></LI></UL></LI></UL></LI><LI CLASS="bulletlist"><P>Heater Board:</P><UL><LI CLASS="bulletlist"><P>micro-controller starts running the PRDs (in case of error,
+LED ST0/ST1 flashes)</P></LI><LI CLASS="bulletlist"><P>then goes to idle state</P></LI><LI CLASS="bulletlist"><P>heater supply bus reaches its final value</P></LI></UL></LI><LI CLASS="bulletlist"><P>Rotation Board:</P><UL><LI CLASS="bulletlist"><P>micro-controller starts by running the PRDs (in case of error
+Led ST0/ST1 flashes)</P></LI><LI CLASS="bulletlist"><P>then goes to idle state</P></LI><LI CLASS="bulletlist"><P>gates drive supply reaches its final value </P></LI><LI CLASS="bulletlist"><P>DC Bus reaches its final value </P></LI></UL></LI><LI CLASS="bulletlist"><P>Inverter:</P><P>DC Bus reaches its final value on inverter LC and on gate drive supply</P></LI></UL><P CLASS="sect2">Once each main function is alive the control firmware:</P><UL><LI CLASS="bulletlist"><P>checks the generator configuration consistency (in case of
+error, error message is sent)</P></LI><LI CLASS="bulletlist"><P>installs the right hardware drivers </P></LI><LI CLASS="bulletlist"><P>talks to the system or the console (in the case where the
+generator cannot find system presence, PPC boardLEDs S0-S7 display an error
+code) </P></LI><LI CLASS="bulletlist"><P>configures the final control FPGA</P></LI><LI CLASS="bulletlist"><P>sends to rotation and heater databases to respective circuit
+boards based on the knowledge of the tube selected</P></LI></UL><P CLASS="sect2">At this level, if no error has been detected, the generator is ready
+to drive exposures.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310612-310583">7&nbsp;&nbsp;Components<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">For theory information on X-Ray Generation sub-system components, please
+refer to <SPAN CLASS="MODULEREF"><I><A HREF="220601.htm"> X-Ray
+Generation Components (Pro 16)</A></I></SPAN>. It contains the following
+information:</P><OL><LI CLASS="numlist"><P>HV Power Inverter, including Gate Command</P></LI><LI CLASS="numlist"><P>Power PC (PPC) Control Board, including:</P><OL TYPE="a"><LI CLASS="numlist"><P>CPU Core</P></LI><LI CLASS="numlist"><P>JEDI Internal Control Bus</P></LI><LI CLASS="numlist"><P>Exposure Control</P></LI><LI CLASS="numlist"><P>HV Power Inverter Control</P></LI><LI CLASS="numlist"><P>HV Chain Measure and Safeties</P></LI><LI CLASS="numlist"><P>External Interfaces</P></LI></OL></LI><LI CLASS="numlist"><P>HV Tank, including:</P><OL TYPE="a"><LI CLASS="numlist"><P>EMI Protection</P></LI><LI CLASS="numlist"><P>HV Cable</P></LI></OL></LI><LI CLASS="numlist"><P>Auxiliary Box, including:</P><OL TYPE="a"><LI CLASS="numlist"><P>Low Voltage Power Supply 400 (LVPS400)</P></LI><LI CLASS="numlist"><P>Rotation Board</P></LI><LI CLASS="numlist"><P>Heater Board</P></LI></OL></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL310616-310583">8&nbsp;&nbsp;Generator Firmware<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The generator firmware runs on the PPC control board's Power PC CPU.
+Its main functions are:</P><UL><LI CLASS="bulletlist"><P>console and/or system communication</P></LI><LI CLASS="bulletlist"><P>exposure sequencing (rotation, heater, exposure control, mA
+regulation)</P></LI><LI CLASS="bulletlist"><P>tube/generator thermal protection</P></LI><LI CLASS="bulletlist"><P>Image quality algorithms </P></LI><LI CLASS="bulletlist"><P>tube calibrations</P></LI><LI CLASS="bulletlist"><P>Tube/generator tracking</P></LI><LI CLASS="bulletlist"><P>generator diagnostics (application background diagnostics
+and service diagnostics) For more on diagnostics, see the Troubleshooting
+&gt;&gt; Diagnostics section of this publication.</P></LI></UL><P CLASS="sect1">For further information on Generator Firmware (including the topics
+listed below), please refer to <SPAN CLASS="MODULEREF"><I><A HREF="220568.htm">Generator Firmware (Pro16)</A></I></SPAN>.</P><UL><LI CLASS="bulletlist"><P>System Communication</P></LI><LI CLASS="bulletlist"><P>Exposure Sequencing</P></LI><LI CLASS="bulletlist"><P>Tube Spit Counting</P></LI><LI CLASS="bulletlist"><P>Filament Aging</P></LI><LI CLASS="bulletlist"><P>Database</P></LI><LI CLASS="bulletlist"><P>Tracking and Trending (TnT) data</P><P>For additional TnT data information, see also:</P><UL><LI CLASS="bulletlist"><P><SPAN CLASS="MODULEREF"><I><A HREF="219828.htm">Generator Data (Pro16)</A></I></SPAN></P></LI><LI CLASS="bulletlist"><P><SPAN CLASS="MODULEREF"><I><A HREF="220596.htm">Tube Data (Pro16)</A></I></SPAN></P></LI></UL></LI></UL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

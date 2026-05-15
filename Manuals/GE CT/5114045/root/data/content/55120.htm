@@ -1,0 +1,323 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Scan Reconstruction Unit Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5114045-800,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;10<BR>LightSpeed 4.X Service Information (Advanced)</P></td></tr></table><H1 ID="top">Scan Reconstruction Unit Theory </H1><P CLASS="descriptive">This module consists of the following Sections:</P><UL><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90587-55120-dup.1">Section 1</A> - SRU
+Components and Block Diagrams</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90760-55120-dup.1">Section 2</A> - Scan
+Reconstruction Unit Overview</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90763-55120-dup.1">Section 3</A> - Scan
+Reconstruction Unit Hardware Theory</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90767-55120-dup.1">Section 4</A> - Scan
+Data Disk Assembly</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL189735-55120-dup.1">Section 5</A> -
+Recon Interface Processor (RIP) - Motorola Board</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90776-55120-dup.1">Section 6</A> - PMC
+SCSI Card - SBS Technologies (2265396)</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90782-55120-dup.1">Section 7</A> - DAS
+Interface Processor (DIP)</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90791-55120-dup.1">Section 8</A> - Pegasus
+Image Generator (PEG-IG) Board Theory</P></LI><LI CLASS="bulletlist"><P><A HREF="55120.htm#SL90794-55120-dup.1">Section 9</A> - Scan
+Reconstruction Unit Cabling</P></LI></UL><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90587-55120-dup.1">1&nbsp;&nbsp;SRU Components and Block Diagrams<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Scan Reconstruction Unit 	 
+(SRU)
+ consists of the following components:</P><DIV CLASS="INFTABLE"><CENTER><table border="1"><colgroup><col width="184"><col width="493"></colgroup><tbody><tr><td align="left" valign="top">Scan Data
+Disk 	 
+(SDD)
+</td><td align="left" valign="top">The SDD is the raw DAS data
+save media and can hold 1,000 8-slice rotations of data.</td></tr><tr><td align="left" valign="top">Reconstruction
+Interface Processor 	 
+(RIP)
+</td><td align="left" valign="top">The RIP is responsible for coordinating
+the save operation and moving the data from the DIP to the scan data disk.</td></tr><tr><td align="left" valign="top">DAS Interface
+Processor 	 
+(DIP)
+</td><td align="left" valign="top">The DIP is responsible for receiving
+data from Slip Ring Communications 	 
+(SRC)
+, decoding the FEC CRC and buffering it for saving by the RIP.</td></tr><tr><td align="left" valign="top">Pegasus Image
+Generator 	 
+(PEG-IG)
+</td><td align="left" valign="top">The PEG-IG is responsible for
+correcting and calibrating the DAS data (after it has been saved onto the
+SDD), and then making an image from the corrected view data.</td></tr></tbody></table></CENTER></DIV><P CLASS="sect1">For SRU component interconnection information, see the appropriate Console
+block diagram (&#8220;click&#8221; on a PDF icon, below).</P><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">Global Console - Linux (GOC2) Block Diagram</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/64030.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">Global Console - Octane2 (GOC1) Block Diagram</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/63702.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90760-55120-dup.1">2&nbsp;&nbsp;Scan Reconstruction Unit Overview<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113844987">2.1&nbsp;&nbsp;X-ray Abort<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DAS Interface Processor 	 
+(DIP)
+ contains a 24V X-ray Abort relay. This normally open relay must
+be closed to enable X-ray exposure. If the SRU detects that it is unable to
+save uncorrupted scan data to non-volatile memory, then it will open the X-ray
+Abort relay, halting any further X-ray exposure.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113844992">2.2&nbsp;&nbsp;Scan Data Flow<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Scan Data Flow Rates</SPAN> </P><table summary="Scan Data Flow Rates" border="1"><colgroup><col width="184"><col width="126"><col width="126"><col width="145"></colgroup><thead><tr><th>Data Transfer</th><th>984 HZ</th><th>1405 HZ</th><th>1968 HZ</th></tr></thead><tbody><tr><td>DAS Interface</td><td>61.40 Mb/s</td><td>87.67 Mb/s</td><td>122.80 Mb/s</td></tr><tr><td>Scan Data Save</td><td>6.14 Mb/s</td><td>8.77 Mb/s</td><td>12.28 Mb/s</td></tr></tbody></table></CENTER></DIV><P CLASS="sect2">The Forward Error Correction 	 
+(FEC)
+algorithm implemented in DIP hardware will add an additional 10%
+to the scan data rates. All data received through the DAS Interface must be
+saved in non-volatile memory. One super view size (including header) is 6,240
+bytes.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845029">2.3&nbsp;&nbsp;Scan Data Capacity<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">System requirement 2000 rotations:</P><UL><LI CLASS="bulletlist"><P>984 Vws/Rot x 4 Rows/Vw x 768 Ch/Row x 2 B/Ch = 6.05MB / Rot
+- Scan Data</P></LI><LI CLASS="bulletlist"><P>984 Vws/Rot x 24 Wds/Hdr x 4 B/Wd = 94.5 KB / Rot - Header</P></LI><LI CLASS="bulletlist"><P>2000 Rotations x 6.14 MB / Rotation = 12.28 GB.</P></LI><LI CLASS="bulletlist"><P>Scan Data Disk is currently an 18GB capacity disk, and holds
+only the Scan Data (views).</P></LI><LI CLASS="bulletlist"><P>OC host computer holds Scan Header Data.</P></LI></UL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845043">2.4&nbsp;&nbsp;Reconstruction Data Flow<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Reconstruction Data Flow Rates</SPAN> </P><table summary="Reconstruction Data Flow Rates" border="1"><colgroup><col width="277"><col width="163"></colgroup><thead><tr><th>Data Transfer</th><th>3.0 Seconds</th></tr></thead><tbody><tr><td>Scan Data Restore</td><td>3.0 MB/s</td></tr><tr><td>Prep to FBP to Image Pull</td><td>2.34 MB/s</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845065">2.5&nbsp;&nbsp;Reconstruction Performance<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Time-to-First-Image reconstruction time, T1st, is measured from the
+point the software function, DIP Control, receives the first &#8220;Data Available&#8221;
+interrupt from DIP hardware, to the point where the software function, Image
+Create, pulls the reconstructed image from the PEG-IG board.</P><P CLASS="sect2">T1st assumes the following functional flow.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Time to First Image (assuming 0% overhead)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55139.gif" BORDER="0" usemap="#55139.gif"></P></DIV><P CLASS="sect2">Preliminary study of Helical Reconstruction processing estimates that
+the time to first image including overhead is 7 seconds. Case study features
+3:1 pitch, 2x Z-over-sampling, 3.0 second recon, and continuous images. The
+system requirement measured from start scan button pushed until image displayed
+is 10 sec. for helical and 6 sec. for axial scans.</P><P CLASS="sect2">Image-to-Image reconstruction time, TImg, is measured from the point
+where the software function, Image Create, pulls a reconstructed image from
+the PEG-IG board to the point where Image Create pulls the next reconstructed
+image from the PEG-IG board.</P><P CLASS="sect2">TImg assumes the following functional flow.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Image to Image Time (assuming 0% overhead)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55142.gif" BORDER="0" usemap="#55142.gif"></P></DIV><P CLASS="sect2">TImg assumes Filtered Backprojection 	 
+(FBP)
+ and Postprocessing are the determining functions. FBP takes approximately
+1.60 sec. and Postprocessing is 0.70 sec., i.e. total time = 2.30 Seconds.
+IBO adds 0.80 sec. to Postprocessing.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845323">2.6&nbsp;&nbsp;Preprocessing<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Preprocessing is performed on the PEG-IG Board. The data is received
+from the RIP and DAS interface processor Board.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845326">2.7&nbsp;&nbsp;Filtered Backprojection (1.60 Seconds)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Convolution operates on projections the same way: 8 DSPs filter 8 projections
+simultaneously. However, the filter time is approximately 13ms. per iteration.
+Thus, the total filter time is approximately 123 x 13ms = 1.60 seconds.</P><P CLASS="sect2">Backprojection hardware operates simultaneously on 8 projections per
+pixel scan. The time to backproject these 8 projections is 5.24ms. per 5122
+image or 1.31ms. per 2562 image. The image backprojection time is based on
+number of views divided by 8 and multiplied by the respective pixel scan time.
+For example: 984 projections P 8 = 123 iterations x 5.24ms = 0.64 seconds
+for 5122 images.</P><P CLASS="sect2">Backprojection hardware is operating on projections n through n+7. Convolution
+is operating on projections n+8 though n+15. The filtered backprojection time
+is based on the longer of these two functions.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845331">2.8&nbsp;&nbsp;Postprocessing (0.7 Seconds)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Ring-fix takes 500ms, and clip, scale, and round take 200ms to complete.</P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90763-55120-dup.1">3&nbsp;&nbsp;Scan Reconstruction Unit Hardware Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The SRU has three inter-bus connections and one external control signal:
+1) MDAS (via RF Slip Ring), 2) UIF Sub-system (Host Computer), 3) Scan Control,
+and 4) X-ray Abort (to PDU).</P><P CLASS="sect1">The MDAS-SRU connection utilizes TAXI transmitted
+from the DAS Control Board 	 
+(DCB)
+ and
+received by SRU&#8217;s DIP Card. The Host-SRU connection utilizes Ethernet-TCP
+via 100BaseTX. The SRU-Scan connection (3) utilizes Ethernet-UDP via 10Base2.
+X-ray Abort (4) is a 24V, normally-open relay that controls the X-Ray ON function. </P><P CLASS="sect1">There are four major intra-bus connections: 1) PMC - PCI Mezzanine Card,
+2) Ultra SCSI - Small Computer System Interface, 3) 100BaseTX-Ethernet, and
+4) VME - Versa Modulo Euro-card. These bus structures must support data and
+control flow for a 4 row, 0.7 second scanner and scalable to support 0.5 second
+scanning.</P><P CLASS="sect1">There are two logical sections to the console chassis. One section contains
+the Host Computer with System Disk, Ethernet and Serial Interfaces, and the
+Scan Data Disk. The other section contains a VME Backplane, Recon Interface
+Processor with piggy-backed PMC Scan Data SCSI Interface and PMC DIP Interface
+boards, and Pegasus Image Generator Board. The entire VME Chassis is commonly
+termed the Image Chain Engine 	 
+(ICE)
+.</P><P CLASS="sect1">The Host Computer performs functions for scan control, and the RIP performs
+functions for recon control, and scan data acquisition. The PEG-IG, under
+the control of the RIP, performs functions for preprocessing, filtered backprojection,
+iterative bone option, and postprocessing. The Host Computer-VME connection
+utilizes Ethernet-TCP via 100BaseTX.</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845349">3.1&nbsp;&nbsp;SRU Component Functions<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113845351">3.1.1&nbsp;&nbsp;Recon Interface Processor (RIP)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Recon Interface Processor (RIP) - or Motorola POWER-PC Computer - performs
+Recon Control functions. It is the central &#8220;hub&#8221; for all logical
+connections between sub-systems in the ICE. Its processor is RISC and contains
+adequate memory to support Control and Image Chain functions. It connects
+to the scan data disk and performs the Scan Data Save and Restore functions.
+The RIP can communicate with the rest of the ICE through the VME Backplane,
+and with the OC Host Computer through its 100BaseTX-Ethernet Interface.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113845355">3.1.2&nbsp;&nbsp;Scan Data Disk (DD or SDD)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Scan Data Disk (DD or SDD) serves as a buffer for the Image Chain&#8217;s
+data flow architecture and a temporary storage facility for the scan data
+required for reconstruction (header data for the scans is stored on the OC
+Host&#8217;s disks). This disk sub-unit must support 4 row, 0.7 second scanning,
+i.e. 8.61 MB/s Scan Data Save and 2.60 MB/s Scan Data Restore and be scalable
+to support 4 row, 0.5 second scanning, i.e. 12.06 MB/s Scan Data Save and
+2.60 MB/s Scan Data Restore. Save and Restore operations must be partitioned
+or interleaved to minimize Time to First Image (T1st) and allow scan and recon
+simultaneity.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113845358">3.1.3&nbsp;&nbsp;LAN Switch &amp; Hub<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">LAN Switch &amp; HUB interconnect two 100BaseTX and one 10Base2 Ethernet
+ports. The ethernet switch isolates the 100Mb/s transmissions from the 10Mb/s
+transmissions. The ethernet hub converts UTP to thin coax media for communication
+with the Gantry.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113845362">3.1.4&nbsp;&nbsp;DAS Interface Processor (DIP)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">DAS Interface Processor (DIP) is a bus medium translator. It guarantees
+a continuous flow of DAS data from the 125Mb/s TAXI to the 132MB/s PMC-bus.
+This board connects directly to the RIP as a PCI-PMC Card. It has adequate
+data buffers to support the Scan Data Save operation. Forward Error Correction
+will be applied to the data stream to increase the errors/bit rate to approximately
+10-14. The DIP will count the occurrences of forward error corrected scan
+data during an exposure. If Scan Data cannot be corrected, then an abort condition
+exists. The RIP software will record the FEC correction count on a per scan
+basis. Its TAXI design can be easily upgraded to support 175Mb/s transfer
+rate (i.e., 4 row, 0.5 second scanning). The DIP also contains the 24V normally-open
+relay that contributes to the X-ray On function.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113845365">3.1.5&nbsp;&nbsp;Pegasus Image Generator (PEG-IG)<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">Pegasus Image Generator (PEG-IG) performs Scan Data Correction. The
+Scan Data Correction portion of the PEG-IG performs the Image Chain&#8217;s
+preprocessing, calibration, and scout imaging functions. It receives Scan
+Data from the RIP and transmits Projection Data and Scout Images to the board&#8217;s
+Image Generator.</P><P CLASS="sect3">Pegasus Image Generator performs the Image Chain&#8217;s Filtered Backprojection
+and Postprocessing (including Iterative Bone Option, IBO) functions. It receives
+Projection Data from the RIP and transmits Scout, Axial, Cine, or Helical
+Images to the RIP for transfer to the OC Host.</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113845370">3.2&nbsp;&nbsp;Power Supply<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The following chart identifies power requirements of the external power
+supply used for the Scan Data Disks and the VME Chassis:</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Scan Reconstruction Unit Power Supply Requirements</SPAN> </P><table summary="Scan Reconstruction Unit Power Supply Requirements" border="1"><colgroup><col width="206"><col width="106"><col width="112"><col width="121"><col width="121"></colgroup><thead><tr><th>External Power Requirements</th><th>+ 3 Volts</th><th>+ 5 Volts</th><th>- 12 Volts</th><th>+ 12 Volts</th></tr></thead><tbody><tr><td>Scan Data Disks</td><td>&nbsp;</td><td>1.0 A</td><td>3.6 A</td><td>&nbsp;</td></tr><tr><td>Recon Interface Processor</td><td>+</td><td>4.0A +</td><td>0 mA +</td><td>0 mA +</td></tr><tr><td>Pegasus Image Generator</td><td>&nbsp;</td><td>12.0 A</td><td>&nbsp;</td><td>500 mA</td></tr><tr><td>Total = 134.2 Watts</td><td>&nbsp;</td><td>17.0 A</td><td>3.6 A</td><td>0.5 A</td></tr></tbody></table></CENTER></DIV><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e415"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Up to 15 Watts additional power may be drawn by the two PMC cards
+(DIP and SCSI) attached to the RIP Board.<p>Care must be taken to provide the proper in-rush current necessary to
+accelerate the disk drive motors to specified RPMs.</p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90767-55120-dup.1">4&nbsp;&nbsp;Scan Data Disk Assembly<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Scan Data Disk Drive Characteristics</SPAN> </P><table summary="Scan Data Disk Drive Characteristics" border="1"><colgroup><col width="407"><col width="134"><col width="116"></colgroup><thead><tr><th align="right">Seagate P/N &raquo;</th><th colspan="2" align="center">ST318452LW</th></tr></thead><tbody><tr><td>Formatted capacity:</td><td colspan="2" align="center">18.4 Gbytes</td></tr><tr><td align="left">Max. data blocks: </td><td colspan="2" align="center"> 35,843,670 (222EE56h)</td></tr><tr><td align="left">Cylinders and heads (user accessible):</td><td colspan="2" align="center">18,497 / 4 heads</td></tr><tr><td align="left">Disc rotation:</td><td colspan="2" align="center">15k rpm</td></tr><tr><td align="left">Operating voltages:</td><td align="center">+5V</td><td align="center">+12V</td></tr><tr><td align="left">Typical operating current:</td><td align="center">0.88A</td><td align="center">0.79A</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL189735-55120-dup.1">5&nbsp;&nbsp;Recon Interface Processor (RIP) - Motorola Board<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Motorola POWER-PC based processor board used in the current generation
+of CT systems performs the function of Reconstruction Interface Processing.
+The board (MVME24xx) utilizes a 350 MHz MPC 750 PPC processor, contains 128
+Mbytes of main memory, and has both a SCSI PMC daughter-card and a DIP PMC
+daughter-card.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Recon Interface Processor Board Layout (MVME24xx)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/159260.jpg" BORDER="0" usemap="#159260.jpg"></P></DIV><P CLASS="sect1">The MVME2400 Series is a family of VME processor modules based on the
+Motorola PowerPlus II VME Architecture. Featuring the MPC750 class microprocessor
+with up to 1MB of backside L2 cache and dual PMC slots to 32-256MB of ECC
+protected SDRAM, 8MB of on-board Flash, 1MB of socketed Flash, 10/100BaseT
+Ethernet, one serial port and two 64-bit P1386.1-compliant PCI Mezzanine Card
+(PMC) slots that support both front panel and P2 I/O and 114-pin MICTOR connector
+allowing for the addition of up to 4 more PMCs via an expansion mezzanine
+(PMCspan-002/-010).</P><P CLASS="sect1">The MVME24xx is a VME processor module equipped with a PowerPC 750 microprocessor.
+Features include:</P><UL><LI CLASS="bulletlist"><P>Ethernet and debug ports</P></LI><LI CLASS="bulletlist"><P>Boot ROM</P></LI><LI CLASS="bulletlist"><P>Flash memory</P></LI><LI CLASS="bulletlist"><P>DRAM</P></LI><LI CLASS="bulletlist"><P>Interface for two PCI Mezzanine Cards (PMCs)</P></LI></UL><P CLASS="sect1">Four standard buses are supported:</P><UL><LI CLASS="bulletlist"><P>PowerPC Processor Bus </P></LI><LI CLASS="bulletlist"><P>ISA Bus</P></LI><LI CLASS="bulletlist"><P>PCI Local Bus </P></LI><LI CLASS="bulletlist"><P>VMEbus</P></LI></UL><P CLASS="sect1">The MVME24xx interfaces to the VMEbus via the P1 and P2 connectors.
+It also draws +5V, +12V, and -12V power from the VMEbus backplane through
+these connectors. The +3.3V power, used for the PCI bridge chip and possibly
+for the PMC mezzanine, is derived onboard from the +5V power.</P><P CLASS="sect1">Two RJ45 connectors on the front panel provide the interface to 10/100Base-T
+Ethernet, and to a debug serial port.</P><P CLASS="sect1">Items that can be configured manually on the MVME24xx include:</P><UL><LI CLASS="bulletlist"><P>Flash memory bank A/bank B reset vector (J15)</P></LI><LI CLASS="bulletlist"><P>VMEbus system controller selection header (J16)</P></LI><LI CLASS="bulletlist"><P>General-purpose software-readable header (J17)</P></LI></UL><P CLASS="sect1">The MVME24xx has been factory tested and is shipped with the configurations
+described in the following sections. The MVME24xx factory-installed debug
+monitor, PPCBug, operates with those factory settings.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90776-55120-dup.1">6&nbsp;&nbsp;PMC SCSI Card - SBS Technologies (2265396)<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The PMC-UltraSCSI Card provides a high performance UltraWide SCSI (Fast-40)
+adapter solution for a PMC carrier board in VME-based systems. It is an ideal
+module for disk, tape, CD-ROM or other storage media and SCSI peripheral applications.
+The module supports single-ended or differential signaling for asynchronous
+or synchronous SCSI operations. Flexible physical I/O access is available
+via a 68-pin SCSI-III front panel connector or the PMC back panel P4 connector.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">PMC-UltraSCSI Card (SBS Technologies)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55130.jpg" BORDER="0" usemap="#55130.jpg"></P></DIV><P CLASS="sect1">The PMC-UltraSCSI features the LSI Logic SYM53C875 UltraWide SCSI (Fast-40)
+controller, with SCSI SCRIPTS processor support. It allows bus transfer rates
+up to 40 MB/sec synchronous across a 16-bit bus. In addition, 4KB of on-chip
+static RAM is available for SCSI SCRIPTS instruction storage to control the
+SCSI device.</P><P CLASS="sect1">The PMC-UltraSCSI supports DMA with 536 bytes of FIFO. The FIFO has
+burst length of up to 128 transfers to allow maximum bandwidth. Interrupt
+is supported via PCI pin INTA#. VxWorks, LynxOS, and Windows NT device drivers
+are available for the PMC-UltraSCSI (single-ended signaling only). The module
+is compliant with standard single-wide PMC specifications IEEE P1386.1 and
+PCI Specifications.</P><P CLASS="sect1">KEY FEATURES:</P><UL><LI CLASS="bulletlist"><P>Supports UltraSCSI (Fast-20), SCSI-I, SCSI-II, and SCSI-III</P></LI><LI CLASS="bulletlist"><P>Features LSI Logic SYM53C875 SCSI controller</P></LI><LI CLASS="bulletlist"><P>Synchronous SCSI data rates up to 40 Mbytes/sec, asynchronous
+up to 20 Mbytes/sec</P></LI><LI CLASS="bulletlist"><P>Front-panel or back-panel I/O access (via order options)</P></LI><LI CLASS="bulletlist"><P>Single-ended or differential SCSI bus support (via order options)</P></LI><LI CLASS="bulletlist"><P>Support for VxWorks, LynxOS, and Windows NT (single-ended
+only)</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90782-55120-dup.1">7&nbsp;&nbsp;DAS Interface Processor (DIP)<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113852526">7.1&nbsp;&nbsp;Overview<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DIP is the main interface between the DAS and the SRU Subsystem.
+It receives high-speed serial data from the slip ring, buffers it, and sends
+an interrupt to Scan Data Save process in the RIP. The RIP then saves data
+to the Scan Data Disk (SDD). The interface between Scan Data Acquisition and
+the SRU is drawn at the serial interface of the DIP. The DIP board is a plug-in
+mezzanine adapter card, with a PCI-standard interface, to the RIP board.</P><P CLASS="sect2">The DIP board also contains the SRU portion of a &#8220;wired and&#8221;
+interface to the scan abort relay. Access to the relay is achieved via a registered
+write on the PCI bus, via the RIP board.</P><P CLASS="sect2">The DIP board also contains the SRU input to the RHARD reset interface
+to the scan control hardware in the STC, ETC, and OBC. Access to the relay
+is achieved via a registered write on the PCI bus, via the RIP board.</P><P CLASS="sect2">There is no built-in self test on the DIP Board. The DIP board does
+provide data loopback capability in diagnostics.</P><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852531">7.1.1&nbsp;&nbsp;Inputs<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">FROM SLIP RING:</P><P CLASS="sect3">High-speed serial data, on fiber optic media, received via a connector
+on the faceplate of the DIP board. Data can be either:</P><UL><LI CLASS="bulletlist"><P>Offset Data Views prior to scan start and containing a Forward
+Error Correction (FEC) CRC</P></LI><LI CLASS="bulletlist"><P>Scan Data Views after scan start and containing a Forward
+Error Correction (FEC) CRC</P></LI></UL><P CLASS="sect3">FROM RIP, VIA THE PCI BUS:</P><UL><LI CLASS="bulletlist"><P>PCI board configuration control, via a set of configuration
+registers</P></LI><LI CLASS="bulletlist"><P>PCI board base address, via a set of configuration registers</P></LI><LI CLASS="bulletlist"><P>Data transfer configuration, via a register set</P></LI><LI CLASS="bulletlist"><P>X-ray Abort line control, via a command register</P></LI><LI CLASS="bulletlist"><P>RHARD line control, via a command register</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852551">7.1.2&nbsp;&nbsp;Outputs<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">TO RIP:</P><UL><LI CLASS="bulletlist"><P>Interrupts when a configurable amount of DAS data is buffered
+and ready for saving OR when one of several data integrity errors has occurred.
+Per the PCI Spec v2.1, the DIP only uses INTA_N in the PCI bus.</P></LI><LI CLASS="bulletlist"><P>A block of DAS data, via Direct Memory Access (DMA) memory
+read</P></LI></UL><P CLASS="sect3">TO PDU:</P><P CLASS="sect3">Wired &#8220;AND&#8221; relay connection for X-ray abort</P><P CLASS="sect3">TO SCAN CONTROL HARDWARE:</P><P CLASS="sect3">RHARD relay connection for resetting the scan control hardware</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113852562">7.2&nbsp;&nbsp;Data Paths<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DAS/DIP Data Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55148.gif" BORDER="0" usemap="#55148.gif"></P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852692">7.2.1&nbsp;&nbsp;SRC Data Path<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The Scan Data Interface to the DAS scan data buffers is the primary
+DAS data path, within the DIP. The data path is 16-bits wide and is timed
+off of the serial data receive clock, running at 16.667 MHz. Therefore, the
+bandwidth is 33.33 Mbytes/sec. Of this, only 25 Mbytes/sec. (including FEC)
+are used.</P><P CLASS="sect3">When reading and writing in burst mode, the SDRAM bus is capable of
+transferring eight 32-bit data words at 66.6676 MHz in 15 clock cycles. This
+provides a bandwidth of 142 MB/s. The SDRAM bus provides a margin of 43 MB/s
+when it is being fully utilized by the Serial and PCI Interfaces.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852695">7.2.2&nbsp;&nbsp;PCI Data Path<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">This PCI Data Path connects the RIP&#8217;s PCI interface with the SDRAM
+Data Buffers. The data bus is 32 bits wide while the address bus is only 24
+bits. All functions on the bus appear as a memory map, with respect to the
+RIP. All transactions are 32-bits long word-wide timed off of the PCI board
+clock, running at 33 MHz. Therefore, the bandwidth of the bus is 132 Mbytes
+/ second in burst mode. However, the DIP is only capable of transferring a
+32-bit long word of data every two clock cycles in burst mode. Therefore,
+the bandwidth limit on the DIP is 66 Mbytes / second.</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113852698">7.3&nbsp;&nbsp;Interfaces<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852700">7.3.1&nbsp;&nbsp;Scan Abort Line<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The abort line interface is the gateway for the SRU subsystem to abort
+scanning in the event of a fatal error condition that cannot be terminated
+through normal scan control communication messages. Error conditions can include
+CPU failures, communication failures, and DAS data errors. A relay that normally
+forms a closed loop with the PDU is connected to a male, 9-pin, Sub-miniature
+D connector on the DIP faceplate. The relay opens to abort a scan. The interface
+is designed to be safe upon reset. This means that the relay is normally open
+and must be closed by writing a logical &#8220;1&#8221; to the DIP command
+register before X-rays can be turned on. Abort line status is available to
+the RIP via the DIP status register. See <A HREF="javascript:winopen('55120illd0e745.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  6</A>.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852827">7.3.2&nbsp;&nbsp;RHARD<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The RHARD interface is the gateway for the SRU subsystem to reset the
+scan control hardware (STC, ETC, and OBC) in the event of a controller lockup
+error condition that cannot be reset through normal scan control communication
+messages. A relay that normally forms a closed loop with the STC and ETC is
+connected to the same male, 9-pin, Sub-miniature D connector on the DIP faceplate
+as the Abort Line Interface above. The relay opens to reset the scan control
+hardware. Reset relay status is available to the RIP via the DIP status register.
+See <A HREF="javascript:winopen('55120illd0e745.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  6</A>.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113852959">7.3.3&nbsp;&nbsp;Scan Data Interface<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The Scan Data Interface function is responsible for the following: (See <A HREF="javascript:winopen('55120illd0e745.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  6</A>)</P><UL><LI CLASS="bulletlist"><P>Controlling the Transmit function. Transmit only occurs when
+diagnostic mode is active.</P><UL><LI CLASS="bulletlist"><P>Reading the Test Data FIFO, when non-empty</P></LI><LI CLASS="bulletlist"><P>Setting up the data to be transmitted to the Transmit function
+and creating the write enable</P></LI></UL></LI><LI CLASS="bulletlist"><P>Controlling the Loopback function. Loopback mode can only
+be enabled when diagnostic mode is active.</P></LI><LI CLASS="bulletlist"><P>Controlling the Receive function.</P><UL><LI CLASS="bulletlist"><P>Detecting an incoming data byte stream and reading it from
+the Receive function</P></LI><LI CLASS="bulletlist"><P>Checking byte parity errors and feeding those errors back
+into FEC for increased error detection and correction</P></LI><LI CLASS="bulletlist"><P>Detecting modem violations and FEC CRC errors from the Receive
+function</P></LI><LI CLASS="bulletlist"><P>De-multiplexing the incoming byte stream into 32-bit words</P></LI><LI CLASS="bulletlist"><P>Checking the header for data type and magic number to recognize
+view length errors. There are two magic numbers, one for an offset views and
+one for scan data views. The upper 16-bits of the first word of each view
+is compared to the values written into the BMR. If there is a match, the lower
+16-bits are considered the length of the view and are loaded into a counter.
+When the counter expires, it is assumed to be at the start of the next view
+and the word is checked again. If there is not a match, a view length error
+is assumed.</P></LI></UL></LI><LI CLASS="bulletlist"><P>Controlling the DAS Buffer Crossbar and writing DAS data words
+to the DAS Data Buffer</P></LI><LI CLASS="bulletlist"><P>Making interrupt requests to the PCI Interface function</P></LI></UL></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113853126">7.3.4&nbsp;&nbsp;PCI Interface<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The DIP is considered a target-only PCI board. All registers and buffers
+on the DIP are mapped into memory Unix memory space. Registers and buffers
+can be accessed through programmed I/O by the CPU or through DMA by any device
+on the PCI bus. PCI I/O space accesses are not allowed. All registers and
+buffers are accessed with 32-bit transfer only and both single and burst mode
+transfers are supported.</P><P CLASS="sect3">The PCI Interface function is responsible for controlling the PCI bus
+transactions:</P><UL><LI CLASS="bulletlist"><P>Providing board level plug-n-play and configuration</P></LI><LI CLASS="bulletlist"><P>Providing address decodes for all board registers and memory
+devices</P></LI><LI CLASS="bulletlist"><P>Providing transaction sequencing for all access modes</P></LI><LI CLASS="bulletlist"><P>Providing system interrupt capability for reporting all error
+conditions</P></LI></UL></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113853139">7.4&nbsp;&nbsp;DIP Board Processing<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DIP acts as the main interface between the DAS and the SRU Subsystem.
+It is responsible for receiving data from the slip ring, buffering it, and
+sending an interrupt to Scan Data Save to have it save to the Scan Data Disk
+(SDD). The interface between Scan Data Acquisition and the SRU is drawn at
+the interface of the DIP. The DIP board is a mezzanine adapter card, with
+a PCI-standard interface, to the RIP board. See <A HREF="javascript:winopen('55120illd0e745.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  6</A> for a block diagram of the DIP PWA.</P><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DIP Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55134.gif" BORDER="0" usemap="#55134.gif"></P></DIV><P CLASS="sect2">The only processing that is performed on the DIP is data integrity checking.
+Each view record, sent by the DAS contains the following information:</P><UL><LI CLASS="bulletlist"><P>Header, with a Unique (Magic) ID</P></LI><LI CLASS="bulletlist"><P>Channel Data</P></LI><LI CLASS="bulletlist"><P>Checksum of the header and the channel data</P></LI></UL><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113853392">7.4.1&nbsp;&nbsp;Setup<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The RIP sets up the DAS data buffer transfer size, in words, in the
+DIP command register. This transfer size is the number of 32-bit words -1
+written into one of the two DAS Data Buffers before the DIP will interrupt
+the RIP.</P><P CLASS="sect3">The RIP sets up the DIP magic number register for both the offset and
+scan views, but only sets the enable bit for the offset views.</P><P CLASS="sect3">The RIP sets up the DIP command register to enable FEC and data receive
+and waits for interrupts from the DIP indicating that there are buffers of
+offset data ready for save.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113853397">7.4.2&nbsp;&nbsp;Offset Views<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The first buffers of data to be written are offset views. Once enough
+offset data has been written to a DAS data buffer to equal the DAS buffer
+transfer size, the DIP switches the Scan Data Buffer crossbar to the other
+buffer and interrupt the RIP.</P><P CLASS="sect3">The DIP ISR on the RIP will read the DIP interrupt status register,
+see that the interrupt was for a buffer ready, kick off the transfer, and
+wait for completion. A resource on the RIP then performs PCI 32-bit memory
+access reads of the Scan Data Buffer until the block has been transferred.
+When the RIP gets the completion message, it sets the transfer complete bit
+in the DIP command register.</P><P CLASS="sect3">The RIP then waits for the next interrupt to repeat the process until
+all offset data blocks, except for the last, have been transferred.</P><P CLASS="sect3">The last offset view to be sent from the DAS has a flag in the Unique
+ID word of the header indicating that this is the last offset to be sent.
+This indicates to the DIP that the last DAS data buffer will be a partial
+buffer. When the DIP has written this last partial buffer, it interrupts the
+RIP with a different bit set in the DIP interrupt status register. The DIP
+ISR that reads the DIP interrupt status register will detect this and perform
+a read of the BSR to determine the size of the last transfer. It then sets
+up the last transfer and kicks off the transfer.</P><P CLASS="sect3">When offsets are complete, the RIP sets up the magic number register
+to disable offset views and enable scan views.</P></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113853403">7.4.3&nbsp;&nbsp;Scan Views<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3">The process for collecting scan data views is identical to collecting
+offset data views</P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113853406">7.5&nbsp;&nbsp;Power Requirements<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The DIP uses 2 of the available power supplies provided by the PCI backplane.
+Power dissipation on the DIP for each supplied used is shown in <A HREF="javascript:winopen('55120tbld0e796.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Table 5</A>.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">DIP Power Requirements</SPAN> </P><table summary="DIP Power Requirements" border="1"><colgroup><col width="157"><col width="187"></colgroup><thead><tr><th align="center" valign="top">ELEMENT</th><th align="center" valign="top">MAXIMUM POWER</th></tr></thead><tbody><tr><td align="center" valign="top">+5V</td><td align="center" valign="top">2 watts</td></tr><tr><td align="center" valign="top">+3.3V</td><td align="center" valign="top">7 watts</td></tr><tr><td align="center" valign="top">+12V</td><td align="center" valign="top">Not Used</td></tr><tr><td align="center" valign="top">-12V</td><td align="center" valign="top">Not Used</td></tr></tbody></table></CENTER></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90791-55120-dup.1">8&nbsp;&nbsp;Pegasus Image Generator (PEG-IG) Board Theory<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><A HREF="javascript:winopen('55120illd0e845.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Illustration  7</A> is the block diagram
+of the Pegasus board.</P><P CLASS="sect1">The Pegasus Assembly is a complex circuit board that converts raw image
+data into a viewable image. There are thirteen microprocessors, as well as
+twelve custom ASICs that all work in parallel to perform this task. The following
+is a short description of each major section of the board.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e837"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For a full size version of this illustration, click on the PDF
+icon below.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="MEDIA"><CENTER><P CLASS="MEDIATITLE"><SPAN CLASS="MEDIAINTRO"><B>Media File 3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="MEDIATITLE">Full Size Illustration: Pegasus Image Generator Board Block Diagram</SPAN> </P></CENTER><CENTER><P CLASS="MEDIAOBJ"><A HREF="../media/64769.pdf" TARGET="_blank"><IMG SRC="../icons/pdf.gif" BORDER="0" ALIGN="top" HSPACE="4" WIDTH="28" HEIGHT="31"></A></P></CENTER></DIV><DIV CLASS="ILLUSTRATION"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration 7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Pegasus Image Generator Board Block Diagram</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/55145.gif" BORDER="0" usemap="#55145.gif"></P></DIV><P CLASS="sect1">The Pegasus board gets all its power from the VME 5V supply. There are
+three local power regulators that supply 1.9V, 2.6V, and 3.3V power for the
+board.</P><P CLASS="sect1">There are three power supply LEDs near the center backplane connector:</P><P CLASS="sect1">DS14 - Goes on when the 5V power is up.</P><P CLASS="sect1">DS15 - Goes on when the on-board 2.6V regulator is up.</P><P CLASS="sect1">DS16 - Goes on when the on-board 1.9V regulator is up.</P><P CLASS="sect1">These LEDs only give an approximate indication of the power status,
+i.e. they do not indicate whether or not the supply is out of tolerance.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL90794-55120-dup.1">9&nbsp;&nbsp;Scan Reconstruction Unit Cabling<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113853953">9.1&nbsp;&nbsp;Power and Ground<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The LAN electronics contain their own power
+supplies and receive 110VAC power from the Console PDU. The Scan Data Disks
+and the VME backplane receive their +5VDC and +12VDC power from a power supply
+that feeds all components within the Recon box. This power supply is mounted
+on one of the two "flip-down" doors on the side of the Recon box.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113853959">9.2&nbsp;&nbsp;DAS Data Receive<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Connects the HSDCD slip ring receiver to the console DIP Board, via
+62.5/125 um fiber-optic cable. The transmitted data is serially encoded using
+CIMT format per the HDMP 1032/1034 chip specifications. The maximum data rate
+is 350 Mbaud.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113853962">9.3&nbsp;&nbsp;X-ray Abort<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Connects the Power Distribution Unit (PDU) to the DIP Board via a cable
+with DB9 Connectors; the typical application is 35m. The DIP design uses a
+4-pin Mate-n-Loc connector (the &#8220;DIP Board&#8217;s X-ray Abort and RHard
+Pinouts&#8221; table in <SPAN CLASS="MODULEREF"><I><A HREF="55911.htm">DIP Board LEDs and Connections</A></I></SPAN> shows the pin definitions).
+The sense pins are shorted when a cable is present, resulting in a logic &#8220;HI.&#8221;
+If the cable is disconnected, the resulting logic level is &#8220;LO.&#8221;
+This state can be read by the host computer via the Status or Interrupt Registers.</P><P CLASS="sect2">This four pin format must be converted to mate with a 9-pin Sub-D AMP205204-4
+connector before leaving the console. This connector adaptor can be placed
+on the console&#8217;s bulkhead. See the &#8220;DIP Board&#8217;s X-ray Abort
+and RHard Pinouts&#8221; table in <SPAN CLASS="MODULEREF"><I><A HREF="55911.htm">DIP Board LEDs and Connections</A></I></SPAN>.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854215">9.4&nbsp;&nbsp;Serial Port<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">There is one serial port connection. It is between the Host Computer
+and the RIP. The Host connector is of type RJ45. The RIP connector is of type
+RJ45. They comply with the RS232 specification. These ports function as a
+backup connection to the RIP in the event that the processor unit does not
+properly initialize (Boot Link). It is also dedicated to performing Scan and
+Recon inter-processor communications during system operation.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854218">9.5&nbsp;&nbsp;Ethernet Switch<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">All external and internal Ethernet connections between the SRU and Scan
+Control components must be made through an Ethernet Switch. This switch isolates
+the 100Mb/s traffic of the Host Computer and RIP board from the 10Mb/s traffic
+between the Host and Patient Handling Sub-system 	 
+(PHS)
+. These connections to the switch use Category 5 Un-shielded Twisted Pair 	 
+(UTP)
+ cable
+with RJ45 connectors. The 10Mb/s media is converted from 10BaseT to 10Base2
+before leaving the console.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854226">9.6&nbsp;&nbsp;Ethernet<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Connects the Scan Control Subsystems (10Base2) to the OC Host Computer
+(10BaseT). The media conversion takes place in the console via a powered converter.
+The cable from the Ethernet switch to the Ethernet converter is a Category
+5 Un-shielded Twisted Pair (UTP) cable; maximum length 6m. The cable from
+the powered transceiver to the Scan Control Subsystems is Thin Coax. The typical
+application is 35m.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854228">9.7&nbsp;&nbsp;Fast Ethernet<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Connects the UIF Host Computer, and Image Chain Engine (ICE) using a
+Category 5 Un-shielded Twisted Pair (UTP) cable. The connection to the RIP
+is a standard 100BaseTX Ethernet (RJ45). Maximum length 6m.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854232">9.8&nbsp;&nbsp;External SCSI<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Connects RIP to (1) Scan Data Disk using high density 68 pin cable as
+defined by the ANSI SCSI-3 (Wide Ultra SCSI) Standard for 16bit - 40MB/s buses.
+Maximum length 0.75m.</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1229113854235">9.9&nbsp;&nbsp;Technical Specifications<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113854236">9.9.1&nbsp;&nbsp;Serial<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><A HREF="javascript:winopen('55120tbld0e936.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Table 6</A> shows cable pin-out
+assignments for the serial ports.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Serial Port Pinout Assignments</SPAN> </P><table summary="Serial Port Pinout Assignments" border="1"><colgroup><col width="55"><col width="139"><col width="276"></colgroup><thead><tr><th>Pin</th><th>Assignment</th><th>Description</th></tr></thead><tbody><tr><td>1 </td><td>DCD </td><td>Data Carrier Detect</td></tr><tr><td>2 </td><td>RD </td><td>Receive Data</td></tr><tr><td>3 </td><td>TD </td><td>Transmit Data</td></tr><tr><td>4 </td><td>DTR </td><td>Data Terminal Ready</td></tr><tr><td>5 </td><td>SG </td><td>Signal Ground</td></tr><tr><td>6 </td><td>DSR </td><td>Data Set Ready</td></tr><tr><td>7 </td><td>RTS </td><td>Request to Send</td></tr><tr><td>8 </td><td>CTS </td><td>Clear to Send</td></tr><tr><td>9 </td><td>RI </td><td>Ring Indicator</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113854417">9.9.2&nbsp;&nbsp;Ethernet 10-Base T/100-Base T<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><A HREF="javascript:winopen('55120tbld0e1021.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Table 7</A> shows the cable
+pinout assignments for the Ethernet 10-Base T/100-Base T port.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Ethernet 10-BASE T/100-Base T Port Pinout Assignments</SPAN> </P><table summary="Ethernet 10-BASE T/100-Base T Port Pinout Assignments" border="1"><colgroup><col width="55"><col width="242"></colgroup><thead><tr><th>Pin </th><th>Assignment</th></tr></thead><tbody><tr><td>1 </td><td>TRANSMIT+</td></tr><tr><td>2 </td><td>TRANSMIT-</td></tr><tr><td>3 </td><td>RECEIVE+</td></tr><tr><td>4 </td><td>(Reserved)</td></tr><tr><td>5 </td><td>(Reserved)</td></tr><tr><td>6</td><td>RECEIVE-</td></tr><tr><td>7</td><td>(Reserved)</td></tr><tr><td>8</td><td>(Reserved)</td></tr></tbody></table></CENTER></DIV></DIV><DIV CLASS="SECT3"><H4 CLASS="SECT3" ID="ov-1229113854573">9.9.3&nbsp;&nbsp;SCSI<SPAN CLASS="SECT1EFF"> </SPAN></H4><P CLASS="sect3"><A HREF="javascript:winopen('55120tbld0e1080.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">
+Table 8</A> shows the cable
+pinout assignments for the SCSI port.</P><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID=""><SPAN CLASS="TABLEINTRO"><B>Table 8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">SCSI Port Pinout Assignments </SPAN> </P><table summary="SCSI Port Pinout Assignments " border="1"><colgroup><col width="129"><col width="139"><col width="27"><col width="108"><col width="160"></colgroup><thead><tr><th>Pin </th><th>Assignment</th><th>&nbsp;</th><th>Pin </th><th>Assignment</th></tr></thead><tbody><tr><td>1 </td><td>GROUND </td><td>&nbsp;</td><td>35 </td><td>-DB(12)</td></tr><tr><td>2 </td><td>GROUND </td><td>&nbsp;</td><td>36 </td><td>-DB(13)</td></tr><tr><td>3 </td><td>GROUND </td><td>&nbsp;</td><td>37 </td><td>-DB(14)</td></tr><tr><td>4 </td><td>GROUND </td><td>&nbsp;</td><td>38 </td><td>-DB(15)</td></tr><tr><td>5 </td><td>GROUND </td><td>&nbsp;</td><td>39 </td><td>-DB(P1)</td></tr><tr><td>6 </td><td>GROUND </td><td>&nbsp;</td><td>40 </td><td>-DB(0)</td></tr><tr><td>7 </td><td>GROUND </td><td>&nbsp;</td><td>41 </td><td>-DB(1)</td></tr><tr><td>8 </td><td>GROUND </td><td>&nbsp;</td><td>42 </td><td>-DB(2)</td></tr><tr><td>9 </td><td>GROUND </td><td>&nbsp;</td><td>43 </td><td>-DB(3)</td></tr><tr><td>10 </td><td>GROUND </td><td>&nbsp;</td><td>44 </td><td>-DB(4)</td></tr><tr><td>11 </td><td>GROUND </td><td>&nbsp;</td><td>45 </td><td>-DB(5)</td></tr><tr><td>12 </td><td>GROUND </td><td>&nbsp;</td><td>46 </td><td>-DB(6)</td></tr><tr><td>13 </td><td>GROUND </td><td>&nbsp;</td><td>47 </td><td>-DB(7)</td></tr><tr><td>14 </td><td>GROUND </td><td>&nbsp;</td><td>48 </td><td>-DB(P)</td></tr><tr><td>15 </td><td>GROUND </td><td>&nbsp;</td><td>49 </td><td>GROUND</td></tr><tr><td>16 </td><td>GROUND </td><td>&nbsp;</td><td>50 </td><td>GROUND</td></tr><tr><td>17 </td><td>TERMPWR </td><td>&nbsp;</td><td>51 </td><td>TERMPWR</td></tr><tr><td>18 </td><td>TERMPWR </td><td>&nbsp;</td><td>52 </td><td>TERMPWR</td></tr><tr><td>19 </td><td>OPEN </td><td>&nbsp;</td><td>53 </td><td>OPEN</td></tr><tr><td>20 </td><td>GROUND </td><td>&nbsp;</td><td>54 </td><td>GROUND</td></tr><tr><td>21 </td><td>GROUND </td><td>&nbsp;</td><td>55 </td><td>-ATN</td></tr><tr><td>22 </td><td>GROUND </td><td>&nbsp;</td><td>56 </td><td>GROUND</td></tr><tr><td>23 </td><td>GROUND </td><td>&nbsp;</td><td>57 </td><td>-BSY</td></tr><tr><td>24 </td><td>GROUND </td><td>&nbsp;</td><td>58 </td><td>-ACK</td></tr><tr><td>25 </td><td>GROUND </td><td>&nbsp;</td><td>59 </td><td>-RST</td></tr><tr><td>26 </td><td>GROUND </td><td>&nbsp;</td><td>60 </td><td>-MSG</td></tr><tr><td>27 </td><td>GROUND </td><td>&nbsp;</td><td>61</td><td>-SEL</td></tr><tr><td>28 </td><td>GROUND </td><td>&nbsp;</td><td>62 </td><td>-C/D</td></tr><tr><td>29 </td><td>GROUND </td><td>&nbsp;</td><td>63 </td><td>-REQ</td></tr><tr><td>30 </td><td>GROUND </td><td>&nbsp;</td><td>64 </td><td>-I/O</td></tr><tr><td>31 </td><td>GROUND </td><td>&nbsp;</td><td>65 </td><td>-DB(8)</td></tr><tr><td>32 </td><td>GROUND </td><td>&nbsp;</td><td>66 </td><td>-DB(9)</td></tr><tr><td>33 </td><td>GROUND </td><td>&nbsp;</td><td>67 </td><td>-DB(10)</td></tr><tr><td>34 </td><td>GROUND </td><td>&nbsp;</td><td>68 </td><td>-DB(11)</td></tr></tbody></table></CENTER></DIV></DIV></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>
