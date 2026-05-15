@@ -723,29 +723,9 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <button class="btn btn-gold" onclick="showTab('money');setMoneyTab('invoices');openInvoiceModal()">📝 Generate Invoice</button>
     <button class="btn btn-outline" onclick="printRates()">🖨 Print Rates</button>
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
-    <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
+    <button class="btn btn-accent" onclick="openEmailSigModal()">📧 Email Signature</button>
   </div>
   <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</div>
-
-  <!-- EMAIL SIGNATURE GENERATOR -->
-  <div id="emailSigSection" style="display:none" class="card mt-12">
-    <div class="card-header" style="background:linear-gradient(135deg,#004d66,#006080)">
-      <span>📧 Email Signature Generator</span>
-    </div>
-    <div style="padding:16px">
-      <div style="font-size:.8rem;color:var(--text2);margin-bottom:12px">Choose a team member, then copy the HTML signature into your email client.</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('michael')">Michael Jackson</button>
-        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('antonio')">Antonio Jackson</button>
-        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('candelario')">Candelario Juarez</button>
-      </div>
-      <div id="emailSigPreview" style="border:1px solid var(--gray2);border-radius:8px;overflow:hidden;background:#fff;margin-bottom:10px"></div>
-      <div id="emailSigCopyRow" style="display:none;gap:8px;flex-wrap:wrap">
-        <button class="btn btn-success btn-sm" onclick="copyEmailSigHTML()">📋 Copy HTML to Clipboard</button>
-        <span style="font-size:.75rem;color:var(--text2);align-self:center">Paste into Gmail → Settings → Signature (HTML mode) or Outlook → Signature editor</span>
-      </div>
-    </div>
-  </div>
 
   <!-- HOLD HARMLESS AGREEMENT -->
   <div id="holdHarmlessSection" class="card mt-12" style="border:2px solid var(--navy)">
@@ -2730,7 +2710,7 @@ function confirmKBSuggest(){
 // ── UNIFIED SEARCH ──
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
-  if(!q||q.length<2){ res.innerHTML=''; return; }
+  if(!q||q.length<2){ res.innerHTML=''; renderErrCodeList(); return; }
   const ql = q.toLowerCase();
   const errMatches = FULL_ERROR_DB.filter(e=>
     e.code.toLowerCase().includes(ql)||e.desc.toLowerCase().includes(ql)||e.brand.toLowerCase().includes(ql));
@@ -2801,6 +2781,19 @@ function kbSearch(q){
       </div>`).join('')+'</div>';
   }
   res.innerHTML = html;
+  if(html) setTimeout(()=>res.scrollIntoView({behavior:'smooth',block:'start'}),30);
+  const errCodeList = document.getElementById('errCodeList');
+  const errTab = document.getElementById('kbp-errcodes');
+  if(errCodeList && errTab && errTab.style.display!=='none'){
+    if(!q||q.length<2){ renderErrCodeList(); return; }
+    if(errMatches.length){
+      errCodeList.innerHTML='<div style="overflow-x:auto"><table class="cl-table" style="font-size:.82rem"><thead><tr><th style="text-align:left">Code</th><th style="text-align:left;min-width:60px">Brand</th><th style="text-align:left">Description</th><th></th></tr></thead><tbody>'+
+        errMatches.map(e=>`<tr><td><strong style="color:var(--red)">${e.code}</strong></td><td><span class="badge bc" style="font-size:.62rem">${e.brand}</span></td><td style="font-size:.8rem">${e.desc}</td><td><button onclick="getAIFix('${e.code}')" style="background:var(--navy);color:white;border:none;padding:3px 8px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button></td></tr>`).join('')+
+        '</tbody></table></div>';
+    } else {
+      errCodeList.innerHTML=`<div class="alert alert-info">No error codes found for "${q}".</div>`;
+    }
+  }
 }
 
 // Alias for backwards compat
@@ -3976,13 +3969,11 @@ const EMAIL_SIG_PEOPLE = {
 };
 let _emailSigCurrentHTML = '';
 
-function toggleEmailSig(){
-  const sec = document.getElementById('emailSigSection');
-  if(!sec) return;
-  const showing = sec.style.display !== 'none';
-  sec.style.display = showing ? 'none' : 'block';
-  if(!showing){ buildEmailSig('michael'); setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'nearest'}),50); }
+function openEmailSigModal(){
+  openModal('emailSigModal');
+  buildEmailSig('michael');
 }
+function toggleEmailSig(){ openEmailSigModal(); }
 
 function buildEmailSig(key){
   const p = EMAIL_SIG_PEOPLE[key]; if(!p) return;
@@ -4578,7 +4569,29 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
-<!-- KB Entry Modal -->
+<!-- Email Signature Modal -->
+<div class="modal-overlay" id="emailSigModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header" style="background:linear-gradient(135deg,#004d66,#006080)"><h3>📧 Email Signature Generator</h3><button class="modal-close" onclick="closeModal('emailSigModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="font-size:.82rem;color:var(--text2);margin-bottom:12px">Choose a team member, then copy the HTML into your email client (Gmail → Settings → Signature, or Outlook → Signature editor).</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('michael')">Michael Jackson</button>
+        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('antonio')">Antonio Jackson</button>
+        <button class="btn btn-sm btn-accent" onclick="buildEmailSig('candelario')">Candelario Juarez</button>
+      </div>
+      <div id="emailSigPreview" style="border:1px solid var(--gray2);border-radius:8px;overflow:hidden;background:#fff;margin-bottom:10px;min-height:40px"></div>
+      <div id="emailSigCopyRow" style="display:none;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-success btn-sm" onclick="copyEmailSigHTML()">📋 Copy HTML to Clipboard</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('emailSigModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Import / KB Entry Modal -->
 <div class="modal-overlay" id="importDocModal">
   <div class="modal" style="max-width:560px">
     <div class="modal-header"><h3>📥 Import File to Knowledge Base</h3><button class="modal-close" onclick="closeModal('importDocModal')">✕</button></div>
@@ -4586,7 +4599,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       <div class="alert alert-info" style="margin-bottom:12px;font-size:.82rem">Upload a service document, repair log, or CSV. Claude will extract KB entries or error codes for you to review before adding.</div>
       <div class="form-group">
         <label class="form-label">File</label>
-        <div class="photo-upload-area" onclick="document.getElementById('importFileInput').click()" id="importDropArea">📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)</div>
+        <label for="importFileInput" class="photo-upload-area" id="importDropArea" style="cursor:pointer;display:block;user-select:none">📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)</label>
         <input type="file" id="importFileInput" accept=".txt,.csv,.pdf,.md,.log,.htm,.html" style="display:none" onchange="importFileSelected(this)">
         <div id="importFileName" style="font-size:.78rem;color:var(--text2);margin-top:4px"></div>
       </div>
