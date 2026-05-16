@@ -1,4 +1,4 @@
-const CACHE = 'amt-v33';
+const CACHE = 'amt-v34';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
