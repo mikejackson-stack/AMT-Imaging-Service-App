@@ -1027,6 +1027,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         </div>
         <button onclick="setupClaudeKey()" id="claudeKeyBtn" style="background:#0a1628;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap">🔑 Claude Key</button>
         <button onclick="setupGrokKey()" id="grokKeyBtn" style="background:#0a1628;color:white;border:none;padding:6px 12px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap;display:none">🤖 Grok Key</button>
+        <button onclick="exportAIKeys()" title="Export AI keys to use on another device" style="background:#1d4ed8;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap">📤 Export Keys</button>
+        <button onclick="importAIKeys()" title="Import AI keys from another device" style="background:#374151;color:white;border:none;padding:6px 10px;border-radius:8px;font-size:.75rem;cursor:pointer;white-space:nowrap">📥 Import Keys</button>
       </div>
     </div>
     <div id="errCodeList"></div>
@@ -4330,6 +4332,33 @@ function updateAIKeyBtns(){
   updateGrokKeyBtn();
 }
 
+function exportAIKeys(){
+  const data = {
+    p: localStorage.getItem('amt_ai_provider')||'claude',
+    ck: localStorage.getItem('amt_claude_key')||'',
+    gk: localStorage.getItem('amt_grok_key')||''
+  };
+  if(!data.ck && !data.gk){ showToast('No API keys saved yet.'); return; }
+  const code = btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  window.prompt('Copy this setup code to use your AI keys on another device. Keep it private:', code);
+  navigator.clipboard.writeText(code).catch(()=>{});
+}
+
+function importAIKeys(){
+  const code = window.prompt('Paste your AI key setup code:');
+  if(!code) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(code.trim()))));
+    if(data.p) localStorage.setItem('amt_ai_provider', data.p);
+    if(data.ck) localStorage.setItem('amt_claude_key', data.ck);
+    if(data.gk) localStorage.setItem('amt_grok_key', data.gk);
+    updateAIKeyBtns();
+    showToast('AI keys imported successfully!');
+  } catch(e) {
+    alert('Invalid setup code. Make sure you copied the full code.');
+  }
+}
+
 async function callAI(messages, maxTokens){
   maxTokens = maxTokens||1024;
   const prov = getAIProvider();
@@ -4455,12 +4484,14 @@ function previewJobPhoto(input){
 
 // ── DOCUMENT IMPORT ──
 let _importFileText = '';
+let _importIsImage = false;
+let _importImageB64 = '';
 
 function openImportDocModal(){
   _importFileText = '';
   document.getElementById('importFileInput').value = '';
   document.getElementById('importFileName').textContent = '';
-  document.getElementById('importDropArea').textContent = '📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)';
+  document.getElementById('importDropArea').textContent = '📄 Tap to choose a file (.txt .pdf .docx .html .jpg .png …)';
   document.getElementById('importParseBtn').style.display = 'none';
   document.getElementById('importResults').style.display = 'none';
   document.getElementById('importResultsList').innerHTML = '';
@@ -4475,43 +4506,119 @@ function importFileSelected(input){
   document.getElementById('importDropArea').textContent = '📄 ' + file.name;
   document.getElementById('importResults').style.display = 'none';
   document.getElementById('importConfirmBtn').style.display = 'none';
+  document.getElementById('importParseBtn').style.display = 'none';
   document.getElementById('importStatus').textContent = 'Reading file…';
+  _importFileText = ''; _importIsImage = false; _importImageB64 = '';
   const ext = file.name.split('.').pop().toLowerCase();
+
+  // Images → AI OCR via vision API
+  if(['jpg','jpeg','png','gif','webp','bmp'].includes(ext)){
+    const ir = new FileReader();
+    ir.onload = ev => {
+      _importImageB64 = ev.target.result;
+      _importIsImage = true;
+      document.getElementById('importStatus').innerHTML = '🖼️ <strong>Image / scanned document detected.</strong> AI will OCR and extract knowledge. Click Parse with AI below.';
+      document.getElementById('importParseBtn').style.display = 'block';
+    };
+    ir.readAsDataURL(file);
+    return;
+  }
+
+  // DOCX → extract XML text nodes
+  if(ext === 'docx'){
+    const ar = new FileReader();
+    ar.onload = ev => {
+      _importFileText = extractDocxText(ev.target.result);
+      if(_importFileText.length < 20){
+        document.getElementById('importStatus').textContent = '⚠️ Could not read .docx — try File → Save As .txt in Word first.';
+        return;
+      }
+      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars from Word document`;
+      document.getElementById('importParseBtn').style.display = 'block';
+    };
+    ar.readAsArrayBuffer(file);
+    return;
+  }
+
   const r = new FileReader();
-  r.onload = e => {
-    _importFileText = e.target.result;
-    const isBinaryPDF = _importFileText.startsWith('%PDF') || (ext==='pdf' && _importFileText.length<50);
-    if(isBinaryPDF){
-      document.getElementById('importStatus').innerHTML =
-        '⚠️ <strong>Binary PDF detected.</strong> Browsers can\'t extract text from scanned PDFs. Try: (a) a text-based PDF, (b) an .htm / .html manual file, or (c) copy-paste text from the PDF into a .txt file and upload that.';
-      document.getElementById('importParseBtn').style.display = 'block'; // still allow attempt
-      return;
+  r.onload = ev => {
+    let raw = ev.target.result;
+    if(ext === 'pdf' || raw.startsWith('%PDF')){
+      _importFileText = extractPdfText(raw);
+      if(_importFileText.length < 50){
+        document.getElementById('importStatus').innerHTML =
+          '⚠️ <strong>Scanned/image PDF</strong> — no text found. Save as .jpg/.png and re-upload for AI OCR, or use an .html version.';
+        return;
+      }
+      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars extracted from PDF`;
+    } else if(ext === 'html' || ext === 'htm'){
+      _importFileText = stripHtmlForImport(raw);
+      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars (HTML stripped)`;
+    } else {
+      _importFileText = raw;
+      if(_importFileText.length < 10){ document.getElementById('importStatus').textContent = '⚠️ File appears empty.'; return; }
+      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} characters`;
     }
-    if(_importFileText.length < 10){
-      document.getElementById('importStatus').textContent = '⚠️ File appears empty — try a different file.';
-      return;
-    }
-    document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} characters extracted`;
     document.getElementById('importParseBtn').style.display = 'block';
   };
   r.onerror = () => { document.getElementById('importStatus').textContent = '⚠️ Could not read file'; };
   r.readAsText(file);
 }
 
+function stripHtmlForImport(html){
+  html = html.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'');
+  html = html.replace(/<[^>]+>/g,' ');
+  html = html.replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<')
+             .replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n));
+  return html.replace(/\s+/g,' ').trim();
+}
+
+function extractPdfText(raw){
+  const matches = raw.match(/\(([^)]{2,})\)/g)||[];
+  let text = matches.length > 5
+    ? matches.map(m=>m.slice(1,-1).replace(/\\n/g,'\n').replace(/\\r/g,'').replace(/\\t/g,' ')
+                      .replace(/\\\\/g,'\\').replace(/\\\(/g,'(').replace(/\\\)/g,')')).join(' ')
+    : '';
+  if(text.replace(/\s/g,'').length < 100){
+    const words = raw.match(/[A-Za-z][a-z]{3,}(?:\s[A-Za-z][a-z]{2,})*/g)||[];
+    text = words.join(' ');
+  }
+  return text.replace(/\s+/g,' ').trim().substring(0,18000);
+}
+
+function extractDocxText(buf){
+  const bytes = new Uint8Array(buf);
+  let str = '';
+  for(let i = 0; i < Math.min(bytes.length,2000000); i++){
+    const b = bytes[i];
+    if(b >= 32 && b < 128) str += String.fromCharCode(b);
+    else if(b === 10 || b === 13) str += '\n';
+  }
+  const chunks = str.match(/<w:t[^>]*>([^<]+)<\/w:t>/g)||[];
+  if(chunks.length > 3) return chunks.map(c=>c.replace(/<[^>]+>/g,'')).join(' ').replace(/\s+/g,' ').trim();
+  return str.replace(/[^\x20-\x7E\n]/g,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().substring(0,18000);
+}
+
 async function importParseWithClaude(){
   const target = document.getElementById('importTarget').value;
-  const text = _importFileText.substring(0, 12000);
   const prov = getAIProvider();
-  document.getElementById('importStatus').textContent = `⏳ ${prov==='grok'?'Grok':'Claude'} is parsing the document…`;
+  document.getElementById('importStatus').textContent = `⏳ ${prov==='grok'?'Grok':'Claude'} is parsing…`;
   const parseBtn = document.getElementById('importParseBtn').querySelector('button');
   if(parseBtn) parseBtn.disabled = true;
-
-  const promptText = target === 'kb'
-    ? `Extract repair knowledge base entries from this field service document. Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
-    : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
-
   try {
-    const raw = await callAI([{role:'user',content:promptText}], 2048);
+    let raw;
+    if(_importIsImage && _importImageB64){
+      const ocrPrompt = target === 'kb'
+        ? 'This is a scanned service document. Extract repair KB entries as JSON array only: [{"title":"...","cat":"GE or Siemens or Philips or CT or General","model":"...","error":"...","problem":"...","solution":"...","parts":"..."}].'
+        : 'This is a scanned service document. Extract error codes as JSON array only: [{"code":"...","brand":"GE or Siemens or Philips or Other","desc":"..."}].';
+      raw = await callAIWithImage(_importImageB64, ocrPrompt);
+    } else {
+      const text = _importFileText.substring(0, 12000);
+      const promptText = target === 'kb'
+        ? `Extract repair knowledge base entries from this field service document. Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
+        : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
+      raw = await callAI([{role:'user',content:promptText}], 2048);
+    }
     const match = raw.trim().match(/\[[\s\S]*\]/);
     if(!match) throw new Error('No JSON array found in response');
     const entries = JSON.parse(match[0]);
@@ -4522,6 +4629,46 @@ async function importParseWithClaude(){
     document.getElementById('importStatus').textContent = '⚠️ ' + err.message;
   } finally {
     if(parseBtn) parseBtn.disabled = false;
+  }
+}
+
+async function callAIWithImage(dataUrl, msgText){
+  const prov = getAIProvider();
+  const mimeMatch = dataUrl.match(/data:([^;]+);base64,/);
+  const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+  const b64 = dataUrl.split(',')[1];
+  if(prov === 'claude'){
+    let key = localStorage.getItem('amt_claude_key');
+    if(!key){ key = window.prompt('Enter your Anthropic API key:'); if(!key) throw new Error('No key'); localStorage.setItem('amt_claude_key', key.trim()); updateAIKeyBtns(); }
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mimeType,data:b64}},
+          {type:'text',text:msgText}
+        ]}]
+      })
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Claude HTTP ${resp.status}`);}
+    const data = await resp.json();
+    return data.content[0].text;
+  } else {
+    let key = localStorage.getItem('amt_grok_key');
+    if(!key){ key = window.prompt('Enter your xAI Grok API key:'); if(!key) throw new Error('No key'); localStorage.setItem('amt_grok_key', key.trim()); updateAIKeyBtns(); }
+    const resp = await fetch('https://api.x.ai/v1/chat/completions',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+key.trim(),'Content-Type':'application/json'},
+      body:JSON.stringify({model:'grok-2-vision-1212',max_tokens:2048,
+        messages:[{role:'user',content:[
+          {type:'image_url',image_url:{url:dataUrl}},
+          {type:'text',text:msgText}
+        ]}]
+      })
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Grok HTTP ${resp.status}`);}
+    const data = await resp.json();
+    return data.choices[0].message.content;
   }
 }
 
@@ -4617,11 +4764,11 @@ function formatAIText(text){
   <div class="modal" style="max-width:560px">
     <div class="modal-header"><h3>📥 Import File to Knowledge Base</h3><button class="modal-close" onclick="closeModal('importDocModal')">✕</button></div>
     <div class="modal-body">
-      <div class="alert alert-info" style="margin-bottom:12px;font-size:.82rem">Upload a service document, repair log, or CSV. Claude will extract KB entries or error codes for you to review before adding.</div>
+      <div class="alert alert-info" style="margin-bottom:12px;font-size:.82rem">Supported: <strong>.txt .csv .pdf .docx .html .md .json .rtf .eml .xml</strong> and images (<strong>.jpg .png .gif .webp</strong> — AI will OCR scanned docs).</div>
       <div class="form-group">
         <label class="form-label">File</label>
-        <label for="importFileInput" class="photo-upload-area" id="importDropArea" style="cursor:pointer;display:block;user-select:none">📄 Tap to choose a file (.txt, .csv, .pdf, .md, .log)</label>
-        <input type="file" id="importFileInput" accept=".txt,.csv,.pdf,.md,.log,.htm,.html" style="display:none" onchange="importFileSelected(this)">
+        <label for="importFileInput" class="photo-upload-area" id="importDropArea" style="cursor:pointer;display:block;user-select:none">📄 Tap to choose a file (.txt .pdf .docx .html .jpg .png …)</label>
+        <input type="file" id="importFileInput" accept=".txt,.csv,.pdf,.md,.log,.htm,.html,.docx,.rtf,.xml,.json,.eml,.jpg,.jpeg,.png,.gif,.webp" style="display:none" onchange="importFileSelected(this)">
         <div id="importFileName" style="font-size:.78rem;color:var(--text2);margin-top:4px"></div>
       </div>
       <div class="form-group">
