@@ -4832,12 +4832,18 @@ document.addEventListener('DOMContentLoaded',()=>{
 
       <!-- Token -->
       <div style="background:var(--gray);border-radius:8px;padding:12px;margin-bottom:12px">
-        <div style="font-weight:700;font-size:.85rem;margin-bottom:4px;color:var(--navy)">🔑 GitHub Personal Access Token</div>
-        <div style="font-size:.75rem;color:var(--text2);margin-bottom:8px">
-          Without token: 60 API calls/hr &nbsp;|&nbsp; With token: 5,000/hr<br>
-          <a href="https://github.com/settings/tokens/new?scopes=repo&description=AMT+App" target="_blank" style="color:var(--blue2)">Create token ↗</a> — select <strong>Contents: read-only</strong>
-        </div>
-        <input id="gh_token_input" type="password" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxx" style="margin-bottom:6px;font-family:monospace;font-size:.82rem">
+        <div style="font-weight:700;font-size:.85rem;margin-bottom:6px;color:var(--navy)">🔑 GitHub Personal Access Token</div>
+        <div style="font-size:.75rem;color:var(--text2);margin-bottom:10px">Without token: 60 API calls/hr &nbsp;|&nbsp; With token: 5,000/hr</div>
+        <ol style="font-size:.8rem;color:var(--text);margin:0 0 12px 0;padding-left:18px;line-height:2">
+          <li><strong>Click this link</strong> to open GitHub token setup:<br>
+            <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=AMT+Imaging+App" target="_blank" rel="noopener" style="color:var(--blue2);word-break:break-all">🔗 Create token on GitHub ↗</a>
+          </li>
+          <li>Set <strong>Expiration</strong> (90 days recommended)</li>
+          <li>Click the green <strong>Generate token</strong> button</li>
+          <li><strong>Copy</strong> the token shown (starts with <code>ghp_</code>)</li>
+          <li><strong>Paste</strong> it in the field below and click Save</li>
+        </ol>
+        <input id="gh_token_input" type="password" class="form-control" placeholder="Paste token here (starts with ghp_...)" style="margin-bottom:6px;font-family:monospace;font-size:.82rem">
         <div id="gh_token_status" style="font-size:.75rem;margin-bottom:8px;min-height:18px;color:var(--text2)"></div>
         <div style="display:flex;gap:6px">
           <button class="btn btn-success btn-sm" onclick="saveGHToken()" style="flex:1">💾 Save Token</button>
