@@ -2739,6 +2739,297 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-20',
     created: '2026-05-20T00:00:00.000Z'
   }
+  ,
+  {
+    id: 'dg_seed_003',
+    title: 'GE MR 450w / 750w — Communication Links Reference',
+    system: 'GE MRI',
+    category: 'System Architecture',
+    diagnosticPath: 'N/A — Reference guide for system communication links',
+    purpose: 'Reference guide for all data communication links in GE Discovery MR450w and MR750w systems. Essential for diagnosing intermittent communication faults, identifying correct fiber/cable paths during swaps, and understanding which boards connect to which subsystems.',
+    componentsTested: ['IRF3 / CAM Chassis', 'Remote Receiver Module (RRx)', 'ICN1 / ICN2', 'GMC Board / Cronus Chassis', 'XGA Amplifiers', 'XPS Gradient Hardware', 'RF Control Board (RFCB)', 'SRI4', 'In-Room Display (IRD)', 'PGR Cabinet Ethernet Switch'],
+    sections: [
+      {
+        title: 'Communication Links Overview Table',
+        type: 'table',
+        headers: ['Link Name', 'Medium', 'Connects', 'Data Transferred'],
+        rows: [
+          ['DVMR Link', 'Dual fiber optic', 'IRF3 board (CAM chassis) ↔ various components throughout system', 'Status and control information'],
+          ['VRF Data Link', 'Dual fiber optic', 'Remote Receiver Module (RRx) ↔ ICNs', 'Image raw data'],
+          ['Infiniband Link', 'Copper', 'ICN1 ↔ ICN2 (32-channel systems ONLY — not used in MR750)', 'Image data between ICNs'],
+          ['XGD Data Fiber Link', 'Dual fiber optic', 'GMC board (Cronus chassis) ↔ each XGA amplifier', 'Waveform data, status and control information'],
+          ['CAN Link', 'Dual fiber optic + copper (combined)', 'Various components throughout system', 'Status and control data'],
+          ['Octavius Link', 'Copper', 'Cronus chassis ↔ XGA and XPS gradient hardware', 'Status and diagnostic data'],
+          ['Ethernet', 'Copper', 'Various components ↔ 16-port Ethernet switch (PGR cabinet)', 'Status, control, and image data'],
+          ['STRB Fiber Link', 'Single fiber optic (unidirectional)', 'RRx1 → RF Control Board (RFCB) and SRI4', 'Control information from RRx1'],
+          ['One Wire Network', 'Copper (often integrated into component cables, not dedicated)', 'Various circuit boards throughout equipment room', 'Secondary status and diagnostic data'],
+          ['In-Room Display Fiber Link', 'Dual fiber optic', 'In-Room Display (IRD) ↔ In-Room Display Controller (IRDC) in GOC', 'Video and status data'],
+          ['Clock Synchronization Fibers', 'Single fiber optic', 'XGA and XPS components (clock signals only)', 'XGA and XPS clock signals — fiber can be swapped between XGA and XPS']
+        ]
+      },
+      {
+        title: 'Key Diagnostic Notes',
+        type: 'steps',
+        steps: [
+          'DVMR Link (dual fiber): If IRF3 board faults appear across multiple subsystems simultaneously, suspect the DVMR link first.',
+          'VRF Data Link (dual fiber): Raw image data path — faults here cause image artifacts or complete image loss even when scanning appears to proceed normally.',
+          'Infiniband Link (copper, 32-ch only): Only present on 32-channel MR450w systems. NOT used in MR750. Faults cause ICN communication errors.',
+          'XGD Data Fiber Link (dual fiber): Waveform data path to XGA amplifiers — faults cause gradient waveform errors or gradient amplifier faults.',
+          'CAN Link (fiber + copper hybrid): Mixed medium — start with the fiber segments when troubleshooting, then check copper.',
+          'Octavius Link (copper): Diagnostic data path to gradient hardware — errors here appear as gradient status/diagnostic failures even if gradient hardware is functional.',
+          'Ethernet (copper, 16-port switch in PGR): Common path for status and image data — check the PGR cabinet Ethernet switch and all patch cables when multiple network-related faults appear.',
+          'STRB Fiber (unidirectional, single): Control from RRx1 only — if RF control faults appear at RFCB or SRI4 without obvious RF hardware failure, check this fiber.',
+          'One Wire Network: Secondary diagnostic only — not a primary data path. Often shared with component cables rather than dedicated. Check with service diagnostics if 1-wire errors appear.',
+          'Clock Sync Fibers: Can be swapped between XGA and XPS for isolation testing. If gradient timing issues appear on one axis only, try swapping the clock fiber between XGA and XPS to see if the fault follows the fiber.'
+        ]
+      }
+    ],
+    tags: ['communication links', '450w', '750w', 'fiber optic', 'DVMR', 'VRF', 'infiniband', 'XGD', 'CAN', 'octavius', 'ethernet', 'STRB', 'one wire', 'IRD', 'clock', 'ICN', 'RRx', 'GMC', 'Cronus', 'XGA', 'XPS', 'RFCB', 'SRI4'],
+    source: 'GE MR 450w/750w Communication Links Reference (450w_750w_Communication_Links.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_004',
+    title: 'GE Discovery MR450w — Patient Table Troubleshooting',
+    system: 'GE MRI',
+    category: 'Patient Table',
+    diagnosticPath: 'N/A — Mechanical/electrical troubleshooting reference',
+    purpose: 'Comprehensive symptom-to-resolution troubleshooting guide for the GE Discovery MR450w patient table. Covers table arm board, table raising/lowering, table docking/undocking, long drive motor, port cover, and cradle motion failures. Use when the table fails to move, latch, dock, or produces abnormal noise.',
+    componentsTested: ['Table Arm Board / Armboard Clutches', 'Safety Lever', 'Cradle / Cradle Interlock', 'Hydraulic System', 'Rotary Pump / Reciprocating Pump', 'Long Drive Motor', 'Electromagnetic Clutch', 'Drive Belt / Rigibelt', 'Dock Hook / Mechanical Dock Linkage', 'Electrical Dock Linkage / Connector Return Spring', 'Port Cover', 'String Encoder', 'PHPS (Power Hub Power Supply)', 'SRI / SRI-4 (Scan Room Interface)', 'TIB (Table Interface Box)', 'M3303 Cable'],
+    sections: [
+      {
+        title: 'Table Arm Board',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['The armboard does not latch.', 'Armboard clutches', 'Cable too tight to release the clutch', 'Remove handle cover, loosen adjustment screw until clutch can lock. If loosening resolves it, no replacement needed. If not, replace armboard.'],
+          ['The armboard will not release with the handle.', 'Handle mechanism', 'Handle cannot return to home position', 'Replace armboard.'],
+          ['The armboard will not release with the handle.', 'Handle mechanism', 'Arms, crimps, or cables broken/worn', 'Remove handle cover, examine arms and cables for breaks or wear. Replace armboard if confirmed.'],
+          ['The armboard will not release with the handle.', 'Release cable', 'Gap between arm and baseplate pin', 'Remove handle cover, turn adjustment screw to reduce gap to 0 mm. If armboard releases after adjustment, no replacement needed. Otherwise replace armboard.'],
+          ['The armboard will not release with the handle.', 'Armboard clutches', 'Clutch shoulder screw (large slotted brass screw) is loose', 'Remove armboard, examine clutch shoulder screw. If loose, replace armboard.']
+        ]
+      },
+      {
+        title: 'Table Lowering',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not lower with dock or table down pedal.', 'Safety lever', 'Safety lever is lowered', 'Raise the safety lever.'],
+          ['Table does not lower with dock or table down pedal.', 'Cradle position', 'Cradle not in home position', 'Press home button on magnet or pull egress handle to move cradle to home. Then lower table using down pedal.'],
+          ['Table does not lower with dock or table down pedal.', 'Cradle interlock', 'Interlocks holding down link bar above cylinder down lever; interference from cables', 'Press home button or pull egress handle. Adjust flipper interlock cable per flipper interlock adjustment procedure.'],
+          ['Table does not lower with dock or table down pedal.', 'Down pedal link bracket', 'Down link bar resting on top of cylinder down lever', 'Adjust dock push rod to create 1/16 to 1/8 inch gap between down link bar and cylinder down lever. Check high pressure line routing.'],
+          ['Table lowers slower with dock down pedal than table down pedal.', 'Push rod', 'Push rod not adjusted correctly', 'Adjust push rod until gap between down link bar and cylinder down lever is 1/16 to 1/8 inch.']
+        ]
+      },
+      {
+        title: 'Table Raising',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not raise with reciprocating pump.', 'Cylinder down lever', 'Stuck in open position', 'Examine dock push rod setting — not pushing cylinder down lever when both down pedals are not depressed. Adjust push rod to 1/16–1/8 inch gap.'],
+          ['Table does not raise with reciprocating pump.', 'Reciprocating pump linkages', 'Linkages worn too much', 'Examine reciprocating pump linkages for wear, verify all pins installed. Replace any worn linkages.'],
+          ['Table does not raise with reciprocating pump.', 'Hydraulic system', 'Too much air in system', 'Bleed air out of hydraulic system.'],
+          ['Table does not raise with reciprocating pump.', 'Hydraulic system', 'Not enough hydraulic oil', 'Compare oil fill level to fill line on reservoir with table in down position. Add oil as required.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Cylinder down lever', 'Stuck in open position', 'Examine cylinder down lever — must return home without either down pedal depressed. Release lever from open position.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Rotary pump coupler', 'Dock motor coupler and rotary pump coupler misaligned', 'Verify switch inside dock is operating correctly. Align rotary pump; do dock and table alignment procedure.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Rotary pump coupler', 'Dock motor coupler and/or rotary pump coupler worn', 'Visually examine each coupler for significant wear. Replace worn coupler.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Hydraulic system', 'Not enough hydraulic oil', 'Add oil to fill line.']
+        ]
+      },
+      {
+        title: 'Long Drive Motor Failures',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Cradle does not move.', 'Cable connection', 'Table not electrically docked', 'Electrically dock the table.'],
+          ['Cradle does not move.', 'Cable connection', 'Cables disconnected — motor power cable (motor not spinning), motor encoder cable (motor not spinning), electromagnetic clutch cable (motor spins but cradle does not move)', 'Connect disconnected cables.'],
+          ['Cradle does not move.', 'Cable connection', 'Debris in cable connection at I/O panel (ISC cabinet) or dock connectors', 'Remove debris from cable connectors.'],
+          ['Cradle does not move.', 'Rigibelt', 'Locking patch M5 screws have loosened or backed out of rigibelt mounting block', 'Replace original screws with locking patch M5 screws, or adjust torque.'],
+          ['Cradle only moves ~100 mm.', 'Secondary latch', 'Adjustment out of spec or latch failed', 'Adjust or replace secondary latch.'],
+          ['Cradle only moves ~2 mm.', 'Primary latch', 'Adjustment out of spec, latch failed, or incorrect tuning file', 'Adjust or replace primary latch; confirm software revision.'],
+          ['Cradle stuck at 2000–2380 mm position.', 'Table/bridge alignment', 'Cradle making contact with tabletop or bridge; rigibelt connection block hitting tabletop or bridge cover plate', 'Examine and re-align tabletop and bridge.'],
+          ['Long drive motor spinning, cradle does not move, only lower half of electromagnetic clutch rotates.', 'Electromagnetic clutch power', 'No 22.5V power when table electrically docked — check clutch cable and DCPS', 'Restore power to electromagnetic clutch.'],
+          ['Long drive motor spinning, cradle does not move, only lower half of electromagnetic clutch rotates.', 'Electromagnetic clutch', 'Has 22.5V but not engaged, or engaged but slipping and alignment not within spec', 'Replace electromagnetic clutch.'],
+          ['Lower half of electromagnetic clutch does not rotate.', 'Drive belt', 'Belt broken or loose', 'Replace drive belt, or tighten to 93.5–106 N using sonic tool or 3 mm per pen tool.'],
+          ['Lower half of electromagnetic clutch does not rotate.', 'Motor', 'Motor failed (all cable connections clean)', 'Replace motor.'],
+          ['Cradle only moves ~20 mm when cradle movement button pressed.', 'String encoder', 'Encoder string broken or encoder failed', 'Replace encoder.'],
+          ['Cradle only moves ~20 mm when cradle movement button pressed.', 'Encoder string mounting', 'Screw holding encoder string to interface block is broken', 'Replace screw and interface block; attach encoder string to interface block.']
+        ]
+      },
+      {
+        title: 'Long Drive Noise',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Cradle movement makes noise.', 'Table/bridge', 'Table or bridge misaligned', 'Examine and re-align tabletop and bridge.'],
+          ['Cradle movement makes noise.', 'Object interference', 'Unexpected object on tabletop or bridge surface', 'Remove any objects from tabletop and/or bridge surface.'],
+          ['Cradle movement makes noise.', 'Cradle wheel', 'Wheel(s) worn out or failed', 'Replace any worn or failed wheels.'],
+          ['Cradle movement makes noise.', 'Long drive belt', 'Drive belt tension too high', 'Adjust drive belt tension or replace drive belt if required.'],
+          ['Cradle movement makes noise.', 'Rigibelt', 'Rigibelt jumping teeth', 'Replace rigibelt drive.'],
+          ['Cradle movement makes noise.', 'Gearbox', 'Gearbox failed', 'Replace motor and gearbox assembly.'],
+          ['Cradle movement makes noise.', 'Primary latch', 'Making contact with bottom of cradle', 'Examine and adjust primary latch. Replace if required.'],
+          ['Cradle movement makes noise.', 'Secondary latch', 'Making contact with bottom of cradle', 'Examine and adjust secondary latch. Replace if required.'],
+          ['Cradle movement makes noise.', 'Cradle flap', 'Scrubbing with tabletop or tabletop rear cover', 'Replace cradle flap.'],
+          ['Cradle movement makes noise.', 'String roller', 'Encoder string roller has friction with roller shaft surfaces', 'Add grease between encoder string roller and surfaces that hold the roller shaft.']
+        ]
+      },
+      {
+        title: 'Table Docking',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not mechanically dock.', 'Dock hook', 'Dock hook tension too high (attempts to engage but cannot rotate over center)', 'Do dock hook tension adjustment.'],
+          ['Table does not mechanically dock.', 'Dock hook', 'Dock hook has low/no tension, or rotates back to undocked position after failing to engage', 'Replace dock hook if broken; do dock hook tension adjustment.'],
+          ['Table does not mechanically dock.', 'Dock link screw', 'Dock link screw set incorrectly — front of dock hook weldment should barely touch bumper tube when undocked', 'Adjust dock link screw to within specifications.'],
+          ['Table does not mechanically dock.', 'Dock link screw', 'Bushing worn at screw contact point', 'Replace worn bushing.'],
+          ['Table does not mechanically dock.', 'Rotary pump oil catch pan interference', 'Table too low relative to dock, causing oil catch pan to interfere with dock nose cover', 'Inspect interference. Do table alignment procedure; adjust caster height if required.'],
+          ['Table does not mechanically dock.', 'Mechanical dock linkage', 'Jammed from pressing mechanical and electrical dock pedals simultaneously', 'Release jammed linkage by pulling mechanical linkage forward and/or pushing electrical sled backward. Do not touch electrical dock connector pins.'],
+          ['Table does not mechanically dock.', 'Enclosure interference', 'Interference between lower base enclosure and dock enclosure', 'Adjust mounting of enclosure to avoid interference.'],
+          ['Table does not electrically dock; electrical dock pedal requires little/no force; electrical sled does not move forward.', 'Electrical dock linkage', 'Broken or stuck electrical dock linkage hook (under front of table near rotary pump; or below bell crank pin)', 'Replace broken linkage; or press electrical dock pedal, then press mechanical dock pedal, hold mechanical pedal down, release electrical dock pedal.'],
+          ['Table does not electrically dock; electrical dock pedal requires high force as sled starts to move.', 'Table alignment', 'Electrical sled pins hitting dock, not aligned to holes on docking connector', 'Do table alignment adjustment procedure.'],
+          ['Table does not electrically dock; electrical dock pedal requires high force as sled starts to move.', 'Connector return spring', 'Rocker clamps on either side of electrical sled slipped early and hit dock', 'Rotate rocker clamps back to retracted position. Replace any broken connector return springs above the sled.']
+        ]
+      },
+      {
+        title: 'Table Undocking & Port Cover',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not undock; no pedal resistance.', 'Undock linkage components', 'Undock pedal fails to activate undock components; white delrin undock hook block broken/missing; or flipper interlock not set correctly', 'Replace delrin undock hook block if needed. Adjust flipper interlock cable per flipper interlock adjustment procedure.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Undock linkage components', 'Undock pedal fails to activate mechanical undock; white delrin undock hook block broken/missing', 'Replace delrin undock hook block if needed.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Cradle position', 'Cradle not in home position', 'Press home button on magnet or pull egress handle to move cradle to home position.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Cradle interlock', 'Interlocks holding electrical dock link bar; cable interference preventing flipper from releasing', 'Resolve interference so flipper can move freely.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Object interference', 'Object in gap between port cover and cradle cover', 'Clean gap between port cover and cradle cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cable', 'Cables interfering with brass bar of port cover', 'Re-route interfering cables.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cradle front/rear cover', 'Cover broken', 'Replace cradle front/rear cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Port cover', 'Port cover broken', 'Replace port cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Screws', 'Port screws loose', 'Tighten port screws.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cradle hardtop', 'Hardtop cover interferes with port cover; limit screws missing', 'Replace any missing limit screws.']
+        ]
+      },
+      {
+        title: 'Cradle Motion Failures (Electronic)',
+        type: 'table',
+        headers: ['Symptom', 'Error Code', 'Failure Point', 'Troubleshooting', 'Resolution'],
+        rows: [
+          ['Cradle does not move.', 'N/A', 'Cable connection — cables disconnected', 'Dock motor and long drive motor share PHPS 60V supply. Reseat cable runs M3358, M3369, M3303. Reseat M3311 and M3315 by temporarily bypassing filters and pigtail cables, connecting directly to PHPS.', 'Reseat cables M3358, M3369, M3303.'],
+          ['Cradle does not move.', 'N/A', 'M3303 cable — may be damaged when pulled through overhead cable trough during installation', 'Examine M3303. See cradle motion hardware documentation.', 'Replace M3303.'],
+          ['Cradle exhibits uncontrolled acceleration when Cradle In or Cradle Out pressed.', 'N/A', 'Cable connection — cables disconnected', 'Reseat cable runs M3369, M3303, and PHPS J39.', 'Reseat cables.'],
+          ['Cradle exhibits uncontrolled acceleration when Cradle In or Cradle Out pressed.', 'N/A', 'Cable connection (J3) — damaged pin', 'Examine J3 on right side of magnet for damaged pins.', 'Replace M3303.'],
+          ['Cradle visibly shakes during travel into or out of bore.', 'N/A', 'Drive belt — improper installation', 'Examine whether drive belt is installed correctly.', 'Reinstall drive belt per Installation Manual.'],
+          ['Cradle visibly shakes during travel into or out of bore.', 'N/A', 'Cable connection — damaged pin in SRI J21 to PHPS2 J39 path', 'Examine all connections in cable path from SRI J21 to PHPS2 J39. Try routing cable M3311 directly to PHPS2 J36, temporarily bypass filter at PHPS J36.', 'Replace cable(s) with damaged pins.'],
+          ['Cradle moves short distance, stops, IRD not showing or not changing.', 'N/A', 'Cable connection — position encoder signals A or B missing', 'Reseat position encoder cable at TIB J2. Examine and reseat cable run M3351 at TIB J5 and SRI-4 J2.', 'Reseat cables.'],
+          ['Cradle moves short distance, stops, IRD not showing or not changing.', 'N/A', 'Encoder — encoder broken', 'After checking cable connections, use SRI real-time data diagnostic to verify encoder is sending signals.', 'Replace position encoder.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'Cable connection or damaged pin (J3)', 'Check PHPS2 and connection between SRI J21 and PHPS2 J39. Examine J3 on right side of magnet.', 'Reseat or replace M3303.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'PHPS2 — PHPS2 has failed', 'If above action solved problem, no further action. If not, replace PHPS2 and verify SRI motion test is successful.', 'Replace PHPS2.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'SRI — SRI has failed', 'If above actions solved problem, no further action.', 'Replace SRI.'],
+          ['Landmark advances to within 1 mm of target after Advance to Scan, then stops.', 'N/A', 'Cable connection', 'Press Advance to Scan again to advance to 0 mm. Reseat M3351 at TIB J5 and SRI-4 J2.', 'Reseat cables or replace cable from position encoder at TIB J2.'],
+          ['System halts during exam; patient not moving; log indicates cradle moved off scan plane.', '2261552', 'Cable position — M3351 too close to magnet bore or RF drive cables', 'Make sure patient is not moving. Update route of cable run M3351.', 'Move cable M3351 farther from magnet bore and RF drive cables.'],
+          ['Log indicates problem with Home or EOT.', 'N/A', 'Brass plunger — stuck inside LPCA, blocking optical switch light beam', 'Optical switch LED indicator is orange when light beam is unblocked.', 'Reset the brass plungers inside the LPCA.'],
+          ['Log indicates cradle is attached while table is undocked and/or lowered.', '2268941', 'Plastic spring — spring compressed over time, blocking LPCA cradle detect switch light beam path', 'N/A', 'Replace the spring.'],
+          ['Under heavy load, cradle travels short distance and reports error; under light/no load, cradle moves normally.', '2268819', 'Long drive assembly belt — belt does not follow correct path', 'Do SRI motion test. If cradle moves freely under heavy load when detached from LPCA, use flashlight to view underside of long drive assembly and inspect belt routing path.', 'Update belt path per Installation Manual.'],
+          ['Under heavy load, cradle travels short distance and reports error; under light/no load, cradle moves normally.', '2268819', 'Assembly bolts — long assembly bolts incorrectly installed near rollers (short bolts should have been used)', 'Use flashlight to view underside of long drive assembly and illuminate space around belt rollers. Check if assembly bolts are too long and contacting rollers.', 'Swap long bolts with shorter bolts.']
+        ]
+      }
+    ],
+    tags: ['patient table', '450w', 'MR450w', 'table lowering', 'table raising', 'table docking', 'cradle', 'long drive motor', 'hydraulic', 'electromagnetic clutch', 'rigibelt', 'dock hook', 'port cover', 'PHPS', 'SRI', 'TIB', 'M3303', 'M3351', 'string encoder', 'armboard'],
+    source: 'GE Discovery MR450w Service Manual — Troubleshooting the Patient Table (450w_Troubleshooting_patient_table.pdf)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_005',
+    title: 'GE Signa HDxt 23x — HIS/RIS & Modality Worklist (MWL) Setup',
+    system: 'GE MRI',
+    category: 'HIS/RIS / DICOM Connectivity',
+    diagnosticPath: 'Common Service Desktop > [Tools icon] > Guided Install > FE Mode login (root / operator) > Connectivity > HIS/RIS',
+    purpose: 'Step-by-step procedure to set up, configure, and verify the Modality Worklist (MWL) connection between a GE Signa HDxt 1.5T (23x platform) MRI system and a hospital HIS or radiology RIS system. Covers initial configuration, all MWL sub-menus, functional verification test, and troubleshooting when the worklist is not populated. Estimated time: 15 minutes. 1 person required.',
+    componentsTested: ['HIS/RIS Network Connection', 'MWL Configuration (SCP, MWL Config Details, Return Tag, Table Column Selection, PPS)', 'DICOM Connectivity (Port 4000)', 'Scan Room Worklist Display', 'MR confess settings'],
+    sections: [
+      {
+        title: 'Pre-Requisites — Information to Collect Before Starting',
+        type: 'note',
+        content: 'Collect the following from the hospital/site network administrator BEFORE starting configuration. All entry fields are case-sensitive: (1) IP address of the HIS/RIS server, (2) Port number of the RIS system, (3) AE Title of the RIS system, (4) Host Name of the RIS system. Write these down — you will need them at multiple steps.'
+      },
+      {
+        title: 'Section 4.1 — HIS/RIS Setup Procedure',
+        type: 'steps',
+        steps: [
+          'Collect the HIS/RIS server information from the site network administrator: IP address, Port number, AE Title, Host name. Write these down — all fields are case-sensitive.',
+          'From the scan desktop, click the [Tools] icon (wrench) → [Service Desktop Manager] → [Guided Install] button.',
+          'Log in using FE Mode: username root, password operator. (NOTE: Customer may have changed the default password — contact the customer if login fails.)',
+          'Under [Connectivity], select [HIS/RIS].',
+          'In the HIS/RIS screen, enter or verify the following fields: Hospital Name, Suite ID, Host ID, Local AE Title (hostname, 1–16 chars), Local IP Address (Host IP), Local Port Number (Host Port) — set to 4000 (standard DICOM MR networking port), Netmask, DICOM Network Timeout (Slow = 300 sec), Default Router IP Address, Station Name (3–8 chars). Click [Configure].',
+          'Under [MWL Configuration], select [MWL Config Detail].',
+          'The MWL Config Details screen shows Patient Detail Fields, Exam Detail Fields, and Other Detail Fields with their DICOM tags and Required checkboxes. Select or deselect fields as the site requires. Click [Configure].',
+          'Under [MWL Configuration], select [Return Tag Configure].',
+          'The Return Tag Configuration screen shows Refresh Query Tag Fields and Caution Tag Fields with DICOM tags. Select fields the site wants refreshed in the Modality Worklist. Click [Configure].',
+          'Under [MWL Configuration], select [SCP Configure].',
+          'In the SCP Configure screen, click [New]. Enter the following from the site: Host Name, IP Address, Port Number, AE Title. Check [DefaultSelected] if this is the primary RIS server. Click [Configure].',
+          'To verify network connectivity, click the [Ping] button. NOTE: Ping may take up to 3 minutes. If Ping fails: open a command window and ping the IP address; also try telnet to the IP address from the command window.',
+          'Under [MWL Configuration], select [Table Column Selection Configure].',
+          'The Table Column Selection screen shows fields that appear in the patient record table at the top of the scan window (Worklist Type, Scheduled Time, Name, Accession, Patient ID, SPS Description, Modality, Referring Physician, Scheduled Date, Status, Local Protocol, Recommended Protocol, Caution, Perf. Physician). Select or deselect as desired. Click [Configure].',
+          'Under [MWL Configuration], select [PPS Configure]. NOTE: PPS Configure is available for 1.5T systems only at time of this document — not available for 3.0T.',
+          'Click [New], enter all PPS server fields (Host Name, IP Address, Port Number, AE Title), click [Configure].',
+          'In the scan desktop, click the dropdown on the [Refresh] button to open the RefreshData dialog. Set: Breadth of Search (Today / Any Day / Days before Today / Days after Today / Date Range) and Search RIS for (This System / This Modality / All Modalities). WARNING: Selecting "All Modalities" may cause the scanner to hang if the facility has a very large worklist. Set Auto-RefreshTiming as requested by site. Click [Save].'
+        ]
+      },
+      {
+        title: 'Section 4.2 — Functional Verification',
+        type: 'steps',
+        steps: [
+          'In the scan desktop, click the [Work List] icon. The worklist should display with scheduled patients.',
+          'To test connectivity: click the [New Patient] icon.',
+          'On the scan screen enter: Patient ID = geservice, Weight = 111.',
+          'Click the [Save] button.',
+          'In the Search/Refresh box, click the [Search Data] button. The Search Data window opens.',
+          'In the Search Data window, configure the search: enter Name, Patient ID, Accession, or Procedure ID; set Breadth of Search (Today / Any Day / Days Before/After / Date Range); set Search RIS for (This System / This Modality / All Modalities).',
+          'Click [Search]. Results should appear in the list above the patient information area.',
+          'If results appear correctly, MWL is working. If not, proceed to Troubleshooting below.'
+        ]
+      },
+      {
+        title: 'Section 4.3 — Troubleshooting When MWL Does Not Work',
+        type: 'steps',
+        steps: [
+          'From the Common Service Desktop, select [Guided Install] button and log in to FE Mode (root / operator).',
+          'Under [Connectivity], select [HIS/RIS]. Verify that Hospital Name, Suite ID, Host ID, Local AE Title, Local Port Number (should be 4000), and Station Name are all correct for this system.',
+          'Under [MWL Configuration], select [SCP Configure]. Verify that the Host Name, IP Address, Port Number, and AE Title are all correct for the RIS server (from the site network administrator).',
+          'Click the [Ping] button to verify network connectivity. NOTE: Ping may take up to 3 minutes.',
+          'DECISION — Ping fails: Open a command window and ping the IP address manually. Also try telnet to the IP address. If both fail, the issue is a network/firewall problem — escalate to site IT.',
+          'DECISION — Ping succeeds but worklist still empty: Verify that the AE Title matches exactly what the RIS system expects (case-sensitive). Verify the Port Number matches the RIS system (not necessarily 4000 — use what the site administrator provided).',
+          'Under [Home], select [Verification].',
+          'In the Verification screen, click [Configure] and confirm that no errors are present and all system parameters (Field Strength, Package Name, Gradient Type, etc.) are correct for this installation.',
+          'Select [File] > [Quit] to exit Guided Install.',
+          'If MWL is still not working after all above steps, escalate to GE TSM — the issue may be in the RIS system configuration on the hospital side.'
+        ]
+      },
+      {
+        title: 'Key Parameters Reference',
+        type: 'table',
+        headers: ['Parameter', 'Location in Guided Install', 'Notes'],
+        rows: [
+          ['Hospital Name', 'Connectivity > HIS/RIS', 'Must match RIS system record for this scanner'],
+          ['Local AE Title', 'Connectivity > HIS/RIS', 'Hostname, 1–16 chars, case-sensitive — must match what RIS uses to identify this scanner'],
+          ['Local Port Number (Host Port)', 'Connectivity > HIS/RIS', 'Set to 4000 (standard DICOM MR networking port)'],
+          ['DICOM Network Timeout', 'Connectivity > HIS/RIS', 'Set to Slow (300 sec) for most sites'],
+          ['SCP Host Name', 'MWL Configuration > SCP Configure', 'Site name — from network administrator'],
+          ['SCP AE Title', 'MWL Configuration > SCP Configure', 'MWL Application Entity title of RIS system — case-sensitive'],
+          ['SCP IP Address', 'MWL Configuration > SCP Configure', 'IP address of the RIS server'],
+          ['SCP Port Number', 'MWL Configuration > SCP Configure', 'Port number of RIS system — may NOT be 4000; use site-provided value'],
+          ['RefreshData > All Modalities', 'Scan Desktop > Refresh dropdown', 'WARNING: May cause scanner hang if facility worklist is very large'],
+          ['PPS Configure', 'MWL Configuration > PPS Configure', '1.5T systems ONLY — not available for 3.0T at time of this document']
+        ]
+      }
+    ],
+    tags: ['HIS', 'RIS', 'MWL', 'modality worklist', 'DICOM', 'SCP', 'AE title', 'worklist setup', '23x', 'HDxt', '1.5T', 'connectivity', 'network', 'PPS', 'guided install', 'FE mode'],
+    source: 'GE Signa HDxt 1.5T Service Methods — HIS/RIS Setup and Troubleshooting, Direction 5440001-3 Rev 12.0 (23x_MWL_setup.pdf)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
