@@ -1456,8 +1456,16 @@ function bootApp(){
   if(savedGuides) {
     try { diagGuides = JSON.parse(savedGuides); } catch(e) { diagGuides = []; }
   }
-  if(!diagGuides.length) {
-    diagGuides = DIAG_GUIDES_SEED.map(g => ({...g}));
+  // Merge any new seed guides not yet in user's collection
+  let seedsAdded = false;
+  DIAG_GUIDES_SEED.forEach(seed => {
+    if(!diagGuides.find(g => g.id === seed.id)) {
+      diagGuides.push({...seed});
+      seedsAdded = true;
+    }
+  });
+  if(!diagGuides.length || seedsAdded) {
+    if(!diagGuides.length) diagGuides = DIAG_GUIDES_SEED.map(g => ({...g}));
     localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
   }
 }
@@ -2637,6 +2645,97 @@ const DIAG_GUIDES_SEED = [
     ],
     tags: ['GLD', 'gather load data', 'driver module', 'multicoil', 'dynamic disable', 'DD', 'bias', 'pen panel'],
     source: 'Tech Tip — GE MR Gather Load Data (Feb 2025)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_002',
+    title: 'DQA II Tool — Error Diagnosis & Phantom Troubleshooting',
+    system: 'GE MRI',
+    category: 'DQA / Calibration',
+    diagnosticPath: 'DQA II Tool > Actions Required Window',
+    purpose: 'Diagnose and resolve errors reported by the DQA II Tool during daily quality assurance calibration scans on GE Signa 15x MRI systems. Covers gradient wiring faults, phantom positioning errors, and image quality issues that confuse the tool.',
+    componentsTested: ['Gradient Coils (X, Y, Z)', 'DQA Phantom', 'Head Coil', 'Laser Light Alignment', 'MR confess file settings'],
+    sections: [
+      {
+        title: 'Common First Check — Referenced in Every Error Below',
+        type: 'note',
+        content: 'For almost every DQA II error, start here: verify the system can properly scan the head image. Check coil type, phantom type, positioning, coil latches/clamps, and landmarking. If an issue is found, correct it and run the DQA II Tool again before investigating further.'
+      },
+      {
+        title: 'DQA II Error Quick-Reference Table',
+        type: 'table',
+        headers: ['DQA II Error Message', 'Quick Action'],
+        rows: [
+          ['One or more gradients appear not to be functioning at all.', 'Verify system can scan the head image normally. Run a basic head scan to confirm gradient function.'],
+          ['Z gradient coil appears to be driven by the wrong gradient input.', 'Step 1 (coil/phantom/positioning check). Review DQA exam images. Axial (Coronal) images look correct? → resolve IQ. Not correct? → gradient wiring problem (Section 3).'],
+          ['Z gradient polarity appears to be inverted.', 'Step 1. Check Coronal images. If Axial image: bar moves TOWARD GE logo/comb (inf→sup) = polarity flipped → Section 3. Bar moves AWAY = IQ issue. Resolve IQ or check wiring.'],
+          ['Phantom used appears to be wrong and/or severely mispositioned.', 'Step 1. Visually verify phantom is centered in bore before scanning.'],
+          ['Phantom is offset more than ±36 mm along Z.', 'Step 1. Verify correct phantom, centered in head coil. Check Laser Light Alignment (axial light aligned to phantom crosshairs). Verify isocenter Z and MR confess file settings.'],
+          ['X and Y gradient coil inputs appear to be swapped.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X and Y gradient polarities appear to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X gradient polarity appears to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['Y gradient polarity appears to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X and Z gradient polarities appear to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['Phantom appears to be rotated 16° about physical Z axis.', 'Step 1. Verify phantom NOT rotated in head coil. Positive Z rotation value → rotate phantom CLOCKWISE (viewed from front). Reposition carefully.'],
+          ['Phantom appears to be rotated 16° about physical Y axis.', 'Step 1. Verify phantom NOT rotated in head coil. Reposition per axis orientation guide. Avoid misaligning when repositioning.'],
+          ['Phantom center appears to be offset 20 mm along physical X.', 'Step 1. Positive X offset → move phantom to the LEFT (viewed from front).'],
+          ['Phantom center appears to be offset 20 mm along physical Y.', 'Step 1. Positive Y offset → move phantom DOWN (viewed from front).']
+        ]
+      },
+      {
+        title: 'Z Gradient Wrong Input — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, coil latches/clamps, landmarking. Correct any issues and rerun DQA II Tool.',
+          'Open the image browser and review the most recent DQA exam.',
+          'If images are labeled “Axial (Coronal)”: verify at least one looks similar in shape and position of phantom features to the expected reference images.',
+          'DECISION — Axial (Coronal) image LOOKS CORRECT (even if degraded by low SNR, ghosting, or distortion): suboptimal image quality has confused the DQA II Tool. Resolve the image quality issues first, then rerun.',
+          'DECISION — Axial (Coronal) image does NOT look correct: this indicates a gradient wiring or setup problem. Proceed to gradient wiring checks (Section 3 of service manual).'
+        ]
+      },
+      {
+        title: 'Z Gradient Polarity Inverted — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, latches/clamps, landmarking.',
+          'Review the most recent DQA exam in the image browser.',
+          'If images are labeled “Coronal”: verify at least one looks similar to the expected Coronal reference image.',
+          'DECISION — Coronal image looks correct (even if degraded): IQ issue. Resolve image quality before running DQA II Calibration.',
+          'DECISION — Coronal image does NOT look correct: gradient wiring/setup problem → proceed to gradient wiring checks.',
+          'If the exam contains an image labeled “Axial”: the DQA II Tool made early detection of a Z gradient polarity problem from multi-slice images.',
+          'DECISION — Central bar feature moves TOWARD GE logo and comb features as slice location moves from INFERIOR to SUPERIOR: Z gradient may be polarity flipped → proceed to gradient wiring checks (Section 3).',
+          'DECISION — Central bar moves AWAY from GE logo and comb features: IQ issue has confused the tool. Resolve image quality issues first.',
+          'Review all images for degradation artifacts (noise, distortion, ghosting) and check against reference images for expected phantom appearance.'
+        ]
+      },
+      {
+        title: 'Phantom Offset >±36 mm Along Z — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, latches/clamps, landmarking.',
+          'Confirm the correct phantom is being used.',
+          'Visually verify phantom is properly positioned and centered in the head coil.',
+          'Check Laser Light Alignment: the axial alignment light must aim straight down and line up with the crosshairs on the DQA phantom.',
+          'Verify the isocenter Z value is close to the default for this magnet type.',
+          'Verify that the proper magnet and magnet cover options are correctly set in the MR confess file.'
+        ]
+      },
+      {
+        title: 'Phantom Position & Rotation Correction Reference',
+        type: 'table',
+        headers: ['Error', 'Direction Convention', 'Correction'],
+        rows: [
+          ['Rotated 16° about Z axis', 'Positive value = needs clockwise rotation (viewed from front)', 'Rotate phantom CLOCKWISE when viewed from front'],
+          ['Rotated 16° about Y axis', 'Per axis orientation guide in service manual', 'Re-position phantom; avoid misalignment during repositioning'],
+          ['Offset 20 mm along X', 'Positive X value = phantom is too far to the right', 'Move phantom to the LEFT (viewed from front)'],
+          ['Offset 20 mm along Y', 'Positive Y value = phantom is too high', 'Move phantom DOWN (viewed from front)']
+        ]
+      }
+    ],
+    tags: ['DQA', 'DQA II', 'calibration', 'gradient', 'phantom', 'Z gradient', 'polarity', '15x', 'image quality', 'IQ', 'confess', 'laser alignment', 'coil positioning'],
+    source: 'GE Signa 15x Service Manual — DQA II Tool Errors (15x_DQA_II_Tool_Problems.htm)',
     dateAdded: '2026-05-20',
     created: '2026-05-20T00:00:00.000Z'
   }
