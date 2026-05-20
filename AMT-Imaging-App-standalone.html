@@ -925,6 +925,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <button class="mst-btn" id="kb-tab-parts" onclick="setKBTab('parts')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🔩 Parts</button>
     <button class="mst-btn" id="kb-tab-kb" onclick="setKBTab('kb')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🧠 Knowledge Base</button>
     <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">⚠️ Error Codes</button>
+    <button class="mst-btn" id="kb-tab-diag" onclick="setKBTab('diag')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🔧 Diagnostic Guides</button>
   </div>
 
   <!-- FILE EXPLORER -->
@@ -1028,6 +1029,26 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       </div>
     </div>
     <div id="errCodeList"></div>
+  </div>
+  <div id="kbp-diag" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <strong style="font-size:.88rem">🔧 Diagnostic Guides</strong>
+      <button class="btn btn-success btn-sm" onclick="openDiagGuideModal()">+ Add Guide</button>
+    </div>
+    <!-- Filter chips -->
+    <div class="filter-bar" id="diagSysFilter" style="margin-bottom:10px">
+      <div class="filter-chip active" onclick="setDiagFilter('')" data-diag="">All Systems</div>
+      <div class="filter-chip" onclick="setDiagFilter('GE MRI')" data-diag="GE MRI">GE MRI</div>
+      <div class="filter-chip" onclick="setDiagFilter('Siemens MRI')" data-diag="Siemens MRI">Siemens MRI</div>
+      <div class="filter-chip" onclick="setDiagFilter('GE CT')" data-diag="GE CT">GE CT</div>
+      <div class="filter-chip" onclick="setDiagFilter('Siemens CT')" data-diag="Siemens CT">Siemens CT</div>
+    </div>
+    <!-- Search -->
+    <input class="form-control" id="diagSearchInput" placeholder="🔍 Search guides…" oninput="renderDiagGuides()" style="margin-bottom:12px;font-size:.85rem">
+    <!-- Guide list -->
+    <div id="diagGuideList"></div>
+    <!-- Guide detail view (hidden by default) -->
+    <div id="diagGuideDetail" style="display:none"></div>
   </div>
 </div>
 
@@ -1425,6 +1446,15 @@ function bootApp(){
   // Set today on date fields
   ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=now.toISOString().slice(0,10);});
   updateAIKeyBtns();
+  // Load diagnostic guides
+  const savedGuides = localStorage.getItem('amt_diag_guides_v30');
+  if(savedGuides) {
+    try { diagGuides = JSON.parse(savedGuides); } catch(e) { diagGuides = []; }
+  }
+  if(!diagGuides.length) {
+    diagGuides = DIAG_GUIDES_SEED.map(g => ({...g}));
+    localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
+  }
 }
 
 function logout(){
@@ -2490,7 +2520,7 @@ let editingKBId = null;
 function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); }
 
 function setKBTab(t){
-  ['files','parts','kb','errcodes'].forEach(s=>{
+  ['files','parts','kb','errcodes','diag'].forEach(s=>{
     const btn = document.getElementById('kb-tab-'+s);
     if(btn) btn.classList.toggle('active', s===t);
     const el = document.getElementById('kbp-'+s);
@@ -2498,6 +2528,7 @@ function setKBTab(t){
   });
   if(t==='kb') renderKBEntries();
   if(t==='errcodes') renderErrCodeList();
+  if(t==='diag') renderDiagGuides();
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
   if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
   updateAIKeyBtns();
@@ -2813,6 +2844,226 @@ function renderErrCodeList(){
       <td>${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="color:var(--blue2);font-size:.75rem">📖 Open ↗</a>':'-'}</td>
       <td><button onclick="getAIFix('${e.code}')" style="background:var(--navy);color:white;border:none;padding:3px 8px;border-radius:6px;font-size:.7rem;cursor:pointer;white-space:nowrap">🤖 AI Fix</button></td>
     </tr>`).join('')+'</tbody></table></div>';
+}
+
+// ── Diagnostic Guides ──────────────────────────────────────────────────────
+let _diagFilter = '';
+
+function setDiagFilter(sys){
+  _diagFilter = sys;
+  document.querySelectorAll('#diagSysFilter .filter-chip').forEach(c=>{
+    c.classList.toggle('active', (c.dataset.diag||'')===(sys||''));
+  });
+  renderDiagGuides();
+}
+
+function renderDiagGuides(){
+  const listEl = document.getElementById('diagGuideList');
+  const detailEl = document.getElementById('diagGuideDetail');
+  if(!listEl) return;
+  detailEl.style.display = 'none';
+  listEl.style.display = 'block';
+  const q = (document.getElementById('diagSearchInput')?.value||'').toLowerCase();
+  let guides = diagGuides.filter(g=>{
+    if(_diagFilter && g.system !== _diagFilter) return false;
+    if(q) {
+      const haystack = [g.title, g.system, g.category, g.purpose, ...(g.tags||[])].join(' ').toLowerCase();
+      if(!haystack.includes(q)) return false;
+    }
+    return true;
+  });
+  if(!guides.length){
+    listEl.innerHTML = '<p style="color:var(--text2);text-align:center;padding:30px 0;font-size:.9rem">No diagnostic guides found.</p>';
+    return;
+  }
+  listEl.innerHTML = guides.map(g=>`
+    <div class="card" style="margin-bottom:10px;cursor:pointer;border-left:3px solid var(--gold)" onclick="viewDiagGuide('${g.id}')">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:.9rem;margin-bottom:3px">${g.title}</div>
+          <div style="font-size:.78rem;color:var(--text2);margin-bottom:5px">
+            <span style="background:var(--navy);color:#fff;border-radius:4px;padding:1px 6px;margin-right:5px">${g.system}</span>
+            <span style="background:var(--gray2);border-radius:4px;padding:1px 6px">${g.category}</span>
+          </div>
+          <div style="font-size:.8rem;color:var(--text2)">${g.purpose.substring(0,120)}${g.purpose.length>120?'…':''}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+          <button class="btn btn-outline btn-sm" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')" style="font-size:.7rem">✏️ Edit</button>
+          <button class="btn btn-sm" style="font-size:.7rem;background:#fee2e2;color:#dc2626;border:1px solid #fecaca" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">🗑️</button>
+        </div>
+      </div>
+      <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">
+        ${(g.tags||[]).slice(0,5).map(t=>`<span style="font-size:.7rem;background:var(--gray);border-radius:10px;padding:1px 7px;color:var(--text2)">${t}</span>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function viewDiagGuide(id){
+  const g = diagGuides.find(x=>x.id===id);
+  if(!g) return;
+  const listEl = document.getElementById('diagGuideList');
+  const detailEl = document.getElementById('diagGuideDetail');
+  listEl.style.display = 'none';
+  detailEl.style.display = 'block';
+
+  function renderSection(s){
+    if(s.type === 'steps'){
+      return `
+        <div style="margin-bottom:18px">
+          <div style="font-weight:600;font-size:.88rem;margin-bottom:8px;color:var(--navy)">${s.title}</div>
+          <ol style="margin:0;padding-left:20px;font-size:.85rem">
+            ${(s.steps||[]).map((step,i)=>{
+              const isDecision = step.startsWith('DECISION');
+              const isWarning = step.startsWith('⚠️');
+              const style = isDecision
+                ? 'margin-bottom:6px;background:#fffbeb;border-left:3px solid #f59e0b;padding:5px 8px;border-radius:0 4px 4px 0;list-style:none;margin-left:-20px'
+                : isWarning
+                ? 'margin-bottom:6px;background:#fef2f2;border-left:3px solid #dc2626;padding:5px 8px;border-radius:0 4px 4px 0;list-style:none;margin-left:-20px;font-weight:600'
+                : 'margin-bottom:5px';
+              return `<li style="${style}">${step}</li>`;
+            }).join('')}
+          </ol>
+        </div>`;
+    }
+    if(s.type === 'table'){
+      return `
+        <div style="margin-bottom:18px">
+          <div style="font-weight:600;font-size:.88rem;margin-bottom:8px;color:var(--navy)">${s.title}</div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+              <thead>
+                <tr style="background:var(--navy);color:#fff">
+                  ${(s.headers||[]).map(h=>`<th style="padding:6px 10px;text-align:left;white-space:nowrap">${h}</th>`).join('')}
+                </tr>
+              </thead>
+              <tbody>
+                ${(s.rows||[]).map((row,ri)=>`
+                  <tr style="background:${ri%2===0?'var(--gray)':'#fff'}">
+                    ${row.map(cell=>`<td style="padding:5px 10px;border-bottom:1px solid var(--gray2)">${cell}</td>`).join('')}
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+    if(s.type === 'note' || s.type === 'warning'){
+      const color = s.type==='warning' ? '#fef2f2' : '#eff6ff';
+      const border = s.type==='warning' ? '#dc2626' : '#3b82f6';
+      return `
+        <div style="margin-bottom:18px;background:${color};border-left:4px solid ${border};padding:10px 14px;border-radius:0 var(--r) var(--r) 0;font-size:.85rem">
+          <strong>${s.title}</strong><br>${s.content||''}
+        </div>`;
+    }
+    return '';
+  }
+
+  detailEl.innerHTML = `
+    <div style="margin-bottom:12px">
+      <button class="btn btn-outline btn-sm" onclick="renderDiagGuides()" style="font-size:.8rem">← Back to list</button>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1rem">${g.title}</h3>
+          <div style="font-size:.78rem;color:var(--text2)">
+            <span style="background:var(--navy);color:#fff;border-radius:4px;padding:1px 7px;margin-right:5px">${g.system}</span>
+            <span style="background:var(--gray2);border-radius:4px;padding:1px 7px;margin-right:5px">${g.category}</span>
+            <span>Source: ${g.source||'—'}</span>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openDiagGuideModal('${g.id}')" style="font-size:.78rem">✏️ Edit</button>
+      </div>
+
+      ${g.diagnosticPath ? `
+      <div style="margin-bottom:14px;padding:8px 12px;background:var(--gray);border-radius:var(--r);font-size:.82rem">
+        <strong>📍 Diagnostic Path:</strong><br>
+        <span style="color:var(--blue2);font-family:monospace">${g.diagnosticPath}</span>
+      </div>` : ''}
+
+      <div style="margin-bottom:14px">
+        <strong style="font-size:.82rem;display:block;margin-bottom:4px">Purpose</strong>
+        <p style="margin:0;font-size:.85rem;color:var(--text)">${g.purpose}</p>
+      </div>
+
+      ${g.componentsTested && g.componentsTested.length ? `
+      <div style="margin-bottom:16px">
+        <strong style="font-size:.82rem;display:block;margin-bottom:6px">Components Tested</strong>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          ${g.componentsTested.map(c=>`<span style="background:var(--gray);border:1px solid var(--gray2);border-radius:6px;padding:3px 10px;font-size:.8rem">${c}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      <hr style="border:none;border-top:1px solid var(--gray2);margin:14px 0">
+
+      ${(g.sections||[]).map(s=>renderSection(s)).join('')}
+
+      ${g.tags && g.tags.length ? `
+      <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px">
+        ${g.tags.map(t=>`<span style="font-size:.72rem;background:var(--gray);border-radius:10px;padding:2px 8px;color:var(--text2)">${t}</span>`).join('')}
+      </div>` : ''}
+    </div>`;
+}
+
+function deleteDiagGuide(id){
+  if(!confirm('Delete this diagnostic guide?')) return;
+  diagGuides = diagGuides.filter(g=>g.id!==id);
+  localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
+  renderDiagGuides();
+}
+
+let _editingDiagId = null;
+
+function openDiagGuideModal(id){
+  _editingDiagId = id||null;
+  const g = id ? diagGuides.find(x=>x.id===id) : null;
+  document.getElementById('diagGuideModalTitle').textContent = g ? '✏️ Edit Diagnostic Guide' : '🔧 Add Diagnostic Guide';
+  document.getElementById('dg_title').value = g ? g.title : '';
+  document.getElementById('dg_system').value = g ? g.system : 'GE MRI';
+  document.getElementById('dg_category').value = g ? g.category : '';
+  document.getElementById('dg_path').value = g ? (g.diagnosticPath||'') : '';
+  document.getElementById('dg_purpose').value = g ? g.purpose : '';
+  document.getElementById('dg_components').value = g ? (g.componentsTested||[]).join(', ') : '';
+  document.getElementById('dg_tags').value = g ? (g.tags||[]).join(', ') : '';
+  document.getElementById('dg_source').value = g ? (g.source||'') : '';
+  document.getElementById('dg_sections_json').value = g ? JSON.stringify(g.sections||[], null, 2) : '[]';
+  openModal('diagGuideModal');
+}
+
+function saveDiagGuide(){
+  const title = document.getElementById('dg_title').value.trim();
+  if(!title){ alert('Title is required.'); return; }
+  let sections = [];
+  try {
+    sections = JSON.parse(document.getElementById('dg_sections_json').value||'[]');
+  } catch(e) {
+    alert('Invalid JSON in sections field. Please check the format.');
+    return;
+  }
+  const entry = {
+    id: _editingDiagId || ('dg_'+Date.now()),
+    title,
+    system: document.getElementById('dg_system').value,
+    category: document.getElementById('dg_category').value.trim(),
+    diagnosticPath: document.getElementById('dg_path').value.trim(),
+    purpose: document.getElementById('dg_purpose').value.trim(),
+    componentsTested: document.getElementById('dg_components').value.split(',').map(s=>s.trim()).filter(Boolean),
+    sections,
+    tags: document.getElementById('dg_tags').value.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean),
+    source: document.getElementById('dg_source').value.trim(),
+    dateAdded: new Date().toISOString().slice(0,10),
+    created: _editingDiagId ? (diagGuides.find(x=>x.id===_editingDiagId)?.created||new Date().toISOString()) : new Date().toISOString()
+  };
+  if(_editingDiagId){
+    const idx = diagGuides.findIndex(x=>x.id===_editingDiagId);
+    if(idx>=0) diagGuides[idx] = entry; else diagGuides.push(entry);
+  } else {
+    diagGuides.push(entry);
+  }
+  localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
+  closeModal('diagGuideModal');
+  renderDiagGuides();
 }
 
 // ════════════════════════════════════════════════════
@@ -3234,6 +3485,109 @@ function sendInvoiceEmail(invId){
   window.open('mailto:'+email+'?subject='+subject+'&body='+body);
   alert('✅ Invoice PDF saved to your Downloads.\n📧 Email draft opened to: '+email+'\n\nAttach the PDF file from your Downloads folder before sending.');
 }
+
+// ════════════════════════════════════════════════════
+// DIAGNOSTIC GUIDES SEED DATA
+// ════════════════════════════════════════════════════
+const DIAG_GUIDES_SEED = [
+  {
+    id: 'dg_seed_001',
+    title: 'Gather Load Data — Multicoil & Dynamic Disable Fault Diagnosis',
+    system: 'GE MRI',
+    category: 'Driver Module',
+    diagnosticPath: 'Service Browser > Diagnostics > Peripherals > Driver Module Diagnostics > Gather Load Data',
+    purpose: 'Rapid diagnosis of multicoil bias and dynamic disable (DD) faults using Gather Load Data (GLD). Takes approximately 1 minute per run, requires no phantoms or scanning. Pinpoints the exact failed component in under 15 minutes.',
+    componentsTested: ['Driver Module', 'Pen Panel DD Filter', 'DD Cables (Driver Module to Pen Panel)', 'DD Cables (Pen Panel to Magnet)', 'RF Coils (Multichannel)', 'Body RF Coil'],
+    sections: [
+      {
+        title: 'Running the Test',
+        type: 'steps',
+        steps: [
+          'Navigate to: Service Browser > Diagnostics > Peripherals > Driver Module Diagnostics > Gather Load Data',
+          'Change the Default output filename to something memorable (e.g. your initials + run number + brief description: "kp1_ctl").',
+          'Leave all other settings at default values.',
+          'Click Run. The test takes approximately 1 minute.',
+          'Results are saved to /usr/g/service/log/<filename>_mc.txt (multicoil) and <filename>_dd.txt (dynamic disable).',
+          'Open results: gedit /usr/g/service/log/<filename>_mc.txt  OR  gedit /usr/g/service/log/<filename>_dd.txt'
+        ]
+      },
+      {
+        title: 'Multicoil Error Troubleshooting',
+        type: 'steps',
+        steps: [
+          'Identify the coil causing the error in the error log.',
+          'Plug in the bad coil.',
+          'Change the Default filename (run 1) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename1_mc.txt',
+          'Find the channel number the error log indicated. Verify its numbers differ from other good channels.',
+          'Remove the bad coil. Plug in a different multichannel coil.',
+          'Change the Default filename (run 2) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename2_mc.txt',
+          'DECISION — Run 2 channel OK: Bad channel from run 1 now looks normal → order the coil from step 2 (bad coil).',
+          'DECISION — Run 2 channel still bad: Bad channel persists → problem is in the system. Continue to next step.',
+          'Connect the coil from step 2. Swap cables J5 and J10 on the back of the Driver Module.',
+          'Change the Default filename (run 3) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename3_mc.txt',
+          'DECISION — Bad channel did NOT move → order Driver Module.',
+          'DECISION — Bad channel DID move → call TSM for support (problem is between Driver Module and coil).',
+          '⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS before leaving.'
+        ]
+      },
+      {
+        title: 'Dynamic Disable (DD) Troubleshooting',
+        type: 'steps',
+        steps: [
+          'Unplug any coils from the system.',
+          'Identify the DD BLD (front/back, 1/2/3/4) with the error and whether it is a short or open.',
+          'Change the Default filename (run 1) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename1_dd.txt',
+          'Find the DD line noted in the error log. Verify it shows the bad value described in the error.',
+          'Swap cables BD1↔BD4 and BD2↔BD3 at the back of the Driver Module.',
+          'Change the Default filename (run 2) and run GLD.',
+          'DECISION — Bad value did NOT move → order Driver Module.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the back of the Driver Module to original positions.',
+          'On the equipment room side of the Pen Panel swap J92↔J96 and J93↔J95.',
+          'Change the Default filename (run 3) and run GLD.',
+          'DECISION — Bad value did NOT move → order cable from Driver Module to Pen Panel.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the equipment room side of the Pen Panel to original positions.',
+          'On the magnet room side of the Pen Panel swap J72↔J76 and J73↔J75.',
+          'Change the Default filename (run 4) and run GLD.',
+          'DECISION — Bad value did NOT move → order Pen Panel DD Filter.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the magnet room side of the Pen Panel to original positions.',
+          'At the magnet: swap the two front DD lines with each other AND the two rear DD lines with each other.',
+          'Change the Default filename (run 5) and run GLD.',
+          'DECISION — Bad value did NOT move → order cable from Pen Panel to magnet.',
+          'DECISION — Bad value DID move → call TSM for support (issue is in the body RF coil).',
+          '⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS before leaving.'
+        ]
+      },
+      {
+        title: 'Component Isolation Decision Tree',
+        type: 'table',
+        headers: ['Scenario', 'Test', 'Result', 'Action'],
+        rows: [
+          ['Multicoil fault', 'Swap coils', 'Bad channel moves with coil', 'Replace coil'],
+          ['Multicoil fault', 'Swap J5/J10 on Driver Module', 'Bad channel does NOT move', 'Replace Driver Module'],
+          ['Multicoil fault', 'Swap J5/J10 on Driver Module', 'Bad channel DOES move', 'Call TSM — cable path issue'],
+          ['DD fault', 'Swap BD1↔BD4, BD2↔BD3 (Driver Mod back)', 'Bad value does NOT move', 'Replace Driver Module'],
+          ['DD fault', 'Swap J92↔J96, J93↔J95 (Pen Panel equipment room)', 'Bad value does NOT move', 'Replace cable: Driver Mod → Pen Panel'],
+          ['DD fault', 'Swap J72↔J76, J73↔J75 (Pen Panel magnet room)', 'Bad value does NOT move', 'Replace Pen Panel DD Filter'],
+          ['DD fault', 'Swap front/rear DD lines at magnet', 'Bad value does NOT move', 'Replace cable: Pen Panel → Magnet'],
+          ['DD fault', 'Swap front/rear DD lines at magnet', 'Bad value DOES move', 'Call TSM — Body RF Coil issue']
+        ]
+      }
+    ],
+    tags: ['GLD', 'gather load data', 'driver module', 'multicoil', 'dynamic disable', 'DD', 'bias', 'pen panel'],
+    source: 'Tech Tip — GE MR Gather Load Data (Feb 2025)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+];
+
+let diagGuides = [];
 
 // ════════════════════════════════════════════════════
 // PARTS DATABASE — localStorage key
@@ -4807,6 +5161,70 @@ document.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
   <div class="modal-footer"><button class="btn btn-success" onclick="saveKBEntry()">💾 Save Entry</button><button class="btn btn-outline" onclick="closeModal('kbEntryModal')">Cancel</button></div></div>
+</div>
+
+<!-- Diagnostic Guide Modal -->
+<div class="modal-overlay" id="diagGuideModal" style="display:none">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <h3 id="diagGuideModalTitle">🔧 Add Diagnostic Guide</h3>
+      <button class="modal-close" onclick="closeModal('diagGuideModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label class="form-label">Title *</label>
+          <input class="form-control" id="dg_title" placeholder="e.g. Gather Load Data — Driver Module Diagnostics">
+        </div>
+        <div class="form-group">
+          <label class="form-label">System</label>
+          <select class="form-control" id="dg_system">
+            <option>GE MRI</option><option>Siemens MRI</option><option>Philips MRI</option><option>GE CT</option><option>Siemens CT</option><option>General</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Category / Subsystem</label>
+          <input class="form-control" id="dg_category" placeholder="e.g. Driver Module, RF System, Gradient">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Source Document</label>
+          <input class="form-control" id="dg_source" placeholder="e.g. Tech Tip GE MR Feb 2025">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Diagnostic Path (menu navigation)</label>
+        <input class="form-control" id="dg_path" placeholder="Service Browser > Diagnostics > Peripherals > ...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Purpose</label>
+        <textarea class="form-control" id="dg_purpose" style="min-height:70px" placeholder="What does this diagnostic test do?"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Components Tested (comma-separated)</label>
+          <input class="form-control" id="dg_components" placeholder="Driver Module, Pen Panel, DD Cables">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tags (comma-separated)</label>
+          <input class="form-control" id="dg_tags" placeholder="GLD, multicoil, driver module">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" style="display:flex;justify-content:space-between">
+          <span>Sections (JSON)</span>
+          <a href="javascript:void(0)" onclick="document.getElementById('dg_sections_json').value=JSON.stringify([{title:'Steps',type:'steps',steps:['Step 1','Step 2']}],null,2)" style="font-size:.75rem;color:var(--blue2)">Insert example</a>
+        </label>
+        <textarea class="form-control" id="dg_sections_json" style="min-height:160px;font-family:monospace;font-size:.78rem" placeholder='[{"title":"Steps","type":"steps","steps":["Step 1","Step 2"]}]'></textarea>
+        <div style="font-size:.72rem;color:var(--text2);margin-top:3px">Types: "steps" (steps:[]), "table" (headers:[], rows:[[]]), "note"/"warning" (content:"")</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
+      <button class="btn btn-outline" onclick="closeModal('diagGuideModal')">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <!-- KB Suggest Modal (auto-created from completed job) -->
