@@ -2267,7 +2267,7 @@ const GH={
   branch:'main',
   manualsRoot:'Manuals',
   // GitHub Pages base — files served with correct MIME types (htm=HTML, pdf=inline)
-  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App/Manuals',
+  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App',
   // Optional: GitHub Personal Access Token (read:contents only) to raise API limit
   // Set via: localStorage.setItem('amt_gh_token', 'ghp_yourtoken')
   get token(){ return localStorage.getItem('amt_gh_token')||''; }
@@ -3960,11 +3960,11 @@ function openGHSettings(){
   openModal('ghSettingsModal');
 }
 
-async 
 
 
 
-async 
+
+
 
 document.addEventListener('DOMContentLoaded',()=>{
   // Set defaults
@@ -4389,7 +4389,7 @@ async function callAI(messages, maxTokens){
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages})
+      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:maxTokens,messages})
     });
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Claude HTTP ${resp.status}`);}
     const data = await resp.json();
@@ -4643,7 +4643,7 @@ async function callAIWithImage(dataUrl, msgText){
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,
+      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:2048,
         messages:[{role:'user',content:[
           {type:'image',source:{type:'base64',media_type:mimeType,data:b64}},
           {type:'text',text:msgText}
