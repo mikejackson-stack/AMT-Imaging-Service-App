@@ -3030,6 +3030,413 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-20',
     created: '2026-05-20T00:00:00.000Z'
   }
+  ,
+  {
+    id: 'dg_seed_006',
+    title: 'GE ACGD Cabinet — Gradient Amplifier Fault Troubleshooting',
+    system: 'GE MRI',
+    category: 'Gradient System',
+    diagnosticPath: 'Check error log for fault codes → refer to flowcharts below by fault number',
+    purpose: 'Complete troubleshooting guide for the GE ACGD (Advanced Constant Gradient Driver) Cabinet. Covers SGA and SGA-PS fault codes with specific actions, PDU faults, Power Supply LED diagnostics, and hardware isolation procedures for GP, Power Supply, and SGA components. Rev 4 (Feb 29, 2008).',
+    componentsTested: ['SGA (Switching Gradient Amplifier) — X, Y, Z axes', 'SGA-PS (SGA Power Supply)', 'GP (Gradient Processor)', 'PDU (Power Distribution Unit)', 'IPG (Internal Pulse Generator)', 'TYME Board', 'BRM (Bus Rail Module) Cables', 'Gradient Coils'],
+    sections: [
+      {
+        title: 'Fault Priority Order — Check in This Sequence',
+        type: 'steps',
+        steps: [
+          'IMPORTANT: If any gradient cables are swapped between different axes or polarities for troubleshooting, perform the Geometry Verification procedure to verify gradient cables are returned to their original positions before returning to service.',
+          'Step 1 — Check for SGA Rollover Fault (2244582, 2244583, 2244584). If present: STOP — do not proceed to other faults.',
+          'Step 2 — Check for SGA Overrange Fault (2244579, 2244580, 2244581). If present: STOP and ignore all other faults.',
+          'Step 3 — Check for SGA PS Cable Off Fault (2244586). If present: STOP.',
+          'Step 4 — Check for SGA PS Power Off Fault (2244587). If present: STOP.',
+          'Step 5 — Work through the remaining faults in the ACGD Fault Tree (see error messages table below), following directions in each error message.'
+        ]
+      },
+      {
+        title: 'SGA and SGA-PS Error Messages (Table 3-1)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244570', 'SGA_Failed_Ready', 'SGA _ Axis failed to go to Ready when commanded', '1. G_Enable test point on front of SGA J2 must be HIGH; replace SGA axis. 2. Check cable between GP and SGA. 3. Replace GP.'],
+          ['2244571', 'SGA_Cable_Off_Fault', 'GP reporting SGA _ Axis cable off fault', '1. Check cable between GP and SGA. 2. Replace GP. 3. Swap SGAs and replace appropriate axis.'],
+          ['2244572', 'SGA_Power_Off_Fault', 'GP reporting _ Axis SGA Power Off', '1. Check 208V line cable is fully seated between SGA and PDU. 2. Replace SGA.'],
+          ['2244573', 'SGA_WF_PSUV_Fault', 'GP reporting _ Axis SGA internal wiring fault and internal Power Supply under voltage', '1. TPS Reset. 2. Replace SGA.'],
+          ['2244574', 'SGA_OC_Fault', 'GP reported _ Axis SGA over current fault', '1. Check output cabling to the coil. 2. Replace SGA.'],
+          ['2244575', 'SGA_OV_Fault', 'GP reported _ Axis SGA over voltage fault', '1. If no other faults reported, replace SGA. 2. See other faults.'],
+          ['2244576', 'SGA_UV_Fault', 'GP reported _ Axis under voltage fault', '1. If no other faults reported, replace SGA. 2. See other faults.'],
+          ['2244577', 'SGA_IDIST_Fault', 'GP reported _ Axis Current Distortion Fault', '1. Check L coil calibration. 2. Run Gradient Driver Tests to isolate FRU. 3. If diagnostics pass, write CQA.'],
+          ['2244578', 'SGA_OT_Fault', 'GP reported _ Axis SGA Over Temperature Fault', 'Replace SGA.'],
+          ['2244579', 'X_SGA_OVRANGE_Fault', 'X Axis Gradient data over range — GP detected error in incoming high-speed data from IPG', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244580', 'Y_SGA_OVRANGE_Fault', 'Y Axis Gradient data over range', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244581', 'Z_SGA_OVRANGE_Fault', 'Z Axis Gradient data over range', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244582', 'X_SGA_RollOver_Fault', 'X Axis Gradient data rollover — digital DC offset compensation caused data to rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244583', 'Y_SGA_RollOver_Fault', 'Y Axis Gradient data rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244584', 'Z_SGA_RollOver_Fault', 'Z Axis Gradient data rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244585', 'SGAPS_Ready_Fault', 'SGA Power Supply failed to go to ready when commanded or came out of Ready', '1. Press Reset Button on SGA PS. 2. If ENABLE test point on SGA-PS J2 connector is HIGH, replace SGA-PS. 3. Check cable from GP to SGA-PS. 4. Replace GP.'],
+          ['2244586', 'SGAPS_Cable_Off_Fault', 'GP is reporting a SGA Power Supply Cable Off Fault', '1. Check cable between GP and SGA-PS. 2. Replace SGA-PS.'],
+          ['2244587', 'SGAPS_Power_Off_Fault', 'GP is reporting SGA-PS Power Off', '1. Check 420V power breaker on PDU; if tripped, replace SGA-PS — do NOT cycle power. 2. Make sure 420V power line is fully seated between PDU and SGA-PS. 3. Push EMO Reset Switch on PDU. 4. Replace SGA-PS.'],
+          ['2244588', 'SGAPS_WF_PSUV_Fault', 'GP is reporting SGA-PS internal wiring fault or internal power supply under voltage', '1. Reseat SGA-PS connectors. 2. Replace SGA-PS.'],
+          ['2244589', 'SGAPS_OT_Fault', 'GP reported a SGA-PS over temp fault', '1. Wait at least 5 minutes for cabinet to cool. 2. Check fan phase rotation, fan filter, and make sure gradient cabinet rear door is closed. 3. Check SGA-PS.'],
+          ['2244590', 'SGAPS_OC_Fault', 'SGA-PS over current fault', '1. Check SGA-PS LEDs to determine which SGA axis is source of problem and replace it. 2. Replace SGA-PS. 3. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244591', 'SGAPS_OV_Fault', 'SGA-PS over voltage fault', '1. Check SGA-PS LEDs; if BUS_OV LED lit, check PDU 420V output — if primary, replace SGA-PS. 2. If OV_X, Y, Z LED lit, swap military connectors to isolate SGA vs. SGA-PS. 3. Replace SGA-PS. 4. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244592', 'SGAPS_UV_Fault', 'SGA-PS Under Voltage Fault', '1. Check SGA-PS LEDs; if BUS_UV LED lit, check PDU 420V output — if primary, replace SGA-PS. 2. If UV_X, Y, Z LED lit, swap military connectors to isolate SGA vs. SGA-PS. 3. Replace SGA-PS. 4. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244593', 'SGA_Failed_Standby', 'SGA _ Axis failed to go to Standby when commanded', '1. If G_ENABLE test point on front of SGA J2 connector is LOW, replace SGA Axis. 2. Check cable between GP and SGA. 3. Replace GP.'],
+          ['2244594-2244596', 'X/Y/Z_Failed_Recovery', 'X/Y/Z Axis gradient error detected; recovery in progress', 'Ignore.'],
+          ['2244597', 'Recovery_Done', 'Gradient system on _ axis recovered successfully — no faults at present time', 'Ignore.'],
+          ['2245044', 'Current Driver Tests', 'GP reported an X Axis SGA Internal Wiring or Internal Power Supply Under Voltage fault', '1. Cycle two breakers on the PDU. 2. Replace SGA.']
+        ]
+      },
+      {
+        title: 'Software Error Messages (Table 2-1)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244500', 'Invalid Update Error', 'Internal GP software error — invalid selection for update mode', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244501', 'Undef_Interrupt', 'Internal GP software error', '1. Check GP Board LED — blinking for 5 seconds. 2. Software bug; write CQA.'],
+          ['224502', 'Invalid_TP', 'Internal GP software error', '1. Check GP Board LED — blinking for 5 seconds. 2. Software bug; write CQA.'],
+          ['224530', 'Undef_MDS_OPCODE', 'Internal GP software error — GP received undefined opcode from SPI MDS Packet', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244540', 'Invalid_Axis', 'Internal GP software error — number of axis not between Value and Value (SMOD or debugger invalid info)', '1. Software bug; write CQA.'],
+          ['2244541', 'Bad_PS_Level', 'Internal GP software error — SPI specified undefined value in MDS packet', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244542', 'No_PS_Level_Stdby', 'IPG attempted to command gradient axis to Standby before sending GIP_CONFIG packet to GP', 'Check IPG.'],
+          ['2244543', 'No_PS_Level_Rdy', 'IPG attempted to command gradient axis to Ready before sending GIP_CONFIG packet to GP', 'Check IPG.'],
+          ['224607', 'ADC Error', 'Internal GP software error — unavailable signal for selection on ADC Multiplexor', 'If seen in field, write CQA.']
+        ]
+      },
+      {
+        title: 'Hardware Error Messages (Table 2-2)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244544', 'GRAM_Tune_Verify', 'GP unsuccessful loading/verifying GP digital tuning values for _ Axis', 'Replace GP.'],
+          ['2244605', 'Framing Error', 'Hardware Error — Gradient data framing error. GP reported a data framing error', '1. Check fiber optic clock cable between Systems Cabinet and GP. 2. Check IPG, TYME, and GP. 3. Run fiber optic diagnostics.'],
+          ['2244606', 'Clock Stop Error', 'Hardware Error — No Gradient Clock. Gradient clock stop occurred; GP stopped receiving gradient clock from IPG', '1. Check connection between TYME Board and GP Board. 2. Check IPG, TYME, and GP. 3. Run fiber optic diagnostics.']
+        ]
+      },
+      {
+        title: 'PDU Fault Symptoms and Causes (Table 4-1)',
+        type: 'table',
+        headers: ['Symptom', 'Possible Cause(s)'],
+        rows: [
+          ['Bus OV, Bus UV, and PSUV faults in power supply', '1. PDU tapped wrong. 2. Inadequate power feed/UPS.'],
+          ['Power supply IGBT failure; PSUV faults', 'Unbalanced voltages or missing phases — indicates a feeder, PDU transformer, or internal wiring problem.'],
+          ['E-Off not working or E-Stop contactor will not pick up', '1. A connector may be loose on the PDU control board. 2. Board may be bad.'],
+          ['NOTE', 'GE recommends a 160kVA UPS from Powerware. Other UPS\'s or line regulators can cause PDU or PS Problems.']
+        ]
+      },
+      {
+        title: 'Power Supply LED Indicators (Table 6-1)',
+        type: 'table',
+        headers: ['LED(s)', 'Function / Meaning'],
+        rows: [
+          ['ISECX, ISECY, ISECZ', 'Indicate secondary currents in power supply for each axis. Light up when the SGA for that axis pulls current from the power supply.'],
+          ['IPX OC, IPY OC, IPZ OC', 'Indicate over currents in transformer primaries. Uncommon fault — would indicate a shorted transformer primary.'],
+          ['ISX OC, ISY OC, ISZ OC', 'Indicate over currents in transformer secondary. Two causes: a blown IGBT in the SGA, or a shorted diode module in the power supply.'],
+          ['OVX, OVY, OVZ', 'Indicate over voltages on output of power supply. Loose connectors can cause this problem.'],
+          ['UVX, UVY, UVZ', 'Indicate under voltages on output of power supply. Can be caused by shorted semiconductors in SGA or power supply.'],
+          ['ITANK OC', 'Indicates sum of transformer primary currents is too large — heavy loads on all three axes at once.'],
+          ['BUS OV', 'Indicates an over voltage on the input bus of the power supply. Check PDU tapping and measure 420 VAC on terminal block in back of power supply.']
+        ]
+      },
+      {
+        title: 'Hardware Fault Isolation — Step-by-Step Procedure',
+        type: 'steps',
+        steps: [
+          'Start: A scan error is occurring on a specific axis (X, Y, or Z).',
+          'Step 1 — Swap the faulting axis data cable (fiber) to the GP with the corresponding cable from another axis. Rescan.',
+          'DECISION — Fault changes axis: Problem is NOT with the GP. Continue to Step 2.',
+          'DECISION — Fault does NOT change axis: GP is bad. Swap the GP.',
+          'Step 2 — Determine if this is an SGA PS fault.',
+          'DECISION — SGA PS fault: Restore data cables. Swap the faulting axis SGA power cables with another axis and rescan.',
+          '  If PS fault changes axis: SGA PS is bad. Swap SGA PS.',
+          '  If PS fault does NOT change axis: Problem is with SGA, or gradient coil and cables. Restore power cables.',
+          'Step 3 (if not PS fault) — Swap faulting axis SGA output cables with another axis and rescan.',
+          'DECISION — Fault changes axis: Problem is with gradient coil and cables. Restore SGA output cables.',
+          'DECISION — Fault does NOT change axis: Swap faulting SGA control board with another axis.',
+          '  If fault changes axis: SGA control board is bad. Replace control board.',
+          '  If fault does NOT change axis: Swap faulting SGA with another axis.',
+          '    If fault changes axis: SGA is bad. Swap SGA.',
+          '    If fault does NOT change axis: Go back to start.',
+          'Step 4 (if gradient coil/cables suspected) — Disconnect a leg of the faulting gradient coil at the rear of the magnet or penetration panel. Measure resistance across gradient coil.',
+          'DECISION — Resistance > 1 ohm: Gradient coil is resistive and needs replacement.',
+          'DECISION — Resistance NOT > 1 ohm: Check resistance at cable connected to SGA output.',
+          '  If resistance > 1 ohm: Find the open cable and replace it.',
+          '  If resistance NOT > 1 ohm: Go back to start.'
+        ]
+      },
+      {
+        title: '5-1 GP Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems in a particular GP axis: swap the suspect axis fiber cable with another axis. In turn, swap the corresponding data cables at the GP (or at the SGA). GP has both fiber cables and data cables at the rear of the module.'
+      },
+      {
+        title: '5-2 Power Supply Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems caused by a particular power supply output: swap one or both cables of the suspect axis with the cables of another axis. All six outputs are identical and will work on either connector of any SGA. Do NOT move data or fiber cables for this test — only DC power cables.'
+      },
+      {
+        title: '5-3 SGA Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems in a particular SGA: swap the BRM cables of the suspect axis with another axis at the terminal board at the back of the PDU. Also swap the corresponding data cables at the GP or at the SGA. If this indicates a bad SGA, try swapping the control boards. Refer to the BRM cable illustration for cable locations.'
+      }
+    ],
+    tags: ['ACGD', 'SGA', 'SGA-PS', 'gradient amplifier', 'GP', 'PDU', 'gradient fault', '2244570', '2244571', '2244572', '2244573', '2244574', '2244575', '2244576', '2244577', '2244578', '2244579', '2244580', '2244581', '2244582', '2244583', '2244584', '2244585', '2244586', '2244587', '2244588', '2244589', '2244590', '2244591', '2244592', '2244593', '2244605', '2244606', 'rollover', 'overrange', 'over current', 'over voltage', 'under voltage', 'IPG', 'TYME', 'BRM'],
+    source: 'GE Medical Systems — ACGD Cabinet Troubleshooting Flowchart, Rev 4 (Feb 29, 2008), GD4TSC1.DOC',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_007',
+    title: 'GE LCC300 3.0T Magnet — Updated Ramp Schedule (SN beginning with "W")',
+    system: 'GE MRI',
+    category: 'Magnet / Cryogen',
+    diagnosticPath: 'N/A — Procedure guide for magnet ramp-up',
+    purpose: 'Updated recommended ramp schedule for GE LCC300 3.0T magnets with serial numbers beginning with "W". The original schedule was overly conservative due to quench concerns. This updated schedule reduces total ramp time from ~7h 45m to an average of 5h 45m and eliminates an intermediate helium fill. Applies to MR750 (5500099) and LCC300 (2325852) magnet and cryogen manuals. Service Notes DOC0610311 Rev 1, May 2009.',
+    componentsTested: ['LCC300 3.0T Magnet Main Coil', 'ATR (Automatic Tune and Ramp) System', 'Helium Level Monitor'],
+    sections: [
+      {
+        title: 'Effectivity and Background',
+        type: 'note',
+        content: 'EFFECTIVITY: All GE LCC300 magnets with serial number beginning with "W". PROBLEM: When 3T magnets were introduced, the ramp rate developed was not optimized between quench probability vs. ramp time. The only concern was quenching, so the original schedule was very conservative. An engineering study resulted in this updated schedule that balances both issues. Engineering Test Plan (ETP) stored in "My Workshop" under document DOC0550994.'
+      },
+      {
+        title: 'Ramp Schedule Comparison',
+        type: 'table',
+        headers: ['Stage', 'Main Coil (Ramp) Voltage', 'OLD Current Range (Amps)', 'NEW Current Range (Amps)'],
+        rows: [
+          ['1', '6.00', '0 to 248', '0 to 300'],
+          ['2', '4.00', '248 to 283', '300 to 335'],
+          ['3', '2.00', '283 to 314', '335 to 350'],
+          ['4', '1.00', '314 to 342', '350 to 355'],
+          ['5', '0.50', '342 to 360', '355 to Final Field'],
+          ['6', '0.30', '>360 (OLD only)', 'N/A — eliminated in new schedule'],
+          ['NOTE', '—', 'Old: 6 stages, ~7h 45m total, required helium fill', 'New: 5 stages, avg 5h 45m, no intermediate fill needed']
+        ]
+      },
+      {
+        title: 'Ramp Procedure — Key Steps',
+        type: 'steps',
+        steps: [
+          'Verify magnet serial number begins with "W" — this schedule applies ONLY to those magnets.',
+          'Proceed with ramp using the NEW 5-stage schedule above (not the old 6-stage schedule in the manual).',
+          'Stage 1: Ramp at 6.00V from 0 to 300 Amps.',
+          'Stage 2: Reduce to 4.00V, ramp from 300 to 335 Amps.',
+          'Stage 3: Reduce to 2.00V, ramp from 335 to 350 Amps.',
+          'Stage 4: Reduce to 1.00V, ramp from 350 to 355 Amps.',
+          'Stage 5: Reduce to 0.50V, ramp from 355 Amps to Final Field.',
+          'ATR NOTE: When the magnet field reaches ±0.5 Gauss of the ATR "Recommended Site Parking Field", slowly adjust the Voltage Adjust Control for 0.10 volts main coil driving voltage. (See Section 7.4.4, Step 12 of service manual.)',
+          'CRITICAL — Monitor helium level continuously during ramp. If level drops to 65% or below: immediately stabilize the field, park the magnet, and disconnect/remove ramping connections.',
+          'Helium planning: The average helium level was 70% at the end of the ramp. Plan on having enough helium on hand afterwards to top off.'
+        ]
+      },
+      {
+        title: 'Key Differences vs. Old Schedule',
+        type: 'table',
+        headers: ['Parameter', 'Old Schedule', 'New Schedule'],
+        rows: [
+          ['Number of stages', '6', '5'],
+          ['Total ramp time', '~7 hours 45 min (straight to field)', 'Average 5 hours 45 min'],
+          ['Intermediate helium fill', 'Required (due to long ramp time)', 'Not needed'],
+          ['Final stage voltage', '0.30V for >360A', '0.50V to Final Field'],
+          ['Helium level at end', 'Not specified', 'Average 70% — plan to top off']
+        ]
+      }
+    ],
+    tags: ['3T', 'LCC300', 'ramp', 'ramp schedule', 'magnet ramp', 'MR750', 'cryogen', 'helium', 'ramp up', 'serial W', 'ATR', 'DOC0610311'],
+    source: 'GE Service Notes — Change in Recommended LCC300 3.0T Magnet Ramp Schedule, SN DOC0610311 Rev 1 (May 2009)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_008',
+    title: 'TEAL XGD PDU — 48V Power Supply Mounting Screw Replacement (TSB 102109-1)',
+    system: 'GE MRI',
+    category: 'PDU / Power Supply',
+    diagnosticPath: 'N/A — Corrective maintenance procedure',
+    purpose: 'Replace power supply mounting screws in TEAL XGD PDUs that are too long and could cause internal shorting to ground of PS1 and/or PS2. Affects 25 PDUs manufactured between 12/14/2007 and 8/7/2008. TEAL Electronics Technical Service Bulletin 102109-1, issued 10/21/2009.',
+    componentsTested: ['XGD PDU Power Supply PS1 (P/N 0590905)', 'XGD PDU Power Supply PS2 (P/N 0590902)', 'Power Supply Mounting Brackets'],
+    sections: [
+      {
+        title: 'Affected PDU Serial Numbers',
+        type: 'table',
+        headers: ['Serial Numbers Affected (TEAL P/N 6600003 / GE P/N 5140621)'],
+        rows: [
+          ['97679, 97680, 99326, 99327, 100972'],
+          ['101501, 101502, 101503, 112951, 114986'],
+          ['114987, 114988, 114990, 114992, 115349'],
+          ['115350, 115351, 115401, 115402, 115403'],
+          ['115404, 115405, 115406, 115506, 115507']
+        ]
+      },
+      {
+        title: 'Parts and Tools Required',
+        type: 'table',
+        headers: ['Item', 'Part Number / Specification', 'Quantity'],
+        rows: [
+          ['Screw mounting kit', 'P/N 4990913', '1 kit total, consisting of:'],
+          ['8-32x1/4" 100° countersink Phillips head screws', 'P/N 0110091', 'Qty 8 per kit'],
+          ['Screw torque labels', 'P/N 1181431', 'Qty 2 per kit'],
+          ['Phillips head torque screwdriver', '16 in-lbs setting', '1'],
+          ['Loc-tite', '#242', '1']
+        ]
+      },
+      {
+        title: 'Replacement Procedure',
+        type: 'steps',
+        steps: [
+          'Disconnect and lock-out/tag-out facility power from the PDU.',
+          'Remove the front panel of the PDU.',
+          'Remove the twist-lock receptacle panel at the bottom right of the PDU front and set aside.',
+          'Disconnect and remove the power supply assembly from the PDU.',
+          'Disassemble the power supply mounting brackets and remove the power supplies from the mounting brackets. DISCARD the existing screws (8-32x3/8") used to mount the power supplies to the mounting brackets.',
+          'Mount the power supplies to the two mounting brackets using a small drop of Loc-tite #242 on the supplied 8-32x1/4" screws. Torque to 16 in-lbs.',
+          'CRITICAL: PS1 (labeled "PS1") must be mounted to the UPPER mounting bracket (P/N 0590905). PS2 (labeled "PS2") must be mounted to the LOWER bracket (P/N 0590902).',
+          '⚠️ CAUTION: Do NOT use the 8-32x3/8" screws to mount the power supplies to the mounting bracket — only use the new 8-32x1/4" screws.',
+          'Apply one screw torque label to the bottom center of each of the two power supply mounting brackets.',
+          'Re-assemble the mounting brackets together using a small drop of Loc-tite #242 on the existing 8-32x3/8" screws (these are the bracket-to-bracket screws, NOT the PS-to-bracket screws). Torque to 16 in-lbs.',
+          'Install the power supply assembly to the PDU and secure using the existing screws.',
+          'Re-connect the power connections to the power supplies.',
+          'Install the front panel to the PDU.',
+          'Return the PDU to service.'
+        ]
+      }
+    ],
+    tags: ['TEAL', 'PDU', 'XGD', 'power supply', '48V', 'PS1', 'PS2', 'mounting screw', 'TSB', '102109-1', 'short circuit', 'ground', 'Loc-tite'],
+    source: 'TEAL Electronics Corporation — Technical Service Bulletin 102109-1 (10/21/2009)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_009',
+    title: 'GE MR 450w Body Coil XRF — BANDPASS Design DC Resistance Reference',
+    system: 'GE MRI',
+    category: 'RF System / Body Coil',
+    diagnosticPath: 'N/A — Reference measurements for bench testing and fault isolation',
+    purpose: 'DC resistance measurement reference for the GE MR450w XRF Body Coil and associated components. The XRF coil uses a BANDPASS design intended to improve image shading and integrate dynamic disable into the coil. Use these measurements to verify coil and hybrid splitter integrity during troubleshooting.',
+    componentsTested: ['XRF Body Coil (J2, J3 RF ports)', 'Body Hybrid Splitter (J7, J12, J13, J14)', 'Body Hybrid Splitter Dummy Load', 'Dynamic Disable lines (J6, J7 on coil)'],
+    sections: [
+      {
+        title: 'XRF Coil Design Notes',
+        type: 'note',
+        content: 'The XRF coil uses a BANDPASS design. This design was intended to improve image shading concerns and was originally intended to allow forgoing dynamic disable hardware. Dynamic disable was ultimately still required but the design allowed it to be integrated into the coil. RF Engineer responsible for XRF Coil design: Susan Mathew.'
+      },
+      {
+        title: 'DC Resistance Measurements — Expected Values',
+        type: 'table',
+        headers: ['Component', 'Test Point', 'Expected Measurement', 'Notes'],
+        rows: [
+          ['Body Hybrid Splitter Dummy Load', 'J14 (BNC, left): center pin to shield', '51 ohms', 'Normal'],
+          ['Body Hybrid Splitter Dummy Load', 'J12 (N connection, center): center pin to shield', 'Short circuit (DC)', 'Normal — internally a λ/4-wave shorted stub in parallel with 50Ω load; requires vector Z meter or network analyzer to properly measure impedance of this port'],
+          ['Body Hybrid Splitter Dummy Load', 'J13 (BNC, right): center pin to shield', '51 ohms', 'Normal'],
+          ['Body Hybrid Splitter — Dummy Load overall', 'DC short to ground', 'Dead DC short', 'Normal — because λ/4-wave shorted stub is attached in parallel with load resistor internally'],
+          ['Body Hybrid Splitter — Direct Drive line (DD Bias) J7', 'Black to center pin, red to shield', '0.407V', 'Normal'],
+          ['Body Hybrid Splitter — Direct Drive line (DD Bias) J7', 'Red to center pin, black to shield', 'Open circuit', 'Normal'],
+          ['Body Hybrid Splitter — Reflected power ports to UPM', 'Center pin to shield', '~51 ohms (DVM)', 'Normal'],
+          ['XRF Body Coil — J2 (left RF port)', 'Center pin to shield', 'Short circuit', 'Normal'],
+          ['XRF Body Coil — J3 (right RF port)', 'Center pin to shield', 'Short circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J2 shield to J3 shield', 'Open circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J2 center pin to J3 shield', 'Open circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J3 center pin to J2 shield', 'Open circuit', 'Normal'],
+          ['Dynamic Disable lines J6 & J7 (same cable)', 'Black to center pin, red to shield', '0.418V', 'Normal'],
+          ['Dynamic Disable lines J6 & J7 (same cable)', 'Red to center pin, black to shield', 'Open circuit', 'Normal'],
+          ['Dynamic Disable lines J6 to J7', 'Any part of J6 to any part of J7', 'Open circuit (always)', 'Normal — any continuity between J6 and J7 indicates a fault']
+        ]
+      }
+    ],
+    tags: ['XRF', 'body coil', 'BANDPASS', '450w', 'RF', 'DC resistance', 'hybrid splitter', 'dynamic disable', 'DD', 'coil measurements', 'bench test'],
+    source: 'GE MR 450w Body Coil XRF Design Notes (450_body_coil_XRF_Coil_is_BANDPASS.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_010',
+    title: 'GE MR 450w / 750w — Cooling System Configuration & Alarm Reference',
+    system: 'GE MRI',
+    category: 'Cooling System',
+    diagnosticPath: 'N/A — Configuration reference. Config file: /w/config/cooling.cfg.5.2.1',
+    purpose: 'Reference guide for the cooling system configuration, setpoints, PLC alarm parameters, and scan-inhibiting alarms in GE Discovery MR450w and MR750w systems. Use when responding to cooling alarms, adjusting setpoints, or verifying alarm limits during commissioning or PM.',
+    componentsTested: ['Gradient Coil Cooling Loop', 'Power Electronics Cooling Loop (XGD)', 'PGR Cabinet Cooling', 'Chilled Air Supply', 'Cryo-Cooler Compressor Cooling'],
+    sections: [
+      {
+        title: 'Configuration File Location',
+        type: 'note',
+        content: 'Cooling cabinet configuration file is located at: /w/config/cooling.cfg.5.2.1 — Setpoint parameters vary between MR systems. The power electronics supply temperature (formerly xgd_coolant_temp_setpoint) is derived from the XGD air temperature and humidity. The minimum temperature is 30°C.'
+      },
+      {
+        title: 'Setpoint Parameters',
+        type: 'table',
+        headers: ['Parameter Name', 'Description'],
+        rows: [
+          ['grad_coolant_pump_freq', 'Pump frequency for Gradient Coil Loop'],
+          ['grad_coolant_temp_setpoint', 'Coolant temperature delivered to Gradient Coil'],
+          ['pgr_coolant_pump_freq', 'Pump frequency for PGR Cabinet'],
+          ['rf_air_blower_freq', 'Blower frequency for Chilled Air Supply'],
+          ['rf_air_temp_setpoint', 'Coolant temperature for Chilled Air Supply'],
+          ['xgd_coolant_temp_setpoint', 'Power electronics supply temperature (derived from XGD air temp + humidity; minimum 30°C)']
+        ]
+      },
+      {
+        title: 'PLC Alarm Parameters',
+        type: 'table',
+        headers: ['Parameter Name', 'Description'],
+        rows: [
+          ['cust_coolant_temp_low_limit', 'Lower limit for facility supply temperature'],
+          ['cust_coolant_temp_high_limit', 'Upper limit for facility supply temperature'],
+          ['cust_coolant_press_low_limit', 'Lower limit for facility supply pressure'],
+          ['cust_coolant_press_high_limit', 'Upper limit for facility supply pressure'],
+          ['cust_coolant_press_diff_low_limit', 'Minimum pressure differential between facility supply and return pressures'],
+          ['cust_coolant_return_pr_low_limit', 'Lower limit for facility return pressure'],
+          ['cust_coolant_return_pr_high_limit', 'Upper limit for facility return pressure'],
+          ['grad_coolant_temp_low_limit', 'Lower limit for gradient coil supply temperature'],
+          ['grad_coolant_temp_high_limit', 'Upper limit for gradient coil supply temperature'],
+          ['grad_coolant_press_low_limit', 'Lower limit for gradient coil supply pressure'],
+          ['grad_coolant_press_high_limit', 'Upper limit for gradient coil supply pressure'],
+          ['grad_coolant_flowrate_low_limit', 'Lower limit for gradient coil flow rate'],
+          ['grad_coolant_flowrate_high_limit', 'Upper limit for gradient coil flow rate'],
+          ['grad_coolant_resist_low_alarm', 'Alarm for coolant resistivity on gradient coil loop'],
+          ['grad_coolant_resist_low_warning', 'Warning for coolant resistivity on gradient coil loop (warning only, not alarm)'],
+          ['xgd_coolant_temp_low_limit', 'Lower limit for power electronics supply temperature'],
+          ['xgd_coolant_temp_high_limit', 'Upper limit for power electronics supply temperature'],
+          ['xgd_coolant_press_low_limit', 'Lower limit for power electronics supply pressure'],
+          ['xgd_coolant_press_high_limit', 'Upper limit for power electronics supply pressure'],
+          ['xgd_coolant_flowrate_low_limit', 'Lower limit for power electronics flow rate'],
+          ['xgd_coolant_flowrate_high_limit', 'Upper limit for power electronics flow rate'],
+          ['rf_air_temp_low_limit', 'Lower limit for chilled air temperature'],
+          ['rf_air_temp_high_limit', 'Upper limit for chilled air temperature'],
+          ['rf_air_velocity_low_limit', 'Lower limit flow rate for chilled air'],
+          ['rf_air_velocity_high_limit', 'Upper limit flow rate for chilled air'],
+          ['cryo_coolant_flowrate_low_limit', 'Lower limit for cryo-cooler compressor flow rate'],
+          ['cryo_coolant_flowrate_high_limit', 'Upper limit for cryo-cooler compressor flow rate']
+        ]
+      },
+      {
+        title: 'Scan-Inhibiting Alarms — These Stop or Prevent Scanning',
+        type: 'table',
+        headers: ['Alarm Name', 'Type'],
+        rows: [
+          ['Customer-Supplied Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Customer-Supplied Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Pressure High Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Flow Rate Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Resistivity Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Reservoir Low Alarm', 'IMMEDIATE STOP — stops scan in progress'],
+          ['Power Electronics Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Pressure High Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Flow Rate Low Alarm', 'Inhibits new scans']
+        ]
+      }
+    ],
+    tags: ['cooling', 'coolant', 'PLC', 'alarm', 'setpoint', '450w', '750w', 'gradient cooling', 'XGD cooling', 'chilled air', 'cryo cooler', 'resistivity', 'flow rate', 'temperature', 'pressure', 'cooling.cfg'],
+    source: 'GE MR 450w/750w Cooling System Configuration Reference (450w_750w_cooling_config.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
