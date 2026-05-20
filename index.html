@@ -2267,7 +2267,7 @@ const GH={
   branch:'main',
   manualsRoot:'Manuals',
   // GitHub Pages base — files served with correct MIME types (htm=HTML, pdf=inline)
-  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App',
+  pages:'https://mikejackson-stack.github.io/AMT-Imaging-Service-App/Manuals',
   // Optional: GitHub Personal Access Token (read:contents only) to raise API limit
   // Set via: localStorage.setItem('amt_gh_token', 'ghp_yourtoken')
   get token(){ return localStorage.getItem('amt_gh_token')||''; }
@@ -3960,11 +3960,11 @@ function openGHSettings(){
   openModal('ghSettingsModal');
 }
 
+async 
 
 
 
-
-
+async 
 
 document.addEventListener('DOMContentLoaded',()=>{
   // Set defaults
@@ -4389,7 +4389,7 @@ async function callAI(messages, maxTokens){
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','content-type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:maxTokens,messages})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:maxTokens,messages})
     });
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`Claude HTTP ${resp.status}`);}
     const data = await resp.json();
@@ -4486,12 +4486,22 @@ function previewJobPhoto(input){
 let _importFileText = '';
 let _importIsImage = false;
 let _importImageB64 = '';
+let _importQueue = []; // [{name,size,ext,status,text,isImage,imageB64,file}]
 
 function openImportDocModal(){
   _importFileText = '';
+  _importIsImage = false;
+  _importImageB64 = '';
+  _importQueue = [];
   document.getElementById('importFileInput').value = '';
-  document.getElementById('importFileName').textContent = '';
-  document.getElementById('importDropArea').textContent = '📄 Tap to choose a file (.txt .pdf .docx .html .jpg .png …)';
+  const dropArea = document.getElementById('importDropArea');
+  if(dropArea) dropArea.textContent = '📂 Tap to choose files (single or multiple)';
+  const fn = document.getElementById('importFileName');
+  if(fn) fn.textContent = '';
+  document.getElementById('importQueueList').style.display = 'none';
+  document.getElementById('importQueueList').innerHTML = '';
+  document.getElementById('importProgressWrap').style.display = 'none';
+  document.getElementById('importProgressBar').style.width = '0%';
   document.getElementById('importParseBtn').style.display = 'none';
   document.getElementById('importResults').style.display = 'none';
   document.getElementById('importResultsList').innerHTML = '';
@@ -4501,68 +4511,194 @@ function openImportDocModal(){
 }
 
 function importFileSelected(input){
-  const file = input.files[0]; if(!file) return;
-  document.getElementById('importFileName').textContent = file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)';
-  document.getElementById('importDropArea').textContent = '📄 ' + file.name;
+  const files = [...input.files];
+  if(!files.length) return;
+  _importQueue = files.map(f => ({
+    name: f.name,
+    size: f.size,
+    ext: f.name.split('.').pop().toLowerCase(),
+    status: 'pending',
+    text: '',
+    isImage: false,
+    imageB64: '',
+    file: f
+  }));
+  renderImportQueue();
   document.getElementById('importResults').style.display = 'none';
   document.getElementById('importConfirmBtn').style.display = 'none';
   document.getElementById('importParseBtn').style.display = 'none';
-  document.getElementById('importStatus').textContent = 'Reading file…';
-  _importFileText = ''; _importIsImage = false; _importImageB64 = '';
-  const ext = file.name.split('.').pop().toLowerCase();
+  document.getElementById('importStatus').textContent = `${files.length} file${files.length>1?'s':''} selected — processing…`;
+  processImportQueue();
+}
 
-  // Images → AI OCR via vision API
-  if(['jpg','jpeg','png','gif','webp','bmp'].includes(ext)){
-    const ir = new FileReader();
-    ir.onload = ev => {
-      _importImageB64 = ev.target.result;
-      _importIsImage = true;
-      document.getElementById('importStatus').innerHTML = '🖼️ <strong>Image / scanned document detected.</strong> AI will OCR and extract knowledge. Click Parse with AI below.';
-      document.getElementById('importParseBtn').style.display = 'block';
-    };
-    ir.readAsDataURL(file);
-    return;
+function renderImportQueue(){
+  const el = document.getElementById('importQueueList');
+  if(!_importQueue.length){ el.style.display='none'; return; }
+  el.style.display = 'block';
+  el.innerHTML = _importQueue.map((item) => {
+    let bg='background:var(--gray2);color:var(--text2)', badge='⏳';
+    if(item.status==='ok')         { bg='background:#d1fae5;color:#065f46'; badge='✓'; }
+    else if(item.status==='ocr')   { bg='background:#dbeafe;color:#1e40af'; badge='OCR'; }
+    else if(item.status==='error') { bg='background:#fee2e2;color:#991b1b'; badge='✗'; }
+    else if(item.status==='processing'){ bg='background:#fef9c3;color:#854d0e'; badge='…'; }
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--gray2);font-size:.78rem">
+      <span style="display:inline-block;padding:1px 6px;border-radius:99px;font-size:.7rem;font-weight:700;${bg}">${badge}</span>
+      <span style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</span>
+      <span style="color:var(--text2);font-size:.7rem">${(item.size/1024).toFixed(1)}KB</span>
+    </div>`;
+  }).join('');
+}
+
+function updateQueueItem(idx, status, extra){
+  if(!_importQueue[idx]) return;
+  _importQueue[idx].status = status;
+  if(extra) Object.assign(_importQueue[idx], extra);
+  renderImportQueue();
+}
+
+async function loadScript(src){
+  if(document.querySelector(`script[src="${src}"]`)) return;
+  return new Promise((res,rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+}
+
+async function extractPdfTextPDFJS(arrayBuf){
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+  const lib = window['pdfjs-dist/build/pdf'];
+  if(lib && !lib.GlobalWorkerOptions.workerSrc)
+    lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf = await lib.getDocument({data: new Uint8Array(arrayBuf)}).promise;
+  let out = '';
+  for(let p = 1; p <= pdf.numPages; p++){
+    const page = await pdf.getPage(p);
+    const content = await page.getTextContent();
+    out += content.items.map(i=>i.str).join(' ') + '\n';
   }
+  return out.replace(/\s+/g,' ').trim();
+}
 
-  // DOCX → extract XML text nodes
-  if(ext === 'docx'){
-    const ar = new FileReader();
-    ar.onload = ev => {
-      _importFileText = extractDocxText(ev.target.result);
-      if(_importFileText.length < 20){
-        document.getElementById('importStatus').textContent = '⚠️ Could not read .docx — try File → Save As .txt in Word first.';
-        return;
-      }
-      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars from Word document`;
-      document.getElementById('importParseBtn').style.display = 'block';
-    };
-    ar.readAsArrayBuffer(file);
-    return;
+async function renderPdfPageToCanvas(page){
+  const vp = page.getViewport({scale:1.5});
+  const canvas = document.createElement('canvas');
+  canvas.width = vp.width; canvas.height = vp.height;
+  await page.render({canvasContext:canvas.getContext('2d'),viewport:vp}).promise;
+  return canvas;
+}
+
+async function ocrPdfWithTesseract(arrayBuf){
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js');
+  await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js');
+  const lib = window['pdfjs-dist/build/pdf'];
+  if(lib && !lib.GlobalWorkerOptions.workerSrc)
+    lib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf = await lib.getDocument({data: new Uint8Array(arrayBuf)}).promise;
+  const worker = await Tesseract.createWorker('eng');
+  let out = '';
+  const maxPages = Math.min(pdf.numPages, 8);
+  for(let p = 1; p <= maxPages; p++){
+    const page = await pdf.getPage(p);
+    const canvas = await renderPdfPageToCanvas(page);
+    const {data:{text}} = await worker.recognize(canvas);
+    out += text + '\n';
   }
+  await worker.terminate();
+  return out.replace(/\s+/g,' ').trim();
+}
 
-  const r = new FileReader();
-  r.onload = ev => {
-    let raw = ev.target.result;
-    if(ext === 'pdf' || raw.startsWith('%PDF')){
-      _importFileText = extractPdfText(raw);
-      if(_importFileText.length < 50){
-        document.getElementById('importStatus').innerHTML =
-          '⚠️ <strong>Scanned/image PDF</strong> — no text found. Save as .jpg/.png and re-upload for AI OCR, or use an .html version.';
-        return;
-      }
-      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars extracted from PDF`;
-    } else if(ext === 'html' || ext === 'htm'){
-      _importFileText = stripHtmlForImport(raw);
-      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} chars (HTML stripped)`;
-    } else {
-      _importFileText = raw;
-      if(_importFileText.length < 10){ document.getElementById('importStatus').textContent = '⚠️ File appears empty.'; return; }
-      document.getElementById('importStatus').textContent = `Ready — ${_importFileText.length.toLocaleString()} characters`;
+function autoCategorize(text){
+  const t = text.toLowerCase();
+  if(/siemens|avanto|aera|magnetom|syngo/.test(t)) return 'Siemens';
+  if(/philips|intera|achieva|ingenia/.test(t)) return 'Philips';
+  if(/stellant|medrad|injector/.test(t)) return 'Injector';
+  if(/\bct\b|computed tomography|lightspeed|revolution/.test(t)) return 'CT';
+  if(/\bge\b|signa|discovery|optima|hdxt/.test(t)) return 'GE';
+  return 'General';
+}
+
+// Silently scan raw text for error code patterns and add new ones to FULL_ERROR_DB
+function autoExtractAndAddErrorCodes(texts){
+  // Matches patterns like MGD-BOOT, MCP-820, TABLE-DOCK, SG-001, PHPS-VOLT
+  const re = /\b([A-Z]{2,8}-[A-Z0-9]{2,10}(?:-[A-Z0-9]{1,8})?)\b/g;
+  const added = [];
+  for(const text of texts){
+    if(!text) continue;
+    re.lastIndex = 0;
+    let m;
+    while((m = re.exec(text)) !== null){
+      const code = m[1];
+      // Skip generic UPPER-CASE phrases that aren't error codes (too short, no context)
+      if(code.length < 4) continue;
+      if(FULL_ERROR_DB.find(x => x.code === code)) continue;
+      // Grab surrounding context (~200 chars) for brand detection
+      const ctx = text.substring(Math.max(0, m.index-150), m.index+150);
+      const brand = autoCategorize(ctx);
+      // Look for a short description near the code
+      const descMatch = text.substring(m.index, m.index+200).match(/[-–:]\s*([^\n.]{10,100})/);
+      const desc = descMatch ? descMatch[1].trim() : '(auto-extracted from import)';
+      FULL_ERROR_DB.push({code, brand, desc, manual:''});
+      added.push(code);
     }
-    document.getElementById('importParseBtn').style.display = 'block';
-  };
-  r.onerror = () => { document.getElementById('importStatus').textContent = '⚠️ Could not read file'; };
-  r.readAsText(file);
+  }
+  return added;
+}
+
+async function processImportQueue(){
+  const total = _importQueue.length;
+  const wrap = document.getElementById('importProgressWrap');
+  const bar  = document.getElementById('importProgressBar');
+  const lbl  = document.getElementById('importProgressLabel');
+  const cnt  = document.getElementById('importProgressCount');
+  wrap.style.display = 'block';
+
+  for(let i = 0; i < total; i++){
+    const item = _importQueue[i];
+    updateQueueItem(i, 'processing');
+    lbl.textContent = `Processing ${item.name}…`;
+    cnt.textContent = `${i+1} / ${total}`;
+    bar.style.width = `${Math.round((i/total)*100)}%`;
+    try {
+      if(['jpg','jpeg','png','gif','webp','bmp'].includes(item.ext)){
+        await new Promise(res => {
+          const ir = new FileReader();
+          ir.onload = ev => { item.imageB64 = ev.target.result; item.isImage = true; res(); };
+          ir.readAsDataURL(item.file);
+        });
+        updateQueueItem(i, 'ok');
+      } else if(item.ext === 'docx'){
+        const buf = await item.file.arrayBuffer();
+        item.text = extractDocxText(buf);
+        updateQueueItem(i, item.text.length > 20 ? 'ok' : 'error');
+      } else if(item.ext === 'pdf'){
+        const buf = await item.file.arrayBuffer();
+        let text = '';
+        try { text = await extractPdfTextPDFJS(buf); } catch(e){ text = ''; }
+        if(text.replace(/\s/g,'').length < 80){
+          updateQueueItem(i, 'ocr');
+          lbl.textContent = `OCR scanning ${item.name}…`;
+          try { text = await ocrPdfWithTesseract(buf); } catch(e){ text = ''; }
+        }
+        item.text = text;
+        updateQueueItem(i, item.text.length > 20 ? 'ok' : 'error');
+      } else if(item.ext === 'html' || item.ext === 'htm'){
+        const raw = await item.file.text();
+        item.text = stripHtmlForImport(raw);
+        updateQueueItem(i, item.text.length > 20 ? 'ok' : 'error');
+      } else {
+        item.text = await item.file.text();
+        updateQueueItem(i, item.text.length > 10 ? 'ok' : 'error');
+      }
+    } catch(e){ updateQueueItem(i, 'error'); }
+  }
+
+  bar.style.width = '100%';
+  cnt.textContent = `${total} / ${total}`;
+  const okCount = _importQueue.filter(x => x.status==='ok' || x.status==='ocr').length;
+  lbl.textContent = `Done — ${okCount} of ${total} ready`;
+  document.getElementById('importStatus').textContent = `${okCount} file${okCount!==1?'s':''} ready to parse`;
+  if(okCount > 0) document.getElementById('importParseBtn').style.display = 'block';
 }
 
 function stripHtmlForImport(html){
@@ -4599,38 +4735,78 @@ function extractDocxText(buf){
   return str.replace(/[^\x20-\x7E\n]/g,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim().substring(0,18000);
 }
 
-async function importParseWithClaude(){
+async function importParseFiles(){
   const target = document.getElementById('importTarget').value;
   const prov = getAIProvider();
-  document.getElementById('importStatus').textContent = `⏳ ${prov==='grok'?'Grok':'Claude'} is parsing…`;
   const parseBtn = document.getElementById('importParseBtn').querySelector('button');
   if(parseBtn) parseBtn.disabled = true;
-  try {
-    let raw;
-    if(_importIsImage && _importImageB64){
-      const ocrPrompt = target === 'kb'
-        ? 'This is a scanned service document. Extract repair KB entries as JSON array only: [{"title":"...","cat":"GE or Siemens or Philips or CT or General","model":"...","error":"...","problem":"...","solution":"...","parts":"..."}].'
-        : 'This is a scanned service document. Extract error codes as JSON array only: [{"code":"...","brand":"GE or Siemens or Philips or Other","desc":"..."}].';
-      raw = await callAIWithImage(_importImageB64, ocrPrompt);
-    } else {
-      const text = _importFileText.substring(0, 12000);
-      const promptText = target === 'kb'
-        ? `Extract repair knowledge base entries from this field service document. Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
-        : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
-      raw = await callAI([{role:'user',content:promptText}], 2048);
-    }
-    const match = raw.trim().match(/\[[\s\S]*\]/);
-    if(!match) throw new Error('No JSON array found in response');
-    const entries = JSON.parse(match[0]);
-    if(!entries.length) throw new Error('No entries extracted from document');
-    importShowResults(entries, target);
-    document.getElementById('importStatus').textContent = `Found ${entries.length} entr${entries.length===1?'y':'ies'} — review and select below`;
-  } catch(err){
-    document.getElementById('importStatus').textContent = '⚠️ ' + err.message;
-  } finally {
-    if(parseBtn) parseBtn.disabled = false;
+  document.getElementById('importResults').style.display = 'none';
+  document.getElementById('importConfirmBtn').style.display = 'none';
+  document.getElementById('importResultsList').innerHTML = '';
+
+  const allEntries = [];
+  const bar  = document.getElementById('importProgressBar');
+  const lbl  = document.getElementById('importProgressLabel');
+  const cnt  = document.getElementById('importProgressCount');
+  document.getElementById('importProgressWrap').style.display = 'block';
+
+  let readyItems = _importQueue.filter(x => x.status==='ok' || x.status==='ocr' || x.isImage);
+  if(!readyItems.length){
+    // fallback: legacy single-file mode
+    readyItems = [{name:'file', ext:'txt', status:'ok', text:_importFileText, isImage:_importIsImage, imageB64:_importImageB64}];
   }
+
+  for(let i = 0; i < readyItems.length; i++){
+    const item = readyItems[i];
+    lbl.textContent = `Parsing ${item.name||'file'}…`;
+    cnt.textContent = `${i+1} / ${readyItems.length}`;
+    bar.style.width = `${Math.round((i/readyItems.length)*100)}%`;
+    document.getElementById('importStatus').textContent = `⏳ ${prov==='grok'?'Grok':'Claude'} parsing ${item.name||'file'}…`;
+    try {
+      let raw;
+      if(item.isImage && item.imageB64){
+        const ocrPrompt = target === 'kb'
+          ? 'This is a scanned service document. Extract repair KB entries as JSON array only: [{"title":"...","cat":"GE or Siemens or Philips or CT or General","model":"...","error":"...","problem":"...","solution":"...","parts":"..."}].'
+          : 'This is a scanned service document. Extract error codes as JSON array only: [{"code":"...","brand":"GE or Siemens or Philips or Other","desc":"..."}].';
+        raw = await callAIWithImage(item.imageB64, ocrPrompt);
+      } else {
+        const cat = autoCategorize(item.text||'');
+        const text = (item.text||'').substring(0, 12000);
+        const promptText = target === 'kb'
+          ? `Extract repair knowledge base entries from this field service document (likely ${cat} equipment). Return a JSON array only, no other text:\n[{"title":"short title","cat":"GE or Siemens or Philips or CT or General","model":"scanner model if known","error":"error code if any","problem":"problem description","solution":"fix/solution","parts":"parts used if any"}]\n\nDocument:\n${text}`
+          : `Extract error codes from this field service document. Return a JSON array only, no other text:\n[{"code":"error code","brand":"GE or Siemens or Philips or Other","desc":"description of what the error means"}]\n\nDocument:\n${text}`;
+        raw = await callAI([{role:'user',content:promptText}], 2048);
+      }
+      const match = raw.trim().match(/\[[\s\S]*\]/);
+      if(match){
+        const entries = JSON.parse(match[0]);
+        entries.forEach(e => { e._source = item.name||''; });
+        allEntries.push(...entries);
+      }
+    } catch(e){ /* skip failed item */ }
+  }
+
+  bar.style.width = '100%';
+  cnt.textContent = `${readyItems.length} / ${readyItems.length}`;
+  if(parseBtn) parseBtn.disabled = false;
+
+  // Always run silent regex error code scan over all raw texts
+  const rawTexts = readyItems.map(x => x.text||'').filter(Boolean);
+  const autoErrCodes = autoExtractAndAddErrorCodes(rawTexts);
+  if(autoErrCodes.length) renderErrCodeList();
+
+  if(!allEntries.length){
+    let msg = '⚠️ No entries extracted — check AI key or try a different file.';
+    if(autoErrCodes.length) msg = `⚠️ AI found nothing, but auto-detected ${autoErrCodes.length} error code(s) added to Error DB.`;
+    document.getElementById('importStatus').textContent = msg;
+    return;
+  }
+  importShowResults(allEntries, target);
+  let statusMsg = `Found ${allEntries.length} entr${allEntries.length===1?'y':'ies'} — review and select below`;
+  if(autoErrCodes.length) statusMsg += ` · ${autoErrCodes.length} error code(s) auto-added to Error DB`;
+  document.getElementById('importStatus').textContent = statusMsg;
 }
+const importParseWithClaude = importParseFiles;
 
 async function callAIWithImage(dataUrl, msgText){
   const prov = getAIProvider();
@@ -4643,7 +4819,7 @@ async function callAIWithImage(dataUrl, msgText){
     const resp = await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'x-api-key':key.trim(),'anthropic-version':'2023-06-01','Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:2048,
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2048,
         messages:[{role:'user',content:[
           {type:'image',source:{type:'base64',media_type:mimeType,data:b64}},
           {type:'text',text:msgText}
@@ -4672,15 +4848,20 @@ async function callAIWithImage(dataUrl, msgText){
   }
 }
 
+function importSelectAll(val){
+  document.querySelectorAll('#importResultsList input[type=checkbox]').forEach(cb => cb.checked = val);
+}
+
 function importShowResults(entries, target){
   const list = document.getElementById('importResultsList');
   list.innerHTML = entries.map((e,i) => {
+    const srcBadge = e._source ? `<span style="font-size:.65rem;color:var(--text2);opacity:.75;margin-left:4px">[${e._source}]</span>` : '';
     const summary = target === 'kb'
-      ? `<strong>${e.title||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.cat||'General'}</span>${e.model?'<span style="font-size:.75rem;color:var(--text2);margin-left:6px">'+e.model+'</span>':''}<div style="font-size:.78rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,120)}</div>`
-      : `<strong style="color:var(--red)">${e.code||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.brand||'Other'}</span><div style="font-size:.78rem;color:var(--text2);margin-top:2px">${(e.desc||'').substring(0,120)}</div>`;
+      ? `<strong>${e.title||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.cat||'General'}</span>${e.model?'<span style="font-size:.75rem;color:var(--text2);margin-left:6px">'+e.model+'</span>':''}${srcBadge}<div style="font-size:.78rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,120)}</div>`
+      : `<strong style="color:var(--red)">${e.code||'—'}</strong><span class="badge bc" style="margin-left:6px;font-size:.62rem">${e.brand||'Other'}</span>${srcBadge}<div style="font-size:.78rem;color:var(--text2);margin-top:2px">${(e.desc||'').substring(0,120)}</div>`;
     return `<label style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--gray2);cursor:pointer">
       <input type="checkbox" checked data-idx="${i}" style="margin-top:3px;flex-shrink:0">
-      <div>${summary}</div>
+      <div style="flex:1;min-width:0">${summary}</div>
     </label>`;
   }).join('');
   list.dataset.target = target;
@@ -4695,33 +4876,40 @@ function importConfirmSelected(){
   const entries = JSON.parse(list.dataset.entries||'[]');
   const checked = [...list.querySelectorAll('input[type=checkbox]:checked')].map(cb=>parseInt(cb.dataset.idx));
   const selected = checked.map(i=>entries[i]).filter(Boolean);
-  if(!selected.length){ showToast('No entries selected'); return; }
+  if(!selected.length){ showToast('⚠️ No entries selected — check at least one item'); return; }
+
+  let added = 0, skipped = 0;
 
   if(target === 'kb'){
     selected.forEach(e => {
+      const title = e.title||'Imported Entry';
+      if(kbEntries.find(x => x.title === title)){ skipped++; return; }
       kbEntries.unshift({
         id:'kb_'+Date.now()+'_'+Math.random().toString(36).slice(2,6),
-        title:e.title||'Imported Entry', cat:e.cat||'General',
+        title, cat:e.cat||'General',
         model:e.model||'', error:e.error||'',
         problem:e.problem||'', solution:e.solution||'',
         parts:e.parts||'', tags:[], date:new Date().toISOString().slice(0,10),
         created:new Date().toISOString()
       });
+      added++;
     });
     saveKBData();
     renderKBEntries();
   } else {
     selected.forEach(e => {
-      if(!FULL_ERROR_DB.find(x=>x.code===e.code)){
-        FULL_ERROR_DB.push({code:e.code||'CUSTOM',brand:e.brand||'Other',desc:e.desc||'',manual:''});
-      }
+      if(FULL_ERROR_DB.find(x=>x.code===e.code)){ skipped++; return; }
+      FULL_ERROR_DB.push({code:e.code||'CUSTOM',brand:e.brand||'Other',desc:e.desc||'',manual:''});
+      added++;
     });
     renderErrCodeList();
-    showToast(`✅ ${selected.length} error code(s) added (session only — will reset on reload)`);
   }
 
   closeModal('importDocModal');
-  showToast(`✅ ${selected.length} ${target==='kb'?'KB entr':'error code'}${selected.length>1?(target==='kb'?'ies':'s'):(target==='kb'?'y':'')} added`);
+  const noun = target==='kb' ? (added===1?'KB entry':'KB entries') : (added===1?'error code':'error codes');
+  let msg = added ? `✅ ${added} ${noun} added` : '⚠️ Nothing new added';
+  if(skipped) msg += ` · ${skipped} duplicate${skipped!==1?'s':''} skipped`;
+  showToast(msg, added ? 3500 : 5000);
   if(target==='kb') setKBTab('kb'); else setKBTab('errcodes');
 }
 
@@ -4761,17 +4949,29 @@ function formatAIText(text){
 
 <!-- Import / KB Entry Modal -->
 <div class="modal-overlay" id="importDocModal">
-  <div class="modal" style="max-width:560px">
-    <div class="modal-header"><h3>📥 Import File to Knowledge Base</h3><button class="modal-close" onclick="closeModal('importDocModal')">✕</button></div>
-    <div class="modal-body">
-      <div class="alert alert-info" style="margin-bottom:12px;font-size:.82rem">Supported: <strong>.txt .csv .pdf .docx .html .md .json .rtf .eml .xml</strong> and images (<strong>.jpg .png .gif .webp</strong> — AI will OCR scanned docs).</div>
-      <div class="form-group">
-        <label class="form-label">File</label>
-        <label for="importFileInput" class="photo-upload-area" id="importDropArea" style="cursor:pointer;display:block;user-select:none">📄 Tap to choose a file (.txt .pdf .docx .html .jpg .png …)</label>
-        <input type="file" id="importFileInput" accept=".txt,.csv,.pdf,.md,.log,.htm,.html,.docx,.rtf,.xml,.json,.eml,.jpg,.jpeg,.png,.gif,.webp" style="display:none" onchange="importFileSelected(this)">
-        <div id="importFileName" style="font-size:.78rem;color:var(--text2);margin-top:4px"></div>
+  <div class="modal" style="max-width:580px">
+    <div class="modal-header"><h3>📥 Bulk Import to Knowledge Base</h3><button class="modal-close" onclick="closeModal('importDocModal')">✕</button></div>
+    <div class="modal-body" style="max-height:72vh;overflow-y:auto">
+      <div class="alert alert-info" style="margin-bottom:10px;font-size:.8rem">
+        Select <strong>one or multiple files</strong>. PDFs: text extracted automatically; scanned PDFs: Tesseract OCR. Supported: <strong>.pdf .htm .html .txt .docx .csv .md .jpg .png .gif .webp</strong>
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom:8px">
+        <label for="importFileInput" class="photo-upload-area" id="importDropArea" style="cursor:pointer;display:block;user-select:none;text-align:center;padding:14px">
+          📂 Tap to choose files (single or multiple)
+        </label>
+        <input type="file" id="importFileInput" multiple accept=".txt,.csv,.pdf,.md,.log,.htm,.html,.docx,.rtf,.xml,.json,.eml,.jpg,.jpeg,.png,.gif,.webp" style="display:none" onchange="importFileSelected(this)">
+      </div>
+      <div id="importQueueList" style="display:none;margin-bottom:8px"></div>
+      <div id="importProgressWrap" style="display:none;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;font-size:.74rem;color:var(--text2);margin-bottom:4px">
+          <span id="importProgressLabel">Processing…</span>
+          <span id="importProgressCount"></span>
+        </div>
+        <div style="background:var(--gray2);border-radius:99px;height:6px;overflow:hidden">
+          <div id="importProgressBar" style="height:100%;background:var(--blue2);border-radius:99px;width:0%;transition:width .3s"></div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:10px">
         <label class="form-label">Import as</label>
         <select class="form-control" id="importTarget">
           <option value="kb">Knowledge Base entries</option>
@@ -4779,15 +4979,21 @@ function formatAIText(text){
         </select>
       </div>
       <div id="importParseBtn" style="display:none;margin-bottom:12px">
-        <button class="btn btn-primary" onclick="importParseWithClaude()" style="width:100%">🤖 Parse with AI</button>
+        <button class="btn btn-primary" onclick="importParseFiles()" style="width:100%">🤖 Parse with AI</button>
       </div>
       <div id="importResults" style="display:none">
-        <div style="font-weight:700;font-size:.85rem;margin-bottom:8px">Review extracted entries — uncheck any you don't want to add:</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <span style="font-weight:700;font-size:.85rem">Review extracted entries:</span>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm btn-outline" onclick="importSelectAll(true)" style="font-size:.72rem;padding:3px 8px">All</button>
+            <button class="btn btn-sm btn-outline" onclick="importSelectAll(false)" style="font-size:.72rem;padding:3px 8px">None</button>
+          </div>
+        </div>
         <div id="importResultsList"></div>
       </div>
     </div>
     <div class="modal-footer" style="justify-content:space-between">
-      <span id="importStatus" style="font-size:.78rem;color:var(--text2)"></span>
+      <span id="importStatus" style="font-size:.78rem;color:var(--text2);flex:1;margin-right:8px"></span>
       <div style="display:flex;gap:8px">
         <button class="btn btn-outline" onclick="closeModal('importDocModal')">Cancel</button>
         <button class="btn btn-success" id="importConfirmBtn" style="display:none" onclick="importConfirmSelected()">✅ Add Selected</button>
