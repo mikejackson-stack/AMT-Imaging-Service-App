@@ -1183,16 +1183,16 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 const FULL_ERROR_DB=[
   // GE MRI
-  {code:'E305',brand:'GE',desc:'RF Amplifier fault — check RF amp cooling, connections, and power supply',manual:'Error codes and Troubleshooting/RF Amplifier and UPM Calibration Dual drive RF Amp.html'},
+  {code:'E305',brand:'GE',desc:'RF Amplifier fault — check RF amp cooling, connections, and power supply',manual:'Error codes and Troubleshooting All Systems/RF Amplifier and UPM Calibration Dual drive RF Amp.html'},
   {code:'E410',brand:'GE',desc:'Gradient overheat — verify gradient cooling water flow and temperature',manual:'GE/LX 9X Platform/gradient/gradient.htm'},
-  {code:'E501',brand:'GE',desc:'Cold head fault — check cold head compressor, helium level and power supply',manual:'Error codes and Troubleshooting/Coldhead trouble shooting Sumitomo.pdf'},
-  {code:'E112',brand:'GE',desc:'Patient table drive fault — inspect table drive motor and encoder',manual:'Error codes and Troubleshooting/patient table adjustment.htm'},
+  {code:'E501',brand:'GE',desc:'Cold head fault — check cold head compressor, helium level and power supply',manual:'Error codes and Troubleshooting All Systems/Coldhead trouble shooting Sumitomo.pdf'},
+  {code:'E112',brand:'GE',desc:'Patient table drive fault — inspect table drive motor and encoder',manual:'Error codes and Troubleshooting All Systems/patient table adjustment.htm'},
   {code:'E203',brand:'GE',desc:'Shim power supply fault — check shim supply voltages and connections',manual:''},
   {code:'E601',brand:'GE',desc:'DAS communication fault — check DAS cables and power',manual:''},
   {code:'E720',brand:'GE',desc:'RF shield breach — inspect door gaskets and RF penetrations',manual:''},
-  {code:'FREQ',brand:'GE',desc:'Frequency calibration failure — run shim/frequency calibration sequence',manual:'Error codes and Troubleshooting/CPD Calibration.pdf'},
-  {code:'Quench',brand:'GE/All',desc:'Magnet quench — immediate evacuation, contact OEM, cryogen refill required',manual:'Error codes and Troubleshooting/Coldhead trouble shooting Sumitomo.pdf'},
-  {code:'He Level',brand:'GE/All',desc:'Low helium level — schedule fill immediately if below 60%',manual:'Error codes and Troubleshooting/Coldhead trouble shooting Sumitomo.pdf'},
+  {code:'FREQ',brand:'GE',desc:'Frequency calibration failure — run shim/frequency calibration sequence',manual:'Error codes and Troubleshooting All Systems/CPD Calibration.pdf'},
+  {code:'Quench',brand:'GE/All',desc:'Magnet quench — immediate evacuation, contact OEM, cryogen refill required',manual:'Error codes and Troubleshooting All Systems/Coldhead trouble shooting Sumitomo.pdf'},
+  {code:'He Level',brand:'GE/All',desc:'Low helium level — schedule fill immediately if below 60%',manual:'Error codes and Troubleshooting All Systems/Coldhead trouble shooting Sumitomo.pdf'},
   // Siemens MRI
   {code:'F001',brand:'Siemens',desc:'Gradient amplifier fault — check GRADS cabinet and cooling lines',manual:'Siemens/Avanto/Avanto Gradient TSG M7-000.840.16.07.02.pdf'},
   {code:'F042',brand:'Siemens',desc:'RF power fault — inspect RF amplifier and transmission chain',manual:''},
@@ -3244,7 +3244,7 @@ const PARTS_STORE_KEY = 'amt_parts_v30';
 // ── GE Signa Excite & HDx FRU database (extracted from Direction 2345481r13 + 5166012r14)
 const PARTS_SEED = [
   // ── MCP820 boards from service documentation ──
-  {id:'ps001',num:'2294300-16',desc:'MCP820 CPU Board APS/AGP HDx 15.x MGD',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x MGD',cost:0,notes:'Slot 7F=APS, slot 70F=AGP. Board Identifier: SCPGEDAQ2X-016. 128MB mini-board: 06B.',manual:'',date:'2025-05-08'},
+  {id:'ps001',num:'2294300-16',desc:'MCP820 CPU Board APS/AGP HDx 15.x MGD',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x MGD',cost:0,notes:'Slot 7F=APS, slot 70F=AGP. Board Identifier: SCPGEDAQ2X-016. 128MB mini-board: 06B.',manual:'Error codes and Troubleshooting All Systems/GE MGD APS SCP Troubleshooting Guide Scott 1 OCR.pdf',date:'2025-05-08'},
   {id:'ps002',num:'2294300-18',desc:'MCP820 CPU Board APS/AGP HDx 15.x CAM',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x CAM chassis',cost:0,notes:'Used in CAM chassis. Board Identifier: SCPGEDAQ2X-016. 128MB mini-board: 07A.',manual:'',date:'2025-05-08'},
   {id:'ps003',num:'2294300-23',desc:'MCP820 CPU Board AGP only',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x MGD/CAM',cost:0,notes:'Can only be used as AGP, not APS. 128MB mini-board: 27A.',manual:'',date:'2025-05-08'},
   {id:'ps004',num:'2294300-14',desc:'MCP820 CPU Board APS/AGP HDx 14.x legacy',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 14.x (legacy)',cost:0,notes:'Works as APS only. Not recommended for AGP. 128MB mini-board: 06A.',manual:'',date:'2025-05-08'},
@@ -3702,6 +3702,8 @@ if(!partsDB){
   const newSeeds = PARTS_SEED.filter(s=>!partsDB.find(p=>p.id===s.id));
   if(newSeeds.length){ partsDB=[...newSeeds,...partsDB]; saveParts(); }
 }
+// FIX: Migrate bad manual paths from older localStorage data
+(()=>{let chg=false;partsDB.forEach(p=>{if(p.manual==='GE/MGD_APS_AGP_Service.pdf'){p.manual='Error codes and Troubleshooting All Systems/GE MGD APS SCP Troubleshooting Guide Scott 1 OCR.pdf';chg=true;}});if(chg)saveParts();})();
 
 function saveParts(){ localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB)); }
 
