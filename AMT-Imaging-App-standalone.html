@@ -4381,6 +4381,360 @@ const DIAG_GUIDES_SEED = [
     source: 'GE MR 450w/750w Cooling System Configuration Reference (450w_750w_cooling_config.doc)',
     dateAdded: '2026-05-20',
     created: '2026-05-20T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_011',
+    title: 'GE LCC 1.5T/1.0T — Cryogens High Pressure / Helium Loss Troubleshooting',
+    system: 'GE MRI',
+    category: 'Cryogens / Magnet',
+    diagnosticPath: 'Check magnet pressure / helium loss → verify thermal stability → check critical conditions → Temperature/Pressure path OR Leak path',
+    purpose: 'Complete troubleshooting guide for high helium vessel pressure and/or helium loss on GE 1.5T and 1.0T LCC Active Shield magnets. Follows the structured GE diagnostic flow: Chiller & Compressor Checks → Magnet Checks → Coldhead Checks → Leak Troubleshooting. Direction 2192624 REV 8 (Sept 2002).',
+    componentsTested: [
+      'Helium Vessel (pressure, level)',
+      'Recondenser (temperature, icing)',
+      'Two-Stage Cryocooler Coldhead (1st stage, 2nd stage temps)',
+      'SHI Cryocooler Compressor (static/dynamic pressure, absorber)',
+      'Coldhead Sleeve (vacuum integrity)',
+      'Water Chiller',
+      'Helium Flexlines',
+      'Magnet Monitor (heater operation)',
+      'Shim Lead (retracted/locked)',
+      'Plumbing / O-Ring / Burst Disc (leak sites)'
+    ],
+    sections: [
+      {
+        title: 'Critical Magnet Conditions — Specifications',
+        type: 'table',
+        headers: ['Parameter', 'Specification', 'Measurement Tool'],
+        rows: [
+          ['2nd Stage Coldhead Temperature', '< 4.4 K', 'Portable RuO Monitor (2171219)'],
+          ['1st Stage Coldhead Temperature', '< 45 K', 'Magnet Monitor'],
+          ['Recondenser Temperature', '> 3.9 K but < 4.5 K', 'Calculate: Recond. T minus 2nd Stage T'],
+          ['Delta T (Recond. T minus 2nd Stage T)', '< 0.2 K', 'Portable RuO Monitor (2171219)'],
+          ['Magnet Helium Pressure', '> 0.3 but < 4.7 psig', 'Magnet Monitor'],
+          ['Compressor Static Pressure', '16.3-16.8 Kgf/cm2G (1.6-1.65 MPa)', 'Compressor gauges'],
+          ['Compressor Dynamic Pressure', '21.4-23.5 Kgf/cm2G (2.1-2.3 MPa)', 'Compressor gauges'],
+          ['Ambient Room Temperature', '< 28 C (82 F)', 'Thermometer']
+        ]
+      },
+      {
+        title: 'Helium Pressure vs. Recondenser Temperature Reference',
+        type: 'note',
+        content: 'Formula: Recondenser T approx. 0.0626 x Pressure(psig) + 4.2316 K\n\n0 psig = 4.25 K | 1 psig = 4.30 K | 2 psig = 4.37 K | 3 psig = 4.40 K | 4 psig = 4.50 K | 5 psig = 4.56 K\n\nIMPORTANT: If helium pressure > 5.25 psig, CHECK THE RELIEF VALVE immediately.\n\nUse this data with the Initial Troubleshooting flowchart to determine if vapor pressure is consistent with RuO temperature readings. If point lies ON the line: temperature and pressure are consistent with theory. Points ABOVE the line: potential thermal issue. Points BELOW the line: potential icing in the Recondenser.'
+      },
+      {
+        title: 'Pressure Safety Warning',
+        type: 'warning',
+        content: 'CRYOSTAT EXHAUST SYSTEM IS DESIGNED WITH A 5.25 PSIG RELIEF VALVE. Observe the internal cryostat pressure gauge. Set Magnet Monitor pressure to 0.5 psig and VENT cryostat down to 0.3 psig through Vent Valve V2 BEFORE removing Ramp Caps or Fill Caps or loosening any component. This prevents exposure to rapid exhausting cold helium gas during service operations.'
+      },
+      {
+        title: 'Step 1 — Initial Troubleshooting Decision',
+        type: 'steps',
+        items: [
+          'Confirm problem: Is magnet pressure HIGH or is magnet LOSING helium? If No — END troubleshooting.',
+          'Is magnet thermally stable? If No — WAIT until thermally stable. NOTE: High pressure/helium loss or high Coldhead temperatures after installation, ramping/shimming, helium fill, power outage, or Coldhead replacement DO NOT NECESSARILY indicate a magnet thermal performance problem.',
+          'Once thermally stable, check all Critical Magnet Conditions (see spec table). Use Portable RuO Monitor (2171219) connected DIRECTLY to RuO outputs on Coldhead and Sleeve for 2nd Stage and Recondenser readings. Note: 2nd Stage readings may show 0.1-0.25 K oscillation — record average: (T_min + T_max) / 2.',
+          'Are any readings OUT OF SPECIFICATION?\n  YES + readings out of spec: Proceed with Temperature/Pressure Troubleshooting (Steps 2, 3, 4)\n  NO (readings within spec): Proceed with Leak Troubleshooting (Step 5)'
+        ]
+      },
+      {
+        title: 'Step 2 — Chiller and Compressor Checks (Do This First)',
+        type: 'steps',
+        items: [
+          'Check Water Chiller — if out of spec, have chiller repaired.',
+          'Check Compressor pressure: If LOW — Recharge (Static: 16.3-16.8 Kgf/cm2G; Dynamic: 21.4-23.5 Kgf/cm2G). If HIGH — Reduce to spec.',
+          'Compare Compressor run time vs. actual time — has it been off? Report to site management.',
+          'Check Ambient Room Temperature: must be < 28 C (82 F). If high, report to site management.',
+          'Check Compressor space size (air-cooled only) — if too small, report to site management (ref SHI manual CVSA-71A p.18).',
+          'Check Compressor input power (correct voltage/phase?) — if incorrect, report to site management.',
+          'Check Dirty Air Filter (air-cooled) — vacuum air filter (ref CVSA-71A p.23).',
+          'Check Helium Flexline connections — supply/return tight, correct, O-rings in place (ref CVSA-71A).',
+          'Check Absorber use time — if > 20,000 hours, replace Absorber (ref CVSA-71A p.23).',
+          'Check By-Pass Solenoid Valve (stuck open) — Check Dynamic Pressure: (a) Bleed, run, and recharge Compressor. (b) If By-Pass Light not lit, replace filament. (c) If By-Pass Light still not lit, replace Compressor. NOTE: By-Pass Light lit = normal operation.',
+          'If high pressure/helium loss persists, proceed to Step 3 — Magnet Checks.'
+        ]
+      },
+      {
+        title: 'Step 3 — Magnet Checks',
+        type: 'steps',
+        items: [
+          'Check Magnet Monitor for proper operation — heater should maintain 0.3-4.7 psig. If heater stuck on — Repair or Replace Magnet Monitor.',
+          'Check Shim Lead: retracted and locked? (12 inches / 300mm of Shim Lead should show when locked.) If not locked, retract and lock.',
+          'Check if Helium was added recently — overfill condition? Check SHeM Table; reduce He level to 95% full.',
+          'Check Coldhead Sleeve vacuum loss or contamination — replace charcoal packets; re-evacuate Sleeve to < 10 microns (< 10 milliTorr, < 0.01 mmHg).',
+          'Check for Ice in Vertical Penetration — ramp down magnet; check through View Port Caps for ice inside Vertical Penetration.',
+          'Check Ice in Recondenser — check Recondenser temperature using pressure/temperature graph; De-Ice Magnet if needed.',
+          'Check for Thermal Short (see Thermal Short Readings Matrix table). If suspected, contact On-Line Center and Florence.',
+          'Check for Magnet Vacuum Loss (cold spots or sweating on magnet) — if 2nd Stage HIGH + 1st Stage HIGH + Recond. HIGH + Delta T HIGH: Re-Evacuate or Replace Magnet. Also check vacuum plug and vacuum level.',
+          'If high pressure/helium loss persists, proceed to Step 4 — Coldhead Checks. Perform Coldhead Checks only after completing Chiller/Compressor and Magnet Checks.'
+        ]
+      },
+      {
+        title: 'Thermal Short and Vacuum Loss Readings Matrix',
+        type: 'table',
+        headers: ['Condition', '2nd Stage T', '1st Stage T', 'Recond. T', 'Delta T', 'Action'],
+        rows: [
+          ['Thermal Short — Shield to He Vessel (type 1)', 'HIGH', 'In Spec.', 'HIGH', 'HIGH', 'Contact On-Line Center and Florence'],
+          ['Thermal Short — Shield to He Vessel (type 2)', 'In Spec./HIGH', 'In Spec./HIGH', 'In Spec./HIGH', 'In Spec./HIGH', 'Contact On-Line Center and Florence'],
+          ['Suspension Failure', 'In Spec./HIGH', 'In Spec.', 'In Spec./HIGH', 'In Spec./HIGH', 'Contact On-Line Center and Florence'],
+          ['Magnet Vacuum Loss (all HIGH)', 'HIGH', 'HIGH', 'HIGH', 'HIGH', 'Re-Evacuate or Replace Magnet']
+        ]
+      },
+      {
+        title: 'Step 4 — Coldhead Checks',
+        type: 'steps',
+        items: [
+          'Check Coldhead power: verify 200 VAC at Coldhead Pins. If absent, check cable connections and Compressor power output.',
+          'Check if Coldhead is operating in REVERSE: Readings show 2nd Stage ~-15K, 1st Stage ~-90K, Recond. HIGH, Delta T OUT OF SPEC. Action: Correct miswiring at Penetration Panel (color-match each filter).',
+          'Check Coldhead for NOISE:\n  Grinding Noise: Motor Failure — Replace Coldhead immediately.\n  Knocking Noise (Contamination or Improper Phasing): (a) Check electrical phasing; correct if necessary. (b) Check Flexlines for proper connection. (c) If phasing correct: warm Coldhead, purge; or replace Coldhead and Getter. (d) If Coldhead replaced: turn off Coldhead, remove Flexlines immediately to trap contamination.',
+          'WARNING: Do NOT replace only one component. If oil is found, replace entire system — Coldhead + Flexlines + Compressor. Oil will foul any new component added to the system.',
+          'Check for OIL in Flexlines — use black light or clean lint-free white cloth whenever Flexlines are disconnected. If oil found: REPLACE Coldhead, Flexlines, AND Compressor.',
+          'Check Coldhead Sleeve vacuum loss/contamination: 2nd Stage High or In Spec., 1st Stage In Spec., Recond. HIGH, Delta T In Spec. — Action: Pump Sleeve / Check background; Replace Coldhead.',
+          'Check for improperly inserted Coldhead (Delta T may be > 0.2K, 1st Stage may be > 45K, may be bent/damaged): (a) Remove and warm Coldhead. (b) Check for damage. (c) Purge Sleeve with nitrogen. (d) Add new Getter Bags and Indium Gaskets. (e) Replace Coldhead and Vacuum Sleeve.',
+          'Check Coldhead 2nd Stage performance loss:\n  Pattern A: 2nd Stage HIGH, 1st Stage In Spec., Recond. HIGH, Delta T In Spec./High — Replace Coldhead.\n  Pattern B: 2nd Stage In Spec., 1st Stage HIGH, Recond. In Spec./High, Delta T In Spec. — Replace Coldhead.',
+          'If high pressure/helium loss persists after all checks — contact the Online Center.'
+        ]
+      },
+      {
+        title: 'Step 5 — Leak Troubleshooting',
+        type: 'steps',
+        items: [
+          'SAFETY FIRST: Turn on magnet room vent exhaust fan (or open mobile van hatch) before starting. Required to exhaust odorless/invisible helium gas and prevent oxygen displacement. Wear protective clothing, nonabsorbent gloves, and goggles when replacing burst disc on cold vent system.',
+          'Classify the scenario: (a) Helium Loss + HIGH Pressure: check helium pressure, proceed through plumbing checks. (b) Helium Loss + NORMAL Pressure: leak check all plumbing using Portable Helium Meter (2270571), Snoop, or Latex Glove.',
+          'Check these areas with leak detector fluid: (a) Ramp Leads and Fill Port Caps — if leak: check/replace O-ring, tighten. (b) External Plumbing at Vent Adapter — if leak: tighten or replace. (c) Burst Disc at Vent Stack Exhaust — if leak: tighten or ramp down and replace disc. (d) Shim Leads and Main Leads — if leak: check O-rings; tighten or ramp down and replace. (e) Vertical Turret and Instrumentation Lead Cover — if leak: tighten or ramp down as needed.',
+          'Pressure must be < 3.9 psig for leak detection. Check: all external plumbing joints, Vertical Turret/Instrumentation Lead Cover, Main Lead/fill port caps, Shim Lead collar/cap, Pressure Gauge, Shim Lead Pins.',
+          'Valve balloon test: attach small balloon to exhaust side of 5.25 psig relief valve, 7.25 psig bypass valve, and Nupro valve. Observe for balloon expansion. Replace any valve with suspected leaks and retest.',
+          'Check for Ice: (a) Main Lead port — visually check with View Port Caps; if ice, warm vent assembly and remove. (b) Shim Lead/Main Lead caps — remove caps; if ice, use coring tools to remove. (c) Recondenser ice block (2nd Stage and Recondenser temp low): ramp down magnet, purge Recondenser, remove Coldhead, warm Sleeve to 240-260 F, vent slowly to avoid quench, remove ice.',
+          'Burst Disc procedure: (1) Ramp magnet to zero field. (2) Remove Vent Adapter. (3) Check Burst Disc for cracks or gasket leaks. Replace any cracked or leaking disc. CAUTION: Small micro-bubbles between gasket and flange are NORMAL. Only replace if continuous bubbles > 0.08 inch (2mm) diameter are present. Foam-like bubbles may be present normally.'
+        ]
+      },
+      {
+        title: 'Data to Collect Before Calling for Support',
+        type: 'table',
+        headers: ['Category', 'Item'],
+        rows: [
+          ['Site Info', 'System ID / Magnet Number / Install Date / Site Type (Mobile or Fixed)'],
+          ['Compressor', 'Serial Number / Install Date / Run Time'],
+          ['Compressor', 'Static Pressure / Dynamic Pressure'],
+          ['Compressor', 'Inlet Water Flow / Water Temperature at Inlet'],
+          ['Coldhead', 'Serial Number'],
+          ['Coldhead', '2nd Stage Temperature (Hand-held RuO)'],
+          ['Coldhead', 'Recondenser Temperature (Hand-held RuO)'],
+          ['Coldhead', 'Delta T / 1st Stage Temperature'],
+          ['Coldhead', 'Sleeve Vacuum / Number of Getter Bags / Date Last Changed'],
+          ['Coldhead', 'Noise description'],
+          ['Magnet', 'Helium Pressure / Helium Level (Cylindrical)'],
+          ['Magnet', 'Frost on Plumbing / Magnet Monitor Heater Verification']
+        ]
+      }
+    ],
+    tags: ['cryogens', 'coldhead', 'helium', 'high pressure', 'helium loss', 'recondenser', 'compressor', 'LCC', '1.5T', '1.0T', 'active shield', 'cryocooler', 'RuO', 'delta T', 'sleeve vacuum', 'thermal short', 'burst disc', 'leak', 'SHI', 'Sumitomo', 'icing', 'zero boil-off', 'ZBO'],
+    source: 'GE Medical Systems — GE 1.5T & 1.0T LCC Active Shield Magnet and Cryogens Subsystem, Direction 2192624 REV 8 (Sept 2002) (Coldhead_trouble_shooting_Sumitomo.pdf)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_012',
+    title: 'Cryocooler Coldhead Replacement — Field Procedure (Sumitomo / Leybold / Balzer)',
+    system: 'GE MRI',
+    category: 'Cryogens / Magnet',
+    diagnosticPath: 'Verify problem is coldhead → Set up vacuum and helium lines → Pre-removal vacuum test → Remove old coldhead (type-specific) → Install new coldhead → Post-installation vacuum verification',
+    purpose: 'Step-by-step field procedure for replacing a two-stage cryocooler coldhead (Sumitomo, Leybold, or Balzer type). Covers tools required, pre-change verification, vacuum and helium line setup, type-specific removal steps, installation, and post-installation vacuum verification to < 10 microns. Based on field tech procedure notes (Feb 2009).',
+    componentsTested: [
+      'Cryocooler Coldhead (Sumitomo, Leybold, or Balzer)',
+      'Coldhead Sleeve (gasket seating, vacuum integrity)',
+      'Coldhead Ring and Gaskets',
+      'Getter Bags',
+      'Helium Flexlines (oil check)',
+      'Vacuum System (micron meter, vacuum pump)',
+      'Compressor (refill if needed)'
+    ],
+    sections: [
+      {
+        title: 'Tools Required',
+        type: 'table',
+        headers: ['Item', 'Notes'],
+        rows: [
+          ['New/correct coldhead', 'Verify type: Sumitomo, Leybold, or Balzer — must match existing system'],
+          ['Coldhead change kit', 'Includes: vacuum pump, vacuum line, helium gas tube, valve assembly, vacuum puller, vacuum grease, silver tape, cover plate, micron meter'],
+          ['Coldhead gaskets', 'Leybold/Balzer: large ring + small ring | Sumitomo: large ring + small grill-shaped gasket'],
+          ['Coldhead ring', 'Leybold/Balzer ONLY — set up prior to pulling coldhead'],
+          ['Copper tube', 'Sumitomo ONLY'],
+          ['Extension cord', ''],
+          ['Heat gun', 'For warming rings/stages — Sumitomo type'],
+          ['Absorber', 'If needed — verify correct type for system'],
+          ['Helium gas cylinder', 'Minimum 500 psi in tank'],
+          ['Low pressure regulator', 'If no pressure on magnet'],
+          ['High pressure regulator', 'To fill compressor if needed'],
+          ['Lakeshore thermometer or laptop', 'To monitor temperatures before and after'],
+          ['GE Universal Coldhead Replacement Tool Kit (2300306)', 'Recommended']
+        ]
+      },
+      {
+        title: 'Pre-Change Verification — Do NOT Skip',
+        type: 'steps',
+        items: [
+          'Check magnet pressure and follow the cryogens troubleshooting procedure to VERIFY the coldhead is the actual problem before proceeding.',
+          'Record current coldhead temperatures (1st Stage, 2nd Stage, Recondenser) with Lakeshore or laptop BEFORE turning anything off — these are your baseline values.',
+          'Inspect the new coldhead: must be free of defects and contamination before bringing to site.'
+        ]
+      },
+      {
+        title: 'Setup',
+        type: 'steps',
+        items: [
+          'Set up new coldhead with correct gaskets and O-rings. Be careful NOT to get contaminants on the coldhead surfaces.',
+          'Have the new coldhead FULLY READY before pulling out the old coldhead. Minimize the time the sleeve is open.',
+          'Set up coldhead change kit: vacuum pump, vacuum line, helium gas line.',
+          'Set up helium gas line to top of magnet, or attach low pressure regulator if magnet has no pressure.',
+          'Connect vacuum plunger to coldhead sleeve — approximately 3 turns. Not too tight. Verify good connection to the small gasket.'
+        ]
+      },
+      {
+        title: 'Pre-Removal Vacuum Test',
+        type: 'steps',
+        items: [
+          'Purge helium gas through the line to displace any air.',
+          'Vacuum down to LESS THAN 50 microns before pulling the plunger out.',
+          'As you slowly pull the plunger, WATCH THE MICRON GAUGE:\n  Gauge goes DOWN or stays near the same = GOOD vacuum. Proceed.\n  Gauge goes UP or meter pegs = BAD vacuum. May indicate leaking gasket. Consider replacing gaskets and reinstalling as used coldhead depending on history and site situation.'
+        ]
+      },
+      {
+        title: 'Coldhead Removal',
+        type: 'steps',
+        items: [
+          'Remove ALL bolts around the outside EXCEPT ONE.',
+          'When pulling the final bolt, be READY TO CATCH the coldhead — it may begin to come out on its own.',
+          'IMPORTANT: The coldhead is FERROUS (magnetic). Once removed, keep it LOW and as far from the magnet bore as possible at all times.',
+          'Proceed with the type-specific steps below for your coldhead type.'
+        ]
+      },
+      {
+        title: 'Leybold or Balzer — Type-Specific Removal Steps',
+        type: 'steps',
+        items: [
+          'Keep HELIUM GAS FLOWING continuously throughout the entire removal to prevent contamination from entering the sleeve.',
+          'Check inside the sleeve for gasket residue stuck to the rings.',
+          'If residue is present: use a NON-FERROUS stick with a cloth on the end to scrape it off.',
+          'Wipe away any frost as you pull out the coldhead.'
+        ]
+      },
+      {
+        title: 'Sumitomo — Type-Specific Removal Steps',
+        type: 'steps',
+        items: [
+          'Can turn helium gas OFF after the coldhead is removed (unlike Leybold/Balzer).',
+          'Check inside the sleeve for gasket residue on the rings; remove with non-ferrous cloth-wrapped stick if present.',
+          'Begin heating the TWO RINGS inside the sleeve with a heat gun:\n  MUST NOT exceed 300 K at any point.\n  Both stages must reach > 275 K to ensure all frost and ice is completely removed.\n  Monitor with Lakeshore or copper tube probe.'
+        ]
+      },
+      {
+        title: 'Coldhead Installation',
+        type: 'steps',
+        items: [
+          'Turn ON helium gas as you begin inserting the new coldhead.',
+          'Verify CORRECT ORIENTATION and DIRECTION before inserting — do not reverse.',
+          'Try not to touch the sides of the sleeve or damage the gaskets during insertion.',
+          'Once holes are lined up and coldhead is against the sleeve: turn helium gas OFF.',
+          'Pull coldhead out approximately half an inch, then push it back in — aligning holes and ensuring the gasket does NOT pinch.',
+          'Turn ON the vacuum — let the coldhead pull in naturally.',
+          'Install all bolts HAND-TIGHT. Keep tightening even, watching the gap around the flange to maintain uniform spacing.'
+        ]
+      },
+      {
+        title: 'Post-Installation Vacuum Verification',
+        type: 'steps',
+        items: [
+          'When micron gauge reaches 200 microns: purge helium gas through the line to drive out contaminants.',
+          'Cycle purge: Open gas, close gas, open vacuum. Repeat approximately 3 times.',
+          'Let vacuum pull back down. TARGET: LESS THAN 10 microns.',
+          'If not reaching < 10 microns: try additional helium purge cycles after waiting a bit.',
+          'Vacuum leak test: Close the vacuum valve and WATCH the micron gauge:\n  Gauge goes up slightly then STOPS = acceptable (normal gas desorption).\n  Gauge keeps rising rapidly = suspect broken coldhead ring (broken during installation) or gasket pinch. Remove and re-inspect.',
+          'Once vacuum is stable below 10 microns: reconnect helium flexlines, power up coldhead, and monitor temperatures with Lakeshore.'
+        ]
+      }
+    ],
+    tags: ['coldhead', 'cryocooler', 'Sumitomo', 'Leybold', 'Balzer', 'coldhead replacement', 'cryogens', 'vacuum', 'micron meter', 'helium', 'getter bags', 'gasket', 'sleeve', 'flexlines', 'MRI magnet', 'field procedure'],
+    source: 'GE Cryocooler Coldhead Replacement Field Notes — Randy (Coldhead_change.doc, Feb 2009)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_013',
+    title: 'CTL Coil — Multicoil Control Wiring Reference (CTLTOP / CTLMID / CTLBOT)',
+    system: 'GE MRI',
+    category: 'RF / Coils',
+    diagnosticPath: 'Identify failing CTL element or section → Trace signal path through Multi-Coil Select Switch → Verify Preamplifier Protection → Check RF Cabinet / SSM connections',
+    purpose: 'Multicoil control wiring reference for the CTL (Cardiac/Torso Longitudinal) receive coil. Documents the complete signal path through the System Cabinet, Penetration Panel, Multi-Coil Select Switch (S1-S5), and Preamplifier Protection board for each of the three coil sections (TOP, MID, BOT). Useful for tracing element drop-out, SNR failures, and coil element selection issues. Rev C (2001-12-05), Phil Steen MR Imaging Subsystems Engineering.',
+    componentsTested: [
+      'CTL Coil Elements (TOP section, MID section, BOT section)',
+      'Multi-Coil Select Switch (S1-S5)',
+      'Preamplifier Protection Board',
+      'RF Cabinet / SSM (System Software Module) driver outputs',
+      'System Cabinet REV connections',
+      'Penetration Panel REV1 coaxial connections'
+    ],
+    sections: [
+      {
+        title: 'CTL Coil Sections — Configuration Summary',
+        type: 'table',
+        headers: ['Section', 'Receive Mask', 'MC Recon Enable', 'End Receiver', 'Start Receiver', 'Notes'],
+        rows: [
+          ['CTLTOP', '7', '6', '2', '0', 'Elements hard off in receive state; always +5V during transmit state'],
+          ['CTLMID', '14', '0', '3', '0', 'Image from shaded receivers; excluded by n-coil recon'],
+          ['CTLBOT', '14', '0', '0', '0', 'Image from shaded receivers; element soft off (blue)']
+        ]
+      },
+      {
+        title: 'Signal Path Overview',
+        type: 'note',
+        content: 'CTL coil signal flows through these stages (coil to system cabinet direction):\n\n1. CTL Coil Elements (patient interface) — numbered 1-6+ per section\n2. Preamplifier Protection — preamp inputs/outputs with port enable and error enable signals\n3. Multi-Coil Select Switch (S1-S5) — selects active coil elements; driven by SSM driver signals (driver1-driver4)\n4. Penetration Panel — REV1 coaxial connections at RF shield boundary\n5. System Cabinet — REV connections\n6. RF Cabinet / SSM — driver control signals (driver1-5)\n\nKey SSM control signals:\n  Port enable / Error enable: controls preamp enable per element\n  MC recon enable mask: determines which elements are reconstructed\n  Transmit state: ALL elements at +5V (fully detuned for patient safety)\n  Receive state: elements follow hard-off (red) or soft-off (blue) logic per section'
+      },
+      {
+        title: 'Multi-Coil Select Switch — Driver Assignments',
+        type: 'table',
+        headers: ['Switch', 'Driver Signal', 'Position'],
+        rows: [
+          ['S5', 'driver2', 'Far-left group'],
+          ['S4', 'driver4', 'Second from left'],
+          ['S3', 'driver1', 'Center'],
+          ['S2', 'driver3', 'Second from right'],
+          ['S1', 'driver2', 'Far-right group']
+        ]
+      },
+      {
+        title: 'Key Logic States Reference',
+        type: 'table',
+        headers: ['State', 'Signal', 'Element Behavior'],
+        rows: [
+          ['Transmit state', '+5V always', 'ALL elements hard off — coil fully detuned for patient protection'],
+          ['Receive ON', 'Port enable HIGH', 'Element receiving signal (bold line on diagram)'],
+          ['Receive soft off', 'Element soft off (blue)', 'Element not receiving but not fully detuned'],
+          ['Receive hard off', 'Element hard off (red)', 'Element fully detuned during receive'],
+          ['Excluded from n-coil recon', 'Image from shaded receivers only', 'CTLMID and CTLBOT elements not used in reconstruction']
+        ]
+      },
+      {
+        title: 'Troubleshooting CTL Element Failures — Step-by-Step',
+        type: 'steps',
+        items: [
+          'Identify which CTL section is failing (TOP, MID, or BOT) and which element number shows dropout or noise using the image artifact location and pattern.',
+          'Confirm the receive mask for that section is correct in software: TOP = mask 7, MID = mask 14, BOT = mask 14.',
+          'For CTLMID and CTLBOT: these sections are excluded from n-coil reconstruction and image from shaded receivers. Verify recon configuration is not masking the element in software before proceeding to hardware.',
+          'Identify the Multi-Coil Select Switch (S1-S5) and driver signal (driver1-4) that routes the failing element. A stuck-open or stuck-closed switch will drop an entire element group.',
+          'Check port enable signal at the Preamplifier Protection board for the affected element port. If port enable is absent or low, trace back to SSM driver output.',
+          'Verify coaxial connections at the Penetration Panel (REV1 connectors) are tight and free of corrosion for the affected element path.',
+          'Check System Cabinet REV connections for continuity on the affected element signal line.',
+          'Check RF Cabinet connection to SSM — verify driver signal voltage (+5V during transmit state for all elements is required).',
+          'For CTLTOP only: elements must be hard off during receive state. If a TOP element is hot (not properly detuned) during receive, check the hard-off circuitry on the preamplifier protection board.',
+          'If all hardware checks pass, suspect the coil connector or coil cable. Swap with a known-good CTL coil to confirm.'
+        ]
+      }
+    ],
+    tags: ['CTL', 'CTL coil', 'cardiac', 'torso', 'multicoil', 'receive coil', 'coil elements', 'multi-coil select switch', 'preamplifier protection', 'SSM', 'RF cabinet', 'penetration panel', 'wiring', 'coil troubleshooting', 'receive chain', 'element dropout'],
+    source: 'Phil Steen MR Imaging Subsystems Engineering — Multicoil Control Diagram Rev C (2001-12-05) (CTLtroubleshooting.pdf)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
   }
 ];
 
