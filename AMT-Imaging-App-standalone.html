@@ -3236,6 +3236,1654 @@ function sendInvoiceEmail(invId){
 }
 
 // ════════════════════════════════════════════════════
+// DIAGNOSTIC GUIDES SEED DATA
+// ════════════════════════════════════════════════════
+const DIAG_GUIDES_SEED = [
+  {
+    id: 'dg_seed_001',
+    title: 'Gather Load Data — Multicoil & Dynamic Disable Fault Diagnosis',
+    system: 'GE MRI',
+    category: 'Driver Module',
+    diagnosticPath: 'Service Browser > Diagnostics > Peripherals > Driver Module Diagnostics > Gather Load Data',
+    purpose: 'Rapid diagnosis of multicoil bias and dynamic disable (DD) faults using Gather Load Data (GLD). Takes approximately 1 minute per run, requires no phantoms or scanning. Pinpoints the exact failed component in under 15 minutes.',
+    componentsTested: ['Driver Module', 'Pen Panel DD Filter', 'DD Cables (Driver Module to Pen Panel)', 'DD Cables (Pen Panel to Magnet)', 'RF Coils (Multichannel)', 'Body RF Coil'],
+    sections: [
+      {
+        title: 'Running the Test',
+        type: 'steps',
+        steps: [
+          'Navigate to: Service Browser > Diagnostics > Peripherals > Driver Module Diagnostics > Gather Load Data',
+          'Change the Default output filename to something memorable (e.g. your initials + run number + brief description: "kp1_ctl").',
+          'Leave all other settings at default values.',
+          'Click Run. The test takes approximately 1 minute.',
+          'Results are saved to /usr/g/service/log/<filename>_mc.txt (multicoil) and <filename>_dd.txt (dynamic disable).',
+          'Open results: gedit /usr/g/service/log/<filename>_mc.txt  OR  gedit /usr/g/service/log/<filename>_dd.txt'
+        ]
+      },
+      {
+        title: 'Multicoil Error Troubleshooting',
+        type: 'steps',
+        steps: [
+          'Identify the coil causing the error in the error log.',
+          'Plug in the bad coil.',
+          'Change the Default filename (run 1) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename1_mc.txt',
+          'Find the channel number the error log indicated. Verify its numbers differ from other good channels.',
+          'Remove the bad coil. Plug in a different multichannel coil.',
+          'Change the Default filename (run 2) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename2_mc.txt',
+          'DECISION — Run 2 channel OK: Bad channel from run 1 now looks normal → order the coil from step 2 (bad coil).',
+          'DECISION — Run 2 channel still bad: Bad channel persists → problem is in the system. Continue to next step.',
+          'Connect the coil from step 2. Swap cables J5 and J10 on the back of the Driver Module.',
+          'Change the Default filename (run 3) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename3_mc.txt',
+          'DECISION — Bad channel did NOT move → order Driver Module.',
+          'DECISION — Bad channel DID move → call TSM for support (problem is between Driver Module and coil).',
+          '⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS before leaving.'
+        ]
+      },
+      {
+        title: 'Dynamic Disable (DD) Troubleshooting',
+        type: 'steps',
+        steps: [
+          'Unplug any coils from the system.',
+          'Identify the DD BLD (front/back, 1/2/3/4) with the error and whether it is a short or open.',
+          'Change the Default filename (run 1) and run GLD.',
+          'Open results: gedit /usr/g/service/log/filename1_dd.txt',
+          'Find the DD line noted in the error log. Verify it shows the bad value described in the error.',
+          'Swap cables BD1↔BD4 and BD2↔BD3 at the back of the Driver Module.',
+          'Change the Default filename (run 2) and run GLD.',
+          'DECISION — Bad value did NOT move → order Driver Module.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the back of the Driver Module to original positions.',
+          'On the equipment room side of the Pen Panel swap J92↔J96 and J93↔J95.',
+          'Change the Default filename (run 3) and run GLD.',
+          'DECISION — Bad value did NOT move → order cable from Driver Module to Pen Panel.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the equipment room side of the Pen Panel to original positions.',
+          'On the magnet room side of the Pen Panel swap J72↔J76 and J73↔J75.',
+          'Change the Default filename (run 4) and run GLD.',
+          'DECISION — Bad value did NOT move → order Pen Panel DD Filter.',
+          'DECISION — Bad value DID move → continue.',
+          'Restore the 4 cables on the magnet room side of the Pen Panel to original positions.',
+          'At the magnet: swap the two front DD lines with each other AND the two rear DD lines with each other.',
+          'Change the Default filename (run 5) and run GLD.',
+          'DECISION — Bad value did NOT move → order cable from Pen Panel to magnet.',
+          'DECISION — Bad value DID move → call TSM for support (issue is in the body RF coil).',
+          '⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS before leaving.'
+        ]
+      },
+      {
+        title: 'Component Isolation Decision Tree',
+        type: 'table',
+        headers: ['Scenario', 'Test', 'Result', 'Action'],
+        rows: [
+          ['Multicoil fault', 'Swap coils', 'Bad channel moves with coil', 'Replace coil'],
+          ['Multicoil fault', 'Swap J5/J10 on Driver Module', 'Bad channel does NOT move', 'Replace Driver Module'],
+          ['Multicoil fault', 'Swap J5/J10 on Driver Module', 'Bad channel DOES move', 'Call TSM — cable path issue'],
+          ['DD fault', 'Swap BD1↔BD4, BD2↔BD3 (Driver Mod back)', 'Bad value does NOT move', 'Replace Driver Module'],
+          ['DD fault', 'Swap J92↔J96, J93↔J95 (Pen Panel equipment room)', 'Bad value does NOT move', 'Replace cable: Driver Mod → Pen Panel'],
+          ['DD fault', 'Swap J72↔J76, J73↔J75 (Pen Panel magnet room)', 'Bad value does NOT move', 'Replace Pen Panel DD Filter'],
+          ['DD fault', 'Swap front/rear DD lines at magnet', 'Bad value does NOT move', 'Replace cable: Pen Panel → Magnet'],
+          ['DD fault', 'Swap front/rear DD lines at magnet', 'Bad value DOES move', 'Call TSM — Body RF Coil issue']
+        ]
+      }
+    ],
+    tags: ['GLD', 'gather load data', 'driver module', 'multicoil', 'dynamic disable', 'DD', 'bias', 'pen panel'],
+    source: 'Tech Tip — GE MR Gather Load Data (Feb 2025)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_002',
+    title: 'DQA II Tool — Error Diagnosis & Phantom Troubleshooting',
+    system: 'GE MRI',
+    category: 'DQA / Calibration',
+    diagnosticPath: 'DQA II Tool > Actions Required Window',
+    purpose: 'Diagnose and resolve errors reported by the DQA II Tool during daily quality assurance calibration scans on GE Signa 15x MRI systems. Covers gradient wiring faults, phantom positioning errors, and image quality issues that confuse the tool.',
+    componentsTested: ['Gradient Coils (X, Y, Z)', 'DQA Phantom', 'Head Coil', 'Laser Light Alignment', 'MR confess file settings'],
+    sections: [
+      {
+        title: 'Common First Check — Referenced in Every Error Below',
+        type: 'note',
+        content: 'For almost every DQA II error, start here: verify the system can properly scan the head image. Check coil type, phantom type, positioning, coil latches/clamps, and landmarking. If an issue is found, correct it and run the DQA II Tool again before investigating further.'
+      },
+      {
+        title: 'DQA II Error Quick-Reference Table',
+        type: 'table',
+        headers: ['DQA II Error Message', 'Quick Action'],
+        rows: [
+          ['One or more gradients appear not to be functioning at all.', 'Verify system can scan the head image normally. Run a basic head scan to confirm gradient function.'],
+          ['Z gradient coil appears to be driven by the wrong gradient input.', 'Step 1 (coil/phantom/positioning check). Review DQA exam images. Axial (Coronal) images look correct? → resolve IQ. Not correct? → gradient wiring problem (Section 3).'],
+          ['Z gradient polarity appears to be inverted.', 'Step 1. Check Coronal images. If Axial image: bar moves TOWARD GE logo/comb (inf→sup) = polarity flipped → Section 3. Bar moves AWAY = IQ issue. Resolve IQ or check wiring.'],
+          ['Phantom used appears to be wrong and/or severely mispositioned.', 'Step 1. Visually verify phantom is centered in bore before scanning.'],
+          ['Phantom is offset more than ±36 mm along Z.', 'Step 1. Verify correct phantom, centered in head coil. Check Laser Light Alignment (axial light aligned to phantom crosshairs). Verify isocenter Z and MR confess file settings.'],
+          ['X and Y gradient coil inputs appear to be swapped.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X and Y gradient polarities appear to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X gradient polarity appears to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['Y gradient polarity appears to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['X and Z gradient polarities appear to be inverted.', 'Step 1. Review images for noise/distortion. Refer to gradient wiring checks (Section 3).'],
+          ['Phantom appears to be rotated 16° about physical Z axis.', 'Step 1. Verify phantom NOT rotated in head coil. Positive Z rotation value → rotate phantom CLOCKWISE (viewed from front). Reposition carefully.'],
+          ['Phantom appears to be rotated 16° about physical Y axis.', 'Step 1. Verify phantom NOT rotated in head coil. Reposition per axis orientation guide. Avoid misaligning when repositioning.'],
+          ['Phantom center appears to be offset 20 mm along physical X.', 'Step 1. Positive X offset → move phantom to the LEFT (viewed from front).'],
+          ['Phantom center appears to be offset 20 mm along physical Y.', 'Step 1. Positive Y offset → move phantom DOWN (viewed from front).']
+        ]
+      },
+      {
+        title: 'Z Gradient Wrong Input — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, coil latches/clamps, landmarking. Correct any issues and rerun DQA II Tool.',
+          'Open the image browser and review the most recent DQA exam.',
+          'If images are labeled "Axial (Coronal)": verify at least one looks similar in shape and position of phantom features to the expected reference images.',
+          'DECISION — Axial (Coronal) image LOOKS CORRECT (even if degraded by low SNR, ghosting, or distortion): suboptimal image quality has confused the DQA II Tool. Resolve the image quality issues first, then rerun.',
+          'DECISION — Axial (Coronal) image does NOT look correct: this indicates a gradient wiring or setup problem. Proceed to gradient wiring checks (Section 3 of service manual).'
+        ]
+      },
+      {
+        title: 'Z Gradient Polarity Inverted — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, latches/clamps, landmarking.',
+          'Review the most recent DQA exam in the image browser.',
+          'If images are labeled "Coronal": verify at least one looks similar to the expected Coronal reference image.',
+          'DECISION — Coronal image looks correct (even if degraded): IQ issue. Resolve image quality before running DQA II Calibration.',
+          'DECISION — Coronal image does NOT look correct: gradient wiring/setup problem → proceed to gradient wiring checks.',
+          'If the exam contains an image labeled "Axial": the DQA II Tool made early detection of a Z gradient polarity problem from multi-slice images.',
+          'DECISION — Central bar feature moves TOWARD GE logo and comb features as slice location moves from INFERIOR to SUPERIOR: Z gradient may be polarity flipped → proceed to gradient wiring checks (Section 3).',
+          'DECISION — Central bar moves AWAY from GE logo and comb features: IQ issue has confused the tool. Resolve image quality issues first.',
+          'Review all images for degradation artifacts (noise, distortion, ghosting) and check against reference images for expected phantom appearance.'
+        ]
+      },
+      {
+        title: 'Phantom Offset >±36 mm Along Z — Step-by-Step',
+        type: 'steps',
+        steps: [
+          'Perform Step 1: check coil type, phantom type, positioning, latches/clamps, landmarking.',
+          'Confirm the correct phantom is being used.',
+          'Visually verify phantom is properly positioned and centered in the head coil.',
+          'Check Laser Light Alignment: the axial alignment light must aim straight down and line up with the crosshairs on the DQA phantom.',
+          'Verify the isocenter Z value is close to the default for this magnet type.',
+          'Verify that the proper magnet and magnet cover options are correctly set in the MR confess file.'
+        ]
+      },
+      {
+        title: 'Phantom Position & Rotation Correction Reference',
+        type: 'table',
+        headers: ['Error', 'Direction Convention', 'Correction'],
+        rows: [
+          ['Rotated 16° about Z axis', 'Positive value = needs clockwise rotation (viewed from front)', 'Rotate phantom CLOCKWISE when viewed from front'],
+          ['Rotated 16° about Y axis', 'Per axis orientation guide in service manual', 'Re-position phantom; avoid misalignment during repositioning'],
+          ['Offset 20 mm along X', 'Positive X value = phantom is too far to the right', 'Move phantom to the LEFT (viewed from front)'],
+          ['Offset 20 mm along Y', 'Positive Y value = phantom is too high', 'Move phantom DOWN (viewed from front)']
+        ]
+      }
+    ],
+    tags: ['DQA', 'DQA II', 'calibration', 'gradient', 'phantom', 'Z gradient', 'polarity', '15x', 'image quality', 'IQ', 'confess', 'laser alignment', 'coil positioning'],
+    source: 'GE Signa 15x Service Manual — DQA II Tool Errors (15x_DQA_II_Tool_Problems.htm)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_003',
+    title: 'GE MR 450w / 750w — Communication Links Reference',
+    system: 'GE MRI',
+    category: 'System Architecture',
+    diagnosticPath: 'N/A — Reference guide for system communication links',
+    purpose: 'Reference guide for all data communication links in GE Discovery MR450w and MR750w systems. Essential for diagnosing intermittent communication faults, identifying correct fiber/cable paths during swaps, and understanding which boards connect to which subsystems.',
+    componentsTested: ['IRF3 / CAM Chassis', 'Remote Receiver Module (RRx)', 'ICN1 / ICN2', 'GMC Board / Cronus Chassis', 'XGA Amplifiers', 'XPS Gradient Hardware', 'RF Control Board (RFCB)', 'SRI4', 'In-Room Display (IRD)', 'PGR Cabinet Ethernet Switch'],
+    sections: [
+      {
+        title: 'Communication Links Overview Table',
+        type: 'table',
+        headers: ['Link Name', 'Medium', 'Connects', 'Data Transferred'],
+        rows: [
+          ['DVMR Link', 'Dual fiber optic', 'IRF3 board (CAM chassis) ↔ various components throughout system', 'Status and control information'],
+          ['VRF Data Link', 'Dual fiber optic', 'Remote Receiver Module (RRx) ↔ ICNs', 'Image raw data'],
+          ['Infiniband Link', 'Copper', 'ICN1 ↔ ICN2 (32-channel systems ONLY — not used in MR750)', 'Image data between ICNs'],
+          ['XGD Data Fiber Link', 'Dual fiber optic', 'GMC board (Cronus chassis) ↔ each XGA amplifier', 'Waveform data, status and control information'],
+          ['CAN Link', 'Dual fiber optic + copper (combined)', 'Various components throughout system', 'Status and control data'],
+          ['Octavius Link', 'Copper', 'Cronus chassis ↔ XGA and XPS gradient hardware', 'Status and diagnostic data'],
+          ['Ethernet', 'Copper', 'Various components ↔ 16-port Ethernet switch (PGR cabinet)', 'Status, control, and image data'],
+          ['STRB Fiber Link', 'Single fiber optic (unidirectional)', 'RRx1 → RF Control Board (RFCB) and SRI4', 'Control information from RRx1'],
+          ['One Wire Network', 'Copper (often integrated into component cables, not dedicated)', 'Various circuit boards throughout equipment room', 'Secondary status and diagnostic data'],
+          ['In-Room Display Fiber Link', 'Dual fiber optic', 'In-Room Display (IRD) ↔ In-Room Display Controller (IRDC) in GOC', 'Video and status data'],
+          ['Clock Synchronization Fibers', 'Single fiber optic', 'XGA and XPS components (clock signals only)', 'XGA and XPS clock signals — fiber can be swapped between XGA and XPS']
+        ]
+      },
+      {
+        title: 'Key Diagnostic Notes',
+        type: 'steps',
+        steps: [
+          'DVMR Link (dual fiber): If IRF3 board faults appear across multiple subsystems simultaneously, suspect the DVMR link first.',
+          'VRF Data Link (dual fiber): Raw image data path — faults here cause image artifacts or complete image loss even when scanning appears to proceed normally.',
+          'Infiniband Link (copper, 32-ch only): Only present on 32-channel MR450w systems. NOT used in MR750. Faults cause ICN communication errors.',
+          'XGD Data Fiber Link (dual fiber): Waveform data path to XGA amplifiers — faults cause gradient waveform errors or gradient amplifier faults.',
+          'CAN Link (fiber + copper hybrid): Mixed medium — start with the fiber segments when troubleshooting, then check copper.',
+          'Octavius Link (copper): Diagnostic data path to gradient hardware — errors here appear as gradient status/diagnostic failures even if gradient hardware is functional.',
+          'Ethernet (copper, 16-port switch in PGR): Common path for status and image data — check the PGR cabinet Ethernet switch and all patch cables when multiple network-related faults appear.',
+          'STRB Fiber (unidirectional, single): Control from RRx1 only — if RF control faults appear at RFCB or SRI4 without obvious RF hardware failure, check this fiber.',
+          'One Wire Network: Secondary diagnostic only — not a primary data path. Often shared with component cables rather than dedicated. Check with service diagnostics if 1-wire errors appear.',
+          'Clock Sync Fibers: Can be swapped between XGA and XPS for isolation testing. If gradient timing issues appear on one axis only, try swapping the clock fiber between XGA and XPS to see if the fault follows the fiber.'
+        ]
+      }
+    ],
+    tags: ['communication links', '450w', '750w', 'fiber optic', 'DVMR', 'VRF', 'infiniband', 'XGD', 'CAN', 'octavius', 'ethernet', 'STRB', 'one wire', 'IRD', 'clock', 'ICN', 'RRx', 'GMC', 'Cronus', 'XGA', 'XPS', 'RFCB', 'SRI4'],
+    source: 'GE MR 450w/750w Communication Links Reference (450w_750w_Communication_Links.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_004',
+    title: 'GE Discovery MR450w — Patient Table Troubleshooting',
+    system: 'GE MRI',
+    category: 'Patient Table',
+    diagnosticPath: 'N/A — Mechanical/electrical troubleshooting reference',
+    purpose: 'Comprehensive symptom-to-resolution troubleshooting guide for the GE Discovery MR450w patient table. Covers table arm board, table raising/lowering, table docking/undocking, long drive motor, port cover, and cradle motion failures. Use when the table fails to move, latch, dock, or produces abnormal noise.',
+    componentsTested: ['Table Arm Board / Armboard Clutches', 'Safety Lever', 'Cradle / Cradle Interlock', 'Hydraulic System', 'Rotary Pump / Reciprocating Pump', 'Long Drive Motor', 'Electromagnetic Clutch', 'Drive Belt / Rigibelt', 'Dock Hook / Mechanical Dock Linkage', 'Electrical Dock Linkage / Connector Return Spring', 'Port Cover', 'String Encoder', 'PHPS (Power Hub Power Supply)', 'SRI / SRI-4 (Scan Room Interface)', 'TIB (Table Interface Box)', 'M3303 Cable'],
+    sections: [
+      {
+        title: 'Table Arm Board',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['The armboard does not latch.', 'Armboard clutches', 'Cable too tight to release the clutch', 'Remove handle cover, loosen adjustment screw until clutch can lock. If loosening resolves it, no replacement needed. If not, replace armboard.'],
+          ['The armboard will not release with the handle.', 'Handle mechanism', 'Handle cannot return to home position', 'Replace armboard.'],
+          ['The armboard will not release with the handle.', 'Handle mechanism', 'Arms, crimps, or cables broken/worn', 'Remove handle cover, examine arms and cables for breaks or wear. Replace armboard if confirmed.'],
+          ['The armboard will not release with the handle.', 'Release cable', 'Gap between arm and baseplate pin', 'Remove handle cover, turn adjustment screw to reduce gap to 0 mm. If armboard releases after adjustment, no replacement needed. Otherwise replace armboard.'],
+          ['The armboard will not release with the handle.', 'Armboard clutches', 'Clutch shoulder screw (large slotted brass screw) is loose', 'Remove armboard, examine clutch shoulder screw. If loose, replace armboard.']
+        ]
+      },
+      {
+        title: 'Table Lowering',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not lower with dock or table down pedal.', 'Safety lever', 'Safety lever is lowered', 'Raise the safety lever.'],
+          ['Table does not lower with dock or table down pedal.', 'Cradle position', 'Cradle not in home position', 'Press home button on magnet or pull egress handle to move cradle to home. Then lower table using down pedal.'],
+          ['Table does not lower with dock or table down pedal.', 'Cradle interlock', 'Interlocks holding down link bar above cylinder down lever; interference from cables', 'Press home button or pull egress handle. Adjust flipper interlock cable per flipper interlock adjustment procedure.'],
+          ['Table does not lower with dock or table down pedal.', 'Down pedal link bracket', 'Down link bar resting on top of cylinder down lever', 'Adjust dock push rod to create 1/16 to 1/8 inch gap between down link bar and cylinder down lever. Check high pressure line routing.'],
+          ['Table lowers slower with dock down pedal than table down pedal.', 'Push rod', 'Push rod not adjusted correctly', 'Adjust push rod until gap between down link bar and cylinder down lever is 1/16 to 1/8 inch.']
+        ]
+      },
+      {
+        title: 'Table Raising',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not raise with reciprocating pump.', 'Cylinder down lever', 'Stuck in open position', 'Examine dock push rod setting — not pushing cylinder down lever when both down pedals are not depressed. Adjust push rod to 1/16–1/8 inch gap.'],
+          ['Table does not raise with reciprocating pump.', 'Reciprocating pump linkages', 'Linkages worn too much', 'Examine reciprocating pump linkages for wear, verify all pins installed. Replace any worn linkages.'],
+          ['Table does not raise with reciprocating pump.', 'Hydraulic system', 'Too much air in system', 'Bleed air out of hydraulic system.'],
+          ['Table does not raise with reciprocating pump.', 'Hydraulic system', 'Not enough hydraulic oil', 'Compare oil fill level to fill line on reservoir with table in down position. Add oil as required.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Cylinder down lever', 'Stuck in open position', 'Examine cylinder down lever — must return home without either down pedal depressed. Release lever from open position.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Rotary pump coupler', 'Dock motor coupler and rotary pump coupler misaligned', 'Verify switch inside dock is operating correctly. Align rotary pump; do dock and table alignment procedure.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Rotary pump coupler', 'Dock motor coupler and/or rotary pump coupler worn', 'Visually examine each coupler for significant wear. Replace worn coupler.'],
+          ['Table does not raise with rotary pump (motor operates, table does not).', 'Hydraulic system', 'Not enough hydraulic oil', 'Add oil to fill line.']
+        ]
+      },
+      {
+        title: 'Long Drive Motor Failures',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Cradle does not move.', 'Cable connection', 'Table not electrically docked', 'Electrically dock the table.'],
+          ['Cradle does not move.', 'Cable connection', 'Cables disconnected — motor power cable (motor not spinning), motor encoder cable (motor not spinning), electromagnetic clutch cable (motor spins but cradle does not move)', 'Connect disconnected cables.'],
+          ['Cradle does not move.', 'Cable connection', 'Debris in cable connection at I/O panel (ISC cabinet) or dock connectors', 'Remove debris from cable connectors.'],
+          ['Cradle does not move.', 'Rigibelt', 'Locking patch M5 screws have loosened or backed out of rigibelt mounting block', 'Replace original screws with locking patch M5 screws, or adjust torque.'],
+          ['Cradle only moves ~100 mm.', 'Secondary latch', 'Adjustment out of spec or latch failed', 'Adjust or replace secondary latch.'],
+          ['Cradle only moves ~2 mm.', 'Primary latch', 'Adjustment out of spec, latch failed, or incorrect tuning file', 'Adjust or replace primary latch; confirm software revision.'],
+          ['Cradle stuck at 2000–2380 mm position.', 'Table/bridge alignment', 'Cradle making contact with tabletop or bridge; rigibelt connection block hitting tabletop or bridge cover plate', 'Examine and re-align tabletop and bridge.'],
+          ['Long drive motor spinning, cradle does not move, only lower half of electromagnetic clutch rotates.', 'Electromagnetic clutch power', 'No 22.5V power when table electrically docked — check clutch cable and DCPS', 'Restore power to electromagnetic clutch.'],
+          ['Long drive motor spinning, cradle does not move, only lower half of electromagnetic clutch rotates.', 'Electromagnetic clutch', 'Has 22.5V but not engaged, or engaged but slipping and alignment not within spec', 'Replace electromagnetic clutch.'],
+          ['Lower half of electromagnetic clutch does not rotate.', 'Drive belt', 'Belt broken or loose', 'Replace drive belt, or tighten to 93.5–106 N using sonic tool or 3 mm per pen tool.'],
+          ['Lower half of electromagnetic clutch does not rotate.', 'Motor', 'Motor failed (all cable connections clean)', 'Replace motor.'],
+          ['Cradle only moves ~20 mm when cradle movement button pressed.', 'String encoder', 'Encoder string broken or encoder failed', 'Replace encoder.'],
+          ['Cradle only moves ~20 mm when cradle movement button pressed.', 'Encoder string mounting', 'Screw holding encoder string to interface block is broken', 'Replace screw and interface block; attach encoder string to interface block.']
+        ]
+      },
+      {
+        title: 'Long Drive Noise',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Cradle movement makes noise.', 'Table/bridge', 'Table or bridge misaligned', 'Examine and re-align tabletop and bridge.'],
+          ['Cradle movement makes noise.', 'Object interference', 'Unexpected object on tabletop or bridge surface', 'Remove any objects from tabletop and/or bridge surface.'],
+          ['Cradle movement makes noise.', 'Cradle wheel', 'Wheel(s) worn out or failed', 'Replace any worn or failed wheels.'],
+          ['Cradle movement makes noise.', 'Long drive belt', 'Drive belt tension too high', 'Adjust drive belt tension or replace drive belt if required.'],
+          ['Cradle movement makes noise.', 'Rigibelt', 'Rigibelt jumping teeth', 'Replace rigibelt drive.'],
+          ['Cradle movement makes noise.', 'Gearbox', 'Gearbox failed', 'Replace motor and gearbox assembly.'],
+          ['Cradle movement makes noise.', 'Primary latch', 'Making contact with bottom of cradle', 'Examine and adjust primary latch. Replace if required.'],
+          ['Cradle movement makes noise.', 'Secondary latch', 'Making contact with bottom of cradle', 'Examine and adjust secondary latch. Replace if required.'],
+          ['Cradle movement makes noise.', 'Cradle flap', 'Scrubbing with tabletop or tabletop rear cover', 'Replace cradle flap.'],
+          ['Cradle movement makes noise.', 'String roller', 'Encoder string roller has friction with roller shaft surfaces', 'Add grease between encoder string roller and surfaces that hold the roller shaft.']
+        ]
+      },
+      {
+        title: 'Table Docking',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not mechanically dock.', 'Dock hook', 'Dock hook tension too high (attempts to engage but cannot rotate over center)', 'Do dock hook tension adjustment.'],
+          ['Table does not mechanically dock.', 'Dock hook', 'Dock hook has low/no tension, or rotates back to undocked position after failing to engage', 'Replace dock hook if broken; do dock hook tension adjustment.'],
+          ['Table does not mechanically dock.', 'Dock link screw', 'Dock link screw set incorrectly — front of dock hook weldment should barely touch bumper tube when undocked', 'Adjust dock link screw to within specifications.'],
+          ['Table does not mechanically dock.', 'Dock link screw', 'Bushing worn at screw contact point', 'Replace worn bushing.'],
+          ['Table does not mechanically dock.', 'Rotary pump oil catch pan interference', 'Table too low relative to dock, causing oil catch pan to interfere with dock nose cover', 'Inspect interference. Do table alignment procedure; adjust caster height if required.'],
+          ['Table does not mechanically dock.', 'Mechanical dock linkage', 'Jammed from pressing mechanical and electrical dock pedals simultaneously', 'Release jammed linkage by pulling mechanical linkage forward and/or pushing electrical sled backward. Do not touch electrical dock connector pins.'],
+          ['Table does not mechanically dock.', 'Enclosure interference', 'Interference between lower base enclosure and dock enclosure', 'Adjust mounting of enclosure to avoid interference.'],
+          ['Table does not electrically dock; electrical dock pedal requires little/no force; electrical sled does not move forward.', 'Electrical dock linkage', 'Broken or stuck electrical dock linkage hook (under front of table near rotary pump; or below bell crank pin)', 'Replace broken linkage; or press electrical dock pedal, then press mechanical dock pedal, hold mechanical pedal down, release electrical dock pedal.'],
+          ['Table does not electrically dock; electrical dock pedal requires high force as sled starts to move.', 'Table alignment', 'Electrical sled pins hitting dock, not aligned to holes on docking connector', 'Do table alignment adjustment procedure.'],
+          ['Table does not electrically dock; electrical dock pedal requires high force as sled starts to move.', 'Connector return spring', 'Rocker clamps on either side of electrical sled slipped early and hit dock', 'Rotate rocker clamps back to retracted position. Replace any broken connector return springs above the sled.']
+        ]
+      },
+      {
+        title: 'Table Undocking & Port Cover',
+        type: 'table',
+        headers: ['Symptom', 'Failure Point', 'Possible Cause', 'Resolution'],
+        rows: [
+          ['Table does not undock; no pedal resistance.', 'Undock linkage components', 'Undock pedal fails to activate undock components; white delrin undock hook block broken/missing; or flipper interlock not set correctly', 'Replace delrin undock hook block if needed. Adjust flipper interlock cable per flipper interlock adjustment procedure.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Undock linkage components', 'Undock pedal fails to activate mechanical undock; white delrin undock hook block broken/missing', 'Replace delrin undock hook block if needed.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Cradle position', 'Cradle not in home position', 'Press home button on magnet or pull egress handle to move cradle to home position.'],
+          ['Table electrically undocks but does not mechanically undock.', 'Cradle interlock', 'Interlocks holding electrical dock link bar; cable interference preventing flipper from releasing', 'Resolve interference so flipper can move freely.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Object interference', 'Object in gap between port cover and cradle cover', 'Clean gap between port cover and cradle cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cable', 'Cables interfering with brass bar of port cover', 'Re-route interfering cables.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cradle front/rear cover', 'Cover broken', 'Replace cradle front/rear cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Port cover', 'Port cover broken', 'Replace port cover.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Screws', 'Port screws loose', 'Tighten port screws.'],
+          ['P1/P2/P4 port cover will not open or close.', 'Cradle hardtop', 'Hardtop cover interferes with port cover; limit screws missing', 'Replace any missing limit screws.']
+        ]
+      },
+      {
+        title: 'Cradle Motion Failures (Electronic)',
+        type: 'table',
+        headers: ['Symptom', 'Error Code', 'Failure Point', 'Troubleshooting', 'Resolution'],
+        rows: [
+          ['Cradle does not move.', 'N/A', 'Cable connection — cables disconnected', 'Dock motor and long drive motor share PHPS 60V supply. Reseat cable runs M3358, M3369, M3303. Reseat M3311 and M3315 by temporarily bypassing filters and pigtail cables, connecting directly to PHPS.', 'Reseat cables M3358, M3369, M3303.'],
+          ['Cradle does not move.', 'N/A', 'M3303 cable — may be damaged when pulled through overhead cable trough during installation', 'Examine M3303. See cradle motion hardware documentation.', 'Replace M3303.'],
+          ['Cradle exhibits uncontrolled acceleration when Cradle In or Cradle Out pressed.', 'N/A', 'Cable connection — cables disconnected', 'Reseat cable runs M3369, M3303, and PHPS J39.', 'Reseat cables.'],
+          ['Cradle exhibits uncontrolled acceleration when Cradle In or Cradle Out pressed.', 'N/A', 'Cable connection (J3) — damaged pin', 'Examine J3 on right side of magnet for damaged pins.', 'Replace M3303.'],
+          ['Cradle visibly shakes during travel into or out of bore.', 'N/A', 'Drive belt — improper installation', 'Examine whether drive belt is installed correctly.', 'Reinstall drive belt per Installation Manual.'],
+          ['Cradle visibly shakes during travel into or out of bore.', 'N/A', 'Cable connection — damaged pin in SRI J21 to PHPS2 J39 path', 'Examine all connections in cable path from SRI J21 to PHPS2 J39. Try routing cable M3311 directly to PHPS2 J36, temporarily bypass filter at PHPS J36.', 'Replace cable(s) with damaged pins.'],
+          ['Cradle moves short distance, stops, IRD not showing or not changing.', 'N/A', 'Cable connection — position encoder signals A or B missing', 'Reseat position encoder cable at TIB J2. Examine and reseat cable run M3351 at TIB J5 and SRI-4 J2.', 'Reseat cables.'],
+          ['Cradle moves short distance, stops, IRD not showing or not changing.', 'N/A', 'Encoder — encoder broken', 'After checking cable connections, use SRI real-time data diagnostic to verify encoder is sending signals.', 'Replace position encoder.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'Cable connection or damaged pin (J3)', 'Check PHPS2 and connection between SRI J21 and PHPS2 J39. Examine J3 on right side of magnet.', 'Reseat or replace M3303.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'PHPS2 — PHPS2 has failed', 'If above action solved problem, no further action. If not, replace PHPS2 and verify SRI motion test is successful.', 'Replace PHPS2.'],
+          ['Cradle does not always respond when Cradle In or Advance to Scan pressed; IRD updates.', '2268821, 2268879', 'SRI — SRI has failed', 'If above actions solved problem, no further action.', 'Replace SRI.'],
+          ['Landmark advances to within 1 mm of target after Advance to Scan, then stops.', 'N/A', 'Cable connection', 'Press Advance to Scan again to advance to 0 mm. Reseat M3351 at TIB J5 and SRI-4 J2.', 'Reseat cables or replace cable from position encoder at TIB J2.'],
+          ['System halts during exam; patient not moving; log indicates cradle moved off scan plane.', '2261552', 'Cable position — M3351 too close to magnet bore or RF drive cables', 'Make sure patient is not moving. Update route of cable run M3351.', 'Move cable M3351 farther from magnet bore and RF drive cables.'],
+          ['Log indicates problem with Home or EOT.', 'N/A', 'Brass plunger — stuck inside LPCA, blocking optical switch light beam', 'Optical switch LED indicator is orange when light beam is unblocked.', 'Reset the brass plungers inside the LPCA.'],
+          ['Log indicates cradle is attached while table is undocked and/or lowered.', '2268941', 'Plastic spring — spring compressed over time, blocking LPCA cradle detect switch light beam path', 'N/A', 'Replace the spring.'],
+          ['Under heavy load, cradle travels short distance and reports error; under light/no load, cradle moves normally.', '2268819', 'Long drive assembly belt — belt does not follow correct path', 'Do SRI motion test. If cradle moves freely under heavy load when detached from LPCA, use flashlight to view underside of long drive assembly and inspect belt routing path.', 'Update belt path per Installation Manual.'],
+          ['Under heavy load, cradle travels short distance and reports error; under light/no load, cradle moves normally.', '2268819', 'Assembly bolts — long assembly bolts incorrectly installed near rollers (short bolts should have been used)', 'Use flashlight to view underside of long drive assembly and illuminate space around belt rollers. Check if assembly bolts are too long and contacting rollers.', 'Swap long bolts with shorter bolts.']
+        ]
+      }
+    ],
+    tags: ['patient table', '450w', 'MR450w', 'table lowering', 'table raising', 'table docking', 'cradle', 'long drive motor', 'hydraulic', 'electromagnetic clutch', 'rigibelt', 'dock hook', 'port cover', 'PHPS', 'SRI', 'TIB', 'M3303', 'M3351', 'string encoder', 'armboard'],
+    source: 'GE Discovery MR450w Service Manual — Troubleshooting the Patient Table (450w_Troubleshooting_patient_table.pdf)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_005',
+    title: 'GE Signa HDxt 23x — HIS/RIS & Modality Worklist (MWL) Setup',
+    system: 'GE MRI',
+    category: 'HIS/RIS / DICOM Connectivity',
+    diagnosticPath: 'Common Service Desktop > [Tools icon] > Guided Install > FE Mode login (root / operator) > Connectivity > HIS/RIS',
+    purpose: 'Step-by-step procedure to set up, configure, and verify the Modality Worklist (MWL) connection between a GE Signa HDxt 1.5T (23x platform) MRI system and a hospital HIS or radiology RIS system. Covers initial configuration, all MWL sub-menus, functional verification test, and troubleshooting when the worklist is not populated. Estimated time: 15 minutes. 1 person required.',
+    componentsTested: ['HIS/RIS Network Connection', 'MWL Configuration (SCP, MWL Config Details, Return Tag, Table Column Selection, PPS)', 'DICOM Connectivity (Port 4000)', 'Scan Room Worklist Display', 'MR confess settings'],
+    sections: [
+      {
+        title: 'Pre-Requisites — Information to Collect Before Starting',
+        type: 'note',
+        content: 'Collect the following from the hospital/site network administrator BEFORE starting configuration. All entry fields are case-sensitive: (1) IP address of the HIS/RIS server, (2) Port number of the RIS system, (3) AE Title of the RIS system, (4) Host Name of the RIS system. Write these down — you will need them at multiple steps.'
+      },
+      {
+        title: 'Section 4.1 — HIS/RIS Setup Procedure',
+        type: 'steps',
+        steps: [
+          'Collect the HIS/RIS server information from the site network administrator: IP address, Port number, AE Title, Host name. Write these down — all fields are case-sensitive.',
+          'From the scan desktop, click the [Tools] icon (wrench) → [Service Desktop Manager] → [Guided Install] button.',
+          'Log in using FE Mode: username root, password operator. (NOTE: Customer may have changed the default password — contact the customer if login fails.)',
+          'Under [Connectivity], select [HIS/RIS].',
+          'In the HIS/RIS screen, enter or verify the following fields: Hospital Name, Suite ID, Host ID, Local AE Title (hostname, 1–16 chars), Local IP Address (Host IP), Local Port Number (Host Port) — set to 4000 (standard DICOM MR networking port), Netmask, DICOM Network Timeout (Slow = 300 sec), Default Router IP Address, Station Name (3–8 chars). Click [Configure].',
+          'Under [MWL Configuration], select [MWL Config Detail].',
+          'The MWL Config Details screen shows Patient Detail Fields, Exam Detail Fields, and Other Detail Fields with their DICOM tags and Required checkboxes. Select or deselect fields as the site requires. Click [Configure].',
+          'Under [MWL Configuration], select [Return Tag Configure].',
+          'The Return Tag Configuration screen shows Refresh Query Tag Fields and Caution Tag Fields with DICOM tags. Select fields the site wants refreshed in the Modality Worklist. Click [Configure].',
+          'Under [MWL Configuration], select [SCP Configure].',
+          'In the SCP Configure screen, click [New]. Enter the following from the site: Host Name, IP Address, Port Number, AE Title. Check [DefaultSelected] if this is the primary RIS server. Click [Configure].',
+          'To verify network connectivity, click the [Ping] button. NOTE: Ping may take up to 3 minutes. If Ping fails: open a command window and ping the IP address; also try telnet to the IP address from the command window.',
+          'Under [MWL Configuration], select [Table Column Selection Configure].',
+          'The Table Column Selection screen shows fields that appear in the patient record table at the top of the scan window (Worklist Type, Scheduled Time, Name, Accession, Patient ID, SPS Description, Modality, Referring Physician, Scheduled Date, Status, Local Protocol, Recommended Protocol, Caution, Perf. Physician). Select or deselect as desired. Click [Configure].',
+          'Under [MWL Configuration], select [PPS Configure]. NOTE: PPS Configure is available for 1.5T systems only at time of this document — not available for 3.0T.',
+          'Click [New], enter all PPS server fields (Host Name, IP Address, Port Number, AE Title), click [Configure].',
+          'In the scan desktop, click the dropdown on the [Refresh] button to open the RefreshData dialog. Set: Breadth of Search (Today / Any Day / Days before Today / Days after Today / Date Range) and Search RIS for (This System / This Modality / All Modalities). WARNING: Selecting "All Modalities" may cause the scanner to hang if the facility has a very large worklist. Set Auto-RefreshTiming as requested by site. Click [Save].'
+        ]
+      },
+      {
+        title: 'Section 4.2 — Functional Verification',
+        type: 'steps',
+        steps: [
+          'In the scan desktop, click the [Work List] icon. The worklist should display with scheduled patients.',
+          'To test connectivity: click the [New Patient] icon.',
+          'On the scan screen enter: Patient ID = geservice, Weight = 111.',
+          'Click the [Save] button.',
+          'In the Search/Refresh box, click the [Search Data] button. The Search Data window opens.',
+          'In the Search Data window, configure the search: enter Name, Patient ID, Accession, or Procedure ID; set Breadth of Search (Today / Any Day / Days Before/After / Date Range); set Search RIS for (This System / This Modality / All Modalities).',
+          'Click [Search]. Results should appear in the list above the patient information area.',
+          'If results appear correctly, MWL is working. If not, proceed to Troubleshooting below.'
+        ]
+      },
+      {
+        title: 'Section 4.3 — Troubleshooting When MWL Does Not Work',
+        type: 'steps',
+        steps: [
+          'From the Common Service Desktop, select [Guided Install] button and log in to FE Mode (root / operator).',
+          'Under [Connectivity], select [HIS/RIS]. Verify that Hospital Name, Suite ID, Host ID, Local AE Title, Local Port Number (should be 4000), and Station Name are all correct for this system.',
+          'Under [MWL Configuration], select [SCP Configure]. Verify that the Host Name, IP Address, Port Number, and AE Title are all correct for the RIS server (from the site network administrator).',
+          'Click the [Ping] button to verify network connectivity. NOTE: Ping may take up to 3 minutes.',
+          'DECISION — Ping fails: Open a command window and ping the IP address manually. Also try telnet to the IP address. If both fail, the issue is a network/firewall problem — escalate to site IT.',
+          'DECISION — Ping succeeds but worklist still empty: Verify that the AE Title matches exactly what the RIS system expects (case-sensitive). Verify the Port Number matches the RIS system (not necessarily 4000 — use what the site administrator provided).',
+          'Under [Home], select [Verification].',
+          'In the Verification screen, click [Configure] and confirm that no errors are present and all system parameters (Field Strength, Package Name, Gradient Type, etc.) are correct for this installation.',
+          'Select [File] > [Quit] to exit Guided Install.',
+          'If MWL is still not working after all above steps, escalate to GE TSM — the issue may be in the RIS system configuration on the hospital side.'
+        ]
+      },
+      {
+        title: 'Key Parameters Reference',
+        type: 'table',
+        headers: ['Parameter', 'Location in Guided Install', 'Notes'],
+        rows: [
+          ['Hospital Name', 'Connectivity > HIS/RIS', 'Must match RIS system record for this scanner'],
+          ['Local AE Title', 'Connectivity > HIS/RIS', 'Hostname, 1–16 chars, case-sensitive — must match what RIS uses to identify this scanner'],
+          ['Local Port Number (Host Port)', 'Connectivity > HIS/RIS', 'Set to 4000 (standard DICOM MR networking port)'],
+          ['DICOM Network Timeout', 'Connectivity > HIS/RIS', 'Set to Slow (300 sec) for most sites'],
+          ['SCP Host Name', 'MWL Configuration > SCP Configure', 'Site name — from network administrator'],
+          ['SCP AE Title', 'MWL Configuration > SCP Configure', 'MWL Application Entity title of RIS system — case-sensitive'],
+          ['SCP IP Address', 'MWL Configuration > SCP Configure', 'IP address of the RIS server'],
+          ['SCP Port Number', 'MWL Configuration > SCP Configure', 'Port number of RIS system — may NOT be 4000; use site-provided value'],
+          ['RefreshData > All Modalities', 'Scan Desktop > Refresh dropdown', 'WARNING: May cause scanner hang if facility worklist is very large'],
+          ['PPS Configure', 'MWL Configuration > PPS Configure', '1.5T systems ONLY — not available for 3.0T at time of this document']
+        ]
+      }
+    ],
+    tags: ['HIS', 'RIS', 'MWL', 'modality worklist', 'DICOM', 'SCP', 'AE title', 'worklist setup', '23x', 'HDxt', '1.5T', 'connectivity', 'network', 'PPS', 'guided install', 'FE mode'],
+    source: 'GE Signa HDxt 1.5T Service Methods — HIS/RIS Setup and Troubleshooting, Direction 5440001-3 Rev 12.0 (23x_MWL_setup.pdf)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_006',
+    title: 'GE ACGD Cabinet — Gradient Amplifier Fault Troubleshooting',
+    system: 'GE MRI',
+    category: 'Gradient System',
+    diagnosticPath: 'Check error log for fault codes → refer to flowcharts below by fault number',
+    purpose: 'Complete troubleshooting guide for the GE ACGD (Advanced Constant Gradient Driver) Cabinet. Covers SGA and SGA-PS fault codes with specific actions, PDU faults, Power Supply LED diagnostics, and hardware isolation procedures for GP, Power Supply, and SGA components. Rev 4 (Feb 29, 2008).',
+    componentsTested: ['SGA (Switching Gradient Amplifier) — X, Y, Z axes', 'SGA-PS (SGA Power Supply)', 'GP (Gradient Processor)', 'PDU (Power Distribution Unit)', 'IPG (Internal Pulse Generator)', 'TYME Board', 'BRM (Bus Rail Module) Cables', 'Gradient Coils'],
+    sections: [
+      {
+        title: 'Fault Priority Order — Check in This Sequence',
+        type: 'steps',
+        steps: [
+          'IMPORTANT: If any gradient cables are swapped between different axes or polarities for troubleshooting, perform the Geometry Verification procedure to verify gradient cables are returned to their original positions before returning to service.',
+          'Step 1 — Check for SGA Rollover Fault (2244582, 2244583, 2244584). If present: STOP — do not proceed to other faults.',
+          'Step 2 — Check for SGA Overrange Fault (2244579, 2244580, 2244581). If present: STOP and ignore all other faults.',
+          'Step 3 — Check for SGA PS Cable Off Fault (2244586). If present: STOP.',
+          'Step 4 — Check for SGA PS Power Off Fault (2244587). If present: STOP.',
+          'Step 5 — Work through the remaining faults in the ACGD Fault Tree (see error messages table below), following directions in each error message.'
+        ]
+      },
+      {
+        title: 'SGA and SGA-PS Error Messages (Table 3-1)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244570', 'SGA_Failed_Ready', 'SGA _ Axis failed to go to Ready when commanded', '1. G_Enable test point on front of SGA J2 must be HIGH; replace SGA axis. 2. Check cable between GP and SGA. 3. Replace GP.'],
+          ['2244571', 'SGA_Cable_Off_Fault', 'GP reporting SGA _ Axis cable off fault', '1. Check cable between GP and SGA. 2. Replace GP. 3. Swap SGAs and replace appropriate axis.'],
+          ['2244572', 'SGA_Power_Off_Fault', 'GP reporting _ Axis SGA Power Off', '1. Check 208V line cable is fully seated between SGA and PDU. 2. Replace SGA.'],
+          ['2244573', 'SGA_WF_PSUV_Fault', 'GP reporting _ Axis SGA internal wiring fault and internal Power Supply under voltage', '1. TPS Reset. 2. Replace SGA.'],
+          ['2244574', 'SGA_OC_Fault', 'GP reported _ Axis SGA over current fault', '1. Check output cabling to the coil. 2. Replace SGA.'],
+          ['2244575', 'SGA_OV_Fault', 'GP reported _ Axis SGA over voltage fault', '1. If no other faults reported, replace SGA. 2. See other faults.'],
+          ['2244576', 'SGA_UV_Fault', 'GP reported _ Axis under voltage fault', '1. If no other faults reported, replace SGA. 2. See other faults.'],
+          ['2244577', 'SGA_IDIST_Fault', 'GP reported _ Axis Current Distortion Fault', '1. Check L coil calibration. 2. Run Gradient Driver Tests to isolate FRU. 3. If diagnostics pass, write CQA.'],
+          ['2244578', 'SGA_OT_Fault', 'GP reported _ Axis SGA Over Temperature Fault', 'Replace SGA.'],
+          ['2244579', 'X_SGA_OVRANGE_Fault', 'X Axis Gradient data over range — GP detected error in incoming high-speed data from IPG', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244580', 'Y_SGA_OVRANGE_Fault', 'Y Axis Gradient data over range', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244581', 'Z_SGA_OVRANGE_Fault', 'Z Axis Gradient data over range', 'Usually a PSD problem; ignore all other faults except Rollover 2244582.'],
+          ['2244582', 'X_SGA_RollOver_Fault', 'X Axis Gradient data rollover — digital DC offset compensation caused data to rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244583', 'Y_SGA_RollOver_Fault', 'Y Axis Gradient data rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244584', 'Z_SGA_RollOver_Fault', 'Z Axis Gradient data rollover', '1. Check DC offset calibration. 2. Check PSD application. 3. Write CQA.'],
+          ['2244585', 'SGAPS_Ready_Fault', 'SGA Power Supply failed to go to ready when commanded or came out of Ready', '1. Press Reset Button on SGA PS. 2. If ENABLE test point on SGA-PS J2 connector is HIGH, replace SGA-PS. 3. Check cable from GP to SGA-PS. 4. Replace GP.'],
+          ['2244586', 'SGAPS_Cable_Off_Fault', 'GP is reporting a SGA Power Supply Cable Off Fault', '1. Check cable between GP and SGA-PS. 2. Replace SGA-PS.'],
+          ['2244587', 'SGAPS_Power_Off_Fault', 'GP is reporting SGA-PS Power Off', '1. Check 420V power breaker on PDU; if tripped, replace SGA-PS — do NOT cycle power. 2. Make sure 420V power line is fully seated between PDU and SGA-PS. 3. Push EMO Reset Switch on PDU. 4. Replace SGA-PS.'],
+          ['2244588', 'SGAPS_WF_PSUV_Fault', 'GP is reporting SGA-PS internal wiring fault or internal power supply under voltage', '1. Reseat SGA-PS connectors. 2. Replace SGA-PS.'],
+          ['2244589', 'SGAPS_OT_Fault', 'GP reported a SGA-PS over temp fault', '1. Wait at least 5 minutes for cabinet to cool. 2. Check fan phase rotation, fan filter, and make sure gradient cabinet rear door is closed. 3. Check SGA-PS.'],
+          ['2244590', 'SGAPS_OC_Fault', 'SGA-PS over current fault', '1. Check SGA-PS LEDs to determine which SGA axis is source of problem and replace it. 2. Replace SGA-PS. 3. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244591', 'SGAPS_OV_Fault', 'SGA-PS over voltage fault', '1. Check SGA-PS LEDs; if BUS_OV LED lit, check PDU 420V output — if primary, replace SGA-PS. 2. If OV_X, Y, Z LED lit, swap military connectors to isolate SGA vs. SGA-PS. 3. Replace SGA-PS. 4. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244592', 'SGAPS_UV_Fault', 'SGA-PS Under Voltage Fault', '1. Check SGA-PS LEDs; if BUS_UV LED lit, check PDU 420V output — if primary, replace SGA-PS. 2. If UV_X, Y, Z LED lit, swap military connectors to isolate SGA vs. SGA-PS. 3. Replace SGA-PS. 4. Power cycle ACGD power breaker on PDU to recover.'],
+          ['2244593', 'SGA_Failed_Standby', 'SGA _ Axis failed to go to Standby when commanded', '1. If G_ENABLE test point on front of SGA J2 connector is LOW, replace SGA Axis. 2. Check cable between GP and SGA. 3. Replace GP.'],
+          ['2244594-2244596', 'X/Y/Z_Failed_Recovery', 'X/Y/Z Axis gradient error detected; recovery in progress', 'Ignore.'],
+          ['2244597', 'Recovery_Done', 'Gradient system on _ axis recovered successfully — no faults at present time', 'Ignore.'],
+          ['2245044', 'Current Driver Tests', 'GP reported an X Axis SGA Internal Wiring or Internal Power Supply Under Voltage fault', '1. Cycle two breakers on the PDU. 2. Replace SGA.']
+        ]
+      },
+      {
+        title: 'Software Error Messages (Table 2-1)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244500', 'Invalid Update Error', 'Internal GP software error — invalid selection for update mode', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244501', 'Undef_Interrupt', 'Internal GP software error', '1. Check GP Board LED — blinking for 5 seconds. 2. Software bug; write CQA.'],
+          ['224502', 'Invalid_TP', 'Internal GP software error', '1. Check GP Board LED — blinking for 5 seconds. 2. Software bug; write CQA.'],
+          ['224530', 'Undef_MDS_OPCODE', 'Internal GP software error — GP received undefined opcode from SPI MDS Packet', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244540', 'Invalid_Axis', 'Internal GP software error — number of axis not between Value and Value (SMOD or debugger invalid info)', '1. Software bug; write CQA.'],
+          ['2244541', 'Bad_PS_Level', 'Internal GP software error — SPI specified undefined value in MDS packet', '1. Check MDS link connection. 2. Software bug; write CQA.'],
+          ['2244542', 'No_PS_Level_Stdby', 'IPG attempted to command gradient axis to Standby before sending GIP_CONFIG packet to GP', 'Check IPG.'],
+          ['2244543', 'No_PS_Level_Rdy', 'IPG attempted to command gradient axis to Ready before sending GIP_CONFIG packet to GP', 'Check IPG.'],
+          ['224607', 'ADC Error', 'Internal GP software error — unavailable signal for selection on ADC Multiplexor', 'If seen in field, write CQA.']
+        ]
+      },
+      {
+        title: 'Hardware Error Messages (Table 2-2)',
+        type: 'table',
+        headers: ['Error Code', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244544', 'GRAM_Tune_Verify', 'GP unsuccessful loading/verifying GP digital tuning values for _ Axis', 'Replace GP.'],
+          ['2244605', 'Framing Error', 'Hardware Error — Gradient data framing error. GP reported a data framing error', '1. Check fiber optic clock cable between Systems Cabinet and GP. 2. Check IPG, TYME, and GP. 3. Run fiber optic diagnostics.'],
+          ['2244606', 'Clock Stop Error', 'Hardware Error — No Gradient Clock. Gradient clock stop occurred; GP stopped receiving gradient clock from IPG', '1. Check connection between TYME Board and GP Board. 2. Check IPG, TYME, and GP. 3. Run fiber optic diagnostics.']
+        ]
+      },
+      {
+        title: 'PDU Fault Symptoms and Causes (Table 4-1)',
+        type: 'table',
+        headers: ['Symptom', 'Possible Cause(s)'],
+        rows: [
+          ['Bus OV, Bus UV, and PSUV faults in power supply', '1. PDU tapped wrong. 2. Inadequate power feed/UPS.'],
+          ['Power supply IGBT failure; PSUV faults', 'Unbalanced voltages or missing phases — indicates a feeder, PDU transformer, or internal wiring problem.'],
+          ['E-Off not working or E-Stop contactor will not pick up', '1. A connector may be loose on the PDU control board. 2. Board may be bad.'],
+          ['NOTE', 'GE recommends a 160kVA UPS from Powerware. Other UPS\'s or line regulators can cause PDU or PS Problems.']
+        ]
+      },
+      {
+        title: 'Power Supply LED Indicators (Table 6-1)',
+        type: 'table',
+        headers: ['LED(s)', 'Function / Meaning'],
+        rows: [
+          ['ISECX, ISECY, ISECZ', 'Indicate secondary currents in power supply for each axis. Light up when the SGA for that axis pulls current from the power supply.'],
+          ['IPX OC, IPY OC, IPZ OC', 'Indicate over currents in transformer primaries. Uncommon fault — would indicate a shorted transformer primary.'],
+          ['ISX OC, ISY OC, ISZ OC', 'Indicate over currents in transformer secondary. Two causes: a blown IGBT in the SGA, or a shorted diode module in the power supply.'],
+          ['OVX, OVY, OVZ', 'Indicate over voltages on output of power supply. Loose connectors can cause this problem.'],
+          ['UVX, UVY, UVZ', 'Indicate under voltages on output of power supply. Can be caused by shorted semiconductors in SGA or power supply.'],
+          ['ITANK OC', 'Indicates sum of transformer primary currents is too large — heavy loads on all three axes at once.'],
+          ['BUS OV', 'Indicates an over voltage on the input bus of the power supply. Check PDU tapping and measure 420 VAC on terminal block in back of power supply.']
+        ]
+      },
+      {
+        title: 'Hardware Fault Isolation — Step-by-Step Procedure',
+        type: 'steps',
+        steps: [
+          'Start: A scan error is occurring on a specific axis (X, Y, or Z).',
+          'Step 1 — Swap the faulting axis data cable (fiber) to the GP with the corresponding cable from another axis. Rescan.',
+          'DECISION — Fault changes axis: Problem is NOT with the GP. Continue to Step 2.',
+          'DECISION — Fault does NOT change axis: GP is bad. Swap the GP.',
+          'Step 2 — Determine if this is an SGA PS fault.',
+          'DECISION — SGA PS fault: Restore data cables. Swap the faulting axis SGA power cables with another axis and rescan.',
+          '  If PS fault changes axis: SGA PS is bad. Swap SGA PS.',
+          '  If PS fault does NOT change axis: Problem is with SGA, or gradient coil and cables. Restore power cables.',
+          'Step 3 (if not PS fault) — Swap faulting axis SGA output cables with another axis and rescan.',
+          'DECISION — Fault changes axis: Problem is with gradient coil and cables. Restore SGA output cables.',
+          'DECISION — Fault does NOT change axis: Swap faulting SGA control board with another axis.',
+          '  If fault changes axis: SGA control board is bad. Replace control board.',
+          '  If fault does NOT change axis: Swap faulting SGA with another axis.',
+          '    If fault changes axis: SGA is bad. Swap SGA.',
+          '    If fault does NOT change axis: Go back to start.',
+          'Step 4 (if gradient coil/cables suspected) — Disconnect a leg of the faulting gradient coil at the rear of the magnet or penetration panel. Measure resistance across gradient coil.',
+          'DECISION — Resistance > 1 ohm: Gradient coil is resistive and needs replacement.',
+          'DECISION — Resistance NOT > 1 ohm: Check resistance at cable connected to SGA output.',
+          '  If resistance > 1 ohm: Find the open cable and replace it.',
+          '  If resistance NOT > 1 ohm: Go back to start.'
+        ]
+      },
+      {
+        title: '5-1 GP Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems in a particular GP axis: swap the suspect axis fiber cable with another axis. In turn, swap the corresponding data cables at the GP (or at the SGA). GP has both fiber cables and data cables at the rear of the module.'
+      },
+      {
+        title: '5-2 Power Supply Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems caused by a particular power supply output: swap one or both cables of the suspect axis with the cables of another axis. All six outputs are identical and will work on either connector of any SGA. Do NOT move data or fiber cables for this test — only DC power cables.'
+      },
+      {
+        title: '5-3 SGA Fault Isolation',
+        type: 'note',
+        content: 'To isolate problems in a particular SGA: swap the BRM cables of the suspect axis with another axis at the terminal board at the back of the PDU. Also swap the corresponding data cables at the GP or at the SGA. If this indicates a bad SGA, try swapping the control boards. Refer to the BRM cable illustration for cable locations.'
+      }
+    ],
+    tags: ['ACGD', 'SGA', 'SGA-PS', 'gradient amplifier', 'GP', 'PDU', 'gradient fault', '2244570', '2244571', '2244572', '2244573', '2244574', '2244575', '2244576', '2244577', '2244578', '2244579', '2244580', '2244581', '2244582', '2244583', '2244584', '2244585', '2244586', '2244587', '2244588', '2244589', '2244590', '2244591', '2244592', '2244593', '2244605', '2244606', 'rollover', 'overrange', 'over current', 'over voltage', 'under voltage', 'IPG', 'TYME', 'BRM'],
+    source: 'GE Medical Systems — ACGD Cabinet Troubleshooting Flowchart, Rev 4 (Feb 29, 2008), GD4TSC1.DOC',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_007',
+    title: 'GE LCC300 3.0T Magnet — Updated Ramp Schedule (SN beginning with "W")',
+    system: 'GE MRI',
+    category: 'Magnet / Cryogen',
+    diagnosticPath: 'N/A — Procedure guide for magnet ramp-up',
+    purpose: 'Updated recommended ramp schedule for GE LCC300 3.0T magnets with serial numbers beginning with "W". The original schedule was overly conservative due to quench concerns. This updated schedule reduces total ramp time from ~7h 45m to an average of 5h 45m and eliminates an intermediate helium fill. Applies to MR750 (5500099) and LCC300 (2325852) magnet and cryogen manuals. Service Notes DOC0610311 Rev 1, May 2009.',
+    componentsTested: ['LCC300 3.0T Magnet Main Coil', 'ATR (Automatic Tune and Ramp) System', 'Helium Level Monitor'],
+    sections: [
+      {
+        title: 'Effectivity and Background',
+        type: 'note',
+        content: 'EFFECTIVITY: All GE LCC300 magnets with serial number beginning with "W". PROBLEM: When 3T magnets were introduced, the ramp rate developed was not optimized between quench probability vs. ramp time. The only concern was quenching, so the original schedule was very conservative. An engineering study resulted in this updated schedule that balances both issues. Engineering Test Plan (ETP) stored in "My Workshop" under document DOC0550994.'
+      },
+      {
+        title: 'Ramp Schedule Comparison',
+        type: 'table',
+        headers: ['Stage', 'Main Coil (Ramp) Voltage', 'OLD Current Range (Amps)', 'NEW Current Range (Amps)'],
+        rows: [
+          ['1', '6.00', '0 to 248', '0 to 300'],
+          ['2', '4.00', '248 to 283', '300 to 335'],
+          ['3', '2.00', '283 to 314', '335 to 350'],
+          ['4', '1.00', '314 to 342', '350 to 355'],
+          ['5', '0.50', '342 to 360', '355 to Final Field'],
+          ['6', '0.30', '>360 (OLD only)', 'N/A — eliminated in new schedule'],
+          ['NOTE', '—', 'Old: 6 stages, ~7h 45m total, required helium fill', 'New: 5 stages, avg 5h 45m, no intermediate fill needed']
+        ]
+      },
+      {
+        title: 'Ramp Procedure — Key Steps',
+        type: 'steps',
+        steps: [
+          'Verify magnet serial number begins with "W" — this schedule applies ONLY to those magnets.',
+          'Proceed with ramp using the NEW 5-stage schedule above (not the old 6-stage schedule in the manual).',
+          'Stage 1: Ramp at 6.00V from 0 to 300 Amps.',
+          'Stage 2: Reduce to 4.00V, ramp from 300 to 335 Amps.',
+          'Stage 3: Reduce to 2.00V, ramp from 335 to 350 Amps.',
+          'Stage 4: Reduce to 1.00V, ramp from 350 to 355 Amps.',
+          'Stage 5: Reduce to 0.50V, ramp from 355 Amps to Final Field.',
+          'ATR NOTE: When the magnet field reaches ±0.5 Gauss of the ATR "Recommended Site Parking Field", slowly adjust the Voltage Adjust Control for 0.10 volts main coil driving voltage. (See Section 7.4.4, Step 12 of service manual.)',
+          'CRITICAL — Monitor helium level continuously during ramp. If level drops to 65% or below: immediately stabilize the field, park the magnet, and disconnect/remove ramping connections.',
+          'Helium planning: The average helium level was 70% at the end of the ramp. Plan on having enough helium on hand afterwards to top off.'
+        ]
+      },
+      {
+        title: 'Key Differences vs. Old Schedule',
+        type: 'table',
+        headers: ['Parameter', 'Old Schedule', 'New Schedule'],
+        rows: [
+          ['Number of stages', '6', '5'],
+          ['Total ramp time', '~7 hours 45 min (straight to field)', 'Average 5 hours 45 min'],
+          ['Intermediate helium fill', 'Required (due to long ramp time)', 'Not needed'],
+          ['Final stage voltage', '0.30V for >360A', '0.50V to Final Field'],
+          ['Helium level at end', 'Not specified', 'Average 70% — plan to top off']
+        ]
+      }
+    ],
+    tags: ['3T', 'LCC300', 'ramp', 'ramp schedule', 'magnet ramp', 'MR750', 'cryogen', 'helium', 'ramp up', 'serial W', 'ATR', 'DOC0610311'],
+    source: 'GE Service Notes — Change in Recommended LCC300 3.0T Magnet Ramp Schedule, SN DOC0610311 Rev 1 (May 2009)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_008',
+    title: 'TEAL XGD PDU — 48V Power Supply Mounting Screw Replacement (TSB 102109-1)',
+    system: 'GE MRI',
+    category: 'PDU / Power Supply',
+    diagnosticPath: 'N/A — Corrective maintenance procedure',
+    purpose: 'Replace power supply mounting screws in TEAL XGD PDUs that are too long and could cause internal shorting to ground of PS1 and/or PS2. Affects 25 PDUs manufactured between 12/14/2007 and 8/7/2008. TEAL Electronics Technical Service Bulletin 102109-1, issued 10/21/2009.',
+    componentsTested: ['XGD PDU Power Supply PS1 (P/N 0590905)', 'XGD PDU Power Supply PS2 (P/N 0590902)', 'Power Supply Mounting Brackets'],
+    sections: [
+      {
+        title: 'Affected PDU Serial Numbers',
+        type: 'table',
+        headers: ['Serial Numbers Affected (TEAL P/N 6600003 / GE P/N 5140621)'],
+        rows: [
+          ['97679, 97680, 99326, 99327, 100972'],
+          ['101501, 101502, 101503, 112951, 114986'],
+          ['114987, 114988, 114990, 114992, 115349'],
+          ['115350, 115351, 115401, 115402, 115403'],
+          ['115404, 115405, 115406, 115506, 115507']
+        ]
+      },
+      {
+        title: 'Parts and Tools Required',
+        type: 'table',
+        headers: ['Item', 'Part Number / Specification', 'Quantity'],
+        rows: [
+          ['Screw mounting kit', 'P/N 4990913', '1 kit total, consisting of:'],
+          ['8-32x1/4" 100° countersink Phillips head screws', 'P/N 0110091', 'Qty 8 per kit'],
+          ['Screw torque labels', 'P/N 1181431', 'Qty 2 per kit'],
+          ['Phillips head torque screwdriver', '16 in-lbs setting', '1'],
+          ['Loc-tite', '#242', '1']
+        ]
+      },
+      {
+        title: 'Replacement Procedure',
+        type: 'steps',
+        steps: [
+          'Disconnect and lock-out/tag-out facility power from the PDU.',
+          'Remove the front panel of the PDU.',
+          'Remove the twist-lock receptacle panel at the bottom right of the PDU front and set aside.',
+          'Disconnect and remove the power supply assembly from the PDU.',
+          'Disassemble the power supply mounting brackets and remove the power supplies from the mounting brackets. DISCARD the existing screws (8-32x3/8") used to mount the power supplies to the mounting brackets.',
+          'Mount the power supplies to the two mounting brackets using a small drop of Loc-tite #242 on the supplied 8-32x1/4" screws. Torque to 16 in-lbs.',
+          'CRITICAL: PS1 (labeled "PS1") must be mounted to the UPPER mounting bracket (P/N 0590905). PS2 (labeled "PS2") must be mounted to the LOWER bracket (P/N 0590902).',
+          '⚠️ CAUTION: Do NOT use the 8-32x3/8" screws to mount the power supplies to the mounting bracket — only use the new 8-32x1/4" screws.',
+          'Apply one screw torque label to the bottom center of each of the two power supply mounting brackets.',
+          'Re-assemble the mounting brackets together using a small drop of Loc-tite #242 on the existing 8-32x3/8" screws (these are the bracket-to-bracket screws, NOT the PS-to-bracket screws). Torque to 16 in-lbs.',
+          'Install the power supply assembly to the PDU and secure using the existing screws.',
+          'Re-connect the power connections to the power supplies.',
+          'Install the front panel to the PDU.',
+          'Return the PDU to service.'
+        ]
+      }
+    ],
+    tags: ['TEAL', 'PDU', 'XGD', 'power supply', '48V', 'PS1', 'PS2', 'mounting screw', 'TSB', '102109-1', 'short circuit', 'ground', 'Loc-tite'],
+    source: 'TEAL Electronics Corporation — Technical Service Bulletin 102109-1 (10/21/2009)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_009',
+    title: 'GE MR 450w Body Coil XRF — BANDPASS Design DC Resistance Reference',
+    system: 'GE MRI',
+    category: 'RF System / Body Coil',
+    diagnosticPath: 'N/A — Reference measurements for bench testing and fault isolation',
+    purpose: 'DC resistance measurement reference for the GE MR450w XRF Body Coil and associated components. The XRF coil uses a BANDPASS design intended to improve image shading and integrate dynamic disable into the coil. Use these measurements to verify coil and hybrid splitter integrity during troubleshooting.',
+    componentsTested: ['XRF Body Coil (J2, J3 RF ports)', 'Body Hybrid Splitter (J7, J12, J13, J14)', 'Body Hybrid Splitter Dummy Load', 'Dynamic Disable lines (J6, J7 on coil)'],
+    sections: [
+      {
+        title: 'XRF Coil Design Notes',
+        type: 'note',
+        content: 'The XRF coil uses a BANDPASS design. This design was intended to improve image shading concerns and was originally intended to allow forgoing dynamic disable hardware. Dynamic disable was ultimately still required but the design allowed it to be integrated into the coil. RF Engineer responsible for XRF Coil design: Susan Mathew.'
+      },
+      {
+        title: 'DC Resistance Measurements — Expected Values',
+        type: 'table',
+        headers: ['Component', 'Test Point', 'Expected Measurement', 'Notes'],
+        rows: [
+          ['Body Hybrid Splitter Dummy Load', 'J14 (BNC, left): center pin to shield', '51 ohms', 'Normal'],
+          ['Body Hybrid Splitter Dummy Load', 'J12 (N connection, center): center pin to shield', 'Short circuit (DC)', 'Normal — internally a λ/4-wave shorted stub in parallel with 50Ω load; requires vector Z meter or network analyzer to properly measure impedance of this port'],
+          ['Body Hybrid Splitter Dummy Load', 'J13 (BNC, right): center pin to shield', '51 ohms', 'Normal'],
+          ['Body Hybrid Splitter — Dummy Load overall', 'DC short to ground', 'Dead DC short', 'Normal — because λ/4-wave shorted stub is attached in parallel with load resistor internally'],
+          ['Body Hybrid Splitter — Direct Drive line (DD Bias) J7', 'Black to center pin, red to shield', '0.407V', 'Normal'],
+          ['Body Hybrid Splitter — Direct Drive line (DD Bias) J7', 'Red to center pin, black to shield', 'Open circuit', 'Normal'],
+          ['Body Hybrid Splitter — Reflected power ports to UPM', 'Center pin to shield', '~51 ohms (DVM)', 'Normal'],
+          ['XRF Body Coil — J2 (left RF port)', 'Center pin to shield', 'Short circuit', 'Normal'],
+          ['XRF Body Coil — J3 (right RF port)', 'Center pin to shield', 'Short circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J2 shield to J3 shield', 'Open circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J2 center pin to J3 shield', 'Open circuit', 'Normal'],
+          ['XRF Body Coil — J2 to J3 isolation', 'J3 center pin to J2 shield', 'Open circuit', 'Normal'],
+          ['Dynamic Disable lines J6 & J7 (same cable)', 'Black to center pin, red to shield', '0.418V', 'Normal'],
+          ['Dynamic Disable lines J6 & J7 (same cable)', 'Red to center pin, black to shield', 'Open circuit', 'Normal'],
+          ['Dynamic Disable lines J6 to J7', 'Any part of J6 to any part of J7', 'Open circuit (always)', 'Normal — any continuity between J6 and J7 indicates a fault']
+        ]
+      }
+    ],
+    tags: ['XRF', 'body coil', 'BANDPASS', '450w', 'RF', 'DC resistance', 'hybrid splitter', 'dynamic disable', 'DD', 'coil measurements', 'bench test'],
+    source: 'GE MR 450w Body Coil XRF Design Notes (450_body_coil_XRF_Coil_is_BANDPASS.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  }
+  ,
+  {
+    id: 'dg_seed_010',
+    title: 'GE MR 450w / 750w — Cooling System Configuration & Alarm Reference',
+    system: 'GE MRI',
+    category: 'Cooling System',
+    diagnosticPath: 'N/A — Configuration reference. Config file: /w/config/cooling.cfg.5.2.1',
+    purpose: 'Reference guide for the cooling system configuration, setpoints, PLC alarm parameters, and scan-inhibiting alarms in GE Discovery MR450w and MR750w systems. Use when responding to cooling alarms, adjusting setpoints, or verifying alarm limits during commissioning or PM.',
+    componentsTested: ['Gradient Coil Cooling Loop', 'Power Electronics Cooling Loop (XGD)', 'PGR Cabinet Cooling', 'Chilled Air Supply', 'Cryo-Cooler Compressor Cooling'],
+    sections: [
+      {
+        title: 'Configuration File Location',
+        type: 'note',
+        content: 'Cooling cabinet configuration file is located at: /w/config/cooling.cfg.5.2.1 — Setpoint parameters vary between MR systems. The power electronics supply temperature (formerly xgd_coolant_temp_setpoint) is derived from the XGD air temperature and humidity. The minimum temperature is 30°C.'
+      },
+      {
+        title: 'Setpoint Parameters',
+        type: 'table',
+        headers: ['Parameter Name', 'Description'],
+        rows: [
+          ['grad_coolant_pump_freq', 'Pump frequency for Gradient Coil Loop'],
+          ['grad_coolant_temp_setpoint', 'Coolant temperature delivered to Gradient Coil'],
+          ['pgr_coolant_pump_freq', 'Pump frequency for PGR Cabinet'],
+          ['rf_air_blower_freq', 'Blower frequency for Chilled Air Supply'],
+          ['rf_air_temp_setpoint', 'Coolant temperature for Chilled Air Supply'],
+          ['xgd_coolant_temp_setpoint', 'Power electronics supply temperature (derived from XGD air temp + humidity; minimum 30°C)']
+        ]
+      },
+      {
+        title: 'PLC Alarm Parameters',
+        type: 'table',
+        headers: ['Parameter Name', 'Description'],
+        rows: [
+          ['cust_coolant_temp_low_limit', 'Lower limit for facility supply temperature'],
+          ['cust_coolant_temp_high_limit', 'Upper limit for facility supply temperature'],
+          ['cust_coolant_press_low_limit', 'Lower limit for facility supply pressure'],
+          ['cust_coolant_press_high_limit', 'Upper limit for facility supply pressure'],
+          ['cust_coolant_press_diff_low_limit', 'Minimum pressure differential between facility supply and return pressures'],
+          ['cust_coolant_return_pr_low_limit', 'Lower limit for facility return pressure'],
+          ['cust_coolant_return_pr_high_limit', 'Upper limit for facility return pressure'],
+          ['grad_coolant_temp_low_limit', 'Lower limit for gradient coil supply temperature'],
+          ['grad_coolant_temp_high_limit', 'Upper limit for gradient coil supply temperature'],
+          ['grad_coolant_press_low_limit', 'Lower limit for gradient coil supply pressure'],
+          ['grad_coolant_press_high_limit', 'Upper limit for gradient coil supply pressure'],
+          ['grad_coolant_flowrate_low_limit', 'Lower limit for gradient coil flow rate'],
+          ['grad_coolant_flowrate_high_limit', 'Upper limit for gradient coil flow rate'],
+          ['grad_coolant_resist_low_alarm', 'Alarm for coolant resistivity on gradient coil loop'],
+          ['grad_coolant_resist_low_warning', 'Warning for coolant resistivity on gradient coil loop (warning only, not alarm)'],
+          ['xgd_coolant_temp_low_limit', 'Lower limit for power electronics supply temperature'],
+          ['xgd_coolant_temp_high_limit', 'Upper limit for power electronics supply temperature'],
+          ['xgd_coolant_press_low_limit', 'Lower limit for power electronics supply pressure'],
+          ['xgd_coolant_press_high_limit', 'Upper limit for power electronics supply pressure'],
+          ['xgd_coolant_flowrate_low_limit', 'Lower limit for power electronics flow rate'],
+          ['xgd_coolant_flowrate_high_limit', 'Upper limit for power electronics flow rate'],
+          ['rf_air_temp_low_limit', 'Lower limit for chilled air temperature'],
+          ['rf_air_temp_high_limit', 'Upper limit for chilled air temperature'],
+          ['rf_air_velocity_low_limit', 'Lower limit flow rate for chilled air'],
+          ['rf_air_velocity_high_limit', 'Upper limit flow rate for chilled air'],
+          ['cryo_coolant_flowrate_low_limit', 'Lower limit for cryo-cooler compressor flow rate'],
+          ['cryo_coolant_flowrate_high_limit', 'Upper limit for cryo-cooler compressor flow rate']
+        ]
+      },
+      {
+        title: 'Scan-Inhibiting Alarms — These Stop or Prevent Scanning',
+        type: 'table',
+        headers: ['Alarm Name', 'Type'],
+        rows: [
+          ['Customer-Supplied Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Customer-Supplied Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Pressure High Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Flow Rate Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Resistivity Low Alarm', 'Inhibits new scans'],
+          ['Gradient Coil Coolant Supply Reservoir Low Alarm', 'IMMEDIATE STOP — stops scan in progress'],
+          ['Power Electronics Coolant Supply Temperature High Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Pressure Low Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Pressure High Alarm', 'Inhibits new scans'],
+          ['Power Electronics Coolant Supply Flow Rate Low Alarm', 'Inhibits new scans']
+        ]
+      }
+    ],
+    tags: ['cooling', 'coolant', 'PLC', 'alarm', 'setpoint', '450w', '750w', 'gradient cooling', 'XGD cooling', 'chilled air', 'cryo cooler', 'resistivity', 'flow rate', 'temperature', 'pressure', 'cooling.cfg'],
+    source: 'GE MR 450w/750w Cooling System Configuration Reference (450w_750w_cooling_config.doc)',
+    dateAdded: '2026-05-20',
+    created: '2026-05-20T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_011',
+    title: 'GE LCC 1.5T/1.0T — Cryogens High Pressure / Helium Loss Troubleshooting',
+    system: 'GE MRI',
+    category: 'Cryogens / Magnet',
+    diagnosticPath: 'Check magnet pressure / helium loss → verify thermal stability → check critical conditions → Temperature/Pressure path OR Leak path',
+    purpose: 'Complete troubleshooting guide for high helium vessel pressure and/or helium loss on GE 1.5T and 1.0T LCC Active Shield magnets. Follows the structured GE diagnostic flow: Chiller & Compressor Checks → Magnet Checks → Coldhead Checks → Leak Troubleshooting. Direction 2192624 REV 8 (Sept 2002).',
+    componentsTested: [
+      'Helium Vessel (pressure, level)',
+      'Recondenser (temperature, icing)',
+      'Two-Stage Cryocooler Coldhead (1st stage, 2nd stage temps)',
+      'SHI Cryocooler Compressor (static/dynamic pressure, absorber)',
+      'Coldhead Sleeve (vacuum integrity)',
+      'Water Chiller',
+      'Helium Flexlines',
+      'Magnet Monitor (heater operation)',
+      'Shim Lead (retracted/locked)',
+      'Plumbing / O-Ring / Burst Disc (leak sites)'
+    ],
+    sections: [
+      {
+        title: 'Critical Magnet Conditions — Specifications',
+        type: 'table',
+        headers: ['Parameter', 'Specification', 'Measurement Tool'],
+        rows: [
+          ['2nd Stage Coldhead Temperature', '< 4.4 K', 'Portable RuO Monitor (2171219)'],
+          ['1st Stage Coldhead Temperature', '< 45 K', 'Magnet Monitor'],
+          ['Recondenser Temperature', '> 3.9 K but < 4.5 K', 'Calculate: Recond. T minus 2nd Stage T'],
+          ['Delta T (Recond. T minus 2nd Stage T)', '< 0.2 K', 'Portable RuO Monitor (2171219)'],
+          ['Magnet Helium Pressure', '> 0.3 but < 4.7 psig', 'Magnet Monitor'],
+          ['Compressor Static Pressure', '16.3-16.8 Kgf/cm2G (1.6-1.65 MPa)', 'Compressor gauges'],
+          ['Compressor Dynamic Pressure', '21.4-23.5 Kgf/cm2G (2.1-2.3 MPa)', 'Compressor gauges'],
+          ['Ambient Room Temperature', '< 28 C (82 F)', 'Thermometer']
+        ]
+      },
+      {
+        title: 'Helium Pressure vs. Recondenser Temperature Reference',
+        type: 'note',
+        content: 'Formula: Recondenser T approx. 0.0626 x Pressure(psig) + 4.2316 K\n\n0 psig = 4.25 K | 1 psig = 4.30 K | 2 psig = 4.37 K | 3 psig = 4.40 K | 4 psig = 4.50 K | 5 psig = 4.56 K\n\nIMPORTANT: If helium pressure > 5.25 psig, CHECK THE RELIEF VALVE immediately.\n\nUse this data with the Initial Troubleshooting flowchart to determine if vapor pressure is consistent with RuO temperature readings. If point lies ON the line: temperature and pressure are consistent with theory. Points ABOVE the line: potential thermal issue. Points BELOW the line: potential icing in the Recondenser.'
+      },
+      {
+        title: 'Pressure Safety Warning',
+        type: 'warning',
+        content: 'CRYOSTAT EXHAUST SYSTEM IS DESIGNED WITH A 5.25 PSIG RELIEF VALVE. Observe the internal cryostat pressure gauge. Set Magnet Monitor pressure to 0.5 psig and VENT cryostat down to 0.3 psig through Vent Valve V2 BEFORE removing Ramp Caps or Fill Caps or loosening any component. This prevents exposure to rapid exhausting cold helium gas during service operations.'
+      },
+      {
+        title: 'Step 1 — Initial Troubleshooting Decision',
+        type: 'steps',
+        items: [
+          'Confirm problem: Is magnet pressure HIGH or is magnet LOSING helium? If No — END troubleshooting.',
+          'Is magnet thermally stable? If No — WAIT until thermally stable. NOTE: High pressure/helium loss or high Coldhead temperatures after installation, ramping/shimming, helium fill, power outage, or Coldhead replacement DO NOT NECESSARILY indicate a magnet thermal performance problem.',
+          'Once thermally stable, check all Critical Magnet Conditions (see spec table). Use Portable RuO Monitor (2171219) connected DIRECTLY to RuO outputs on Coldhead and Sleeve for 2nd Stage and Recondenser readings. Note: 2nd Stage readings may show 0.1-0.25 K oscillation — record average: (T_min + T_max) / 2.',
+          'Are any readings OUT OF SPECIFICATION?\n  YES + readings out of spec: Proceed with Temperature/Pressure Troubleshooting (Steps 2, 3, 4)\n  NO (readings within spec): Proceed with Leak Troubleshooting (Step 5)'
+        ]
+      },
+      {
+        title: 'Step 2 — Chiller and Compressor Checks (Do This First)',
+        type: 'steps',
+        items: [
+          'Check Water Chiller — if out of spec, have chiller repaired.',
+          'Check Compressor pressure: If LOW — Recharge (Static: 16.3-16.8 Kgf/cm2G; Dynamic: 21.4-23.5 Kgf/cm2G). If HIGH — Reduce to spec.',
+          'Compare Compressor run time vs. actual time — has it been off? Report to site management.',
+          'Check Ambient Room Temperature: must be < 28 C (82 F). If high, report to site management.',
+          'Check Compressor space size (air-cooled only) — if too small, report to site management (ref SHI manual CVSA-71A p.18).',
+          'Check Compressor input power (correct voltage/phase?) — if incorrect, report to site management.',
+          'Check Dirty Air Filter (air-cooled) — vacuum air filter (ref CVSA-71A p.23).',
+          'Check Helium Flexline connections — supply/return tight, correct, O-rings in place (ref CVSA-71A).',
+          'Check Absorber use time — if > 20,000 hours, replace Absorber (ref CVSA-71A p.23).',
+          'Check By-Pass Solenoid Valve (stuck open) — Check Dynamic Pressure: (a) Bleed, run, and recharge Compressor. (b) If By-Pass Light not lit, replace filament. (c) If By-Pass Light still not lit, replace Compressor. NOTE: By-Pass Light lit = normal operation.',
+          'If high pressure/helium loss persists, proceed to Step 3 — Magnet Checks.'
+        ]
+      },
+      {
+        title: 'Step 3 — Magnet Checks',
+        type: 'steps',
+        items: [
+          'Check Magnet Monitor for proper operation — heater should maintain 0.3-4.7 psig. If heater stuck on — Repair or Replace Magnet Monitor.',
+          'Check Shim Lead: retracted and locked? (12 inches / 300mm of Shim Lead should show when locked.) If not locked, retract and lock.',
+          'Check if Helium was added recently — overfill condition? Check SHeM Table; reduce He level to 95% full.',
+          'Check Coldhead Sleeve vacuum loss or contamination — replace charcoal packets; re-evacuate Sleeve to < 10 microns (< 10 milliTorr, < 0.01 mmHg).',
+          'Check for Ice in Vertical Penetration — ramp down magnet; check through View Port Caps for ice inside Vertical Penetration.',
+          'Check Ice in Recondenser — check Recondenser temperature using pressure/temperature graph; De-Ice Magnet if needed.',
+          'Check for Thermal Short (see Thermal Short Readings Matrix table). If suspected, contact On-Line Center and Florence.',
+          'Check for Magnet Vacuum Loss (cold spots or sweating on magnet) — if 2nd Stage HIGH + 1st Stage HIGH + Recond. HIGH + Delta T HIGH: Re-Evacuate or Replace Magnet. Also check vacuum plug and vacuum level.',
+          'If high pressure/helium loss persists, proceed to Step 4 — Coldhead Checks. Perform Coldhead Checks only after completing Chiller/Compressor and Magnet Checks.'
+        ]
+      },
+      {
+        title: 'Thermal Short and Vacuum Loss Readings Matrix',
+        type: 'table',
+        headers: ['Condition', '2nd Stage T', '1st Stage T', 'Recond. T', 'Delta T', 'Action'],
+        rows: [
+          ['Thermal Short — Shield to He Vessel (type 1)', 'HIGH', 'In Spec.', 'HIGH', 'HIGH', 'Contact On-Line Center and Florence'],
+          ['Thermal Short — Shield to He Vessel (type 2)', 'In Spec./HIGH', 'In Spec./HIGH', 'In Spec./HIGH', 'In Spec./HIGH', 'Contact On-Line Center and Florence'],
+          ['Suspension Failure', 'In Spec./HIGH', 'In Spec.', 'In Spec./HIGH', 'In Spec./HIGH', 'Contact On-Line Center and Florence'],
+          ['Magnet Vacuum Loss (all HIGH)', 'HIGH', 'HIGH', 'HIGH', 'HIGH', 'Re-Evacuate or Replace Magnet']
+        ]
+      },
+      {
+        title: 'Step 4 — Coldhead Checks',
+        type: 'steps',
+        items: [
+          'Check Coldhead power: verify 200 VAC at Coldhead Pins. If absent, check cable connections and Compressor power output.',
+          'Check if Coldhead is operating in REVERSE: Readings show 2nd Stage ~-15K, 1st Stage ~-90K, Recond. HIGH, Delta T OUT OF SPEC. Action: Correct miswiring at Penetration Panel (color-match each filter).',
+          'Check Coldhead for NOISE:\n  Grinding Noise: Motor Failure — Replace Coldhead immediately.\n  Knocking Noise (Contamination or Improper Phasing): (a) Check electrical phasing; correct if necessary. (b) Check Flexlines for proper connection. (c) If phasing correct: warm Coldhead, purge; or replace Coldhead and Getter. (d) If Coldhead replaced: turn off Coldhead, remove Flexlines immediately to trap contamination.',
+          'WARNING: Do NOT replace only one component. If oil is found, replace entire system — Coldhead + Flexlines + Compressor. Oil will foul any new component added to the system.',
+          'Check for OIL in Flexlines — use black light or clean lint-free white cloth whenever Flexlines are disconnected. If oil found: REPLACE Coldhead, Flexlines, AND Compressor.',
+          'Check Coldhead Sleeve vacuum loss/contamination: 2nd Stage High or In Spec., 1st Stage In Spec., Recond. HIGH, Delta T In Spec. — Action: Pump Sleeve / Check background; Replace Coldhead.',
+          'Check for improperly inserted Coldhead (Delta T may be > 0.2K, 1st Stage may be > 45K, may be bent/damaged): (a) Remove and warm Coldhead. (b) Check for damage. (c) Purge Sleeve with nitrogen. (d) Add new Getter Bags and Indium Gaskets. (e) Replace Coldhead and Vacuum Sleeve.',
+          'Check Coldhead 2nd Stage performance loss:\n  Pattern A: 2nd Stage HIGH, 1st Stage In Spec., Recond. HIGH, Delta T In Spec./High — Replace Coldhead.\n  Pattern B: 2nd Stage In Spec., 1st Stage HIGH, Recond. In Spec./High, Delta T In Spec. — Replace Coldhead.',
+          'If high pressure/helium loss persists after all checks — contact the Online Center.'
+        ]
+      },
+      {
+        title: 'Step 5 — Leak Troubleshooting',
+        type: 'steps',
+        items: [
+          'SAFETY FIRST: Turn on magnet room vent exhaust fan (or open mobile van hatch) before starting. Required to exhaust odorless/invisible helium gas and prevent oxygen displacement. Wear protective clothing, nonabsorbent gloves, and goggles when replacing burst disc on cold vent system.',
+          'Classify the scenario: (a) Helium Loss + HIGH Pressure: check helium pressure, proceed through plumbing checks. (b) Helium Loss + NORMAL Pressure: leak check all plumbing using Portable Helium Meter (2270571), Snoop, or Latex Glove.',
+          'Check these areas with leak detector fluid: (a) Ramp Leads and Fill Port Caps — if leak: check/replace O-ring, tighten. (b) External Plumbing at Vent Adapter — if leak: tighten or replace. (c) Burst Disc at Vent Stack Exhaust — if leak: tighten or ramp down and replace disc. (d) Shim Leads and Main Leads — if leak: check O-rings; tighten or ramp down and replace. (e) Vertical Turret and Instrumentation Lead Cover — if leak: tighten or ramp down as needed.',
+          'Pressure must be < 3.9 psig for leak detection. Check: all external plumbing joints, Vertical Turret/Instrumentation Lead Cover, Main Lead/fill port caps, Shim Lead collar/cap, Pressure Gauge, Shim Lead Pins.',
+          'Valve balloon test: attach small balloon to exhaust side of 5.25 psig relief valve, 7.25 psig bypass valve, and Nupro valve. Observe for balloon expansion. Replace any valve with suspected leaks and retest.',
+          'Check for Ice: (a) Main Lead port — visually check with View Port Caps; if ice, warm vent assembly and remove. (b) Shim Lead/Main Lead caps — remove caps; if ice, use coring tools to remove. (c) Recondenser ice block (2nd Stage and Recondenser temp low): ramp down magnet, purge Recondenser, remove Coldhead, warm Sleeve to 240-260 F, vent slowly to avoid quench, remove ice.',
+          'Burst Disc procedure: (1) Ramp magnet to zero field. (2) Remove Vent Adapter. (3) Check Burst Disc for cracks or gasket leaks. Replace any cracked or leaking disc. CAUTION: Small micro-bubbles between gasket and flange are NORMAL. Only replace if continuous bubbles > 0.08 inch (2mm) diameter are present. Foam-like bubbles may be present normally.'
+        ]
+      },
+      {
+        title: 'Data to Collect Before Calling for Support',
+        type: 'table',
+        headers: ['Category', 'Item'],
+        rows: [
+          ['Site Info', 'System ID / Magnet Number / Install Date / Site Type (Mobile or Fixed)'],
+          ['Compressor', 'Serial Number / Install Date / Run Time'],
+          ['Compressor', 'Static Pressure / Dynamic Pressure'],
+          ['Compressor', 'Inlet Water Flow / Water Temperature at Inlet'],
+          ['Coldhead', 'Serial Number'],
+          ['Coldhead', '2nd Stage Temperature (Hand-held RuO)'],
+          ['Coldhead', 'Recondenser Temperature (Hand-held RuO)'],
+          ['Coldhead', 'Delta T / 1st Stage Temperature'],
+          ['Coldhead', 'Sleeve Vacuum / Number of Getter Bags / Date Last Changed'],
+          ['Coldhead', 'Noise description'],
+          ['Magnet', 'Helium Pressure / Helium Level (Cylindrical)'],
+          ['Magnet', 'Frost on Plumbing / Magnet Monitor Heater Verification']
+        ]
+      }
+    ],
+    tags: ['cryogens', 'coldhead', 'helium', 'high pressure', 'helium loss', 'recondenser', 'compressor', 'LCC', '1.5T', '1.0T', 'active shield', 'cryocooler', 'RuO', 'delta T', 'sleeve vacuum', 'thermal short', 'burst disc', 'leak', 'SHI', 'Sumitomo', 'icing', 'zero boil-off', 'ZBO'],
+    source: 'GE Medical Systems — GE 1.5T & 1.0T LCC Active Shield Magnet and Cryogens Subsystem, Direction 2192624 REV 8 (Sept 2002) (Coldhead_trouble_shooting_Sumitomo.pdf)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_012',
+    title: 'Cryocooler Coldhead Replacement — Field Procedure (Sumitomo / Leybold / Balzer)',
+    system: 'GE MRI',
+    category: 'Cryogens / Magnet',
+    diagnosticPath: 'Verify problem is coldhead → Set up vacuum and helium lines → Pre-removal vacuum test → Remove old coldhead (type-specific) → Install new coldhead → Post-installation vacuum verification',
+    purpose: 'Step-by-step field procedure for replacing a two-stage cryocooler coldhead (Sumitomo, Leybold, or Balzer type). Covers tools required, pre-change verification, vacuum and helium line setup, type-specific removal steps, installation, and post-installation vacuum verification to < 10 microns. Based on field tech procedure notes (Feb 2009).',
+    componentsTested: [
+      'Cryocooler Coldhead (Sumitomo, Leybold, or Balzer)',
+      'Coldhead Sleeve (gasket seating, vacuum integrity)',
+      'Coldhead Ring and Gaskets',
+      'Getter Bags',
+      'Helium Flexlines (oil check)',
+      'Vacuum System (micron meter, vacuum pump)',
+      'Compressor (refill if needed)'
+    ],
+    sections: [
+      {
+        title: 'Tools Required',
+        type: 'table',
+        headers: ['Item', 'Notes'],
+        rows: [
+          ['New/correct coldhead', 'Verify type: Sumitomo, Leybold, or Balzer — must match existing system'],
+          ['Coldhead change kit', 'Includes: vacuum pump, vacuum line, helium gas tube, valve assembly, vacuum puller, vacuum grease, silver tape, cover plate, micron meter'],
+          ['Coldhead gaskets', 'Leybold/Balzer: large ring + small ring | Sumitomo: large ring + small grill-shaped gasket'],
+          ['Coldhead ring', 'Leybold/Balzer ONLY — set up prior to pulling coldhead'],
+          ['Copper tube', 'Sumitomo ONLY'],
+          ['Extension cord', ''],
+          ['Heat gun', 'For warming rings/stages — Sumitomo type'],
+          ['Absorber', 'If needed — verify correct type for system'],
+          ['Helium gas cylinder', 'Minimum 500 psi in tank'],
+          ['Low pressure regulator', 'If no pressure on magnet'],
+          ['High pressure regulator', 'To fill compressor if needed'],
+          ['Lakeshore thermometer or laptop', 'To monitor temperatures before and after'],
+          ['GE Universal Coldhead Replacement Tool Kit (2300306)', 'Recommended']
+        ]
+      },
+      {
+        title: 'Pre-Change Verification — Do NOT Skip',
+        type: 'steps',
+        items: [
+          'Check magnet pressure and follow the cryogens troubleshooting procedure to VERIFY the coldhead is the actual problem before proceeding.',
+          'Record current coldhead temperatures (1st Stage, 2nd Stage, Recondenser) with Lakeshore or laptop BEFORE turning anything off — these are your baseline values.',
+          'Inspect the new coldhead: must be free of defects and contamination before bringing to site.'
+        ]
+      },
+      {
+        title: 'Setup',
+        type: 'steps',
+        items: [
+          'Set up new coldhead with correct gaskets and O-rings. Be careful NOT to get contaminants on the coldhead surfaces.',
+          'Have the new coldhead FULLY READY before pulling out the old coldhead. Minimize the time the sleeve is open.',
+          'Set up coldhead change kit: vacuum pump, vacuum line, helium gas line.',
+          'Set up helium gas line to top of magnet, or attach low pressure regulator if magnet has no pressure.',
+          'Connect vacuum plunger to coldhead sleeve — approximately 3 turns. Not too tight. Verify good connection to the small gasket.'
+        ]
+      },
+      {
+        title: 'Pre-Removal Vacuum Test',
+        type: 'steps',
+        items: [
+          'Purge helium gas through the line to displace any air.',
+          'Vacuum down to LESS THAN 50 microns before pulling the plunger out.',
+          'As you slowly pull the plunger, WATCH THE MICRON GAUGE:\n  Gauge goes DOWN or stays near the same = GOOD vacuum. Proceed.\n  Gauge goes UP or meter pegs = BAD vacuum. May indicate leaking gasket. Consider replacing gaskets and reinstalling as used coldhead depending on history and site situation.'
+        ]
+      },
+      {
+        title: 'Coldhead Removal',
+        type: 'steps',
+        items: [
+          'Remove ALL bolts around the outside EXCEPT ONE.',
+          'When pulling the final bolt, be READY TO CATCH the coldhead — it may begin to come out on its own.',
+          'IMPORTANT: The coldhead is FERROUS (magnetic). Once removed, keep it LOW and as far from the magnet bore as possible at all times.',
+          'Proceed with the type-specific steps below for your coldhead type.'
+        ]
+      },
+      {
+        title: 'Leybold or Balzer — Type-Specific Removal Steps',
+        type: 'steps',
+        items: [
+          'Keep HELIUM GAS FLOWING continuously throughout the entire removal to prevent contamination from entering the sleeve.',
+          'Check inside the sleeve for gasket residue stuck to the rings.',
+          'If residue is present: use a NON-FERROUS stick with a cloth on the end to scrape it off.',
+          'Wipe away any frost as you pull out the coldhead.'
+        ]
+      },
+      {
+        title: 'Sumitomo — Type-Specific Removal Steps',
+        type: 'steps',
+        items: [
+          'Can turn helium gas OFF after the coldhead is removed (unlike Leybold/Balzer).',
+          'Check inside the sleeve for gasket residue on the rings; remove with non-ferrous cloth-wrapped stick if present.',
+          'Begin heating the TWO RINGS inside the sleeve with a heat gun:\n  MUST NOT exceed 300 K at any point.\n  Both stages must reach > 275 K to ensure all frost and ice is completely removed.\n  Monitor with Lakeshore or copper tube probe.'
+        ]
+      },
+      {
+        title: 'Coldhead Installation',
+        type: 'steps',
+        items: [
+          'Turn ON helium gas as you begin inserting the new coldhead.',
+          'Verify CORRECT ORIENTATION and DIRECTION before inserting — do not reverse.',
+          'Try not to touch the sides of the sleeve or damage the gaskets during insertion.',
+          'Once holes are lined up and coldhead is against the sleeve: turn helium gas OFF.',
+          'Pull coldhead out approximately half an inch, then push it back in — aligning holes and ensuring the gasket does NOT pinch.',
+          'Turn ON the vacuum — let the coldhead pull in naturally.',
+          'Install all bolts HAND-TIGHT. Keep tightening even, watching the gap around the flange to maintain uniform spacing.'
+        ]
+      },
+      {
+        title: 'Post-Installation Vacuum Verification',
+        type: 'steps',
+        items: [
+          'When micron gauge reaches 200 microns: purge helium gas through the line to drive out contaminants.',
+          'Cycle purge: Open gas, close gas, open vacuum. Repeat approximately 3 times.',
+          'Let vacuum pull back down. TARGET: LESS THAN 10 microns.',
+          'If not reaching < 10 microns: try additional helium purge cycles after waiting a bit.',
+          'Vacuum leak test: Close the vacuum valve and WATCH the micron gauge:\n  Gauge goes up slightly then STOPS = acceptable (normal gas desorption).\n  Gauge keeps rising rapidly = suspect broken coldhead ring (broken during installation) or gasket pinch. Remove and re-inspect.',
+          'Once vacuum is stable below 10 microns: reconnect helium flexlines, power up coldhead, and monitor temperatures with Lakeshore.'
+        ]
+      }
+    ],
+    tags: ['coldhead', 'cryocooler', 'Sumitomo', 'Leybold', 'Balzer', 'coldhead replacement', 'cryogens', 'vacuum', 'micron meter', 'helium', 'getter bags', 'gasket', 'sleeve', 'flexlines', 'MRI magnet', 'field procedure'],
+    source: 'GE Cryocooler Coldhead Replacement Field Notes — Randy (Coldhead_change.doc, Feb 2009)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_013',
+    title: 'CTL Coil — Multicoil Control Wiring Reference (CTLTOP / CTLMID / CTLBOT)',
+    system: 'GE MRI',
+    category: 'RF / Coils',
+    diagnosticPath: 'Identify failing CTL element or section → Trace signal path through Multi-Coil Select Switch → Verify Preamplifier Protection → Check RF Cabinet / SSM connections',
+    purpose: 'Multicoil control wiring reference for the CTL (Cardiac/Torso Longitudinal) receive coil. Documents the complete signal path through the System Cabinet, Penetration Panel, Multi-Coil Select Switch (S1-S5), and Preamplifier Protection board for each of the three coil sections (TOP, MID, BOT). Useful for tracing element drop-out, SNR failures, and coil element selection issues. Rev C (2001-12-05), Phil Steen MR Imaging Subsystems Engineering.',
+    componentsTested: [
+      'CTL Coil Elements (TOP section, MID section, BOT section)',
+      'Multi-Coil Select Switch (S1-S5)',
+      'Preamplifier Protection Board',
+      'RF Cabinet / SSM (System Software Module) driver outputs',
+      'System Cabinet REV connections',
+      'Penetration Panel REV1 coaxial connections'
+    ],
+    sections: [
+      {
+        title: 'CTL Coil Sections — Configuration Summary',
+        type: 'table',
+        headers: ['Section', 'Receive Mask', 'MC Recon Enable', 'End Receiver', 'Start Receiver', 'Notes'],
+        rows: [
+          ['CTLTOP', '7', '6', '2', '0', 'Elements hard off in receive state; always +5V during transmit state'],
+          ['CTLMID', '14', '0', '3', '0', 'Image from shaded receivers; excluded by n-coil recon'],
+          ['CTLBOT', '14', '0', '0', '0', 'Image from shaded receivers; element soft off (blue)']
+        ]
+      },
+      {
+        title: 'Signal Path Overview',
+        type: 'note',
+        content: 'CTL coil signal flows through these stages (coil to system cabinet direction):\n\n1. CTL Coil Elements (patient interface) — numbered 1-6+ per section\n2. Preamplifier Protection — preamp inputs/outputs with port enable and error enable signals\n3. Multi-Coil Select Switch (S1-S5) — selects active coil elements; driven by SSM driver signals (driver1-driver4)\n4. Penetration Panel — REV1 coaxial connections at RF shield boundary\n5. System Cabinet — REV connections\n6. RF Cabinet / SSM — driver control signals (driver1-5)\n\nKey SSM control signals:\n  Port enable / Error enable: controls preamp enable per element\n  MC recon enable mask: determines which elements are reconstructed\n  Transmit state: ALL elements at +5V (fully detuned for patient safety)\n  Receive state: elements follow hard-off (red) or soft-off (blue) logic per section'
+      },
+      {
+        title: 'Multi-Coil Select Switch — Driver Assignments',
+        type: 'table',
+        headers: ['Switch', 'Driver Signal', 'Position'],
+        rows: [
+          ['S5', 'driver2', 'Far-left group'],
+          ['S4', 'driver4', 'Second from left'],
+          ['S3', 'driver1', 'Center'],
+          ['S2', 'driver3', 'Second from right'],
+          ['S1', 'driver2', 'Far-right group']
+        ]
+      },
+      {
+        title: 'Key Logic States Reference',
+        type: 'table',
+        headers: ['State', 'Signal', 'Element Behavior'],
+        rows: [
+          ['Transmit state', '+5V always', 'ALL elements hard off — coil fully detuned for patient protection'],
+          ['Receive ON', 'Port enable HIGH', 'Element receiving signal (bold line on diagram)'],
+          ['Receive soft off', 'Element soft off (blue)', 'Element not receiving but not fully detuned'],
+          ['Receive hard off', 'Element hard off (red)', 'Element fully detuned during receive'],
+          ['Excluded from n-coil recon', 'Image from shaded receivers only', 'CTLMID and CTLBOT elements not used in reconstruction']
+        ]
+      },
+      {
+        title: 'Troubleshooting CTL Element Failures — Step-by-Step',
+        type: 'steps',
+        items: [
+          'Identify which CTL section is failing (TOP, MID, or BOT) and which element number shows dropout or noise using the image artifact location and pattern.',
+          'Confirm the receive mask for that section is correct in software: TOP = mask 7, MID = mask 14, BOT = mask 14.',
+          'For CTLMID and CTLBOT: these sections are excluded from n-coil reconstruction and image from shaded receivers. Verify recon configuration is not masking the element in software before proceeding to hardware.',
+          'Identify the Multi-Coil Select Switch (S1-S5) and driver signal (driver1-4) that routes the failing element. A stuck-open or stuck-closed switch will drop an entire element group.',
+          'Check port enable signal at the Preamplifier Protection board for the affected element port. If port enable is absent or low, trace back to SSM driver output.',
+          'Verify coaxial connections at the Penetration Panel (REV1 connectors) are tight and free of corrosion for the affected element path.',
+          'Check System Cabinet REV connections for continuity on the affected element signal line.',
+          'Check RF Cabinet connection to SSM — verify driver signal voltage (+5V during transmit state for all elements is required).',
+          'For CTLTOP only: elements must be hard off during receive state. If a TOP element is hot (not properly detuned) during receive, check the hard-off circuitry on the preamplifier protection board.',
+          'If all hardware checks pass, suspect the coil connector or coil cable. Swap with a known-good CTL coil to confirm.'
+        ]
+      }
+    ],
+    tags: ['CTL', 'CTL coil', 'cardiac', 'torso', 'multicoil', 'receive coil', 'coil elements', 'multi-coil select switch', 'preamplifier protection', 'SSM', 'RF cabinet', 'penetration panel', 'wiring', 'coil troubleshooting', 'receive chain', 'element dropout'],
+    source: 'Phil Steen MR Imaging Subsystems Engineering — Multicoil Control Diagram Rev C (2001-12-05) (CTLtroubleshooting.pdf)',
+    dateAdded: '2026-05-21',
+    created: '2026-05-21T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_014',
+    title: 'Siemens Espree — LHe Fill (Static System, Mk1 & Mk2)',
+    system: 'Siemens MRI',
+    category: 'cryogens',
+    purpose: 'Step-by-step liquid helium fill procedure for the Siemens Espree static (no permanent syphon) magnet system using Mk1 (OR105) or Mk2 venting system. Covers normal fill, dewar changeover, bottom fill, and post-fill verification.',
+    componentsTested: ['Helium vessel', 'MSUP display unit', 'Pressure heater', 'Compressor', 'Service syphon', 'Dewar syphon', 'Venting bypass valve', 'Turret venting system', 'Carbon resistors (bottom fill)'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Safety Requirements',
+        content: 'CRYOGENIC BURNS: Full PPE required — cryo gloves, safety glasses, face shield, lab coat, safety shoes.\nSTRONG MAGNETIC FIELD: Non-magnetic tools only. NEVER bring GHe steel cylinder into magnet room.\nASPHYXIATION: O2 monitors on and operational. Do not vent He into room. Ensure turret venting kit connected to quench pipe.\nQUENCH RISK: Warm He gas will cause quench. Never leave transfer unattended. Replace syphons with frost/condensation on body (poor vacuum).'
+      },
+      {
+        type: 'table',
+        title: 'Required Equipment',
+        headers: ['Item', 'Part Number / Spec'],
+        rows: [
+          ['Service syphon kit', 'p/n 08396363'],
+          ['Pressure service tool', 'p/n 03861221'],
+          ['Syphon port adaptor (Mk2 only)', 'p/n 10113551'],
+          ['30mm non-magnetic syphon spanner (Mk2 only)', 'Non-magnetic'],
+          ['MSUP handheld display unit', '25-way D connector, LCD, Sample + Display buttons'],
+          ['Heat gun', '110V hot air gun'],
+          ['Helium gas', '>=99.9% purity, pressure regulator 0-1.5 bar (0-22 psig)'],
+          ['PPE', 'Cryo gloves, safety glasses, face shield, lab coat, safety shoes'],
+          ['O2 monitor', 'Continuous monitoring required'],
+          ['Snoop / leak detector', 'Post-fill leak check']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Dewar Preparation',
+        items: [
+          'If dewar is highly pressurized, release pressure SLOWLY via primary ball valve OUTSIDE the imaging suite.',
+          'Fit dewar syphon adaptor to the dewar.',
+          'Pre-cool dewar syphon: open dewar syphon flow valve halfway (2 turns) and allow to cool until dense white cascading plume appears.',
+          'Target dewar operating pressure: ~0.27 bar (4 psig). Too much or too little causes inefficiency.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Pre-Fill — Service Syphon Cool-Down',
+        items: [
+          'Check current He level and pressure on MSUP display (Sample button). Record readings.',
+          'Ensure syphon end cap is fitted and bypass valve is CLOSED.',
+          'Activate pressure heater by removing pressure service tool — achieve ~0.3 psia positive pressure in magnet.',
+          'Reconnect the pressure service tool.',
+          'Remove syphon end cap and allow service syphon to vent until fully cold — dense white cascading plume appears.',
+          'CAUTION: Cold gas will exhaust when syphons are disconnected. Stand clear, wear gloves and safety glasses.',
+          'Set gas supply pressure to 0.27 bar (4 psig).'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Liquid Helium Transfer',
+        items: [
+          'As service syphon nears full cold, open dewar syphon flow valve halfway (2 turns). Pre-cool until dense cascading plume.',
+          'When BOTH syphons give dense white cascading plume, couple them together and secure lock nut.',
+          'CAUTION: If magnet is at field — warm He gas WILL cause quench. Ensure both syphons fully cold before coupling.',
+          'Maximize transfer by fully opening dewar syphon flow valve (4 full turns = fully open; guide pins flush with top of brass nut).',
+          'Re-fit pressure service tool to de-activate pressure heater.',
+          'Take initial He level from MSUP display (press Sample button).',
+          'Repeat level every 5 minutes. Increase must be seen within 20 minutes. If no increase — stop and investigate.',
+          'NOTE: Opening bypass valve may help reduce back pressure and improve transfer efficiency.',
+          'Maintain dewar pressure ~0.27 bar (4 psig) throughout.',
+          'Transfer rate at 4 psig: ~10 L/min. 250 L dewar empties in 25-30 min. DO NOT LEAVE UNATTENDED.',
+          'If frost or condensation forms on body of either syphon — STOP immediately. Syphon may need replacement.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Stopping the Transfer',
+        items: [
+          'When level meter reads 95%, OR dewar empties — close dewar syphon flow valve IMMEDIATELY.',
+          'WARNING: Do NOT fill above 95%. Magnet cannot be ramped at higher He level.',
+          'Signs of empty dewar: high-pitched whistling from syphon OR noticeable drop in dewar pressure.',
+          'Dewar syphon flow valve MUST be closed immediately when dewar empties — if left open: RISK OF QUENCH.',
+          'Set dewar gas pressure regulator to zero.',
+          'Begin de-pressurization of dewar.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Changing Supply Dewars During Transfer',
+        items: [
+          'When dewar empties, stop transfer immediately — close dewar syphon flow valve.',
+          'Turn off gas supply. Vent storage dewar to atmospheric — MUST BE DONE IN WELL-VENTILATED AREA, NOT in imaging suite.',
+          'Close primary ball valve; open low pressure relief valve.',
+          'Warm syphon joint to room temperature with heat gun.',
+          'Disconnect dewar from service syphon — CAUTION: cold gas exhaust. Stand clear, wear PPE.',
+          'Remove moisture from service syphon end with paper toweling.',
+          'Fit service syphon end cap IMMEDIATELY and securely — CAUTION: air ingress causes ice blockage and excessive pressure.',
+          'Open then close primary ball valve to confirm dewar is fully depressurized.',
+          'When gas pressure = zero, remove dewar syphon and insert into full dewar.',
+          'Close syphon entry port on new dewar; open low pressure relief valve.',
+          'Pre-cool dewar syphon before resuming transfer.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Removing the Service Syphon (Post-Fill)',
+        items: [
+          'Open venting bypass valve VERY SLOWLY to depressurize He vessel to 0.1 psia (7 mbar) above atmospheric.',
+          'Warm syphon joint to room temperature with heat gun to remove ice.',
+          'Close venting bypass valve BEFORE disconnecting syphons.',
+          'Disconnect syphons — CAUTION: cold gas exhaust. Stand clear. Wear gloves.',
+          'Immediately cap service syphon with syphon end cap.',
+          'Remove service syphon from magnet IMMEDIATELY after de-coupling.',
+          'Mk1: Fit syphon blanking plug (hand-tight + 1/2 turn with syphon C spanner). Re-fit syphon end cap. Close bypass valve.',
+          'Mk2: Remove brass syphon fill adaptor, fit syphon blanking plug with new copper seal. Warm threads, carefully tighten with 30mm non-magnetic spanner — NO undue force (damaged threads = leak).'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Post-Fill Verification',
+        items: [
+          'Warm top plate and syphon plug with heat gun; re-tighten plug.',
+          'CAUTION: Warm syphon port plug sufficiently — ice on threads causes air ingress and excessive pressure.',
+          'Remove pressure service tool; reconnect pressure sensor cable to pressure switch.',
+          'Confirm all pressure alarms de-activated and pressure heater operational.',
+          'Switch on compressor; allow magnet pressure to rise.',
+          'Verify pressure heater activates at 20% duty cycle — yellow LED on MSUP illuminated.',
+          'Verify compressor activates automatically as pressure rises above atmospheric.',
+          'Warm turret and venting valves to room temperature with hot air gun.',
+          'Confirm: no alarm signals on MSUP display or Alarm Box. Magnet pressure ~15.3 psia.',
+          'Disconnect MSUP display unit. Perform Turret Leak Check. Check 4K cold head flange for leaks.',
+          'NOTE: Wait at least 2 hours after fill before attempting to ramp the magnet.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Bottom Fill — He Level = 0%',
+        content: 'Required when He level = 0% AND carbon resistors no warmer than 77K. ONLY Siemens-trained CSEs may perform. Inform Magnet HSC immediately. Carbon resistor reference (41-way plug, ohms): Room temp: C1(a-e)=140-180, C2(b-e)=120-160, C3=120-160, C4=120-160. At 77K: C1=170-200, C2-C4=130-180. At 4.2K: all=700-1500. (*C4 measures He gas temps during ramping only.) After bottom fill, first magnet energization must be NEXT DAY to allow coils to thermally stabilize. ~500-700 L He required to achieve 10% meter reading from nitrogen temperature.'
+      }
+    ],
+    tags: ['helium', 'fill', 'cryogens', 'espree', 'siemens', 'static system', 'mk1', 'mk2', 'syphon', 'MSUP', 'quench', 'bottom fill'],
+    source: 'Siemens Espree — Filling the Static System (CB-DOC/200707, 11.10.2007)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_015',
+    title: 'GE CXK4 (LCC) — Liquid Helium Transfer (Oxford MP 80/412)',
+    system: 'GE MRI',
+    category: 'cryogens',
+    purpose: 'Step-by-step liquid helium fill procedure for GE CXK4 / LCC (Liquid Cooled Cryostat) magnets using the Oxford Instruments MP 80/412 system. Covers pre-fill checks, pressure management, transfer, multi-dewar switchover, and post-fill steps.',
+    componentsTested: ['Helium Fill Port (V1)', 'Helium Vent valve (V2)', 'Magnet Monitor', 'Pressure builder', 'Dewar syphon assembly', 'Transfer line / stinger', 'Magnet pressure gauge'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Safety Requirements',
+        content: 'CRYOGENIC HAZARD: Always wear cryogenic gloves, safety glasses, and face shield. Cold helium causes severe burns.\nO2 MONITORING: Use portable O2 meter throughout transfer. Helium displaces oxygen — asphyxiation risk.\nNEVER leave transfer unattended — 250 L dewar empties in 25-30 minutes.\nQUENCH RISK: Dewar pressure MUST remain higher than magnet pressure at all times. If dewar pressure drops below magnet pressure, warm gas enters magnet and WILL cause a quench.\nDO NOT exceed 95% helium level — magnet cannot be ramped above 95%.'
+      },
+      {
+        type: 'table',
+        title: 'Required Equipment',
+        headers: ['Item', 'Specification'],
+        rows: [
+          ['PPE', 'Cryogenic gloves, safety glasses, face shield'],
+          ['Portable O2 meter', 'Required — in use throughout procedure'],
+          ['Transfer line', "12' or 15' dewar syphon"],
+          ['Magnet stinger', '14.75" magnet stinger'],
+          ['Tools', 'Non-ferrous tools only'],
+          ['Heat gun', '110V'],
+          ['Pressure regulator', 'Low pressure (0-5 psi) for dewar'],
+          ['Leak detector', 'Snoop solution for post-fill check']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Pre-Fill Checks',
+        items: [
+          'Observe vessel pressure on magnet gauge — normal operating range: 3.9-4.1 psi. Record current reading.',
+          'Record current helium level from display.',
+          'Confirm O2 meter is functional and in use.',
+          'Confirm adequate dewar supply available for fill.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Prepare Magnet for Fill',
+        items: [
+          'Turn Magnet Monitor key CLOCKWISE to "Fill" position — this disables the pressure builder.',
+          'WARNING: Magnet pressure MUST be reduced to less than 2.0 psi before connecting dewar syphon.',
+          'Vent magnet pressure down to < 2.0 psi using V2 (Helium Vent valve).',
+          'Confirm magnet pressure < 2.0 psi on pressure gauge before proceeding.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Prepare Dewar and Transfer Line',
+        items: [
+          'Assemble dewar syphon: dewar stinger + extension + brass adaptor with O-ring.',
+          'CRITICAL: Dewar pressure MUST remain higher than magnet pressure throughout transfer. If dewar drops below magnet pressure — warm gas enters magnet — QUENCH.',
+          'Set dewar pressure to 4.0 psi. Magnet must be at < 2.0 psi (pressure differential is critical).',
+          'Purge transfer line: insert dewar stinger into dewar and allow cold gas to flow until visible plume at magnet end.',
+          'Insert stinger into V1 (Helium Fill Port) and tighten brass fill cap securely.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Liquid Helium Transfer',
+        items: [
+          'Fully open dewar syphon valve.',
+          'Pressurize dewar to 4.0-4.5 psi using low pressure regulator.',
+          'Confirm liquid helium flow — level gauge should begin rising within a few minutes.',
+          'Monitor helium level continuously. Transfer rate: ~10 L/min at 4 psig.',
+          '250 L dewar empties in approximately 25-30 minutes. DO NOT LEAVE UNATTENDED.',
+          'Monitor dewar pressure — maintain 4.0-4.5 psi. Pressure drop indicates dewar emptying.',
+          'Stop fill at 95% — do NOT fill above 95%. If exceeded, vent excess using V-2 (Helium Vent).'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Multi-Dewar Switchover (if needed)',
+        items: [
+          'When dewar empties (whistling sound or pressure drop) — close dewar syphon valve immediately.',
+          'Warm transfer line joint with heat gun before disconnecting from empty dewar.',
+          'Disconnect from empty dewar — cold gas will exhaust. Stand clear, wear PPE.',
+          'Quickly connect to full pre-pressurized dewar (must be pre-set to 4.0 psi).',
+          'Re-open syphon valve and resume transfer.',
+          'Minimize time between dewars to prevent warm gas from entering magnet.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Stopping the Fill and Post-Fill',
+        items: [
+          'When He level reaches 95% or dewar is empty — close dewar syphon valve.',
+          'Vent dewar pressure to zero using low pressure relief.',
+          'Remove dewar syphon from V1 fill port.',
+          'Warm the V1 fill port cap with heat gun to remove ice.',
+          'Re-tighten fill port cap securely.',
+          'Perform leak check on fill port with Snoop solution.',
+          'Turn Magnet Monitor key COUNTER-CLOCKWISE out of "Fill" position — re-enables pressure builder.',
+          'Record final He level and magnet pressure on Service Report.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Key Reference Values',
+        content: 'Normal magnet pressure: 3.9-4.1 psi. Max fill level: 95% (never exceed). Dewar operating pressure during fill: 4.0-4.5 psi. Transfer rate: ~10 L/min at 4 psig. 250 L dewar duration: 25-30 min. Magnet pressure before connecting: must be < 2.0 psi. V1 = Helium Fill Port. V2 = Helium Vent. Magnet Monitor key: clockwise = Fill (disables pressure builder); counter-clockwise = normal operation.'
+      }
+    ],
+    tags: ['helium', 'fill', 'cryogens', 'GE', 'LCC', 'CXK4', 'oxford', 'MP80', 'quench', 'transfer', 'pressure builder'],
+    source: 'GE CXK4 LCC Liquid Helium Fill Procedure — Oxford Instruments MP 80/412',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_016',
+    title: 'MRI Physics Quick Reference — Sequences, Parameters & Artifacts',
+    system: 'MRI General',
+    category: 'reference',
+    purpose: 'Field reference for MRI physics fundamentals. Covers magnet types, Larmor equation, T1/T2 relaxation, gradient coils, signal coding, k-space, all major pulse sequences (SE, TSE, GE, IR, STIR, FLAIR), sequence parameters and their image effects, contrast weighting rules, and artifact identification and causes. Essential background for field service engineers.',
+    componentsTested: ['Gradient coils (Gss/Gz, Gpe/Gy, Gro/Gx)', 'RF transmit/receive system', 'Main magnet (B0)', 'RF cage / Faraday shield', 'Cryostat / superconducting system', 'Receiver coils'],
+    sections: [
+      {
+        type: 'table',
+        title: 'Magnet Types',
+        headers: ['Type', 'Field Strength', 'Notes'],
+        rows: [
+          ['Permanent', '0.064-0.3 T', 'No power required; fixed field; heavy'],
+          ['Resistive', 'Up to 0.3 T', 'Water-cooled; power required; can be turned off'],
+          ['Superconducting', 'Up to 12 T (clinical: 1.5 T typical)', 'LHe at 4K (-269C); most common clinical type; always on']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'RF Coil Types and Signal Benefit',
+        headers: ['Coil Type', 'Signal Benefit'],
+        rows: [
+          ['Volume coil', 'Baseline reference'],
+          ['Surface coil', 'Higher SNR for superficial structures; limited depth'],
+          ['Quadrature (QD / CP)', 'Square root of 2 (1.4x) more signal than linear'],
+          ['Phased array', 'Square root of 2 more signal than QD; combines multiple elements for coverage + SNR']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Larmor Equation and Core Physics',
+        content: 'Larmor equation: omega-0 = gamma x B0 (resonant frequency = gyromagnetic ratio x field strength). Hydrogen gamma = 42.57 MHz/T. At 1.5 T: 63.855 MHz (~63.6 MHz). T1 (spin-lattice / longitudinal relaxation): Recovery of Mz back toward B0. T1 = time to reach 63% of full Mz. Fat has shorter T1 than water. T2 (spin-spin / transverse relaxation): Decay of Mxy signal. T2 = time for signal to decay to 37%. T2 much less than T1. Caused by spin-spin interactions. T2* (T2-star): Faster decay than T2; adds field inhomogeneity contribution. Signal decays to near zero in about +/- 40 ms. FID (Free Induction Decay): signal received by coil during T2 decay after 90-degree RF pulse. CRITICAL: T1 and T2 are independent, simultaneous processes.'
+      },
+      {
+        type: 'table',
+        title: 'Gradient Coils — Functions',
+        headers: ['Gradient', 'Axis', 'Function'],
+        rows: [
+          ['Gss (Gz)', 'Z — head to toe', 'Slice Selection: selects which slice is excited by matching RF pulse frequency to Larmor frequency at that Z location'],
+          ['Gpe (Gy)', 'Y — anterior to posterior', 'Phase Encoding: briefly applied to create unique phase per row within the selected slice. Each TR = one phase-encoding step.'],
+          ['Gro (Gx)', 'X — left to right', 'Frequency Encoding (Read Out): applied during signal acquisition. Columns have unique frequencies for left-right localization.']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'k-Space (Raw Data / Time Domain / Matrix)',
+        content: 'k-space = raw MRI data before image reconstruction. Each line of k-space = one phase-encoding step (one TR repetition). Center of k-space = SNR and contrast information. Outer k-space = spatial resolution / sharpness. 2D Fourier Transform (2DFT) converts k-space to final image. k-Space is symmetric top/bottom and left/right. Half Fourier Imaging (also: Half Scan, Partial Scanning, Advanced Fourier Imaging): fills only ~57% of k-space; halves scan time; image slightly blurred. k-Space filling methods: Linear (top to bottom, standard), Centric (center first, used for contrast angio), Reversed Centric, Spiral (used in EPI: very fast, poor resolution, high susceptibility sensitivity).'
+      },
+      {
+        type: 'table',
+        title: 'Pulse Sequences — Summary',
+        headers: ['Sequence', 'Key Feature', 'Advantage', 'Disadvantage'],
+        rows: [
+          ['Spin Echo (SE)', '90 + 180-deg RF pulses. Echo = rephased FID. Compensates T2* effects.', 'High signal; real T1 and T2 images; compensates field inhomogeneity', 'Long scan time; high RF deposit; motion artifacts'],
+          ['Turbo SE / FSE / TSE', 'Multiple 180-deg pulses per TR (Echo Train). Each echo fills one k-space line. ETL = echo train length.', 'Fast (factor = ETL); widely used T2 imaging', 'Mixed contrast; TSE-specific artifacts; high RF deposit'],
+          ['HASTE / FASE', 'ETL=212 + Half Fourier: single-shot. One repetition = one image.', 'Extremely fast; used for MRCP (bile duct imaging)', 'Poor spatial resolution; high T2* sensitivity'],
+          ['Gradient Echo (GE)', 'No 180-deg pulse. Gradient polarity reversal rephases spins instead.', 'Fast scans; low RF deposit; dynamic imaging possible', 'Does NOT compensate T2* — susceptibility artifacts; lower signal'],
+          ['Inversion Recovery (IR)', '180-deg prep pulse + SE sequence. Extra T1 contrast from Inversion Time (TI).', 'Excellent T1 contrast; great anatomy delineation', 'Very long scan time; limited number of slices'],
+          ['STIR', 'IR with TI at fat null (~160 ms at 1.5T; 90 ms at 0.35T; 120 ms at 0.5T; 140 ms at 1.0T)', 'Suppresses fat signal; useful for bone bruises and soft tissue', 'Long scan time'],
+          ['FLAIR', 'IR with long TI (~2000 ms) to null CSF signal, combined with long TE', 'Multiple Sclerosis lesions bright (CSF dark); very sensitive for demyelinating disease', 'Very long TR required (5000 ms for FastFLAIR)']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Image Contrast — SE Sequence Rules',
+        headers: ['Weighting', 'TR', 'TE', 'Bright Structures', 'Best Use'],
+        rows: [
+          ['T1-weighted', 'Short (~600 ms)', 'Short (~10-30 ms)', 'Fat; Gd-enhanced tissue; CSF is DARK', 'Anatomy; post-contrast; gray/white matter differentiation'],
+          ['T2-weighted', 'Long (~2000-3000 ms)', 'Long (~80-250 ms)', 'CSF; edema; water; fat intermediate', 'Pathology detection (most disease shows as water increase)'],
+          ['Proton Density (PD)', 'Long (~1000-2000 ms)', 'Short (~10-30 ms)', 'Structures with many protons = bright', 'Cartilage; joints; early pathology; baseline contrast'],
+          ['Gd-DTPA contrast', 'Short TR T1 sequence', 'Short', 'Enhanced tissue bright on T1', 'Blood-brain barrier breakdown; tumor enhancement; vessels']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Parameter Reference Table (TR / TE / TI / FA)',
+        headers: ['Sequence', 'TR (ms)', 'TE (ms)', 'TI (ms)', 'FA'],
+        rows: [
+          ['SE T1', '600', '10-30', '—', '90 deg'],
+          ['SE Proton Density', '1000', '10-30', '—', '90 deg'],
+          ['SE T2', '2000', '80-250', '—', '90 deg'],
+          ['GE T1', 'Short (low TR impact)', '2-14', '—', '60-90 deg'],
+          ['GE Proton Density', 'Short', '2-14', '—', '30-60 deg'],
+          ['GE T2', 'Short', '20-34', '—', '5-30 deg'],
+          ['IR T1', '2000', '10-30', '400-700', '90 deg'],
+          ['STIR (1.5T)', '2000', '10-30', '80-120', '90 deg'],
+          ['FastFLAIR', '5000', '10-30', '1800-2200', '90 deg']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Scan Parameter Effects',
+        headers: ['Parameter', 'Increasing Effect', 'Trade-off'],
+        rows: [
+          ['TR UP', 'Less T1 contrast; more PD contrast; more signal; longer scan time', 'Signal vs scan time'],
+          ['TE UP', 'More T2 contrast; less signal; possible contrast swap (CSF brighter than gray matter)', 'Contrast vs signal'],
+          ['FA UP (GE only)', 'More T1 contrast; more signal; possible contrast swap', 'T1 vs T2 weighting'],
+          ['TI UP (IR only)', 'T1 contrast changes; more signal; different tissue nulled', 'Tissue nulling selectivity'],
+          ['NA/NEX UP', 'SNR increases by sqrt(NA); fewer artifacts; image averaging effect', 'Doubles scan time per 2x factor'],
+          ['MX UP (phase/PE)', 'Higher resolution; lower signal per voxel; longer scan time', 'Resolution vs SNR vs scan time'],
+          ['MX UP (RO direction)', 'Higher resolution; lower signal per voxel; NO effect on scan time', 'Resolution vs SNR only'],
+          ['FOV DOWN', 'Higher resolution; lower SNR (squared relationship); smaller anatomy coverage', 'Resolution vs SNR'],
+          ['ST DOWN', '50% signal loss per halving; higher resolution; less partial volume effect', 'Signal vs resolution'],
+          ['SG UP', 'Less cross-talk between adjacent slices; more body coverage', 'Cross-talk vs coverage gap'],
+          ['BW DOWN', 'More SNR; forces longer TE; more chemical shift artifact', 'SNR vs TE vs chemical shift']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Image Artifact Identification Guide',
+        headers: ['Artifact', 'Appearance', 'Cause', 'Fix / Notes'],
+        rows: [
+          ['Motion', 'Ghosting or blurring in phase-encoding direction', 'Patient movement, breathing, pulsation during phase encoding gradient', 'Flow compensation; cardiac/respiratory gating; faster sequence; change PE direction to avoid critical anatomy'],
+          ['Para-magnetic (metal)', 'Dark signal void with distortion / blooming', 'Metal (especially iron) deflects B0 field — protons outside Larmor range', 'Screen ALL patients for metal before scan. Titanium/aluminum = minimal. Iron/steel = severe. SAFETY: metal can kill.'],
+          ['Phase wrap', 'Body part wrapped onto opposite side of image', 'FOV in PE direction smaller than object being scanned', 'Enable No-Wrap option (doubles FOV; reconstructs only specified area). Time penalty: doubles scan time.'],
+          ['Frequency (RF noise)', 'Lines or stripes in frequency-encoding direction', 'Faulty electronics; external transmitters; RF cage leak; scanner room door left open; metal in patient', 'Close scanner room door. Call engineer for RF cage leak or faulty electronics.'],
+          ['Susceptibility', 'Black pencil-line outline at tissue boundaries (fat/muscle/water interfaces)', 'Local field inhomogeneity at tissue boundaries; different bonding of hydrogen in fat vs muscle', 'Use SE (compensates T2*). GE sequences most affected. Worsens at higher B0.'],
+          ['Clipping (overflow)', 'Bands of inverted gray signal; hot spots', 'Receiver gain too high during pre-scan; signal exceeds ADC range', 'Repeat pre-scan; adjust receiver gain settings.'],
+          ['Chemical shift', 'White and black border at fat/water boundary in frequency (RO) direction', 'Fat H and water H resonate at different frequencies (224 Hz difference at 1.5T; 74 Hz at 0.5T)', 'Increase bandwidth; use fat saturation; change PE direction. Worse at low BW and high B0.'],
+          ['Spike', 'Diagonal lines across entire image (criss-cross pattern)', 'Single bad data point (outlier) in k-space', 'Repeat scan. Check for intermittent RF interference.'],
+          ['Zebra', 'Alternating bright/dark horizontal stripes', 'Patient touching receive coil; or phase wrap effect', 'Ensure patient not touching coil. Enable No-Wrap option.']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Tissue Relaxation Times at 1.5 T (approximate)',
+        headers: ['Tissue', 'T1 (ms)', 'T2 (ms)', 'Notes'],
+        rows: [
+          ['Gray matter', '921', '101', 'Brain'],
+          ['White matter', '787', '92', 'Brain'],
+          ['Brain tumors', '1073', '121', 'Higher water content'],
+          ['CSF', '>3000', '>250', 'Long T1 and T2 — bright on T2'],
+          ['Fat (adipose)', '259', '84', 'Short T1 — bright on T1'],
+          ['Liver (normal)', '493', '43', 'Short T2'],
+          ['Muscle (normal)', '868', '47', ''],
+          ['Kidney (normal)', '652', '58', ''],
+          ['Edema', '1090', '113', 'Long T1 and T2 — bright on T2'],
+          ['Meningioma', '979', '103', '']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Gradient System Specs and MRI Noise',
+        content: 'Three gradient coil sets in one cylinder (Gx, Gy, Gz) placed inside the magnet bore. MRI scanning noise is caused by gradient coil vibration under high current switching — coils are fixed in resin but still vibrate due to strong magnetic forces. Key gradient specs: (1) Max strength T/m — higher = smaller min FOV, thinner slices. (2) Rise time (seconds) — shorter = better. (3) Slew rate = Max strength divided by rise time (T/m/s) — higher = faster sequences (shorter minimum TR and TE). Example: 17 T/m / 0.7s = 24 T/m/s. Slice thickness is determined by: (1) steepness of slice select gradient slope, and (2) bandwidth of the 90-degree RF pulse.'
+      }
+    ],
+    tags: ['physics', 'MRI', 'T1', 'T2', 'sequences', 'artifacts', 'parameters', 'k-space', 'Larmor', 'reference', 'SE', 'TSE', 'FSE', 'GE', 'IR', 'STIR', 'FLAIR', 'SNR', 'gradient', 'contrast'],
+    source: 'MRI Physics by Evert J. Blink, rev 1.3 (January 2000 - August 2010, mri-physics.net)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+];
+
+let diagGuides = [];
+
+// ════════════════════════════════════════════════════
 // PARTS DATABASE — localStorage key
 // ════════════════════════════════════════════════════
 const PARTS_STORE_KEY = 'amt_parts_v30';
