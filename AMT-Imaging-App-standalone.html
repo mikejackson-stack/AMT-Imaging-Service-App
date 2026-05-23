@@ -6191,6 +6191,297 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-23',
     created: '2026-05-23T00:00:00.000Z'
   }
+,
+  {
+    id: 'dg_seed_028',
+    title: 'GE Signa Linux Host Root Password Reset',
+    system: 'GE Signa (Fedora/Linux Host)',
+    category: 'Host Computer',
+    diagnosticPath: 'Host Computer > Linux > Root Password',
+    purpose: 'Procedure to reset a forgotten or locked root password on GE Signa MRI host computers running Fedora Linux. Three methods are covered: GRUB2 boot rescue (most common, no media required), Fedora Live Media boot, and BIOS-protected system workaround. Applicable to Signa 1.5T and 3.0T systems with Linux-based hosts.',
+    componentsTested: ['Host Computer', 'Linux OS', 'GRUB2 Boot Loader', 'Root Account'],
+    sections: [
+      {
+        type: 'note',
+        title: 'When to Use This Guide',
+        content: 'Use when root login is required for service (e.g., GE software installation, system recovery, advanced diagnostics) and the root password is unknown. On GE Signa systems, root access is needed for manual service procedures, log access, and configuration changes that cannot be performed from the service browser. Source: Fedora Project Wiki — How to Reset a Root Password (method applies to GE Signa Linux hosts).'
+      },
+      {
+        type: 'steps',
+        title: 'Method 1: GRUB2 Boot Rescue (No Media Required)',
+        items: [
+          'Reboot or power on the host computer. Watch for the GRUB2 boot menu to appear.',
+          'Use arrow keys to select the boot entry you want to edit (usually the first/default entry).',
+          'Press "e" to start editing that boot entry.',
+          'Use arrow keys to find the line beginning with "linux", "linux16", or "linuxefi" (UEFI systems).',
+          'Navigate to the END of that line. Add a space, then type: rw   then another space, then: init=/bin/bash',
+          'If disk is encrypted, also add: plymouth.enable=0',
+          'Press Ctrl-X or F10 to boot that entry. System will boot to a root shell (# prompt).',
+          'At the # prompt, type: passwd   and press Enter.',
+          'Enter the new root password twice when prompted.',
+          'Run: touch /.autorelabel   to restore SELinux file context labels on reboot.',
+          'Reboot: /sbin/reboot -f'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Method 2: Fedora Live Media Boot (Bootloader Password Protected)',
+        items: [
+          'Boot the system from Fedora Live CD/DVD or USB.',
+          'After live session starts, open a terminal. Switch to root: su (will not ask for password in live session).',
+          'Create a mount point: mkdir /mnt/sysimage',
+          'Mount the system partition (replace /dev/sda1 with actual root partition device): mount /dev/sda1 /mnt/sysimage',
+          'Chroot into the installed system: chroot /mnt/sysimage/',
+          'Reset the root password: passwd',
+          'Enter and confirm the new password.',
+          'Exit the chroot: exit',
+          'Reboot and boot from the hard drive as normal.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Method 3: BIOS Password Protected',
+        content: 'If the BIOS is password-protected and prevents booting from alternate media: (1) Check machine documentation for CMOS reset jumper to clear BIOS password — usually a physical jumper on the motherboard. (2) Physically change the boot order by moving the hard drive to the first boot position (if BIOS allows without password). (3) Move the system hard disk to another compatible machine, boot that machine, and follow Method 2 to reset the password, then reinstall the disk.'
+      }
+    ],
+    tags: ['root password', 'Linux', 'Fedora', 'GRUB2', 'host computer', 'password reset', 'rescue mode', 'init=/bin/bash', 'service access', 'Signa'],
+    source: 'Fedora Project Wiki — How to Reset a Root Password (applicable to GE Signa Linux host computers)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_029',
+    title: 'GE Signa HDxt ICN (Image Compute Node) Replacement',
+    system: 'GE Signa HDxt / HDe 1.5T',
+    category: 'Reconstruction',
+    diagnosticPath: 'Reconstruction > ICN > Replacement',
+    purpose: 'Step-by-step replacement procedure for the GE Signa HDxt/HDe Image Compute Node (ICN). Four ICN hardware types are covered: 5127452 (black dedicated computing boxes), 5127452-3 (Sun 4100), 5337894-3 (Sun 4170 16-channel), and 5337894-4 (Sun 4170 32-channel). ICNs are located in the system cabinet either below the MGD chassis or at the bottom of the cabinet. NEVER power on/off from the front panel button.',
+    componentsTested: ['ICN (Image Compute Node)', 'InfiniBand Connections', 'Ethernet Switch Connections', 'Service Browser', 'System Cabinet'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Critical ICN Power-Down Rules',
+        items: [
+          'NEVER turn ICNs ON or OFF using the power button on the front panel — the ICNs run software on disk drives that will corrupt if not shut down properly.',
+          'ICNs must ONLY be powered down through the service browser using the ICN ON/OFF procedure.',
+          'If there is more than one ICN in the rack, switch off ALL ICNs before removing any from the rack.',
+          'If replacing an ICN that is NOT on top of the stack, all ICNs above it must be uncabled and removed first to prevent damage.',
+          'ELECTROCUTION HAZARD: Dangerous voltages are present throughout the System Cabinet when power is applied. Perform LOTO before working on hardware.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'ICN Part Numbers by Type',
+        headers: ['ICN Type', 'Part Number', 'Notes'],
+        rows: [
+          ['HDx Image Compute Node (Black Boxes)', '5127452', 'Only use when cabinet contains 5127452'],
+          ['HDx ICN Sun 4100', '5127452-3', 'Only use when cabinet contains 5127452-3'],
+          ['HDx ICN Sun 4170 — 16 Channel', '5337894-3', 'Only use when cabinet contains 5337894-3'],
+          ['HDx ICN Sun 4170 — 32 Channel', '5337894-4', 'Only use when cabinet contains 5337894-4']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'ICN Replacement Procedure',
+        items: [
+          'Locate the ICN(s) in the system cabinet — positioned below the MGD chassis or at the bottom of the cabinet (location varies by system configuration: 1.5T vs 3.0T).',
+          'From the service browser, switch OFF all ICNs using the ICN ON/OFF Procedure. If multiple ICNs are present, shut down ALL before removing any.',
+          'Perform LOTO on the Systems Cabinet or RF Systems Cabinet (RFS).',
+          'Disconnect from the rear of the ICN(s): power cables, InfiniBand cable, and all three Ethernet switch connections. Note connection port positions for reinstallation.',
+          'Remove the retaining screws at the front of the ICN chassis.',
+          'Slide the ICN(s) out from the front of the cabinet.',
+          'For types 5127452-3, 5337894-3, and 5337894-4 ONLY: Transfer the front bracket to the new ICN. Right side bracket: push downward and rotate 45° to remove. Left side bracket: slide upward to remove. Install on new ICN in reverse order.',
+          'Install the new ICN and reconnect all cables in reverse order (Ethernet, InfiniBand, power). Consult 5133310 (1.5T) or 5133320 (3.0T) block diagrams if needed.',
+          'Configure the new ICN per the ICN Reconfiguration procedure.',
+          'Perform a test scan to verify system operation.'
+        ]
+      }
+    ],
+    tags: ['ICN', 'image compute node', 'Sun 4100', 'Sun 4170', 'reconstruction', 'HDxt', 'HDe', 'InfiniBand', 'service browser', 'black boxes', '5127452', '5337894'],
+    source: 'GE Direction 5440001-3, Rev 6 — Signa HDxt Service Methods, ICN Replacements (Section 500339)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_030',
+    title: 'GE Signa HDxt Longitudinal Drive Motor, Coupling and Gear Box Replacement',
+    system: 'GE Signa HDxt 1.5T',
+    category: 'Table / Patient Transport',
+    diagnosticPath: 'Table > Longitudinal Drive > Motor / Gear Box / Coupling',
+    purpose: 'Replacement procedure for the Longitudinal Drive Motor, Flexible Coupling, and 16mm Gear Box (Speed Reducer) on the GE Signa HDxt 1.5T. The drive system is located in the rear pedestal. Requires 2 MR-safety-trained personnel due to strong magnet attraction. All ferrous components must be removed from the Magnet Room before disassembly. Loctite 242 is required on all reassembly screws including set screws.',
+    componentsTested: ['Longitudinal Drive Motor', 'Flexible Coupling', 'Gear Box (Speed Reducer)', 'Motor Mounting Bracket', 'Patient Cradle'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Ferrous Material and Magnetic Field Safety',
+        items: [
+          'TWO MR safety-trained personnel MUST be present at all times when servicing ferrous devices in the magnet room.',
+          'The Longitudinal Drive Motor and Gear Box contain FERROUS material. Holding either too close to the bore will forcibly attract it to the magnet — causing injury and equipment damage.',
+          'Motor and Gear Box MUST be removed from the Magnet Room BEFORE disassembly and before installing the new part.',
+          'Static magnetic field must NOT exceed 200 Gauss at any point along the service path.',
+          'Walk the service path BEFORE beginning — verify no trip hazards, clutter, or obstacles.',
+          'At NO time should the gear box assembly be left within the magnetic field unattended.',
+          'Use a towel or cardboard on the floor/wall when sliding the assembly out to prevent damage.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Tools and Parts',
+        content: 'Tools: Nonmagnetic Service Tool Kit (5113258 or 5112581). Parts: Longitudinal Drive Motor (see FRU manual), Flexible Coupling (see FRU manual), 16mm Gear Box/Speed Reducer (see FRU manual). Apply Loctite 242 to ALL screws during reassembly, including set screws.'
+      },
+      {
+        type: 'steps',
+        title: '4.1 Longitudinal Drive Motor Replacement',
+        items: [
+          'Perform LOTO on the PDU. Refer to MR Service Safety Manual PN 5452735.',
+          'Remove the rear pedestal LEFT side cover (as viewed from the rear of the magnet).',
+          'Disconnect all cables from the motor.',
+          'Loosen the two lower set screws (approximately 90° apart) on the motor shaft coupling.',
+          'While one person holds the motor firmly with BOTH hands, the other person loosens and removes the two long motor mounting screws from the inner bracket. (Aluminum spacers may come free as well — retain them.)',
+          'Twist the motor/bracket assembly to free the inner bracket. Insert a screwdriver into the separation location and pry apart.',
+          'With the last screw removed, carefully lower the motor to the floor and slide it toward the FRONT of the Magnet Room (away from magnet) until outside the 200 Gauss area. Retain the two long screws and aluminum spacers.',
+          'With motor OUTSIDE the Magnet Room: remove the four mounting screws from the motor mounting bracket to separate motor from bracket.',
+          'Install the replacement motor onto the bracket. Do NOT fully tighten — some bracket movement is needed for reconnecting to the clutch assembly.',
+          'Bring the motor/bracket assembly back into the Magnet Room along the SAME path used for removal.',
+          'While second person holds motor firmly, first person reconnects motor/bracket assembly to clutch assembly using the two long screws and aluminum spacers.',
+          'Apply Loctite 242 to ALL screws. Tighten the four bracket screws evenly. Tighten the two coupling set screws.',
+          'Reconnect cables. Replace rear pedestal cover. Remove LOTO. Restore system power.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: '4.2 Gear Box (Speed Reducer) Replacement',
+        items: [
+          'Perform LOTO on the PDU.',
+          'Remove the rear pedestal left side cover. Disconnect cables from motor.',
+          'Remove and retain the two hex nuts from the threaded rods holding the motor/coupling/gear box assembly to the pedestal frame bracket.',
+          'While one person holds the motor assembly firmly, the other loosens and removes the two long mounting screws attaching to the aluminum spacers. (Retain screws for reassembly.)',
+          'Pull the entire assembly away from the mounts, spacers, and coupling attached to the rear pedestal frame. Do NOT leave assembly unattended within the magnetic field.',
+          'Carefully remove the motor assembly from the Magnet Room — place on floor and slide to front of room as shown in Illustration 2.',
+          'OUTSIDE Magnet Room: loosen the two set screws (90° apart) on the motor shaft flexible coupling (gear box side). Remove the Gear Box from the assembly.',
+          'Loosen the two set screws on the gear box output shaft coupling and remove the coupling from the gear box.',
+          'Prepare the new gear box: remove the four body screws (the threaded rod and mounting screws will hold it together in the assembly).',
+          'Apply Loctite 242 to all screws. Attach the gear box output shaft coupling and tighten both set screws.',
+          'Attach gear box to motor shaft flexible coupling by inserting the gear box input shaft into the coupling, sliding between motor mounting brackets. Use the two long mounting screws to position.',
+          'Ensure one set screw is on the shaft flat. Tighten both set screws.',
+          'Bring the assembly back into the Magnet Room along the SAME removal path. Reattach to rear pedestal bracket.',
+          'Tighten the two mounting screws and two hex nuts. Reconnect cables. Replace cover.',
+          'Remove LOTO. Restore system power.'
+        ]
+      },
+      {
+        type: 'note',
+        title: '4.3 Flexible Coupling Replacement',
+        content: 'Follow either the Motor or Gear Box replacement procedure (whichever is convenient) to access and replace the flexible coupling. Key points: (1) Loosen and tighten ALL FOUR set screws (two at each end) on the flexible coupling. (2) Ensure one set screw on each end is on the shaft flat — one on the motor shaft flat, one on the gear box input shaft flat. (3) Apply Loctite 242 to all set screws. Finalization: verify the patient cradle moves smoothly into and out of the magnet bore.'
+      }
+    ],
+    tags: ['longitudinal drive', 'drive motor', 'gear box', 'speed reducer', 'flexible coupling', 'patient table', 'cradle', 'pedestal', 'ferrous', 'HDxt', '1.5T', 'Loctite 242', 'set screw', 'MR safety'],
+    source: 'GE Direction 5440001-3, Rev 12.0 — Signa HDxt Service Methods, Section 546776 Longitudinal Drive Motor, Coupling and Gear Box Replacement',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_031',
+    title: 'GE MRI Magnet Types, Weights, and Dimensions Reference',
+    system: 'GE MRI (All Types)',
+    category: 'Reference',
+    diagnosticPath: 'Reference > Magnet Identification > Type / Weight / Dimensions',
+    purpose: 'Quick-reference table for identifying GE MRI magnet types by serial number prefix, with shipping/installation weights and physical dimensions (L × W × H). Used for planning magnet installations, site moves, and determining appropriate moving equipment. All dimensions include 6-inch furniture movers/skates. Covers 5X, LX, and EX platform magnets plus special types.',
+    componentsTested: ['Magnet Assembly', 'Site Planning'],
+    sections: [
+      {
+        type: 'table',
+        title: 'GE MRI Magnet Types — 5X, LX, EX Platforms',
+        headers: ['Type', 'Serial # Prefix', 'Weight (lbs)', 'L × W × H (with 6in movers)'],
+        rows: [
+          ['SI', '67xxx', '18,800', '93 × 87 × 103 in'],
+          ['SII', 'Cxxx', '18,800', '93 × 87 × 103 in'],
+          ['SIII', 'Dxxx', '16,100', '93 × 87 × 103 in'],
+          ['SIV', 'Gxxx', '19,300', '93 × 88 × 101 in'],
+          ['SV', 'Jxxx', '15,800', '88 × 88 × 98 in'],
+          ['SXC_1', 'Kxxx', '15,800', '88 × 88 × 98 in'],
+          ['SXC_2', 'Lxxx', '15,800', '88 × 88 × 98 in'],
+          ['SX (Excite)', 'Xxxx', '15,800', '88 × 88 × 98 in'],
+          ['SX-M', 'XMxxx', '15,800', '88 × 88 × 98 in'],
+          ['Conquest 1.5T', 'Nxxx', '11,000', '73 × 82 × 98 in'],
+          ['Conquest 1.0T', 'Pxxx', '10,200', '73 × 82 × 98 in'],
+          ['1.5T LCC Active Shield', 'Rxxx', '12,000', 'L 94 in (w/bars) × 72 × 82 × 98 in'],
+          ['1.0T LCC Active Shield', 'Qxxx', '12,000', 'L 94 in (w/bars) × 72 × 82 × 98 in'],
+          ['3.0T LCC', '(none listed)', '25,000', 'L 94 in (w/bars) × 81 × 86 × 94 in'],
+          ['0.7T HFO', 'Txxx', '22,000', '81 × 86 × 94 in'],
+          ['0.5T VMX', 'Vxxx', '8,600', '74 × 71 × 88 in'],
+          ['0.5T VMX2', 'Zxxx', '8,600', '74 × 71 × 88 in'],
+          ['Compact', 'Exxx', '—', '—'],
+          ['Oxford (12 Resistive Coils)', 'O124xxx', '—', '—'],
+          ['Oxford (18 Resistive Coils)', 'O184xxx', '—', '—'],
+          ['MR Max', 'Axxx', '—', '—']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Usage Notes',
+        content: 'All dimensions shown include 6-inch furniture movers/skates — subtract 6 inches from height for final installed height without movers. LCC magnets have shipping bars that extend the length to 94 inches (bar width = L 94in W/bars). Serial number prefix identifies the magnet type and generation: R = 1.5T LCC, Q = 1.0T LCC, X = Signa Excite SX, D = SIII, G = SIV, J = SV, K = SXC_1, L = SXC_2, N = 1.5T Conquest, P = 1.0T Conquest. Use this table for site survey planning, doorway clearance checks, floor loading calculations, and crane/dolly selection.'
+      }
+    ],
+    tags: ['magnet types', 'serial number', 'weight', 'dimensions', 'site planning', 'installation', 'LCC', 'Conquest', 'Excite', 'SX', 'SIII', 'SIV', 'SV', 'VMX', 'HFO', 'Oxford', 'reference', 'floor loading'],
+    source: 'GE MRI Magnet Types, Weight, and Dimensions Reference Sheet (5X, LX, EX) — Rev 1',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_032',
+    title: 'GE MRI Multicoil TR Bias Fault Troubleshooting',
+    system: 'GE Signa 1.5T / 1.0T (Multicoil)',
+    category: 'RF / Coil',
+    diagnosticPath: 'RF > Multicoil > TR Bias Fault',
+    purpose: 'Troubleshooting guide for Multicoil TR Bias faults on GE Signa 1.5T and 1.0T systems. TR bias is supplied from the SSM (System Support Module) through the Multicoil Select Switch to the Preamp Protect Module. It controls PIN diode switching in phased-array coils: -5V during receive (reverse bias = tune coil), +5V during transmit (forward bias = detune coil). A fault in this circuit prevents proper coil tuning/detuning and causes image degradation or coil errors.',
+    componentsTested: ['SSM J20 MC SIGNALS Connector', 'CPD Board', 'Multicoil Select Switch', 'Preamp Protect Module', 'PIN Diode Switching Circuit'],
+    sections: [
+      {
+        type: 'note',
+        title: 'TR Bias Theory Overview',
+        content: 'TR (Transmit/Receive) bias controls PIN diode switching in phased-array (multicoil) coils: -5V is applied to selected coils during RECEIVE to reverse-bias PIN switches, tuning the coil. +5V is applied during TRANSMIT to forward-bias PIN switches, detuning the coil. +5V is also applied during RECEIVE to coils NOT being used to detune them ("hard off" = detuned + output switched off the receive line). "Soft off" = coil left tuned (reverse-biased) but switched from the receive line. Hard off is more effective at preventing noise pickup from unused coils.'
+      },
+      {
+        type: 'steps',
+        title: 'Multicoil TR Driver Fault Isolation Procedure',
+        items: [
+          'Set up for a scan using the CTLTOP coil (use even if site does not have this coil — it is used only for testing).',
+          'Perform [Manual Prescan] → [Done] to establish coil drive state.',
+          'Refer to the CTLTOP Multicoil diagram on the 8.X Service CD-ROM under: Coils > Multicoil Control Diagrams > "1.5T Teledyne, USAI As Well As 1.0T CTL Coils". This diagram is also valid for 1.0T systems.',
+          'Using a Digital Multimeter (DMM), measure voltages between each Multicoil Driver pin and the Common pins at J20 MC SIGNALS on the REAR of the SSM.',
+          'Compare measured voltages to the expected values in the table below.',
+          'If multicoil drive voltages are not present at J20 on the SSM, replace the CPD Board.',
+          'If voltages are present at J20 but absent at the coil connector, trace through the Multicoil Select Switch and Preamp Protect Module in the Low Profile Carriage Assembly.',
+          'After CPD replacement or cable repair, reconnect all disconnected cables and retest.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Table 10-1: J20 MC SIGNALS Pin Assignments — CTLTOP Coil Selection',
+        headers: ['Driver #', 'Pin at J20', 'Expected Voltage', 'Common Pins'],
+        rows: [
+          ['1', '8', '−5 VDC', '10, 11, 12, 13, 14, 15'],
+          ['2', '6', '−5 VDC', '10, 11, 12, 13, 14, 15'],
+          ['3', '3', '−5 VDC', '10, 11, 12, 13, 14, 15'],
+          ['4', '1', '+5 VDC', '10, 11, 12, 13, 14, 15']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Key Fault Decision',
+        content: 'If the problem is missing multicoil drive voltage from the SSM at J20 MC SIGNALS → Replace the CPD Board. If the voltage is present at J20 but the coil is not properly switching → trace the circuit from J20 through the Multicoil Select Switch to the Preamp Protect Module in the Low Profile Carriage Assembly, checking for open connections or damaged connectors.'
+      }
+    ],
+    tags: ['TR bias', 'multicoil', 'phased array', 'PIN diode', 'SSM', 'J20', 'CPD board', 'Preamp Protect Module', 'Multicoil Select Switch', 'coil fault', '1.5T', '1.0T', 'RF', 'detuning', 'receive bias'],
+    source: 'GE Signa MRI Service Manual — Chapter 10: Troubleshooting Multicoil TR Bias Faults',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
