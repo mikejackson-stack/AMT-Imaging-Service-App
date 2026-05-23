@@ -6482,6 +6482,265 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-23',
     created: '2026-05-23T00:00:00.000Z'
   }
+,
+  {
+    id: 'dg_seed_033',
+    title: 'GE Signa Linux Host Administration — USB Mount and Password Change',
+    system: 'GE Signa (Linux Host)',
+    category: 'Host Computer',
+    diagnosticPath: 'Host Computer > Linux > Administration',
+    purpose: 'Common Linux host administration tasks on GE Signa MRI systems: (1) mounting a USB drive to copy service logs, software, or configuration files; (2) changing account passwords via the Unix shell. These tasks are routinely needed during software updates, data backups, and when resetting credentials.',
+    componentsTested: ['Host Computer', 'Linux OS', 'USB Drive', 'Shell Account'],
+    sections: [
+      {
+        type: 'steps',
+        title: 'Mounting a USB Drive in Linux',
+        items: [
+          'Open a shell terminal and become root (su or login as root).',
+          'Run: tail -f /var/log/messages   — the terminal will wait and display system events in real time.',
+          'Plug in the USB drive. Watch the log output for device detection messages.',
+          'Look for the line specifying the assigned device — typically sdd1, sde1, or similar. Note the exact device name (e.g., /dev/sdd1).',
+          'Check if Linux automatically assigned a mount point (it will appear in the log, e.g., /media/USB). If assigned, the drive is already accessible.',
+          'If no mount point was assigned: open a new shell window, become root, and create one: cd /media && mkdir USB',
+          'Mount the drive: mount /dev/sdd1 /media/USB   (substitute actual device name and preferred mount point)',
+          'Access files using Linux commands (cp, ls, mv) or open a file manager: nautilus &',
+          'In Nautilus: navigate to Places → Computer to see mounted drives.',
+          'When finished: unmount before physically removing: umount /dev/sdd1   (use actual device name)'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Changing a User Account Password',
+        items: [
+          'Open a shell terminal.',
+          'Login as root (or su to root). Root is required to change any account password without knowing the old one.',
+          'To change the "signa" user password (or any other account): passwd signa',
+          'To change the root password: passwd',
+          'Enter the new password when prompted.',
+          'Re-enter the password to confirm.',
+          'Password is changed immediately — no reboot required.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Common Device Names on GE Signa Linux Hosts',
+        content: 'Typical USB device assignments on GE Signa Linux systems: /dev/sda = primary internal hard drive, /dev/sdb = secondary internal drive or first USB, /dev/sdc-sdf = additional USB devices. If multiple USB devices are present, the newest one will be the highest letter. Always verify the device name in /var/log/messages before mounting to avoid mounting the wrong device.'
+      }
+    ],
+    tags: ['USB', 'mount', 'Linux', 'shell', 'password', 'passwd', 'root', 'signa', 'host computer', 'nautilus', 'administration', 'sdd1'],
+    source: 'GE Signa Service Engineering Internal Documentation — Mounting a USB Drive in Linux; Password Change Procedure',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_034',
+    title: 'GE Signa HDxt Patient Transport System Theory and Operation',
+    system: 'GE Signa HDxt 1.5T',
+    category: 'Table / Patient Transport',
+    diagnosticPath: 'Table > Patient Transport > Theory / Troubleshooting',
+    purpose: 'Complete theory of operation for the GE Signa HDxt patient transport (table), covering the hydraulic system, pedal functions, cradle interlock logic, docking mechanism, up sensor, emergency egress, and maintenance requirements. Essential reference for diagnosing table faults — cannot dock, will not lower, cradle does not travel, or table does not raise. Source: GE Direction 5440001-3, Rev 4.',
+    componentsTested: ['Hydraulic Pump', 'Hydraulic Cylinder', 'Down Valve', 'Dock Assembly', 'Cradle Interlock', 'Undock Link', 'Down Link', 'Central Pin', 'Front Latch', 'Up Sensor', 'Up Limit Cable', 'Casters'],
+    sections: [
+      {
+        type: 'note',
+        title: 'System Overview',
+        content: 'The patient transport is a lightweight, portable table that docks to the magnet enclosure via a dock assembly. When docked, it is secured by a 500-lb over-the-center cam force. Three locking casters prevent movement during patient transfer. One Direction Lock Caster aids straight-line maneuvering but does NOT lock the table. Main assemblies: Table Top, Cradle (patient platform), Cradle Handle, Hydraulic Scissors mechanism, Dock Interface, Arm Boards, IV Pole, and Pedals.'
+      },
+      {
+        type: 'table',
+        title: 'Foot Pedal Functions (4 Pedals at Rear of Table)',
+        headers: ['Pedal #', 'Name', 'Function'],
+        rows: [
+          ['1', 'Table Dock', 'Activates docking mechanism — locks table to magnet enclosure'],
+          ['2', 'Table Undock', 'Detaches table from magnet enclosure'],
+          ['3', 'Table Up', 'Operates hydraulic pump via mechanical linkage — raises table'],
+          ['4', 'Table Down', 'Opens down valve — lowers table by gravity']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Hydraulic System Theory',
+        content: 'A single-acting hydraulic pump at the docking end raises the table. The pump receives power from an electric motor in the dock assembly (when docked) OR from the Table Up foot pedal (rear pedal) via mechanical linkage. The table is lowered by gravity when the down valve (at the base of the hydraulic cylinder) opens. The down valve is mechanically linked to: (1) the Table Down foot pedal at the rear of the table, AND (2) a set of pedals on either side of the dock assembly when the table is docked.'
+      },
+      {
+        type: 'steps',
+        title: 'Cradle Interlock Logic',
+        items: [
+          'The cradle interlock prevents the table from being undocked or lowered unless the cradle is in the home (fully retracted) position.',
+          'Cradle NOT in home position: the Undock Link and Down Link are RAISED — this physically blocks the undock and down pedal mechanisms.',
+          'Cradle IN home position: the Undock Link and Down Link are LOWERED — undock and down functions are enabled.',
+          'Central Pin: EXTENDS (pops up) when the table is UNDOCKED — engages the cradle, limiting it to ~3.62 in (92 mm) travel. The pin is RETRACTED when the table is DOCKED (bumper in dock assembly pushes the central pin cable).',
+          'Front Latch (Dock Link): EXTENDS and locks the cradle when table is UNDOCKED — prevents cradle from traveling out of the table. RETRACTS when the table is DOCKED, allowing full cradle travel.',
+          'Side Lock: RETRACTS when carriage is latched onto the cradle — allows cradle to travel into the bore.',
+          'Three mechanical latches provide additional protection against inadvertent table movement.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Up Sensor Conditions',
+        headers: ['Up Limit Cable State', 'Table Position', 'Switch State'],
+        rows: [
+          ['Loose', 'Table NOT in fully up position', 'Deactivated — carriage will not latch'],
+          ['Taut', 'Table IS in fully up position', 'Link pushed forward → dock unit switch actuated → carriage latches onto cradle']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Emergency Patient Egress (Patient Stuck in Bore)',
+        items: [
+          'Calmly approach the magnet bore.',
+          'Locate the emergency egress (cradle release) handle — on the bore face of the magnet.',
+          'ROTATE and PULL the cradle release handle — this unlocks the cradle from the dog housing in the bore.',
+          'Pull the cradle out onto the patient transport.',
+          'Press Table Undock pedal to detach table from magnet.',
+          'Move table and patient out of the magnet room.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Table Transport Emergency Release (Undock Pedal Failure)',
+        items: [
+          'Used when the undock pedal does not function.',
+          'First: ensure the cradle is FULLY RETRACTED to the home position.',
+          'Locate the Emergency Release Lever — a red lever adjacent to the Up and Down pedals.',
+          'Grasp the handle on the red lever and pull STRAIGHT OUT to release the table from the dock.',
+          'Move the table away from the magnet.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Regular Inspection and Maintenance (Weekly)',
+        items: [
+          'Pump table to full height, then lower using the down pedal. Listen for abnormal noises.',
+          'Visually inspect below the table for hydraulic oil leaks. If oil is present: contact service immediately and do NOT use the table.',
+          'Check all caster wheels for free rotation.',
+          'Verify lock/unlock function works on all locking casters.',
+          'Clean with mild soap solution for body fluids. Do NOT use amines, strong alkalies, esters, iodine, aromatic/chlorinated hydrocarbons, or ketones.',
+          'Do NOT use autoclaves or industrial washers/dryers.'
+        ]
+      }
+    ],
+    tags: ['patient table', 'patient transport', 'HDxt', 'cradle', 'dock', 'hydraulic', 'down valve', 'cradle interlock', 'up sensor', 'pedal', 'emergency egress', 'central pin', 'front latch', 'undock', 'side lock'],
+    source: 'GE Direction 5440001-3, Rev 4 — Signa HDxt Service Methods, Patient Transport Theory (Module Version 3.0, 6/10/09)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_035',
+    title: 'GE Signa MR750 3.0T PDM Block Diagram Reference',
+    system: 'GE Signa MR750 3.0T',
+    category: 'Power / PDU',
+    diagnosticPath: 'Power > PDM > Block Diagram',
+    purpose: 'Block diagram reference for the Power Distribution Module (PDM) inside the PGR Cabinet of the GE Signa MR750 3.0T. Covers the RF/PDM section (circuit breakers, RF amplifier feeds, transmit connections) and the PDM Recon section (ICN power, CAM, Ethernet Switch, Term Server, Clock). Used for tracing power faults, locating breakers, and identifying connector assignments.',
+    componentsTested: ['PDM', 'Circuit Breakers', 'RF/PDM Section', 'Recon Section', 'ICN Power', 'CAM', 'NR Amp', 'BB Amp'],
+    sections: [
+      {
+        type: 'table',
+        title: 'RF/PDM Section — Circuit Breakers and Connections',
+        headers: ['Component', 'Connector / Label', 'Connected To'],
+        rows: [
+          ['CB1', 'CB1', 'RF/PDM main distribution'],
+          ['CB2', 'CB2', 'PEN Cabinet feed'],
+          ['CB3', 'CB3', 'BB Amp (J205) feed'],
+          ['CB7', 'CB7', 'FUS CNTL (J302) feed'],
+          ['TM1', 'TM1 — NR Amp', 'XRFD lines L1, L2, L3'],
+          ['J205', 'J205 — BB Amp', 'Broadband Amplifier'],
+          ['J12', 'To AMT MNS J12', 'AMT MNS (Magnet Network Switch)'],
+          ['J16', 'J16 — PEN Cab', 'Penetration Cabinet J1'],
+          ['J302', 'J302 — FUS CNTL', 'RF Fuse/Control'],
+          ['GND Stud', '6mm Stud (46-328425P2, 46-328433P3)', 'Chassis ground — Top Plate']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'PDM Recon Section — Circuit Breakers and Connections',
+        headers: ['Component', 'Connector / Label', 'Connected To'],
+        rows: [
+          ['TM2', 'TM2 — AWG#12', 'Three-phase input: N, B, C from Recon Breaker in PDU'],
+          ['CB4', 'CB4', 'Recon section distribution'],
+          ['CB5', 'CB5', 'Recon section distribution'],
+          ['CB6', 'CB6', 'Recon section distribution'],
+          ['CB8', 'CB8 — Clock', 'Clock (J30)'],
+          ['CB9', 'CB9', 'Recon section distribution'],
+          ['J24', 'J24 — ICN-1', 'Image Compute Node 1'],
+          ['J25', 'J25 — ICN-2', 'Image Compute Node 2'],
+          ['J26', 'J26', 'Recon distribution'],
+          ['J27', 'J27 — CAM', 'CAM subsystem'],
+          ['J28', 'J28 — Ethernet Switch', 'System Ethernet Switch'],
+          ['J29', 'J29 — Term Server', 'Terminal Server'],
+          ['J30', 'J30 — Clock', 'System Clock (via CB8)'],
+          ['CAM STIF J5', 'To CAM STIF J5', 'CAM STIF board connector'],
+          ['SERVICE', 'SERVICE ports', 'Service access connections']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'PDM Location and Usage',
+        content: 'The PDM (Power Distribution Module) is located inside the PGR (Processing/Gradient/RF) Cabinet. It splits into two sections: the RF/PDM section handles power to the RF transmit chain (NR Amp, BB Amp, Penetration Cabinet, FUS CNTL) while the Recon section handles power to the reconstruction computers (ICN-1, ICN-2) and network infrastructure (CAM, Ethernet Switch, Term Server, Clock). When troubleshooting a dead subsystem, identify which section it belongs to and check the corresponding circuit breakers first.'
+      }
+    ],
+    tags: ['PDM', 'power distribution', 'PGR cabinet', 'MR750', '3.0T', 'circuit breaker', 'ICN', 'CAM', 'NR Amp', 'BB Amp', 'block diagram', 'XRFD', 'FUS CNTL', 'PDU', 'Recon'],
+    source: 'GE Healthcare — Signa MR750 3.0T Block Diagrams and Supplemental Schematics, PDM inside PGR Cabinet (PDU 5-2)',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_036',
+    title: 'GE MRI RF Power Calculation Formulas Reference',
+    system: 'GE Signa (All RF Systems)',
+    category: 'RF / Transmit',
+    diagnosticPath: 'RF > Power Measurement > Formulas',
+    purpose: 'Reference formulas for RF power calculations on GE Signa MRI systems when using an oscilloscope and dummy load (not the RF Power Measurement Kit). Covers: Watts from oscilloscope Vpeak, Vpeak from required power, and unit conversions between Vpp, Vp, dBm, and Watts. Also includes the Magnitude Squared Attenuation Factor to dB formula for RF Kit calibration verification. Source: GEMS Signa RF Power Calculator (R. Hawthorne, GE Medical Systems, 2001).',
+    componentsTested: ['RF Amplifier', 'Dummy Load', 'Oscilloscope', 'RF Power'],
+    sections: [
+      {
+        type: 'note',
+        title: 'Prerequisites for Using These Formulas',
+        content: 'These formulas are used when NOT using the RF Power Measurement Kit. Three values must be accurately known before calculating: (1) Scope Correction Factor for the specific oscilloscope being used, (2) Dummy Load and Cable Attenuation Factor (determined by the Dummy Load and Cable Calibration procedure), (3) measured or desired Vpeak from the oscilloscope.'
+      },
+      {
+        type: 'table',
+        title: 'Power Calculation Formulas',
+        headers: ['To Find', 'Known Values', 'Formula'],
+        rows: [
+          ['Power (Watts)', 'Vpeak, Scope CF, Dummy Load Factor', 'P = ((Vpeak ÷ Scope_CF)² ÷ 100) × Dummy_Load_Factor'],
+          ['Vpeak (oscilloscope)', 'Required Power (W), Scope CF, Dummy Load Factor', 'Vpeak = √((Power × 100 ÷ Dummy_Factor) × Scope_CF)']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'RF Unit Conversion Formulas',
+        headers: ['Conversion', 'Formula', 'Notes'],
+        rows: [
+          ['Vpp → dBm', 'dBm = 20 × log10(Vpp ÷ 0.632456)', 'Peak-to-peak voltage to dBm'],
+          ['Vp → dBm', 'dBm = 20 × log10(Vp ÷ 0.316228)', 'Peak voltage to dBm'],
+          ['dBm → Watts', 'W = 10^(dBm ÷ 10) ÷ 1000', 'Standard dBm to Watts'],
+          ['dBm → Vpp', 'Vpp = 10^(dBm ÷ 20) × 0.632456', 'dBm to peak-to-peak voltage'],
+          ['dBm → Vp', 'Vp = 10^(dBm ÷ 20) × 0.316228', 'dBm to peak voltage']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'RF Kit Calibration Verification',
+        headers: ['To Find', 'Known Value', 'Formula'],
+        rows: [
+          ['dB attenuation', 'Magnitude Squared Attenuation Factor (MSAF)', 'dB = 10 × log10(MSAF)']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Worked Example',
+        content: 'Example (from calculator defaults): Vpeak = 38V on scope, Scope CF = 0.88, Dummy Load Factor = 1025. Corrected Vpeak = 38 ÷ 0.88 = 43.18V. Power = (43.18² ÷ 100) × 1025 = (1864.5 ÷ 100) × 1025 ≈ 19,111W ≈ 19 kW. Reverse example: Required power = 2000W, Scope CF = 0.88, Factor = 1025. Vpeak = √((2000 × 100 ÷ 1025) × 0.88) = √(195.1 × 0.88) = √171.7 ≈ 13.1V on scope.'
+      }
+    ],
+    tags: ['RF power', 'power calculation', 'Vpeak', 'Vpp', 'dBm', 'watts', 'oscilloscope', 'dummy load', 'scope correction factor', 'calibration', 'MSAF', 'RF measurement', 'transmit'],
+    source: 'GEMS Signa RF Power Calculator, Rev 1 — Robert R. Hawthorne, GE Medical Systems MR Service Engineering, November 2001',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
