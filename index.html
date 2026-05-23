@@ -5111,6 +5111,361 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-23',
     created: '2026-05-23T00:00:00.000Z'
   }
+,
+  {
+    id: 'dg_seed_024',
+    title: 'GE LCC Magnet Rampdown to Zero Field',
+    system: 'GE LCC 1.5T/1.0T Active Shield',
+    category: 'Magnet',
+    diagnosticPath: 'Magnet > Rampdown > Zero Field',
+    purpose: 'Procedure to safely ramp down a GE LCC Active Shield magnet from parking current to zero field. Two methods: Shim Lead (normal) and Auxiliary Rampdown Cable 2217315 (when Shim Lead cannot engage due to ice or P100 damage). Requires 2 persons and approximately 300 minutes (5 hours). Helium level must be >= 90% before starting.',
+    componentsTested: ['Main Coil', 'Shim Lead', 'Auxiliary Rampdown Cable 2217315', 'Main Lead Extensions', 'Heater 1 Main Switch', 'Axial Shim Heater Switch', 'Power Supply'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Critical Safety Requirements',
+        items: [
+          'AXIAL SHIM HEATER SWITCH MUST REMAIN ON FOR THE ENTIRE PROCEDURE — turning it off during rampdown can cause irreparable shim coil damage.',
+          'DO NOT touch the Main Heater Switch during resistance checks — activating the Main Switch at current will quench the magnet.',
+          'Verify connection polarity matches the Magnet Ramping and Parking Current Log (Ch 8 Sec 5) BEFORE turning on the power supply.',
+          'Helium level must be >= 90% before starting. If < 90%, fill helium first.',
+          'Power supply must be routinely calibrated — large voltage fluctuations or excessive ripple can cause a quench.',
+          'Normal polarity: "+" left, "-" right as viewed from Coldhead side. Reversed: "+" right, "-" left.',
+          'Required equipment: 750A TCR PS (46-260776G3) or 1000A ESS PS (46-260776G4); MetroLab Teslameter (46-251865G4) with Probe #5 (46-255839P104).'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Method Selection',
+        content: 'Use Method 1 (Shim Lead) whenever the Shim Lead can be engaged. Use Method 2 (Auxiliary Rampdown Cable 2217315) only when the Shim Lead cannot engage due to ice in the vertical penetration or P100 connector damage.'
+      },
+      {
+        type: 'steps',
+        title: 'Method 1: Shim Lead Rampdown — Pre-Checks',
+        items: [
+          'Retrieve connection polarity and parking current from Ch 8 Sec 5 Magnet Ramping and Parking Current Log.',
+          'Set Axial Shim Heater Switch to ON — verify it remains ON for the entire procedure.',
+          'Engage Shim Lead into vertical penetration. If Shim Lead cannot engage, proceed to Method 2.',
+          'Connect DVM across Main Coil voltage access points on the Shim Lead.',
+          'Set 750A PS Current Adjust to full CW (max), or set 1000A PS to 10A above parking current.',
+          'Adjust Voltage Control to bring output to parking current value from the log.',
+          'Set Heater 1 Main Switch to "I" (on). Allow ~1 minute for Main Switch to go normal.',
+          'Perform contact resistance check: at 500A, DVM reading must be <= 150mV. At 735A must be < 2.2V.',
+          'If resistance check fails: (a) Turn off PS, (b) remove/clean/tighten ramp cable contacts, (c) repeat check.',
+          'When resistance check passes and reading < 2.2V, proceed to rampdown voltage profile.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Method 1: Shim Lead Rampdown Voltage Profile (Table 5-4)',
+        headers: ['Main Coil Voltage', 'Main Coil Current Range'],
+        rows: [
+          ['-0.30 V', 'Start → 720 A'],
+          ['-0.50 V', '720 → 700 A'],
+          ['-0.60 V', '700 → 675 A'],
+          ['-0.75 V', '675 → 650 A'],
+          ['-1.00 V', '650 → 625 A'],
+          ['-1.50 V', '625 → 500 A'],
+          ['Gradually turn Voltage Control CCW to zero, then Current Controls to zero (full CCW)', '500 → 0 A']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Method 1: Shim Lead Rampdown — Completion',
+        items: [
+          'Monitor voltmeter with Voltmeter Select Switch in "MAIN COIL" position. Zero reading = fully discharged.',
+          'When fully discharged, set Heater 1 Main Switch to "O" (off).',
+          'Set Main Power and Power On switches to "OFF".',
+          'Disconnect input power cables from the magnet power supply.',
+          'Shim heater currents reference: T1 = 610 ± 5 mA, T2 = 610 ± 5 mA, Axial = 710 ± 10 mA.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Method 2: Auxiliary Cable (2217315) Rampdown',
+        items: [
+          'Retrieve connection polarity and parking current from Ch 8 Sec 5 log. Ensure Main Leads are connected with correct polarity.',
+          'Connect DVM to Voltage Sense Leads from Main Lead Extensions (used to approximate Main Coil voltage since Shim Lead connector is disengaged).',
+          'Set Current Adjust: 750A PS = full CW (max); 1000A PS = parking current + 10A.',
+          'Set Voltage Control to adjust output current to parking current from log.',
+          'Set Heater 1 Main Switch to "I" (on). Allow ~1 minute for Main Switch to go normal.',
+          'Slowly decrease Voltage Control CCW until -0.3V is observed on DVM.',
+          'Continue rampdown following voltage profile in Table 5-5 below.',
+          'Observe voltmeter with Voltmeter Select Switch in "MAIN COIL" position — zero = fully discharged.',
+          'When discharged: set Heater 1 Main Switch to "O" (off), then Main Power and Power On to OFF.',
+          'Disconnect input power cables. Note: For reverse-ramped magnets, all driving voltages are equal in magnitude but opposite in polarity.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Method 2: Auxiliary Cable Rampdown Voltage Profile (Table 5-5)',
+        headers: ['Main Coil Voltage (DVM)', 'Main Coil Current Range'],
+        rows: [
+          ['-0.10 V', 'Start → 720 A'],
+          ['-0.30 V', '720 → 700 A'],
+          ['-0.40 V', '700 → 675 A'],
+          ['-0.50 V', '675 → 650 A'],
+          ['-0.80 V', '650 → 625 A'],
+          ['-1.40 V', '625 → 500 A'],
+          ['Gradually turn Voltage Control to zero (full CCW), then Current Controls to zero (full CCW)', '500 → 0 A']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Post-Rampdown: Main Lead Extension Removal (Both Methods)',
+        items: [
+          'Perform steps below AFTER magnet is fully ramped down and AC power is disconnected.',
+          'Install a screw into the flow hole of ONLY ONE Main Lead Extension.',
+          'Remove all ice around the Ramp Lead Port compression fitting on the plugged Extension.',
+          'Unscrew the Ramp Lead Port compression fitting and remove the Main Lead Extension.',
+          'Immediately replace the cap onto the Ramp Lead Port to prevent ice buildup.',
+          'Repeat steps for the other Main Lead Extension.',
+          'SAFETY: Do not touch both Main Lead Extensions simultaneously — rapid discharge hazard if magnet is at field.',
+          'Wear nonabsorbent leather gloves — cold burn hazard from cryostat contact.'
+        ]
+      }
+    ],
+    tags: ['rampdown', 'deenergize', 'LCC', 'magnet', 'shim lead', 'auxiliary cable', '2217315', 'quench prevention', 'parking current', 'ramp cable', 'main lead extensions', '1.5T', '1.0T'],
+    source: 'GE Direction 2192624, Revision 9 — Chapter 5 Section 6 Magnet Rampdown to Zero Field',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_025',
+    title: 'GE LCC Magnet Shim Lead Electrical Resistance Checks',
+    system: 'GE LCC 1.5T/1.0T Active Shield',
+    category: 'Magnet',
+    diagnosticPath: 'Magnet > Shim Lead > Electrical Checks',
+    purpose: 'Resistance measurements for the GE LCC Active Shield magnet at 4.2K superconducting state. Used to verify integrity of main coil, superconducting shim coils, and switch heaters before and after Shim Lead servicing or deicing. Tests can be performed via the P1-A Cannon Connector (27-pin) on the Shim Lead or via the Pigtail Cable connectors P2/P2-W.',
+    componentsTested: ['Main Coil', 'S/C Shim Coils', 'Switch Heaters', 'Shim Lead P1-A Connector', 'Pigtail Cable P2/P2-W', 'J5-1 Connector', 'Sav-Con Connector'],
+    sections: [
+      {
+        type: 'note',
+        title: 'Connector Reference',
+        content: 'J5-1 (10-pin): Main coil access lugs. P1-A (27-pin Cannon connector): Primary access to all shim coil and switch heater circuits via Shim Lead. P2 / P2-W (Pigtail Cable): Secondary access to same circuits — used when Shim Lead is removed from vertical penetration. All resistance measurements are performed at 4.2K superconducting state. Source: Direction 2192624, Revision 17 (Section 5.4 Magnet Electrical Checks).'
+      },
+      {
+        type: 'table',
+        title: 'Table 4-5: Main Coil Resistance at 4.2K',
+        headers: ['Test Point', 'Measurement Location', 'Acceptance Limit'],
+        rows: [
+          ['Main Coil (+) to Main Coil (-)', 'Main Coil Power Lugs AND J5-1 pins 9 & 10', '< 6 ohms']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Table 4-6: S/C Shim Coil Resistance via P1-A Connector',
+        headers: ['Coil Label', 'Coil Function', 'Acceptable Range (R, RA type)', 'Acceptable Range (RB type)'],
+        rows: [
+          ['AX1 / Z1', 'Axial Shim 1', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['AX2 / Z2', 'Axial Shim 2', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['AX3 / Z3', 'Axial Shim 3', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['AX4 / Z4', 'Axial Shim 4', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['AX5 / Z5', 'Axial Shim 5', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['AX6 / Z6', 'Axial Shim 6', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-1 / C31', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-2 / C11+', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-3 / C22+', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-4 / C11-', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-5 / C22-', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T1-6 / C33', 'Transverse 1 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-1 / S31', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-2 / S11+', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-3 / S22+', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-4 / S11-', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-5 / S22-', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω'],
+          ['T2-6 / S33', 'Transverse 2 Shim', '0.3 – 0.5 Ω', '0.04 – 0.80 Ω']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Table 4-6 (cont): S/C Switch Heater Resistance via P1-A Connector',
+        headers: ['Switch', 'P1-A Connector Pins', 'Acceptance Range'],
+        rows: [
+          ['Main Switch Heater', 'Pins 1 and 2', '22 – 27 Ω'],
+          ['Axial Shim Heater', 'Pins 5 and 6', '27 – 33 Ω (some units: 22 – 28 Ω)'],
+          ['T1 Switch Heater', 'Pins 7 and 6', '8 – 10 Ω'],
+          ['T2 Switch Heater', 'Pins 8 and 6', '8 – 10 Ω']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Table 4-7: S/C Shim Coil Resistance via Pigtail Cable (P2 / P2-W)',
+        headers: ['Circuit Type', 'Acceptable Range (R, RA)', 'Acceptable Range (RB)'],
+        rows: [
+          ['All S/C Shim Coils (AX1-6, T1-1 to 6, T2-1 to 6)', '0.3 – 0.6 Ω', '0.04 – 0.80 Ω']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Failure Action',
+        content: 'If shim coil resistance checks fail after deicing and Shim Lead reassembly, replace the Sav-Con Connector on the Shim Lead. After any resistance failure, repeat the full Table 4-6 / 4-7 check to confirm all circuits are in spec before re-engaging the Shim Lead.'
+      }
+    ],
+    tags: ['shim lead', 'resistance check', 'LCC', 'electrical check', 'P1-A', 'J5-1', 'pigtail cable', 'switch heater', 'axial shim', 'transverse shim', 'S/C coil', '4.2K', 'superconducting', 'Sav-Con'],
+    source: 'GE Direction 2192624, Revision 17 — Section 5.4 Magnet Electrical Checks, Tables 4-5 through 4-7',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_026',
+    title: 'GE LCC Magnet Vertical Penetration / Turret Deicing',
+    system: 'GE LCC 1.5T/1.0T Active Shield',
+    category: 'Cryogenics',
+    diagnosticPath: 'Cryogenics > Deicing > Vertical Penetration',
+    purpose: 'Procedures for removing ice from the LCC magnet vertical penetration (turret) area that prevents Shim Lead engagement and from the Ramp/Fill ports. Three escalating levels: Level 1 uses helium gas flush through Nupro Valve; Level 2 is full deicing with Shim Lead removal, Lexan cover plate, and purge tube; and Ramp/Fill Port deicing uses coring tools. Level 2 requires the magnet to be ramped down first using Auxiliary Cable 2217315.',
+    componentsTested: ['Shim Lead', 'Nupro Valve', 'Vertical Penetration', 'Ramp Lead Ports', 'Fill Port', 'Instrumentation Lead Connector', 'Lexan Cover Plate', 'Deicing Purge Tube', 'Coring Tools'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Safety Requirements Before Deicing',
+        items: [
+          'Magnet must be ramped down to zero field BEFORE performing Level 2 deicing (Shim Lead removal).',
+          'Do NOT exceed 140 cfh helium gas flow — exceeding this rate risks a magnet quench.',
+          'Watch magnet internal pressure — must stay below 0.5 psig during helium flush. Open Vent Valve V2 first.',
+          'Cryocooler must be shut down per correct sequence (Level 2): Coldhead Drive Switch ON → Drive Switch to O → run coldhead 10 seconds → turn both OFF → LOTO before opening the turret.',
+          'Do NOT exceed indicator line depth when using coring tools in Ramp/Fill ports.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Level 1: Helium Gas Flush (Minor Ice)',
+        items: [
+          'Open Vent Valve V2 first to maintain magnet pressure < 0.5 psig during flush.',
+          'Start helium gas flow through Nupro Valve at 80 cfh (cubic feet per hour) for 1 minute.',
+          'Monitor magnet internal pressure — must remain < 0.5 psig.',
+          'Check if Shim Lead can now engage. If yes, procedure complete.',
+          'If insufficient: increase flow to 140 cfh (MAXIMUM — do not exceed) for 2 minutes.',
+          'Repeat attempts to engage Shim Lead. If still unsuccessful after multiple attempts, proceed to Level 2.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Level 2: Shim Lead Removal and Full Deicing (Severe Ice)',
+        items: [
+          'Ramp down magnet to zero field using Auxiliary Rampdown Cable 2217315 (see dg_seed_024 Method 2).',
+          'Shut down Cryocooler: (a) Turn Coldhead Drive Switch to ON, (b) turn Drive Switch to O (off), (c) run coldhead for 10 seconds, (d) turn both switches OFF, (e) apply LOTO.',
+          'Vent magnet to 0.2 psig using Vent Valve V2.',
+          'Blow warm helium gas at 4 psig for 5 minutes through a Tygon tube directed at the Nupro Valve opening. Attempt to engage Shim Lead.',
+          'If Shim Lead still cannot engage: remove Shim Lead Assembly by removing 8 × 1/4-20 bolts.',
+          'Install Lexan Cover Plate (46-294765G1) over the opening to maintain visibility.',
+          'Insert Deicing Purge Tube (2347725) through cover plate. Direct 8–10 psig helium gas at the connector area.',
+          'Temporarily disconnect the Instrumentation Lead Connector using Connector Insertion/Removal Tool (46-281934P1). Apply 8–10 psig helium gas to that port as well.',
+          'Use a flashlight through the Lexan plate to verify ice has been cleared.',
+          'After ice removal, reconnect Instrumentation Lead Connector, remove purge tube.',
+          'Reinstall Shim Lead Assembly (8 × 1/4-20 bolts). Perform Shim Coil resistance checks (see dg_seed_025).',
+          'If resistance checks fail, replace the Sav-Con Connector before proceeding.',
+          'Reconnect compressor supply and return gas lines at Coldhead. Turn on Cryocooler.',
+          'Verify no helium leaks at all disturbed connections before leaving site.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Ramp Port Deicing (Coring Tools)',
+        items: [
+          'For ramp ports with ice blockage: insert Noninsulated Coring Tool (2280035) using rotating and pushing motion to break through ice.',
+          'Follow with Insulated Ramping Port Tool (5248857) to reach the bottom of the ramp lead pin.',
+          'For fill port ice: use Noninsulated Fill Port Coring Tool (5248765) first, then Insulated Fill Port Coring Tool (5248857).',
+          'Low-ceiling situations: use Ramp Port Coring Tool (5248766) and Fill Port Coring Tool (5248851) — these are 3-piece assemblies.',
+          'CRITICAL: Observe indicator lines on all coring tools. Do NOT insert deeper than the indicator line — this can damage internal components.',
+          'Replace all port caps immediately after tool removal to prevent new ice formation.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Deicing Tool Reference',
+        headers: ['Tool', 'Part Number', 'Application'],
+        rows: [
+          ['Noninsulated Coring Tool', '2280035', 'Ramp ports — initial ice breakthrough'],
+          ['Insulated Ramping Port Tool', '5248857', 'Ramp ports — reach bottom of pin'],
+          ['Noninsulated Fill Port Coring Tool', '5248765', 'Fill port — initial ice breakthrough'],
+          ['Insulated Fill Port Coring Tool', '5248857', 'Fill port — reach bottom of pin'],
+          ['Low-Ceiling Ramp Port Coring Tool', '5248766', 'Ramp ports — restricted headroom (3-piece)'],
+          ['Low-Ceiling Fill Port Coring Tool', '5248851', 'Fill port — restricted headroom (3-piece)'],
+          ['Deicing Purge Tube', '2347725', 'Level 2 — helium purge at Shim Lead connector'],
+          ['Lexan Cover Plate', '46-294765G1', 'Level 2 — covers turret opening for visibility'],
+          ['Connector Insertion/Removal Tool', '46-281934P1', 'Level 2 — Instrumentation Lead Connector']
+        ]
+      }
+    ],
+    tags: ['deicing', 'vertical penetration', 'turret', 'LCC', 'shim lead', 'cryogenics', 'Nupro valve', 'ramp port', 'fill port', 'coring tool', 'purge tube', 'Lexan', '1.5T', '1.0T', 'ice blockage'],
+    source: 'GE Direction 2192624, Revision 17 — Section 9.2.4 Turret/Vertical Penetration Deicing',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
+,
+  {
+    id: 'dg_seed_027',
+    title: 'GE LCC Magnet Parking Target Worksheet',
+    system: 'GE LCC 1.5T/1.0T Active Shield',
+    category: 'Magnet',
+    diagnosticPath: 'Magnet > Ramping > Parking Target Calculation',
+    purpose: 'Worksheet and calculation guide for determining the correct magnet parking frequency and Gauss target for GE LCC Active Shield magnets. Used during magnet ramping to calculate the target frequency based on ATR (Acceptance Test Report) shim currents. The parking frequency compensates for shim coil contributions so the system resonates at 63.876 MHz (1.5T proton frequency) at parking current.',
+    componentsTested: ['Main Coil', 'Axial Shim Coils (Z2, Z4, Z6)', 'Power Supply Parking Current', 'MetroLab Teslameter'],
+    sections: [
+      {
+        type: 'note',
+        title: 'Overview and Purpose',
+        content: 'When a GE LCC magnet is ramped to parking current with heaters off, the superconducting shim coils contribute additional magnetic field beyond the main coil. The parking target frequency accounts for this contribution so the final field is exactly 1.5T (63.876 MHz for proton). The worksheet calculates the target by subtracting the summed shim contributions (in Hz) from 63,876,000 Hz. This target is measured with a MetroLab Teslameter during ramp-up and the power supply current is adjusted until the target frequency is achieved.'
+      },
+      {
+        type: 'table',
+        title: 'Parking Target Calculation Formula',
+        headers: ['Parameter', 'Formula / Value', 'Notes'],
+        rows: [
+          ['Axial 2 (Z2) contribution', 'Axial2_current × 6000 Hz/A', 'From ATR final shim currents'],
+          ['Axial 4 (Z4) contribution', 'Axial4_current × 3500 Hz/A', 'From ATR final shim currents'],
+          ['Axial 6 (Z6) contribution', 'Axial6_current × (−1750) Hz/A', 'Note: Z6 factor is negative'],
+          ['Total shim contribution (Hz)', 'Z2_contrib + Z4_contrib + Z6_contrib', 'Sum of all three'],
+          ['Target parking frequency (Hz)', '63,876,000 − Total_shim_contribution', 'Target for MetroLab at parking current'],
+          ['Target parking Gauss', 'Target_frequency ÷ 4257.6', 'Conversion: Hz to Gauss (1.5T proton)']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'How to Use the Parking Worksheet',
+        items: [
+          'Obtain ATR (Acceptance Test Report) final shim currents for Axial 2, Axial 4, and Axial 6.',
+          'Calculate each shim contribution: Axial2 × 6000, Axial4 × 3500, Axial6 × (−1750).',
+          'Sum all three contributions to get total shim contribution in Hz.',
+          'Calculate target frequency: 63,876,000 − total_shim_contribution.',
+          'Calculate target Gauss: target_frequency ÷ 4257.6.',
+          'Record the target frequency and Gauss in the Magnet Ramping and Parking Current Log (Ch 8, Sec 5).',
+          'During ramp-up: with heaters OFF and power supply at parking current, measure frequency with MetroLab.',
+          'Adjust power supply current until measured frequency matches target within specification.',
+          'Record final ramp current and measured frequency/Gauss in the log.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Example Calculation (from LCC_Parking_Target spreadsheet)',
+        headers: ['Parameter', 'Example Value A', 'Example Value B (Surface Pro)'],
+        rows: [
+          ['Axial 2 current', '8.129 A', '15.128 A'],
+          ['Axial 4 current', '0.274 A', '15.102 A'],
+          ['Axial 6 current', '−8.529 A', '−1.307 A'],
+          ['Z2 contribution', '48,774 Hz', '90,768 Hz'],
+          ['Z4 contribution', '959 Hz', '52,857 Hz'],
+          ['Z6 contribution', '14,926 Hz', '2,287 Hz'],
+          ['Total shim contribution', '64,659 Hz', '145,912 Hz'],
+          ['Target frequency', '63,811,341 Hz', '63,730,088 Hz'],
+          ['Target Gauss', '14,985 G', '14,967 G'],
+          ['Final ramp current (if known)', '—', '742 A']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Polarity and Log Requirements',
+        content: 'Always record ramp polarity in the log: Normal polarity = "+" left, "−" right from Coldhead side. Reversed = "+" right, "−" left. Also record which Main Lead Extension is Red (+) and which is Black (−) at both the power supply and the magnet. This polarity data is critical for any future rampdown — an incorrect polarity setting when turning on the Main Switch can cause a magnet quench.'
+      }
+    ],
+    tags: ['parking target', 'parking current', 'ramping', 'LCC', 'frequency', 'Gauss', 'shim currents', 'MetroLab', 'axial shim', 'Z2', 'Z4', 'Z6', 'ATR', 'calculation', '1.5T', '63.876 MHz'],
+    source: 'LCC Active Shield Magnet Parking Worksheet (J. Jones, Rev. Sept 18 2011) — GE Direction 2192624',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
