@@ -4153,6 +4153,332 @@ const DIAG_GUIDES_SEED = [
     source: 'MRI Physics by Evert J. Blink, rev 1.3 (January 2000 - August 2010, mri-physics.net)',
     dateAdded: '2026-05-23',
     created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_017',
+    title: 'Siemens VLM/VESDA Gradient Supervision — Installation (MR059/11/S, Espree)',
+    system: 'Siemens MRI',
+    category: 'installation',
+    purpose: 'Complete installation procedure for the Siemens VESDA VLM (Very Large Monitoring) gradient cable supervision system on Espree (and Avanto/Trio TIM) magnets. The VLM is a laser-driven aspirating smoke detector mounted in the equipment room that monitors gradient cable overheat. This is a mandatory safety update (MR059/11/S) in response to Customer Safety Advisory MR029/10/S regarding gradient connection overheat incidents. Requires 2 CSEs, ~4.5 hours.',
+    componentsTested: ['VLM device (VESDA)', 'AMC backplane X23/X25 alarm connectors', 'X44/X45 12VDC alarm/fault paths', 'X89/X124 ACC roof connectors', 'FOC W17991 (D70 to VLM)', 'FOC W1430 (magnet gradient coil to VLM)', 'W0991 power cable', 'W3990/W3991 AMC wiring harnesses', 'D70 GPA board U1 FOC port', 'Flexa hose system (aspirating sample lines)', 'Gradient filter covers', 'Magnet sample plates (rear/left)'],
+    sections: [
+      {
+        type: 'note',
+        title: 'Applicability & Update Kit',
+        content: 'Applies to: Espree (all, serial# 30001–31232), Avanto, Trio TIM. SW required: VB15-SP6 or VB17-SP4.\n\nUpdate Kit p/n 10684112 contents:\n• VLM device: p/n 10683917\n• Gradient System Monitoring kit 022: p/n 10684182\n• Cable W3991 (ACC X124 to power rail): p/n 10683764\n• Cable W3990 (ACC AMC X25): p/n 10683996\n• Power cable W0991 (X89/X124 to VLM X1): p/n 10683763\n• FOC W17991 (GPA D70 to VLM U1): p/n 10683942\n• Gradient filter cover, magnet room: p/n 7393015\n• Gradient filter cover, equipment room: p/n 7393023\n• Cabinet mounting bracket: p/n 10684375\n• DVDs: syngo MR VB15_GCS, VB17_GCS, COBR-Recovery\n• Magnet hose kit Espree: left sample plate (10684005), rear sample plate (10684004), junction hose (10684355)\n\nEx-factory pre-wired cutoffs: Espree s/n ≥31161, Avanto s/n ≥27864, Trio TIM s/n ≥35453/35079 — check for blind plugs on X89 and X124; if present, skip ACC cabling and hosing steps.'
+      },
+      {
+        type: 'warning',
+        title: 'Safety — Power Down Before Hardware Work',
+        content: 'CAPACITOR HAZARD: GPA capacitors hold lethal charge. Must wait 20 minutes after power down.\n1. Shut down MR system completely.\n2. Switch OFF F1 and F2 in GPA cabinet.\n3. Switch OFF F100 on ACC cabinet roof.\n4. Wait 20 MINUTES minimum for capacitor discharge.\n5. Do NOT perform smoke test during helium filling or magnet ramping — oxygen accumulation creates fire risk with glowing smoke wicks.'
+      },
+      {
+        type: 'steps',
+        title: 'Step 1 — ACC Cabinet Cabling (skip if pre-wired from factory)',
+        content: [
+          'Check ACC cabinet roof for blind plugs on X89 and X124. If plugs are present, skip this entire section (pre-wired ex-factory).',
+          'Remove AMC frame from ACC cabinet.',
+          'Remove X25 connector from AMC backplane.',
+          'Install cable W3990 to X25 on AMC backplane.',
+          'Connect W3990 flying leads: brown/green to X34 (GND), red to X44 (12VDC alarm path to X25 pin 5).',
+          'Attach W3500 to W3990 and secure with cable ties.',
+          'Install W3991 X124 sub-D connector on ACC cabinet roof.',
+          'Attach W3991 to X23 on AMC backplane.',
+          'Connect W3991 flying leads: brown/green to X35 (GND), red to X45 (12VDC fault path to X23 pin 2).',
+          'Reinstall AMC frame.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 2 — Power Distribution Wiring (W3991 flying leads)',
+        content: [
+          'Remove cover from line power distribution — 6 × 5mm Allen screws.',
+          'Guide W3991 along cabinet frame down to right side of power distribution.',
+          'Remove original blue lead X1.9 from right side of power rail. Re-label it X1.20 and connect to X1.20 terminal. NOTE: On older cabinets X1.20 terminal may be missing — insert additional terminal from UI kit (loosen end terminal, insert new terminal).',
+          'Connect the 4 flying leads of W3991 per labels: X1.9, X1.10, and X1.20 to power rail terminals; yellow lead labeled F4.1 to circuit breaker F4 top connection (use large Phillips screwdriver — additional slot in front of brown lead).',
+          'NOTE: On some cabinets top terminal is mislabeled F4.2 (should be F4.1). Yellow F4.1 lead must go on top of F4.',
+          'Reinstall power distribution cover.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 3 — GPA Cabling (FOC W17991)',
+        content: [
+          'Feed FOC W17991 through wave duct on ACC/EPC cabinet roof — label "U1/D70" must be inside the cabinet.',
+          'Feed FOC W17991 through wave duct from ACC/EPC to GPA cabinet.',
+          'Remove original fiber optic cable from U1/D70 on GPA board (save this FOC — will connect to VLM U2 later).',
+          'Connect W17991 to U1 on front of D70 GPA board.',
+          'The free end of W17991 will connect to VLM U1 in a later step.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 4 — Install VLM (VESDA) Device',
+        content: [
+          'Find mounting location in EQUIPMENT ROOM at eye level.',
+          'Use a level and mark hole positions for mounting plate on wall with pencil.',
+          'Concrete walls: drill 2×6mm holes, insert standard 6mm dowels. Drywall: use special drywall dowels.',
+          'Attach VESDA mounting plate to wall.',
+          'Hang VLM device onto mounting plate.',
+          'Install hose clip on wall 200–250mm above VLM hose inlet using level.',
+          'OPTIONAL (if wall space insufficient): Use cabinet mounting bracket p/n 10684375. Attach VESDA plate to bracket with 2×M4 Allen screws. Attach hose clamp with M6 Allen screw/nut. Mount bracket on ACC/GPA cabinet side panel (remove upper 4 side panel screws, hang bracket) OR on cabinet roof front between GPA and ACC/EPC using existing SW19 screws from red transport bracket. Hang VLM onto bracket.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 5 — VLM Internal Jumper Setting',
+        content: [
+          'Open upper cover of VLM device.',
+          'Remove 2 Phillips screws and swing out the lower housing.',
+          'Locate internal jumper on PCB — there is one jumper beside the fiber optic connectors.',
+          'Verify jumper is in position 2-3 (default). This is correct for ALL Tim systems (Espree, Avanto, Trio) and Biograph mMR.',
+          'Close housing and upper cover.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 6 — Electrical and FOC Connections to VLM',
+        content: [
+          'On ACC cabinet roof: if blind plugs on X89 and X124, remove them and replace with cable W0991.',
+          'Attach W0991 to X89 and X124 on ACC roof.',
+          'Connect other end of W0991 to VLM device connector X1.',
+          'Connect FOC W1430 (the original GPA FOC removed from D70 U1 in Step 3, which comes from magnet gradient coil) to VLM device U2. Re-label this cable "Grad Cable SV POF RX".',
+          'When system is powered: verify light is visible at W1430 and light is emitted from VLM transmitter U1.',
+          'Connect FOC W17991 (coming from D70 U1 on GPA board) to VLM device U1.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Hose System Overview & Rules',
+        content: 'Hose routing: VLM inlet → ACC/EPC T-piece → filter panel T-piece → magnet (left sample plate T-piece + rear sample plate T-piece). VLM exhaust goes to pressure equalization hose if needed.\n\nHose sizes: 10mm inside ACC/EPC cabinet and at gradient filter covers; 22mm for all other connections.\nHose type: Flexa corrugated hose system throughout.\nMAXIMUM total hose length: 30 m.\nMINIMUM section lengths (do not cut shorter):\n• VLM to ACC/EPC T-piece: >1 m\n• ACC/EPC T-piece to filter panel T-piece: >1 m\n• Filter panel T-piece to magnet T-piece: >5 m\nProper cutting: Always cut in the groove of the hose (not on top ridge) using the blue hose cutter from the kit. Improper cuts prevent T-piece connection.\nProper connection: Push hose into T-piece while twisting slightly until ~4 ring-sections are seated. Test by trying to pull out — it should not be possible.'
+      },
+      {
+        type: 'steps',
+        title: 'Step 7 — ACC/EPC Hose Installation',
+        content: [
+          'Remove cover from line power distribution (6 × 5mm Allen screws) to access cabinet interior.',
+          'Lay 10mm thin hose along cabinet frame (to the right of the blue hose) and secure with cable ties.',
+          'Feed thin hose through wave duct on ACC/EPC cabinet roof.',
+          'Push-fit a T-piece onto the hose end on the roof.',
+          'Reinstall power distribution cover.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 8 — Filter Plate Hose Installation',
+        content: [
+          'Remove old gradient filter covers from both sides of filter panel using 5mm Allen key (can be discarded).',
+          'Install new gradient filter covers: equipment room side p/n 7393023, magnet room side p/n 7393015. Attach high-voltage warning labels included in kit.',
+          'NOTE for OLD-STYLE covers: Remove hose couplings from new covers (unscrew). Screw coupling halves together to form 2 full couplings with 3mm sample hole. Push couplings onto thin hoses on both sides of gradient filters and route hoses between gradient cable brackets, securing with cable tie in middle.',
+          'Feed 22mm hose through wave duct of filter panel from examination room side to equipment room side.',
+          'Press-fit preconfigured T-piece (from filter plate hose kit) onto equipment room end of hose.',
+          'Push short 10mm hose pieces into couplings at gradient filter covers (new-style: directly into integrated ports).',
+          'Cut 22mm hose from filter panel T-piece to ACC/EPC T-piece (minimum length 1m). Lay along on-site cable ducts. Push-fit into both T-pieces.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 9 — Magnet Hose Installation (Espree-specific)',
+        content: [
+          'NOTE: Espree serial# <30099 requires special rear cover removal tool p/n 10018422 (one-piece rear cover is very heavy — 2-person job).',
+          'Remove rear magnet cover. Remove service turret cover.',
+          'Lay 22mm hose from filter panel T-piece through ceiling to magnet (minimum length 5m). Use hose from the 30m roll in the kit.',
+          'REAR SAMPLE PLATE: Remove 2 nuts from gradient cable bracket. Install rear sample plate (p/n 10684004) using nut and NORDLOCK washers from kit. Adjust position using mounting hole tolerances as needed. Push junction hose (p/n 10684355) into T-piece of rear sample plate.',
+          'LEFT SAMPLE PLATE: Loosen 2 nuts on MSUP mounting plate. Attach left sample plate (p/n 10684005) to left side of MSUP mounting plate using original nuts.',
+          'Push junction hose (from rear sample plate) into LOWER side of T-piece on left sample plate.',
+          'Push upper 22mm hose from filter panel ceiling run into UPPER side of T-piece on left sample plate.',
+          'Reinstall magnet covers.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 10 — VLM Device Hose Connection (final)',
+        content: [
+          'Remove red blind cap from VLM device inlet (suction hole on front).',
+          'Cut 22mm hose to correct length (minimum 1m) from VLM to ACC/EPC T-piece on cabinet roof.',
+          'Push black plastic bushing (cone-shaped) onto hose — thin end of cone goes in first.',
+          'Press bushing with hose into suction hole of VLM device.',
+          'Lay hose from VLM via cable ducts to ACC/EPC cabinet roof.',
+          'Push-fit hose to T-piece on ACC/EPC roof.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 11 — Master Back-Up & Software Installation',
+        content: [
+          'Switch on F100 on ACC cabinet roof. Turn on MR system (GPA F1/F2 remain off for now). VLM will power on — this is normal.',
+          'Perform Master Back-Up while remaining hardware steps complete.',
+          'When ready for software: switch on F1 and F2 in GPA cabinet.',
+          'On MRC console: Disable Autologin if enabled → Reboot → Log in as Administrator.',
+          'Insert DVD "syngo MR B17(B15) Numaris/4 VB17A_GCS (VB15A_GCS Rev.B)" mat# 10684053 (VB17) / 10849906 (VB15) into CD/DVD-ROM drive.',
+          'Start Windows Explorer → navigate to CD/DVD-ROM drive R:',
+          'Double-click MR_Update.bat. Installation copies files then starts in new CMD window (~15 min). Ignore ERRORLEVEL: 42 messages.',
+          'Installation complete when CMD shows: "all packages have been installed successfully" and "Please reboot your system now". DVD ejects automatically.',
+          'Remove DVD. System auto-reboots → log in as meduser → wait for main UI.',
+          'Verify: Help → Info → confirm entry "N4_VB17A(VB15A)_FEATURE_20101007_GCS_F8" is listed under Siemens software packages. Also check C:\\MedCom\\MriProduct\\inst\\SWHistory.txt for same entry.',
+          'Enable Autologin: Options → Service → Local Service → enter service key → OK → Configuration → Local host Users → check Enable Autologin → Save → Home.',
+          'Perform Reboot Scanner to enable gradient cable supervision. Recommend full system power cycle including MRSC for complete MRC/MRSC communication.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 12 — VLM Start-Up & Normalization',
+        content: [
+          'Close RF-cabin door.',
+          'Verify F100 is on (VLM powered). FAULT lamp will be on for ~5 seconds on power-up — normal.',
+          'Allow 90-second warm-up time.',
+          'Open front cover of VLM device.',
+          'Press and hold RESET button for 10 seconds until ALL 3 LEDs (OK/FAULT/FIRE) start flashing simultaneously — this activates normalization set-mode.',
+          'Release RESET button. Wait until all lamps go off.',
+          'When lamps start flashing again, press RESET button once more to CONFIRM the current airflow as the new 100% nominal value.',
+          'VLM is now normalized. Deviations >±20% from this nominal will trigger FAULT. Broken or blocked hose = FAULT immediately.',
+          'NOTE: If normalization fails and VLM goes to failure mode, there is likely a differential pressure between RF-cabin and equipment room exceeding VLM limits → proceed to Pressure Equalization procedure.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 13 — Final Checks',
+        content: [
+          'GRADIENT COIL TEMPERATURE TEST: Open VLM device, disconnect FOC W1430 from U2. Verify: green OK lamp stays on; console shows offline scanner; error popup "Gradient Power Amplifier Error: Temperature of gradient coil is too high". Reattach W1430. Perform Reboot Scanner.',
+          'AIRFLOW FAILURE TEST: Remove hose from VLM inlet. After ~30 seconds: FAULT lamp lights on VLM + console popup "Scanner Hardware Malfunction / Functional problem within automatic shutdown mechanism". Refit hose → OK lamp should return.',
+          'DIFFERENTIAL PRESSURE TEST: Open RF-cabin door. Wait 5 minutes. OK lamp must remain on. If FAULT appears → proceed to Pressure Equalization (optional) below.',
+          'SMOKE TEST (WARNING: Do NOT perform during helium fill or magnet ramping): Light smoke wick 10–15 seconds. Extinguish flame. Hold smoking wick behind rear magnet cover at lower sample plate for 5 seconds. Extinguish wick in box (box seals it in ~15 sec). After 20–40 sec delay: FIRE lamp lights on VLM; GPA modulator disables; console shows "Scanner Hardware Error Automatic Shutdown — Evacuate patient immediately". Scanner switches to standby 1 min later. Reset: press RESET button after smoke clears; may take several minutes for background smoke level to normalize before reset is possible.',
+          'Perform measurement scan; verify images on MRC and MRSC.',
+          'Create COBR image (captures all SHx/SPy modifications).',
+          'Complete and file Completion Protocol (from back of document).'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 14 — Pressure Equalization (only if differential pressure test fails)',
+        content: [
+          'Remove exhaust cap from top of VLM device.',
+          'Push-fit black bushing onto end of 22mm hose from remaining hose roll.',
+          'Push bushing into exhaust port on top of VLM device.',
+          'Lay equalization hose from VLM exhaust through filter plate wave duct into magnet room.',
+          'Cut equalization hose inside magnet room ~20–30cm behind the wave duct — open end vents into magnet room, equalizing pressure.',
+          'Re-normalize VLM (Step 12) with RF-cabin door slightly open (~3mm) for maximum tolerance in both directions.',
+          'If still failing: Install additional T-piece in equalization hose — cut hose ~1m behind VLM exhaust, prepare T-piece p/n 10683922 (remove 10mm reduction insert) with ~2m of 22mm hose, connect T-piece in-line, outlet of 2m hose must remain inside equipment room. Normalize with RF door 3mm open. Perform smoke test at gradient filter cover in equipment room.'
+        ]
+      }
+    ],
+    tags: ['siemens', 'espree', 'avanto', 'trio', 'vlm', 'vesda', 'gradient supervision', 'smoke detector', 'installation', 'MR059', 'update kit', 'FOC', 'hose system', 'normalization', 'gradient cable', 'ACC', 'GPA', 'AMC'],
+    source: 'Siemens MR059/11/S Update Instructions — Gradient Supervision (Espree), M6-010.896.19.03.02, 06.12',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+
+  {
+    id: 'dg_seed_018',
+    title: 'VLM/VESDA Gradient Supervision — Troubleshooting, Airflow Faults & VSC Software',
+    system: 'Siemens MRI',
+    category: 'troubleshooting',
+    purpose: 'Field troubleshooting guide for the Siemens VLM (VESDA) gradient cable supervision system on Espree, Avanto, and Trio TIM magnets. Covers LED status interpretation, MRI_SUP fault codes, post-installation shutdown errors by system type, VLM bypass procedure, all causes of airflow FAULT conditions, pressure equalization procedures, and use of the VSC laptop software to access VLM event logs. VLM passwords included.',
+    componentsTested: ['VLM device LEDs (OK/FAULT/FIRE)', 'AMC backplane X23/X25/X44/X45 wiring', 'W3990 cable resistor (1.5K ohm)', 'FOC W1430 (magnet to VLM U2)', 'FOC W17991 (GPA D70 to VLM U1)', 'GSSU D17/D70 board', 'X89/X124 jumper plugs', 'Hose system airtightness', 'VLM airflow sensor', 'RS232 VSC communication'],
+    sections: [
+      {
+        type: 'table',
+        title: 'VLM LED Status Reference',
+        headers: ['LED', 'State', 'Meaning', 'Required Action'],
+        rows: [
+          ['OK (green)', 'ON steady', 'Powered and normal operation', 'None'],
+          ['OK (green)', 'OFF', 'VLM unpowered or hardware fault', 'Check W0991 power cable, F100 breaker, X89/X124 connections'],
+          ['FAULT (amber)', 'FLASHING', 'Minor fault — airflow deviating >20% from calibrated nominal', 'Check hose connections; normalize VLM if needed (self-clears if airflow returns to normal)'],
+          ['FAULT (amber)', 'ON steady', 'Major fault — airflow outside 12–24 L/min allowed range', 'Find airflow blockage or leak; check hose routing and bushing seating'],
+          ['FIRE (red)', 'ON', 'Smoke detected — GPA modulator disabled immediately; scanner shuts down in 1 min', 'Evacuate patient; after smoke clears press RESET button to re-initialize; wait for background smoke to normalize']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'MRI_SUP Error Codes',
+        headers: ['Code', 'Condition', 'Signal Path to Trace', 'Notes'],
+        rows: [
+          ['MRI_SUP 1005', 'FAULT (constant)', 'Check 12V at X45 → trace through W3991 → check X23 pin 2 on AMC backplane', 'Fault path — W3991 cable. Check for broken resistor or loose connector'],
+          ['MRI_SUP 1006', 'ALARM / Automatic Shutdown', 'Check 12V at X44 → trace through W3990 → check X25 pin 5 on AMC backplane', 'Alarm/shutdown path — W3990 cable. Known issue: broken 1.5K ohm resistor inside W3990 at connector housing (covered in heat shrink — cut to inspect)']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Post-Installation "Scanner Hardware Error Automatic Shutdown" — By System Type',
+        content: [
+          'This error immediately after VLM install indicates a wiring/connectivity problem, NOT an actual smoke event. The VLM may show green OK. Diagnose by system type:',
+          'ESPREE: Check X1 connector on the VLM cable (W0991). Brown wire at X1 pin 9 may not be making solid electrical contact. Remove and reseat the connector; verify continuity.',
+          'AVANTO: Problem is often in the CCA cable harness. Resolution: perform software reload and reinstall the GCS patch from DVD.',
+          'TIM TRIO: Check inside W3990 cable at the X44→X25 pin 5 connector housing. A 1.5K ohm resistor inside the connector is covered with heat shrink. Cut the heat shrink to expose and inspect the resistor — a broken resistor here causes constant MRI_SUP 1006 alarm.',
+          'All systems: Verify X124 pins 3 & 4 jumper — these can be omitted (no wires in W3991 at those pins). On systems with X127 instead of X124, jumper may be needed at X127.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Bypassing the VLM (to confirm VLM is the fault source)',
+        content: [
+          'Use this procedure to determine if the VLM device itself is causing the scanner fault vs. a wiring problem.',
+          'Step 1: Reconnect the original FOC from VLM U2 back to GSSU D17 or D70 board U1 (bypassing VLM on the optical fiber loop).',
+          'Step 2: Install X89 and X124 blind jumper plugs on ACC cabinet roof (this tells the AMC the VLM signals are normal).',
+          'Step 3: Attempt to run the system.',
+          'Result interpretation: If system runs normally with VLM bypassed → the VLM hardware or its connections are the fault source. If system still faults → the problem is in the AMC wiring (X23/X25/X44/X45 paths) independent of VLM.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'VLM Airflow FAULT — Causes and Fixes',
+        headers: ['Cause', 'Effect on Flow', 'Diagnosis', 'Fix'],
+        rows: [
+          ['Excessive differential pressure RF-cabin vs equipment room (>40–50 Pa)', 'Flow deviation exceeds ±20%', 'VLM OK with RF door closed; FAULT when RF door opens = pressure differential', 'Install pressure equalization hose from VLM exhaust to magnet room; re-normalize with RF door ~3mm open'],
+          ['Blind cap not removed from VLM inlet', 'Zero flow → FAULT immediately', 'Visual inspection of VLM inlet', 'Remove red blind cap from VLM suction hole'],
+          ['Leaking hose connections (improper cut or rough edges)', 'Flow reduction or increase', 'Inspect all T-piece connections; properly sealed hose has noticeable friction when twisting in coupling', 'Re-cut hose in groove (not on ridge) using blue cutter; re-seat in T-piece until ~4 ring sections engaged'],
+          ['Missing white rubber seal in T-piece joint', '~1.4 L/min loss (~7%)', 'Disassemble T-piece and inspect for white rubber seal', 'Install white rubber seal in T-piece'],
+          ['Missing black bushing at VLM inlet or outlet', '~9 L/min increase (~43%)', 'Visual inspection of VLM hose connection', 'Install black plastic bushing (cone-shaped, thin end first) at VLM inlet/outlet'],
+          ['Missing grey outlet cover on VLM', '~0.4 L/min increase (~2%)', 'Visual inspection of VLM exhaust port', 'Install grey exhaust cover if pressure equalization not needed']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Pressure Equalization Procedure (RF-cabin pressure problem)',
+        content: [
+          'Required when VLM FAULT occurs with RF-cabin door open but not when closed — indicates cabin pressure differential exceeding VLM limits.',
+          'PRESSURE LOW scenario: Remove grey exhaust cap from top of VLM device. Push black bushing onto end of 22mm hose. Insert bushing into VLM exhaust port. Route hose through filter plate wave duct into magnet/examination room. Cut hose 20–30cm inside examination room (open end vents into low-pressure RF cabin). Re-normalize VLM with RF door slightly open (~3mm). If resolved: done. If not resolved: contact HSC for VLM software update.',
+          'PRESSURE HIGH scenario: Install pressure equalization hose as above (LOW scenario). Normalize with RF-cabin door open ~3mm (normalizes at mid-point pressure). If resolved: done. If not resolved: install additional T-piece — cut equalization hose ~1m behind VLM exhaust, insert T-piece p/n 10683922 (remove 10mm reduction insert!) with ~2m of 22mm hose attached, connect in-line, outlet of 2m hose must remain inside equipment room. Normalize again with RF door 3mm open. Perform smoke test at gradient filter cover in equipment room.',
+          'T-piece parts: T-piece p/n 10683922, black bushing p/n 10683929.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'VSC Software Setup (VLM log access via laptop)',
+        content: [
+          'Download VLM_Software_Win7.ZIP from Siemens HSC/service portal.',
+          'Install SiemensMedicalSetup_30500.msi → creates "Siemens Medical VSC" desktop icon.',
+          'Hardware connection: use RS232 cable 9-pin sub-D (female/male), p/n 10915402. Connect to RS232 socket under VLM top cover (open upper cover of VLM to access).',
+          'Communication settings: Port COM1, Baud Rate 19200, Data Bits 8, Parity None, Stop Bits 1.',
+          'If communication fails: in VSC go to Connection → Manager → Edit → verify all parameters match above.',
+          'Launch VSC. Device View shows: Alarm Status indicators (OK/Alert/Action/Fire1/Fire2/Trouble/Disabled), smoke concentration graph (%/m), baseline ~0.013 %/m.',
+          'Detail Status tab shows: Location, Device Status (Enabled = normal), Active Trouble Status, Active Alarm Status, Current Value, Alarm thresholds (Alert: 0.009 %/m, Action: 0.140 %/m, Fire1: 0.200 %/m, Fire2: 20.000 %/m), Current Air Flow (~21.0 L/min normal), Air flow % of normalized (100% = nominal), Filter Present (yes/no), Filter life used (%), Filter life remaining (days).',
+          'Normal airflow working range: 12–24 L/min. Deviation must be ≤±20% of normalized value (≤±30% for VLM serial# >SB8708352).'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'VSC Event Log Access',
+        content: [
+          'In Siemens Medical VSC software with RS232 connected to VLM:',
+          'Click the "Event Log" button in the main toolbar.',
+          'Login prompt appears. Enter: User ID = USR, PIN = 1111.',
+          'Click "Filter Events" — ensure all event types are selected.',
+          'View log: Yellow entries = FAULT events (airflow or device faults with date/time). Red entries = FIRE events.',
+          'Log is useful for determining if FAULT events are intermittent (pressure changes with RF door) or constant (hose/hardware problem).',
+          'To export or document: screenshot the log or note date/time stamps of events.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'VLM Login Credentials',
+        content: 'These credentials are for VLM device access via VSC software (RS232 laptop connection) and any device configuration interface:\n\nUser ID: USR  |  PIN: 1111  (standard user — event log access)\nUser ID: ADM  |  PIN: 1413  (administrator — configuration)\nUser ID: DST  |  PIN: 1451  (distributor/service level)\n\nFor routine troubleshooting, USR/1111 is sufficient for event log review.'
+      }
+    ],
+    tags: ['siemens', 'espree', 'avanto', 'trio', 'vlm', 'vesda', 'gradient supervision', 'troubleshooting', 'airflow', 'fault', 'fire', 'MRI_SUP 1005', 'MRI_SUP 1006', 'pressure equalization', 'VSC software', 'event log', 'smoke detector', 'gradient cable', 'W3990', 'W3991', 'bypass'],
+    source: 'Siemens field email (P. Belcher, Nov 2012), VLM_Trouble_Shooting.pdf, VLM_Software_Guide_Win7.pdf, VLM_Passwords.txt',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
   }
 ];
 
