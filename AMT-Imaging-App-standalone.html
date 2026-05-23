@@ -5205,6 +5205,637 @@ const DIAG_GUIDES_SEED = [
     dateAdded: '2026-05-23',
     created: '2026-05-23T00:00:00.000Z'
   }
+  ,
+  {
+    id: 'dg_seed_019',
+    title: 'GE ACGD Cabinet Troubleshooting — SGA/SGA-PS Fault Codes & Hardware Isolation',
+    system: 'GE MRI',
+    category: 'Gradient System',
+    diagnosticPath: 'Gradient Fault > ACGD Cabinet > SGA / SGA-PS / GP / PDU',
+    purpose: 'Identify and resolve faults in the ACGD (Advanced Cooling Gradient Driver) Cabinet including SGA amplifier faults, power supply faults, PDU issues, and hardware isolation using the axis-swap technique. Covers all fault codes from GD4TSC1.DOC.',
+    componentsTested: ['SGA (Switched Gradient Amplifier)', 'SGA-PS (Power Supply)', 'GP (Gradient Processor)', 'PDU (Power Distribution Unit)', 'BRM cables', 'Fiber optic clock cable', 'TYME Board', 'Gradient coil'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Important Safety Note',
+        content: 'If any gradient cables are swapped between different axes or polarities for troubleshooting, perform the Geometry Verification procedure afterward to verify gradient cables are returned to their original position.'
+      },
+      {
+        type: 'steps',
+        title: 'Hardware Fault Isolation — Axis-Swap Method (Illustration 5-1)',
+        steps: [
+          'Identify the faulting axis from the error log (X, Y, or Z).',
+          'Swap the faulting axis data cable at the GP with another axis data cable and rescan.',
+          'If fault does NOT change axis: GP is bad — replace GP.',
+          'If fault DOES change axis: problem is not the GP — proceed to check SGA, SGA-PS, and gradient coil cables.',
+          'If SGA PS fault is also present: restore data cables, then swap the faulting axis SGA power cables with another axis and rescan.',
+          'If PS fault changes axis: SGA-PS is bad — swap SGA-PS.',
+          'If PS fault does NOT change axis: problem is with SGA, gradient coil, or cables — restore power cables.',
+          'Swap faulting axis SGA output cables with another axis and rescan.',
+          'If fault changes axis: problem is with gradient coil and cables. Disconnect one leg of faulting gradient coil and measure resistance. If > 1 ohm: coil is resistive and needs replacement. If < 1 ohm: check cable at SGA output.',
+          'If fault does NOT change axis with SGA output cable swap: swap faulting SGA control board with another axis.',
+          'If fault changes axis with control board swap: control board is bad — replace.',
+          'If fault does NOT change with control board swap: swap faulting SGA with another axis. If fault changes axis: SGA is bad — replace.',
+          'For SGA isolation: swap BRM cables at PDU terminal board and data cables at GP or SGA. If bad SGA confirmed, try swapping control boards before replacing full SGA unit.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'SGA Error Messages — Table 3-1',
+        headers: ['Error #', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244570', 'SGA_Failed_Ready', 'Axis SGA failed to go to Ready when commanded', 'Check G_Enable TP on front of SGA J2 (HIGH = replace SGA axis); check cable between GP and SGA; replace GP'],
+          ['2244571', 'SGA_Cable_Off_Fault', 'GP reporting SGA axis cable off fault', 'Check cable between GP and SGA; replace GP; swap SGAs and replace appropriate axis'],
+          ['2244572', 'SGA_Power_Off_Fault', 'GP reporting axis SGA Power Off', 'Check 208V line cable fully seated between SGA and PDU; replace SGA'],
+          ['2244573', 'SGA_WF_PSUV_Fault', 'Axis SGA internal wiring fault and internal PS under voltage', 'TPS Reset; replace SGA'],
+          ['2244574', 'SGA_OC_Fault', 'Axis SGA over current fault', 'Check output cabling to the coil; replace SGA'],
+          ['2244575', 'SGA_OV_Fault', 'Axis SGA over voltage fault', 'If no other faults reported, replace SGA; see other faults'],
+          ['2244576', 'SGA_UV_Fault', 'Axis SGA under voltage fault', 'If no other faults reported, replace SGA; see other faults'],
+          ['2244577', 'SGA_IDIST_Fault', 'Axis Current Distortion Fault', 'Check L coil calibration; run Gradient Driver Tests to isolate FRU; if diagnostics pass, write CQA'],
+          ['2244578', 'SGA_OT_Fault', 'Axis SGA Over Temperature', 'Check SGA and cabinet cooling; check fan rotation and rear door is closed'],
+          ['2244579', 'X_SGA_OVRANGE_Fault', 'X Axis Gradient data over range from IPG', 'Usually a PSD problem; ignore all other faults except Rollover 2244582'],
+          ['2244580', 'Y_SGA_OVRANGE_Fault', 'Y Axis Gradient data over range from IPG', 'Usually a PSD problem; ignore all other faults except Rollover 2244582'],
+          ['2244581', 'Z_SGA_OVRANGE_Fault', 'Z Axis Gradient data over range from IPG', 'Usually a PSD problem; ignore all other faults except Rollover 2244582'],
+          ['2244582', 'X_SGA_RollOver_Fault', 'X Axis Gradient data rollover — DC offset compensation caused rollover', 'Check DC offset calibration; check PSD application; write CQA'],
+          ['2244583', 'Y_SGA_RollOver_Fault', 'Y Axis Gradient data rollover', 'Check DC offset calibration; check PSD application; write CQA'],
+          ['2244584', 'Z_SGA_RollOver_Fault', 'Z Axis Gradient data rollover', 'Check DC offset calibration; check PSD application; write CQA'],
+          ['2244585', 'SGAPS_Ready_Fault', 'SGA Power Supply failed to go to ready or came out of Ready', 'Press Reset Button on SGA-PS; if ENABLE TP on SGA-PS J2 is HIGH, replace SGA-PS; check cable GP to SGA-PS; replace GP'],
+          ['2244586', 'SGAPS_Cable_Off_Fault', 'GP reporting SGA Power Supply Cable Off Fault', 'Check cable between GP and SGA-PS; replace SGA-PS'],
+          ['2244587', 'SGAPS_Power_Off_Fault', 'GP reporting SGA-PS Power Off', 'Check 420V breaker on PDU — if tripped, replace SGA-PS (do NOT cycle power); ensure 420V line fully seated between PDU and SGA-PS; push EMO Reset Switch on PDU; replace SGA-PS'],
+          ['2244588', 'SGAPS_WF_PSUV_Fault', 'SGA-PS internal wiring fault or internal PS under voltage', 'Reseat SGA-PS connectors; replace SGA-PS'],
+          ['2244589', 'SGAPS_OT_Fault', 'SGA-PS over temp fault', 'Wait at least 5 minutes for cabinet to cool; check fan phase rotation, fan filter, verify rear door is closed; check SGA-PS'],
+          ['2244590', 'SGAPS_OC_Fault', 'SGA-PS over current fault', 'Check SGA-PS LEDs to determine which axis is source of problem; replace SGA-PS; power cycle ACGD breaker on PDU to recover'],
+          ['2244591', 'SGAPS_OV_Fault', 'SGA-PS over voltage fault', 'If BUS_OV LED lit: check PDU 420V output — if primary, replace SGA-PS. If OV_X/Y/Z LED lit: swap military connectors to isolate SGA vs SGA-PS; replace SGA-PS; power cycle ACGD breaker on PDU'],
+          ['2244592', 'SGAPS_UV_Fault', 'SGA-PS Under Voltage Fault', 'If BUS_UV LED lit: check PDU 420V output — if primary, replace SGA-PS. If UV_X/Y/Z LED lit: swap military connectors to isolate; replace SGA-PS; power cycle ACGD breaker on PDU'],
+          ['2244593', 'SGA_Failed_Standby', 'Axis SGA failed to go to Standby when commanded', 'If G_ENABLE TP on SGA J2 is LOW: replace SGA axis; check cable between GP and SGA; replace GP'],
+          ['2244594', 'X_Failed_Recovery', 'X Axis gradient error detected; recovery in progress', 'Ignore — informational only'],
+          ['2244595', 'Y_Failed_Recovery', 'Y Axis gradient error detected; recovery in progress', 'Ignore — informational only'],
+          ['2244596', 'Z_Failed_Recovery', 'Z Axis gradient error detected; recovery in progress', 'Ignore — informational only'],
+          ['2244597', 'Recovery_Done', 'Gradient system on axis recovered successfully; no faults present', 'Ignore — informational only'],
+          ['2245044', 'Current_Driver_Tests', 'GP reported X Axis SGA Internal Wiring or Internal PS Under Voltage fault', 'Cycle two breakers on the PDU; replace SGA']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Software Errors — Table 2-1',
+        headers: ['Error #', 'Fault Name', 'Symptom', 'Action'],
+        rows: [
+          ['2244500', 'Invalid_Update_Error', 'Internal GP software error — invalid update mode selection', 'Check MDS link connection; software bug — write CQA'],
+          ['2244501', 'Undef_Interrupt', 'Internal GP software error', 'Check GP Board LED blinking for 5 seconds; software bug — write CQA'],
+          ['2244540', 'Invalid_Axis', 'Internal GP software error — axis number not between valid values', 'If using SMOD or debugger, invalid info was requested; software bug — write CQA'],
+          ['2244541', 'Bad_PS_Level', 'Internal GP software error — invalid Gradient PS level selection in MDS packet', 'Check MDS link connection; software bug — write CQA'],
+          ['2244542', 'No_PS_Level_Stdby', 'IPG attempted to command gradient axis to Standby before sending GIP_CONFIG packet', 'Check IPG'],
+          ['2244543', 'No_PS_Level_Rdy', 'IPG attempted to command gradient axis to Ready before sending GIP_CONFIG packet', 'Check IPG'],
+          ['2244544', 'GRAM_Tune_Verify', 'GP unsuccessful loading/verifying GP digital tuning values for axis', 'Replace GP'],
+          ['2244605', 'Framing_Error', 'Hardware Error — gradient data framing error', 'Check fiber optic clock cable between Systems Cabinet and GP; check IPG, TYME, and GP; run fiber optic diagnostics'],
+          ['2244606', 'Clock_Stop_Error', 'Hardware Error — no gradient clock; GP stopped receiving gradient clock from IPG', 'Check connection between TYME Board and GP Board; check IPG, TYME, and GP; run fiber optic diagnostics']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'PDU Fault Symptoms — Table 4-1',
+        headers: ['Symptom', 'Possible Cause'],
+        rows: [
+          ['Bus OV, Bus UV and PSUV faults in power supply', 'PDU tapped wrong; inadequate power feed or UPS issue'],
+          ['Power supply IGBT failure; PSUV faults', 'Unbalanced voltages or missing phases — indicates feeder, PDU transformer, or internal wiring problem'],
+          ['E-Off not working or E-Stop contactor will not pick up', 'Connector loose on PDU control board; board may be bad. Note: GE recommends 160kVA Powerware UPS — other UPS or line regulators can cause PDU or PS problems.']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'SGA-PS Power Supply LED Descriptions — Table 6-1',
+        headers: ['LED(s)', 'Function / Meaning'],
+        rows: [
+          ['ISECX, ISECY, ISECZ', 'Secondary currents in PS for each axis — illuminate when SGA pulls current from PS'],
+          ['IPX OC, IPY OC, IPZ OC', 'Over currents in transformer primaries — uncommon; indicates shorted transformer primary'],
+          ['ISX OC, ISY OC, ISZ OC', 'Over currents in transformer secondary — caused by blown IGBT in SGA or shorted diode module in PS'],
+          ['OVX, OVY, OVZ', 'Over voltages on PS output — loose connectors cause this problem'],
+          ['UVX, UVY, UVZ', 'Under voltages on PS output — caused by shorted semiconductors in SGA or PS'],
+          ['ITANK OC', 'Sum of transformer primary currents too large — heavy loads on all three axes simultaneously'],
+          ['BUS OV', 'Over voltage on input bus — check PDU tapping and measure 420 VAC at terminal block in back of PS'],
+          ['BUS UV', 'Under voltage on input bus — can be caused by mistapping the PDU or line sags'],
+          ['PSWF', 'One of three faults: under voltage on 5 or 15V control board; wire fault'],
+          ['FREQ', 'Frequency that IGBTs are switching at — control signal (informational)'],
+          ['GD (YELLOW)', 'Switching of gate drive PS — RED or GREEN illumination indicates problem on control board or gate driver; replace PS'],
+          ['HSOT', 'Heat sink over temperature — check fan is running in correct direction and rear door is closed'],
+          ['FAULT', 'Lights whenever any fault is true, or when RESET pushbutton is pressed'],
+          ['LEFT FF, RIGHT FF', 'Indicate IGBT switching (informational)'],
+          ['VINV', 'Indicates IGBT switching — control signal (informational)'],
+          ['ENABLE', 'Lights when PS is enabled by the GP'],
+          ['TJOT, TJ', 'TJOT: ignore. TJ: RED all the time — ignore']
+        ]
+      }
+    ],
+    tags: ['ACGD', 'SGA', 'gradient', 'fault codes', 'power supply', 'GP', 'PDU', 'LED', 'hardware isolation', 'axis swap', 'GE gradient', 'IGBT', 'BRM'],
+    source: 'GE ACGD Cabinet Troubleshooting Flowchart, GD4TSC1.DOC, Rev 4, Feb 29, 2008',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_020',
+    title: 'GE LCC Magnet Cryogen System — High Pressure, Helium Loss & Coldhead Troubleshooting',
+    system: 'GE MRI',
+    category: 'Cryogen / Magnet',
+    diagnosticPath: 'Cryogen Fault > High Helium Pressure / Helium Loss > Coldhead / Compressor / Chiller / Leak',
+    purpose: 'Troubleshoot high helium pressure, helium loss, coldhead performance degradation, and cryogen leaks in the GE 1.5T and 1.0T LCC Active Shield Magnet cryogenic cooling system using the Sumitomo two-stage cryocooler (Direction 2192624).',
+    componentsTested: ['Coldhead (Sumitomo two-stage cryocooler)', 'Recondenser', 'Compressor', 'Chiller / water cooling', 'RuO temperature monitor', 'Adsorber (molecular sieve)', 'Helium plumbing and flex hoses', 'Burst disk', 'Coldhead flange O-ring'],
+    sections: [
+      {
+        type: 'table',
+        title: 'Critical Cryogen Specifications',
+        headers: ['Parameter', 'Acceptable Range', 'Notes'],
+        rows: [
+          ['Coldhead 2nd Stage Temperature', '< 4.4 K', 'Must be below 4.4K for adequate cooling of magnet'],
+          ['Coldhead 1st Stage Temperature', '< 45 K', 'Recondenser/radiation shield stage'],
+          ['Recondenser Temperature', '3.9 to 4.5 K', 'Optimal operating range for helium recondensation'],
+          ['Delta T (1st to 2nd stage)', '< 0.2 K', 'Small delta indicates good coldhead regenerator performance'],
+          ['Helium Pressure', '0.3 to 4.7 psig', 'Normal operating range; above 4.7 psig = high pressure condition requiring action'],
+          ['Magnet Temperature', 'Near 4 K', 'Superconducting state must be maintained at all times']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'High Helium Pressure / Loss — Initial Assessment',
+        steps: [
+          'Connect RuO temperature monitor leads to coldhead 1st and 2nd stage temperature sensor ports. Record readings.',
+          'Read current helium pressure from magnet gauge or helium plumbing gauge.',
+          'Determine if problem is HIGH PRESSURE (rising) or HELIUM LOSS (dropping pressure).',
+          'Check chiller: verify water flow, inlet water temperature (typically 15-20 C), and that chiller is not in fault or alarm state.',
+          'Check compressor: verify it is running, no fault lights, and helium supply and return pressures are within normal range.',
+          'Visually inspect all external helium plumbing, flex hoses, and fittings for frost formation — frost indicates an external leak site.',
+          'If 2nd stage temperature > 4.4K: coldhead is performing poorly — proceed to coldhead troubleshooting.',
+          'If pressure is RISING but coldhead temperatures are OK: check adsorber and look for internal helium contamination.',
+          'If pressure is DROPPING (helium loss confirmed): check for gross leaks at all fittings, valves, and the burst disk.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Coldhead Troubleshooting',
+        steps: [
+          'Record 1st stage and 2nd stage temperatures. If 2nd stage > 4.4K, coldhead is suspect.',
+          'Calculate delta T between stages. If delta T > 0.2K, coldhead regenerator or displacer may be worn.',
+          'Check recondenser temperature: should be 3.9-4.5K. If elevated, coldhead is not removing heat adequately.',
+          'Verify chiller water temperature is within specification — coldhead performance depends critically on chiller. Always verify chiller before suspecting coldhead failure.',
+          'Check compressor helium supply and return pressures are balanced and within spec for the compressor model.',
+          'Check coldhead electrical connections: motor leads, temperature sensor connectors.',
+          'Listen for abnormal coldhead noise — grinding or clicking may indicate worn displacer or contaminated cold head.',
+          'If coldhead is confirmed faulty: replace Sumitomo two-stage coldhead unit.',
+          'After coldhead replacement: allow 4-6 hours minimum for temperatures to stabilize before evaluating performance.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Compressor Troubleshooting',
+        steps: [
+          'Verify compressor power and that unit is running with no fault LEDs or alarm lights.',
+          'Check supply (high pressure) and return (low pressure) helium pressures at compressor gauges.',
+          'Low supply pressure may indicate compressor failure or helium loss from the closed-loop system.',
+          'Inspect helium flex hoses between compressor and coldhead for damage, kinks, or loose fittings.',
+          'Check the adsorber (molecular sieve) — a saturated adsorber can cause pressure anomalies. Replace if not serviced in more than 3 years or if system was vented.',
+          'Verify compressor oil level (if applicable for the compressor model).',
+          'Check compressor cooling — air-cooled models require adequate ventilation; water-cooled models require water flow.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Helium Leak Troubleshooting',
+        steps: [
+          'Visually inspect all external helium plumbing fittings for frost accumulation — frost forms at the leak site.',
+          'Use helium leak detector or sniffer at all compression fittings, valve stems, and the burst disk.',
+          'Check burst disk on magnet — if ruptured, magnet will have vented; quench protocol applies and GE support must be contacted.',
+          'Check adsorber connections and valve packing.',
+          'Check the coldhead flange O-ring at the interface between coldhead and the magnet cold well.',
+          'If leak is confirmed to be internal to the vacuum jacket: contact GE factory service — this requires factory repair.',
+          'After any repair: pressurize system to normal operating pressure, verify pressure is stable over at least 24 hours, allow coldhead to re-cool to 2nd stage < 4.4K before releasing system.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Chiller Dependency Warning',
+        content: 'Coldhead performance is critically dependent on adequate chiller cooling. Before suspecting coldhead failure, always verify: chiller water flow rate, water inlet temperature (typically 15-20 degrees C), and that the chiller is not in fault or alarm state. A warm chiller will cause both coldhead stage temperatures to rise and can mimic a completely failed coldhead. Also note: a loss of chiller cooling for even a short time can cause helium pressure to rise significantly.'
+      }
+    ],
+    tags: ['coldhead', 'cryogen', 'helium', 'LCC', 'magnet', 'cryocooler', 'Sumitomo', 'recondenser', 'compressor', 'chiller', 'helium pressure', 'GE 1.5T', 'GE 1.0T', 'quench', 'leak', 'adsorber'],
+    source: 'GE LCC Active Shield Magnet Cryogens Troubleshooting, Direction 2192624, Rev 8, Sumitomo Coldhead',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_021',
+    title: 'GE CPD Board (SSM) Setup & Calibration — TR Voltage, Multi-Coil, PAC Voltage, Power Monitor',
+    system: 'GE MRI',
+    category: 'RF System',
+    diagnosticPath: 'RF System > SSM Cabinet > CPD Board > TR Voltage / Multi-Coil Driver / PAC Voltage / Power Monitor Type',
+    purpose: 'Set up and calibrate the Communications Pin Driver (CPD) board in the System Support Module (SSM). Covers TR voltage adjustment for body and head coils, Multi-Coil Driver enable/disable configuration, PAC voltage setting (8V vs 9V), Power Monitor type configuration (1.0T vs 1.5T), and system restoration. Applies to 1.0T and 1.5T RF/PEN II, RF/PDU, and SRF cabinets.',
+    componentsTested: ['CPD Board', 'SSM (System Support Module)', 'SSM DIP switches (Bank 1 and Bank 2)', 'TP18 (BTR-OUT — Body TR test point)', 'TP22 (HTR-OUT — Head TR test point)', 'TP1 (negative 5VDC — Multi-Coil test point)', 'R99 (Body TR potentiometer)', 'R104 (Head TR potentiometer)', 'R11 (Multi-Coil negative 5V pot)', 'J5 (UNBLK EN connector)', 'J18 (Multi-Coil TR Bias)', 'J20 (Multi-Coil Signals)', 'J46 (laptop connection)', 'CB4 (main SSM circuit breaker)', 'Fiber optic RX and TX connections at rear of SSM'],
+    sections: [
+      {
+        type: 'warning',
+        title: 'Critical Safety Warning',
+        content: 'CAUTION: Systems WITHOUT a fiber optic repeater at the Pen wall MUST set PAC voltage to 8 VDC — NOT 9 VDC. Setting to 9 VDC on a system without fiber optic repeater can cause equipment damage. Verify fiber optic repeater presence before performing Section 8. Also: do not disconnect bias lines during calibration.'
+      },
+      {
+        type: 'steps',
+        title: 'SSM Preparation — CAL Switch Setup',
+        steps: [
+          'Power off the MRI system. Slide SSM chassis out from the equipment rack. Open the SSM lids.',
+          'Disconnect J5 (UNBLK EN) connector at the rear of the SSM.',
+          'Connect laptop to SSM at J46 if using software-assisted calibration procedure.',
+          'Remove the plastic cover from the Test Switch and Test LEDs window on the front of the SSM.',
+          'NOTE: DIP Switch #1 must ALWAYS be placed in the UP position LAST — order of switch placement is critical; system will not recognize changes if order is incorrect.',
+          'Place DIP Switch #3 in the UP position. Place DIP Switch #1 in the UP position LAST.',
+          'All other switches should be in the DOWN position.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Section 6: TR Voltage Adjustment (Body and Head)',
+        steps: [
+          'BODY TR: Connect oscilloscope or DVM to test point TP18 (BTR-OUT) with reference to ground.',
+          'Adjust potentiometer R99 until the Body TR voltage at TP18 measures 4.00 VDC.',
+          'HEAD TR: Connect oscilloscope or DVM to test point TP22 (HTR-OUT) with reference to ground.',
+          'Adjust potentiometer R104 until the Head TR voltage at TP22 measures 8.00 VDC.',
+          'For Spectroscopy TR adjustments: refer to the appropriate Spectroscopy (MNS) Subsystem Setup and Calibration Tab — NOT this procedure.',
+          'Cable and Test Switch Restoration: Place DIP switch #3 in the Down position first, then place DIP switch #1 in the Down position. Place all other switches in Down position.',
+          'Reconnect J5 (UNBLK EN) at the rear of the SSM.',
+          'If not proceeding to the next section, refer to Section 10 - System Restoration.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Section 7: Multi-Coil Driver Enable/Disable (Front Panel DIP Switches)',
+        steps: [
+          'Note: Disabling is not normally required — each SSM is shipped from factory with all four Multi-Coil Drivers enabled. Perform this section only if spare board seal is broken.',
+          'Remove plastic cover from the Test Switch and Test LEDs window on front of SSM.',
+          'Place switches 3, 4 in Up position. Ensure all other switches are in Down position.',
+          'To configure Multi-Coil Driver settings: (a) To DISABLE ALL Multi-Coil Drivers: place switches 5, 6, 7, and 8 in the Down position, then proceed to step 4. (b) To DISABLE drivers 3 and 4 only: place switches 5 and 6 in the Up position, then proceed to step 4. (c) To ENABLE ALL Multi-Coil Drivers: place switches 5, 6, 7, and 8 in the Up position, then proceed to step 4.',
+          'Place switch #10 in the Up position.',
+          'Place switch #10 in the Down position. Bank 1 LEDs 1, 2, 3, and 4 will illuminate and remain illuminated.',
+          'Place switch #1 in the Down position. Bank 1 LED 1 will illuminate for approximately one minute, then extinguish.',
+          'Place all switches in the Down position.',
+          'Cycle the main circuit breaker CB4: turn to OFF position, wait 15 seconds, then set to ON position. This saves the changes to the SSM.',
+          'Replace the plastic cover on the front of the SSM.',
+          'Multi-Coil negative 5 VDC verification: connect oscilloscope or DVM to CPD Board test point TP1 (negative 5VDC) with reference to ground. Adjust R11 until voltage = negative 5.00 VDC (plus or minus 0.05 VDC).',
+          'Verify J18 (Multi-coil TR Bias, labeled MR1-A7-J18) and J20 (Multi-Coil Signals, labeled MR1-A7-J20) cables are connected to their correct locations — these cables must NOT be swapped.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Section 8: PAC Voltage Configuration (8 VDC vs 9 VDC)',
+        steps: [
+          'PAC voltage is preset to 9 VDC at factory. Verify and configure only if spare board seal is broken.',
+          'CAUTION: Systems WITHOUT fiber optic repeater at Pen wall must be set to 8 VDC. Systems WITH fiber optic repeater should remain at 9 VDC.',
+          'Remove fiber optic cables from rear of SSM (RX and TX connections).',
+          'Remove the plastic cover on the front of the SSM.',
+          'Place DIP Switch #1 in UP position LAST — order is critical.',
+          'For systems WITHOUT fiber optic repeater (set to 8 VDC): place switch 6 in Down, switches 4 and 1 in Up. All others Down. Verify by LED display: Bank 1 LEDs 1, 2, and 5 will illuminate.',
+          'For systems WITH fiber optic repeater (set to 9 VDC): place switches 6, 4, and 1 in Up. All others Down. Verify by LED display: Bank 1 LEDs 1, 3, and 5 will illuminate.',
+          'Place switch 1 in the Down position.',
+          'Place all other switches in the Down position.',
+          'Cycle CB4: OFF then wait 15 seconds then ON. This saves the PAC voltage setting.',
+          'Replace the plastic cover on the front of the SSM.',
+          'Reconnect fiber optic cables to RX and TX on rear of SSM.',
+          'Perform TPS Reset: click Service Desktop icon and click TPS Reset button on Service Rx.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Section 9: Power Monitor Type Configuration (1.0T vs 1.5T)',
+        steps: [
+          'Default Power Monitor type on replacement boards is 1.5T. Verify and set to match actual system field strength.',
+          'Remove plastic cover on front of SSM.',
+          'Place switches 3, 2, 4, and 1 in the Up position (place #1 last). All others in Down position.',
+          'Read LED BANK 1 and LED BANK 2 to determine current configuration: LED #2 = 1.0T; LED #3 = 0.7T; LED #4 = 1.5T. If already correct, stop — no further action needed.',
+          'To set to 1.0T: place switch 5 in Up position and switch 6 in Down position.',
+          'To set to 1.5T: place switch 5 in Up position AND switch 6 in Up position.',
+          'Place switch #10 in the Up position followed by Down position. LED BANK 1 and BANK 2 will change to show LED #2 (1.0T) or LED #4 (1.5T).',
+          'Place switch #1 in the Down position. LEDs in BANK 1 and BANK 2 should now be extinguished.',
+          'Place all switches in the Down position.',
+          'Cycle CB4: OFF then wait 15 seconds then ON. This saves the Power Monitor type.',
+          'Replace the plastic cover on the front of the SSM.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Section 10: System Restoration',
+        steps: [
+          'Close the SSM lids, replace all lid screws, slide the SSM chassis back into the rack, and replace the four front screws.',
+          'Remove laptop connection to SSM at J46, if applicable.',
+          'Replace all cabinet covers.',
+          'Verify J5 (UNBLK EN) is connected at the rear of the SSM.',
+          'Perform a TPS Reset.',
+          'Perform a Head Scan, Body Scan, and Multi-coil scan to verify the system is scanning normally.'
+        ]
+      }
+    ],
+    tags: ['CPD', 'SSM', 'TR voltage', 'calibration', 'multi-coil', 'PAC voltage', 'power monitor', 'DIP switch', 'RF/PEN II', 'RF/PDU', 'SRF', '1.0T', '1.5T', 'TP18', 'TP22', 'R99', 'R104', 'GE RF'],
+    source: 'GE Communications Pin Driver (CPD) Board Set Up and Calibration, RC3SCA2.DOC, Rev 7, March 22, 2001',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_022',
+    title: 'GE MGD APS/AGP MCP820 Troubleshooting — NVRAM Config Recovery & PPCBUG Commands',
+    system: 'GE MRI',
+    category: 'System / MGD',
+    diagnosticPath: 'MGD Failure > MCP820 SBC (APS / AGP / SCP) > Boot-up Data > CNFG/ENV Recovery or Board Replacement',
+    purpose: 'Diagnose and repair GE Signa Excite HD/HDx MGD (Multi-Generational Data Acquisition) chassis failures caused by corrupted MCP820 SBC configuration and environment (NVRAM) data. Covers reading serial boot-up data via mgd_term, interpreting critical marker messages, using PPCBUG commands to restore the Board Information Block, replacing the Timekeeper chip, and reflashing the SCP NVRAM. Approximately 80% of returned MCP820 boards are field-repairable using this procedure.',
+    componentsTested: ['MCP820 SBC (APS and AGP board positions)', 'SCP board (CPV3060) in slot 11', 'PPCBUG firmware (stored in two AM29LV040B NVRAM chips)', 'Timekeeper chip (with built-in lithium battery)', 'Board Information Block (CNFG data)', 'VxWorks operating system', 'mgd_term serial terminal connections', 'Infiniband board', 'VRE/ICN', 'RF-DIF board', 'DRF board', 'SRF/TRF boards', 'SCP/SCP2'],
+    sections: [
+      {
+        type: 'note',
+        title: 'Key Insight — 80% of Failed MCP820 Boards Are Field-Repairable',
+        content: 'About 80% of defective MCP820 boards returned from the field are due to corrupted config and/or system environment data (similar to corrupted BIOS). These boards do NOT need to be replaced. They can be fixed on-site by restoring the Board Information Block (CNFG) and environment (ENV) data using PPCBUG debugger commands. The procedure in this guide applies to both APS and AGP board positions. The author recommends using the AGP position (black screen background) for troubleshooting because it is easier to work with in mgd_term.'
+      },
+      {
+        type: 'table',
+        title: 'MGD Board Positions and Failure Indicators',
+        headers: ['Board', 'Function', 'Position', 'Fail Indicator', 'Debug Prompt'],
+        rows: [
+          ['APS (MCP820)', 'Array Processor Subsystem — controls image data acquisition, RRF chassis, RF-DIF, DRF, Infiniband, VRE/ICN', 'APS slot in MGD', 'Board Fail LED stays ON', 'MCP820-Bug> or MCP820-Diag>'],
+          ['AGP (MCP820)', 'Acquisition Gradient Processor — controls SRF/TRF boards, SCP/SCP2', 'AGP slot in MGD', 'Board Fail LED stays ON', 'MCP820-Bug> or MCP820-Diag>'],
+          ['SCP (CPV3060)', 'Scan Control Processor — controls CAN, MDS, SRI, UPM (scan hardware)', 'Slot 11 in MGD front', 'Fault LED stays ON', 'EPPC-Bug>']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 1: Access MGD Serial Boot-up Data via mgd_term',
+        steps: [
+          'At the MRI system console, login as "sdc" with password "adw2.0" (for 15.x and 16.x systems).',
+          'Open a Command Window (right-click on empty screen area), type "endsession", click Yes. Repeat 2-3 times until the login screen returns.',
+          'At the login screen, login as "root" with password "operator".',
+          'Open a Command Window and type "mgd_term". Three terminal windows will open: one each for APS (white background), AGP (black background), and SCP.',
+          'Reposition and enlarge the windows. The top line of each window should display "Connected".',
+          'Go to the back of the MGD chassis and turn off the MGD power switch. Count to 10 seconds then turn it back on.',
+          'Observe the serial boot-up data appear in each processor window. This begins a few seconds after MGD power is applied.',
+          'If system fails to come up after approximately 15 minutes, look for a "TPS Reset was not successful" message in the MRI display.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Critical Marker Messages in Serial Boot-up Data',
+        headers: ['Marker Message', 'Which Board', 'What It Means'],
+        rows: [
+          ['"There are no errors in the OS Error Log Buffer"', 'APS, AGP, or SCP (whichever window)', 'Board passed self-test and initialization — board hardware is healthy'],
+          ['"Auto start of Tardis done"', 'APS only', 'TARDIS (Transmit And Receive Data Interface Subsystem) initialized OK. Image data acquisition components are OK: Infiniband, VRE/ICN, DRF, RRF, RF-DIF'],
+          ['"Network is OK" or "Network OK"', 'APS, AGP, or SCP', 'SBC board successfully initialized its network connection to all other hosts, servers, and CPU boards'],
+          ['"Startup Complete"', 'APS, AGP, or SCP', 'Board and all attached devices have successfully initialized. A TPS Reset would be successful at this point.']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 2: Identify Problem Type from Boot-up Data',
+        steps: [
+          '"NVRAM checksum error" then stops at MCP820-Bug> or MCP820-Diag>: Run ST (Self-Test) under MCP820-Diag>. If hardware passes ST, run VER then ENV;D under MCP820-Bug> to correct ENV data, and CNFG/CNFG;M to check and correct the Board Information Block. See CNFG/ENV Recovery procedure below.',
+          '"Board Configuration verification failure" then stops at MCP820-Bug> or MCP820-Diag>: Same approach — run ST, then correct CNFG and ENV data.',
+          'Board hangs or stops after displaying Motorola PPCBUG debugger header and during Self-Test or Autoboot, without a Board Fail LED: Most likely CNFG has been entered but ENV data is still incorrect. Move board to AGP slot to force a stop at MCP820-Bug>. Or perform a Double-Button Reset. Then recheck and reenter correct CNFG and ENV.',
+          '"There are no errors in the OS Error Log Buffer" never appears in boot-up data: MCP820 CPU board internal hardware problem. Replace the board.',
+          'APS fails to initialize (other boards initialize OK): Check RRF chassis, RF-DIF Board, DRF Board, Infiniband Board, and VRE/ICN subsystems.',
+          'AGP fails to initialize (other boards initialize OK): Check SRF/TRF Boards and SCP/SCP2.',
+          'SCP fails to initialize (other boards initialize OK): Check CAN, MDS, SRI, and UPM subsystems.',
+          'IMPORTANT: RF Amp, Gradient Amps, and other subsystems NOT listed above will NOT prevent MGD from starting up or prevent Applications level. However, these can prevent a successful TPS Reset, which prevents scanning.'
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'Step 3: CNFG and ENV Recovery Procedure (Section VI of source document)',
+        steps: [
+          'With the suspect MCP820 board in the AGP position, power on the MGD. Wait for the AGP window to display the MCP820-Bug> prompt.',
+          'At MCP820-Bug>, type "CNFG" and press Enter. Compare the output to a known good board. Question marks (????) in any field indicate corrupted Board Information Block data.',
+          'Turn off MGD power. Remove the AGP board and place it on a flat non-metallic surface.',
+          'Locate the Timekeeper chip (beside the two 32-pin NVRAM chips labeled AM29LV040B near the PPCBUG label on the board). Using a DVM, test the Timekeeper chip lithium battery output — must be greater than 3 VDC. If less than 3 VDC: replace the Timekeeper chip.',
+          'Gather Board Information Block data for this specific board (read values from the board label and back of board): (a) Board (PWA) Serial Number — from sticker on board; (b) Board Identifier — SCPGEDAQ2X-016 for p/n 2294300-16 and -18, SCPGEDAQ2X-015 for p/n 2294300-14; (c) Artwork (PWA) Identifier — from back of board, e.g. 01-W3938F05A; (d) MPU Clock Speed = 500; (e) BUS Clock Speed = 100; (f) Ethernet Address — lower of the two MAC addresses listed on board label; (g) Primary SCSI Identifier = 07; (h) System Serial Number = 0; (i) System Identifier = 0; (j) License Identifier = same value as Board (PWA) Serial Number; (k) PEC Code = 0; (l) CLEI Code = 0.',
+          'Reinstall the AGP board into the MGD. Turn on MGD power. Wait for MCP820-Bug> prompt in the AGP window.',
+          'At MCP820-Bug>, type "CNFG;M" and enter the Board Information Block data gathered in step 5 for each prompted field.',
+          'After CNFG data entry: type "TIME" to display current board date/time. Use "SET MMDDYYHHMMSS" to set correct date/time — match to main MRI system time (run "date" command in a C-Shell on the host to get current system time).',
+          'Type "SD" to switch to MCP820-Diag>. Type "ST" (Self-Test). All tests should display PASSED. If any tests FAIL, the board hardware itself is defective — replace the board.',
+          'Type "SD" to switch back to MCP820-Bug>. Type "ENV;D" and press Enter. Accept defaults by pressing Enter for each prompt. When asked "Update Non-Volatile RAM (Y/N)?" answer Y. When asked "Reset Local System (CPU) (Y/N)?" answer N.',
+          'Turn off MGD power using the power switch at the rear of the MGD chassis. Wait 10 seconds then turn back on.',
+          'Wait for the AGP window to display MCP820-Bug>. Quickly type "RB" and press Enter. If AGP shows MCP820-Diag> instead: type "SD" to switch first, then type "RB".',
+          'AGP will perform a ROMboot and reach the same initialization level as APS. Both will stop with a message about VRE not being ready. This is normal — the AGP board is now OK.',
+          'FINAL STEP: Turn off MGD power. Turn back on after 10 seconds. Wait for AGP to stop at MCP820-Diag>. Enter "SD" to switch to MCP820-Bug>. Enter "ENV" command and walk through the environment settings — specifically correct the Autoboot and ROMBoot parameters (set Auto Boot Enable = Y, ROM Boot at power-up only = Y). Answer Y to Update Non-Volatile RAM and N to Reset Local System.',
+          'Cycle MGD power and verify it now goes through initialization normally without stopping at MCP820-Bug> or MCP820-Diag>.',
+          'Shut down the full MRI system, then reboot. Login as sdc with password adw2.0. System should go to Applications level. Perform TPS Reset.',
+          'Perform Head and Body scans to confirm full system functionality.'
+        ]
+      },
+      {
+        type: 'table',
+        title: 'PPCBUG Command Reference',
+        headers: ['Prompt', 'Command', 'Function'],
+        rows: [
+          ['MCP820-Bug>', 'CNFG', 'Display the Board Information Block. Question marks = corrupted data.'],
+          ['MCP820-Bug>', 'CNFG;M', 'Modify the Board Information Block — enter each field value interactively.'],
+          ['MCP820-Bug>', 'ENV', 'Set the environment for debugger or operating system — walks through all parameters interactively.'],
+          ['MCP820-Bug>', 'ENV;D', 'Rewrite and update environment in NVRAM using data stored in ROM — restores defaults.'],
+          ['MCP820-Bug>', 'VER', 'Display debugger Version/Revision information and board hardware details (Board Type Identifier, memory size, etc.).'],
+          ['MCP820-Bug>', 'RB', 'ROM Boot — boot from ROM, brings board to same initialization level as APS.'],
+          ['MCP820-Bug>', 'RESET', 'Cold/Warm Reset of the SBC.'],
+          ['MCP820-Bug>', 'HE', 'Help — display list of available commands.'],
+          ['MCP820-Bug>', 'SET MMDDYYHHMMSS', 'Set date and time on the board.'],
+          ['MCP820-Bug>', 'TIME', 'Display current date and time stored on the board.'],
+          ['MCP820-Bug>', 'SD', 'Switch Directories — toggle between MCP820-Bug> (debugger) and MCP820-Diag> (diagnostics) modes.'],
+          ['MCP820-Diag>', 'ST', 'Run Self-Test — all subtests should show PASSED on a good board.'],
+          ['MCP820-Diag>', 'DE', 'Display Errors.'],
+          ['MCP820-Diag>', 'DEM', 'Display Error Messages.'],
+          ['MCP820-Diag>', 'HEX', 'Help Extended — more detailed version of HE.'],
+          ['MCP820-Diag>', 'CNFG', 'Available at MCP820-Diag> even though not listed in menu.'],
+          ['MCP820-Diag>', 'VER', 'Available at MCP820-Diag> even though not listed in menu.'],
+          ['Host C-Shell', 'cu scp', 'Connect to SCP board serial port from MGD host (full syntax: t20 6# cu scp)'],
+          ['EPPC-Bug>', 'ENV;D', 'Reflash SCP NVRAM with auto-configuration defaults — first step to recover corrupted SCP board']
+        ]
+      },
+      {
+        type: 'steps',
+        title: 'SCP Board NVRAM Reflash Procedure (EPPC-Bug> Recovery)',
+        steps: [
+          'Open a C-Shell window on the MRI host.',
+          'Connect to SCP Board: type the command "t20 6# cu scp" and press Enter. You should see "Connected" displayed.',
+          'Press Enter. If you see the "EPPC-Bug>" prompt, the SCP Board NVRAM is corrupted — proceed to step 4. If you do NOT see EPPC-Bug>, the SCP board NVRAM is not corrupted and this procedure will not help.',
+          'At EPPC-Bug>, type "ENV;D" and press Enter. When prompted "Update Non-Volatile Memory (Y/N)?", answer Y. When prompted "Reset Local System (CPU) (Y/N)?", answer N.',
+          'Type "ENV" and press Enter. Accept all default values by pressing Enter for each prompt. When prompted "Update Non-Volatile Memory (Y/N)?", answer Y. When prompted "Reset Local System (CPU) (Y/N)?", answer N.',
+          'Type "SD" and press Enter to switch directories.',
+          'Type "SE;AEM;QST;PCIB;FECETH" and press Enter.',
+          'Type "GO FC00017C" and press Enter.',
+          'Type "NULL" and press Enter.',
+          'When prompted "Update Non-Volatile Memory (Y/N)?", answer Y. When prompted "Reset Local System (CPU) (Y/N)?", answer N.',
+          'To safely exit debug mode: open the rear door of the EXCITE System Cabinet, locate the power switch on the left rear of the MGD Chassis, and cycle MGD power.',
+          'Perform a TPS Reset. The system should now recover normally.'
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Timekeeper Chip and Double-Button Reset Notes',
+        content: 'The Timekeeper chip is located beside the two 32-pin NVRAM chips (AM29LV040B) on the MCP820 board near the PPCBUG label. It supplies power to maintain NVRAM data when the board is unpowered. When the Timekeeper chip is removed, it resets all NVRAM contents and forces the MCP820 to execute the PPCBUG debugger on the next power-up. Replacement procedure: lay board on flat non-metallic surface, remove old Timekeeper, install new one, then perform CNFG/ENV restoration as described above. The Double-Button Reset (press RESET and ABORT simultaneously, release RESET first, wait 7 seconds, release ABORT) is documented in the Motorola PPCBUG manual as a way to force debugger mode, but it has been reported as unreliable in field use. Removing the Timekeeper chip is the more reliable method for forcing PPCBUG access.'
+      }
+    ],
+    tags: ['MGD', 'MCP820', 'APS', 'AGP', 'SCP', 'PPCBUG', 'NVRAM', 'CNFG', 'ENV', 'Timekeeper', 'boot-up', 'VxWorks', 'mgd_term', 'GE Excite', 'HDx', 'config recovery', 'EPPC-Bug', 'NVRAM reflash', 'Board Information Block'],
+    source: 'GE MR Advanced Service — MGD APS/AGP, Lito Condes, GE MRI Advanced Service Engineer, Rev 2, July 21, 2017',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_023',
+    title: 'GE MR Host Info — Login Credentials, Filesystem Paths, Key Commands & Config Files',
+    system: 'GE MRI',
+    category: 'System / Host',
+    diagnosticPath: 'GE MR Host > Login / Filesystem / Commands / Config Files / Log Files',
+    purpose: 'Quick reference for GE MR host system login credentials, important filesystem directories and shortcuts, key configuration files, error log locations, and useful shell commands for field service. Covers all GE MRI software versions from 5.x through 23.x including Octane (SGI/IRIX), Linux (Red Hat 11.x+), and LX9x platform systems.',
+    componentsTested: ['MR Host computer (Octane SGI or Linux workstation)', 'GE MR software (5.x through 23.x)', 'VRE software', 'ICN (Image Communication Network)', 'TPS CPU', 'MGD', 'IPG', 'CERD subsystem'],
+    sections: [
+      {
+        type: 'table',
+        title: 'System Login Credentials',
+        headers: ['Login Type', 'Username', 'Password', 'Applies To'],
+        rows: [
+          ['Applications login', 'signa', '4$apps', 'Software version 5.x'],
+          ['Applications login', 'signa', 'adw2.0', 'Software version 9.x'],
+          ['Applications login', 'sdc', 'adw2.0', 'Software version 11.x and above (most common field use)'],
+          ['Applications login', 'signa', 'gemr7', 'Profile and Contour systems'],
+          ['Superuser / Admin', 'root', 'operator', 'All versions (use "su" command to switch to root)'],
+          ['Report Manager', 'mrgo1', '(site-specific)', 'GE report manager program'],
+          ['Sun ICN web utility', 'root', 'changeme', 'ICN web interface access']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Key Filesystem Directories',
+        headers: ['Path', 'Description'],
+        rows: [
+          ['/usr/g/bin', 'Most executable MR application commands are here'],
+          ['/w/config', 'All system configuration files: gradient, coil, stage, shimconfig, etc.'],
+          ['/usr/g/service/cclass/spt', 'All system performance test spec files'],
+          ['/usr/g/caldir', 'All calibration files: shim, grafidy, group delay, back, ECC, etc.'],
+          ['/usr/g/mrraw', 'Raw data files'],
+          ['/usr/g/service/data', 'All service test files: lvshim, spt, ept, etc.'],
+          ['/usr/g/service/log', 'Error logs and core files'],
+          ['/usr/g/service/protocols', 'All protocols stored here'],
+          ['/export/home/signa/protocols/site', 'Alternate location for site-specific protocols'],
+          ['/export/home/signa/tools', 'Location of many calibration and test programs'],
+          ['/export/home/vre/netinstall', 'Location where VRE software is saved on host']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Filesystem Shortcuts (Symbolic Links)',
+        headers: ['Shortcut', 'Points To'],
+        rows: [
+          ['/usr/g', '/export/home/signa'],
+          ['/usr/g/mrraw', '/export/home/signa/research/mrraw'],
+          ['/usr/g/service', '/export/home/service'],
+          ['/w', '/export/home/signa/w']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Key Configuration Files in /w/config',
+        headers: ['File Path', 'Description'],
+        rows: [
+          ['/w/config/MRconfig.cfg', 'Main MR configuration file'],
+          ['/w/config/CoilConfig.cfg', 'All individual coil configurations'],
+          ['/w/config/ShimConfig.cfg', 'Installed shim currents and gradshim values'],
+          ['/w/config/DcbCalib.cfg', 'DD open threshold values'],
+          ['/w/config/DcbConfig.cfg', 'Driver Module configuration file (10.x and newer)'],
+          ['/w/config/mgd_stage', 'File used to emulate individual parts of MR system (10.0 and newer)'],
+          ['/w/config/ipg_stage', 'File used to emulate individual parts of MR system (9.1 and older)'],
+          ['/w/config/PM.config', 'Change all values to zero to remove PM Required message at startup (11.x only)'],
+          ['/w/config/Temperature.cfg', 'Settings for bore temp and gradient amplifier temp warnings'],
+          ['/w/config/spt_nesting', 'Remove this file to have SPT ask which length loader to use again'],
+          ['/etc/config/static-route.options', 'Default and additional router/gateway addresses for LX and Excite systems. Syntax: $ROUTE $QUIET add net default (router address)'],
+          ['/etc/rc2.d/S93route', 'Default and additional router/gateway addresses for Profile, Contour, 5.x systems. Syntax: route add default xxx.xxx.xxx.xxx 1'],
+          ['/etc/sysconfig/network-scripts/ifcfg-eth0', 'System network options tied to MACADDR (11.x and up)'],
+          ['/etc/passwd', 'Change password for current user state using passwd command']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Key Log Files and Diagnostic Data Files',
+        headers: ['File Path', 'Description'],
+        rows: [
+          ['/usr/g/service/log/gesys_systemID.log', 'Extended error log — replace systemID with the unique ID of your system. Use "gedit /usr/g/service/log/gesys*" to open from any shell window'],
+          ['/usr/g/service/log/pcft.log', 'Patient comfort temperature sensor log file'],
+          ['/usr/g/service/log/scn.out', 'Details of the last two days of scans'],
+          ['/usr/g/service/data/temperature_log.data', 'Log of current magnet temperature (Profile systems)'],
+          ['/usr/g/service/license/license.db', 'Shows all installed options using shortened names'],
+          ['/usr/g/caldir/ecccoeff.dat', 'ECC (Eddy Current Compensation) calibration data'],
+          ['/usr/g/caldir/grafidyx.cal', 'Grafidy calibration data — X axis'],
+          ['/usr/g/caldir/grafidyy.cal', 'Grafidy calibration data — Y axis'],
+          ['/usr/g/caldir/grafidyz.cal', 'Grafidy calibration data — Z axis'],
+          ['/usr/g/caldir/gram_tune.dat', 'Grafidy calibration tune data'],
+          ['/usr/g/service/cclass/spt/cal.spt', 'Head and body gain specifications'],
+          ['/usr/g/service/cclass/spt/snr.spt', 'Head and body SNR, TG, Ziso, and Gradcal specifications']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'Essential Shell Commands for Field Service',
+        headers: ['Command', 'Description'],
+        rows: [
+          ['getver', 'Shows current software revision and patches with revisions'],
+          ['tps_reset', 'Perform TPS Reset from a shell window'],
+          ['mgd_term', 'Opens 3 separate terminal log screens showing output of APS, AGP, and SCP boards'],
+          ['mgd_termc', 'Kills all open mgd_term windows'],
+          ['hw_config_status', 'Shows configuration of boards in the TPS chassis'],
+          ['ifconfig -a', 'Shows network configuration of host (Linux systems)'],
+          ['endsession', 'Shuts down applications and goes to login screen — saves reboot time'],
+          ['blanktime 0', 'Disables screensaver until next reboot'],
+          ['gedit', 'Text editor similar to Windows Wordpad (Linux). Use Ctrl+F to search file contents'],
+          ['checkINFO -pre', 'Checks all saveinfo data on the hard drive (must be in root)'],
+          ['checkINFO -post', 'Checks saveinfo data on MOD (must be in root)'],
+          ['df -h', 'Shows disk usage on host split up by individual partitions'],
+          ['top', 'Shows all open processes and continuously refreshes memory and CPU usage'],
+          ['ps -A', 'Shows all active processes on host computer'],
+          ['kill 1234', 'Kills any active task — replace 1234 with the actual process number from ps -A'],
+          ['prune', 'Brings up pop-up box to prune error log file'],
+          ['tail -f filename', 'Shows last 10 lines of a file and keeps it open watching live updates'],
+          ['tail -n 50 filename', 'Shows last 50 lines of a file (replace 50 with desired number of lines)'],
+          ['cp filename copyname', 'Copies file with new name. Adding .bak to new name hides backup from software'],
+          ['find / -name *filename*', 'Finds all files with filename as part of the name on the host computer'],
+          ['swmgr', 'Software manager for installing and removing patches'],
+          ['cu scp', 'Opens communication shell with SCP board in MGD'],
+          ['cu cerd', 'Opens communication shell with CERD board'],
+          ['cu tps', 'Opens communication window with TPS CPU board'],
+          ['cu igp', 'Opens communication shell with the IPG board'],
+          ['rlogin hostname', 'Used to log in to other hosts remotely'],
+          ['eject', 'Software command to eject CD tray when the physical button is not working'],
+          ['sock_test', 'Shows currently installed options on the system'],
+          ['resetftg', 'Enables Fast TG'],
+          ['setftg', 'Disables Fast TG'],
+          ['/usr/local/bin/install/java/Guided_Install', 'Opens Guided Install even if applications are not up — critical field command'],
+          ['/use/g/bin/installTool FE_MODE', 'Forces Guided Install open — verified working on 23.x systems'],
+          ['/usr/g/service/cclass/sys_health', 'Creates detailed system health report saved to /usr/g/service/log/system_health.log'],
+          ['/usr/g/tools/lvshim/runlvshim', 'Forces LV Shim tool open — works on 15.x and up'],
+          ['/usr/g/bin/webCfgEditor', 'GE config file manager — can run without applications up'],
+          ['/usr/g/bin/startBoreViewer', 'Displays patient comfort sensor data in graphs (23.x and up)'],
+          ['/usr/g/bin/GetPCHart', 'Displays PC hardware configuration'],
+          ['/usr/g/bin/showVREConfig', 'Displays VRE hardware info'],
+          ['/usr/local/bin/install/configure/mgdSubnetChoices', 'Shows the allowable MGD subnets for the system']
+        ]
+      },
+      {
+        type: 'table',
+        title: 'MGD Subnet Addresses',
+        headers: ['Subnet', 'Notes'],
+        rows: [
+          ['10.217.x', 'Allowable MGD subnet'],
+          ['10.121.x', 'Allowable MGD subnet'],
+          ['192.168.x', 'Allowable MGD subnet'],
+          ['10.47.x', 'Allowable MGD subnet'],
+          ['10.0.x', 'Allowable MGD subnet'],
+          ['172.22.x', 'Allowable MGD subnet']
+        ]
+      },
+      {
+        type: 'note',
+        title: 'Octane (SGI/IRIX) vs Linux System Differences',
+        content: 'Older GE MRI systems (through LX 9.x) use an SGI Octane workstation running IRIX OS. Key Octane-specific commands: jot (text editor like Notepad), toolchest (opens tools menu), confidence (tests keyboard/mouse/monitor), scrsave (creates SGI .rgb screenshot of current screen), snapshot (area screenshot), string filename (displays text contents of binary files — useful for identifying raw image files). Linux systems (11.x and above) use: gedit, gimp, nautilus (file explorer), pkgmgr -i (installs .rpm patch files), gnome-mouse-properties, system-config-mouse. For remote ICN console access: /export/home/signa/vre/install/icnRemoteConsole.pl --bmcip=x.x.x.x (find ICN IP first with getipandmac.pl sun command).'
+      }
+    ],
+    tags: ['GE MR host', 'login', 'passwords', 'filesystem', 'commands', 'config files', 'log files', 'tps_reset', 'mgd_term', 'getver', 'MRconfig', 'ShimConfig', 'CoilConfig', 'Guided_Install', 'field service reference', 'Linux', 'Octane', 'sdc', 'root', 'operator'],
+    source: 'GE MR Host Info, Kenneth W. Parr, Revision 7/24/2025',
+    dateAdded: '2026-05-23',
+    created: '2026-05-23T00:00:00.000Z'
+  }
 ];
 
 let diagGuides = [];
