@@ -5181,7 +5181,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(stored){ diagGuides = JSON.parse(stored); }
     else { diagGuides = JSON.parse(JSON.stringify(DIAG_GUIDES_SEED)); localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides)); }
     // Upgrade: seed any guides not yet in localStorage
-    DIAG_GUIDES_SEED.forEach(s=>{ if(!diagGuides.find(g=>g.id===s.id)){ diagGuides.push(s); } });
+    DIAG_GUIDES_SEED.forEach(s=>{ const ex=diagGuides.find(g=>g.id===s.id); if(!ex){ diagGuides.push(s); } else if(s.content && !ex.content){ ex.content=s.content; } });
     localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
   }
 
