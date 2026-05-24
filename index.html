@@ -5172,7 +5172,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
   ];
 
-  // ── Diagnostic Guides ──────────────────────────────────────────
+  // -- Diagnostic Guides ------------------------------------------
   function initDiagGuides(){
     const stored = localStorage.getItem('amt_diag_guides_v30');
     if(stored){ diagGuides = JSON.parse(stored); }
@@ -5199,12 +5199,12 @@ document.addEventListener('DOMContentLoaded',()=>{
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
             <div>
               <div style="font-weight:600;color:var(--navy);margin-bottom:.25rem">${g.title}</div>
-              <div style="font-size:.8rem;color:var(--text2)">${g.system||''} ${g.category?'· '+g.category:''}</div>
+              <div style="font-size:.8rem;color:var(--text2)">${g.system||''} ${g.category?'* '+g.category:''}</div>
               <div style="font-size:.8rem;color:var(--text2);margin-top:.25rem">${(g.content||'').substring(0,120)}...</div>
             </div>
             <div style="display:flex;gap:.4rem;flex-shrink:0">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')">✏️</button>
-              <button class="btn btn-sm btn-outline" style="color:var(--danger)" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">🗑</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')">??</button>
+              <button class="btn btn-sm btn-outline" style="color:var(--danger)" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">?</button>
             </div>
           </div>
         </div>
@@ -5216,7 +5216,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('diagViewTitle').textContent = g.title;
     document.getElementById('diagViewBody').innerHTML =
       '<div style="margin-bottom:.5rem"><span class="badge" style="background:var(--navy);color:#fff;padding:.2rem .5rem;border-radius:.25rem">' + (g.system||'') + '</span>' +
-      (g.category ? ' <span style="color:var(--text2);font-size:.85rem">· '+g.category+'</span>' : '') + '</div>' +
+      (g.category ? ' <span style="color:var(--text2);font-size:.85rem">* '+g.category+'</span>' : '') + '</div>' +
       '<pre style="white-space:pre-wrap;font-family:inherit;font-size:.9rem;line-height:1.6">' + (g.content||'').replace(/</g,'&lt;') + '</pre>';
     openModal('diagGuideViewModal');
   }
