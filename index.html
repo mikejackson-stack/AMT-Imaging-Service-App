@@ -2865,6 +2865,7 @@ function setKBTab(t){
   });
   if(t==='kb') renderKBEntries();
   if(t==='errcodes') renderErrCodeList();
+  if(t==='diagguides') renderDiagGuides();
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
   if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
 }
@@ -4785,7 +4786,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     <div class="modal-content" style="max-width:750px;max-height:90vh;overflow-y:auto">
       <div class="modal-header">
         <span id="diagViewTitle" class="modal-title"></span>
-        <button onclick="closeModal('diagGuideViewModal')" class="btn-close">?</button>
+        <button onclick="closeModal('diagGuideViewModal')" class="btn-close">&#128465;</button>
       </div>
       <div class="modal-body" id="diagViewBody"></div>
     </div>
@@ -5205,8 +5206,8 @@ document.addEventListener('DOMContentLoaded',()=>{
               <div style="font-size:.8rem;color:var(--text2);margin-top:.25rem">${(g.content||'').substring(0,120)}...</div>
             </div>
             <div style="display:flex;gap:.4rem;flex-shrink:0">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')">??</button>
-              <button class="btn btn-sm btn-outline" style="color:var(--danger)" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">?</button>
+              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')">&#9999;&#65039;</button>
+              <button class="btn btn-sm btn-outline" style="color:var(--danger)" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">&#128465;</button>
             </div>
           </div>
         </div>
