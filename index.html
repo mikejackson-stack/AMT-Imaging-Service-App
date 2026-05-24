@@ -1075,6 +1075,24 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <div class="alert alert-info" style="margin-bottom:10px">📋 Built-in error code reference. Entries from completed jobs are added automatically.</div>
     <div id="errCodeList"></div>
   </div>
+
+  <div id="kbp-diagguides" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+      <h2 style="margin:0;color:var(--navy)">🔧 Diagnostic Guides</h2>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <select id="diagFilterSystem" class="form-control" style="width:auto" onchange="renderDiagGuides()">
+          <option value="">All Systems</option>
+          <option value="GE MRI">GE MRI</option>
+          <option value="Siemens MRI">Siemens MRI</option>
+          <option value="GE CT">GE CT</option>
+          <option value="Siemens CT">Siemens CT</option>
+        </select>
+        <input id="diagSearch" type="text" class="form-control" style="width:200px" placeholder="🔍 Search guides..." oninput="renderDiagGuides()">
+        <button class="btn btn-success" onclick="openDiagGuideModal()">+ Add Guide</button>
+      </div>
+    </div>
+    <div id="diagGuidesList"></div>
+  </div>
 </div>
 
 </div><!-- /contentArea -->
@@ -4732,23 +4750,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 </div>
 
 
-  <div id="kbp-diagguides" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-      <h2 style="margin:0;color:var(--navy)">🔧 Diagnostic Guides</h2>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <select id="diagFilterSystem" class="form-control" style="width:auto" onchange="renderDiagGuides()">
-          <option value="">All Systems</option>
-          <option value="GE MRI">GE MRI</option>
-          <option value="Siemens MRI">Siemens MRI</option>
-          <option value="GE CT">GE CT</option>
-          <option value="Siemens CT">Siemens CT</option>
-        </select>
-        <input id="diagSearch" type="text" class="form-control" style="width:200px" placeholder="🔍 Search guides..." oninput="renderDiagGuides()">
-        <button class="btn btn-success" onclick="openDiagGuideModal()">+ Add Guide</button>
-      </div>
-    </div>
-    <div id="diagGuidesList"></div>
-  </div>
+  
 
   <!-- Diagnostic Guide Detail Modal -->
   <div id="diagGuideModal" class="modal" style="display:none">
