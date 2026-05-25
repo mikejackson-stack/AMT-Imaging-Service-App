@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Shim System Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>⚡ GE MRI Shim System Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, Discovery MR450/750, Optima 450w/750w. Covers Error E203 (Shim power supply fault), shim system diagnostics, and image uniformity troubleshooting.</div>
+
+<h2>Error E203 — Shim Power Supply Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Shim Power Supply (SPS) Status</td><td>Check the shim power supply located in the electronics cabinet. Verify status LEDs — fault LED on = SPS self-test failed. Measure output voltages on the SPS at the designated test points (typically ±15V, ±5V, and the shim channel output rails). Compare to service manual specifications.</td></tr>
+  <tr><td>Shim Power Supply Fuses</td><td>Inspect SPS fuses — blown fuses are a common cause of E203 after power events. Replace only with OEM-specified fuse rating. Do not increase fuse rating as this masks underlying overcurrent conditions.</td></tr>
+  <tr><td>Shim Coil Continuity</td><td>Run shim coil test: MR Service Desktop → Diagnostics → System Function → Magnet → Shim Test. This tests X, Y, Z, and higher-order shim coil channels. An open or shorted channel isolates the fault to a specific shim channel or its driver output.</td></tr>
+  <tr><td>Shim Cable Connections</td><td>Inspect shim coil cable connections at the magnet feedthrough and at the SPS. These are low-voltage DC connections but poor contact causes channel faults. Reseat all shim cable connectors.</td></tr>
+  <tr><td>Shim Channel Cards</td><td>On systems with individual shim channel driver cards, check each card for fault indicators. Swap or replace a suspected failed card. Run shim test after any card replacement.</td></tr>
+  <tr><td>Thermal State</td><td>E203 on a warm system after extended scanning may indicate thermal protection triggering on the SPS or shim driver cards. Allow system to cool. Check SPS ventilation — clean fans and filters. Run shim test after cooldown.</td></tr>
+</table>
+
+<h2>Shim-Related Image Quality Issues</h2>
+<div class="info">Shim problems don't always generate hard faults. Degraded shim performance causes subtle to severe image quality degradation — particularly in fat suppression, EPI, and spectroscopy sequences.</div>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Diagnosis / Fix</th></tr>
+  <tr><td>Poor fat suppression (inhomogeneous, patchy)</td><td>B0 field non-uniformity — shim degraded or B0 disturbed by environment change</td><td>Run auto-shim with calibration phantom: Service Desktop → Magnet → Auto Shim. Verify center frequency and shim current settings. Check if ferromagnetic items have been moved near the scanner.</td></tr>
+  <tr><td>EPI images have geometric distortion / ghosting</td><td>B0 inhomogeneity severely affects EPI — shim dependent</td><td>Run field map and assess B0 uniformity. Re-shim the system. EPI is extremely sensitive to even small B0 deviations — verify shim quality with dedicated EPI test sequence.</td></tr>
+  <tr><td>Image uniformity poor — bright center / dark edges or vice versa</td><td>B1 inhomogeneity (RF) — not shim; or shim if low-order</td><td>Differentiate: run phantom scan. If non-uniformity follows phase encode direction = shim. If non-uniformity is circular or radial = RF (body coil issue). Address accordingly.</td></tr>
+  <tr><td>Chemical shift artifacts worse than usual</td><td>Center frequency drift combined with shim degradation</td><td>Perform center frequency calibration. Re-run auto-shim. Verify shim holds stable after calibration (check frequency over 30 minutes with phantom).</td></tr>
+  <tr><td>Spectroscopy (MRS) linewidth too wide</td><td>B0 homogeneity insufficient — shim inadequate or failed channel</td><td>Run shim coil test to identify failed channels. Re-shim with spectroscopy-optimized protocol (full-volume manual or automated shim). Linewidth spec for 1H MRS: typically &lt;10 Hz for clinical, &lt;5 Hz for research.</td></tr>
+  <tr><td>Shim currents much higher than baseline</td><td>Environmental change (new ferromagnetic object near magnet); magnet drift</td><td>Survey scan room and adjacent areas for new ferromagnetic installations (new equipment, plumbing, structural work). Compare shim current values to installation baseline. Contact GE if drift is unexplained.</td></tr>
+</table>
+
+<h2>Shim System Test Points (GE HDxt / Excite)</h2>
+<table>
+  <tr><th>Test Point</th><th>Expected Value</th><th>Notes</th></tr>
+  <tr><td>SPS +15V Rail</td><td>+15.0 VDC ±5%</td><td>Main shim analog supply</td></tr>
+  <tr><td>SPS -15V Rail</td><td>-15.0 VDC ±5%</td><td>Negative rail — check both rails simultaneously</td></tr>
+  <tr><td>SPS +5V Rail</td><td>+5.0 VDC ±5%</td><td>Logic supply for shim control board</td></tr>
+  <tr><td>X Shim Coil Resistance</td><td>Platform specific — see service manual</td><td>Measured at magnet feedthrough with SPS disconnected</td></tr>
+  <tr><td>Y Shim Coil Resistance</td><td>Platform specific</td><td>Compare to baseline; significant change = coil winding issue</td></tr>
+  <tr><td>Z Shim Coil Resistance</td><td>Platform specific</td><td>Z0 coil (main z-shim) is typically the highest resistance</td></tr>
+  <tr><td>Shim Current Output</td><td>Per auto-shim calibration</td><td>Read in Service Desktop — compare to installation baseline for drift monitoring</td></tr>
+</table>
+
+<h2>Auto-Shim Procedure (Field)</h2>
+<table>
+  <tr><th>Step</th><th>Notes</th></tr>
+  <tr><td>1. Place calibration phantom at isocenter</td><td>Use the GE spherical calibration phantom — center with alignment lasers. Allow phantom to equilibrate to room temperature (30 min minimum).</td></tr>
+  <tr><td>2. Run center frequency calibration</td><td>MR Service Desktop → Diagnostics → Magnet → Frequency. System must lock center frequency before shimming.</td></tr>
+  <tr><td>3. Run Auto Shim</td><td>MR Service Desktop → Diagnostics → Magnet → Auto Shim. System performs field mapping and calculates optimal shim currents. Process takes 5–15 minutes.</td></tr>
+  <tr><td>4. Verify shim result</td><td>Review field homogeneity report. Residual field deviation should be within spec (&lt;1–2 ppm typical for clinical). If not, run a second auto-shim pass.</td></tr>
+  <tr><td>5. Scan verification</td><td>Run a clinical test scan (fat-suppressed sequence is a good indicator). Verify fat suppression is uniform across the FOV.</td></tr>
+  <tr><td>6. Document shim currents</td><td>Record X, Y, Z, and higher-order shim current values. Compare to installation baseline and previous PM values. Large changes warrant investigation.</td></tr>
+</table>
+
+<h2>Shim System PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Run auto-shim with calibration phantom</td><td>Annual PM</td><td>Document shim current values — trend over time to detect slow drift</td></tr>
+  <tr><td>Measure SPS output voltages</td><td>Annual PM</td><td>Verify all rails within spec at test points</td></tr>
+  <tr><td>Run shim coil test (all channels)</td><td>Annual PM</td><td>MR Service Desktop → Shim Test — document pass/fail per channel</td></tr>
+  <tr><td>Inspect shim cable connections</td><td>Annual PM</td><td>Reseat all connectors at SPS and magnet feedthrough</td></tr>
+  <tr><td>Clean SPS fans and cooling vents</td><td>Annual PM</td><td>Overtemp protection on SPS causes intermittent E203</td></tr>
+  <tr><td>Survey for environmental ferromagnetic changes</td><td>Per event / Annual</td><td>Any facility renovation near scan room can shift shim requirements significantly</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> Shim current drift over years is normal as the magnet ages and building materials settle. Trending the auto-shim current values at each annual PM lets you catch gradual drift before it degrades image quality clinically.</div>
+<div class="tip"><strong>Tip:</strong> Before assuming a shim hardware fault, always check the environment. A new MRI-incompatible item moved into or near the scan room (even in an adjacent hallway) can dramatically shift the B0 field and make auto-shim fail or produce poor results.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

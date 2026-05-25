@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI RF Shield & Zipper Artifact — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>🛡️ GE MRI RF Shielding & Zipper Artifact Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: All GE MRI platforms (Signa Excite, HDxt, Discovery, Optima, BRivo). Covers Error E720 (RF shield breach), zipper artifacts, RF interference diagnostics, and shield integrity testing.</div>
+
+<h2>Error E720 — RF Shield Breach</h2>
+<div class="warn">RF interference from outside the scan room ruins image quality and patient scans. Always isolate the source before returning the system to clinical use. A single cell phone or WiFi device inside the shield can cause persistent artifacts.</div>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Scan Room Survey</td><td>Before any hardware inspection — remove all electronics, phones, pagers, Bluetooth devices, and wireless equipment from the scan room. Power cycle the system and run a test scan. RF artifacts that disappear confirm an electronic device as the source.</td></tr>
+  <tr><td>RF Door Gaskets</td><td>Inspect all RF door gaskets for compression, gaps, damage, or corrosion. Fingerstrip gaskets on GE RF doors must make full continuous contact around the door perimeter. Test with RF door fully closed — press on door frame and listen/feel for gap. Clean gasket mating surfaces of corrosion or debris.</td></tr>
+  <tr><td>Door Hinges and Latches</td><td>Check RF door hinges for proper grounding. Inspect door latch pressure — door must seal with firm, even pressure across all gasket contact points. Adjust latch spring tension if door closing pressure is uneven.</td></tr>
+  <tr><td>Penetration Panel</td><td>Inspect the RF penetration panel (typically at the rear or side wall). Look for unsealed holes, missing waveguide filters, or improperly sealed cable entries. Any unsealed penetration is a potential RF leak path.</td></tr>
+  <tr><td>Waveguide Filters</td><td>Check waveguide filters on all service penetrations (utility, cable, HVAC). A damaged or missing waveguide filter allows RF to pass through the wall. Inspect filter integrity — check for cracks, moisture ingress, or corrosion.</td></tr>
+  <tr><td>Window and View Panel</td><td>Inspect the RF window (copper mesh or conductive glass) for damage, delamination, or gaps at the frame. The window frame must make continuous electrical contact with the shield wall. Check ground strap at window frame.</td></tr>
+  <tr><td>RF Shield Test</td><td>Run the RF shield integrity test: MR Service Desktop → Diagnostics → RF Shield Test. This measures ambient RF inside the room. Compare results to baseline. Spikes at specific frequencies help identify the source type (WiFi = 2.4/5 GHz, cellular = various).</td></tr>
+</table>
+
+<h2>Zipper Artifact — Diagnosis by Location</h2>
+<div class="info">A zipper artifact is a bright or dark line running across the image at a fixed frequency encoding position. The line's position in the image corresponds to the frequency of the interference relative to the Larmor frequency.</div>
+<table>
+  <tr><th>Artifact Appearance</th><th>Likely Source</th><th>Action</th></tr>
+  <tr><td>Single bright line — appears on all pulse sequences and orientations</td><td>Continuous RF emitter inside or near the scan room (device or equipment)</td><td>Remove all electronics from scan room. Use a spectrum analyzer to identify emitter frequency. Check for equipment plugged into scan room electrical outlets.</td></tr>
+  <tr><td>Multiple lines — regular spacing (comb pattern)</td><td>Switching power supply noise; fluorescent light RF leakage</td><td>Turn off and unplug suspect equipment one at a time while monitoring artifact. Fluorescent light ballasts inside the RF enclosure are a known source.</td></tr>
+  <tr><td>Line moves between scans or is intermittent</td><td>Pulsed RF emitter (wireless device, pager, walkie-talkie)</td><td>Aggressively survey scan room and adjacent spaces. Wireless devices used by staff near the shield are a common cause. Check for devices on the other side of a shared wall.</td></tr>
+  <tr><td>Line only on certain pulse sequences (EPI, GRE)</td><td>Gradient-induced RF noise coupling into receive chain</td><td>Inspect gradient cable shielding. Check for inadequate cable dressing — gradient cables too close to receive coil cables. This is a hardware shielding issue, not an RF breach.</td></tr>
+  <tr><td>Line that tracks with frequency offset changes</td><td>Internal electronic source (RF amp sideband, oscillator leakage)</td><td>If line moves in predictable relationship to center frequency changes, suspect internal electronics rather than external RF. Check RF amp output and filter stages.</td></tr>
+  <tr><td>New artifact after facility construction nearby</td><td>New RF source introduced in adjacent space; shield damage from construction</td><td>Inspect shield walls for physical damage (holes, patch points). Verify no new electrical equipment was installed sharing walls with scan room. RF shield inspection with attenuation test recommended.</td></tr>
+</table>
+
+<h2>RF Shield Attenuation Test (Field Method)</h2>
+<div class="info">A proper RF shield attenuation test requires a calibrated RF signal generator and spectrum analyzer. This is done after any shield repair to verify integrity. Typical spec for GE scan rooms: &gt;100 dB attenuation at Larmor frequency.</div>
+<table>
+  <tr><th>Step</th><th>Procedure</th></tr>
+  <tr><td>1. Baseline scan</td><td>Run a test scan with all normal clinical conditions. Save images. Document artifact-free baseline.</td></tr>
+  <tr><td>2. RF source test</td><td>Have a colleague walk around the outside perimeter of the scan room with a cell phone actively streaming video (RF active). Watch for artifact changes — indicates shield weakness at that location.</td></tr>
+  <tr><td>3. Door test</td><td>Open door slightly (1–2mm) while monitoring scan. Any artifact increase with door open vs. closed confirms door gasket is the primary RF entry point.</td></tr>
+  <tr><td>4. Penetration test</td><td>Inspect penetration panel with a portable RF meter on the inside. Higher readings near specific penetrations identify filter failures.</td></tr>
+  <tr><td>5. Repair and retest</td><td>After any repair (gasket replacement, waveguide filter replacement, hole sealing), repeat baseline scan to confirm artifact elimination.</td></tr>
+</table>
+
+<h2>Common RF Gasket Replacement Procedure</h2>
+<table>
+  <tr><th>Step</th><th>Notes</th></tr>
+  <tr><td>Obtain correct gasket part number</td><td>GE RF door gaskets are model-specific — verify part number from service manual before ordering. Fingerstrip vs. knife-blade gasket types are not interchangeable.</td></tr>
+  <tr><td>Remove old gasket</td><td>Carefully peel old gasket. Clean mating surface with isopropyl alcohol to remove adhesive residue and corrosion. Surface must be clean and bare metal for new gasket to make proper RF contact.</td></tr>
+  <tr><td>Install new gasket</td><td>Press gasket firmly into channel or adhesive surface. For fingerstrip gaskets, verify all fingers are straight and will make contact when door closes. No gaps in the gasket run.</td></tr>
+  <tr><td>Test door sealing pressure</td><td>Close door and check for uniform resistance across full perimeter. Latch adjustment may be needed to ensure even gasket compression.</td></tr>
+  <tr><td>Scan verification</td><td>Run test phantom scan. Compare to pre-repair scan. Zipper artifact should be eliminated if gasket was the source.</td></tr>
+</table>
+
+<h2>RF Shield PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Inspect RF door gaskets for compression and integrity</td><td>Semi-Annual</td><td>Full perimeter inspection — look for flat spots, gaps, or corrosion at contact surface</td></tr>
+  <tr><td>Inspect waveguide filters on all penetrations</td><td>Annual</td><td>Check for cracks, moisture, missing filters, or unsealed holes</td></tr>
+  <tr><td>Check RF window frame ground strap</td><td>Annual</td><td>Ground strap must be tight and corrosion-free</td></tr>
+  <tr><td>Run RF shield diagnostic</td><td>Annual PM</td><td>MR Service Desktop RF shield test — document and trend results</td></tr>
+  <tr><td>Survey scan room for unauthorized electronics</td><td>Per event / complaint</td><td>Any new artifact report should begin with a room electronics survey before hardware work</td></tr>
+  <tr><td>Inspect penetration panel for new unsealed holes</td><td>Annual</td><td>Any cable or pipe added since last PM can create a new leak point</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The fastest way to diagnose an RF artifact is to run a scan with nothing in the bore and the room completely clear of all electronics. If the zipper disappears, the source is an electronic device. If it persists, it's hardware — shield, gasket, or internal electronics.</div>
+<div class="tip"><strong>Tip:</strong> Staff behavior change is the #1 cause of new zipper artifacts at established sites. Someone brings a wireless device into the scan room, or new wireless equipment is installed nearby. Check the environment thoroughly before suspecting hardware failure.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI DAS / Communication Faults — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>📡 GE MRI DAS & Communication Fault Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, Discovery MR450/750, Optima 450w/750w. Covers Error E601 (DAS communication fault), subsystem communication failures, and related diagnostics.</div>
+
+<h2>Error E601 — DAS Communication Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>DAS Power and Status</td><td>Check DAS power supply in the electronics cabinet. Verify green status LEDs on DAS board(s). A power-cycled DAS board will typically recover from soft communication errors. Run: MR Service Desktop → Diagnostics → System Function → DAS.</td></tr>
+  <tr><td>DAS Cable Connections</td><td>Inspect the fiber optic cables from the DAS boards to the system electronics. These are typically orange or yellow fiber cables. Check both ends for seating and physical damage. Fiber breaks near cable tie points are common after years of table motion vibration.</td></tr>
+  <tr><td>DAS Board Reseating</td><td>With system powered down and discharged, reseat DAS boards in their card cage slots. Oxidized edge connectors can cause intermittent E601. Clean edge connectors with contact cleaner if oxidized.</td></tr>
+  <tr><td>Reconstruction / Data Path Test</td><td>Run the full data path self-test: MR Service Desktop → Diagnostics → System Function → Recon → Data Path Test. This verifies end-to-end communication from DAS through reconstruction.</td></tr>
+  <tr><td>Network / Host Communication</td><td>E601 can also occur from host computer communication faults. Check Ethernet connections between acquisition computer (ACQ) and host. Ping test between subsystems in service network diagnostics.</td></tr>
+  <tr><td>Temperature / Thermal State</td><td>DAS communication faults that appear after extended scanning may be thermally driven. Check DAS board temperature via Service Desktop. Ensure DAS board cooling fans are operating. Clean DAS air filter.</td></tr>
+</table>
+
+<h2>E601 Scenario Troubleshooting</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>E601 on startup, clears after power cycle</td><td>DAS boot sequence timeout — soft fault</td><td>Power cycle the DAS subsystem from service menu. Check DAS initialization sequence in error log. If fault clears reliably on retry, monitor for recurrence. Reseat DAS fiber connections.</td></tr>
+  <tr><td>E601 intermittent — occurs randomly during scans</td><td>Marginal fiber optic connection; DAS board failing</td><td>Flex DAS fiber cables while monitoring Service Desktop for fault recurrence. Identify loose connector. Replace fiber segment or DAS board as indicated.</td></tr>
+  <tr><td>E601 persistent — system will not initialize</td><td>DAS board failure; DAS power supply fault; fiber completely broken</td><td>Inspect DAS board for fault LED. Measure DAS power supply voltages (+5V, +12V). Replace DAS board or power supply as indicated. Replace fiber if physically damaged.</td></tr>
+  <tr><td>E601 with image artifacts (banding, noise)</td><td>DAS board partially functional — some channels dropped</td><td>Run DAS channel test. Identify failed channel(s). Replace DAS board. Run air calibration after replacement to baseline new board.</td></tr>
+  <tr><td>E601 after power outage</td><td>DAS corrupted by unclean power loss; DAS NVRAM issue</td><td>Run DAS initialization from Service Desktop. If DAS fails to initialize, perform DAS board reset procedure per service manual. In severe cases, DAS board swap may be needed.</td></tr>
+</table>
+
+<h2>DAS Board Test Points (GE Excite/HDxt)</h2>
+<div class="warn">Always de-energize and allow full discharge before accessing DAS board cage or power supply connections. Static-sensitive boards — use ESD protection when handling.</div>
+<table>
+  <tr><th>Test Point</th><th>Expected Value</th><th>Notes</th></tr>
+  <tr><td>DAS +5V Rail</td><td>+5.0 VDC ±5%</td><td>Main DAS logic supply — low voltage = DAS power supply fault</td></tr>
+  <tr><td>DAS +12V Rail</td><td>+12.0 VDC ±5%</td><td>DAS analog supply — measure at board test points per service manual</td></tr>
+  <tr><td>Fiber Optic Receive Power</td><td>Per service manual spec</td><td>Use fiber optic power meter if available; bend in cable reduces receive power significantly</td></tr>
+  <tr><td>DAS Board Temperature</td><td>&lt;55°C typical</td><td>Monitor in real time: Service Desktop → Amp Real Time Data or DAS diagnostics</td></tr>
+</table>
+
+<h2>GE MRI Communication Architecture (Quick Reference)</h2>
+<div class="info">Understanding the communication chain helps narrow fault location. E601 can originate anywhere in the DAS-to-host data path.</div>
+<table>
+  <tr><th>Subsystem</th><th>Communication Link</th><th>Common Failure Mode</th></tr>
+  <tr><td>DAS Boards → ACQ Computer</td><td>Fiber optic (high-speed data)</td><td>Fiber break, dirty connector, bent fiber near cable tie</td></tr>
+  <tr><td>ACQ → Recon (RCB)</td><td>Internal backplane or Ethernet</td><td>Backplane connector, ACQ network card fault</td></tr>
+  <tr><td>Recon → Host</td><td>Gigabit Ethernet</td><td>Network card, switch, or cable fault</td></tr>
+  <tr><td>GCU → GRAMP (gradient control)</td><td>Fiber or dedicated cable</td><td>GCU fiber link — separate from DAS but causes similar comm fault symptoms</td></tr>
+  <tr><td>RF Electronics → Host</td><td>Internal bus + Ethernet</td><td>RF control board failure — may cause concurrent E305 or comm-related RF faults</td></tr>
+</table>
+
+<h2>DAS PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Inspect and clean DAS fiber optic connectors</td><td>Annual</td><td>Use OEM-approved fiber optic cleaner; inspect end-face for contamination</td></tr>
+  <tr><td>Clean DAS board cooling fans and air filter</td><td>Semi-Annual</td><td>DAS thermal faults cause intermittent E601 — keep fans clear</td></tr>
+  <tr><td>Run DAS full self-test</td><td>Annual PM</td><td>MR Service Desktop → Diagnostics → DAS — document pass/fail and any channel anomalies</td></tr>
+  <tr><td>Verify data path end-to-end</td><td>Annual PM</td><td>Run full recon data path test; compare scan SNR to baseline</td></tr>
+  <tr><td>Inspect DAS card edge connectors</td><td>Annual</td><td>Check for oxidation; clean with contact cleaner if needed</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The most common E601 cause on aging GE systems is a degraded fiber optic connection — either a dirty end-face or a hairline crack near a cable tie or bend point. Cleaning or reseating the fiber is the first thing to try and costs nothing.</div>
+<div class="tip"><strong>Tip:</strong> Use MR Service Desktop → Diagnostics → System Function → DAS before touching any hardware. The diagnostic often identifies the specific DAS board or channel causing the fault, narrowing the repair significantly.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

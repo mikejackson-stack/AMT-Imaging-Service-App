@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens MRI RF Amplifier Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>📻 Siemens MRI RF Amplifier Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: Siemens MAGNETOM Espree, Avanto, Avanto Fit, Symphony, Sonata, Trio, Verio, Aera, Skyra, Prisma and related platforms. Covers Fault F042 (RF power fault), RF amplifier diagnostics, and body coil transmit chain troubleshooting.</div>
+
+<h2>Fault F042 — RF Power Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>RF Amplifier Cabinet</td><td>Open the RF amplifier cabinet (located in the equipment room, typically adjacent to the electronics cabinet). Check for fault LEDs on the RF amplifier modules. Note the specific fault indicator — individual stage faults vs. output stage faults indicate different failure points.</td></tr>
+  <tr><td>RF Amplifier Cooling</td><td>Siemens RF amps are air-cooled (most platforms) with dedicated cooling fans. Verify all amp cooling fans are spinning. Check amp intake and exhaust vents for dust blockage. Overtemperature is a leading cause of F042 — especially in summer or warm equipment rooms.</td></tr>
+  <tr><td>RF Forward and Reflected Power</td><td>Using ServiceLine → RF Amplifier → Power Test, measure forward power output and reflected power from the body coil. High reflected power (VSWR) indicates a body coil matching problem, TR switch fault, or RF cable damage. Low forward power indicates amplifier output stage degradation.</td></tr>
+  <tr><td>TR Switch</td><td>The transmit/receive (TR) switch routes high-power RF from the amplifier to the body coil during transmit, and routes the signal to the receiver during receive. A faulty TR switch can cause F042 by creating excessive reflected power or failing to switch. Run TR switch test in ServiceLine.</td></tr>
+  <tr><td>Body Coil Connection and Tuning</td><td>Inspect the body coil RF cable connections at the bore interface. Check the body coil housing for any damage. Run body coil tuning test: ServiceLine → RF → Body Coil Tune. Detuned body coil causes high reflected power and F042.</td></tr>
+  <tr><td>RF Cable Inspection</td><td>Inspect the high-power RF cable from the amplifier to the body coil feedthrough. This cable carries high-power RF pulses and is subject to connector wear. Inspect for visible damage, loose connectors, or SMA/N-connector corrosion.</td></tr>
+</table>
+
+<h2>F042 Sub-Code Troubleshooting</h2>
+<table>
+  <tr><th>Scenario / Sub-Code</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>F042 — RF amp overtemperature</td><td>Amp cooling fans failed or blocked; room ambient temperature too high</td><td>Check amp fans — replace failed fans. Clean amp intake filter. Verify equipment room is being adequately cooled. Allow system to cool before retry.</td></tr>
+  <tr><td>F042 — High reflected power (VSWR fault)</td><td>Body coil mismatch; TR switch fault; RF cable fault</td><td>Measure forward and reflected power. If reflected/forward ratio &gt;10%, focus on body coil tuning and TR switch. Run body coil tune from ServiceLine. Test TR switch isolation.</td></tr>
+  <tr><td>F042 — Low forward power (output fault)</td><td>RF amp output stage degraded or failed; power supply to amp low</td><td>Measure RF amp supply voltages. Check power supply to amp cabinet. If supply is good, amp output stage replacement required. Run amp power diagnostic in ServiceLine.</td></tr>
+  <tr><td>F042 — Intermittent, clears on retry</td><td>Marginal RF connection; amp thermal — runs near threshold; connector oxidation</td><td>Inspect and clean all RF connector mating surfaces. Check amp temperature during operation. Amp may be near end of life if thermal margin is tight. Monitor for frequency of fault recurrence.</td></tr>
+  <tr><td>F042 with body coil artifacts (signal dropout)</td><td>Body coil element failure; detuning circuit fault</td><td>Run body coil element test. Check body coil active/passive detuning. Body coil element replacement is a significant repair — scope and escalate accordingly.</td></tr>
+  <tr><td>F042 after lightning or power surge</td><td>Surge damage to amp output transistors or protection circuitry</td><td>Inspect amp for physical damage (burnt components, blown protection fuses). Measure supply and output rails. Amp board replacement likely if damage is confirmed.</td></tr>
+</table>
+
+<h2>RF Amplifier Test Points (Siemens)</h2>
+<div class="warn">RF amplifier cabinets contain high-voltage supplies (typically ±50–100 VDC) to drive the RF output stages. De-energize and discharge before accessing internal components. RF amplifiers also contain RF power capable of causing burns — ensure system is not transmitting before touching RF connections.</div>
+<table>
+  <tr><th>Test Point</th><th>Expected Value</th><th>Notes</th></tr>
+  <tr><td>RF Amp Supply Voltage (positive rail)</td><td>Platform specific (+48V typical, varies by model)</td><td>Measure at amp power supply output — refer to service manual for your platform</td></tr>
+  <tr><td>RF Forward Power</td><td>Platform specific (kW-range peak power at bore)</td><td>Measured via ServiceLine RF power test — not accessible with standard multimeter</td></tr>
+  <tr><td>RF Reflected Power</td><td>&lt;5% of forward power (typical, check service manual)</td><td>High reflected power = impedance mismatch in transmit chain</td></tr>
+  <tr><td>Body Coil Resonance Frequency</td><td>Larmor frequency for field strength (63.9 MHz @ 1.5T, 123.2 MHz @ 3T)</td><td>Verified via body coil tune test in ServiceLine</td></tr>
+  <tr><td>TR Switch Isolation</td><td>&gt;30 dB transmit-to-receive isolation (verify per service manual)</td><td>Poor TR switch isolation = amplifier noise enters receive chain, elevated noise floor</td></tr>
+</table>
+
+<h2>RF Amplifier Cooling Specifications</h2>
+<table>
+  <tr><th>Parameter</th><th>Typical Spec</th><th>Notes</th></tr>
+  <tr><td>Equipment Room Temperature</td><td>16–24°C at amp inlet</td><td>Verify HVAC is functioning — amp thermal faults common in summer if AC is undersized</td></tr>
+  <tr><td>RF Amp Inlet Air Temperature</td><td>&lt;25°C at amp fan intake</td><td>Higher than 25°C = increased risk of thermal fault during heavy scan loads</td></tr>
+  <tr><td>Amp Fan Status</td><td>All fans operating at rated RPM</td><td>One failed fan is often not immediately obvious but doubles thermal load on remaining fans</td></tr>
+  <tr><td>Amp Filter Condition</td><td>Clean — replace if visibly clogged</td><td>Some Siemens platforms have user-cleanable filters at amp intake — include in PM</td></tr>
+</table>
+
+<h2>RF Amplifier PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Inspect and clean RF amp cooling fans and filters</td><td>Annual</td><td>Clean filter with compressed air; check fan rotation; replace failed fans</td></tr>
+  <tr><td>Run RF amplifier power test (ServiceLine)</td><td>Annual PM</td><td>Document forward power output — trending detects gradual amp degradation</td></tr>
+  <tr><td>Measure reflected power / VSWR</td><td>Annual PM</td><td>Document — gradual increase over years indicates body coil or TR switch degradation</td></tr>
+  <tr><td>Inspect RF cables and connectors</td><td>Annual PM</td><td>Check for corrosion, loose SMA/N connectors, damaged insulation</td></tr>
+  <tr><td>Run body coil tune verification</td><td>Annual PM</td><td>ServiceLine → Body Coil Tune — verify resonance at Larmor frequency</td></tr>
+  <tr><td>Test TR switch isolation</td><td>Annual PM or after F042</td><td>Per ServiceLine test — verify transmit-to-receive isolation meets spec</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> F042 and high reflected power almost always point to the body coil or TR switch before the RF amplifier. Run the body coil tune test and TR switch test first — these are non-invasive and take minutes. The RF amp is rarely the culprit unless forward power is directly measured as low.</div>
+<div class="tip"><strong>Tip:</strong> Siemens equipment rooms often run warm in summer due to building HVAC load increases. A site that runs fine all winter may start generating F042 faults in July — not because anything failed, but because ambient temp has climbed above the amp's thermal limit. Verify room temperature before any RF amp work in summer.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>
