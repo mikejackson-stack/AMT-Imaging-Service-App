@@ -1467,6 +1467,8 @@ function bootApp(){
   const h=now.getHours();
   const d=document.getElementById('nj_date');if(d&&!d.value)d.value=now.toISOString().slice(0,10);
   renderDashboard();
+  // Load diagnostic guides seed
+  if(typeof loadDiagGuides === 'function') loadDiagGuides();
   // Set today on date fields
   ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=now.toISOString().slice(0,10);});
 }
@@ -5089,8 +5091,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   </div></div>
 
   <script>
-  // ?? Diagnostic Guides Seed Data ????????????????????????????????
-  const DIAG_GUIDES_SEED = [
+// === Diagnostic Guides ===
+const DIAG_GUIDES_SEED = [
     {
       id: 'dg_seed_001',
       title: 'GE LCC Magnet Rampdown Procedure',
@@ -5360,15 +5362,166 @@ document.addEventListener('DOMContentLoaded',()=>{
       tags: ['ground','earth','bond','safety','electrical','chassis'],
       content: `## GE MRI System Ground Check\n\n### Why Ground Integrity Matters\n- Proper grounding protects patients from leakage current.\n- Single-point ground system prevents ground loops that degrade image quality.\n- Required by IEC 60601-1 and NFPA 99.\n\n### Equipment Required\n- 4-wire milli-ohmmeter or precision DMM with kelvin clips\n- Ground bond resistance target: <0.1 ohm per connection\n\n### Measurement Points\n| Connection | Expected | Action if Fail |\n|------------|----------|---------------|\n| Console chassis to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Gradient cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| RF cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Magnet cryostat to PDC ground bus | <0.1 ohm | Inspect bond plate on magnet |\n| Scan room copper plate to PDC ground | <0.05 ohm | Inspect penetration bond |\n| PDC to building ground | <0.1 ohm | Refer to facility electrician |\n\n### Procedure\n1. **De-energize and lock out / tag out** system before measuring.\n2. Connect kelvin clips -- one pair at each end of bond path.\n3. Measure resistance. Record value.\n4. Any measurement >0.1 ohm: clean contact surfaces (remove oxidation with fine abrasive), retorque connection, re-measure.\n5. If after cleaning resistance remains high: replace bonding strap or wire.\n\n### Documentation\nRecord all bond resistance values annually and after any PDC or cabinet relocation.`,
       created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_031',
-      title: 'GE Optima MRI Patient Table Fault',
-      system: 'GE MRI',
-      category: 'Patient Table',
-      tags: ['Optima','patient table','drive','fault','encoder','positioning'],
-      content: `## GE Optima MRI Patient Table Fault\n\n### Common Table Fault Codes\n| Code | Description | Initial Action |\n|------|-------------|---------------|\n| TAB-01 | Longitudinal encoder fault | Check encoder cable |\n| TAB-02 | Vertical encoder fault | Check vertical motor assembly |\n| TAB-03 | Longitudinal drive overcurrent | Check rail for obstruction |\n| TAB-04 | Vertical drive overcurrent | Check for jammed mechanism |\n| TAB-10 | Table home position failure | Run table calibration |\n| TAB-15 | Table position mismatch | Re-zero table; recalibrate |\n\n### Step 1 -- Mechanical Inspection\n1. Remove patient from table.\n2. Inspect longitudinal rail for debris, damage, or foreign objects.\n3. Inspect vertical lift mechanism for mechanical obstruction.\n4. Verify all bolts on table carriage are tight.\n\n### Step 2 -- Drive Motor Check\n1. Command table longitudinal movement slowly while monitoring motor current (service mode).\n2. Current should be smooth (no spikes >150% of rated load).\n3. High current spikes: mechanical binding or motor winding fault.\n\n### Step 3 -- Encoder Replacement\n1. Disconnect encoder cable at table chassis connector.\n2. Measure encoder power supply: 5V +/-0.25V.\n3. Check encoder output -- A/B quadrature signals on oscilloscope during slow movement.\n4. No signal or single-channel signal: replace encoder.\n\n### Table Calibration After Repair\n1. **Service > Table > Calibration > Full Calibration**.\n2. Follow prompts -- table will move through full range automatically.\n3. Verify all positions within +/-1 mm tolerance.`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      i
+    }
+];
+
+let diagGuidesDB = [];
+function loadDiagGuides() {
+  const stored = JSON.parse(localStorage.getItem('amt_diagguides_v30')||'null');
+  if (!stored) {
+    diagGuidesDB = DIAG_GUIDES_SEED.slice();
+  } else {
+    diagGuidesDB = stored.slice();
+    DIAG_GUIDES_SEED.forEach(s => {
+      if (!diagGuidesDB.find(g => g.id === s.id)) diagGuidesDB.push(s);
+    });
+  }
+  saveDiagGuides();
+}
+function saveDiagGuides() {
+  localStorage.setItem('amt_diagguides_v30', JSON.stringify(diagGuidesDB));
+}
+
+function renderDiagGuides() {
+  if (!diagGuidesDB.length) loadDiagGuides();
+  const sys = (document.getElementById('diagFilterSystem')||{}).value || '';
+  const q   = ((document.getElementById('diagSearch')||{}).value || '').toLowerCase();
+  const list = document.getElementById('diagGuidesList');
+  if (!list) return;
+  let guides = diagGuidesDB;
+  if (sys) guides = guides.filter(g => g.system === sys);
+  if (q)   guides = guides.filter(g =>
+    g.title.toLowerCase().includes(q) ||
+    (g.category||'').toLowerCase().includes(q) ||
+    (g.tags||[]).join(' ').toLowerCase().includes(q) ||
+    g.content.toLowerCase().includes(q)
+  );
+  if (!guides.length) {
+    list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q ? ' for "' + q + '"' : '') + '.</div>';
+    return;
+  }
+  list.innerHTML = guides.map(g => {
+    const tags = (g.tags||[]).map(t => '<span style="background:#e0f2fe;color:#0369a1;font-size:.65rem;padding:1px 6px;border-radius:8px">#' + t + '</span>').join(' ');
+    return '<div style="background:var(--gray);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border:1px solid var(--gray2)">'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
+        + '<div style="flex:1;min-width:0">'
+          + '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px">'
+            + '<span style="font-weight:700;font-size:.93rem;color:var(--navy)">' + g.title + '</span>'
+            + '<span style="background:var(--blue2);color:white;font-size:.62rem;padding:2px 7px;border-radius:10px">' + g.system + '</span>'
+            + '<span style="background:var(--gray2);color:var(--text2);font-size:.62rem;padding:2px 7px;border-radius:10px">' + (g.category||'') + '</span>'
+          + '</div>'
+          + (tags ? '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">' + tags + '</div>' : '')
+        + '</div>'
+        + '<div style="display:flex;gap:4px;flex-shrink:0">'
+          + '<button class="btn btn-outline btn-sm" onclick="openDiagGuideDetail(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:4px 10px">👁 View</button>'
+          + (isViewOnly() ? '' : '<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:4px 10px">🗑</button>')
+        + '</div>'
+      + '</div>'
+    + '</div>';
+  }).join('');
+}
+
+function openDiagGuideDetail(id) {
+  const g = diagGuidesDB.find(x => x.id === id);
+  if (!g) return;
+  let html = g.content
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px">$1</h5>')
+    .replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:12px 0 6px">$1</h4>')
+    .replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:14px 0 8px">$1</h3>')
+    .replace(/`([^`]+)`/g,'<code style="background:var(--gray2);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>')
+    .replace(/^\| .+$/gm, m => {
+      if (m.includes('---')) return '';
+      const cells = m.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
+      return '<tr>' + cells.map(cell=>'<td style="padding:4px 10px;border:1px solid var(--gray2)">' + cell.trim() + '</td>').join('') + '</tr>';
+    })
+    .replace(/(<tr>.*<\/tr>\n?)+/gs, t => '<table style="border-collapse:collapse;margin:8px 0;font-size:.82rem;width:100%">' + t + '</table>')
+    .replace(/^\d+\. (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/^- (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, t => '<ul style="margin:6px 0;padding-left:20px">' + t + '</ul>')
+    .replace(/\n\n/g,'</p><p style="margin:6px 0">')
+    .replace(/\n/g,'<br>');
+  document.getElementById('dgDetailTitle').textContent = g.title;
+  document.getElementById('dgDetailBody').innerHTML = '<p style="margin:6px 0">' + html + '</p>';
+  openModal('dgDetailModal');
+}
+
+function openDiagGuideModal(prefill) {
+  if (writeGuard('Add Diagnostic Guide')) return;
+  document.getElementById('dg_title').value    = (prefill&&prefill.title)    || '';
+  document.getElementById('dg_system').value   = (prefill&&prefill.system)   || 'GE MRI';
+  document.getElementById('dg_category').value = (prefill&&prefill.category) || '';
+  document.getElementById('dg_tags').value     = (prefill&&prefill.tags)     ? prefill.tags.join(', ') : '';
+  document.getElementById('dg_content').value  = (prefill&&prefill.content)  || '';
+  document.getElementById('dg_edit_id').value  = (prefill&&prefill.id)       || '';
+  openModal('addDiagGuideModal');
+}
+
+function saveDiagGuide() {
+  if (writeGuard('Save Guide')) return;
+  const title   = document.getElementById('dg_title').value.trim();
+  const content = document.getElementById('dg_content').value.trim();
+  if (!title || !content) { alert('Title and Content are required.'); return; }
+  const editId = document.getElementById('dg_edit_id').value;
+  const guide = {
+    id: editId || 'dg_' + Date.now(),
+    title,
+    system:   document.getElementById('dg_system').value,
+    category: document.getElementById('dg_category').value.trim(),
+    tags:     document.getElementById('dg_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    content,
+    created:  new Date().toISOString()
+  };
+  if (editId) {
+    const idx = diagGuidesDB.findIndex(x => x.id === editId);
+    if (idx >= 0) diagGuidesDB[idx] = guide; else diagGuidesDB.unshift(guide);
+  } else {
+    diagGuidesDB.unshift(guide);
+  }
+  saveDiagGuides();
+  closeModal('addDiagGuideModal');
+  renderDiagGuides();
+}
+
+function deleteDiagGuide(id) {
+  if (!confirm('Delete this diagnostic guide?')) return;
+  diagGuidesDB = diagGuidesDB.filter(g => g.id !== id);
+  saveDiagGuides();
+  renderDiagGuides();
+}
+</script>
+
+<!-- Diag Guide Detail Modal -->
+<div class="modal-overlay" id="dgDetailModal" style="display:none">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3 id="dgDetailTitle">Guide</h3><button class="modal-close" onclick="closeModal('dgDetailModal')">✕</button></div>
+    <div class="modal-body" id="dgDetailBody" style="max-height:70vh;overflow-y:auto;font-size:.88rem;line-height:1.6"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('dgDetailModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- Add Diagnostic Guide Modal -->
+<div class="modal-overlay" id="addDiagGuideModal" style="display:none">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header"><h3>🔧 Add / Edit Diagnostic Guide</h3><button class="modal-close" onclick="closeModal('addDiagGuideModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="dg_edit_id">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-control" id="dg_title" placeholder="e.g. GE Signa E305 RF Amp Fault"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">System</label>
+          <select class="form-control" id="dg_system">
+            <option>GE MRI</option><option>Siemens MRI</option><option>GE CT</option><option>Siemens CT</option><option>Injector</option><option>General</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Category</label><input class="form-control" id="dg_category" placeholder="RF / Gradient / Magnet…"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="dg_tags" placeholder="RF amp, E305, cooling"></div>
+      <div class="form-group"><label class="form-label">Content * (Markdown supported)</label><textarea class="form-control" id="dg_content" style="min-height:200px;font-family:monospace;font-size:.82rem" placeholder="## Title&#10;### Step 1&#10;Details here…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
+      <button class="btn btn-outline" onclick="closeModal('addDiagGuideModal')">Cancel</button>
+    </div>
+  </div>
+</div>
