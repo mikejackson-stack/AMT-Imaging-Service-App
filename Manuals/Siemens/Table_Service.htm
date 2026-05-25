@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens MRI Patient Table & E-Stop Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:12px;}
+</style>
+</head>
+<body>
+<h1>🛏️ Siemens MRI Patient Table & E-Stop Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: Siemens MAGNETOM Espree, Avanto, Avanto Fit, Symphony, Sonata, Trio, Verio, Aera, Skyra, Prisma. Covers STE (System Emergency Stop), patient table drive faults, docking issues, and related mechanical/electrical troubleshooting.</div>
+
+<h2>STE — System Emergency Stop Triggered</h2>
+<div class="crit"><strong>Safety First:</strong> Before resetting any E-stop, physically verify that the scan room is clear and safe. Never reset an E-stop that was triggered by a real emergency without understanding why it was triggered.</div>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Identify which E-stop was triggered</td><td>Siemens systems have multiple E-stop buttons: <strong>gantry bore (both sides)</strong>, <strong>control console</strong>, and sometimes <strong>patient handgrip</strong>. Check all buttons — the triggered one is typically latched in (pushed in and rotated). Note: a single triggered E-stop disables the entire patient handling system.</td></tr>
+  <tr><td>Reset all E-stop buttons</td><td>Rotate each E-stop button clockwise (they are twist-release type) until it pops out to its normal extended position. Check all locations systematically — a hidden or forgotten latched button is the most common cause of "E-stop won't clear."</td></tr>
+  <tr><td>System software reset</td><td>After all E-stop buttons are released, reset the E-stop in the system software: <strong>ServiceLine → System → Patient Handling → E-Stop Reset</strong> (or equivalent path for your software version). The system requires a software acknowledgment after hardware reset.</td></tr>
+  <tr><td>Test patient handling after reset</td><td>Run a complete patient table functional test: drive table in/out, up/down, verify all positions. Table should move smoothly through full range. Test both handgrip and panel controls.</td></tr>
+  <tr><td>STE triggered by software fault</td><td>Check the system error log in ServiceLine for any fault that triggered the E-stop programmatically (overload, position error, communication fault). Address root cause before returning system to clinical use.</td></tr>
+</table>
+
+<h2>Patient Table Drive Faults</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Table won't move — no error, E-stop clear</td><td>Table drive interlock not satisfied; docking position not reached; weight limit exceeded</td><td>Verify table is fully docked. Check for obstruction. Run table functional test from ServiceLine. Check that no weight/load limit error is active.</td></tr>
+  <tr><td>Table moves slowly or with hesitation</td><td>Drive belt worn or slipping; lubrication needed; drive motor marginal</td><td>Inspect longitudinal drive belt for wear, cracking, or tension loss. Check guide rail lubrication. Run table at service speed and listen for abnormal motor sounds.</td></tr>
+  <tr><td>Table height won't adjust</td><td>Vertical actuator fault; vertical position sensor error; actuator motor or drive fault</td><td>Inspect vertical actuator for mechanical binding. Check vertical position sensors (typically reed switches or encoders). Verify actuator drive board in patient handling cabinet.</td></tr>
+  <tr><td>Table won't dock to gantry (docking interlock)</td><td>Docking sensor misaligned or failed; table not in correct lateral position; dock latch not engaging</td><td>Manually align table to docking position. Inspect docking latch mechanism. Check docking sensor alignment — Siemens docking uses proximity sensors on the gantry dock plate. Run docking test from ServiceLine.</td></tr>
+  <tr><td>Intermittent table fault — clears on retry</td><td>Communication error between patient handling controller and main system; connector intermittency</td><td>Reseat all connectors at patient handling cabinet. Check cable drag chain for pinched or frayed cables. Review ServiceLine log for communication fault codes.</td></tr>
+  <tr><td>Patient handgrip buttons not working</td><td>Handgrip cable fault; connector; handgrip unit failure</td><td>Inspect handgrip cable connection at table. Test with ServiceLine software control to confirm table drive is functional. If software moves table but handgrip doesn't, fault is in handgrip cable or button assembly.</td></tr>
+</table>
+
+<h2>Siemens Patient Handling System Components</h2>
+<table>
+  <tr><th>Component</th><th>Function</th><th>Service Notes</th></tr>
+  <tr><td>Patient Handling Controller (PHC)</td><td>Main controller board for all table movements — receives commands from console, drives motors, monitors sensors</td><td>Located in patient handling cabinet, typically behind or under the table base. Faults shown on PHC status LEDs and in ServiceLine error log.</td></tr>
+  <tr><td>Longitudinal Drive Motor</td><td>Drives table cradle in/out of bore along the longitudinal axis</td><td>Connected via drive belt to cradle. Belt inspection annual. Motor replacement requires cradle removal on some platforms.</td></tr>
+  <tr><td>Vertical Actuator</td><td>Raises/lowers table height for patient positioning and bore entry</td><td>Electric linear actuator. Check for binding, unusual sounds. Actuator replacement is a significant job on Aera/Skyra platforms.</td></tr>
+  <tr><td>Position Encoder</td><td>Tracks cradle position in real time — enables soft limits and docking position detection</td><td>Encoder failure causes position errors and table faults. Clean encoder strip on systems using optical linear encoders.</td></tr>
+  <tr><td>Docking Interface</td><td>Mechanical and electrical coupling between mobile table and gantry dock — allows table to separate for transfers</td><td>Inspect dock latch and proximity sensor annually. Misalignment is common after table transport. Re-alignment procedure in ServiceLine.</td></tr>
+  <tr><td>E-Stop Loop</td><td>Safety circuit connecting all E-stop buttons in series — any single triggered button disables the entire patient handling system</td><td>If E-stop circuit is open (triggered or wiring fault), table is completely disabled. Wiring fault in loop = all buttons appear triggered.</td></tr>
+</table>
+
+<h2>Horizontal Drive Replacement Reference (Avanto / Espree)</h2>
+<div class="info">The Avanto and Espree share a similar MDSD (Modular Drive System for Docking) horizontal drive assembly. Replacement procedure documented in Siemens service document "Avanto-Espree MDSD horizontal drive replacement procedure."</div>
+<table>
+  <tr><th>Step</th><th>Notes</th></tr>
+  <tr><td>1. System lockout / tagout</td><td>De-energize patient handling system. System must be in service mode with table power isolated.</td></tr>
+  <tr><td>2. Remove cradle from table base</td><td>Disconnect all coil cables and patient handgrip. Slide cradle off table base following service manual.</td></tr>
+  <tr><td>3. Access drive assembly</td><td>Remove table side panels to access the longitudinal drive motor and belt assembly under the cradle track.</td></tr>
+  <tr><td>4. Belt inspection / replacement</td><td>Check belt tension and condition. Replacement belt must be OEM-specified — belt length and tooth pitch are critical for accurate positioning.</td></tr>
+  <tr><td>5. Re-assembly and calibration</td><td>After drive replacement, run position calibration from ServiceLine to re-teach all soft limits and docking positions.</td></tr>
+</table>
+
+<h2>Patient Table PM Checklist (Siemens)</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Test all E-stop buttons</td><td>Annual PM</td><td>Trigger and reset each button — verify system disables and re-enables correctly</td></tr>
+  <tr><td>Run full table functional test</td><td>Annual PM</td><td>ServiceLine patient handling test — verify all positions, speeds, and limits</td></tr>
+  <tr><td>Inspect longitudinal drive belt</td><td>Annual PM</td><td>Check for wear, cracking, tension — replace if any doubt</td></tr>
+  <tr><td>Lubricate guide rails</td><td>Annual PM</td><td>Use OEM-specified lubricant — check ServiceLine for brand/type per platform</td></tr>
+  <tr><td>Inspect docking latch and sensors</td><td>Annual PM</td><td>Verify smooth engagement and disengagement; clean proximity sensor faces</td></tr>
+  <tr><td>Check all cable drag chains</td><td>Annual PM</td><td>Inspect for pinched, frayed, or broken cables in drag chain — common failure point</td></tr>
+  <tr><td>Inspect patient handgrip and cable</td><td>Annual PM</td><td>Test all buttons; inspect cable for cracking at flex points</td></tr>
+  <tr><td>Verify weight limit sensor</td><td>Annual PM</td><td>Check that over-weight interlock triggers at correct value</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> STE (System Emergency Stop) clearing after a reset but immediately re-triggering usually means either a wiring fault in the E-stop loop (opens intermittently) or a software-initiated E-stop from an active system fault. Check ServiceLine error log for the fault code that preceded the STE — it will tell you if it was hardware button or software-generated.</div>
+<div class="tip"><strong>Tip:</strong> Siemens table docking alignment shifts over time, especially on sites that frequently undock for patient transfers. If table reports docking errors that clear with minor repositioning, re-run the docking calibration procedure from ServiceLine to re-teach the docked position.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

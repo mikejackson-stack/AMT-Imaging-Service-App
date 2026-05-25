@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Host Computer & MGD Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:12px;}
+</style>
+</head>
+<body>
+<h1>🖥️ GE MRI Host Computer & MGD Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, HDx, Discovery MR450/750, Optima 450w/750w. Covers MGD-BOOT (MGD fails to reach Applications level), MCP820-NVRAM (board halted at MCP820-Bug/Diag prompt), host computer diagnostics, and APS/AGP/SCP troubleshooting.</div>
+
+<h2>MGD-BOOT — MGD Fails to Reach Applications Level</h2>
+<div class="info">The MGD (Magnet Gradient Driver) must boot through several stages before it reaches "Applications" level. A failure at any stage leaves the system unable to scan. Use <code>mgd_term</code> to watch the boot sequence in real time.</div>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Connect to MGD serial terminal</td><td>Login as root or operator. Open a shell window and type: <code>mgd_term</code>. This connects to the MGD serial console so you can watch the boot sequence.</td></tr>
+  <tr><td>Cycle MGD power</td><td>Power-cycle the MGD chassis (breaker in equipment rack or dedicated power switch on MGD cabinet). Watch the terminal for boot output.</td></tr>
+  <tr><td>Check for key boot messages</td><td>A successful boot shows these messages in sequence:<br>
+    • <code>No errors in OS Error Log Buffer</code><br>
+    • <code>Auto start of Tardis done</code><br>
+    • <code>Network is OK</code><br>
+    • <code>Start-up Complete</code><br>
+    Missing or replaced-by-error messages indicate which subsystem failed.</td></tr>
+  <tr><td>Board Fail LED</td><td>A lit <strong>Board Fail LED</strong> on any MGD board = that board failed its self-test. Note which board and slot before any further troubleshooting.</td></tr>
+  <tr><td>OS Error Log</td><td>If boot halts early, read the OS error log from the terminal. Note the specific error string — it identifies the failed subsystem (network, Tardis clock, APS, AGP, or SCP).</td></tr>
+  <tr><td>Tardis / Real-Time Clock</td><td>"Auto start of Tardis done" must appear. Tardis is the real-time clock subsystem on the MGD. If Tardis fails, the system cannot synchronize timing for gradient pulses. Check Tardis battery on the MGD CPU board.</td></tr>
+  <tr><td>Network check</td><td>"Network is OK" confirms MGD can communicate with the host computer. If network fails: check Ethernet cable between host and MGD, verify IP configuration, check for duplicate addresses.</td></tr>
+  <tr><td>APS / AGP / SCP status</td><td>After network comes up, the APS (Analog Power Supply), AGP (Analog Gradient Processor), and SCP (Scan Control Processor) are initialized. Errors at this stage indicate a specific board fault — match error to board and replace or reseat.</td></tr>
+</table>
+
+<h2>MCP820-NVRAM — Board Halted at MCP820-Bug&gt; or MCP820-Diag&gt; Prompt</h2>
+<div class="warn"><strong>80% of MCP820 field returns are NVRAM corruption, not hardware failure.</strong> Always attempt the NVRAM recovery procedure before ordering a replacement board.</div>
+<table>
+  <tr><th>Symptom / Step</th><th>Action</th></tr>
+  <tr><td>Board halted at <code>MCP820-Bug&gt;</code> prompt</td><td>The MCP820 stopped in debugger mode during boot — NVRAM configuration is corrupt or missing. Do NOT power-cycle yet. Proceed with CNFG check.</td></tr>
+  <tr><td>Board halted at <code>MCP820-Diag&gt;</code> prompt</td><td>Board entered diagnostic mode. Same root cause as Bug prompt — NVRAM issue. Proceed with same recovery steps.</td></tr>
+  <tr><td>Check CNFG data</td><td>At the prompt, type: <code>CNFG</code> and press Enter. Review the output for any <strong>question marks (?)</strong> in the configuration fields. Question marks = that CNFG field is blank or corrupt.</td></tr>
+  <tr><td>Check Timekeeper battery</td><td>Measure voltage on the Timekeeper (Dallas DS1287 or equivalent) chip on the MCP820 board. If battery voltage is below <strong>3.0V</strong>, replace the Timekeeper chip. A dead Timekeeper causes NVRAM loss on power-down.</td></tr>
+  <tr><td>Re-enter CNFG data</td><td>Type: <code>CNFG;M</code> and enter configuration data from the board label (serial number, board type, etc.). Field values are printed on the sticker on the MCP820 board itself.</td></tr>
+  <tr><td>Verify environment settings</td><td>After re-entering CNFG, type: <code>ENV;D</code> to display the current environment variables. Verify they match expected values for the system.</td></tr>
+  <tr><td>Power cycle and verify boot</td><td>Power-cycle the MGD chassis. Board should now complete boot normally. Connect <code>mgd_term</code> and verify "Start-up Complete" message appears.</td></tr>
+  <tr><td>If recovery fails — board replacement</td><td>If CNFG recovery does not resolve the halt, board hardware failure is confirmed. MCP820 part numbers: <strong>2294300-14, -16, -18, or -23</strong> (verify correct revision for your system).</td></tr>
+</table>
+
+<h2>MGD / Host Communication Architecture (GE HDxt / Excite)</h2>
+<table>
+  <tr><th>Board / Component</th><th>Function</th><th>Location</th></tr>
+  <tr><td>MGD CPU / MCP820</td><td>Main processor for the MGD chassis — runs OS, coordinates all MGD functions, communicates with host via Ethernet</td><td>MGD chassis — CPU slot</td></tr>
+  <tr><td>APS (Analog Power Supply)</td><td>Provides precision analog voltages to gradient amplifiers and other analog subsystems. APS faults cause scan failures and boot errors</td><td>MGD chassis</td></tr>
+  <tr><td>AGP (Analog Gradient Processor)</td><td>Processes gradient waveforms from the SCP and drives gradient amplifiers. AGP errors cause gradient-related faults</td><td>MGD chassis</td></tr>
+  <tr><td>SCP (Scan Control Processor)</td><td>Top-level scan controller — receives scan prescriptions from host, generates pulse sequences, coordinates all subsystems during scanning</td><td>MGD chassis</td></tr>
+  <tr><td>Host Computer (Octane / SGI / Linux)</td><td>Runs the MRI application software, sends scan prescriptions to MGD via Ethernet, receives image data</td><td>Equipment room rack</td></tr>
+  <tr><td>Tardis</td><td>Real-time clock subsystem on MGD CPU board — synchronizes timing for all pulsed operations</td><td>On MCP820 board</td></tr>
+</table>
+
+<h2>Host Computer Quick Reference (Octane / Linux Platforms)</h2>
+<table>
+  <tr><th>Task</th><th>Command / Path</th></tr>
+  <tr><td>Connect to MGD terminal</td><td><code>mgd_term</code> (from shell as root)</td></tr>
+  <tr><td>View MGD error log</td><td><code>cat /usr/g/service/log/mgd_err.log</code></td></tr>
+  <tr><td>View system error log</td><td><code>cat /usr/g/service/log/sys_err.log</code></td></tr>
+  <tr><td>Check disk space</td><td><code>df -k</code> — /usr partition must have &gt;10% free</td></tr>
+  <tr><td>Check network to MGD</td><td><code>ping 192.168.1.1</code> (or MGD IP per site)</td></tr>
+  <tr><td>Restart MR application</td><td><code>mrstart</code> from root shell</td></tr>
+  <tr><td>View running processes</td><td><code>ps -ef | grep mr</code></td></tr>
+  <tr><td>Check APS/AGP/SCP status</td><td>Service Desktop → Diagnostics → System Function → MGD Diagnostics</td></tr>
+  <tr><td>MGD power cycle</td><td>Use MGD power switch/breaker in equipment room — wait 30 seconds before powering on</td></tr>
+</table>
+
+<h2>APS / AGP / SCP LED Status (MGD Chassis)</h2>
+<table>
+  <tr><th>LED State</th><th>Meaning</th><th>Action</th></tr>
+  <tr><td>All LEDs green / normal run pattern</td><td>Board operating normally</td><td>No action</td></tr>
+  <tr><td>Board Fail LED lit (red)</td><td>Board failed self-test — hardware fault on that board</td><td>Note board and slot; reseat first, then replace if fault persists</td></tr>
+  <tr><td>Run LED not flashing</td><td>Board is not executing — may be waiting for host or in halt state</td><td>Check for error on mgd_term; try power cycle</td></tr>
+  <tr><td>All LEDs off after power-on</td><td>Board not receiving power — check backplane power and slot connection</td><td>Reseat board; check backplane fuse or power supply to MGD chassis</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> When troubleshooting MGD-BOOT, always connect mgd_term before power-cycling. The boot sequence messages scroll quickly and you'll miss the failure point if you aren't watching. The exact error message tells you exactly which board or subsystem failed.</div>
+<div class="tip"><strong>Tip:</strong> MCP820-NVRAM failures frequently follow a power outage or UPS failure. If a site had a power event and the MGD won't boot the next day, go straight to CNFG;M recovery before ordering any parts — it resolves 4 out of 5 cases.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

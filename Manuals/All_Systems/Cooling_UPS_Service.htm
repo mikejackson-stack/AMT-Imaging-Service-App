@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRI/CT Cooling & UPS Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:12px;}
+</style>
+</head>
+<body>
+<h1>🌡️ MRI/CT Cooling System & UPS Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: All GE and Siemens MRI/CT systems. Covers T200 (temperature warning), equipment room HVAC faults, chiller/HEC failures, gradient water cooling, and UPS battery faults. These are cross-platform issues that affect all modalities.</div>
+
+<h2>T200 — Temperature Warning</h2>
+<div class="warn">A temperature warning is a pre-failure indicator. Address it immediately — within hours a warning becomes a shutdown. The system is telling you something is running hot before hardware damage occurs.</div>
+<table>
+  <tr><th>System Area</th><th>Check</th><th>Action</th></tr>
+  <tr><td>Equipment Room HVAC</td><td>Is the equipment room air conditioning functioning? Check supply air temperature at AC vents. Normal equipment room temperature: <strong>16–24°C</strong>.</td><td>Notify facility HVAC if AC is failed or undersized. Temporary portable AC units can prevent shutdown while waiting for repairs. Confirm with site facilities team.</td></tr>
+  <tr><td>GE HEC (Heat Exchanger Cabinet)</td><td>Check HEC status panel. Verify chilled water supply temperature at HEC inlet (target: &lt;15°C supply, &lt;20°C return). Check HEC pump is running. Check flow meter reading.</td><td>If HEC pump failed: check breaker, check HEC pump fuse, inspect motor. If no chilled water supply from building: contact facilities. Clean HEC strainer if flow is low.</td></tr>
+  <tr><td>Gradient Water Cooling</td><td>GE and Siemens systems have water cooling for gradient coils. Check gradient cooling water temperature at the system heat exchanger. Normal: supply &lt;20°C.</td><td>Check coolant deionizer if equipped (GE HEC). Replace DI cartridge if resistivity is low. Check for coolant leaks at gradient coil fittings (inspect under bore). Low flow alarm = blocked strainer or failed pump.</td></tr>
+  <tr><td>RF Amplifier Cooling</td><td>RF amplifiers are typically air-cooled with dedicated fans. Check RF amp cabinet fans — all should be spinning. Check amp intake air temperature (&lt;25°C target).</td><td>Clean RF amp intake filter (clogged filter = reduced airflow = overtemp). Replace failed fans. Verify equipment room temp allows adequate cooling.</td></tr>
+  <tr><td>Gradient Amplifier Cooling</td><td>High-power gradient amplifiers (GPA/ACGD) generate significant heat. Verify cooling fans in gradient amplifier cabinet are operating. Check for blocked ventilation paths.</td><td>Clean gradient amplifier cabinet filters. Verify equipment room airflow path is not blocked by equipment placement or cable routing.</td></tr>
+  <tr><td>Siemens WCS (Water Cooling System)</td><td>Siemens CT and some MRI systems use a dedicated WCS. Check WCS sight glass (green = normal, red = low). Check WCS pump status and water temperature on the WCS display.</td><td>Add distilled water if WCS level is low. Check WCS pump — listen for cavitation. If WCS temperature is high: check facility water supply temperature and flow rate to WCS heat exchanger.</td></tr>
+</table>
+
+<h2>Seasonal Temperature Fault Patterns</h2>
+<table>
+  <tr><th>Time of Year</th><th>Common Issue</th><th>Quick Check</th></tr>
+  <tr><td>Summer (June–September)</td><td>Equipment room HVAC undersized for summer heat load. RF amp and gradient amp thermal faults increase dramatically. Most common in older buildings.</td><td>Verify equipment room temp is ≤24°C at hottest time of day. Check if building HVAC is shared with other areas that increase load in summer.</td></tr>
+  <tr><td>Winter (December–February)</td><td>Chilled water from building may be too cold or shut off when outside temp drops — can cause over-cooling or HEC low-flow faults. Rare but happens in cold climates.</td><td>Check HEC supply water temperature — should not be &lt;10°C. Some buildings switch off chilled water in winter; HEC needs year-round chilled water supply.</td></tr>
+  <tr><td>After facility renovation</td><td>HVAC ductwork changes, new walls, or moved equipment can redirect airflow away from equipment room. New equipment added to room increases heat load.</td><td>Survey equipment room airflow after any renovation. Measure temperature at multiple points — hot spots indicate poor airflow distribution.</td></tr>
+</table>
+
+<h2>UPS Fault — Battery or Inverter Issues</h2>
+<div class="info">The UPS protects the MRI/CT system from power interruptions that could corrupt data, cause an emergency shutdown, or trigger a magnet quench. A failed UPS battery means one power event can shut down the system mid-scan or worse.</div>
+<table>
+  <tr><th>Fault Type</th><th>Diagnosis</th><th>Action</th></tr>
+  <tr><td>UPS battery low / replace battery warning</td><td>Battery self-test failed or battery voltage below threshold. Most UPS systems run self-test weekly and report battery health.</td><td>Check UPS front panel for battery fault code. Measure battery voltage at UPS battery terminals. GE systems use Eaton 9130 or Powerware 9130 UPS — check model for battery part number. Order and replace batteries. Typical battery life: 3–5 years.</td></tr>
+  <tr><td>UPS on bypass — not providing battery backup</td><td>UPS has switched to bypass mode — system is running on raw utility power with no battery backup.</td><td>Check UPS for fault condition that caused bypass. Common causes: overload (too many devices connected), internal inverter fault, or operator-initiated bypass. Resolve fault and return to normal UPS mode before site leaves unattended.</td></tr>
+  <tr><td>UPS fault alarm — system won't start</td><td>UPS has a hard fault that prevents normal operation. System startup may be blocked if UPS provides startup power or if system checks UPS status on boot.</td><td>Check UPS fault code. Common fault codes: input voltage out of range, battery disconnect, internal fault. Cycle UPS power (if safe to do so). Check utility power quality — low voltage or frequency out of range can cause UPS input faults.</td></tr>
+  <tr><td>System shuts down unexpectedly — no other fault</td><td>Power micro-interruption not visible on meters but long enough to trigger UPS transfer. Or UPS transfer time exceeds system tolerance.</td><td>Check UPS event log for transfer history. If transfers are frequent, evaluate utility power quality. Consider power conditioner upstream of UPS if line quality is poor.</td></tr>
+  <tr><td>UPS transfer time too slow</td><td>Some older UPS systems have transfer times (5–10 ms) that exceed what sensitive electronics can tolerate. Results in equipment fault or reboot despite UPS being present.</td><td>Verify UPS transfer time specification for the installed model. GE specifications require UPS transfer ≤4 ms for full protection. Upgrade UPS if transfer time exceeds system requirement.</td></tr>
+</table>
+
+<h2>GE MRI UPS Reference (Eaton / Powerware 9130)</h2>
+<table>
+  <tr><th>Parameter</th><th>Spec</th><th>Notes</th></tr>
+  <tr><td>Model</td><td>Eaton 9130 / Powerware 9130</td><td>Common on HDxt, Discovery, Optima platforms — verify model at site</td></tr>
+  <tr><td>Battery replacement interval</td><td>3–5 years typical</td><td>Replace proactively — don't wait for battery fault in a clinical environment</td></tr>
+  <tr><td>Transfer time</td><td>≤4 ms (online double-conversion)</td><td>Online UPS provides zero transfer time — always preferred for MRI</td></tr>
+  <tr><td>Status LEDs / display</td><td>Green = normal; Yellow = warning; Red = fault; Bypass = on bypass</td><td>Check front panel display for fault code if alarm is active</td></tr>
+  <tr><td>Battery test</td><td>Automatic weekly self-test</td><td>Manual test: hold Test button 3 seconds. System briefly runs on battery — monitor front panel for pass/fail.</td></tr>
+  <tr><td>Common battery part</td><td>See UPS label for battery model and quantity</td><td>Use OEM batteries or certified equivalent — wrong capacity or chemistry can damage UPS</td></tr>
+</table>
+
+<h2>Siemens MRI UPS Reference</h2>
+<table>
+  <tr><th>Platform</th><th>UPS Type</th><th>Notes</th></tr>
+  <tr><td>Espree, Avanto, Symphony</td><td>Eaton 9130 or Mitsubishi 9800A (varies by install date)</td><td>Check serial number plate on UPS for model. Battery replacement same general procedure as GE.</td></tr>
+  <tr><td>Aera, Skyra, Prisma</td><td>Vertiv Liebert GXT4 (common) or Eaton</td><td>GXT4 uses AGM batteries, typically 3–4 year replacement cycle</td></tr>
+  <tr><td>All Siemens</td><td>UPS must match VA rating of system</td><td>Do not replace UPS with different capacity without Siemens approval — under-sized UPS is a safety risk</td></tr>
+</table>
+
+<h2>Cooling & UPS PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Verify equipment room temperature</td><td>Each PM visit</td><td>Measure at multiple points — document high and low. Alert facility if consistently &gt;24°C</td></tr>
+  <tr><td>Check HEC coolant level and resistivity</td><td>Annual PM</td><td>Top off with distilled water; replace DI cartridge if resistivity &lt;1 MΩ·cm</td></tr>
+  <tr><td>Test HEC pump and flow rate</td><td>Annual PM</td><td>Compare to installation baseline — gradual flow reduction = blocked strainer</td></tr>
+  <tr><td>Clean gradient amp and RF amp filters</td><td>Annual PM</td><td>Compressed air, vacuum, or replace — clogged filters are the #1 cause of summer thermal faults</td></tr>
+  <tr><td>UPS battery test</td><td>Annual PM</td><td>Initiate manual battery test; record pass/fail and runtime result</td></tr>
+  <tr><td>Check UPS battery age</td><td>Annual PM</td><td>If battery age &gt;4 years, recommend proactive replacement regardless of test pass</td></tr>
+  <tr><td>Check UPS event log</td><td>Annual PM</td><td>Review for transfer events, low battery warnings, or bypass events — document</td></tr>
+  <tr><td>Verify Siemens WCS level and temp</td><td>Annual PM (Siemens CT)</td><td>Check WCS sight glass, water temp display, and pump operation</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The most reliable early warning for a cooling problem is temperature trending over multiple PM visits. A room that ran 20°C three years ago and now runs 22°C hasn't failed yet — but it's heading there. Document equipment room temperature at every visit so you can show the facility the trend before the system starts throwing faults.</div>
+<div class="tip"><strong>Tip:</strong> Replace UPS batteries proactively every 4 years in clinical environments — don't wait for the battery to fail during a power event. A $300 battery replacement is far cheaper than recovering from a system crash or magnet quench caused by a dead UPS at 2am.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

@@ -1286,7 +1286,7 @@ const FULL_ERROR_DB=[
   {code:'F001',brand:'Siemens',desc:'Gradient amplifier fault -- check GRADS cabinet and cooling lines',manual:'Siemens/Gradient.htm'},
   {code:'F042',brand:'Siemens',desc:'RF power fault -- check RF amp cooling fans, measure forward/reflected power, inspect TR switch and body coil tuning',manual:'Siemens/RF_Amp_Service.htm'},
   {code:'F100',brand:'Siemens',desc:'Gradient coil temperature fault -- verify water cooling flow and temperature at GRAMP inlet. Check for coolant leak.',manual:'Siemens/Gradient.htm'},
-  {code:'STE',brand:'Siemens',desc:'System emergency stop triggered -- check all e-stop buttons (gantry, bore, control room). Reset and verify before restart.',manual:''},
+  {code:'STE',brand:'Siemens',desc:'System emergency stop triggered -- check all e-stop buttons (gantry, bore, control room). Reset and verify before restart.',manual:'Siemens/Table_Service.htm'},
   // GE CT
   {code:'CT-TUBE',brand:'GE CT',desc:'X-ray tube fault -- check heat unit (HU) level, run tube warm-up. Verify cooling water flow to tube housing. Check tube arc count in service logs.',manual:'GE/CT_Service.htm'},
   {code:'CT-HV',brand:'GE CT',desc:'High voltage fault -- check HV generator, DC bus, and HV cable connections. Inspect HV tank oil. Run HV self-test in Service Desktop. LOTO before touching HV components.',manual:'GE/CT_Service.htm'},
@@ -1337,22 +1337,22 @@ const FULL_ERROR_DB=[
   {code:'INJ-TEMP',brand:'Injector',desc:'Contrast temperature warning -- Warm contrast to 37°C (body temperature) before injection to reduce viscosity, injection pressure, and patient discomfort. Verify warmer calibration at PM.',manual:'Injectors/README.md'},
   {code:'INJ-MR',brand:'Injector',desc:'MR Safety -- Only the Spectris Solaris EP is MR-conditional for use inside MRI rooms. ALL other injectors (Stellant, OptiVantage, EmpowerCTA, Mark 7) are CT/Angio only -- NEVER bring into MRI scan room.',manual:'Injectors/README.md'},
   // General
-  {code:'T200',brand:'All',desc:'Temperature warning -- check HVAC, chiller, and all cooling systems',manual:''},
+  {code:'T200',brand:'All',desc:'Temperature warning -- check HVAC, chiller, and all cooling systems',manual:'All_Systems/Cooling_UPS_Service.htm'},
   {code:'RF Shield',brand:'All',desc:'RF shielding breach detected -- sweep room for electronics first. Inspect door gaskets and waveguide filters.',manual:'GE/RF_Shield_Service.htm'},
-  {code:'UPS',brand:'All',desc:'UPS fault or battery low -- test and replace UPS batteries',manual:''},
+  {code:'UPS',brand:'All',desc:'UPS fault or battery low -- test and replace UPS batteries',manual:'All_Systems/Cooling_UPS_Service.htm'},
   // GE Driver Module Diagnostics
   {code:'DD/TR Bias',brand:'GE',desc:'Driver Module: Check current draw on dynamic disable (DD) and transmit/receive (TR) bias lines. Run Gather Load Data diagnostic (Diagnostics → System Function → RF → Driver Module Diagnostics). Tests driver module, cables, connectors, coil.',manual:'GE/Gather_Load_Data.htm'},
   {code:'Driver Module',brand:'GE',desc:'GE Driver Module Diagnostics path: Diagnostics → System Function → RF → Driver Module Diagnostics. Use Gather Load Data test to troubleshoot intermittent problems and baseline new surface coils. No special equipment required.',manual:'GE/Gather_Load_Data.htm'},
   // Spatial Gradient Reference
-  {code:'SG-MR750w',brand:'GE',desc:'Spatial Gradient -- GE MR750w (3T/70cm): Min entry SG=556 G/cm. At 600 G/cm, D=21.7cm; 700 G/cm D=12.6cm; 800 G/cm D=7.8cm; 900 G/cm D=4.5cm; 1000 G/cm D=2.1cm.',manual:''},
-  {code:'SG-MR450w',brand:'GE',desc:'Spatial Gradient -- GE MR450w (1.5T/70cm): Min entry SG=291 G/cm. At 300 G/cm, D=26.8cm; 350 G/cm D=15.9cm; 400 G/cm D=10.9cm; 500 G/cm D=5.3cm; 600 G/cm D=2.1cm.',manual:''},
-  {code:'SG-G3',brand:'GE',desc:'Spatial Gradient -- GE G3 (3T/60cm): Min entry SG=540 G/cm. At 600 G/cm, D=15.4cm; 700 G/cm D=6.8cm; 800 G/cm D=2.1cm; >=1000 G/cm D=0cm.',manual:''},
-  {code:'SG-MR450',brand:'GE',desc:'Spatial Gradient -- GE MR450/1.5T HDx (1.5T/60cm): Min entry SG=293 G/cm. At 300 G/cm, D=22.6cm; 350 G/cm D=11.1cm; 400 G/cm D=5.8cm; 450 G/cm D=2.4cm; >=500 G/cm D=0cm.',manual:''},
-  {code:'SG-General',brand:'GE',desc:'Spatial Gradient rules: 3T ≈ 2x the SG of 1.5T. 70cm bore ≈ 20% higher SG at bore walls vs 60cm. SG is highest near bore mouth ends, not center. Stay within safe cylinder inside bore to limit SG exposure.',manual:''},
+  {code:'SG-MR750w',brand:'GE',desc:'Spatial Gradient -- GE MR750w (3T/70cm): Min entry SG=556 G/cm. At 600 G/cm, D=21.7cm; 700 G/cm D=12.6cm; 800 G/cm D=7.8cm; 900 G/cm D=4.5cm; 1000 G/cm D=2.1cm.',manual:'GE/Spatial_Gradient_Reference.htm'},
+  {code:'SG-MR450w',brand:'GE',desc:'Spatial Gradient -- GE MR450w (1.5T/70cm): Min entry SG=291 G/cm. At 300 G/cm, D=26.8cm; 350 G/cm D=15.9cm; 400 G/cm D=10.9cm; 500 G/cm D=5.3cm; 600 G/cm D=2.1cm.',manual:'GE/Spatial_Gradient_Reference.htm'},
+  {code:'SG-G3',brand:'GE',desc:'Spatial Gradient -- GE G3 (3T/60cm): Min entry SG=540 G/cm. At 600 G/cm, D=15.4cm; 700 G/cm D=6.8cm; 800 G/cm D=2.1cm; >=1000 G/cm D=0cm.',manual:'GE/Spatial_Gradient_Reference.htm'},
+  {code:'SG-MR450',brand:'GE',desc:'Spatial Gradient -- GE MR450/1.5T HDx (1.5T/60cm): Min entry SG=293 G/cm. At 300 G/cm, D=22.6cm; 350 G/cm D=11.1cm; 400 G/cm D=5.8cm; 450 G/cm D=2.4cm; >=500 G/cm D=0cm.',manual:'GE/Spatial_Gradient_Reference.htm'},
+  {code:'SG-General',brand:'GE',desc:'Spatial Gradient rules: 3T ≈ 2x the SG of 1.5T. 70cm bore ≈ 20% higher SG at bore walls vs 60cm. SG is highest near bore mouth ends, not center. Stay within safe cylinder inside bore to limit SG exposure.',manual:'GE/Spatial_Gradient_Reference.htm'},
   // MGD/CAM APS-AGP-SCP Processor Boards
-  {code:'MGD-BOOT',brand:'GE',desc:'MGD fails to go to Applications level -- check APS-AGP-SCP serial boot-up data via mgd_term. Login root/operator, run mgd_term, cycle MGD power, watch for: "no errors in OS Error Log Buffer", "Auto start of Tardis done", "Network is OK", "Start-up Complete". Board Fail LED on = board failed self-test.',manual:''},
-  {code:'MCP820-NVRAM',brand:'GE',desc:'MCP820 APS/AGP NVRAM corruption (80% of field returns): Board stops at MCP820-Bug> or MCP820-Diag> prompt. Fix: Check CNFG data for question marks, replace Timekeeper chip if battery <3V, enter CNFG;M with board label data, run ENV;D, cycle power. Part numbers: 2294300-14/16/18/23.',manual:''},
-  {code:'PHPS-VOLT',brand:'GE',desc:'PHPS voltage test points (+/-5%): Table/Table com +42VDC (Table PS), Bore +12V Switched (Magnet PS), PAL +15V Switched (Magnet PS), SRI +24V/+12V/+8V (Magnet PS), PAC -8V/+10V/+15V/-15V (Magnet PS). Run PHPS Functional Diagnostic: I/O Status or Amp Real Time Data from MR Service Desktop.',manual:''},
+  {code:'MGD-BOOT',brand:'GE',desc:'MGD fails to go to Applications level -- check APS-AGP-SCP serial boot-up data via mgd_term. Login root/operator, run mgd_term, cycle MGD power, watch for: "no errors in OS Error Log Buffer", "Auto start of Tardis done", "Network is OK", "Start-up Complete". Board Fail LED on = board failed self-test.',manual:'GE/Host_Computer_Service.htm'},
+  {code:'MCP820-NVRAM',brand:'GE',desc:'MCP820 APS/AGP NVRAM corruption (80% of field returns): Board stops at MCP820-Bug> or MCP820-Diag> prompt. Fix: Check CNFG data for question marks, replace Timekeeper chip if battery <3V, enter CNFG;M with board label data, run ENV;D, cycle power. Part numbers: 2294300-14/16/18/23.',manual:'GE/Host_Computer_Service.htm'},
+  {code:'PHPS-VOLT',brand:'GE',desc:'PHPS voltage test points (+/-5%): Table/Table com +42VDC (Table PS), Bore +12V Switched (Magnet PS), PAL +15V Switched (Magnet PS), SRI +24V/+12V/+8V (Magnet PS), PAC -8V/+10V/+15V/-15V (Magnet PS). Run PHPS Functional Diagnostic: I/O Status or Amp Real Time Data from MR Service Desktop.',manual:'GE/Table_Service.htm'},
   {code:'TABLE-DOCK',brand:'GE',desc:'Patient Transport (table) docking issues: Check 3 lock casters + direction lock caster all locked. Cradle interlock prevents undock/lower if cradle not in home position. Front latch locks cradle when undocked. Emergency release: red lever at dock end. Weekly PM: pump to full height, listen for noise, check for hydraulic oil leaks.',manual:'GE/Table_Service.htm'},
 ];
 // ERROR_DB alias for backwards compat
@@ -5175,215 +5175,4 @@ document.addEventListener('DOMContentLoaded',()=>{
       created: '2026-05-23T00:00:00.000Z'
     },
     {
-      id: 'dg_seed_032',
-      title: 'GE MRI Preventive Maintenance Checklist',
-      system: 'GE MRI',
-      category: 'Preventive Maintenance',
-      tags: ['PM','preventive maintenance','checklist','GE MRI','annual','quarterly'],
-      content: `## GE MRI Preventive Maintenance Checklist\n\n### Quarterly PM\n- [ ] Check helium level -- target >75%\n- [ ] Check cold head compressor oil level\n- [ ] Check gradient coolant level and flow rate\n- [ ] Inspect scan room door seals and RF gaskets\n- [ ] Clean air filters: console, gradient cabinet, RF cabinet\n- [ ] Verify table movement -- full longitudinal and vertical range\n- [ ] Test emergency stop buttons (at table and console)\n- [ ] Check all system error logs -- clear non-critical faults\n- [ ] Verify patient intercom and emergency call functions\n- [ ] Check quench circuit continuity at quench button\n\n### Semi-Annual PM\n- [ ] Run full RF calibration and document baseline\n- [ ] Measure and document TR bias voltages\n- [ ] Measure and document gradient calibration values\n- [ ] Shim calibration and B0 map\n- [ ] Cold head displacer inspection (Sumitomo schedule)\n- [ ] Check all cabinet cooling fan operation\n- [ ] Tighten all cable connector fasteners in each cabinet\n- [ ] PDC thermal scan (if IR camera available)\n- [ ] SNR test with all coils -- compare to baseline\n\n### Annual PM\n- [ ] Full gradient eddy current measurement and compensation update\n- [ ] Measure all ground bond resistances (see Ground Check guide)\n- [ ] RF shield leak test with spectrum analyzer\n- [ ] Full safety test: patient emergency stop, interlock testing\n- [ ] Magnet safety survey -- site emergency procedures review\n- [ ] Update system software if GE patch available\n- [ ] Document all PM findings in site PM record`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_033',
-      title: 'CT Laser Alignment Calibration',
-      system: 'GE CT',
-      category: 'Calibration',
-      tags: ['CT','laser','alignment','isocenter','calibration','QA'],
-      content: `## CT Laser Alignment Calibration\n\n### Overview\nCT lasers (external and internal) must accurately mark isocenter for correct patient positioning. Misalignment causes scan placement errors.\n\n### Equipment Required\n- CT alignment phantom (cross-hair phantom or BB phantom)\n- Ruler / calipers\n- Laser alignment tool (if site-specific)\n\n### Laser Types\n| Laser | Location | Purpose |\n|-------|----------|--------|\n| External lateral lasers (2x) | Side walls | Lateral centering |\n| External sagittal laser | Ceiling | Midline alignment |\n| Internal scan plane laser | Inside gantry | Scan plane indication |\n\n### Calibration Procedure\n1. Place alignment phantom at the estimated isocenter on the table.\n2. Command table to isocenter height from console.\n3. Check: external lasers should intersect at phantom crosshair within +/-2 mm.\n4. If external lasers are off:\n   - Access laser bracket (behind side wall panel).\n   - Loosen laser mounting screws.\n   - Adjust laser position until beam centers on phantom crosshair.\n   - Tighten screws; re-verify.\n5. Scan the alignment phantom at nominal technique.\n6. Measure offset of image crosshair from intended isocenter on console.\n7. Adjust isocenter offset in **Service > Table > Isocenter Offset** if >2 mm.\n\n### Acceptance Criteria\n| Laser | Pass Criterion |\n|-------|---------------|\n| External laterals | +/-2 mm from isocenter |\n| External sagittal | +/-2 mm from midline |\n| Internal scan laser | +/-2 mm from scan plane |\n\n### Frequency\n- Weekly visual check\n- Monthly measurement with phantom`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_034',
-      title: 'Siemens CT Preventive Maintenance Checklist',
-      system: 'Siemens CT',
-      category: 'Preventive Maintenance',
-      tags: ['PM','preventive maintenance','Siemens CT','annual','quarterly','checklist'],
-      content: `## Siemens CT Preventive Maintenance Checklist\n\n### Quarterly PM\n- [ ] Run tube warmup and document completion\n- [ ] Perform air calibration -- all kVp settings\n- [ ] Check coolant system level and condition\n- [ ] Inspect all cooling fan operation (gantry, electronics rack)\n- [ ] Check slip ring brushes and rings for wear\n- [ ] Test patient intercom and emergency stop\n- [ ] Clean all air filters\n- [ ] Review error log -- document and clear resolved faults\n- [ ] Verify laser alignment with phantom\n- [ ] Check table movement -- full range, smooth operation\n\n### Semi-Annual PM\n- [ ] kVp accuracy check at all clinical kVp settings\n- [ ] mA linearity test\n- [ ] CTDIvol calibration check with pencil ionization chamber\n- [ ] Water phantom HU calibration\n- [ ] Noise measurement in water phantom\n- [ ] Gantry rotation speed calibration check\n- [ ] Tighten all connector fasteners throughout system\n- [ ] Inspect high-voltage cables and connectors\n\n### Annual PM\n- [ ] Slip ring cleaning and lubrication (per Siemens procedure)\n- [ ] Gantry bearing inspection\n- [ ] Collimator calibration and field uniformity test\n- [ ] HV generator calibration\n- [ ] Full safety interlock testing\n- [ ] Radiation leakage survey (qualified medical physicist)\n- [ ] Software update review -- install approved patches\n- [ ] Review tube hours -- project replacement schedule\n- [ ] Complete annual PM documentation for regulatory compliance`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_035',
-      title: 'GE MRI Gradient Eddy Current Compensation',
-      system: 'GE MRI',
-      category: 'Gradient',
-      tags: ['gradient','eddy current','compensation','calibration','ECC','distortion'],
-      content: `## GE MRI Gradient Eddy Current Compensation\n\n### Overview\nEddy currents induced in the magnet bore cause image artifacts and geometric distortion. ECC (Eddy Current Compensation) pre-distorts gradient waveforms to cancel these effects.\n\n### When to Recalibrate ECC\n- After gradient driver board replacement\n- After magnet ramp-down and ramp-up\n- When images show blurring or distortion on known-stable protocols\n- Per annual PM schedule\n\n### ECC Calibration Procedure\n1. At console ? **Service > Gradient > ECC Calibration**.\n2. Select calibration phantom (provided by GE; water cylinder with known geometry).\n3. Position phantom at isocenter; align per console guidance.\n4. Select **Full ECC Calibration** -- calibrates all axes (X, Y, Z) and cross-terms.\n5. Start calibration -- system acquires a series of gradient echo sequences automatically.\n6. Processing takes 15-30 minutes.\n\n### Interpreting Results\n- System generates ECC correction tables.\n- Compare new vs. previous tables -- large deviations (>20%) may indicate hardware fault.\n- Apply new tables: **Service > Gradient > ECC > Apply Current Calibration**.\n\n### Verification\n1. Scan geometric distortion phantom.\n2. Measure sphere distances on axial, coronal, sagittal reconstructions.\n3. Deviation from known geometry: <=2 mm at +/-20 cm from isocenter.\n\n### Backup and Restore\n- Always backup ECC calibration tables before editing: **Service > Gradient > ECC > Export**.\n- Store backups with date in site service records.`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_036',
-      title: 'GE MRI Gather/Load Data Procedure',
-      system: 'GE MRI',
-      category: 'Calibration',
-      tags: ['gather','load data','calibration','system data','backup','restore'],
-      content: `## GE MRI Gather / Load Data Procedure\n\n### Overview\nThe Gather/Load Data function backs up and restores system calibration data including gradient calibration, RF calibration, shim data, and system configuration. Essential before and after any major subsystem repair.\n\n### When to Gather (Backup)\n- Before any hardware replacement (GPA board, RF board, DAS)\n- Before software updates\n- As part of annual PM\n- Before any invasive service procedure\n\n### Gather (Backup) Procedure\n1. At console ? **Service > System > Gather Data**.\n2. Insert service media (USB or network share as applicable).\n3. Select **All Data** for full backup.\n4. Specific selections available:\n   - Gradient Calibration Data\n   - RF Calibration Data\n   - Shim Data\n   - System Configuration\n   - Patient Protocols\n5. Click **Gather** -- process takes 5-15 minutes.\n6. Label backup media with: date, system serial number, software version, technician name.\n\n### Load Data (Restore) Procedure\n1. At console ? **Service > System > Load Data**.\n2. Insert backup media.\n3. Select data types to restore -- be selective:\n   - After gradient board swap: restore Gradient Calibration only.\n   - After full reimage: restore All Data.\n4. Confirm the load -- **this overwrites current calibration data**.\n5. After load, run full calibration verification before returning to clinical use.\n\n### Important Notes\n- Never load calibration data from a different system serial number -- calibration is system-specific.\n- Store at least 2 backup copies (on-site and off-site or cloud).\n- Calibration data loaded from backup still requires verification scan.`,
-      created: '2026-05-23T00:00:00.000Z'
-    }    ,
-    {
-      id: 'dg_seed_037',
-      title: 'GE Magnet Performance Specs by Family',
-      system: 'GE MRI',
-      category: 'Magnet',
-      tags: ['magnet family','boiloff','fill level','ramp level','shim level','Oxford','LCC','Cx','SIV','SX'],
-      content: `## GE Magnet Performance Specs by Family\n\n### Oxford Magnets (41xxx, 42xxx, 43xxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.5 L/hr |\n| LN2 Boiloff | < 2.0 L/hr |\n| Min. LHe Fill Level | 40% Fixed / 45% Mobile |\n| Min. LHe Ramp Level | 80% Fixed / 45% Mobile |\n\n### S-I Magnets (67xxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.5 L/hr |\n| LN2 Boiloff | < 1.0 L/hr |\n| Total He Flow | 7.0 SCFH (Stack 1.7, Fill Port 0.3, Flange 3.1, 40K 1.8) |\n| Min. LHe Fill Level | 50% |\n| Min. LHe Ramp Level | 75% |\n| Min. LHe Shim Level | 50% |\n\n### S-II (Cxxx) / S-III (Dxxx) / Max (Axxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.2 L/hr |\n| He Vessel Pressure | 0.25\u20130.5 psig |\n| F1 Flow | 0.4\u20130.6 SCFH |\n| F2 Flow | 1.5\u20132.0 SCFH |\n| 1st Stage | 40\u201358 K |\n| 2nd Stage | 7\u201317 K |\n| Min. LHe Fill Level | 30% (3 dewar fills) / 50% (2 dewar fills) |\n| Min. LHe Ramp Level | 75% |\n| Min. LHe Shim Level | 50% |\n\n### S-IV (Gxxx) / SX (Xxxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.2 L/hr |\n| He Vessel Pressure | 0.25\u20130.5 psig |\n| F1 Flow | 1.8\u20132.2 SCFH |\n| F2 Flow | 1.3\u20131.7 SCFH |\n| 1st Stage | 40\u201358 K |\n| 2nd Stage | 7\u201317 K |\n| Min. LHe Fill Level | 65% (S-IV) / 50% (SX) |\n| Min. LHe Ramp Level | 90% (S-IV) / 80% (SX) |\n| Min. LHe Shim Level | 70% (S-IV) / 50% (SX) |\n\n### SV (Jxxx) / SX-C1 (Kxxx) / SX-C2 (Lxxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.2 L/hr |\n| F1 Flow | 1.8\u20132.2 SCFH |\n| F2 Flow | 1.2\u20131.6 SCFH |\n| 1st Stage | 32\u201360 K |\n| 2nd Stage | 7\u201317 K |\n| Min. LHe Fill Level | 50% |\n| Min. LHe Ramp Level | 85% |\n| Min. LHe Shim Level | 65% |\n\n### Conquest Cx 1.0T (Pxxx) / 1.5T (Nxxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.18 L/hr |\n| F1 Flow | 1.8\u20132.2 SCFH |\n| F2 Flow | 0.8\u20131.2 SCFH |\n| 1st Stage | 32\u201360 K |\n| 2nd Stage | 7\u201317 K |\n| Min. LHe Fill Level | 42% |\n| Min. LHe Ramp Level | 90% |\n| Min. LHe Shim Level | 75% |\n\n### Compact (Exxx) / 0.5T VMX (Vxxx)\n| Parameter | Value |\n|-----------|-------|\n| LHe Boiloff | < 0.1 L/hr (Compact) / < 0.075 L/hr (0.5T AS) |\n| He Vessel Pressure | 0.25\u20130.5 psig |\n| F1 Flow | 0.9\u20131.1 SCFH |\n| 1st Stage | 32\u201360 K |\n| 2nd Stage | 7\u201317 K |\n| Min. LHe Fill Level | 40% (Compact) / 50% (0.5T AS) |\n| Min. LHe Ramp Level | 75% (Compact) / 85% (0.5T AS) |\n\n### 0.5T VMX2 (Zxxx)\n| Parameter | Value |\n|-----------|-------|\n| He Vessel Pressure | > 0.3 psig but < 5 psig |\n| Shield Temp | < 55 K |\n| Cryocooler 2nd Stage | > 3.8K but < 4.6K |\n| Recondenser Temp | > 3.8K but < 5K |\n| Coldhead\u2013Recondenser Delta | < 0 but < 0.3K |\n| Min. LHe Fill Level | 55% |\n| Min. LHe Ramp Level | 85% |\n\n### 1.5T LCC (Rxxx) / 1.0T LCC (Qxxx)\n| Parameter | Value |\n|-----------|-------|\n| He Vessel Pressure | > 3 psig but < 5 psig |\n| Shield Temp | < 55 K |\n| Cryocooler 2nd Stage | > 3.8K but < 4.6K |\n| Recondenser Temp | > 3.8K but < 5K |\n| F1 Flow | 1.8\u20132.2 SCFH |\n| Min. LHe Fill Level | 50% |\n| Min. LHe Ramp Level | 90% |\n| Min. LHe Shim Level | 75% |\n\n### Profile Magnets\n- Magnet Temperature: 31\u201334\u00b0C\n- Temperature Restriction: < 45\u00b0C`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_038',
-      title: 'GE MRI Shimming Specifications Reference',
-      system: 'GE MRI',
-      category: 'Magnet',
-      tags: ['shimming','shim specs','DSV','ppm','Hz','LVshim','CSI','quick shim','homogeneity'],
-      content: `## GE MRI Shimming Specifications Reference\n\n### Mechanical Plotting Specs\n| Volume | Spec |\n|--------|------|\n| C6 (40\u00d730cm cylinder) | < 6.3 ppm |\n| 40cm DSV (Compact / 0.5T AS) | < 10 ppm |\n| 45cm DSV (Sphere) | < 12 ppm |\n| 40\u00d735cm Elliptical Volume | < 45 ppm |\n| 45cm DSV (316-point Sphere Cx only) | < 12 ppm |\n\n### CSI Shimming\n| Volume | Spec |\n|--------|------|\n| 20cm DSV (BW 200) | < 40 Hz |\n| All expansion coefficients | < +6 Hz |\n\n### Quick Shimming\n| Volume / Coeff | Spec |\n|----------------|------|\n| 22cm DSV (BW 200) | < 6 Hz |\n| 22cm DSV (GE S-1 / Oxfords) | < 7 Hz |\n| X3, Y3, Z5, Z6 | < +8 Hz |\n| ZXY, Z(X2-Y2), Z3, Z4, Z2X, Z2Y | < +6 Hz |\n| X, Y, Z1, Z2, ZX, ZY, X2-Y2, XY | < +3 Hz |\n\n### LVshim\n| Volume / Coeff | Spec |\n|----------------|------|\n| 45cm DSV (BW 500) | < 45 Hz |\n| 22cm DSV (BW 200) | < 6 Hz |\n| Z1, X, Y (over 45cm DSV) | < +10 Hz |\n| Z2, ZX, ZY, X2-Y2, XY | < +25 Hz |\n| X3, Y3, Z3\u2013Z5, XYZ, Z(X2-Y2), Z2X, Z2Y | < 100mA delta current |\n| Z6 | < +200 Hz |\n\n### LVshim \u2014 Cx & LCC Magnets\n| Volume / Coeff | Spec |\n|----------------|------|\n| 45cm DSV (BW 500) \u2014 1.5T | < 50 Hz |\n| 45cm DSV (BW 500) \u2014 1.0T | < 33 Hz |\n| 22cm DSV (BW 200) | < 4 Hz |\n| Z1, X, Y (over 45cm DSV) | < +10 Hz |\n| Z2, Z3, ZX, ZY, X2-Y2, XY, Z2Y, Z2X, Z(X2-Y2), ZXY, Y3, X3 | < +25 Hz |\n| Z4, Z5, Z6 | < +50 Hz |\n\n### LVshim \u2014 CRM 1.5T\n| Volume / Coeff | Spec |\n|----------------|------|\n| 40cm DSV (BW 500) | < 36 Hz |\n| 22cm DSV (BW 200) | < 6 Hz |\n| Z1, X, Y | < +10 Hz |\n| Z2, ZX, ZY, X2-Y2, XY | < +18 Hz |\n| X3, Y3, Z3\u2013Z5, XYZ, Z(X2-Y2), Z2X, Z2Y | < 100mA delta current |\n| Z6 | < +160 Hz |\n\n### LVshim \u2014 Cx & LCC CRM 1.5T\n| Volume / Coeff | Spec |\n|----------------|------|\n| 40cm DSV (BW 500) | < 40 Hz |\n| 22cm DSV (BW 200) | < 4 Hz |\n| Z1, X, Y | < +10 Hz |\n| Z2, Z3, ZX, ZY, X2-Y2, XY, Z2Y, Z2X, Z(X2-Y2), ZXY, Y3, X3 | < +25 Hz |\n| Z4, Z5, Z6 | < +50 Hz |\n\n### Magnet Frequency Bandwidth\n| Field | Gauss | Frequency |\n|-------|-------|----------|\n| 0.2T | 2005 G \u00b1 9 G | 8.540 MHz \u00b1 40 kHz |\n| 0.5T | 5000 G \u00b1 2.5 G | 21.288 MHz \u00b1 10.644 kHz |\n| 1.0T | 10025 G \u00b1 5 G | 42.682 MHz \u00b1 21.288 kHz |\n| 1.5T | 15000 G \u00b1 7.5 G | 63.864 MHz \u00b1 31.932 kHz |`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_039',
-      title: 'GE Magnet Monitoring (Magstat) Alert Settings',
-      system: 'GE MRI',
-      category: 'Magnet',
-      tags: ['Magstat','magnet monitoring','alert','thresholds','helium level','water flow','temperature','SHeM'],
-      content: `## GE Magnet Monitoring (Magstat) Alert Settings\n\n### Standard Magstat Thresholds\n| Parameter | Low Limit | High Limit |\n|-----------|-----------|------------|\n| First Stage | 25K | 65K |\n| Second Stage | 2K | 20K |\n| Vessel Pressure | 0.10 psi | 2.25 psi |\n| Helium Level | *50.0% | 110.0% |\n| Water Flow | 1.75 GPM | 4.50 GPM |\n| Water Temperature | 40.0\u00b0F | 75.0\u00b0F |\n| **Shim Lead Flow | 0.1 SCFH | 3.0 SCFH |\n| **Pen. Lead Flow | 0.1 SCFH | 4.0 SCFH |\n| LHe Level Trend | 0.5% | 5.0% |\n\n*Set minimum level appropriately for your magnet style and configuration.\n**Only on preliminary magnet monitoring sites.\n\n**Important:** LHe Trend alarm must be **Disabled** at all times.\n\n### Data Acquisition Channel / Coefficient Table\n| Parameter | Channel | Coefficient |\n|-----------|---------|-------------|\n| First Stage | 4 | 5 |\n| Second Stage | 5 | 5 |\n| Vessel Pressure | 2 | 4 |\n| Helium Level | 6 | 3 |\n| Water Flow | 7 | 1 |\n| Water Temperature | 8 | 2 |\n| *Shim Lead Flow | 0 | 1 |\n| *Pen. Lead Flow | 1 | 1 |\n| LHe Level Trend | 4 | 4 |\n\n### Monitoring Hardware Part Numbers\n| Item | Part Number |\n|------|-------------|\n| Magnet Monitoring Interface Box | T3487PX |\n| Water Flow & Temperature Sensor | T3487PY |\n| Pressure Transducer | 46-320840P1 |\n| Power Supply (Interface Box) | 46-328516P1 |\n| Leybold Compressor Adapter Cable | 2116875 |\n| Coldhead Cable (Coldhead Sleeve) | 46-318042P1 |\n| Magnet Monitor (SHeM) | T3504DR |\n\n### Troubleshooting Magstat Alarms\n1. **He Level Low alarm**: Verify gauge reading; schedule helium fill if level truly low.\n2. **Vessel Pressure alarm**: Check compressor operation; verify cold head running. High pressure (>2.5 psi) may indicate cold head stopped.\n3. **Water Flow alarm**: Check chilled water supply; verify flow restrictor not clogged.\n4. **Stage Temperature alarm**: Cold head or compressor issue \u2014 see Cryogen Boiloff guide.`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_040',
-      title: 'GE Cryogen Compressor Pressure Reference (CTI / Balzer / Leybold / Sumitomo)',
-      system: 'GE MRI',
-      category: 'Magnet',
-      tags: ['compressor','CTI','Balzer','Leybold','Sumitomo','pressure','cold head','cryogen'],
-      content: `## GE Cryogen Compressor Pressure Reference\n\n### CTI Compressor\n| Pressure | Spec |\n|----------|------|\n| Static | 230\u2013240 psig |\n| Dynamic | 60\u201390 psig |\n\n**Key Part Numbers:**\n| Item | P/N |\n|------|-----|\n| Compressor | T3487PK |\n| Control Module | T3487PJ |\n| Adsorber | 46-255952P656 |\n| Coldhead | T3487LS |\n| Return Lines 40' | 46-255952P636 |\n| Supply Lines 40' | 46-255952P637 |\n| Check Valve on Return Line | 46-255952P658 |\n\n### Balzer Compressor\n| Pressure | Spec |\n|----------|------|\n| Static | 230\u2013240 psig |\n| Dynamic Supply | 270\u2013310 psig |\n| Dynamic Return | 90\u2013120 psig |\n\n**Key Part Numbers:**\n| Item | P/N |\n|------|-----|\n| Compressor | T3487PH |\n| Adsorber | 46-281034P11 |\n| Coldhead (MR Max) | T3487LC |\n| Coldhead (Signa) | T3487PP |\n| Time Delay Relay (11-pin, Gray) | 46-281034P1 |\n| Time Delay Relay (9-pin, Orange) | 46-281034P16 |\n| Phase Relay | 46-281034P22 |\n\n### Leybold Compressor\n| Pressure | Spec |\n|----------|------|\n| Static | 218\u2013235 psig |\n| Dynamic | 305\u2013334 psig |\n*Return and Supply lines are interchangeable.*\n\n**Key Part Numbers:**\n| Item | P/N |\n|------|-----|\n| Compressor RW4000 | T3487MY |\n| Compressor CP4000 | T3487RB |\n| Coldhead | T3487MR |\n| Adsorber RW4000 | T3487MP |\n| Adsorber CP4000 | 46-294150P24 |\n\n### Sumitomo Compressor\n| Pressure | Spec |\n|----------|------|\n| Static | 16.5\u201317 Bar |\n| Dynamic | 22.5\u201324.5 Bar |\n\n**Key Part Numbers:**\n| Item | P/N |\n|------|-----|\n| Coldhead 10K | T3487RW |\n| Coldhead 4K (with transition flange) | T3487RZ |\n| Compressor H2O Cooled (10K & 4K) | T3487RT |\n| Compressor Air Cooled 4K | T3487RY |\n| Adsorber | T3487RP |\n| 2nd Stage Indium Gasket Kit | 2171621 |\n| Coldhead Gasket / O-Ring Kit | 2171620 |\n\n### Compressor Troubleshooting\n1. **Static pressure low**: Adsorber saturated \u2014 replace adsorber and recharge.\n2. **Dynamic pressure out of range**: Compressor wear or refrigerant leak \u2014 call cryogenics vendor.\n3. **Compressor not starting**: Check phase relay and time delay relay; verify 3-phase power balance.`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_041',
-      title: 'GE MRI Field / Frequency / Gauss Conversion Formulas',
-      system: 'GE MRI',
-      category: 'Calibration',
-      tags: ['frequency','gauss','tesla','PPM','conversion','formula','LHe','flow meter'],
-      content: `## GE MRI Field / Frequency / Gauss Conversion Formulas\n\n### Core Field Formulas\n| Formula | Expression |\n|---------|------------|\n| PPM | (Max Hz \u2212 Min Hz) / Freq in MHz |\n| Tesla | 0.0234875 \u00d7 Freq in MHz |\n| Frequency | 4257.6 \u00d7 Gauss |\n\n### Magnet Frequency Bandwidth Quick Reference\n| Field | Gauss | Larmor Frequency |\n|-------|-------|------------------|\n| 0.2T | 2005 G \u00b1 9 G | 8.540 MHz \u00b1 40 kHz |\n| 0.5T | 5000 G \u00b1 2.5 G | 21.288 MHz \u00b1 10.644 kHz |\n| 1.0T | 10,025 G \u00b1 5 G | 42.682 MHz \u00b1 21.288 kHz |\n| 1.5T | 15,000 G \u00b1 7.5 G | 63.864 MHz \u00b1 31.932 kHz |\n\n### Liquid Helium Weight Conversion\n- Liters of LHe = Weight in pounds / **0.275**\n- Liters of LN2 = Weight in pounds / **1.782**\n\n### Singer Flow Meter (cubic feet/hr to liters/hr)\n| Gas | Formula |\n|-----|---------|\n| Helium | Liters = [(R2 \u2212 R1) / (T2 \u2212 T1)] \u00d7 0.042 |\n| Nitrogen | Liters = [(R2 \u2212 R1) / (T2 \u2212 T1)] \u00d7 0.03835 |\n\n### Dwyer Flow Meter (SCFH to Liters/hr)\n- He Liters/hr = Meter Reading \u00d7 **0.0714**\n\n### Temperature Conversions\n| From | To | Formula |\n|------|----|---------|\n| \u00b0F | \u00b0C | (\u00b0F \u2212 32) \u00d7 5/9 |\n| \u00b0C | K | \u00b0C + 273.16 |\n\n### Diode Curve Reference\n| Diode Type | Used In | Lakeshore 208 Curve |\n|------------|---------|---------------------|\n| SI-410 | SV, SXC-1, SXC-2, VMX, Cx1.0, Cx1.5, VMX2 | Curve 6 |\n| DT-500 | SII, SIII, MAX, SIV, Compact | Curve 2 |\n\n### Misc Cryostat Part Numbers\n| Item | P/N |\n|------|-----|\n| P3 Plug (Single Penetration) | T3487KX |\n| P3 Plug (2nd Penetration) | T3487KY |\n| Top Fill Adapter | 46-318197G1 |\n| LHe Meter Calibration Sticker | 2100640 |\n| Fill Key | 2147002 |\n| Desiccant Bag | 2135979 |`,
-      created: '2026-05-23T00:00:00.000Z'
-    },
-    {
-      id: 'dg_seed_042',
-      title: 'GE 3T TRM & 1.5T BRM RF Body Coil DD Board Connections',
-      system: 'GE MRI',
-      category: 'RF',
-      tags: ['body coil','DD board','dynamic disable','3T','TRM','1.5T','BRM','J3','J4','J5','J6','HV BNC','hybrid','splitter'],
-      content: `## GE 3T TRM & 1.5T BRM RF Body Coil DD Board Connections\n\n### 3T TRM RF Body Coil \u2014 Dynamic Disable Board Connections\n\nHybrid splitter: J74-HJ6 (Run 780). Two main connectors: **J3/J5** and **J4/J6**.\n\n| Element Group | Connects To |\n|--------------|-------------|\n| Front 1, 2, 3, 4 | J4/J6 |\n| Front 5, 6, 7, 8 | J3/J5 |\n| Rear 1, 2, 3, 4 | J4/J6 |\n| Rear 5, 6, 7, 8 | J3/J5 |\n\n**HV BNC Connections (Magnet Room) \u2014 3T TRM:**\n| Connector | Run |\n|-----------|-----|\n| J72 \u2013 FJ3 | Run 778 |\n| J73 \u2013 FJ4 | Run 779 |\n| J75 \u2013 RJ5 | Run 781 |\n| J76 \u2013 RJ6 | Run 782 |\n\n---\n\n### 1.5T BRM RF Body Coil \u2014 Dynamic Disable Board Connections\n\nHybrid Splitter: J74-HJ6 (Run 780). Resistor Splitter Board handles Front 5 & Rear 5.\n\n| Element Group | Connects To |\n|--------------|-------------|\n| Front 1, 2 | J3/J5 |\n| Front 3, 4 | J4/J6 |\n| Rear 1, 2 | J3/J5 |\n| Rear 3, 4 | J4/J6 |\n\n**HV BNC Connections (Magnet Room) \u2014 1.5T BRM:**\n| Connector | Run |\n|-----------|-----|\n| J72 \u2013 FJ3 | Run 778 |\n| J73 \u2013 FJ4 | Run 779 |\n| J75 \u2013 RJ5 | Run 781 |\n| J76 \u2013 RJ6 | Run 782 |\n\n---\n\n### Troubleshooting DD Board Faults\n1. **No transmit on one body coil sector**: Suspect DD board for that sector \u2014 verify correct J3/J5 vs J4/J6 for the faulted element group.\n2. **RF fault on body coil prescan**: Verify HV BNC connections J72\u2013J76 are fully seated at penetration panel.\n3. **Asymmetric body coil images**: Check Run number labels match connectors (J72=778, J73=779, J75=781, J76=782).\n4. **Resistor splitter fault (1.5T)**: Inspect board for burned resistors or broken solder joints.`,
-      created: '2026-05-23T00:00:00.000Z'
-    }
-  ];
-
-  // -- Diagnostic Guides ------------------------------------------
-  function initDiagGuides(){
-    const stored = localStorage.getItem('amt_diag_guides_v30');
-    if(stored){ diagGuides = JSON.parse(stored); }
-    else { diagGuides = JSON.parse(JSON.stringify(DIAG_GUIDES_SEED)); localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides)); }
-    // Upgrade: seed any guides not yet in localStorage
-    DIAG_GUIDES_SEED.forEach(s=>{ const ex=diagGuides.find(g=>g.id===s.id); if(!ex){ diagGuides.push(s); } else if(s.content && !ex.content){ ex.content=s.content; } });
-    localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
-  }
-
-  function renderDiagGuides(){
-    const sys = document.getElementById('diagFilterSystem')?.value||'';
-    const q = (document.getElementById('diagSearch')?.value||'').toLowerCase();
-    let list = diagGuides.filter(g=>{
-      if(sys && g.system !== sys) return false;
-      if(q && !g.title.toLowerCase().includes(q) && !(g.category||'').toLowerCase().includes(q) && !(g.content||'').toLowerCase().includes(q)) return false;
-      return true;
-    });
-    const el = document.getElementById('diagGuidesList');
-    if(!el) return;
-    if(!list.length){ el.innerHTML='<p style="color:var(--text2);text-align:center;padding:2rem">No guides found.</p>'; return; }
-    el.innerHTML = list.map(g=>`
-      <div class="card mb-8" style="cursor:pointer" onclick="viewDiagGuide('${g.id}')">
-        <div class="card-body" style="padding:.75rem 1rem">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
-            <div>
-              <div style="font-weight:600;color:var(--navy);margin-bottom:.25rem">${g.title}</div>
-              <div style="font-size:.8rem;color:var(--text2)">${g.system||''} ${g.category?'* '+g.category:''}</div>
-              <div style="font-size:.8rem;color:var(--text2);margin-top:.25rem">${(g.content||'').substring(0,120)}...</div>
-            </div>
-            <div style="display:flex;gap:.4rem;flex-shrink:0">
-              <button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openDiagGuideModal('${g.id}')">&#9999;&#65039;</button>
-              <button class="btn btn-sm btn-outline" style="color:var(--danger)" onclick="event.stopPropagation();deleteDiagGuide('${g.id}')">&#128465;</button>
-            </div>
-          </div>
-        </div>
-      </div>`).join('');
-  }
-
-  function viewDiagGuide(id){
-    const g = diagGuides.find(x=>x.id===id); if(!g) return;
-    document.getElementById('diagViewTitle').textContent = g.title;
-    document.getElementById('diagViewBody').innerHTML =
-      '<div style="margin-bottom:.5rem"><span class="badge" style="background:var(--navy);color:#fff;padding:.2rem .5rem;border-radius:.25rem">' + (g.system||'') + '</span>' +
-      (g.category ? ' <span style="color:var(--text2);font-size:.85rem">* '+g.category+'</span>' : '') + '</div>' +
-      '<pre style="white-space:pre-wrap;font-family:inherit;font-size:.9rem;line-height:1.6">' + (g.content||'').replace(/</g,'&lt;') + '</pre>';
-    openModal('diagGuideViewModal');
-  }
-
-  function openDiagGuideModal(id){
-    document.getElementById('dg_title').value='';
-    document.getElementById('dg_system').value='GE MRI';
-    document.getElementById('dg_category').value='';
-    document.getElementById('dg_tags').value='';
-    document.getElementById('dg_content').value='';
-    document.getElementById('dg_edit_id').value='';
-    document.getElementById('diagGuideModalTitle').textContent='Add Diagnostic Guide';
-    if(id){
-      const g=diagGuides.find(x=>x.id===id); if(!g) return;
-      document.getElementById('dg_title').value=g.title||'';
-      document.getElementById('dg_system').value=g.system||'GE MRI';
-      document.getElementById('dg_category').value=g.category||'';
-      document.getElementById('dg_tags').value=(g.tags||[]).join(', ');
-      document.getElementById('dg_content').value=g.content||'';
-      document.getElementById('dg_edit_id').value=id;
-      document.getElementById('diagGuideModalTitle').textContent='Edit Diagnostic Guide';
-    }
-    openModal('diagGuideModal');
-  }
-
-  function saveDiagGuide(){
-    if(!writeGuard('Save Diagnostic Guide')) return;
-    const id = document.getElementById('dg_edit_id').value;
-    const g = {
-      id: id || 'dg_user_'+Date.now(),
-      title: document.getElementById('dg_title').value.trim(),
-      system: document.getElementById('dg_system').value,
-      category: document.getElementById('dg_category').value.trim(),
-      tags: document.getElementById('dg_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-      content: document.getElementById('dg_content').value,
-      created: id ? (diagGuides.find(x=>x.id===id)||{}).created || new Date().toISOString() : new Date().toISOString()
-    };
-    if(!g.title){ alert('Title is required.'); return; }
-    if(id){ const i=diagGuides.findIndex(x=>x.id===id); if(i>=0) diagGuides[i]=g; else diagGuides.push(g); }
-    else { diagGuides.unshift(g); }
-    localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
-    closeModal('diagGuideModal');
-    renderDiagGuides();
-  }
-
-  function deleteDiagGuide(id){
-    if(!writeGuard('Delete Diagnostic Guide')) return;
-    if(!confirm('Delete this guide?')) return;
-    diagGuides = diagGuides.filter(g=>g.id!==id);
-    localStorage.setItem('amt_diag_guides_v30', JSON.stringify(diagGuides));
-    renderDiagGuides();
-  }
-
-  // Call init on load
-  document.addEventListener('DOMContentLoaded', ()=>{ initDiagGuides(); });
-
-  // printCapability function
-  function printCapability(){
-    const body = document.getElementById('capabilityBody');
-    if(!body) return;
-    const w = window.open('','_blank','width=800,height=900');
-    w.document.write('<html><head><title>AMT Capability Statement</title><style>body{font-family:Arial,sans-serif;padding:2rem;max-width:700px;margin:auto}h2{color:#003366}ul{line-height:1.8}@media print{button{display:none}}</style></head><body>'+body.innerHTML+'<script>window.print();<\/script></body></html>');
-    w.document.close();
-  }
-</script>
-</body>
-</html>
+      i
