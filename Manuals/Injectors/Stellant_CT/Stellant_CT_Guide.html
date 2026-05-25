@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad Stellant CT — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  h3{color:#0a1628;border-bottom:2px solid #c9a84c;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;}
+  .b-ct{background:#dbeafe;color:#1e40af;}
+  .b-crit{background:#fee2e2;color:#991b1b;}
+  .b-user{background:#dcfce7;color:#166534;}
+</style>
+</head>
+<body>
+
+<h1>💉 Medrad Stellant CT Injection System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Type:</strong> Dual-head CT contrast injector &nbsp;|&nbsp;
+  <strong>Models:</strong> Stellant D, Stellant FLEX, Stellant FLEX with Certegra Workstation<br>
+  <strong>Support:</strong> 1-800-633-7231 &nbsp;|&nbsp;
+  <strong>ManualsLib:</strong> <a href="https://www.manualslib.com/brand/bayer-healthcare/medical-equipment.html" target="_blank">Bayer Healthcare Manuals</a>
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Injector Head</td><td>Dual-syringe (A=contrast, B=saline), LED status indicators, manual knobs, optic syringe sensors</td></tr>
+  <tr><td>Certegra / Display Workstation</td><td>Touch-screen control unit in control room; runs P3T software; connects via ISI cable</td></tr>
+  <tr><td>ISI 700 Module</td><td>Imaging System Interface — scanner trigger integration</td></tr>
+  <tr><td>Power Control Box</td><td>AC power input, fuses, main power switch</td></tr>
+  <tr><td>Handswitch / Pod</td><td>Remote arm/inject control; also via scan-room pod buttons</td></tr>
+</table>
+
+<h2>Error Codes — User Recoverable</h2>
+<div class="tip">User Recoverable errors: follow on-screen instructions to clear. If error persists, contact Bayer service.</div>
+<table>
+  <tr><th>Code</th><th>Description</th><th>First Response</th></tr>
+  <tr><td><code>867</code></td><td>Invalid syringe / syringe not recognized</td><td>Remove and reinstall syringe. Inspect syringe sensor optics and latch. Clean sensor window. Try a known-good syringe. Check flex ring connector.</td></tr>
+  <tr><td><code>2115</code></td><td>Syringe sensor fault — syringe position not detected</td><td>Verify syringe fully seated. Inspect sensor assembly and optics board. Check syringe well for contrast contamination blocking optics.</td></tr>
+  <tr><td><code>2212</code></td><td>Communication error between display and injector head</td><td>Check ISI cable connections at both ends. Verify cable seating at the head cable connector. Power cycle system. Inspect head cable for damage.</td></tr>
+  <tr><td><code>3016</code></td><td>Pressure limit exceeded — injection aborted</td><td>Check IV line for kinks or clamps. Verify 20G+ needle. Reduce flow rate or pressure limit. Check for occlusion in line. Consider diluting contrast.</td></tr>
+  <tr><td>Invalid Syringe</td><td>Syringe brand/size not accepted by protocol</td><td>Verify syringe is the correct OEM type for the protocol configured. Check for expired disposables. Clear with correct syringe or update protocol.</td></tr>
+  <tr><td>Low Contrast / Low Saline</td><td>Insufficient volume for programmed protocol</td><td>Fill or replace syringe. Reprogram protocol with available volume.</td></tr>
+  <tr><td>Pressure Limit Reached</td><td>Injection paused at set pressure limit</td><td>Assess IV site. Check for occlusion. Reduce flow rate. Restart injection if IV patent.</td></tr>
+</table>
+
+<h2>Error Codes — Critical (Requires Power Cycle)</h2>
+<div class="crit">Critical errors require recording the code and rebooting. If error returns after reboot, do not operate — contact Bayer service.</div>
+<table>
+  <tr><th>Code</th><th>Description</th><th>Action</th></tr>
+  <tr><td>Head Cable Fault</td><td>Head cable open/short circuit detected</td><td>Inspect head cable and connectors. Check for damage or pinching. Swap head cable if available. Do not operate with faulty cable.</td></tr>
+  <tr><td>Motor Fault</td><td>Drive motor over-current or encoder failure</td><td>Check for mechanical obstruction. Verify drive belt and motor coupling. If fault persists, motor or driver board replacement required.</td></tr>
+  <tr><td>Power Supply Fault</td><td>DC rail voltage out of spec</td><td>Check wall power quality. Inspect power supply voltages. Replace power supply if rails fail spec.</td></tr>
+  <tr><td>Flex Ring Failure</td><td>Syringe flex ring connector fault</td><td>Inspect flex ring on injector head. Clean contacts. Replace flex ring assembly.</td></tr>
+  <tr><td>Board Comm Failure</td><td>Internal PCB communication failure</td><td>Power cycle. If persists, internal board fault — requires depot service or board swap.</td></tr>
+</table>
+
+<h2>PM Checklist Summary (Annual)</h2>
+<div class="info">Full PM checklist is in the App → PM tab → Stellant Injector PM. Key items:</div>
+<table>
+  <tr><th>#</th><th>Task</th><th>Spec / Acceptance</th></tr>
+  <tr><td>1</td><td>Record original protocol before starting</td><td>Document SW version, protocol settings</td></tr>
+  <tr><td>2</td><td>Inspect head cable and extension cable</td><td>No damage, no pinching, secure connections</td></tr>
+  <tr><td>3</td><td>Clean optic sensors and syringe wells</td><td>Sensors clear, no contrast residue</td></tr>
+  <tr><td>4</td><td>Inspect / replace lens cap and gasket</td><td>Gasket seating; replace if cracked/brittle</td></tr>
+  <tr><td>5</td><td>Replace top cover gaskets</td><td>All gaskets intact, no tears</td></tr>
+  <tr><td>6</td><td>Lubricate plunger tip boot and rubber boot</td><td>Use OEM lubricant only</td></tr>
+  <tr><td>7</td><td>Inspect / replace dual overlay gasket</td><td>Replace if any damage</td></tr>
+  <tr><td>8</td><td>Motor speed check (fast forward/reverse)</td><td>23 ± 5 seconds</td></tr>
+  <tr><td>9</td><td>Motor speed check (slow forward/reverse)</td><td>115 ± 10 seconds</td></tr>
+  <tr><td>10</td><td>Volume accuracy (5ml/sec, 50ml)</td><td>50 ± 1 ml delivered</td></tr>
+  <tr><td>11</td><td>Flow rate accuracy</td><td>10 ± 1 second for 50ml @ 5ml/sec</td></tr>
+  <tr><td>12</td><td>Pressure limit calibration (8ml/sec, 100ml)</td><td>300 ± 50 psi per side</td></tr>
+  <tr><td>13</td><td>Electrical safety check</td><td>Per local requirements / IEC 60601</td></tr>
+  <tr><td>14</td><td>Return injector with original protocol</td><td>Verify settings restored before leaving</td></tr>
+</table>
+
+<h2>Troubleshooting Tips & Tricks</h2>
+<div class="tip"><strong>Tip:</strong> Most "syringe not recognized" errors (code 867/2115) are caused by contrast residue on the optic sensors. Clean sensors with a dry lint-free cloth before replacing any boards.</div>
+<div class="tip"><strong>Tip:</strong> If the injector head won't power on but the workstation is fine — first check the head cable connector at the head (it can vibrate loose on the pedestal mount).</div>
+<div class="tip"><strong>Tip:</strong> Before calling Bayer service for error code 2212 (comm error), always swap the ISI cable end-to-end. These cables fail much more commonly than the boards themselves.</div>
+<div class="warn"><strong>Warning:</strong> The Stellant is NOT MR-conditional. Never bring it into the MRI scan room. Use the Spectris Solaris EP for MRI-guided injections.</div>
+<div class="warn"><strong>Warning:</strong> When replacing the flex ring, power the system completely off first. Connecting/disconnecting the flex ring under power can cause board damage.</div>
+
+<h2>Key Parts & Part Numbers</h2>
+<table>
+  <tr><th>Part</th><th>Description</th></tr>
+  <tr><td>Head Cable</td><td>Coiled cable connecting head to base/workstation. Part varies by model — confirm from unit label.</td></tr>
+  <tr><td>Flex Ring</td><td>Circular connector assembly on injector head syringe interface.</td></tr>
+  <tr><td>Lens Cap & Gasket</td><td>Protects optic syringe sensor. Replace at every PM.</td></tr>
+  <tr><td>Dual Overlay Gasket</td><td>Seals head cover interface. Replace at every PM.</td></tr>
+  <tr><td>Plunger Tip Boot</td><td>Rubber seal on plunger tip. Lubricate or replace at PM.</td></tr>
+  <tr><td>Top Cover Gasket</td><td>Gasket between head covers. Replace at PM.</td></tr>
+  <tr><td>Manual Knobs</td><td>Retract plunger manually. Inspect/replace at PM.</td></tr>
+</table>
+
+<h2>Specifications</h2>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Flow Rate Range</td><td>0.1 – 10 ml/sec (A-side); 0.1 – 10 ml/sec (B-side)</td></tr>
+  <tr><td>Volume Range</td><td>1 – 200 ml per syringe</td></tr>
+  <tr><td>Max Pressure</td><td>Up to 325 psi (programmable)</td></tr>
+  <tr><td>Syringe Sizes</td><td>60 ml, 100 ml, 200 ml (OEM Medrad syringes required)</td></tr>
+  <tr><td>Operating Temp</td><td>15°C – 35°C</td></tr>
+  <tr><td>Power</td><td>100–240 VAC, 50/60 Hz</td></tr>
+  <tr><td>Weight (head)</td><td>Approx. 4 kg</td></tr>
+</table>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">
+  AMT Imaging Solutions LLC — Field Service Reference &nbsp;|&nbsp; Updated May 2026<br>
+  For official service documentation contact Bayer Radiology: 1-800-633-7231
+</p>
+</body>
+</html>

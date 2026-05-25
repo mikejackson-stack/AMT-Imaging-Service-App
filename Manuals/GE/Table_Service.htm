@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Patient Table Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>🛏️ GE MRI Patient Table Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite, HDxt, Discovery MR450/750, Optima 450w/750w patient table (patient positioning system). Covers error E112, TABLE-DOCK fault, table drive and docking issues.</div>
+
+<h2>Error E112 — Patient Table Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Table Position / Docking</td><td>Verify table is fully docked to magnet bore interface. TABLE-DOCK fault indicates the table is not seated properly. Re-dock table: retract fully, then re-dock until positive engagement is felt/heard.</td></tr>
+  <tr><td>Table Limit Switches</td><td>Check table limit switches at docked and home positions. Run Table Diagnostics in MR Service Desktop → Diagnostics → System Function → Table → Table Position Test.</td></tr>
+  <tr><td>Table Drive Motor</td><td>Listen for motor operation when commanding table movement. No movement with motor sound = mechanical obstruction. No motor sound = electrical fault (motor, driver, or control board).</td></tr>
+  <tr><td>Table Power Supply</td><td>Check DC power to table drive controller. Verify fuses on table control board. Check for tripped motor protection relay.</td></tr>
+  <tr><td>Table Cables and Connectors</td><td>Inspect table cable routing. On systems with in-bore cable chains, check for pinched or worn cables. Reseat all connectors at table junction box and system electronics cabinet.</td></tr>
+  <tr><td>Weight Limit / Overload</td><td>If table fault occurs under heavy patient load, check weight limit setting. GE tables are typically rated 300–500 lbs (model specific). Verify patient weight does not exceed limit.</td></tr>
+</table>
+
+<h2>TABLE-DOCK Fault — Troubleshooting</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>TABLE-DOCK fault, table will not dock</td><td>Docking latch misaligned; dock sensor not activated; latch mechanism worn</td><td>Inspect dock latch alignment. Manually guide table into dock. Check dock sensor (proximity switch). Lubricate dock mechanism per PM schedule.</td></tr>
+  <tr><td>TABLE-DOCK fault after table locks</td><td>Dock sensor failed or misadjusted</td><td>Adjust dock sensor position. Test sensor continuity. Replace sensor if faulty.</td></tr>
+  <tr><td>Table docks but won't go into bore</td><td>Table drive fault after docking; in-bore position sensor issue</td><td>Run in-bore drive diagnostics. Check in-bore motor and cable chain. Inspect position encoder.</td></tr>
+  <tr><td>Table moves but makes grinding/squealing noise</td><td>Worn drive belt, misaligned drive track, insufficient lubrication</td><td>Inspect table drive belt for wear or damage. Lubricate drive rail per PM. Replace belt if worn.</td></tr>
+  <tr><td>Table vertical motion failed (height adjustment)</td><td>Vertical drive motor fault; hydraulic leak (hydraulic tables); vertical position sensor</td><td>Check vertical motor/drive. On hydraulic models, inspect for hydraulic fluid leak. Check vertical limit switches.</td></tr>
+  <tr><td>E112 recurring, table works mechanically</td><td>Intermittent connection in table position feedback cable</td><td>Flex table cable manually while monitoring table position in service desktop. Replace cable if intermittent fault identified.</td></tr>
+</table>
+
+<h2>Table Safety Systems</h2>
+<div class="warn">Always maintain control of patient table motion when a patient is on the table. Never leave a patient unattended during table movement. Verify all safety stops and limit switches are functional during PM.</div>
+<table>
+  <tr><th>Safety Feature</th><th>Function</th><th>Test Method</th></tr>
+  <tr><td>Emergency Stop</td><td>Halts all table motion immediately</td><td>Command table movement; press emergency stop; verify table halts. Reset and confirm normal operation.</td></tr>
+  <tr><td>Weight Limit / Overload Cutoff</td><td>Prevents table movement if patient weight exceeds limit</td><td>Check weight limit setting in system configuration. Verify error is generated when simulated overload present.</td></tr>
+  <tr><td>In-Bore Limit Switch</td><td>Prevents table from going too far into bore and contacting gradient coil</td><td>Command table to maximum in-bore position. Verify table stops at correct limit. Do not override limit switches.</td></tr>
+  <tr><td>Out-of-Bore Limit Switch</td><td>Prevents table from retracting too far and falling off the end</td><td>Command table to full retract. Verify table stops at correct home position limit.</td></tr>
+  <tr><td>Dock Sensor</td><td>Prevents table from entering bore unless properly docked</td><td>Attempt to move table into bore without docking. System should refuse movement with TABLE-DOCK error.</td></tr>
+  <tr><td>Anti-Pinch / Obstruction Sensor</td><td>Halts movement if obstruction detected (model dependent)</td><td>Place obstruction in table path during slow movement. Verify table stops and fault is generated.</td></tr>
+</table>
+
+<h2>Table PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Lubricate table drive rails and bearings</td><td>Semi-Annual / Annual</td><td>Use OEM-approved lubricant only. Non-magnetic lubricant is required for any parts near the bore opening.</td></tr>
+  <tr><td>Inspect drive belt tension and condition</td><td>Annual</td><td>Check for cracking, fraying, or wear. Measure belt tension per service manual specification.</td></tr>
+  <tr><td>Test all limit switches</td><td>Annual</td><td>In-bore, out-of-bore, dock sensor, vertical limit switches. Verify correct stopping at each limit.</td></tr>
+  <tr><td>Test emergency stop function</td><td>Annual</td><td>Verify stop button halts motion immediately on all axes</td></tr>
+  <tr><td>Inspect table cable chain</td><td>Annual</td><td>Check for worn or broken links, pinched cables. Flex through full travel range.</td></tr>
+  <tr><td>Clean and inspect dock mechanism</td><td>Annual</td><td>Clean dock latch. Inspect for wear. Lubricate per OEM spec.</td></tr>
+  <tr><td>Verify weight limit calibration</td><td>Annual</td><td>Apply known weight and verify table operates or faults per spec</td></tr>
+  <tr><td>Inspect table top surface and pad</td><td>Semi-Annual</td><td>Check for cracks or wear that could create patient safety risk. Replace worn pad.</td></tr>
+  <tr><td>Electrical safety test</td><td>Annual</td><td>Leakage current test per IEC 60601 / facility requirements</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The most common cause of TABLE-DOCK errors is a dock latch that needs lubrication or minor alignment adjustment. Before suspecting electronics, manually inspect the mechanical dock engagement — this fixes the majority of TABLE-DOCK calls without part replacement.</div>
+<div class="tip"><strong>Tip:</strong> Use MR Service Desktop → Diagnostics → Table → Table Position to monitor table position in real time. This helps confirm whether the fault is mechanical (position reads wrong during motion) or electrical (position doesn't change at all).</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

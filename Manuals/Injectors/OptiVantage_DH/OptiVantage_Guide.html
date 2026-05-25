@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guerbet OptiVantage DH — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+
+<h1>💉 Guerbet OptiVantage DH Dual-Head CT Injection System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Guerbet (formerly Liebel-Flarsheim / Mallinckrodt / Tyco Healthcare) &nbsp;|&nbsp;
+  <strong>Type:</strong> Dual-head CT contrast injector<br>
+  <strong>Also known as:</strong> CT9000 ADV, Illumina (earlier Liebel-Flarsheim models), OptiVantage DH<br>
+  <strong>Support:</strong> Guerbet USA 1-877-484-7234 &nbsp;|&nbsp;
+  <strong>FCC Docs:</strong> <a href="https://fccid.io/UEI844003/User-Manual/User-Manual-698150" target="_blank">OptiVantage DH Operator Manual (FCC)</a>
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Injector Head Assembly</td><td>Dual-piston; A-side (contrast) and B-side (saline). Microprocessor-controlled motors. Mounted on pivot arm.</td></tr>
+  <tr><td>Touch-Screen Console</td><td>Control panel with programmable protocols; scan delay, inject delay, phase delay settings. Located in control room.</td></tr>
+  <tr><td>Power Module</td><td>AC power input, fuse protection, main power switch.</td></tr>
+  <tr><td>Handswitch</td><td>Remote arm/inject capability for scan room technologist.</td></tr>
+  <tr><td>Scanner Interface</td><td>Optional ISI connection for scanner-triggered injection.</td></tr>
+</table>
+
+<h2>Programmable Parameters</h2>
+<table>
+  <tr><th>Parameter</th><th>Range</th><th>Notes</th></tr>
+  <tr><td>Flow Rate</td><td>0.1 – 10 ml/sec (model dependent)</td><td>Each phase independently programmable</td></tr>
+  <tr><td>Volume</td><td>1 – 200 ml per phase</td><td>Total volume limited by syringe size</td></tr>
+  <tr><td>Pressure Limit</td><td>Up to 325 psi (programmable)</td><td>System halts injection if limit reached</td></tr>
+  <tr><td>Inject Delay</td><td>0 – 60 sec</td><td>Delay after arm before injection starts</td></tr>
+  <tr><td>Scan Delay</td><td>0 – 60 sec</td><td>Delay from injection start to scan trigger</td></tr>
+  <tr><td>Phase Delay</td><td>0 – 60 sec</td><td>Delay between multi-phase injection segments</td></tr>
+  <tr><td>DualFlow</td><td>Simultaneous A+B injection</td><td>Contrast + saline simultaneous blend</td></tr>
+</table>
+
+<h2>Error Messages & Troubleshooting</h2>
+<table>
+  <tr><th>Error / Message</th><th>Likely Cause</th><th>Resolution</th></tr>
+  <tr><td>Pressure Limit Reached</td><td>IV occlusion, kinked line, undersized needle, thick contrast</td><td>Check IV line, verify 20G+ needle, reduce flow rate or raise pressure limit if clinically appropriate, warm contrast to body temp</td></tr>
+  <tr><td>Syringe Not Seated / Not Detected</td><td>Syringe not fully installed, dirty sensor, wrong syringe type</td><td>Remove and reinstall syringe firmly. Clean syringe sensor. Verify OEM syringe type for this injector.</td></tr>
+  <tr><td>Communication Error</td><td>Head-to-console cable fault, connector issue</td><td>Check all cable connections. Power cycle. Inspect cable for damage.</td></tr>
+  <tr><td>Motor Fault / Drive Error</td><td>Mechanical obstruction, motor overcurrent, encoder failure</td><td>Check for blockage. Manual retract plunger. Power cycle. If fault persists, motor or driver replacement needed.</td></tr>
+  <tr><td>Volume Remaining Warning</td><td>Insufficient contrast or saline for programmed protocol</td><td>Refill or replace syringe before proceeding.</td></tr>
+  <tr><td>Calibration Error</td><td>Plunger position calibration failed</td><td>Re-run auto-calibration from system menu. Inspect guide rails and lubrication.</td></tr>
+  <tr><td>Power Fault</td><td>AC power interruption or power supply failure</td><td>Check wall power. Check fuses. Inspect power supply voltages.</td></tr>
+  <tr><td>Head Temperature Warning</td><td>Contrast warmer too hot or thermostat fault</td><td>Check contrast warmer setting (should be ~37°C). Inspect warmer thermostat. Do not inject overheated contrast.</td></tr>
+</table>
+
+<h2>PM Tips (Annual / Semi-Annual)</h2>
+<table>
+  <tr><th>Task</th><th>Notes</th></tr>
+  <tr><td>Inspect head cables and connectors</td><td>Check for cracking, pinching, corrosion at connectors</td></tr>
+  <tr><td>Inspect syringe interface and sensors</td><td>Clean optic or mechanical sensors; replace worn O-rings</td></tr>
+  <tr><td>Lubricate drive mechanisms</td><td>Use OEM-approved lubricant only; avoid over-greasing</td></tr>
+  <tr><td>Inspect pivot arm and mounting</td><td>Arm should move smoothly; tighten any loose fasteners</td></tr>
+  <tr><td>Volume accuracy check</td><td>Deliver measured volume, verify ±1 ml accuracy</td></tr>
+  <tr><td>Flow rate accuracy check</td><td>Time delivery of known volume at set rate</td></tr>
+  <tr><td>Pressure limit calibration</td><td>Verify pressure transducer accuracy; calibrate per OEM spec</td></tr>
+  <tr><td>Contrast warmer calibration</td><td>Verify set temperature matches delivered temperature</td></tr>
+  <tr><td>Electrical safety</td><td>Per IEC 60601 and local facility requirements</td></tr>
+</table>
+
+<h2>Troubleshooting Tips</h2>
+<div class="tip"><strong>Tip:</strong> The OptiVantage DH has a "Purge" function on the console that is useful for priming lines and clearing air bubbles. Always purge both sides before connecting to patient.</div>
+<div class="tip"><strong>Tip:</strong> If "Syringe Not Detected" persists after cleaning sensors and trying a new syringe, inspect the latch mechanism on the syringe cradle. A worn or bent latch can prevent the syringe from seating fully against the sensor.</div>
+<div class="warn"><strong>Warning:</strong> The OptiVantage DH is a CT-only injector. It is NOT MR-conditional. Never bring into the MRI scan room.</div>
+<div class="tip"><strong>Tip:</strong> For recurring high-pressure aborts in the same patient population, consider evaluating your IV catheter gauge. Studies show that 22G catheters frequently cause pressure limit events at flow rates above 3 ml/sec.</div>
+
+<h2>Specifications</h2>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Flow Rate Range</td><td>0.1 – 10 ml/sec</td></tr>
+  <tr><td>Volume Range</td><td>1 – 200 ml per phase</td></tr>
+  <tr><td>Max Injection Pressure</td><td>Up to 325 psi</td></tr>
+  <tr><td>Syringe Sizes</td><td>60 ml, 100 ml, 150 ml (OEM Guerbet disposables)</td></tr>
+  <tr><td>Operating Temp</td><td>15°C – 35°C</td></tr>
+  <tr><td>Power</td><td>100–240 VAC, 50/60 Hz</td></tr>
+</table>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">
+  AMT Imaging Solutions LLC — Field Service Reference &nbsp;|&nbsp; Updated May 2026<br>
+  For official service documentation contact Guerbet USA: 1-877-484-7234<br>
+  Reference: OptiVantage DH Operator's Manual (Tyco Healthcare/Guerbet)
+</p>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Calibration Procedures — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>⚙️ GE MRI Calibration Procedures<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, Discovery MR450/750, Optima 450w/750w. Covers FREQ (center frequency) error, RF calibration, gradient calibration, and routine calibration procedures.</div>
+
+<h2>FREQ Error — Center Frequency Out of Range</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Center Frequency Drift</td><td>Run Prescan / Frequency Scout manually: MR Service Desktop → Diagnostics → Frequency. If system cannot find center frequency or returns an error, the Larmor frequency is outside the expected range. This indicates magnet field drift or a calibration issue.</td></tr>
+  <tr><td>Magnet Stability</td><td>Check frequency over time using MR Service Desktop → Magnet Real Time Data → Field Frequency history. A sudden shift suggests a quench event or shimming issue. Gradual drift is normal aging. Extreme drift (&gt;1 kHz) warrants GE service.</td></tr>
+  <tr><td>System Shim</td><td>Run Automatic Frequency and Shim procedure: Diagnostics → System Function → Magnet → Auto Shim. This recalculates the optimal center frequency and passive shim settings. Required after any significant environment change.</td></tr>
+  <tr><td>Patient-Related Susceptibility</td><td>FREQ errors during a scan can be caused by a large patient or patient movement changing the effective field. Try re-running prescan. If persistent, perform a full system prescan with no patient and a calibration phantom.</td></tr>
+  <tr><td>RF Transmit Chain</td><td>FREQ errors can also result from RF excitation issues (RF amp fault). Check for concurrent E305 error. Verify RF transmit chain is functional per RF service guide.</td></tr>
+</table>
+
+<h2>GE MRI Calibration Sequence</h2>
+<div class="info">Run calibrations in the order listed below. Each step depends on the previous being correct. Start with the phantom in the isocenter with no patient.</div>
+<table>
+  <tr><th>Step</th><th>Procedure</th><th>Location in Service Desktop</th></tr>
+  <tr><td>1. Center Frequency</td><td>Find Larmor frequency. System should lock within ±1–5 kHz of expected value for the field strength.</td><td>Diagnostics → System Function → Magnet → Frequency</td></tr>
+  <tr><td>2. RF Transmit Calibration</td><td>Calibrate RF transmit power and flip angle accuracy. Requires calibration phantom. Run ATD (Automatic Transmit Calibration).</td><td>Diagnostics → System Function → RF → RF Calibration</td></tr>
+  <tr><td>3. Gradient Calibration</td><td>Verify gradient linearity and scale factors. Geometric accuracy of images depends on this calibration.</td><td>Diagnostics → System Function → Gradient → Gradient Calibration</td></tr>
+  <tr><td>4. Receive Gain / Prescan</td><td>Set receiver gain for optimal SNR. This is run automatically before most scans (prescan) but can be forced manually.</td><td>Diagnostics → System Function → Receive → Prescan</td></tr>
+  <tr><td>5. Image Quality Check</td><td>Run SNR, uniformity, and resolution phantoms. Document results for ACR or facility accreditation records.</td><td>Run with QA phantom and appropriate ACR/NEMA protocol</td></tr>
+</table>
+
+<h2>Calibration Phantom Tips</h2>
+<table>
+  <tr><th>Scenario</th><th>Best Practice</th></tr>
+  <tr><td>Phantom temperature</td><td>Allow phantom to equilibrate to room temperature (at least 30 min out of refrigerator) before calibrating. Cold phantom shifts T1 and can cause calibration errors.</td></tr>
+  <tr><td>Phantom positioning</td><td>Center phantom precisely at magnet isocenter using alignment lasers. Off-center phantom introduces gradient calibration errors.</td></tr>
+  <tr><td>Phantom fluid</td><td>Use the GE-supplied calibration phantom with correct CuSO₄ or MnCl₂ solution. Check for particulate matter or precipitation — replace phantom fluid annually or per OEM guidance.</td></tr>
+  <tr><td>ACR Phantom</td><td>For ACR accreditation, use the ACR MRI phantom (large acrylic, 13 cm diameter, 148 mm length). Run the prescribed ACR protocol exactly as specified. Document all results.</td></tr>
+  <tr><td>After board replacement</td><td>Always run full calibration sequence after replacing any RF, gradient, or receiver board. Never return a system to clinical use after board swap without calibration verification.</td></tr>
+</table>
+
+<h2>Common Calibration Failures and Causes</h2>
+<table>
+  <tr><th>Failure</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>FREQ error — cannot find center frequency</td><td>Extreme magnet drift; RF transmit chain fault; large B0 disturbance (ferromagnetic item near magnet)</td><td>Check for ferromagnetic items moved near magnet. Check RF chain (E305). If magnet drift confirmed, contact GE.</td></tr>
+  <tr><td>RF calibration failure — flip angle out of range</td><td>RF amp output degraded; body coil detuning issue; coil impedance mismatch</td><td>Check RF amp output power. Verify body coil tuning. Re-run RF diagnostics. Check TR switch.</td></tr>
+  <tr><td>Gradient calibration failure — geometric distortion in phantom images</td><td>Gradient amp performance issue; eddy current compensation drift; phantom off-center</td><td>Re-center phantom. Re-run gradient calibration. Check gradient amp performance. May require GE field service for eddy current recalibration.</td></tr>
+  <tr><td>SNR below spec after calibration</td><td>Coil issue; receive chain degradation; RFI from new source</td><td>Check body coil and any surface coil being tested. Inspect RF shield integrity. Run RFI test. Check receive chain.</td></tr>
+  <tr><td>Calibration passes but images are poor</td><td>Shim coil issue; patient-specific factors; sequence parameters wrong</td><td>Run full auto-shim. Verify clinical protocol parameters. Check image uniformity with phantom vs. patient.</td></tr>
+</table>
+
+<h2>Routine Calibration PM Schedule</h2>
+<table>
+  <tr><th>Calibration Task</th><th>Interval</th><th>Who</th></tr>
+  <tr><td>Daily prescan / auto-calibration</td><td>Daily (automated)</td><td>System performs automatically before each scan</td></tr>
+  <tr><td>ACR / NEMA Image Quality Phantom</td><td>Weekly (ACR) or per accreditation requirement</td><td>MRI tech or physicist</td></tr>
+  <tr><td>RF transmit calibration verification</td><td>Semi-Annual or after RF system repair</td><td>Field service engineer</td></tr>
+  <tr><td>Gradient calibration / geometric accuracy</td><td>Annual or after gradient repair</td><td>Field service engineer</td></tr>
+  <tr><td>Full system calibration (all steps)</td><td>Annual PM or after major repair</td><td>Field service engineer with phantom</td></tr>
+  <tr><td>MR physicist QA review</td><td>Annual (ACR required)</td><td>Qualified MR physicist</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> Document all calibration results in the site's equipment log. Trending calibration data over time (especially RF power and gradient scale factors) can predict hardware degradation before a clinical failure occurs.</div>
+<div class="tip"><strong>Tip:</strong> The FREQ error is sometimes caused by something as simple as a large metallic cart being parked near the magnet room door. Always check the environment before suspecting a hardware calibration issue.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

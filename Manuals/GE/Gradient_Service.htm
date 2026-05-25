@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Gradient System Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>📡 GE MRI Gradient System Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, Discovery MR450/750, Optima 450w/750w and related platforms. Error E410 and related gradient fault diagnostics.</div>
+
+<h2>Error E410 — Gradient Amplifier Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Gradient Amp Cooling</td><td>Verify gradient amplifier cooling fans are running. Check cooling water flow (liquid-cooled systems). Overtemp is a leading cause of E410. Check the temperature status in MR Service Desktop → Gradient Real Time Data.</td></tr>
+  <tr><td>DC Bus Voltage</td><td>Verify DC bus voltage to gradient amps. Check for blown fuses on the gradient power supply. Measure DC rails per service manual test points.</td></tr>
+  <tr><td>Gradient Amp Enable</td><td>Verify gradient amp enable signal is present. Run Gradient Amplifier Diagnostics: MR Service Desktop → Diagnostics → System Function → Gradient → Gradient Amplifier Test.</td></tr>
+  <tr><td>Gradient Cable Connections</td><td>Inspect all gradient cables from amp to gradient coil assembly. Reseat all connectors. Look for arcing or insulation damage.</td></tr>
+  <tr><td>Gradient Coil Continuity</td><td>Run gradient coil resistance check: Diagnostics → Gradient → Gradient Coil Test. X, Y, Z coils tested independently. Note any open or shorted coil.</td></tr>
+  <tr><td>Thermal Interlock</td><td>Check thermal interlock sensors on gradient amplifiers. A tripped thermal switch requires cooldown before reset. Inspect for obstructed airflow or failed fan.</td></tr>
+</table>
+
+<h2>Common Gradient Fault Scenarios</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>E410 on specific axis only (X, Y, or Z)</td><td>Single gradient amp failure or coil fault on that axis</td><td>Run per-axis gradient diagnostic. Isolate to amp or coil with resistance measurement. Replace failed amp or schedule coil service.</td></tr>
+  <tr><td>E410 on startup, clears on retry</td><td>DC bus inrush / slow rail stabilization</td><td>Check DC bus caps and pre-charge circuit. Test gradient power supply under load.</td></tr>
+  <tr><td>E410 intermittent under heavy scan load</td><td>Thermal shutdown — cooling inadequacy</td><td>Clean heat exchangers (liquid-cooled) or fans (air-cooled). Verify coolant flow rate and temperature. Check room ambient temperature.</td></tr>
+  <tr><td>Gradient-related image artifact (banding, geometric distortion)</td><td>Gradient amp performance degraded — not fully failed</td><td>Run gradient performance tests. Check eddy current compensation. May require amp recalibration or replacement.</td></tr>
+  <tr><td>E410 with loud click/bang before fault</td><td>Gradient arc or insulation failure in coil assembly</td><td>Inspect gradient coil connectors for arcing. Measure coil resistance and insulation resistance. Coil assembly replacement likely needed.</td></tr>
+  <tr><td>E410 after power outage or surge</td><td>Blown fuse or damaged power supply component</td><td>Inspect gradient power supply fuses. Check DC bus voltage. Test power supply output.</td></tr>
+</table>
+
+<h2>Gradient Amplifier Test Points (GE Excite/HDxt)</h2>
+<div class="warn">Always use non-magnetic test equipment in or near the magnet room. De-energize gradient amps before touching any gradient amp power connections.</div>
+<table>
+  <tr><th>Test Point</th><th>Expected Value</th><th>Notes</th></tr>
+  <tr><td>DC Bus Voltage</td><td>±350–400 VDC (model specific)</td><td>Measure at gradient amp input — refer to service manual for your platform</td></tr>
+  <tr><td>X Coil Resistance</td><td>Model specific (~0.3–1.2 Ω typical)</td><td>Compare L/R symmetry; open or short = coil fault</td></tr>
+  <tr><td>Y Coil Resistance</td><td>Model specific</td><td>Same as X — compare both coil halves</td></tr>
+  <tr><td>Z Coil Resistance</td><td>Model specific</td><td>Z coil is typically highest resistance of the three</td></tr>
+  <tr><td>Gradient Amp Output Voltage</td><td>Per service desktop real-time data</td><td>Use MR Service Desktop → Gradient Real Time Data during scan</td></tr>
+  <tr><td>Cooling Water Flow (liquid-cooled)</td><td>Per spec (typically 2–4 L/min)</td><td>Check flow meter on cooling water supply line to gradient cabinet</td></tr>
+</table>
+
+<h2>Gradient Coil Resistance Quick Reference</h2>
+<div class="info">Values below are approximate ranges. Always compare to the platform-specific service manual. Significant deviation (>10%) or asymmetry between coil halves indicates a coil fault.</div>
+<table>
+  <tr><th>Platform</th><th>X Coil (Ω)</th><th>Y Coil (Ω)</th><th>Z Coil (Ω)</th></tr>
+  <tr><td>Signa Excite 1.5T</td><td>~0.35</td><td>~0.35</td><td>~0.45</td></tr>
+  <tr><td>Signa HDxt 1.5T</td><td>~0.30</td><td>~0.30</td><td>~0.40</td></tr>
+  <tr><td>Discovery MR450/750</td><td>Refer to service manual</td><td>Refer to service manual</td><td>Refer to service manual</td></tr>
+  <tr><td>Optima MR450w/750w</td><td>Refer to service manual</td><td>Refer to service manual</td><td>Refer to service manual</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> When troubleshooting E410, always start with the gradient diagnostics in MR Service Desktop before making any physical measurements. The diagnostic output narrows the fault to a specific amp channel or coil axis quickly.</div>
+<div class="tip"><strong>Tip:</strong> On liquid-cooled gradient systems, confirm coolant flow and temperature before replacing a gradient amplifier — an overheated amp that looks failed may simply need the cooling system serviced.</div>
+<div class="crit"><strong>Critical:</strong> Gradient amplifier DC bus voltages are HIGH VOLTAGE (350–400 VDC). Always allow full discharge after power-off before touching internal amp components. Confirm with a meter before touching.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

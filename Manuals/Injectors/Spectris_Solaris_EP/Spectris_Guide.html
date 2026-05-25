@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad Spectris Solaris EP — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  h3{color:#0a1628;border-bottom:2px solid #c9a84c;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+
+<h1>💉 Medrad Spectris Solaris EP MR Injection System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Type:</strong> MRI-compatible dual-head injector &nbsp;|&nbsp;
+  <strong>MR Safety:</strong> MR Conditional (must verify site-specific parameters)<br>
+  <strong>Support:</strong> 1-800-633-7231 &nbsp;|&nbsp;
+  <strong>ManualsLib:</strong> <a href="https://www.manualslib.com/manual/1328772/Medrad-Spectris-Solaris-Ep.html" target="_blank">Spectris Solaris EP Operation Manual</a>
+</div>
+
+<div class="crit">
+  ⚠️ <strong>MR Safety:</strong> The Spectris Solaris EP is MR Conditional. Always verify compatibility with the specific MRI system's field strength, bore size, and spatial gradient before positioning. Keep base unit outside the 5 Gauss line. Fiber optic cables must pass RF shield through appropriate penetration filters.
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Injector Head</td><td>MR-conditional dual-head. Positioned at magnet bore. No ferromagnetic parts. Communicates via fiber optic to base.</td></tr>
+  <tr><td>Control Room Unit (CRU)</td><td>Touch-screen control console. Located in control room, outside 5 Gauss line. AC powered.</td></tr>
+  <tr><td>Scan Room Unit (SRU)</td><td>Small interface unit mounted near bore. Connects head to CRU via fiber optic. Relay for arm/inject commands.</td></tr>
+  <tr><td>Fiber Optic Cables</td><td>Connects CRU ↔ SRU ↔ Head. Must route through RF shield penetration with waveguide or proper filter.</td></tr>
+  <tr><td>Battery / Charger</td><td>Internal battery in head for cordless operation inside bore. Separate charger unit. Battery life ~200 injections.</td></tr>
+  <tr><td>Handswitch</td><td>Remote arm/inject handswitch for tech in scan room or control room.</td></tr>
+</table>
+
+<h2>Message Types</h2>
+<table>
+  <tr><th>Type</th><th>Display</th><th>Action</th></tr>
+  <tr><td><strong>Type 1</strong></td><td>Informational message, no dialog</td><td>No action required — information only</td></tr>
+  <tr><td><strong>Type 2</strong></td><td>Yellow dialog box — must acknowledge</td><td>Read message, press button to clear. Correct condition if indicated.</td></tr>
+  <tr><td><strong>Type 3</strong></td><td>Black background — system malfunction</td><td>⚠️ IMMEDIATELY disconnect patient from injector. Record SymCode + ErrNum. Power down system. Call Medrad if error returns after power cycle.</td></tr>
+</table>
+
+<h2>Error Codes & SymCodes</h2>
+<table>
+  <tr><th>Code / SymCode</th><th>ErrNum</th><th>Description</th><th>First Response</th></tr>
+  <tr><td><code>1806</code></td><td>—</td><td>Communication lost between CRU and SRU/Head</td><td>Check fiber optic cables at both ends. Inspect for damage or sharp bends. Verify connections at RF penetration panel. Power cycle system. Swap fiber cable if available.</td></tr>
+  <tr><td><code>1811</code></td><td>—</td><td>Pressure limit exceeded / syringe sensor assembly fault</td><td>Check IV line for occlusion. If pressure OK, inspect syringe sensor assembly and base interface card. May require head switch card or fiber optic cable replacement.</td></tr>
+  <tr><td><code>2101</code></td><td>—</td><td>Motor calibration failure</td><td>Re-run motor calibration from Setup menu. Inspect drive belt and motor coupling. Check for mechanical obstruction. Replace motor or driver board if calibration fails repeatedly.</td></tr>
+  <tr><td><code>1817</code></td><td>—</td><td>Syringe position error</td><td>Remove and reinstall syringe. Clean syringe well O-rings. Verify correct syringe type. Inspect syringe position sensor.</td></tr>
+  <tr><td><code>PRSSRA</code></td><td>1811</td><td>Pressure sensor assembly fault (Type 3)</td><td>Disconnect patient. Power down. Inspect fiber optic cables, base interface card, syringe sensor assemblies, head switch card. Requires board-level diagnosis.</td></tr>
+  <tr><td><code>HSW</code></td><td>-2600</td><td>Handswitch fault (Type 3)</td><td>Disconnect patient. Inspect handswitch cable and connector. Replace handswitch if damaged. If fault persists without handswitch attached, logic board fault suspected.</td></tr>
+  <tr><td>Battery Low</td><td>—</td><td>Head battery below safe threshold</td><td>Charge battery fully (4+ hours) before next use. Check charger output voltage. Replace battery if not holding charge.</td></tr>
+  <tr><td>Charger Fault</td><td>—</td><td>Battery charger not functioning</td><td>Check charger power connections. Inspect charger output. Replace charger if defective.</td></tr>
+  <tr><td>Plunger Calibration</td><td>—</td><td>Plunger homing/calibration failure</td><td>Inspect plunger guide rails. Re-run calibration. Grease guide rails and ball screws per PM procedure.</td></tr>
+</table>
+
+<h2>PM Checklist Summary (Annual)</h2>
+<div class="info">Full PM checklist is in the App → PM tab → Solaris/Spectris Injector PM. Key items:</div>
+<table>
+  <tr><th>#</th><th>Task</th><th>Spec / Acceptance</th></tr>
+  <tr><td>1–2</td><td>Record SW version, run operational checkout</td><td>Document version, protocol verified</td></tr>
+  <tr><td>3</td><td>Move base to control room; disconnect fiber optics; inspect</td><td>No damage to fiber, charger, power box</td></tr>
+  <tr><td>4</td><td>Inspect display panel, handswitch, charging system</td><td>All functional; battery charging normally</td></tr>
+  <tr><td>5</td><td>Inspect head: buttons, plungers, pivot knuckle</td><td>No cracking; smooth plunger movement</td></tr>
+  <tr><td>5d–5k</td><td>Remove top cover; inspect internal wiring, syringe wells, O-rings; grease gears, rails, ball screws</td><td>OEM lubricant; O-rings intact; no corrosion</td></tr>
+  <tr><td>9</td><td>Base inspection: cables, connectors, battery, drive cables, brass housing, front/rear/battery plates</td><td>All hardware secure; no corrosion</td></tr>
+  <tr><td>11</td><td>Syringe position verification</td><td>40 ± 1 ml each side</td></tr>
+  <tr><td>12</td><td>Volume/flow rate (5ml/sec, 50ml, 300psi)</td><td>Per spec table — see App checklist</td></tr>
+  <tr><td>13</td><td>Motor speed checks (fast/slow forward/reverse)</td><td>A-side: 7±2s fast, 25±2s slow; B-side: 12±2s fast, 46±4s slow</td></tr>
+  <tr><td>15–16</td><td>Pressure limit (A: 6.5ml/sec, B: 8ml/sec)</td><td>A: 250±41 psi; B: 300±50 psi</td></tr>
+</table>
+
+<h2>Fiber Optic Installation Tips</h2>
+<div class="tip">
+  <strong>RF Shield Routing:</strong> Fiber optic cables must pass through the RF shield via approved EMC waveguide filters or EMC penetration panels. Do NOT drill new holes without RF filter. Verify with RF shield integrity test after installation.
+</div>
+<div class="tip">
+  <strong>Minimum Bend Radius:</strong> Fiber optic cables must not be bent below their minimum bend radius (~30mm for standard fiber). Tight bends at the penetration panel are the #1 cause of intermittent comm errors (code 1806).
+</div>
+<div class="warn">
+  <strong>Battery Safety:</strong> Do not operate the head with a failed or uncharged battery. Battery voltage below spec can cause erratic motor behavior and mid-injection aborts.
+</div>
+
+<h2>Troubleshooting Tips & Tricks</h2>
+<div class="tip"><strong>Tip:</strong> Error 1806 (comm lost) — before blaming the fiber cable, first check the bulkhead connectors on the RF penetration panel. These connectors are often dirty or slightly loose and are cleaned/tightened in 5 minutes vs. replacing a fiber cable.</div>
+<div class="tip"><strong>Tip:</strong> Error 1811 recurring — if IV pressure is not the cause, the most common fix is replacing the syringe sensor assembly in the head. This is a PM consumable item.</div>
+<div class="tip"><strong>Tip:</strong> If the head battery won't hold a charge past 50%, replace the battery. A partially charged battery will cause random mid-injection aborts as the motor draws peak current.</div>
+<div class="tip"><strong>Tip:</strong> When re-greasing the plastic gears (step 5i), use only MR-safe, non-ferrous lubricant. Standard petroleum-based greases may contain ferrous particles that attract to the magnet over time.</div>
+
+<h2>Specifications</h2>
+<table>
+  <tr><th>Parameter</th><th>Value</th></tr>
+  <tr><td>Flow Rate Range</td><td>0.1 – 10 ml/sec (each side)</td></tr>
+  <tr><td>Volume Range</td><td>1 – 65 ml (A-side contrast); 1 – 130 ml (B-side saline)</td></tr>
+  <tr><td>Max Pressure Limit</td><td>Up to 300 psi (programmable)</td></tr>
+  <tr><td>Syringe Sizes</td><td>A-side: 65 ml; B-side: 130 ml (OEM Medrad MR syringes)</td></tr>
+  <tr><td>Battery Life</td><td>~200 injections per charge</td></tr>
+  <tr><td>MR Conditions</td><td>1.5T and 3T; verify spatial gradient and bore clearance</td></tr>
+  <tr><td>Operating Temp</td><td>15°C – 35°C</td></tr>
+  <tr><td>Head Weight</td><td>Approx. 5.5 kg</td></tr>
+</table>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">
+  AMT Imaging Solutions LLC — Field Service Reference &nbsp;|&nbsp; Updated May 2026<br>
+  For official service documentation contact Bayer Radiology: 1-800-633-7231<br>
+  Reference: ManualsLib — Medrad Spectris Solaris EP Operation Manual (72 pages)
+</p>
+</body>
+</html>

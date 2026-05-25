@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Cryogen & Cold Head Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>❄️ GE MRI Cryogen & Cold Head Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite, HDxt, Discovery MR450/750, Optima 450w/750w superconducting magnet systems. Covers helium level monitoring, cold head service, quench procedures, and cryogen-related alarms (E501 and related).</div>
+
+<div class="crit"><strong>Safety First:</strong> Liquid helium is cryogenic (-269°C / 4K). A magnet quench rapidly vents large volumes of helium gas — oxygen displacement is a life-threatening hazard. Never enter a quenched magnet room without first confirming adequate oxygen levels. Facility must have an O₂ monitor installed in the scan room and quench pipe must be intact and unobstructed.</div>
+
+<h2>Error E501 — Helium Level / Cryogen Warning</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Helium Level Reading</td><td>Check He level display on magnet console or MR Service Desktop → Magnet Real Time Data. Normal operating level is typically 70–100% (GE factory fill). Below 65% warrants attention. Below 50% is urgent — schedule helium fill immediately.</td></tr>
+  <tr><td>Cold Head Operation</td><td>Verify cold head compressor is running. Listen for normal compressor cycling. Check helium pressure gauges on compressor unit. Cold head failure accelerates helium boil-off significantly.</td></tr>
+  <tr><td>Cold Head Supply Lines</td><td>Inspect flexible helium supply lines between compressor and cold head. Check for frost (unusual), crimps, or loose fittings. Replace adsorber on compressor per PM schedule.</td></tr>
+  <tr><td>Magnet Pressure</td><td>Check magnet pressure reading (if equipped). Elevated magnet pressure with low He level can indicate a relief valve event or leak. Normal pressure: slightly above atmospheric.</td></tr>
+  <tr><td>Quench Line</td><td>Verify quench vent pipe is clear and unobstructed from magnet to exterior vent. A blocked quench line is a serious safety hazard.</td></tr>
+  <tr><td>He Level Sensor</td><td>If He level reads abnormally low but magnet is otherwise stable and cold head is running, consider a faulty He level sensor. Cross-reference with cold head run-time and calculated boil-off rate.</td></tr>
+</table>
+
+<h2>Cold Head — Common Issues</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>He level dropping faster than normal (&gt;1–2% per week)</td><td>Cold head degraded or failed; compressor issue; supply line leak</td><td>Verify cold head is running. Check compressor pressures (supply 250–280 psi, return 50–80 psi typical). Replace cold head if performance degraded. Schedule helium fill.</td></tr>
+  <tr><td>Cold head compressor not running</td><td>Power loss, tripped breaker, compressor fault</td><td>Check dedicated cold head circuit breaker. Verify compressor power. Reset if tripped. Inspect compressor for fault light or alarm.</td></tr>
+  <tr><td>Compressor high-pressure fault</td><td>Clogged adsorber, supply line restriction</td><td>Replace adsorber filter on compressor (annual PM item). Check supply line for kinks or obstruction.</td></tr>
+  <tr><td>E501 with He level >70%</td><td>He level sensor fault</td><td>Compare to expected boil-off rate. If magnet is stable and cold head running well, suspect sensor. GE field service may be needed to recalibrate or replace He level sensor.</td></tr>
+  <tr><td>Frost on cold head or magnet neck</td><td>Air or moisture ingress; vacuum jacket compromised</td><td>This indicates a serious problem. Contact GE service. Do not attempt DIY repair on magnet vacuum jacket.</td></tr>
+  <tr><td>Magnet warming (gradual field drift, frequency drift)</td><td>Severe He loss or cold head failure over extended period</td><td>Monitor magnet temperature via service desktop. If magnet is warming, prepare for possible quench. Notify GE immediately. Expedite helium fill.</td></tr>
+</table>
+
+<h2>Helium Fill — Key Points</h2>
+<div class="warn">Helium fills must be performed by trained personnel or a licensed cryogen service provider. Improper technique can quench the magnet or cause injury.</div>
+<table>
+  <tr><th>Step</th><th>Notes</th></tr>
+  <tr><td>Schedule fill at appropriate level</td><td>Most sites fill when He level reaches 65–70%. Do not allow level to drop below 50% — risk of magnet quench increases significantly below this level.</td></tr>
+  <tr><td>Notify staff before fill</td><td>Helium fills produce BOG (boil-off gas). Ensure quench vent path is clear. O₂ monitor should be active in scan room during fill.</td></tr>
+  <tr><td>Cool down fill line before connecting</td><td>Slowly introduce He into the transfer line before connecting to magnet fill port to prevent sudden thermal shock.</td></tr>
+  <tr><td>Monitor magnet pressure during fill</td><td>Pressure should remain near atmospheric. Elevated pressure during fill indicates a potential issue — stop and assess.</td></tr>
+  <tr><td>Record fill volume and He level before/after</td><td>Trend this data to monitor boil-off rate and cold head performance over time.</td></tr>
+</table>
+
+<h2>Quench — Recognition and Response</h2>
+<div class="crit"><strong>A quench is an emergency.</strong> The magnet rapidly vents all liquid helium as gas. 1 liter liquid He = ~750 liters He gas. Oxygen displacement hazard is immediate and life-threatening.</div>
+<table>
+  <tr><th>Indicator</th><th>Action</th></tr>
+  <tr><td>Loud "bang" or "whoosh" from magnet</td><td>Immediately evacuate scan room and control room. Do not re-enter until O₂ level confirmed safe (≥19.5%). Call facility emergency line and GE service.</td></tr>
+  <tr><td>Visible vapor/fog from quench pipe exterior vent</td><td>Evacuate. Verify quench pipe is venting to exterior. Do not block quench vent exhaust.</td></tr>
+  <tr><td>Magnet field indicator drops to zero</td><td>Magnet has quenched or is quenching. Evacuate and follow site emergency procedures.</td></tr>
+  <tr><td>Personnel in room complain of lightheadedness</td><td>Evacuate immediately — possible oxygen deficiency. Activate site emergency response. 911 if anyone loses consciousness.</td></tr>
+  <tr><td>Deliberate quench (emergency situation)</td><td>Use the Emergency Magnet Off (EMO) / quench button ONLY in a true emergency (person pinned by ferromagnetic object, cardiac arrest requiring defibrillation, fire). Quench button is red, typically located at scan room door and inside scan room. Pressing it intentionally quenches the magnet — the magnet is then out of service until re-energized (multi-day process).</td></tr>
+</table>
+
+<h2>Cold Head PM Schedule</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Compressor adsorber replacement</td><td>Annual (or per compressor hours)</td><td>Critical PM item — clogged adsorber reduces cold head efficiency dramatically</td></tr>
+  <tr><td>Cold head replacement</td><td>Every 3–5 years or as performance indicates</td><td>Cold head efficiency degrades over time; trending He boil-off rate is the best indicator</td></tr>
+  <tr><td>Compressor oil change</td><td>Per OEM schedule (varies by model)</td><td>Use only OEM-approved compressor oil</td></tr>
+  <tr><td>Supply line inspection</td><td>Annual</td><td>Check for wear, kinks, frost spots at fittings</td></tr>
+  <tr><td>Helium level trend review</td><td>Monthly</td><td>Compare to previous months to catch cold head degradation early</td></tr>
+  <tr><td>Quench pipe inspection</td><td>Annual</td><td>Verify pipe is unobstructed and exterior vent is clear of debris, bird nests, etc.</td></tr>
+  <tr><td>O₂ monitor calibration</td><td>Annual minimum</td><td>Required by NFPA and most state regulations; critical for scan room safety</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> Track helium level and cold head compressor run hours in a log. A sudden change in boil-off rate (weekly He level drop) is the earliest sign of cold head degradation — you'll catch it before it becomes an emergency.</div>
+<div class="tip"><strong>Tip:</strong> Most GE MRI platforms display cold head status in MR Service Desktop. Check "Magnet Real Time Data" for He level, magnet pressure, and cold head activity. This can be done remotely via InSite before visiting the site.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

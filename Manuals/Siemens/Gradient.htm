@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens MRI Gradient System Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7esp;padding:1px 5px;border-radius:3px;font-family:monospace;}</style>
+</head>
+<body>
+<h1>📡 Siemens MRI Gradient System Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: Siemens MAGNETOM Espree, Avanto, Symphony, Sonata, Trio, Verio, Skyra, Prisma and related platforms. Error F001 (Gradient Amplifier Fault) and related gradient system diagnostics.</div>
+
+<h2>Error F001 — Gradient Amplifier Fault</h2>
+<table>
+  <tr><th>Check</th><th>Action</th></tr>
+  <tr><td>Gradient Amplifier Cabinet</td><td>Open gradient amplifier cabinet (GRAMP). Check for fault LEDs on each gradient amp module (X, Y, Z axes). Note which axis is faulted from the LED indicators or error log.</td></tr>
+  <tr><td>Cooling System</td><td>Siemens gradient amps are water-cooled on most platforms. Verify coolant supply pressure, temperature, and flow rate at the GRAMP water connections. Overtemperature is the #1 cause of F001. Check for coolant leaks.</td></tr>
+  <tr><td>DC Bus Voltage</td><td>Check DC bus voltage at gradient power supply (GPS). Typical value is ±350–450 VDC (platform specific). Check GPS fault indicators. Run ServiceLine → Gradient → GPS test.</td></tr>
+  <tr><td>Gradient Coil Continuity</td><td>Use ServiceLine to run Gradient Coil Test. Test X, Y, Z independently. A specific axis failure points to that amp or coil assembly.</td></tr>
+  <tr><td>Cable Connections</td><td>Inspect all cables between GPS, GRAMP, and gradient coil. Reseat connectors. Check the gradient cable bundle at the bore entry point for wear or damage.</td></tr>
+  <tr><td>Error Log Review</td><td>Review detailed fault log: ServiceLine → Error Log. F001 entries include a sub-code indicating which axis and whether the fault is thermal, overcurrent, or communication. Use sub-code to narrow diagnosis.</td></tr>
+</table>
+
+<h2>F001 Sub-Code Reference</h2>
+<div class="info">The F001 error is accompanied by sub-codes in the Siemens error log. Record the full error string from ServiceLine for accurate diagnosis.</div>
+<table>
+  <tr><th>Sub-Code / Description</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>F001 X / Y / Z — Axis specific thermal fault</td><td>Coolant flow insufficient to that amp module; amp module failing</td><td>Check coolant flow. Clean heat exchangers. Verify coolant temperature at GRAMP inlet (&lt;25°C typical). Replace amp module if thermal fault persists with good cooling.</td></tr>
+  <tr><td>F001 — DC Bus undervoltage</td><td>GPS failure; input power issue; blown fuse in GPS</td><td>Check input power to GPS. Inspect GPS fuses. Measure DC bus output. Replace GPS if output out of spec.</td></tr>
+  <tr><td>F001 — Overcurrent / short</td><td>Gradient coil short circuit; cable insulation failure; amp output stage fault</td><td>Measure gradient coil resistance (X, Y, Z). Check for cable damage or arc tracking. Replace faulted amp module or coil assembly.</td></tr>
+  <tr><td>F001 — Communication fault (GCU link)</td><td>Gradient Control Unit (GCU) to GRAMP communication link failure</td><td>Inspect GCU-GRAMP fiber or cable link. Check GCU card in electronics cabinet for fault LEDs. Reseat GCU card. Run ServiceLine comms test.</td></tr>
+  <tr><td>F001 — Interlock open</td><td>Safety interlock tripped (temperature, door, coolant flow switch)</td><td>Check all GRAMP interlocks. Verify cabinet door is closed and latched. Check coolant flow interlock switch. Check temperature interlock relay.</td></tr>
+</table>
+
+<h2>Common F001 Scenarios</h2>
+<table>
+  <tr><th>Symptom</th><th>Likely Cause</th><th>Fix</th></tr>
+  <tr><td>F001 after several scans, clears after cooldown</td><td>Thermal shutdown — marginal cooling</td><td>Check coolant flow rate and temperature at GRAMP. Inspect heat exchanger for fouling. Verify chiller performance (chilled water systems). Clean air side of heat exchanger if applicable.</td></tr>
+  <tr><td>F001 at startup, one axis only</td><td>GPS output degraded on one rail; single amp module fault</td><td>Identify faulted axis from LED/error log. Measure GPS output on that axis. Swap or replace faulted amp module.</td></tr>
+  <tr><td>F001 after heavy EPI/DTI sequences</td><td>High duty-cycle sequences stress gradient amps thermally</td><td>Verify cooling capacity is adequate for the sequence duty cycle being run. Consider cooling system upgrade if clinically required. Check amp module thermal performance.</td></tr>
+  <tr><td>F001 with image geometric distortion before full fault</td><td>Degrading amp — performance marginal before hard fault</td><td>Run gradient performance tests (linearity, scale). Replace amp module before complete failure causes patient safety or image quality issues.</td></tr>
+  <tr><td>F001 with coolant leak visible in GRAMP cabinet</td><td>Coolant fitting failure; amp module coolant block cracked</td><td>Shut down system immediately. Clean up coolant before any electrical measurements (electrical hazard). Locate leak source. Replace fittings or amp module. DO NOT operate with coolant leak present.</td></tr>
+</table>
+
+<h2>Gradient Amp Cooling System — Siemens Platforms</h2>
+<div class="warn">Water in the GRAMP cabinet creates a serious electrical hazard. Always de-energize the gradient power supply before inspecting for coolant leaks. Never operate the system with a known coolant leak.</div>
+<table>
+  <tr><th>Parameter</th><th>Typical Spec</th><th>Notes</th></tr>
+  <tr><td>Coolant Supply Temperature</td><td>15–25°C at GRAMP inlet</td><td>Higher temp reduces cooling efficiency; verify chiller performance in summer</td></tr>
+  <tr><td>Coolant Flow Rate (to GRAMP)</td><td>Platform specific (typically 4–8 L/min)</td><td>Measure at flow meter on supply line; low flow = risk of thermal shutdown</td></tr>
+  <tr><td>Coolant Type</td><td>Distilled water + inhibitor (Siemens spec)</td><td>Never use tap water — mineral deposits foul cooling passages. Test inhibitor concentration annually.</td></tr>
+  <tr><td>Coolant Pressure Drop</td><td>Platform specific — per service manual</td><td>High pressure drop indicates fouled heat exchanger or restricted flow path</td></tr>
+  <tr><td>GPS DC Bus Voltage</td><td>±350–450 VDC (platform specific)</td><td>Measure with gradient amp connected; compare to service manual spec for your platform</td></tr>
+</table>
+
+<h2>Gradient System PM Checklist</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Inspect coolant hoses and fittings in GRAMP</td><td>Semi-Annual</td><td>Look for seepage, corrosion, cracking at fittings</td></tr>
+  <tr><td>Test coolant inhibitor concentration</td><td>Annual</td><td>Use test strip or refractometer; replenish inhibitor if depleted</td></tr>
+  <tr><td>Clean heat exchanger (if applicable)</td><td>Annual</td><td>Flush secondary side per Siemens procedure</td></tr>
+  <tr><td>Measure gradient coil resistance (X, Y, Z)</td><td>Annual</td><td>Record and trend; significant change indicates coil degradation</td></tr>
+  <tr><td>Inspect gradient cable bundle at bore entry</td><td>Annual</td><td>Check for chafing or damage where cables enter bore housing</td></tr>
+  <tr><td>GPS voltage output check</td><td>Annual</td><td>Verify DC bus voltage on all axes is within spec</td></tr>
+  <tr><td>Gradient amp thermal test</td><td>Annual</td><td>Run high-duty-cycle sequence; monitor GRAMP temperature in ServiceLine</td></tr>
+  <tr><td>Gradient performance calibration check</td><td>Annual</td><td>Run gradient linearity and scale factor test; geometric accuracy phantom scan</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The most common cause of F001 on Siemens systems is coolant-related — either inadequate flow or high coolant temperature. Before replacing any amp module, confirm the cooling system is delivering the correct flow rate and temperature. A GRAMP that runs fine in winter and faults in summer almost always has a chiller or heat exchanger problem.</div>
+<div class="tip"><strong>Tip:</strong> Siemens ServiceLine error log sub-codes are essential for gradient fault diagnosis. Always pull and record the full error string, not just the F001 top-level code. The sub-code tells you which axis, what type of fault, and narrows repair to amp vs. power supply vs. cooling vs. coil.</div>
+<div class="crit"><strong>Critical:</strong> GRAMP DC bus voltages are HIGH VOLTAGE (350–450 VDC). Allow full capacitor discharge after GPS shutdown before accessing internal components. Confirm discharge with a meter before touching bus connections.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>
