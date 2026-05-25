@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE CT System Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>🔬 GE CT System Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Lightspeed (VCT, Pro, Plus, RT), BRivo CT315/325, Discovery CT750 HD, Discovery CT590 RT, Revolution EVO/ACT/Apex. Covers common fault codes, tube, HV, DAS, gantry, couch, and cooling issues.</div>
+
+<h2>X-Ray Tube Faults</h2>
+<div class="warn">X-ray tube replacement requires Radiation Safety Officer (RSO) notification and re-qualification scans. Always check tube heat unit (HU) log before concluding tube failure — thermal shutdown is not the same as tube failure.</div>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Tube heat unit limit reached (HU fault)</td><td>Tube thermal capacity exceeded during heavy scan load or without warm-up</td><td>Allow tube to cool (20–30 min). Run tube warm-up procedure: Service Desktop → Diagnostics → System Function → X-Ray → Tube Warm-Up. Check cooling water flow to tube housing.</td></tr>
+  <tr><td>Tube arcing / intermittent shutdown</td><td>Tube aging, vacuum failure, or HV cable issue</td><td>Review tube arc count and kVp history in service logs. Run tube conditioning sequence. If arcing persists, tube replacement is likely. Inspect HV cables for tracking or damage.</td></tr>
+  <tr><td>Tube will not prepare (no rotation)</td><td>Tube rotor failure; HV fault before prep; anode drive electronics fault</td><td>Listen for rotor spin-up — absence of sound indicates anode drive or electronics fault. Check rotor drive supply voltage. Inspect anode drive card. Run tube rotor test in service mode.</td></tr>
+  <tr><td>Poor image quality — streak artifacts</td><td>Tube focal spot deviation; aging detector; beam filtration issue</td><td>Run air calibration. Check focal spot specification in service logs. Run DAS auto test. If streaks persist on all protocols, tube replacement or detector calibration needed.</td></tr>
+  <tr><td>Tube cooling fault</td><td>Cooling water flow low; heat exchanger fouled; coolant pump fault</td><td>Check cooling water flow rate to tube housing. Inspect heat exchanger for fouling. Verify coolant pump is running. Check coolant temperature at tube inlet (&lt;25°C typical).</td></tr>
+</table>
+
+<h2>High Voltage (HV) System Faults</h2>
+<div class="crit">HIGH VOLTAGE — GE CT HV systems generate 80–140 kVp at milliamp levels capable of lethal injury. De-energize and lock out/tag out (LOTO) before accessing HV tank, cables, or generator. Confirm discharge with meter before touching.</div>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>HV fault at scan start</td><td>HV generator fault; HV tank oil breakdown; kV or mA out of spec</td><td>Review error log for sub-code. Run HV self-test: Service Desktop → Diagnostics → X-Ray → HV Test. Check DC bus voltage to HV generator. Measure HV output with non-contact HV probe per service manual.</td></tr>
+  <tr><td>Scan aborts with HV arc fault</td><td>HV cable tracking; tube arcing; insulation failure in HV tank</td><td>Inspect HV cable candles and slip ring connections. Check HV tank oil level and color (should be clear, not dark or cloudy). Run tube conditioning. Replace HV cable if arc tracking found.</td></tr>
+  <tr><td>kVp or mA out of spec</td><td>HV generator calibration drift; feedback component failure</td><td>Measure kVp and mA per service manual test points. Run HV calibration procedure. Recalibrate or replace HV control board if values cannot be brought into spec.</td></tr>
+  <tr><td>HV tank oil leak</td><td>HV tank seal failure or physical damage</td><td>Shut down immediately — oil leakage is an electrical and environmental hazard. Do not operate. Replace HV tank. Dispose of oil per local regulations.</td></tr>
+</table>
+
+<h2>Data Acquisition System (DAS) Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>DAS communication fault</td><td>DAS board failure; slip ring data link fault; fiber optic link failure</td><td>Run DAS Auto Test: Service Desktop → Diagnostics → System Function → DAS → Auto Test. Check DAS fiber optic connections at slip ring. Inspect DAS fan and airflow. Reseat DAS boards.</td></tr>
+  <tr><td>Ring artifact in images</td><td>Single failed or degraded detector element</td><td>Run air calibration to identify bad detector channels. Review DAS diagnostic for bad channel map. Replace detector module if specific channel consistently fails. Run quality assurance phantom after repair.</td></tr>
+  <tr><td>DAS overtemperature fault</td><td>DAS cooling fan failure; blocked airflow; excessive scan duty cycle</td><td>Check DAS duct fans and filters — clean or replace. Verify airflow through DAS duct. Allow cooldown before restarting. Check room ambient temperature.</td></tr>
+  <tr><td>Data path error / recon failure</td><td>DAS to reconstruction link fault; bad data segment from one view angle</td><td>Run Recon Data Path test in service menu. Inspect reconstruction network connections. Review error log for specific view angle. DAS board or fiber link replacement if persistent.</td></tr>
+</table>
+
+<h2>Gantry Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Gantry will not rotate</td><td>Drive motor fault; belt failure; rotation encoder fault; safety interlock</td><td>Check gantry drive belt — look for breakage or slipping. Verify drive motor and inverter. Inspect rotation encoder. Check all safety interlocks (door, tilt limit).</td></tr>
+  <tr><td>Gantry rotation noise (grinding/squealing)</td><td>Main bearing wear; insufficient lubrication; drive belt misalignment</td><td>Check main bearing lubrication per PM schedule (grease every 2 million revolutions). Inspect belt alignment and tension. Check gantry rotation count in service logs.</td></tr>
+  <tr><td>Gantry tilt fault</td><td>Tilt drive motor fault; hydraulic tilt cylinder leak; tilt encoder fault</td><td>Check tilt drive motor and chain/actuator. On hydraulic tilt systems, inspect cylinder for fluid leaks. Test tilt limit switches. Run tilt calibration in service mode.</td></tr>
+  <tr><td>Slip ring arcing or contact fault</td><td>Worn slip ring brushes; dirty or corroded rings; worn ring surface</td><td>Clean slip rings and brush blocks per PM schedule. Inspect brush spring tension. Measure brush wear length — replace if below minimum per service manual. Clean ring surface with approved cleaner.</td></tr>
+  <tr><td>Encoder fault / position error</td><td>Axial encoder wheel dirty or damaged; encoder reader failure</td><td>Clean axial encoder wheel and reader. Inspect for physical damage. Run encoder calibration. Replace encoder reader if fault persists.</td></tr>
+</table>
+
+<h2>Patient Couch / Table Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Couch will not move (horizontal)</td><td>Drive motor fault; drive belt failure; cradle obstruction</td><td>Check cradle drive belt — inspect for wear or breakage. Verify drive motor operation. Check for mechanical obstruction. Run couch diagnostics in service mode.</td></tr>
+  <tr><td>Couch vertical drive fault</td><td>Vertical motor fault; hydraulic leak (hydraulic tables); limit switch</td><td>Check vertical drive motor and actuator. On hydraulic-assisted vertical models, inspect for hydraulic fluid leak. Test vertical limit switches.</td></tr>
+  <tr><td>Couch position error / limit fault</td><td>Position encoder failure; tape switch or limit switch fault</td><td>Clean and inspect tape switches. Check limit switch function by commanding couch to limits in service mode. Replace faulty switch or encoder.</td></tr>
+  <tr><td>Couch makes grinding noise during travel</td><td>Worn or dry drive rails; worn drive belt; roller bearing issue</td><td>Lubricate drive rails per PM schedule (use OEM-approved non-magnetic lubricant near bore). Inspect rollers and rails for wear. Replace worn drive belt.</td></tr>
+</table>
+
+<h2>Cooling System</h2>
+<table>
+  <tr><th>Parameter</th><th>Typical Spec</th><th>Notes</th></tr>
+  <tr><td>Chilled water supply temperature</td><td>10–20°C at unit inlet</td><td>Higher inlet temp reduces cooling margin — verify chiller performance in summer</td></tr>
+  <tr><td>Cooling water flow rate</td><td>Model specific (typically 8–15 L/min)</td><td>Check at flow meter; low flow = thermal faults and reduced tube life</td></tr>
+  <tr><td>Coolant type</td><td>Distilled water + glycol mix or site facility water</td><td>Verify inhibitor concentration; flush per PM schedule</td></tr>
+  <tr><td>PDU/PDC temperature</td><td>Ambient + &lt;15°C rise inside cabinet</td><td>Clean PDU filters annually — clogged filters are a leading cause of CT power faults</td></tr>
+</table>
+
+<h2>Air Calibration — When to Run</h2>
+<div class="info">Air calibration corrects for detector channel variations and beam hardening. It must be run with no patient or phantom in the bore and with the tube at operating temperature.</div>
+<table>
+  <tr><th>Trigger</th><th>Action</th></tr>
+  <tr><td>Ring artifact appears in images</td><td>Run air calibration immediately. If rings persist, run DAS channel diagnostic to identify bad detector element.</td></tr>
+  <tr><td>After any DAS board replacement</td><td>Full air calibration required before clinical use.</td></tr>
+  <tr><td>After tube replacement or conditioning</td><td>Run air calibration after tube warm-up to baseline new tube output.</td></tr>
+  <tr><td>Scheduled PM</td><td>Air calibration recommended at each PM (quarterly at minimum). Document and trend results.</td></tr>
+  <tr><td>After power outage or recovery</td><td>Run air calibration and QA phantom scan before returning to clinical use.</td></tr>
+</table>
+
+<h2>GE CT PM Quick Reference</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Air calibration</td><td>Quarterly (or per event)</td><td>No patient/phantom in bore; tube at operating temp</td></tr>
+  <tr><td>QA phantom scan (ACR/NEMA)</td><td>Quarterly</td><td>Document and trend results for accreditation</td></tr>
+  <tr><td>Slip ring cleaning</td><td>Quarterly</td><td>Clean with approved cleaner; inspect brush wear</td></tr>
+  <tr><td>Fan and filter cleaning</td><td>Quarterly/Annual</td><td>DAS duct, PDU, console — clean all fans and filters</td></tr>
+  <tr><td>Drive belt inspection</td><td>Annual</td><td>Cradle drive belt tension and wear; replace if cracked</td></tr>
+  <tr><td>Main bearing lubrication</td><td>Every 2M gantry revolutions</td><td>Record gantry revolution count in service log</td></tr>
+  <tr><td>HV cable inspection</td><td>Annual</td><td>Check candles and HV cable for tracking or damage</td></tr>
+  <tr><td>Tube warm-up</td><td>Daily if tube cold (&gt;4 hrs off)</td><td>Run automated warm-up from console before first clinical scan</td></tr>
+  <tr><td>Seismic anchor bolt check</td><td>Annual</td><td>Verify all anchor bolts are secure</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> The most common preventable GE CT service call is thermal shutdown from fouled fans or filters. Cleaning DAS, PDU, and console fans/filters quarterly dramatically reduces site downtime and tube stress.</div>
+<div class="tip"><strong>Tip:</strong> Always run the tube warm-up procedure before first scans of the day if the tube has been off for 4+ hours. Skipping warm-up on a cold tube dramatically reduces tube life and risks early failure.</div>
+<div class="crit"><strong>Critical:</strong> Never access the HV tank, HV generator, or HV cables with the system energized or without confirming full voltage discharge. GE CT HV systems produce lethal voltages. LOTO before any HV work.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>

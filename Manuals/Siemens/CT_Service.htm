@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Siemens CT System Service — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>🔬 Siemens CT System Service Guide<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: Siemens Sensation 64, Somatom Definition, Definition AS, Definition Edge, Definition Flash, Definition Force, Drive, Perspective, Scope, Emotion, and related platforms. Covers tube, HV, DAS, gantry, couch, and Water Cooling System (WCS) faults.</div>
+
+<h2>X-Ray Tube Faults</h2>
+<div class="warn">Siemens CT tube faults are logged with severity levels (1–4). Level 4 faults require tube replacement — lower levels may be addressed by conditioning or cooling. Always review the full error log in syngo Service Mode (SSM) before concluding tube failure.</div>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Tube heat unit (HU) limit / thermal shutdown</td><td>Tube thermal capacity exceeded; WCS flow or temperature out of spec</td><td>Allow tube to cool per software HU indicator. Run tube warm-up: SSM → Tube → Warm-Up. Verify WCS supply temperature (&lt;17°C typical) and flow rate. Check WCS for faults.</td></tr>
+  <tr><td>Tube arcing / kV fault during scan</td><td>Tube aging; vacuum loss; HV cable tracking</td><td>Check tube arc count in SSM → Tube History. Run tube conditioning sequence. If arcing persists above threshold, tube replacement required. Inspect HV cable candles for carbon tracking.</td></tr>
+  <tr><td>Tube rotor noise (rough or loud)</td><td>Anode bearing wear — near end of tube life</td><td>Document rotor noise in service log. Check mAs count against tube life expectancy. Schedule tube replacement. Loud metallic rotor noise = imminent failure.</td></tr>
+  <tr><td>Mylar window damage / contamination</td><td>Physical damage or contrast spray onto window</td><td>Inspect mylar window per PM. A torn or contaminated window causes beam quality changes and image artifacts. Replace mylar window per service manual — do not operate with torn window.</td></tr>
+  <tr><td>Tube cool-down excessive (very slow HU recovery)</td><td>WCS pump running but heat exchanger fouled; low coolant flow</td><td>Measure WCS flow rate at gantry connection. Flush heat exchanger per PM procedure. Check WCS coolant level (sight glass on WCS cabinet). Refill and bleed per WCS service manual.</td></tr>
+</table>
+
+<h2>High Voltage (HV) System Faults</h2>
+<div class="crit">HIGH VOLTAGE — Siemens CT HV systems generate 80–140 kVp. Capacitor banks retain charge after shutdown. Allow full discharge time (per service manual, typically 5+ minutes) and verify with meter before touching HV components.</div>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>HV inverter fault</td><td>HV inverter IGBT failure; DC bus fault; overvoltage protection</td><td>Review error in SSM — note sub-code. Check DC bus voltage to HV inverter. Inspect IGBT module condition. Run HV self-test in SSM → HV → Test. Replace inverter module if fault persists.</td></tr>
+  <tr><td>kVp out of specification</td><td>HV calibration drift; feedback sensor fault</td><td>Measure kVp with dose meter or non-contact probe per service manual. Run kVp calibration in SSM. If calibration cannot correct, HV feedback board replacement may be required.</td></tr>
+  <tr><td>HV fault — arc protection tripped</td><td>Tube arcing; HV cable tracking; HV tank insulation breakdown</td><td>Inspect HV cable routing and candle connections — clean or replace if arc tracking visible. Check HV tank oil level. Run tube conditioning. Replace HV cable or tank if arcing continues.</td></tr>
+  <tr><td>mA (tube current) fault</td><td>mA regulation failure; filament circuit issue; kV/mA control card fault</td><td>Check mA feedback circuit per service manual test points. Measure filament supply voltage. Run mA calibration test in SSM. Replace mA control card if out of spec.</td></tr>
+</table>
+
+<h2>Data Acquisition System (DAS) Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>DAS communication fault</td><td>DAS fiber optic link failure; slip ring data contact fault; DAS board failure</td><td>Inspect DAS fiber optic cable at slip ring junction. Check slip ring data contact condition. Run DAS self-test in SSM → DAS → Diagnostics. Replace fiber or DAS board as indicated.</td></tr>
+  <tr><td>Ring artifact in reconstructed images</td><td>Single failed detector element or channel offset</td><td>Run air calibration (Quality Constancy). Review DAS bad channel map. Persistent ring = specific detector channel failed — replace detector module. Note: single bad channel = narrow ring; multiple = thick band.</td></tr>
+  <tr><td>DAS overtemperature fault</td><td>DAS filter clogged; cooling fan failure; high ambient temp in gantry</td><td>Clean DAS air filter (quarterly PM item). Check DAS fan operation. Verify scan room ambient temperature. Allow cooldown before restarting.</td></tr>
+  <tr><td>Detector window contamination</td><td>Contrast or dust on UHR / detector window</td><td>Clean detector face per PM procedure with OEM-approved cleaner. Do not use abrasive materials. Inspect mylar window integrity.</td></tr>
+</table>
+
+<h2>Water Cooling System (WCS) Faults</h2>
+<div class="info">The WCS is unique to Siemens CT — it cools the tube, HV inverter, and gantry electronics using a closed-loop water circuit. WCS faults are one of the most common Siemens CT service calls and are easily prevented with proper PM.</div>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>WCS low coolant level alarm</td><td>Gradual evaporation loss; small leak in system</td><td>Check WCS sight glass. Refill with distilled water + OEM inhibitor to proper level. Inspect all hose fittings inside gantry and WCS cabinet for weeping. Bleed system per service manual.</td></tr>
+  <tr><td>WCS overtemperature fault</td><td>Facility cooling water temp too high; heat exchanger fouled; low flow</td><td>Check facility water supply temperature (must be &lt;17°C typical). Measure WCS flow rate. Flush heat exchanger if fouled. Verify WCS pump is running at correct speed.</td></tr>
+  <tr><td>WCS low pressure / flow fault</td><td>WCS pump failure; clogged filter; internal leak</td><td>Check WCS pump operation. Inspect WCS filter — replace if clogged. Pressure-check system for internal leaks. Replace WCS pump if pressure/flow cannot be restored.</td></tr>
+  <tr><td>Coolant leak visible inside gantry</td><td>Hose fitting failure; coolant block crack in tube or inverter</td><td>Shut down immediately — electrical hazard. Identify and isolate leak source. Clean up coolant before any electrical measurements. Replace fitting or hose. Do not operate with active leak.</td></tr>
+  <tr><td>WCS inhibitor depleted</td><td>Inhibitor consumed or not replaced at PM</td><td>Test inhibitor concentration with OEM test strip. Flush and refill with fresh inhibitor if concentration is below specification. Depleted inhibitor causes internal corrosion of WCS passages.</td></tr>
+</table>
+
+<h2>Gantry Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Gantry rotation fault / will not rotate</td><td>Drive motor or inverter fault; rotation belt broken; encoder fault</td><td>Check drive belt condition. Verify rotation motor inverter. Inspect rotation encoder. Check for obstruction in gantry rotation path. Run rotation test in SSM.</td></tr>
+  <tr><td>Gantry rotation noise</td><td>Slip ring brush wear; bearing wear; gantry imbalance</td><td>Clean slip rings and inspect brush wear. Check gantry balance (annual PM). Lubricate main bearing per mAs/revolution count in service log.</td></tr>
+  <tr><td>Gantry tilt fault</td><td>Tilt motor or belt fault; tilt encoder; limit switch</td><td>Verify tilt operation from service mode. Check tilt limit switches — gantry should stop cleanly at ±30°. Lubricate vertical drive per PM schedule. Run tilt calibration.</td></tr>
+  <tr><td>Slip ring arcing or brush fault</td><td>Worn brush blocks; contaminated slip ring surface; high humidity</td><td>Clean slip ring and brush blocks per PM schedule (every 6 months). Inspect brush spring tension. Measure brush length — replace if below minimum. Use OEM-approved cleaner.</td></tr>
+  <tr><td>PDC protection fault</td><td>PDC board fault; input power issue; varistor failure</td><td>Check PDC cabinet for fault indicators. Inspect varistor block. Verify input supply voltage. Replace PDC protection module if components show damage (burnt varistors).</td></tr>
+</table>
+
+<h2>Patient Table / Couch Faults</h2>
+<table>
+  <tr><th>Fault / Symptom</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Table will not dock to gantry</td><td>Dock latch misalignment; dock sensor fault; latch wear</td><td>Inspect dock latch for wear. Manually guide table to dock. Check dock proximity sensor — adjust or replace if faulty. Lubricate dock per PM schedule.</td></tr>
+  <tr><td>Table horizontal drive fault</td><td>Horizontal drive motor fault; cradle belt broken; position encoder</td><td>Inspect drive belt for wear or breakage. Check drive motor operation. Run couch diagnostics in SSM → Table → Diagnostics.</td></tr>
+  <tr><td>Table vertical drive fault</td><td>Vertical motor fault; vertical limit switch; drive screw or actuator</td><td>Check vertical drive motor. Lubricate vertical drive screw per PM. Test vertical limit switches. Inspect actuator for binding.</td></tr>
+  <tr><td>Table position fault / error</td><td>Position encoder failure; tape switch issue</td><td>Inspect tape switch along couch travel. Check encoder continuity. Replace faulty sensor or encoder assembly.</td></tr>
+</table>
+
+<h2>Quality Constancy (QC) — When to Run</h2>
+<div class="info">Siemens CT Quality Constancy (QC) replaces air calibration on most platforms. It must be run at the start of each day and after repairs that affect image quality.</div>
+<table>
+  <tr><th>Trigger</th><th>Procedure</th></tr>
+  <tr><td>Daily QC before clinical use</td><td>System may prompt automatically. If not, run SSM → Quality → Quality Constancy. Phantom is not required for standard daily QC.</td></tr>
+  <tr><td>After DAS board or detector replacement</td><td>Run full QC. Also run QA phantom scan to verify image quality.</td></tr>
+  <tr><td>After tube replacement or warm-up</td><td>Run QC after tube warm-up to baseline new tube output.</td></tr>
+  <tr><td>Ring artifact appears</td><td>Run QC immediately. If rings persist, run DAS channel diagnostic and identify bad detector.</td></tr>
+  <tr><td>After site power event</td><td>Run QC and phantom scan before returning to clinical use.</td></tr>
+</table>
+
+<h2>Siemens CT PM Quick Reference</h2>
+<table>
+  <tr><th>Task</th><th>Interval</th><th>Notes</th></tr>
+  <tr><td>Quality Constancy (QC)</td><td>Daily</td><td>Run before first clinical scan each day</td></tr>
+  <tr><td>Slip ring cleaning</td><td>Every 6 months</td><td>Clean rings and inspect brush blocks; replace worn brushes</td></tr>
+  <tr><td>Power/Signal brush inspection/cleaning</td><td>Every 6 months</td><td>Check signal brush wear and contact integrity</td></tr>
+  <tr><td>Drive belt inspection</td><td>Every 6 months / Annual</td><td>Check tension and wear; replace cracked or glazed belt</td></tr>
+  <tr><td>WCS coolant level and inhibitor check</td><td>Annual</td><td>Refill distilled water + inhibitor; test inhibitor concentration</td></tr>
+  <tr><td>WCS heat exchanger flush</td><td>Annual</td><td>Flush secondary side per WCS service procedure</td></tr>
+  <tr><td>DAS filter cleaning</td><td>Quarterly</td><td>Clean or replace DAS air filter — critical for DAS thermal stability</td></tr>
+  <tr><td>Main bearing lubrication</td><td>Per mAs count (see service manual)</td><td>Use OEM grease; record gantry revolution count</td></tr>
+  <tr><td>Vertical drive lubrication</td><td>Annual</td><td>Grease vertical drive screw per OEM procedure</td></tr>
+  <tr><td>HV cable inspection</td><td>Annual</td><td>Inspect candles and cable for tracking or damage</td></tr>
+  <tr><td>Dehumidifier filter</td><td>Annual</td><td>Check and replace dehumidifier filter inside gantry</td></tr>
+  <tr><td>QA phantom scan (ACR/NEMA)</td><td>Quarterly or per accreditation</td><td>Document and trend; required for ACR accreditation</td></tr>
+</table>
+
+<div class="tip"><strong>Tip:</strong> WCS maintenance is the single most impactful PM task on Siemens CT systems. Sites that skip WCS coolant checks consistently see tube thermal faults and shortened tube life. Annual WCS flush + inhibitor refill is non-negotiable.</div>
+<div class="tip"><strong>Tip:</strong> Always check SSM → Tube History before concluding tube failure. Tube arc counts, mAs log, and thermal event history tell the story. A tube with 1 million mAs and increasing arcs needs replacement planning — but one with 100K mAs and a single arc event may just need conditioning.</div>
+<div class="crit"><strong>Critical:</strong> Siemens CT HV systems retain lethal charge after shutdown. Wait the full capacitor discharge time (see system-specific service manual) and verify with a calibrated HV meter before touching any HV component.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>
