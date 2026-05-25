@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GE MRI Gather Load Data Diagnostic — AMT Field Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  h3{color:#0a1628;margin-top:16px;border-bottom:2px solid #c9a84c;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:2px 6px;border-radius:3px;font-family:monospace;font-size:12px;}
+  ol{margin:8px 0;padding-left:20px;}
+  ol li{margin:6px 0;font-size:13px;}
+  .step-block{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:12px 16px;margin:10px 0;}
+  .step-block h4{margin:0 0 8px;color:#1e3a5f;font-size:13px;}
+  .restore{background:#fee2e2;border:1px solid #dc2626;border-radius:6px;padding:10px 14px;margin:12px 0;font-weight:bold;color:#dc2626;}
+</style>
+</head>
+<body>
+<h1>🔌 GE MRI — Gather Load Data (GLD) Diagnostic<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">Applies to: GE Signa Excite (9x–15x), HDxt, Discovery MR450/750, Optima 450w/750w — any platform with a Driver Module. Covers DD/TR Bias faults, multicoil errors, and dynamic disable (DD) troubleshooting using the Gather Load Data tool.</div>
+
+<div class="tip"><strong>Why GLD?</strong> Gather Load Data is the fastest way to diagnose multicoil bias faults and dynamic disable (DD) faults without a phantom or scanning. Each troubleshooting pass takes about 1 minute. A full fault isolation from coil to pen panel to magnet typically takes &lt;15 minutes total.</div>
+
+<h2>How to Launch Gather Load Data</h2>
+<table>
+  <tr><th>Step</th><th>Action</th></tr>
+  <tr><td>Navigation path</td><td><strong>Service Browser → Diagnostics → Peripherals → Driver Module Diagnostics → Gather Load Data</strong><br>Alternate: Diagnostics → Hardware Location → Integrated System Cabinet → RF → Driver Module Diagnostics</td></tr>
+  <tr><td>Set output filename</td><td>Change the <strong>Default output file name</strong> to something you will remember. Use initials + run number + brief description.<br>Example: <code>mj1_ctl</code>, <code>mj2_dd_swap</code>, <code>mj3_penpanel</code></td></tr>
+  <tr><td>Other settings</td><td>Leave voltage (3V, 5V, 7V, or Mixed) and Un-Blank time at <strong>default values</strong> unless specifically changing for isolation testing</td></tr>
+  <tr><td>Run the test</td><td>Click <strong>Run</strong>. Test completes in ~1 minute with no scanning required.</td></tr>
+  <tr><td>View results</td><td>Open a shell window and type: <code>gedit /usr/g/service/log/&lt;filename&gt;_mc.txt</code> (multicoil) or <code>gedit /usr/g/service/log/&lt;filename&gt;_dd.txt</code> (dynamic disable)</td></tr>
+</table>
+
+<h2>Multicoil Bias Fault Troubleshooting</h2>
+<div class="info">Use this procedure when a multicoil error appears in the error log referencing a specific coil or coil channel.</div>
+
+<div class="step-block">
+<h4>Step 1 — Isolate the coil</h4>
+<ol>
+  <li>Identify the coil causing the error in the error log.</li>
+  <li>Plug in the suspect coil.</li>
+  <li>Set filename to <code>mj1_bad_coil</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj1_bad_coil_mc.txt</code></li>
+  <li>Find the channel number from the error log — verify it shows different values compared to the other good channels.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 2 — Confirm fault follows the coil</h4>
+<ol>
+  <li>Remove the suspect coil. Plug in a known-good multichannel coil.</li>
+  <li>Set filename to <code>mj2_good_coil</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj2_good_coil_mc.txt</code></li>
+  <li><strong>If the previously bad channel now looks normal</strong> → fault is in the original coil. <strong>Order the coil.</strong></li>
+  <li><strong>If the bad channel is still present with the known-good coil</strong> → fault is in the system. Continue to Step 3.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 3 — Swap Driver Module cables to isolate</h4>
+<ol>
+  <li>Reconnect the known-good coil from Step 2.</li>
+  <li>Swap cables on <strong>J5 and J10</strong> on the back of the Driver Module.</li>
+  <li>Set filename to <code>mj3_dm_swap</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj3_dm_swap_mc.txt</code></li>
+  <li><strong>If the bad channel did not move</strong> → fault is in the Driver Module. <strong>Order Driver Module.</strong></li>
+  <li><strong>If the bad channel moved</strong> → problem is between the Driver Module and the coil. Call TSM for support.</li>
+</ol>
+</div>
+
+<div class="restore">⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS BEFORE LEAVING SITE</div>
+
+<h2>Dynamic Disable (DD) Fault Troubleshooting</h2>
+<div class="info">Use this procedure when the error log shows a DD BLD (front/back, 1/2/3/4) fault — either a short or an open on a dynamic disable line.</div>
+
+<div class="step-block">
+<h4>Step 1 — Establish baseline</h4>
+<ol>
+  <li>Unplug <strong>all coils</strong> from the system.</li>
+  <li>Identify which DD BLD (front/back, 1/2/3/4) has the error and whether it's a short or open.</li>
+  <li>Set filename to <code>mj1_dd_base</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj1_dd_base_dd.txt</code></li>
+  <li>Find the DD line noted in the error log — confirm it shows the bad value from the error.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 2 — Swap Driver Module DD cables</h4>
+<ol>
+  <li>Swap cables: <strong>BD1 ↔ BD4</strong> and <strong>BD2 ↔ BD3</strong> at the back of the Driver Module.</li>
+  <li>Set filename to <code>mj2_dm_swap</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj2_dm_swap_dd.txt</code></li>
+  <li><strong>If bad value did NOT move</strong> → fault is in the Driver Module. <strong>Order Driver Module.</strong></li>
+  <li><strong>If bad value moved</strong> → fault is downstream. Restore Driver Module cables and continue.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 3 — Swap Pen Panel (equipment room side)</h4>
+<ol>
+  <li>Restore Driver Module cables to original positions.</li>
+  <li>On the <strong>equipment room side of the Pen Panel</strong> swap: <strong>J92 ↔ J96</strong> and <strong>J93 ↔ J95</strong>.</li>
+  <li>Set filename to <code>mj3_pp_eq</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj3_pp_eq_dd.txt</code></li>
+  <li><strong>If bad value did NOT move</strong> → fault is in the cable from Driver Module to Pen Panel. <strong>Order cable.</strong></li>
+  <li><strong>If bad value moved</strong> → fault is downstream. Restore Pen Panel cables and continue.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 4 — Swap Pen Panel (magnet room side)</h4>
+<ol>
+  <li>Restore equipment room Pen Panel cables to original positions.</li>
+  <li>On the <strong>magnet room side of the Pen Panel</strong> swap: <strong>J72 ↔ J76</strong> and <strong>J73 ↔ J75</strong>.</li>
+  <li>Set filename to <code>mj4_pp_mr</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj4_pp_mr_dd.txt</code></li>
+  <li><strong>If bad value did NOT move</strong> → fault is in the Pen Panel DD Filter. <strong>Order Pen Panel DD Filter.</strong></li>
+  <li><strong>If bad value moved</strong> → fault is downstream. Restore Pen Panel cables and continue.</li>
+</ol>
+</div>
+
+<div class="step-block">
+<h4>Step 5 — Swap DD lines at the magnet</h4>
+<ol>
+  <li>Restore magnet room Pen Panel cables to original positions.</li>
+  <li>At the magnet: swap the two <strong>front DD lines</strong> with each other AND the two <strong>rear DD lines</strong> with each other.</li>
+  <li>Set filename to <code>mj5_magnet</code> and run GLD.</li>
+  <li>Open results: <code>gedit /usr/g/service/log/mj5_magnet_dd.txt</code></li>
+  <li><strong>If bad value did NOT move</strong> → fault is in the cable from Pen Panel to magnet. <strong>Order cable.</strong></li>
+  <li><strong>If bad value moved</strong> → fault is in the body RF coil (inside magnet). Call TSM for support.</li>
+</ol>
+</div>
+
+<div class="restore">⚠️ RESTORE ALL CABLES BACK TO ORIGINAL POSITIONS BEFORE LEAVING SITE</div>
+
+<h2>GLD Decision Tree Summary</h2>
+<table>
+  <tr><th>What You Swapped</th><th>Bad Value Stays</th><th>Bad Value Moves</th></tr>
+  <tr><td>Driver Module cables (BD1↔BD4, BD2↔BD3)</td><td>Order <strong>Driver Module</strong></td><td>Fault downstream — continue</td></tr>
+  <tr><td>Pen Panel — equipment room (J92↔J96, J93↔J95)</td><td>Order <strong>DM-to-Pen Panel cable</strong></td><td>Fault downstream — continue</td></tr>
+  <tr><td>Pen Panel — magnet room (J72↔J76, J73↔J75)</td><td>Order <strong>Pen Panel DD Filter</strong></td><td>Fault downstream — continue</td></tr>
+  <tr><td>DD lines at magnet (front pair + rear pair)</td><td>Order <strong>Pen Panel-to-Magnet cable</strong></td><td>Fault in <strong>body RF coil</strong> — call TSM</td></tr>
+</table>
+
+<h2>Results File Reference</h2>
+<table>
+  <tr><th>File</th><th>Contents</th><th>Command</th></tr>
+  <tr><td><code>filename_mc.txt</code></td><td>Multicoil bias channel readings — one row per channel. Bad channel shows different current values from good channels.</td><td><code>gedit /usr/g/service/log/filename_mc.txt</code></td></tr>
+  <tr><td><code>filename_dd.txt</code></td><td>Dynamic disable line readings — one entry per DD line. Shows short/open value on the faulting line.</td><td><code>gedit /usr/g/service/log/filename_dd.txt</code></td></tr>
+</table>
+
+<div class="tip"><strong>Naming convention tip:</strong> Use initials + run number + brief description for each GLD run so you can track which swap each file corresponds to. Example sequence: <code>mj1_base</code> → <code>mj2_dm_swap</code> → <code>mj3_pp_eq</code> → <code>mj4_pp_mr</code> → <code>mj5_magnet</code>. This is critical if you need to share results with TSM.</div>
+
+<div class="tip"><strong>Multicoil vs DD tip:</strong> Multicoil errors reference a specific coil by name or port. DD errors reference a line number (BLD 1–4, front or rear). GLD generates separate output files for each fault type — check both <code>_mc.txt</code> and <code>_dd.txt</code> if the fault type is unclear from the error log.</div>
+
+<p style="text-align:center;color:#6b7280;font-size:12px;margin-top:32px">AMT Imaging Solutions LLC — Field Service Reference | Updated May 2026</p>
+</body>
+</html>
