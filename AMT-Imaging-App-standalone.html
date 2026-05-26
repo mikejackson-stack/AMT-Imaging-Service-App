@@ -17,7 +17,6 @@ window.addEventListener('online', ()=>{ const b=document.getElementById('offline
 window.addEventListener('offline',()=>{ const b=document.getElementById('offlineBadge'); if(b)b.style.display='flex'; });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 :root{
   --navy:#0a1628;--navy2:#112240;--navy3:#1a3358;
@@ -7257,6 +7256,2848 @@ const DIAG_GUIDES_SEED = [
       tags: ['ground','earth','bond','safety','electrical','chassis'],
       content: `## GE MRI System Ground Check\n\n### Why Ground Integrity Matters\n- Proper grounding protects patients from leakage current.\n- Single-point ground system prevents ground loops that degrade image quality.\n- Required by IEC 60601-1 and NFPA 99.\n\n### Equipment Required\n- 4-wire milli-ohmmeter or precision DMM with kelvin clips\n- Ground bond resistance target: <0.1 ohm per connection\n\n### Measurement Points\n| Connection | Expected | Action if Fail |\n|------------|----------|---------------|\n| Console chassis to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Gradient cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| RF cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Magnet cryostat to PDC ground bus | <0.1 ohm | Inspect bond plate on magnet |\n| Scan room copper plate to PDC ground | <0.05 ohm | Inspect penetration bond |\n| PDC to building ground | <0.1 ohm | Refer to facility electrician |\n\n### Procedure\n1. **De-energize and lock out / tag out** system before measuring.\n2. Connect kelvin clips -- one pair at each end of bond path.\n3. Measure resistance. Record value.\n4. Any measurement >0.1 ohm: clean contact surfaces (remove oxidation with fine abrasive), retorque connection, re-measure.\n5. If after cleaning resistance remains high: replace bonding strap or wire.\n\n### Documentation\nRecord all bond resistance values annually and after any PDC or cabinet relocation.`,
       created: '2026-05-23T00:00:00.000Z'
+    },
+    {
+      id: 'dg_lcc_ramp_up_3t',
+      title: 'GE LCC300 3.0T Magnet Ramp Up Procedure',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp up', '3T', 'LCC300', 'magnet', 'ramping', 'cryogen', 'superconducting'],
+      content: `# GE LCC300 3.0T Magnet Ramp Up Procedure
+
+Direction 2325852 Rev 3
+
+## Overview
+
+The 3.0T Corona magnet is ramped to a nominal current of **356 amps** to achieve a 3.0 Tesla field, using voltage control for ramping. Target parking field: \`3.0000 ± 0.0005 Tesla\` (\`30,000 ± 5.0 Gauss\`; \`127.728 MHz ± 21.328 KHz\`).
+
+The magnet is initially ramped until helium level is reduced to 80%, then parked and refilled before final ramp to 3.0T. Start with magnet at **100% helium**.
+
+- Initial ramp to 80% He level: approx. 6 hours including checks
+- Parking fill: approx. 500 liters LHe, ~1 hour
+- Final ramp to 3.0T: approx. 2–3 hours
+
+⚠️ **DANGER: Review all safety requirements before starting. Post warning signs, remove all ferromagnetic objects, verify MRU is operational.**
+
+## Tools / Equipment Required
+
+- Main Coil Power Supply: 750A TCR 7.5T750 (46-260776G3) or 1000A ESS 7.5-1000-2-D-1236 (46-260776G4)
+- 750 Amp Ramp Cart / Cable Kit 2135435
+- Shim Case / Cable Kit 2135558
+- Magnet Ramping Equipment Kit 46-260703G5 (standard ceiling)
+- Fixed Main Lead Extension 46-294204G1; Hold-Down Tool 2193922; Retractable Shim Lead Assembly 2285073
+- 2.5M Ceiling Height Kit M1060SR (low ceiling): Flexible Main Lead Extension 2287029
+- LCC300 Ramp Lead Hold-Down Tool 5116737 (if LHe topoff planned immediately after parking)
+- Digital Voltmeter (DVM)
+- MetroLab Teslameter Kit 46-251865G5
+- Portable Oxygen Monitor 2287000
+- Cryogen Safety Wear Kit 46-271137G1
+
+## Ramping Preparations
+
+1. Verify Magnet Monitor helium level readings are functional and accurate.
+2. Check for ice on Shim Lead connector and Recondenser — deice if required before ramping.
+3. Verify magnet is **100% full** of helium and Vent Valve V2 is closed.
+4. Install and check Main Power Supply per vendor manual and FUNCTIONAL CHECKS Section 8.
+5. Ensure Shim Lead Assembly is **Engaged**.
+6. Disconnect Input Power Cable from Main Power Supply.
+7. Connect power supply to magnet per SET-UP AND CALIBRATION Section 7-4.
+8. Record Main Coil connection polarity in DATA SHEETS Table 5-1.
+9. Set all heater switches to OFF. Set Current Adjust and Voltage controls to zero (full CCW).
+10. Connect Input Power Cable to Main Power Supply.
+
+## Resistance Checks
+
+1. Set Main Power and Power On switches to ON.
+2. Set Heater 2 Shim Axial Switch to I (on) — observe current rise \`700-720 mA\` to verify continuity. Ensure Main Heater Switch is OFF.
+3. Connect DVM to end of Voltage Sense Leads.
+4. Set Current Adjust Coarse Control to maximum (full CW).
+5. Slowly turn Voltage Control CW to set **375A** through Main Power Leads, Lead Extensions, and persistent Main Switch.
+6. Record DVM voltage reading in DATA SHEETS Table 5-1.
+
+⚠️ **DVM voltage > 100 mV at 375A = unacceptable contact resistance. Higher resistance adds heat and may cause quench.**
+
+7. If DVM > 100 mV: wait 1 min; if still high, turn controls to zero, power off, tighten ramp cable bolts, reseat Main Leads. Repeat.
+8. Voltmeter Select Switch to MAIN POWER SUPPLY position — voltage < 2.2V at 375A = acceptable.
+9. Turn Current Adjust and Voltage Adjust controls off (full CCW).
+
+## Ramping Voltage Profile (Table 8-1)
+
+| Main Coil Voltage | Current Range |
+|---|---|
+| 6.00 V | 0–248 A |
+| 4.00 V | 248–283 A |
+| 2.00 V | 283–314 A |
+| 1.00 V | 314–342 A |
+| 0.50 V | 342–360 A |
+| 0.30 V | > 360 A |
+
+📝 **Updated 2009 schedule (LCC300 W-serial magnets):** Stage 1: 6.00V, 0–300A; Stage 2: 4.00V, 300–335A; Stage 3: 2.00V, 335–350A; Stage 4: 1.00V, 350–355A; Stage 5: 0.50V, 355–final field. Average ramp time 5h 45min vs original 7h 45min.
+
+## Section 8-5-1: Initial Ramp & Fill
+
+1. Set power supply controls:
+   - Voltage Control: zero (full CCW)
+   - Current Control: 400 amps
+   - Main Power Switches: ON
+   - Heater 2 Shim Axial Switch: I (on)
+   - Voltmeter Select Switch: Main Coil position
+2. Set Heater 1 Main Switch to I (on). Wait **3 minutes**.
+3. Use Range 5 Teslameter Probe below 2.0T; Range 6 Probe above 2.0T.
+4. Ramp per Table 8-1: slowly turn Voltage Control to obtain Main Coil voltage. Allow voltage to decay over current interval.
+5. At 50 amps, estimate inductance: \`L = 60 × Voltage / Current Change\`. If L outside 200–230 Henries, contact MAC Team.
+6. When He level drops to **80%**, stabilize field (should be 2.6–3.0T), park and disconnect:
+   - Slowly adjust Voltage to stabilize field (last 2 digits only changing)
+   - Maintain stable for **5 minutes**
+   - Turn off Main Switch Heater. Wait **minimum 15 minutes** to go persistent.
+   - Record current, frequency, and lead extension voltage at persistence in DATA SHEETS Table 5-1.
+   - Slowly turn Voltage to zero (CCW) over 2 minutes — check Teslameter doesn't decrease.
+   - Gradually turn Current Adjust to zero over 1 minute.
+   - Set Heater 2 Shim Axial to O (off).
+   - Turn Main Power and Power On to OFF. Disconnect Input Power Cable.
+7. Remove Ramp Lead Hold-Down Tool (skip if LCC300 clamping fixture 5116737 in use).
+8. Remove Main Lead Extensions (one at a time); cap Ramp Lead Ports.
+9. Fill magnet to **100%** (~two 250L Dewars, ~1 hour).
+
+## Section 8-5-2: Final Ramp to 3.0T
+
+1. Complete all Section 8-3 Preparation steps again.
+2. Perform resistance checks (Section 8-4).
+3. Power supply controls: Voltage zero, Current 400A, Main Power ON, Heater 2 Shim Axial ON, Voltmeter on Main Coil.
+4. Use Range 6 Teslameter Probe — locks on near 1.0T (~42.5764 MHz; ~120A).
+5. Retrieve parking current and polarity from DATA SHEETS Table 5-1.
+6. Set Voltage to bring current to parking current value. Set Heater 1 Main to I (on).
+7. Allow **~3 minutes** for Main Switch to go normal.
+8. Ramp per Table 8-1 profile again.
+9. When field reaches 2.9995T, set voltage to 0.1V.
+10. When field reaches \`2.9995–3.0005T\`, stabilize and park:
+    - Adjust Voltage to 0.025V; fine-tune for ATR target frequency.
+    - Maintain for **5 minutes**.
+    - Turn off Main Switch Heater. Wait **minimum 15 minutes**.
+    - Record values at persistence in DATA SHEETS Table 5-1.
+    - Slowly turn Voltage to zero over 2 minutes; turn Current to zero over 1 minute.
+    - Turn off all heaters and power supply. Disconnect Input Power Cable.
+11. Remove Main Lead Extensions (one at a time), plug flow holes, replace Ramp Port Caps.
+12. Set Magnet Monitor heater to **4.0 psig**.
+13. Proceed to shimming and 12-hour post-ramp field stability check.
+
+⚠️ **QUENCH RESPONSE: Immediately set Voltage and Current to zero, turn off power supply, leave room, turn off Cryocooler Compressor outside magnet room.**`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_lcc_ramp_down_3t',
+      title: 'GE LCC300 3.0T Magnet Ramp Down Procedure',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp down', '3T', 'LCC300', 'magnet', 'ramping', 'cryogen', 'discharge'],
+      content: `# GE LCC300 3.0T Magnet Ramp Down Procedure
+
+Direction 2325852 Rev 2/3
+
+## Overview
+
+The magnet is ramped down in two stages: initial ramp to 80% He level → park and refill → final ramp to zero. Requires **100% helium** before starting. Plan for ~500L LHe fill at parking.
+
+Ramp down uses Shim Lead. If Shim Lead cannot be engaged (ice/damage to P100 Sav-Con), use Auxiliary Rampdown Cable 2217315 (connects Main Coil Heater via J1C to J3 on Main Power Supply).
+
+⚠️ **DANGER: Post warning signs, remove all ferromagnetic objects. Power supplies must be outside magnet room.**
+
+## Tools / Equipment
+
+- Main Coil Power Supply (750A or 1000A)
+- Shimming Power Supply 46-260777G3
+- 750 Amp Ramp Cart/Cable Kit 2135435; Shim Cable Kit 2135558
+- Magnet Ramping Equipment Kit 46-260703G5
+- 50 ft Auxiliary Rampdown Cable 2217315
+- DVM, MetroLab Teslameter
+- Portable Oxygen Monitor 2287000; Cryogen Safety Wear Kit
+
+## Section 3-3: Preparation for Rampdown
+
+1. Top-fill magnet to **≥100%** helium.
+2. Ensure Shim Lead Assembly is Engaged.
+3. Set up MetroLab Teslameter for single-point field monitoring.
+4. Perform Ramp Power Supply checks. Verify Shim Supply Heater currents at **810 mA ± 10 mA**.
+5. Disconnect input power cables for all power supplies.
+6. Replace Main Lead Contact Bands.
+7. Connect Shim Power Supply to magnet (Section 7-3).
+8. Open Shim Lead Nupro Vent Valve — allow frost to appear on Shim Lead Connector Housing before removing shim currents.
+9. Connect input power cable to Shim Power Supply.
+10. Set Shim Power Supply Main Power Switch to ON.
+11. Set Shim Supply to last recorded Transverse 1 Currents. Verify polarity correct.
+12. Set Transverse 1 Heater Switch to I (on).
+13. Verify heater current: **610 mA ± 10 mA** for T1/T2 shims; **710 mA ± 15 mA** for axial shims.
+14. Slowly adjust all Shim Current controls to zero.
+15. Set Heater Switch to O (off).
+16. Repeat steps 11-15 for Transverse 2 and Axial Shim Coils.
+17. Set Shim Power Supply to OFF; disconnect all cables.
+18. Record frequency displayed on Teslameter (this is target frequency for re-ramping) in DATA SHEETS Table 5-1.
+19. Close Shim Lead Nupro Vent Valve.
+
+## Section 3-4: Resistance Checks
+
+1. Disconnect Main Power Supply input cable.
+2. Connect Main Power Supply and Main Lead Extensions (Section 7-4).
+3. Set Heater 1 Main and Heater 2 Shim Axial to O (off).
+4. Set Current Adjust and Voltage Adjust to zero (full CCW).
+5. Connect input power cable.
+6. Set Main Power and Power On to ON.
+7. Set Heater 2 Shim Axial to I (on) — observe current rise (700-720 mA). **Keep Main Heater Switch OFF.**
+8. Connect DVM to Voltage Sense Leads.
+9. Set Current Adjust to maximum (full CW).
+10. Slowly turn Voltage CW to set **375A** through Main Leads, Lead Extensions, and persistent Main Switch.
+11. Record DVM reading. ⚠️ **Voltage > 100 mV at 375A = unacceptable. Voltage < 2.2V at 375A = acceptable system resistance.**
+12. If > 100 mV: wait 1 min; tighten bolts; reseat leads. Repeat.
+13. Turn Current Adjust and Voltage Adjust off (full CCW).
+
+## Section 3-5: Initial Rampdown & Fill
+
+⚠️ **Axial Shim Heaters MUST remain on throughout rampdown to prevent shim coil damage. Check polarity matches DATA SHEETS Table 5-1 before starting.**
+
+1. Retrieve Main Coil connection polarity and parking current from DATA SHEETS Table 5-1.
+2. Ensure Axial Shim Heater is on. Connect Main Leads with correct polarity.
+3. Set Voltmeter Select Switch to MAIN COIL position.
+4. Set Current Adjust to parking current + 10 amps.
+5. Set Voltage Control to obtain parking current value.
+6. Set Heater 1 Main Switch to I (on).
+7. Allow **~1 minute** for main switch to go normal.
+8. Slowly decrease Voltage Control (CCW) until **-0.3V** observed on voltmeter (MAIN COIL position).
+9. Adjust voltage during rampdown per Table 3-1:
+
+## Ramp Down Profile (Table 3-1)
+
+| Main Coil Voltage | Main Coil Current Range |
+|---|---|
+| -0.30 V | Start |
+| -0.50 V | 360–342 A |
+| -1.00 V | 342–314 A |
+| -2.00 V | 314–283 A |
+| -4.00 V | 283–248 A |
+| -6.00 V | 248–0 A |
+
+10. When He level reaches **80%**, stabilize field and park:
+    - Slowly adjust Voltage to stabilize field (last 2 digits only on Teslameter)
+    - Maintain stable **5 minutes**
+    - Turn off Main Switch Heater. Wait **minimum 15 minutes** to go persistent.
+    - Record current, frequency, lead extension voltage at persistence.
+    - Slowly turn Voltage to zero (CCW) over 2 minutes.
+    - Gradually turn Current Adjust to zero over 1 minute.
+    - Set Heater 2 Shim Axial to O (off).
+    - Set Main Power to OFF. Disconnect Input Power Cable.
+    - Remove Ramp Lead Hold-Down Tool and Main Lead Extensions; cap Ramp Lead Ports.
+11. Fill magnet to **100%** (~two 250L Dewars, ~1 hour).
+12. Repeat Section 3-3 and 3-4 with magnet at 100%.
+
+## Section 3-6: Rampdown to Zero Field
+
+1-9: Repeat same steps as Section 3-5 initial rampdown setup.
+10. Observe voltmeter — zero reading on both voltage and current meters = magnet fully discharged.
+11. When fully discharged:
+    - Set Heater 1 Main and Heater 2 Shim Axial to O (off).
+    - Set Main Power and Power On to OFF.
+    - Disconnect input power cables.
+12. Replace flow hole screws in each Main Lead Extension **one at a time**, then remove extension and immediately cap Ramp Lead Port.
+
+⚠️ **CAUTION: Replace Ramp Port Caps immediately after removing extensions to prevent ice build-up inside Vertical Penetration.**`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_scp_reflash',
+      title: 'GE Signa Excite SCP Board NVRAM Reflashing (MGD)',
+      system: 'GE MRI',
+      category: 'Host/Software',
+      tags: ['SCP', 'NVRAM', 'MGD', 'reflash', 'Excite', 'boot', 'firmware', 'TPS reset'],
+      content: `# GE Signa Excite SCP Board NVRAM Reflashing
+
+Effectivity: All 10.0 EXCITE MR System SCP Boards (P/N 2294300-2) in MGD Chassis slot 11.
+
+## Problem
+
+Failed SCP Boards returned from field because MGD would not download or boot are often found to have corrupted NVRAM. Corrupted NVRAM prevents successful TPS Reset.
+
+**If the \`EPPC-Bug>\` prompt is seen after logging into the SCP Board — NVRAM is corrupted.** Perform re-flash before replacing the board.
+
+## Procedure
+
+1. Open a C-shell window.
+2. Login to the SCP Board:
+   \`\`\`
+   t20 6# cu scp
+   \`\`\`
+   Expected responses: \`Connected\` then \`EPPC-Bug>\`
+3. If \`EPPC-Bug>\` prompt appears, NVRAM is corrupted — proceed to step 4. If not, NVRAM is NOT corrupted; reflash will not solve the problem.
+
+⚠️ **CAUTION: Work slowly. Double-check all entries. Do NOT power cycle MGD until all values are confirmed correct. Wrong NVRAM entry may hang the SCP permanently.**
+
+4. Enter the following NVRAM reflash sequence:
+   \`\`\`
+   EPPC-Bug> ENV;D
+   Update Non-Volatile Memory (Y/N)? Y
+   Reset Local System (CPU) (Y/N)? N
+   EPPC-Bug> ENV
+   Probe System for Supported I/O Controllers [Y/N] = Y? [Enter]
+   Local SCSI Bus Reset on Debugger Startup [Y/N] = N? [Enter]
+   PCI Interrupts Route Control Registers (PIRQ0/1/2/3) = 0A0B0E0F? [Enter]
+   Firmware Command Buffer Offset = 000002C8? [Enter]
+   Firmware Command Buffer Size = 00000200? [Enter]
+   Firmware Command Buffer Delay = 5000? [Enter]
+   Program Intermediate Load Address = 00200000? [Enter]
+   Binary Program Load Address = 00080000? [Enter]
+   Binary Program Execution Offset = 00000100? [Enter]
+   Primary Network Controller LUN = 20? [Enter]
+   Primary Network Device LUN = 00? [Enter]
+   Firmware Command Buffer : ['NULL' terminates entry]?
+     GO FC000100
+     SD
+     SE;AEM;QST;PCIB;FECETH
+     GO FC00017C
+     NULL
+   Update Non-Volatile Memory (Y/N)? Y
+   Reset Local System (CPU) (Y/N)? N
+   \`\`\`
+5. Cycle MGD power: open rear door of EXCITE System Cabinet → locate power switch on left rear of MGD Chassis → place in DOWN (OFF) position → wait 5 seconds → place back to UP (ON).
+6. Perform a **TPS Reset** from **Utilities** on MR Service Desktop. Watch C-shell window for scrolling information during TPS Reset.
+7. If TPS Reset successful, close C-shell window. Perform a scan to confirm system operation.
+
+## If SCP Still Fails After Reflash
+
+1. Power off MGD. Partially pull SCP Board from slot 11.
+2. Locate **Jumper J31** and **button battery** on bottom front of board.
+3. ✅ Confirm J31 is across the 2 pins closest to front faceplate (normal position).
+4. ✅ Confirm button battery is firmly seated. Measure battery voltage: should be ~**3.1 VDC**, not less than **2.5 VDC**.
+   - Flat exposed side = (+) terminal; edge of battery = (-) terminal.
+5. Check for bent pins on MGD Chassis mid-plane in SCP slot and adjacent slots.
+6. **To clear NVRAM:** move J31 momentarily from left position to right, then back to left. Then repeat step 4 reflash sequence.
+7. If J31 correct, battery OK, and board still won't download — **replace SCP Board**.
+
+📝 Note: SCP Board is in slot 11 on front of MGD Chassis.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_lcc_turret_deicing',
+      title: 'GE LCC Magnet Turret / Shim Lead Sav-Con De-icing',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['deicing', 'LCC', 'shim lead', 'Sav-Con', 'turret', 'vertical penetration', 'helium gas', 'ice'],
+      content: `# GE LCC Magnet Turret & Shim Lead De-icing
+
+GE Healthcare Direction 2192624, Rev 17 — Section 9 Ice Removal
+
+## Overview
+
+Ice in the Vertical Penetration or on the Sav-Con Connector prevents Shim Lead engagement. Two levels of de-icing are available. Ice build-up is usually due to an air leak — locate and correct the leak.
+
+⚠️ **WARNING: Risk of quench if gas He flow rate exceeds 140 CFH. Keep magnet pressure below 0.5 PSI at all times.**
+
+## Required Conditions
+
+- Minimum helium level: **85%** before starting.
+- Pre-set magnet pressure to **0.2–0.4 PSI** the week prior if possible.
+
+## Level 1: Sav-Con Connector De-icing (Quick Method)
+
+**Tools:**
+- 3 ft hose with quick disconnect and Nupro valve fitting
+- 20 ft hose with quick disconnects both sides
+- Flow meter (must be kept vertical to read correctly)
+- Shim supply and cables for continuity check
+- 1 cylinder of pure He gas (99.999%)
+
+**Procedure:**
+1. Connect helium cylinder with regulator and Tygon tubing.
+2. Assemble Helium Gas Hose to Nupro Valve on Shim Lead.
+3. Purge flow meter and 20ft hose; keep flow meter vertical.
+4. Set He flow to **80 CFH** using scale marked 20–140 for helium.
+5. Open Vent Valve V2 to avoid pressure increase in magnet.
+6. Slowly open Nupro Valve — watch magnet pressure, keep below **0.5 PSI**.
+7. Let helium gas flow over Sav-Con connector for **1 minute**.
+8. Turn off gas helium and attempt to seat shim lead. Ensure Shim Lead is aligned with keyway.
+9. If shim lead will not seat: increase flow to **140 CFH** for **2 minutes**. Repeat as necessary.
+10. Once good fit achieved on Sav-Con: verify continuity on all correction coils. Disconnect He gas line (close both Vent Valve V2 and Nupro Valve completely).
+11. If unable to clear — contact Magnet Plant in Florence, SC.
+
+## Level 2: Shim Lead Connector and Vertical Penetration De-icing
+
+📝 **Use when Level 1 fails or shim lead cannot be engaged at all.**
+
+1. Turn off Magnet Monitor power OR disable Master Alarm and Vessel Pressure Control.
+2. Disengage Shim Lead, then attempt to engage. Perform Shim Coil resistance checks.
+   - If checks pass: de-icing not required.
+   - If checks fail or Shim Lead cannot be engaged: proceed.
+3. If magnet is at field — ramp down using 50 ft Auxiliary Rampdown Cable 2217315.
+4. Turn off Cryocooler:
+   a. Turn Coldhead Drive Switch ON (up position, on Compressor back panel).
+   b. Place Drive Switch on Compressor front panel to O (Off).
+   c. Run Coldhead for only **10 seconds** with Compressor off (prevents pressure build-up). Then turn OFF Coldhead Drive Switch AND Compressor Main Power Switch.
+   d. Disconnect and LOTO input power to Compressor. Verify no voltage with DVM.
+5. Vent magnet to **0.2 psig** by opening/closing Vent Valve V2.
+6. Assemble regulator and Tygon tubing to helium cylinder. Remove orifice plug and nut from Shim Lead Nupro Vent Valve; assemble tubing to exhaust stem.
+7. Partially open V2; immediately open Nupro Vent Valve. Blow warm He gas through Shim Lead at **4 psig for 5 minutes** (Shim Lead engaged/partially engaged).
+8. Attempt to engage Shim Lead Connector. If successful: close both valves, perform resistance checks, remove tubing, replace plug.
+   - If checks pass: done.
+   - If checks fail or Shim Lead still cannot be engaged: proceed.
+9. Disengage Shim Lead; lock in Up position.
+10. Set magnet pressure to **0.2 psig**.
+
+⚠️ **NOTICE: Perform next two steps RAPIDLY to prevent cryo-pumping of air into Vertical Stack.**
+
+11. Loosen and remove eight 1/4-20 retaining bolts; remove Shim Lead Assembly.
+12. Immediately cover Vertical Penetration with Lexan Cover Plate 46-294765G1 (align scribe mark toward Vent Adapter); secure with eight 1/4-20 retaining bolts.
+13. Attach Deicing Purge Tube 2347725 to end of Tygon tubing; purge at **4 psig**.
+14. Remove plugs on Cover Plate; insert Deicing Purge Tube through hole closest to Shim Lead Connector.
+15. Direct **8–10 psig** warm He gas onto Shim Lead connector and affected areas inside Vertical Penetration. Keep V2 partially open.
+16. Shine flashlight through Lexan Cover Plate to verify ice removed.
+17. Remove any remaining ice using Deicing Purge Tube (bend as required).
+18. When all ice removed: close V2, remove Lexan Cover Plate.
+19. Disconnect Instrumentation Lead Connector using Connector Insertion/Removal Tool 46-281934P1. Direct 8–10 psig He gas at connector until ice removed. Reconnect.
+20. Replace Shim Lead Assembly.
+21. Perform Shim Coil resistance checks. If unsuccessful, replace Shim Lead Sav-Con Connector.
+22. Perform MRU Checks to verify no Instrumentation Lead Connector damage.
+23. Remove LOTO, connect Compressor power, turn on Cryocooler.
+24. Leak check magnet. Repair any leaks found.
+25. Return Magnet Monitor to normal operation.
+
+## Ramp/Fill Port De-icing
+
+Use when ice prevents interaction with ramp pins or fill port.
+
+1. Reduce vessel pressure to **≤0.2 psi** (open V2).
+2. Slowly insert Noninsulated Coring Tool (2280035) into (+) or (-) ramp port. Rotate back and forth while gently pushing — sawing action cuts through ice to ramp pin.
+3. Remove tool once it hits bottom. Use Insulated Ramping Port Tool (5248857) with same motion to cut remaining ice.
+4. Repeat for other port.
+5. For fill port: use Noninsulated Tool (5248765), then Insulated Fill Port Coring Tool (5248857).
+6. Low ceiling environment: use Ramp Port Coring Tool (5248766) / Fill Port Coring Tool (5248851) in 3-step insertion (bottom piece → middle shaft → top).`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_lcc_shim_lead_deicing',
+      title: 'LCC Shim Lead De-icing (Field Procedure)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['deicing', 'LCC', 'shim lead', 'Sav-Con', 'helium gas', 'ice', 'quench risk'],
+      content: `# LCC Shim Lead De-icing (AMT Field Procedure)
+
+## Tools Required
+
+- 3 ft hose with quick disconnect (one end) and Nupro valve fitting (other end)
+- 20 ft hose with quick disconnects on both sides
+- Flow meter (must be kept **vertical** to read correctly)
+- Shim supply and cables to check continuity
+- 1 cylinder of pure He gas
+
+⚠️ **WARNING: RISK OF QUENCH. DO NOT ATTEMPT UNLESS INSTRUCTED BY MAGNET SERVICE ENGINEERS OR GE MR SPECIALIST.**
+
+⚠️ **WARNING: RISK OF QUENCH IF FLOW EXCEEDS 140 CFH OR MAGNET PRESSURE EXCEEDS 0.5 PSI.**
+
+## Required Conditions
+
+- Minimum helium level: **85%**
+- Pre-set magnet pressure between **0.2–0.4 PSI** the week prior if possible.
+
+## Procedure
+
+1. If possible, lower magnet pressure to **0.4 PSI** in advance.
+2. Purge flow meter. Connect 20 ft hose and purge it too. Keep flow meter vertical.
+3. Set flow to **140 CFH** — start at 60–80 CFH and work up, watching pressure rise rate.
+4. Connect 3 ft hose to Nupro valve; open valve briefly to purge, then close.
+5. Open V2 to lower magnet pressure to **0.2 PSI**.
+6. Connect 20 ft hose to 3 ft hose.
+7. Open V2 to prevent magnet pressure from increasing rapidly — keep open and watch.
+8. Keep Nupro valve **closed** and lower shim lead until it reaches top of ice or Sav-Con connector.
+9. Open Nupro valve slowly; leave open for maximum **2–3 minutes** without letting magnet pressure go above **0.5 PSI**.
+10. Keep V2 closed when not attempting to insert shim lead and no He gas flowing through Nupro.
+11. Try reseating the shim lead; repeat process until good connectivity is achieved.
+
+## If Unsuccessful After Several Attempts
+
+- Try heating shim lead with heat gun and lower down with Nupro valve open.
+- If still unsuccessful, escalate to Level 2 de-icing procedure (see LCC Magnet Turret Deicing guide) or contact GE Magnet Plant in Florence, SC.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_ramp_up_1_5t_sv',
+      title: 'GE 1.5T Cryostable Magnet (SV) Ramp Up Procedure',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp up', '1.5T', 'SV', 'cryostable', 'magnet', 'ramping', '705 amps'],
+      content: `# GE 1.5T Cryostable Magnet (SV) Ramp Up Procedure
+
+Direction 2141548 Rev 2
+
+## Overview
+
+Ramping current: approximately **705 amps**. Uses Voltage Control for ramping. Target parking field: \`1.4999–1.5001 Tesla\` (\`63.866–63.874 MHz\`).
+
+Minimum He level before ramping: **85%**.
+
+## Preparation
+
+1. Set up field monitoring equipment (Teslameter and Probe) per SET UP AND CALIBRATION Section 5.
+2. Perform Magnet Electrical Checks (FUNCTIONAL CHECKS Section 3).
+3. Verify magnet is **≥85% full** of helium.
+4. Ensure Main Power Supply is installed and checked per vendor manual.
+5. Ensure Shim Lead Assembly is Engaged (Section 6).
+6. Disconnect Input Power Cable from Power Supply.
+7. Connect Power Supply to magnet per Section 8 (Electrical Connections for Ramping and Shimming).
+8. Record Main Coil connection polarity in DATA SHEETS Table 6-1.
+9. Set all heater switches to OFF; Voltage and Current Adjust to zero (full CCW).
+10. Connect Input Power Cable to Main Power Supply.
+11. Verify Vent Valve V2 is closed.
+
+## Resistance Checks
+
+1. Perform Switch Heater and Shim Coil resistance checks (FUNCTIONAL CHECKS Section 3).
+2. Set Main Power and Power On switches to ON (front and back of supply).
+3. Set Heater 2 Shim Axial to 1 (on) — observe current rise to **800–820 mA** to verify continuity. Main Heater Switch must be OFF.
+4. Connect DVM to Voltage Sense Leads.
+5. Set Current Adjust to maximum (full CW).
+6. Slowly turn Voltage CW to set **750A** through Main Power Leads, Lead Extensions, and persistent Main Switch.
+7. Record DVM reading in DATA SHEETS Table 6-1.
+
+⚠️ **Voltage > 150 mV at 750A = unacceptable contact resistance. Higher resistance may cause quench.**
+
+8. If DVM > 150 mV: wait 1 min; tighten hold-down tool nuts; if still high, turn controls to zero, power off, check/tighten bolts on ramp cables, reseat leads. Repeat.
+9. Voltmeter to MAIN POWER SUPPLY position: voltage < 2.2V at 735A = acceptable system resistance.
+10. Turn Current Adjust and Voltage controls off (full CCW).
+
+## Ramping Voltage Profile (Table 9-1)
+
+| Main Coil Driving Voltage | Main Coil Current |
+|---|---|
+| 4.00 V | 0–100 A |
+| 3.75 V | 100–200 A |
+| 3.50 V | 200–300 A |
+| 3.00 V | 300–400 A |
+| 2.50 V | 400–500 A |
+| 1.50 V | 500–600 A |
+| 0.75 V | 600–650 A |
+| 0.50 V | 650–675 A |
+| 0.35 V | > 675 A |
+
+## Ramping Procedure
+
+1. Ensure V2 is closed; Voltage and Current Adjust at zero (full CCW).
+2. Set Heater 2 Shim Axial to 1 (ON) on Main Power Supply.
+3. Set Main Ramp Power Supply Main Power to ON.
+4. Press and hold SET POINT button; set Current Adjust to **710 amps** on digital Current meter. Release SET POINT.
+5. Set Heater 1 Main to 1 (on). Wait **3 minutes**.
+6. Set Voltmeter Select Switch to MAIN COIL position.
+7. Turn Voltage Adjust CW to **4.00 V** on digital Voltmeter.
+8. At 50A, estimate inductance: \`L = 10 × Voltage / Current Change\`. Expected ~11 Henries (acceptable: 14.5–16.5 Henries). If outside range, stop and contact MAC Team.
+9. Teslameter locks on between 350–400A (0.6–0.7T). If not locked at 500A, briefly reduce voltage to 0.0V, set to MANUAL mode, adjust COARSE vernier to lock on, then return to AUTO.
+10. Follow Table 9-1 voltage steps as current increases through each range.
+
+⚠️ **WARNING: Do NOT make large current or voltage changes near parking (>675A). Turn Voltage control in slow, continuous motion.**
+
+11. Steps 11–18: Adjust voltage per table at each current milestone (100A, 200A, 300A, 400A, 500A, 600A, 650A, 675A).
+12. Check Teslameter and slowly adjust Voltage to bring field to \`1.4999–1.5001 Tesla\` (\`63.866–63.874 MHz\`). Total current ~705A. Allow field to stabilize — only last 2 digits on Teslameter should change.
+13. Maintain field at final setting for **5 minutes**.
+14. Turn off Main Switch Heater. Wait minimum **15 minutes** to go persistent.
+15. Record current, frequency, and lead extension voltage at persistence in DATA SHEETS Table 6-1.
+16. When persistent, slowly turn Voltage to zero (CCW) over minimum **2 minutes** — monitor Teslameter for no decrease.
+17. Gradually turn Current Adjust to zero (over 1 minute).
+18. Set Heater 2 Shim Axial to 0 (off).
+19. Set Main Power and Power On to OFF. Disconnect Input Power Cable.
+20. Remove ramp lead hold down tool.
+
+21. Remove Main Lead Extensions one at a time:
+    a. Open V2 — bleed vessel pressure to **0.25 psig**. Close V2.
+    b. Install screw into flow hole of one extension.
+    c. Remove ice around ramp lead port compression nut on that extension.
+    d. Unscrew compression nut; remove extension. Immediately cap Ramp Lead Port.
+    e. Repeat for other extension.
+
+22. Verify conditions after ramp:
+    - Instrumentation Lead Flowmeter (F2): **0.8–1.2 SCFH**
+    - Shim Lead Flowmeter (F1): **1.8–2.2 SCFH**
+    - Cryostat Gauge Pressure: **0.25–0.50 psig**
+
+23. Proceed to shimming (Section 10).`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_3t_ramp_schedule_updated',
+      title: 'GE LCC300 3.0T Updated Ramp Schedule (Service Note)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp up', '3T', 'LCC300', 'ramp schedule', 'W-serial', 'service note', 'optimized'],
+      content: `# GE LCC300 3.0T Updated Ramp Schedule
+
+Service Note DOC0610311, May 2009
+
+Effectivity: All GE LCC300 magnets with serial number beginning with **"W"**.
+
+## Problem with Original Schedule
+
+Original schedule was overly conservative (only concerned with quench prevention). Total ramp time: **7h 45min** straight to field (typically ~10 hours including required He fill).
+
+## Updated Schedule (Recommended)
+
+Balances quench risk vs. ramp time. Average ramp time: **5h 45min**. No mid-ramp He fill required in most cases.
+
+| Stage | Main Coil Voltage | Current Range |
+|---|---|---|
+| 1 | 6.00 V | 0–300 A |
+| 2 | 4.00 V | 300–335 A |
+| 3 | 2.00 V | 335–350 A |
+| 4 | 1.00 V | 350–355 A |
+| 5 | 0.50 V | 355 A – Final Field |
+
+When field reaches ±0.5 Gauss of ATR's Recommended Site Parking Field: slowly adjust Voltage to **0.10V** (Section 7.4.4 Step 12).
+
+## Helium Level Monitoring
+
+Closely monitor He level during ramp. When level drops to **65%**, immediately:
+1. Stabilize field
+2. Park magnet
+3. Disconnect/remove ramping connections
+
+📝 Average He level at end of ramp: ~70%. Plan to have enough LHe on hand to top off after ramp.
+
+## Original vs. Updated Comparison
+
+| | Original | Updated |
+|---|---|---|
+| Stage 1 max current | 248 A | 300 A |
+| Total stages | 6 | 5 |
+| Ramp time | ~7h 45min | ~5h 45min |
+| Mid-ramp He fill | Required | Usually not needed |
+| He stop level | 80% | 65% |
+
+📝 These changes are incorporated in next revisions of MR750 (5500099) and LCC300 (2325852) manuals.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_sumitomo_coldhead_pressure_troubleshooting',
+      title: 'GE LCC High Pressure / Helium Loss Troubleshooting (Sumitomo Coldhead)',
+      system: 'GE MRI',
+      category: 'Cooling System',
+      tags: ['coldhead', 'Sumitomo', 'helium loss', 'high pressure', 'LCC', 'cryocooler', 'troubleshooting', 'compressor'],
+      content: `# GE LCC High Pressure / Helium Loss Troubleshooting
+
+Direction 2192624 Rev 8 — Section 2
+
+## Critical Magnet Conditions (Specs)
+
+| Parameter | Specification |
+|---|---|
+| 2nd Stage Coldhead Temp | < 4.4 K |
+| 1st Stage Coldhead Temp | < 45 K |
+| Recondenser Temperature | > 3.9 but < 4.5 K |
+| Delta T (2nd Stage – Recondenser) | < 0.2 K |
+| Magnet Helium Pressure | > 0.3 but < 4.7 psig |
+
+📝 **Note:** High pressure, helium loss, or high Coldhead temperatures occurring after installation, ramping, shimming, He fill, power outage, or Coldhead replacement do NOT necessarily indicate a problem.
+
+## Initial Troubleshooting Flowchart
+
+1. Determine if magnet is thermally stable — if not, WAIT.
+2. Check critical magnet conditions above.
+3. If any reading out of spec → Section 2-3-1 Temperature/Pressure Troubleshooting.
+4. If readings within spec but helium loss detected → Section 2-3-2 Leak Troubleshooting.
+
+## Section 2-3-1: Temperature/Pressure Troubleshooting
+
+### Site Problems and Compressor Checks (Illustration 2-4)
+
+- Check water chiller — if out of spec, have chiller repaired.
+  - Water flow and temperature minimums per SHI Compressor manual, Section 1-1, Tables 1-1, 1-2
+- Check compressor pressures:
+  - Static: **16.3–16.8 Kgf/cm² G** (1.6–1.65 MPa)
+  - Dynamic: **21.4–23.5 Kgf/cm² G** (2.1–2.3 MPa)
+- High ambient temperature (> 28°C / 82°F) → check HVAC
+- Dirty vacuum air filter (air-cooled compressors) → clean per SHI manual CVSA-71A page 23
+- By-Pass Solenoid Valve stuck open → By-Pass Light should be lit during normal operation
+- Check Absorber use time → replace if > 20,000 hours (per SHI manual CVSA-71A page 23)
+- Check Helium flexline connections — make sure supply/return tight, correct, O-rings in place
+
+### Magnet Checks (Illustration 2-5)
+
+- Check Magnet Monitor for proper operation. Heater should maintain **0.3–4.7 psig**.
+- Check Shim Lead — must be retracted and locked (**12 inches / 300 mm** showing when locked)
+- Check if He was recently added (overfill condition)
+- Check for Coldhead Sleeve vacuum loss or contamination:
+  - Replace charcoal packets; re-evacuate Sleeve to **< 10 microns** (< 10 milliTorr, < 0.01 mmHg)
+- Check for ice in Vertical Penetration: ramp down magnet, check through View Port Caps
+- Check for ice in Recondenser (check temperature per LHe Saturation Temperature chart: T = 0.0626P + 4.2316)
+- Localized cold spot on warm bore / end flange → check Vacuum Plug and Vacuum Level
+
+### Coldhead Checks (Illustration 2-6)
+
+⚠️ **Perform ONLY after completing Chiller and Compressor Checks.**
+
+- Check electrical phasing — if reversed, warm Coldhead and purge, OR replace Coldhead + Getter
+- Check Coldhead power: **200 VAC** at Coldhead pins
+- Check Coldhead for noise:
+  - Grinding noise = motor failure → replace Coldhead (Section 12)
+  - Knocking noise = contamination or improper phasing → replace Coldhead
+- If Coldhead replaced: turn off Coldhead immediately and remove Flexlines to trap contamination
+- Check Flexlines for proper connections and for oil contamination (use black light)
+
+⚠️ **If oil found in Flexlines: replace Coldhead, Flexlines, AND Compressor together. Never replace only one component.**
+
+- Check for Coldhead operating in reverse → correct miswiring at Penetration Panel (color-match each filter)
+
+## Section 2-3-2: Leak Troubleshooting
+
+1. Ensure He pressure < 3.9 psig before leak checking (if in C0BO mode, turn off Cryocooler and let pressure build to 3.9 psig).
+2. Check these areas with leak detector fluid (Snoop, Bird Dog, or Portable Leak Detector):
+   - All external plumbing joints
+   - Vertical Turret and Instrumentation Lead Cover
+   - Main Lead and fill port caps
+   - Shim Lead collar/cap
+   - Pressure Gauge
+   - Shim Lead Pins
+3. Check for ice:
+   - Ramp Leads and Fill Port Caps: use Coring Tools to remove
+   - Vent Assembly (Burst Disc area): warm and remove ice
+   - Recondenser: ramp down → purge Recondenser → remove Coldhead → warm Sleeve to 240–260°F → vent slowly
+4. For O-ring leaks: check/replace O-rings in Field Spare Parts Kit (46-294744G5).
+   - Relief valve balloons: attach small balloon to exhaust side of 5.25 psig and 7.25 psig relief valves and Nupro valve. Replace any valve that leaks.
+5. For Burst Disc leaks: ramp down magnet → remove Vent Adapter → check Burst Disc. Small micro-bubbles are normal; major continuous bubbles > 2 mm = replace.
+
+## Helium Saturation Temperature Reference
+
+Recondenser Temperature vs. Helium Vessel Pressure: \`T = 0.0626P + 4.2316\`
+
+- If pressure > 5.25 psig: check relief valve
+- If pressure > 4.1 psig: reduce to 3 psig, recheck recondenser temperature
+
+## Information to Collect Before Calling GE Online Center
+
+- System ID, Magnet Number, Serial Number, Install Date
+- Compressor: Static Pressure, Dynamic Pressure, Inlet Water Flow/Temperature, Run Time
+- Coldhead: 1st Stage Temp, 2nd Stage Temp, Recondenser Temp, Delta T
+- Coldhead Sleeve vacuum, number of Getter Bags, date last changed
+- Magnet Pressure, He Level, Magnet Monitor heater operation`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_leybold_coldhead_troubleshooting',
+      title: 'Leybold RGD 5/100-2 & RGD 580-GE Cold Head Troubleshooting',
+      system: 'GE MRI',
+      category: 'Cooling System',
+      tags: ['Leybold', 'coldhead', 'RGD 5/100-2', 'RGD 580-GE', 'cryocooler', 'troubleshooting', 'valve motor', 'helium leak'],
+      content: `# Leybold RGD 5/100-2 & RGD 580-GE Cold Head Troubleshooting
+
+Leybold GA 12.118/1.02 — GE Part Nos. 2100832, 46-294100P1
+
+## Specifications
+
+| Spec | RGD 5/100-2 | RGD 580-GE |
+|---|---|---|
+| 1st Stage (at 50K) | > 40 W | > 40 W |
+| 2nd Stage (at 12K) | > 2 W | > 2 W |
+| 1st Stage min temp | < 35 K | < 35 K |
+| 2nd Stage min temp | < 10 K | < 10 K |
+| He filling pressure | 218–232 psig (15–16 bar) | 218–232 psig |
+| Safety valve opens at | 28 bar (400 psig) | 28 bar |
+
+⚠️ **Do NOT expose cold head to magnetic field stronger than 300 gauss. May cause erratic operation or motor damage.**
+
+⚠️ **Oil adsorber must be changed every 18,000 operating hours. Failure can contaminate cold head.**
+
+⚠️ **Replace displacer or complete cold head after 9,000 operating hours.**
+
+⚠️ **Use only Grade 5 helium (99.999% pure). Moisture must not exceed 10 ppm.**
+
+## Section 3.1: Simple Troubleshooting Checklist
+
+Before assuming cold head or compressor failure, check:
+
+1. Is the cold head receiving power? Verify compressor connected to correct AC power. Check cable from cold head to compressor is securely plugged in and penetration panel wiring is correct.
+2. Is the compressor rotating in correct direction?
+3. Has displacer been replaced in past 9,000 hours?
+4. Are cold head and compressor properly cooled?
+5. Is shield temperature monitoring equipment working?
+6. Is helium pressure adequate? Check for helium leaks.
+7. Is helium contaminated? Use only Grade 5 He; change oil adsorber at 18,000 hours.
+8. Are flexlines installed correctly (high-pressure to high-pressure port, low-pressure to low-pressure)?
+9. Is valve motor operating properly? (See Section 3.3)
+
+## Section 3.2: Checking for Helium Leaks
+
+If He circuit leaking: pressure on compressor gauge will be low; cold head won't reach normal operating temperature. If pressure very low, compressor shuts down.
+
+1. Check He pressure when compressor is shut down and all components at room temperature.
+2. Use mass spectrometer leak detector with sniffing probe (preferred) or soap solution (Snoop LC).
+3. Check self-sealing Aeroquip gas couplings at cold head first, then at compressor.
+4. Isolate subassemblies by disconnecting Aeroquip couplings at both ends and leak-checking each.
+5. Check pressure safety valve, low-pressure switch, and any tubing that has been rubbing.
+
+⚠️ **After soap-solution testing: wash all residue from joints. Residue in Aeroquip fitting can contaminate displacer.**
+
+## Section 3.3: Checking Valve Motor
+
+📝 **Checking cold head motor is NOT a GE field procedure. Cold head must be removed and sent to authorized repair depot.**
+
+**Resistance Check (cold head warm, compressor off, unplugged, cluster connector removed):**
+
+| Pins | RGD 5/100-2 | RGD 580-GE |
+|---|---|---|
+| 1–2 | 630 Ω (+10%, -5%) | 700 Ω ± 10% |
+| 2–3 | 630 Ω (+10%, -5%) | 700 Ω ± 10% |
+| 1–3 | 630 Ω (+10%, -5%) | 1400 Ω ± 10% |
+
+If readings outside tolerance, replace drive assembly.
+
+**Motor Rotation Check:**
+- Motor power supply (Leybold P/N 200 19 619 required — 200/240V, 50/60Hz)
+- Switch setting: Position 2.0 μF for RGD 5/100 OR 820 Ω / 0.8 μF for RGD 580
+- Control valve must rotate **clockwise** when facing sealing surface
+- If rotating wrong direction: wire color codes at penetration panel are swapped
+
+**Wire Color Code (must match inside and outside penetration panel):**
+- Black = 1; White = 2; Red = 3; Green/Yellow = GND (PE)
+
+## Flexline Color Coding
+
+| Color | Connection |
+|---|---|
+| Red | High-pressure |
+| Green | Low-pressure |
+
+High-pressure red = compressor high-pressure red; Low-pressure green = compressor low-pressure green.
+
+## Maintenance Schedule
+
+- Oil adsorber: change every **18,000 operating hours**
+- Displacer or complete cold head: exchange after **9,000 operating hours**
+- Keep daily operating log for scheduling maintenance`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_cpd_ssm_calibration',
+      title: 'GE SSM CPD Board Setup and Calibration (RF/PEN & RF/PDU Cabinets)',
+      system: 'GE MRI',
+      category: 'RF System',
+      tags: ['SSM', 'CPD', 'calibration', 'T/R switch', 'dynamic disable', 'multi-coil', 'PAC voltage', 'RF system'],
+      content: `# GE SSM CPD Board Setup and Calibration
+
+RC3SCA2.DOC Rev 7 (March 22, 2001)
+
+Applies to: 1.0T and 1.5T RF/PEN II cabinet, RF/PDU cabinet, 1.5T SRF cabinet.
+
+## Tools Required
+
+- 100 MHz Scope (46-183029P61)
+- Digital Multimeter (DMM) (46-194427P49)
+- Pot Tweaker (46-194427P361)
+
+## Prerequisites
+
+⚠️ **CRITICAL: Check jumper JP1 on High Voltage Board before proceeding.**
+- 1.5T systems: JP1 must be set to **1000V** position
+- 1.0T systems: JP1 must be set to **500V** position
+- Comes preset from factory; check if board was ever replaced.
+
+## Section 4: SSM Test Switch and LED Definitions
+
+See full table in CPD Calibration document. Key operating modes:
+
+- **Normal Operation (Switch 1 Down):** MDS/NB/Monitor comm status, T/R fault monitoring
+- **Static Control of Drivers:** Manual open/short control of Head/Body/Spectro/Multicoil T/Rs and Dynamic Disable
+- **Pulse Control of Drivers:** Pulse train control of drivers
+- **PS Override Tests:** Dock enable/disable, PAC voltage, bore light, PAL, bore vent controls
+- **Monitor A/B:** RF fault monitoring modes
+- **Multi-coil Configuration:** Enable/disable individual multi-coil drivers 1–4
+- **Monitor Type Configuration:** 1.0T vs 1.5T power monitor type
+
+## Section 5: SSM CAL Switch
+
+⚠️ **WARNING: Inspect four bias line connections (J72, J73, J75, J76) from Pen Panel to RF coil before calibrating. Disconnected bias line may cause SNR degradation without faulting.**
+
+1. Press and release **CAL switch** on front of SSM. This samples open-circuit fault signals and adjusts thresholds for Dynamic Disable Circuits: J42 (Body 1), J43 (Body 2), J44 (Direct Drive).
+2. During calibration, LEDs labeled TEST, DRV FLT, and PS FLT will illuminate — this is **normal**.
+3. ✅ **Verify Bank 1, LED #10 is OFF** after calibration — indicates successful adjustment.
+
+## Section 6: TR Voltage Adjustment (Troubleshooting Only)
+
+📝 **TR Voltages are factory set. Only perform for troubleshooting — not part of normal calibration.**
+
+### Hardware Setup:
+1. Extend SSM chassis. Open lids. Verify cables connected to J409 (Head TR) and J408 (Body TR).
+2. Disconnect J5 (UNBLK EN) at SSM.
+3. DIP Switch configuration: Place Switch #3 UP first, then Switch #1 UP (all others DOWN). This generates periodic unblank pulse train.
+
+### Body TR (TP18 BTR-OUT):
+- Connect scope to TP18
+- Adjust R99 until **positive-going portion = 4.00 VDC** (referenced to ground)
+- Negative portion (not adjustable): approximately **-12.25 VDC**
+
+### Head TR (TP22 HTR-OUT):
+- Connect scope to TP22
+- Adjust R104 until **positive-going portion = 8.00 VDC** (referenced to ground)
+- Negative portion: approximately **-12.25 VDC**
+
+### Restoration:
+1. Place DIP switch #3, then #1 to DOWN. All others DOWN.
+2. Reconnect J5 (UNBLK EN) at rear of SSM.
+
+## Section 7: Multi-Coil Driver Enable/Disable
+
+📝 **All Multi-Coil Drivers ship enabled from factory. Only change for troubleshooting.**
+
+**Via Front Panel Switches:**
+1. Remove plastic cover from Test Switch window.
+2. Place switches 3, 4, then 1 in UP position (all others DOWN).
+3. To disable all MC drivers: switches 5, 6, 7, 8 DOWN.
+4. To disable MC 3 & 4: switches 5 & 6 UP.
+5. To enable all MC drivers: switches 5, 6, 7, 8 UP.
+6. Place switch 10 UP then DOWN. Bank 1 LEDs 1,2,3,4 illuminate and remain.
+7. Place switch 1 DOWN. Bank 1 LED 1 illuminates ~1 minute then extinguishes.
+8. All switches DOWN.
+9. Cycle CB4 power: OFF → wait 15 seconds → ON. (Saves changes.)
+
+**Multi-Coil -5V Power Supply Adjustment:**
+- Connect DMM or scope to CPD Board test point **TP1 (-5VDC)**.
+- Adjust **R11** until voltage = **-5.00 VDC ± 0.05 VDC**.
+
+## Section 8: PAC Voltage Configuration
+
+**Default: 9 VDC.** Systems without fiber optic repeater at Pen wall must use **8 VDC**.
+
+1. Remove Fiber Optic cables from rear of SSM (RX & TX).
+2. Remove plastic cover from front of SSM.
+3. For **8 VDC** (no fiber optic repeater): Switch 6 DOWN, Switches 4 & 1 UP. LEDs 1, 2, 5 illuminate.
+4. For **9 VDC** (with fiber optic repeater): Switches 6, 4, 1 UP. LEDs 1, 3, 5 illuminate.
+5. Place switch 1 DOWN. All other switches DOWN.
+6. Cycle CB4: OFF → 15 sec → ON. (Saves changes.)
+7. Reconnect Fiber Optic cables.
+8. Perform TPS Reset.
+
+## Section 9: Power Monitor Type Configuration
+
+Default for replacement boards: **1.5T**. LED indicators: LED #2 = 1.0T, LED #3 = 0.7T, LED #4 = 1.5T.
+
+1. Remove plastic cover from SSM front.
+2. Place switches 3, 2, 4, then 1 UP (all others DOWN).
+3. Check current setting from LED Bank 1 & 2 display.
+4. For **1.0T**: Switch 5 UP, Switch 6 DOWN.
+5. For **1.5T**: Switch 5 UP, Switch 6 UP.
+6. Place switch 10 UP then DOWN. LED Bank changes to new setting.
+7. Place switch 1 DOWN. No LEDs should be illuminated.
+8. All switches DOWN. Cycle CB4: OFF → 15 sec → ON.
+
+## System Restoration
+
+1. Close SSM lids, replace lid screws, slide chassis back into rack, replace four front screws.
+2. Remove laptop connection to SSM (J46) if applicable.
+3. Replace cabinet covers.
+4. Verify J5 is connected.
+5. Perform TPS Reset.
+6. Perform Head Scan, Body Scan, and Multi-coil Scan to verify normal operation.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_fid_tuning',
+      title: 'GE Signa MRI FID (Free Induction Decay) Tuning Procedure',
+      system: 'GE MRI',
+      category: 'Calibrations',
+      tags: ['FID', 'tuning', 'center frequency', 'Larmor', 'calibration', 'prescan', 'body coil'],
+      content: `# GE Signa MRI FID Tuning Procedure
+
+SYSSCA4.DOC Rev 1
+
+## Overview
+
+The FID (Free Induction Decay) is the MR signal from magnetic nuclei returning to their aligned state after being deflected 90° by an RF pulse. FID tuning finds the optimal center frequency (Larmor frequency) by adjusting receive and transmit frequencies.
+
+## Initial Conditions
+
+- Signa software fully operational
+- Magnet mechanically shimmed
+
+## Tools Required
+
+- SPT Sphere, 2135650
+- Foam Holder, 2141454
+
+⚠️ **POISON HAZARD: Phantom contains Nickel (suspect carcinogen). Do not ingest. Dispose as hazardous waste.**
+
+⚠️ **CAUTION: Remove quad head coil from cradle and bore before performing any body scans. Failure may damage head coil T/R Network.**
+
+## Setup
+
+1. Remove quad head coil from bore.
+2. Place foam holder on patient table; place body sphere into foam holder. Landmark at center of body sphere (position ~32 inches behind front edge of RF/gradient coil assembly).
+3. Use keypad at front of magnet enclosure to position body sphere. Press LANDMARK then MOVE TO SCAN.
+4. At operator workspace, prepare for FID Tuning scan:
+   - Click [New Pt]; enter: ID: \`geservice\`, Name: \`fid tuning\`, Weight: \`111\`
+   - Set Patient Protocols to Service.
+   - In Protocol field type: \`o.39.1\`
+   - [Save Series], then [Prepare to Scan].
+5. Click [Manual Prescan], then click [Center Freq Coarse (CFL)].
+
+📝 **In manual prescan window: ignore Gradient Shimming values. Goal is to locate optimal center frequency.**
+
+6. Highlight **Center Freq (AX)** and enter frequency value displayed on magnetometer (from successful ramp).
+7. Adjust gains:
+   - Analog (R1) = **7**
+   - Digital (R2) = 10
+   - Transmit Gains (TG) = 0
+8. Set window display:
+   - At Type: select [I Channel]
+   - Click [Gain *] (increase) until signal appears in plot display
+
+## Locating Center Frequency
+
+1. Adjust **Delta Freq (DX)** in steps of **2000 Hz** above or below center frequency until FID signal appears.
+2. Repeat step 1 using smaller units (< 2000 Hz) until maximum amplitude and simplest waveform achieved.
+   - Waveform can be above or below horizontal axis — both are valid.
+3. Once optimal frequency reached: select [Frequency], click [Save Frequency]. Record new frequency in System Log.
+
+## System Restoration
+
+1. At Type: select [P. Spect]; at Gain click [+] until value reduces to 1.
+2. Click [Done] to exit manual prescan.
+3. Click [End Exam] and [Confirm].`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_isocenter_calibration_lx',
+      title: 'GE Signa LX Electrical Isocenter Calibration (Z-axis)',
+      system: 'GE MRI',
+      category: 'Calibrations',
+      tags: ['isocenter', 'calibration', 'DQA', 'phantom', 'IsoVectorZ', 'MRconfig', 'LX', 'Z-axis'],
+      content: `# GE Signa LX Electrical Isocenter Calibration
+
+SYSSCA7.DOC Rev 9
+
+## Overview
+
+Calibrates the electrical isocenter — where X, Y, and Z gradients are nulled — to pass image quality tests. Uses DQA-III phantom and Daily Quality tool.
+
+Only Z-axis is aligned with this procedure, though it can check accuracy in all three orthogonal axes.
+
+## Default IsoVectorZ Config Values
+
+- \`12520\` — Oxford, SI-SV except Magnishield magnet, SX, SX2C
+- \`15250\` — Magnishield magnet
+- \`8981\` — Cx and LCC magnet
+
+📝 Verify correct default value is in MR Config file before performing for first time.
+
+## Initial Conditions
+
+- Signa software operational
+- First axial image from center plastic part of DQA phantom (contains GE logo)
+- Alignment lights physically aligned
+- Table calibrated per Longitudinal Drive System calibration
+
+⚠️ **Longitudinal drive calibration MUST be performed BEFORE electrical isocenter calibration.**
+
+## Tools
+
+- DQA-III Phantom, 2131027-2
+
+⚠️ **POISON HAZARD: Phantom contains Nickel. Do not ingest. Dispose as hazardous waste.**
+
+## Procedure
+
+### Setup
+
+1. Click [New Pt], press Enter:
+   - ID: \`geservice\`
+   - Name: \`isocenter cal\`
+   - Weight: \`111\`
+2. Place DQA-III phantom in head coil. Position with fill plugs **UP** and toward **rear** of magnet.
+3. Landmark in sagittal and axial planes (DQA-III coronal plane is not at isocenter).
+4. At keypad on front magnet enclosure: press LANDMARK then MOVE TO SCAN.
+
+📝 **Do not rotate or skew phantom in head coil — causes errors in Z isocenter analysis.**
+
+5. Prepare for scan:
+   - Set Patient Protocols to Service.
+   - In Protocol field: type \`o.22.1\`
+   - [Save Series], then [Prepare to Scan].
+6. Click [Scan] (system auto prescans first).
+7. Check geometry of axial image — must not be rotated or skewed. If skewed, reposition and rescan.
+
+### Analysis
+
+1. Select [Cal/Checks] from MR Tools menu. Click [DQA Calibration], then [Start].
+   - For 9.x/10.x: Service Browser → Calibration tab → DQA Calibration → Start.
+2. Follow the Automated DQA Calibration Tool prompts:
+   - Press Return when proper phantom position obtained.
+   - Press Return when desired scan completed.
+   - Accept default exam or enter manually.
+   - Verify phantom not skewed more than a few degrees.
+
+### Tool Output Interpretation
+
+- ✅ \`IsoCenter calibrated, no adjustment required.\` — done.
+- If adjustment needed: \`IsoVectorZ adjustment required — [Old IsoVectorZ = XXXXX] [New IsoVectorZ = YYYYY]\`
+  - Enter \`Y\` to update MRconfig.cfg file.
+  - If phantom was skewed, rescan before re-running tool.
+
+3. If IsoVectorZ updated: press Back to Align at keypad; wait for table to return to Landmark.
+4. For **9.0 or earlier**: perform System Shutdown and reboot.
+5. For **9.1 or later**: perform [TPS Reset] to install new value. Reboot not required.
+6. Re-landmark phantom (no need to return to Home). Repeat scan and analysis until \`No Adjustment Required\`.
+
+## Isocenter Repeatability Check
+
+1. After successful calibration: press FAST OUT to move phantom out to alignment light landmark position. Then MOVE TO SCAN to return to isocenter.
+2. Click [Scan].
+3. Repeat analysis (Section 4). Should produce \`No adjustment required\`.
+4. If adjustment still required: perform Longitudinal Drive System calibration, then re-run Electrical Isocenter calibration.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_disk_space_cleanup',
+      title: 'GE Signa System Disk Space Cleanup Procedure',
+      system: 'GE MRI',
+      category: 'Host/Software',
+      tags: ['disk space', 'cleanup', 'host', 'Sun workstation', 'file management', 'storage', 'system maintenance'],
+      content: `# GE Signa System Disk Space Cleanup Procedure
+
+AMT Imaging Solutions — AIS Service Procedure
+
+## Overview
+
+Use when disk space is low. Check that \`/export/home\` and \`/export/home1\` partitions are below **80% full**.
+
+## Step-by-Step Procedure
+
+1. **Verify disk space:**
+   \`\`\`
+   df -h
+   \`\`\`
+   Look for \`/export/home\` and \`/export/home1\`. Missing partition indicates hard drive or software load problem. Both should be < 80% full.
+
+2. **Remove patient images from browser** (via UI).
+
+3. **Remove core files:**
+   \`\`\`
+   cd /usr/g/service/log
+   rm -rf core*
+   rm vx*
+   \`\`\`
+
+4. **Remove SPR SNAP files** (GE diagnostic directories sent to engineering):
+   \`\`\`
+   rm -rf /usr/g/service/log/"directoryname"
+   \`\`\`
+   Replace \`directoryname\` with actual directory name (usually hospital name).
+
+5. **Remove raw data files:**
+   \`\`\`
+   cd /usr/g/mrraw
+   rm -f p*
+   \`\`\`
+   ⚠️ **Do NOT delete a file named \`HEADER_POOL\`.**
+
+6. **Run storelog:**
+   \`\`\`
+   /usr/g/bin/storelog
+   \`\`\`
+   ⚠️ **This wipes the error log. Make sure you don't need it before running.** Does not remove everything unless run when application is down.
+
+7. **Clean the Networking log:**
+   \`\`\`
+   cd /usr/g/hisris
+   ls -sal wlsErrors
+   echo>wlsErrors
+   \`\`\`
+
+8. **Remove temp files from insite directory:**
+   \`\`\`
+   cd /usr/g/insite/data
+   rm *
+   \`\`\`
+
+9. **Prune messages, wtmp, wtmpx files:**
+   \`\`\`
+   su –
+   cd /var/adm
+   cp /dev/null messages
+   cp /dev/null wtmp
+   cp /dev/null wtmpx
+   \`\`\`
+
+10. **Clear the Archive Queue:**
+    \`\`\`
+    cp /dev/null /export/home/sdc/app-defaults/archive/vdi.log
+    \`\`\`
+
+11. **Remove IRIX crash logs (9x systems only):**
+    \`\`\`
+    cd /var/adm/crash
+    ls -sal
+    \`\`\`
+    Remove any large files found.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_dasm_setup',
+      title: 'GE Signa Horizon LX DASM Setup and Troubleshooting',
+      system: 'GE MRI',
+      category: 'Host/Software',
+      tags: ['DASM', 'laser camera', 'SCSI', 'LX', 'Horizon', 'film', 'LCAM', 'setup'],
+      content: `# GE Signa Horizon LX DASM Setup and Troubleshooting
+
+OW2SCAB.DOC Rev 1
+
+Applies to: Signa Horizon LX systems with Analog DASM (laser camera interface via SCSI).
+
+## Section 2: Hardware Configuration
+
+### Indicator LEDs
+
+| LED | Meaning |
+|---|---|
+| Power | DASM-LCAM powered up |
+| CPU | CPU active — flashes continuously after power-up |
+| SCSI | SCSI bus activity (commands sent/data received) |
+| Personality Module | Activity in DASM-LCAM personality module |
+
+### Fuse Specifications
+
+| Voltage | Fuse Rating |
+|---|---|
+| 115 VAC | 2A SB (UL/CSA) or T2.0A (IEC 127) |
+| 230 VAC | 2A SB (UL/CSA) or T2.0A (IEC 127) |
+
+### Power Requirements
+
+| Voltage | Amperage | Wattage |
+|---|---|---|
+| 115 VAC | 0.8 A | 92 W |
+| 230 VAC | 0.4 A | 92 W |
+
+### J2 Jumper Configuration (Normal Signa LX = Example D):
+
+- Memory Size: 1 Mbytes (positions 3-4)
+- SCSI ID: 3 (positions 5-7)
+- Manufacturing diagnostics: disabled
+- RAM diagnostic: disabled (add shunt to position 2 to disable; remove to enable)
+
+## Section 2-6: DASM Installation
+
+1. SGI and DASM powered down.
+2. Set DIP switches: DASM SCSI device address = **3**.
+3. Connect SCSI cable (Centronix to micro SCSI) between DASM and SGI.
+4. Connect camera cable (Centronix to 25/38 pin RS232) between DASM and Camera.
+5. Power on DASM.
+6. Power on SGI. Continue to Start-Up Sequence.
+
+## Section 3: Power-On LED Sequence
+
+1. Power LED comes on.
+2. Octal SCSI ID flashes briefly (LSB next to power LED; if SCSI ID = 0, no LEDs flash).
+3. Three LEDs flash once and go out.
+4. CPU LED blinks regularly = CPU active and functioning.
+
+## Software Setup (Signa 8.3 and Later)
+
+1. Go to Service Desktop → click [Install] button on left toolbar.
+2. Enter root password → press Enter. Install Manager opens in 2-3 minutes.
+3. Select DASM tab.
+4. Select DASM Interpolation Mode (Cubic is normal for most sites).
+5. Select Camera type.
+6. Select Yes to install DASM.
+7. Click [Configure].
+8. File → Exit to close.
+
+## Software Setup (8.2.5 or Earlier)
+
+1. Log off Signa; at logon screen type \`root\` / \`operator\`.
+2. Select Configuration → System → Configure DASM.
+3. Set DASM configuration to Interpolation → Confirm.
+4. Push Install DASM button. Example entries for DryView camera:
+   - Interface type: \`1\` (VIDEO/VDB)
+   - Camera type: \`2\` (3M DryView)
+   - DASM host: [Enter] (local)
+5. Log off and back in as Signa.
+
+## Troubleshooting
+
+### Cabling Check
+
+- Max SCSI cable length: **6.0 meters**
+- SCSI bus terminator must be on second SCSI port or last device in chain
+- All units must be powered down before connecting interface cables
+
+### Error Codes (LED Binary Display)
+
+All LEDs flash briefly = start of error code sequence. Then CPU LED shows first digit, SCSI LED shows second digit.
+
+| Code | Meaning |
+|---|---|
+| 1 | Failed to Set Timer |
+| 2 | Failed to Set Baud Rate |
+| 3 | Failed to Access Rcvr Status Reg for Serial I/O |
+| 4 | Failed to Start Refresh Clock |
+| 5 | Failed in Set Up of Serial I/O |
+| 6 | Checksum Failed |
+| 7 | Failed Static RAM Test |
+| 11 | Failed I/O RAM Test |
+| 12 | Failed SCSI Interface Test |
+| 13 | Failed to Start VRTX Operating System |
+| 21 | Bus Error |
+| 22 | Address Error |
+| 23 | Illegal Instruction |
+| 24 | Undefined MFP Interrupt |
+| 25 | Zero-divide Through Trace Trap Level 5 |
+| 26 | Chk, Trapv, Privilege, or Trace Interrupt |
+| 31 | Unknown Interrupt |`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_mc_bias_fault',
+      title: 'GE MRI Multicoil TR Bias Fault Troubleshooting',
+      system: 'GE MRI',
+      category: 'RF System',
+      tags: ['multicoil', 'TR bias', 'phased array', 'SSM', 'CPD', 'PIN diode', 'fault', 'troubleshooting'],
+      content: `# GE MRI Multicoil TR Bias Fault Troubleshooting
+
+## Overview
+
+TR bias is supplied from the SSM through a dedicated line to the Multicoil Select Switch and Preamp Protect Module. It switches PIN diode switching circuitry in individual phased-array coil elements during a multicoil scan.
+
+- During receive: **-5V** applied to selected coils to reverse bias the PIN diodes
+- Missing or incorrect bias voltage prevents proper coil switching
+
+## Isolation Procedure
+
+1. Set up for a scan using the **CTLTOP coil** (even if site doesn't have this coil), then [Manual Prescan] → [Done].
+
+2. Refer to CTLTOP Multicoil diagram (8.X Service CD-ROM under Coils → Multicoil Control Diagrams → "1.5T Teledyne, USAI As Well As 1.0T CTL Coils"). This is also valid for 1.0T systems.
+
+3. Use a Digital Multimeter (DMM) to measure voltages between designated Multicoil Driver pins and common pins at **J20 MC SIGNALS** on rear of SSM.
+
+## Expected Voltages at J20 MC SIGNALS (CTLTOP Coil)
+
+| Multicoil Driver | Pin | Measured Voltage | Common Pins |
+|---|---|---|---|
+| 1 | 8 | -5 VDC | 10, 11, 12, 13, 14, 15 |
+| 2 | 6 | -5 VDC | 10, 11, 12, 13, 14, 15 |
+| 3 | 3 | -5 VDC | 10, 11, 12, 13, 14, 15 |
+| 4 | 1 | +5 VDC | 10, 11, 12, 13, 14, 15 |
+
+4. If needed, trace voltages through chain to Preamp Protect Module in Low Profile Carriage Assembly.
+
+5. If missing multicoil drive voltage from SSM → **replace CPD Board**.
+
+6. When finished, reconnect any disconnected cables, then return to troubleshooting flowchart.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_hfo_z2_supply',
+      title: 'GE MRI HFO / Z2 Power Supply Troubleshooting Tips',
+      system: 'GE MRI',
+      category: 'Shimming',
+      tags: ['HFO', 'shimming', 'Z2 supply', 'ShimConfig', 'harmonics', 'cu z2supply', 'shim coil'],
+      content: `# GE MRI HFO / Z2 Power Supply Troubleshooting Tips
+
+## ShimConfig.cfg File
+
+Location: \`/usr/ng/w/config/ShimConfig.cfg\`
+
+Contains for each shim coil:
+- Harmonic naming order
+- Current calculation: on or off
+- Existing coil current value
+- Perturbation current value
+- Maximum power supply current
+- Power supply or gradient coil name
+- Harmonic name
+
+Edit with \`vi\` or \`jot\` editor.
+
+## Communicating with Z2 Power Supply
+
+1. Open a C-shell.
+2. Type \`cu z2supply\` to connect.
+3. Commands:
+   - Read software revision: \`gv\`
+   - Reset supply (software rev 4.07 or higher): \`re\`
+   - Read current to supply: \`gc z5\` (units: 8192 counts = 1 amp; max = 32767)
+   - Set current: \`sc z5 (value in counts)\`
+   - Exit connection: \`~.\``,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_artifact_guide',
+      title: 'GE MRI Known Artifacts — Identification and Correction',
+      system: 'GE MRI',
+      category: 'Image Quality',
+      tags: ['artifacts', 'image quality', 'Annefact', 'Gibbs', 'Startifact', 'Maxwell', 'phase wrap', 'aliasing', 'fineline', 'metal', 'ghosting'],
+      content: `# GE MRI Known Artifacts — Identification and Correction
+
+GEHC Training Reference
+
+## Overview
+
+This guide covers recognition, root cause, and resolution of common GE MRI image artifacts — both applications-related (protocol/operator) and hardware-related.
+
+---
+
+## Applications-Related Artifacts
+
+### 1. Annefact
+**Description:** Common sagittal spine artifact with CTL coil — signal contamination from adjacent coil elements.
+**Root cause:** FOV center not properly aligned with coil element center.
+**Solution:** Use correct FOV size for number of coil segments:
+- FOV 24 cm for 2 segments (e.g., CS12)
+- FOV 36 cm for 3 segments (e.g., LS456)
+- FOV > 42 cm for 4 segments (e.g., CTLMID)
+Position center of FOV (S-I direction) in front of middle of used elements.
+
+### 2. Startifact
+**Description:** Peripheral signal artifact on axial plane, often ring-shaped.
+**Root cause:** Incorrect coil selection or FOV too large for selected coils.
+**Solution:** Use recommended coil selection for the specific FOV.
+
+### 3. Maxwell Term Artifacts
+**Description:** Ghosting, blurring, signal void toward ends of FOV when flow compensation is used.
+**Root cause:** Running flow compensation while phase and frequency axes are swapped. Flow comp is applied on frequency axis — with axes swapped this generates a large Maxwell term down Z-axis (S-I direction).
+**Solution:** Turn off flow compensation when phase and frequency are swapped.
+
+### 4. Gibbs (Ringing) Artifacts
+**Description:** Series of lines parallel to a sharp intensity edge in the image.
+**Root cause:** Incomplete digitization of the echo — signal has not decayed to zero by end of acquisition window. More pronounced with small matrix (e.g., 128-pt dimension of a 512x128 acquisition).
+**Solution:** Increase matrix size toward a square acquisition.
+
+### 5. Fineline Artifacts
+**Description:** Thin lines visible in image, most notable on FSE-IR with small FOV/thin slices on bony anatomy (foot, knee).
+**Root cause:** FID from 180 degree RF pulses. ZIP option can enhance the appearance.
+**Solution:** Use true even NEX — e.g., 2 NEX; or 4 NEX when NPW is selected (NPW halves effective NEX).
+
+### 6. TwinSpeed Zoom Artifacts
+**Description:** Appears like RF zipper — peripheral signal from outside FOV wraps into phase direction.
+**Root cause:** Spatial SAT excites tissue beyond the Zoom coil; Zoom crusher gradient becomes ineffective. Affects 3-coil CTL in Zoom mode.
+**Solution:**
+- Eliminate or narrow SAT pulse width (use 30 mm)
+- Select coils inside the Zoom gradient limit
+- Switch from Zoom to Whole gradient mode — in almost all cases eliminates artifacts
+- Note: 2-coil CTL has ~27% more SNR than 3-coil CTL when FOV allows
+
+### 7. Respiratory Motion Artifacts
+**Description:** Regular ghosting in spine images.
+**Root cause:** Patient respiratory motion with regular frequency.
+**Solution:** Use respiratory gating, breath-hold, or respiratory compensation techniques.
+
+### 8. Phase Wrap (Aliasing)
+**Description:** Anatomy outside the FOV wraps into opposite side of image.
+**Solution:** Larger FOV; pre-saturation pulses on undesired tissue; No Phase Wrap option (doubles FOV, doubles phase encodes, halves averages, discards extra data).
+
+---
+
+## Hardware-Related Artifacts
+
+### 9. Shading / Signal Void (Coil Connection)
+**Description:** Dead-channel-like signal void in one region of image. No multicoil errors in log.
+**Root cause:** Poor connection at coil quick-disconnect pin.
+**Solution:** Reseat the connector at the quick disconnect.
+
+### 10. Magnetic Susceptibility (Metal)
+**Description:** Signal void, distortion, or blooming near metal implants/objects.
+**Root cause:** Gradient echo sequences do not re-phase decay caused by local field inhomogeneities from metal.
+**Solution:** Use spin echo rather than gradient echo if possible. Remove all metal objects.
+
+### 11. Metal Artifact (Distortion)
+**Description:** Severe head or anatomy distortion.
+**Root cause:** Ferrous metal causes large local field inhomogeneity — signal void ringed by high signal with image distortion.
+**Solution:** Screen patient thoroughly for metal. Remove all metallic objects before scan.
+
+### 12. Cross-Talk / Saturation (Intersecting Slices)
+**Description:** Dark bands on T1-weighted axial images.
+**Root cause:** Multi-planar acquisition — slices cause pre-excitation/saturation where they intersect with slices in another plane.
+**Solution:** Adjust slice placement to avoid intersection. Use gap between stacks.
+
+### 13. Metal Effects on Fat Saturation
+**Description:** Poor fat suppression near metallic prosthesis.
+**Root cause:** Metal alters local magnetic field, shifts precessional frequencies, renders chemical fat saturation pulses ineffective.
+**Solution:** Use STIR instead of chemical fat sat. Increase B0 shimming over the metal region.
+
+---
+
+## Systematic Artifact Triage
+
+1. Identify pattern — shading, ghosting, wrap, ringing, distortion, zipper.
+2. Check if applications or hardware — try changing protocol parameters first. If artifact persists across all protocols, suspect hardware.
+3. Check error log for multicoil errors, TR faults, DD faults.
+4. Reseat coil connectors as first hardware step.
+5. Run noise scan to isolate receiver channels.
+6. Reference SSM, TR, and DD troubleshooting guides for hardware faults.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_ssm_troubleshooting',
+      title: 'GE MRI 8.x SSM (System Support Module) Troubleshooting',
+      system: 'GE MRI',
+      category: 'Mechanical/Table',
+      tags: ['SSM', 'cradle', 'table', 'bore fan', 'bore light', 'patient alignment light', 'TR fault', 'dynamic disable', 'SRI', 'PAC', 'longitudinal drive', 'error 2225510'],
+      content: `# GE MRI 8.x SSM (System Support Module) Troubleshooting
+
+RC3TSC8.DOC Rev 1 — Applies to: 1.5T and 1.0T GE Signa Systems
+
+## Overview
+
+The SSM drives or powers: cradle/carriage motion, dock motor, gradient fan, bore fan, bore light, patient alignment light (PAL), SRI, PAC, ATD III, and RF T/R switching. This guide assists FEs in isolating failures to specific SSM sub-components.
+
+## Required Tools
+
+- 100 MHz Scope (46-183029P61)
+- RF Power Measurement Kit (46-317724G1 or G2)
+- 50 ohm, 200W, 30 dB Attenuator (46-317724P14) — only with G1 kit
+- RF Test Cables Kit (46-255816G1)
+- Digital Multimeter (DMM) (46-194427P49)
+- TPS RF Service Interface Kit (46-301927G1)
+- Copper Tape 2 inch width (46-258218P5)
+
+---
+
+## Troubleshooting Flowchart Overview
+
+Start at main flowchart and follow branches:
+- Cradle motion problem → Section 2-2
+- Dock motor does not run → Section 2-3
+- Gradient fan problem → Section 2-4
+- PAC power missing → Section 2-6
+- SRI power problem → Section 2-7
+- Bore light problem → Section 2-8 / Section 5
+- Bore fan problem → Section 2-5 / Section 4
+- Patient Alignment Light (PAL) problem → Section 2-9 / Section 6
+- No Power to ATD III → Section 2-45
+- Faults interrupting scans → SSM Fault Code Tree (Section 2-11)
+- Image Quality problem related to SSM → Section 2-10 / Sections 7 through 10
+
+---
+
+## Section 2-2: Cradle Motion Troubleshooting
+
+1. Check if message "The table is not docked" appears in Error Message Window.
+   - If YES: Check table up-limit switch in dock — may not be fully depressed by table plunger. Adjust per PT1SCA2.DOC.
+2. Use emergency release handle on end of cradle to disengage carriage. Carriage travels normally?
+   - YES: Check adjustment of cradle latch plunger on carriage.
+   - NO: Is longitudinal drive motor turning? See Section 3.
+
+---
+
+## Section 2-11: SSM Fault Code Reference
+
+SSM error codes 2225510 through 2225770 are generated by the SSM CPD Board firmware:
+
+| Error Code | Symptom | First Action |
+|---|---|---|
+| 2225510 | General SSM fault | Check error log pattern; check SSM fuses |
+| 2225513 | T/R switch fault | Section 8 TR Driver Troubleshooting |
+| 2225514 | Dynamic Disable fault | Section 9 |
+| 2225515 | Inductive Drive Disable fault | Section 9 |
+| 2225516 | Head T/R fault | Section 8-2 |
+| 2225517 | Body T/R fault | Section 8-2 |
+| 2225518 | Spectroscopy T/R fault | Section 8-2 |
+| 2225519 | Multi-coil fault | Section 10 |
+| 2225520 | Gradient fan fault | Section 2-4 |
+| 2225523 | Bore fan fault | Section 4 |
+| 2225524–2225526 | SRI faults | Section 2-7 |
+| 2225535–2225542 | PAC/physiological faults | Section 2-6 |
+| 2225550–2225558 | Bore light faults | Section 5 |
+| 2225570 | PAL fault | Section 6 |
+| 2225737, 2225738 | ATD III power faults | Section 2-45 |
+| 2225769, 2225770 | Image quality / DD faults | Section 9 |
+
+---
+
+## Section 3: Longitudinal Drive Troubleshooting
+
+### No Carriage Motion
+
+1. Check error log for table/carriage error codes.
+2. Verify all E-stop switches are released.
+3. Verify SSM is powered and CB4 (SSM power) is not tripped.
+4. Check J401 SSM connector — carriage motor power.
+5. Measure 24 VDC at carriage motor connector — if absent, trace back to SSM motor driver.
+6. Check encoder feedback cable from carriage to SSM.
+
+### Erratic Carriage Motion
+
+1. Check encoder cable for damage or intermittent connection.
+2. Verify carriage drive belt tension and condition.
+3. Check motor brushes for wear.
+4. Clean longitudinal drive rail and lubricate per PM schedule.
+
+---
+
+## Section 4: Bore Fan Troubleshooting
+
+1. Verify bore fan operates: SSM command sent from software (TPS Reset cycles bore fan).
+2. Measure AC voltage at bore fan motor connector. Expected: 120 VAC (or 240 VAC on some systems).
+3. If voltage present but fan not running: check capacitor on fan motor; replace motor.
+4. If voltage absent: trace back to SSM relay output for bore fan control.
+5. Check SSM CPD Board — bore fan relay driver output.
+6. Verify relay closes when SSM sends bore fan enable signal (monitor with scope at relay coil).
+
+---
+
+## Section 7: SSM-Related Image Quality Problems
+
+### DD Bias Line Connections (Section 7-1)
+
+**Symptoms:** Low SNR, striping, or noise on specific channels.
+
+1. Check Pen Panel DD bias line connections — J72, J73, J75, J76 from Pen Panel to coil RF shield.
+2. A disconnected bias line may cause SNR degradation WITHOUT generating a fault.
+3. Inspect each connection physically. Reconnect and test.
+
+### Loss of High Voltage Bias (Section 7-2)
+
+1. Verify HV bias at SSM output (typically +/- 200V DC on body coil bias line).
+2. If HV missing: check SSM CPD Board HV section.
+3. Check High Voltage Board jumper JP1:
+   - 1.5T systems: 1000V position
+   - 1.0T systems: 500V position
+
+---
+
+## Section 8: TR Driver Fault Troubleshooting
+
+### Theory (8-1)
+
+The T/R (Transmit/Receive) switch routes RF power to the transmit coil during transmit and disconnects it to protect the receive preamplifiers. A T/R fault indicates the switch did not properly open or close.
+
+### Head, Body, and Spectroscopy TR Driver Faults (8-2)
+
+1. Extend SSM chassis. Open lids.
+2. Check cables J408 (Body TR) and J409 (Head TR) at SSM.
+3. Disconnect J5 (UNBLK EN) at SSM.
+4. DIP Switch: Place Switch 3 UP, then Switch 1 UP — generates periodic unblank pulse train.
+5. Body TR (TP18 BTR-OUT): Connect scope to TP18. Adjust R99 until positive-going portion = 4.00 VDC. Negative portion ~-12.25 VDC (not adjustable).
+6. Head TR (TP22 HTR-OUT): Connect scope to TP22. Adjust R104 until positive-going portion = 8.00 VDC.
+7. Restore: Place DIP switches 3 then 1 DOWN. Reconnect J5.
+
+---
+
+## Section 9: Dynamic Disable / Inductive Drive Disable Faults
+
+### Theory (9-1)
+
+Dynamic Disable (DD) prevents patient RF energy deposition beyond SAR limits. Inductive Drive Disable (IDD) prevents gradient amplifier over-drive. Both are safety circuits — faults will abort scans.
+
+### Isolation (9-2)
+
+1. Check DD bias lines at Pen Panel (Section 7-1 first).
+2. Perform SSM CAL: Press and release CAL button on SSM front panel. This re-samples open-circuit fault levels for DD circuits J42, J43, J44.
+   - LEDs TEST, DRV FLT, PS FLT will illuminate during CAL — this is normal.
+   - After CAL: Bank 1, LED 10 must be OFF to confirm success.
+3. If fault persists after CAL: check for RF leakage into Pen coil connectors.
+4. Use TPS RF Service Interface Kit (46-301927G1) to inject test signals and isolate fault to individual T/R branch.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_magnet_monitor_setup',
+      title: 'GE LCC Magnet Monitor (Smart Helium Meter) Setup and Troubleshooting',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['magnet monitor', 'SHeM', 'LCC', 'helium level', 'proactive', 'PPADS', 'alarm setup', 'installation', 'cryogen monitoring'],
+      content: `# GE LCC Magnet Monitor (Smart Helium Meter) Setup and Troubleshooting
+
+Direction 2236995 Rev 7 — Signa Horizon LCC Magnet Monitor Pro-Active Software
+
+## Overview
+
+The Magnet Monitor (MM) is a stand-alone computer that continuously monitors LCC magnet cryogen levels, temperatures, pressures, and compressor status. It provides proactive alarming to the GE Online Center (OLC/PPADS).
+
+Compatible Magnets: S-II, S-III, S-III Magnashield, S-IV, S-V, S-X, S-XC, CX, Max, LCC.
+
+Two hardware vendors exist: original Granite units (pre-October 2001) and Advantech units (October 2001 onward). Both use same software interface.
+
+IMPORTANT: HFO magnets use Direction 2277211 — this guide covers cylindrical magnets only.
+
+---
+
+## Monitored Parameters
+
+- Helium Level (via Helium Probe)
+- Magnet Vessel Pressure
+- LCC Pressure Control (heater operation)
+- Recondenser Temperature (RuO sensor)
+- Coldhead / 2nd Stage Temperature (RuO sensor)
+- Shield Temperature (Si-410 sensor)
+- Sleeve Temperature (Si-410 sensor)
+- Compressor water flow and temperature
+- Quench detection (Reed Switch)
+- RF Unblank signal monitoring
+
+---
+
+## Pro-Active Software Installation
+
+### Configuring for LCC (Section 2-1-1)
+
+1. Connect laptop to Magnet Monitor via serial cable (COM1) — see Appendix A for pinout.
+2. Open browser and connect to Magnet Monitor IP address.
+3. Navigate to Configure > System Screen.
+4. Select magnet type: LCC.
+5. Enter magnet serial number, site name, and contact information.
+
+### Loading Proprietary Software (Section 2-1-2)
+
+1. Insert proprietary diskette (P/N 2252032-*) into Magnet Monitor floppy drive.
+2. Follow on-screen prompts to install/update software.
+3. System reboots after installation.
+
+### Setting Time and Date (Section 2-1-3)
+
+1. Navigate to Configure > System Screen.
+2. Enter correct local time and date.
+3. Click Save.
+
+---
+
+## Section 6: Parameter Setup — LCC 1.5T and 1.0T Defaults
+
+Navigate to Configure > Parameters:
+
+| Parameter | High Limit | Low Limit |
+|---|---|---|
+| Water flow | 4.5 GPM | 1.3 GPM |
+| Water temp | 75 deg F | 40 deg F |
+| Shield temp (Si-410) | 50 K | 30 K |
+| Sleeve temp (Si-410) | 6 K | 3 K |
+| Recondenser temp (RuO) | 5 K | 3 K |
+| Coldhead temp (RuO) | 5 K | 3 K |
+| Magnet vessel pressure | 4.50 psi | 3.75 psi |
+| Helium level | 110% | *see note |
+| LCC pressure control | 4.1 psi | 3.9 psi |
+
+Note: Set helium low-level alarm approximately 5% below the helium level at time of MM checkout. Absolute minimum He level for LCC = 55%.
+
+IMPORTANT: Enable value should always be Y for all monitored parameters. Use the Alarms page to disable individual alarms rather than disabling parameters.
+
+---
+
+## Section 7: Alarm Setup
+
+### Configure Alarms (Section 7-1)
+
+1. Navigate to Configure > Alarms.
+2. Verify all active parameters are Enabled (Yes).
+3. Set SW Heater Timeout Alarm = 2880 minutes (48 hours). If heater runs longer than this without a fill, MM turns off heater and alerts OLC.
+   - For LCC magnets specifically, GE recommends 5000 minutes.
+
+### Alarm Descriptions (Section 7-2)
+
+| Alarm | Reports to OLC? | Description |
+|---|---|---|
+| Quench Alarm | Yes | Reed switch no longer detects magnetic field |
+| Stuck in RF Unblank | Yes | RF unblank active > 6 hours with system power present |
+| Abandoned by AutoSC | Yes | PPADS connection to MM failed |
+| Stuck in Fill mode | Yes | Key in Fill position longer than timeout setting |
+| SW Heater Timeout | Yes | Heater on longer than timeout without a fill |
+| Unable to Reset Compressor | Yes | Automatic compressor restart failed |
+| Fill Notification | Yes | Sends fill data to OLC |
+| Latched Pressure | Yes | Same pressure reading for 60 consecutive minutes |
+| UPS Power Failure | Yes | MM on UPS backup power |
+| Helium Meter Error | Yes | MM not detecting proper current to magnet |
+
+---
+
+## Online Center Install Check-out (Section 2-2)
+
+1. Navigate to Configure > Installation Check-out Screen.
+2. Verify: Product Type, Hospital Name, MM Location, MM ID, MM IP Address, Modem Type, Phone Number, Link ID, Chat Secret, Center Portmaster Name/Address, GE IP addresses/subnets.
+3. Run COMMUNICATION TEST from Status > Remote field to verify MM can dial out to OLC.
+
+---
+
+## Troubleshooting (Section 9)
+
+| Symptom | Action |
+|---|---|
+| OLC cannot call into Magnet Monitor | Check phone line — must be direct (no switchboard). Bypass multiplexer. Verify phone number. Run Communication Test. |
+| MM does not call PPADS on alarm | Verify Master Alarm delay elapsed. Check dial-out prefix. Check parameter holdoff time. |
+| MM boot failure | Check Boot-up Timeline (Section 9-2). Verify proprietary software installed. |
+| Incorrect helium readings | Check Helium Probe cable connection. Verify calibration coefficients in COEF.CFG (Appendix D). |
+| Pressure reading stuck (latched) | Latched Pressure alarm will fire. Check pressure transducer cable. Replace transducer if reading fails to update. |
+| MM shows low helium when level is OK | Check COEF.CFG coefficients. Compare calculated vs. actual level. |
+
+---
+
+## Connection Types
+
+- Local: Laptop via serial cable (COM1) — Appendix A pinout
+- Ethernet: RJ-45 10 Base-T connection to hospital network
+- Modem: Phone line for OLC dial-in/out (may require multiplexer if sharing phone lines)`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_leybold_compressor_setup',
+      title: 'Leybold RW 4000/6000 Series Compressor — Operation and Troubleshooting',
+      system: 'GE MRI',
+      category: 'Cooling System',
+      tags: ['Leybold', 'compressor', 'RW4000', 'RW6000', 'RW6200', 'cryocooler', 'helium', 'adsorber', 'flexlines', 'coolant', 'troubleshooting'],
+      content: `# Leybold RW 4000/6000 Series Compressor — Operation and Troubleshooting
+
+GA 12.110/6.02 — Cat.-No. 893 31/32/33/41/42/43
+
+## Models Covered
+
+RW 4000 EU, RW 4000, RW 4200, RW 6000 EU, RW 6000, RW 6200
+
+---
+
+## Technical Specifications
+
+| Spec | RW 4000/4200 | RW 6000/6200 |
+|---|---|---|
+| He filling pressure (50 Hz) | 16 -1 bar (218-232 psig) | 16 -1 bar |
+| He filling pressure (60 Hz) | 16 -1 bar | 14 -1 bar (189-203 psig) |
+| Operating pressure (high circuit) | 22 +/-1 bar (305-334 psig) | 22 +/-1 bar |
+| Ambient temp range | 5-40 C (40-105 F) | 5-40 C |
+| Coolant inlet temp | 5-25 C (40-80 F) | 5-25 C |
+| Coolant flow at 25 C | 3.5 l/min (1 gal/min) | 5 l/min (1.3 gal/min) |
+| Electrical power at 50 Hz | 4.2-4.5 kW | 6.1-6.9 kW |
+| Operating current at 50 Hz | 7.0-7.6 A | 9.8-11.1 A |
+| Weight | 98 kg (215 lbs) | 110 kg (243 lbs) |
+
+---
+
+## Built-in Safety Equipment
+
+1. PSL1 Pressure Switch — LOW PRESSURE LED: activates if He pressure < 1.5 +/-0.5 bar above atmosphere; shuts down unit
+2. TSH1 Thermal Switch (38 C / 100 F) — TEMPERATURE LED: He temp after heat exchanger > 38 C
+3. TSH2 Thermal Switch (150 C / 302 F) — TEMPERATURE LED: He temp before heat exchanger > 150 C
+4. TSH4 Klixon — inside compressor capsule (no external indication)
+5. Power module overtemp switch (> 65 C) — no indication, auto shutdown
+6. Motor protection switch — switch trips
+7. Two circuit breakers for cold head (240 VAC)
+8. Circuit breaker for control voltage (24 VDC)
+9. Bypass valve — opens shunt between high/low pressure if differential > 19 + 1.5 bar (276 psig)
+10. Safety valve — opens if high-pressure > 31 +/- 1.5 bar (435 psig) to atmosphere
+11. Check valve — prevents oil back-flow to cold head from low-pressure line
+
+---
+
+## Flexline Connection Sequence
+
+Always connect in this order:
+1. High-pressure (red) to compressor high-pressure (red)
+2. High-pressure (red) to cold head high-pressure (red)
+3. Low-pressure (green) to cold head low-pressure (green)
+4. Low-pressure (green) to compressor low-pressure (green)
+
+Wrench sizes: 1/2 inch coupling — tighten with 1-3/16 inch wrench, stabilize with 1 inch wrench.
+Tighten then back off 1/4 turn to relieve strain.
+Minimum bending radius: 20 cm (8 inches).
+
+---
+
+## Start-Up
+
+1. Open coolant inlet.
+2. Switch on compressor at master switch.
+3. After start, operating pressure stabilizes at ~22 bar (319 psig). Temporarily higher during start-up.
+4. Phase sequence check: Oil must flow in oil flow glass within a few seconds. If no oil flow — wrong phase sequence. Switch off, swap two input phases.
+5. If TEMPERATURE alarm triggers within 5 minutes — also may indicate wrong phase sequence.
+
+---
+
+## Helium Filling
+
+Minimum He pressures (at room temp, unit off):
+- RW 4000/4200 at 50 Hz: 15 bar min, 16 bar nominal
+- RW 4000/4200 at 60 Hz: 15 bar min, 16 bar nominal
+- RW 6000/6200 at 50 Hz: 15 bar min, 16 bar nominal
+- RW 6000/6200 at 60 Hz: 13 bar min, 14 bar nominal
+
+Use only 99.999% pure helium (Grade 5).
+
+Fill procedure: Use pressure reducer + shut-off valve on He cylinder. Set supply pressure to compressor nominal value. Connect adapter to filling nipple. Fill to nominal then disconnect. Maximum filling adapter pressure when disconnected: 28 bar (406 psig).
+
+---
+
+## Adsorber Replacement
+
+Replace every 18,000 operating hours. Oil vapor collects in cold head if adsorber is exhausted, causing performance loss or cold head failure.
+
+Only use Leybold adsorber ARW 6000 (Cat. 893 54).
+
+Switch off compressor. Allow cold head to warm before disconnecting flexlines. Remove transport locks (M8x20 screws) before detaching old adsorber. New adsorber is pre-charged to 16 bar (232 psig). Return old adsorber to Leybold for reconditioning.
+
+---
+
+## Troubleshooting Table
+
+| Fault | Possible Cause | Action |
+|---|---|---|
+| Unit won't start, no alarm | No mains power; motor protection tripped | Check power cord/plug; check mains voltage; check motor protection switch |
+| Won't start; LOW PRESSURE LED | Low He pressure; PSL1 switch open | Check He pressure, add He if needed; press RESET |
+| Won't start; TEMPERATURE LED | Compressor overheated; power module too hot; wrong phase sequence | Allow to cool; press RESET; check phase sequence |
+| Won't start; circuit breaker tripped | Defective wiring; overload | Reset breaker; if trips again call Leybold Service |
+| Shuts down; LOW PRESSURE | He circuit leaking | Check He pressure; locate and repair leak |
+| Shuts down; TEMPERATURE | Coolant not flowing; wrong phase; heat exchanger clogged; oil level low | Check coolant supply, temp, connections; check phase; clean heat exchanger |
+| Shuts down; no indication | He pressure too high; compressor motor overtemp (auto-restarts after ~1-2 hrs) | Check He pressure; locate root cause |
+| Cold head performance deteriorated | Adsorber loaded; wrong He pressure; incorrect electrical connections | Replace adsorber (after 18,000 hrs); check He pressure; check cold head wiring |`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_cx_ramp_up',
+      title: 'GE Cryostable CX Magnet Ramp Up — 1.0T and 1.5T (Direction 2159496)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp up', 'CX', 'cryostable', '1.0T', '1.5T', '745 amps', '742 amps', 'voltage control', 'shimming', 'magnet'],
+      content: `# GE Cryostable CX Magnet Ramp Up — 1.0T and 1.5T
+
+Direction 2159496 Rev 4 — Section 9
+
+## Overview
+
+The Cryostable CX magnet ramps at approximately 745 amps for 1.0T and 742 amps for 1.5T using Voltage Control.
+- Ramp Cable Kit P/N 2135435 (if not ordered with magnet)
+- Shim Cable Kit P/N 2135558
+
+## Safety Requirements — DANGER, Review Before Starting
+
+1. Ensure magnet room vent exhaust fan is ON (or hatch open if mobile van) — helium gas generated during ramp is odorless and invisible.
+2. Notify site administration of magnetic safety precautions.
+3. Post warning signs outside 5 Gauss zone (pacemaker/neurostimulator warning), on magnet room level AND areas below.
+4. Remove all ferromagnetic objects from magnet room. Pull power supplies as far from magnet as cables allow.
+5. Verify MRU (Magnet Rundown Unit) is installed and operational.
+6. Magnet must be >= 90% full of liquid helium before ramping.
+
+## Section 9-1: Preparation
+
+1. Set up field monitoring equipment (Teslameter and Probe) per Section 5.
+2. Perform Magnet Electrical Checks (Section 3).
+3. Verify He level >= 90%.
+4. Verify Main Power Supply installed and calibrated per vendor manual.
+5. Ensure Shim Lead Assembly is Engaged (Section 6).
+6. Disconnect Input Power Cable from Power Supply.
+7. Connect Power Supply to magnet (Section 8 — Electrical Connections).
+8. Record Main Coil connection polarity in DATA SHEETS Table 6-1.
+9. Set all heater switches OFF; Current Adjust and Voltage to zero (full CCW).
+10. Connect Input Power Cable to Main Power Supply.
+11. Ensure He Vent Valve (V2) is closed.
+
+## Section 9-2: Resistance Checks
+
+1. Perform Switch Heater and Shim Coil resistance checks (Section 3).
+2. Set Main Power and Power On switches ON.
+3. Set Heater 2 Shim Axial to 1 (on) — observe ammeter rise to 800-820 mA (circuit continuity). KEEP MAIN HEATER SWITCH OFF.
+4. Connect DVM to Voltage Sense Leads.
+5. Set Current Adjust Coarse to maximum (full CW).
+6. Slowly turn Voltage CW to set 750A through Main Power Leads, Extensions, and persistent Main Switch.
+7. Record DVM voltage.
+
+WARNING: DVM > 150 mV at 750A = unacceptable contact resistance — will add heat and risk quench.
+
+8. If > 150 mV: wait 1 min; tighten hold-down tool nuts; if still high, turn controls to zero, power off, tighten ramp cable bolts, reseat leads. Repeat.
+9. Set Voltmeter to MAIN POWER SUPPLY position: voltage < 2.2V at 750A = acceptable.
+10. Turn controls off (full CCW).
+
+## Ramping Voltage Profile — 1.0T (Table 9-1)
+
+| Main Coil Driving Voltage | Main Coil Current |
+|---|---|
+| 5.00 V | 0-100 A |
+| 4.6 V | 100-200 A |
+| 4.2 V | 200-300 A |
+| 3.8 V | 300-400 A |
+| 3.3 V | 400-500 A |
+| 2.5 V | 500-550 A |
+| 2.0 V | 550-600 A |
+| 1.5 V | 600-625 A |
+| 1.0 V | 625-650 A |
+| 0.75 V | 650-675 A |
+| 0.60 V | 675-700 A |
+| 0.50 V | 700-720 A |
+| 0.30 V | 720-730 A |
+| Slowly lower from 0.30 V | > 730 A |
+| 0.10 V | At 0.990 T |
+| 0.025 V | At 0.999 T |
+| Equalize | At 1.001 T |
+
+Inductance check at startup: L = 10 x Voltage / Current Change (per 10 sec). Expected ~5.0 Henries (acceptable: 4.8-5.2 H). If outside range: stop, contact MAC Team.
+
+Teslameter locks on at ~515A (Range 5 probe), at 0.6-0.7 T (25.5-29.8 MHz).
+
+## Ramping Voltage Profile — 1.5T (Table 9-2)
+
+| Main Coil Driving Voltage | Main Coil Current |
+|---|---|
+| 6.0 V | 0-100 A |
+| 5.6 V | 100-200 A |
+| 5.2 V | 200-300 A |
+| 4.7 V | 300-400 A |
+| 4.3 V | 400-500 A |
+| 3.5 V | 500-550 A |
+| 3.0 V | 550-600 A |
+| 2.35 V | 600-625 A |
+| 2.0 V | 625-650 A |
+| 1.0 V | 650-675 A |
+| 0.75 V | 675-700 A |
+| 0.5 V | 700-720 A |
+| 0.3 V | 720-730 A |
+| Slowly lower from 0.3 V | > 730 A |
+| 0.1 V | At 1.490 T |
+| 0.025 V | At 1.499 T |
+| Equalize | At 1.501 T |
+
+Inductance check: Expected ~10.3 Henries (acceptable: 10.0-10.5 H).
+
+## Parking and Removing Ramp Leads
+
+1. Check Teslameter — slowly adjust Voltage to bring field to ATR target frequency. Total current ~745A (1.0T) or ~742A (1.5T). Only last 2 digits on Teslameter should change.
+2. Maintain final field for 5 minutes.
+3. Turn off Main Switch Heater. Wait minimum 15 minutes for switch to go persistent (voltage stabilizes at 0.00 on Main Coil position).
+4. Record current, frequency, and lead extension voltage at persistence in DATA SHEETS Table 6-1.
+5. Slowly turn Voltage to zero over 2 minutes (CCW). Gradually turn Current Adjust to zero over 1 minute.
+6. Set Heater 2 Shim Axial to 0 (off). Set Main Power and Power On to OFF. Disconnect Input Power Cable.
+7. Remove Ramp Lead Hold-Down Tool. Replace bolts on lead assembly mounting plate.
+8. Remove ramp extensions one at a time:
+   a. Open V2 — depressurize to 0.25 psig. Close V2.
+   b. Install flow hole screw (10-32 UNF) in one extension.
+   c. Remove ice around ramp lead port compression nut.
+   d. Unscrew compression nut, remove extension. Immediately cap Ramp Lead Port.
+   e. Repeat for other extension.
+9. Remove induced transverse coil currents (Section 10-2) before shimming.
+
+## Post-Ramp Flow Rate Checks
+
+Verify after ramp and recheck after 3 days and 1 week:
+- Instrumentation Lead Flowmeter (F2): 0.8-1.2 SCFH
+- Shim Lead Flowmeter (F1): 1.8-2.2 SCFH
+- Cryostat Gauge Pressure: 0.25-0.50 psig
+
+If F2 < 0.8 SCFH or pressure < 0.25 psig: pressurize, bubble-test all exhaust joints, relief valve, Shim Lead Connector. Ensure V2 fully closed.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_cx_ramp_down',
+      title: 'GE Cryostable CX Magnet Ramp Down — 1.0T and 1.5T (Direction 2159496)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp down', 'CX', 'cryostable', '1.0T', '1.5T', 'discharge', 'magnet', 'rampdown procedure'],
+      content: `# GE Cryostable CX Magnet Ramp Down — 1.0T and 1.5T
+
+Direction 2159496 Rev 4 — Section 2
+
+## Overview
+
+Approximate time: 5 hours. Magnet must be >= 85% full of He before starting. Power supplies must be outside the exam room during rampdown.
+
+## Safety Requirements — DANGER
+
+1. Power supplies must be outside exam room.
+2. Magnet room vent exhaust fan must be ON.
+3. He level must be >= 85% to prevent quench during rampdown.
+4. Superconducting magnet is an energy storage device — can generate 100V or more across main leads during quench.
+5. Disconnect input power before connecting Main Power Leads. Do NOT short positive and negative lugs.
+6. Verify ramp polarity plate matches DATA SHEETS Table 6-1 before starting.
+
+## Section 2-1: Preparation for Ramp Down
+
+1. Top-fill magnet to at least 85% helium.
+2. Ensure Shim Lead Assembly is Engaged. If cannot be engaged, use Auxiliary Rampdown Cable (see Schematics).
+3. Set up Teslameter for field monitoring.
+4. Perform Ramp Power Supply checks. Verify Shim Supply Heater currents at 810 mA +/- 10 mA.
+5. Disconnect input power cables for all power supplies.
+6. Replace Ramp Lead Contact Bands (Section 13).
+7. Connect Shim Power Supply to magnet (Section 7).
+8. Remove Shim Lead Vent Cap — allow frost to appear on Shim Lead Connector Housing before removing shim currents.
+9. Connect Shim Power Supply input cable. Set Shim Supply Main Power to ON.
+10. Dial in last recorded Transverse 1 Currents from DATA SHEETS. Verify polarity correct.
+11. Set Transverse 1 Heater Switch to 1 (on). Verify heater current = 810 mA +/- 10 mA.
+12. Allow a few minutes for heater to drive switches resistive.
+13. Slowly adjust all Shim Current controls to zero.
+14. Set Heater Switch to 0 (off).
+15. Repeat steps 11-14 for Transverse 2 and Axial Shim Coils.
+16. Set Shim Power Supply to OFF; disconnect all cables.
+17. Record frequency on Teslameter after shim currents removed — this is the target re-ramping frequency.
+18. Replace Shim Lead Vent Cap.
+
+## Section 2-2: Resistance Checks
+
+1. Disconnect Magnet Power Supply input cable.
+2. Connect Power Supply and Main Lead Extensions (Section 7).
+3. Set Heater 1 Main and Heater 2 Shim Axial to 0 (off). Set controls to zero (full CCW).
+4. Connect input cable. Set Main Power and Power On to ON.
+5. Set Heater 2 Shim Axial to 1 (on) — observe 800-820 mA. KEEP MAIN HEATER OFF.
+6. Connect DVM to Voltage Sense Leads.
+7. Set Current Adjust to maximum (full CW).
+8. Turn Voltage CW to set 500A through leads.
+9. Record DVM reading.
+
+WARNING: DVM > 150 mV at 500A = unacceptable. Wait 1 min; tighten hold-down nuts; tighten cable bolts; reseat leads if needed. Repeat.
+
+10. Increase Voltage to pass 735A — voltage must be < 2.2V to indicate acceptable resistance.
+11. Turn Current and Voltage off (full CCW).
+
+## Section 2-3: Ramp Down — 1.0T and 1.5T
+
+WARNING: Axial Shim Switch Heaters MUST remain on throughout entire rampdown — failure causes irreparable shim coil damage and quench.
+
+WARNING: Verify polarity in DATA SHEETS matches polarity plate. If they do not match, call National Support Center — do not proceed.
+
+1. Retrieve Main Coil polarity and latest parking current from DATA SHEETS Table 6-1.
+2. Ensure Axial Shim Heater is on and Ramp Leads connected with correct polarity.
+3. Set Voltmeter Select Switch to MAIN COIL position.
+4. Set Current Adjust: maximum (full CW) for 750A supply; 10A over parking current for 1000A supply.
+5. Turn Voltage CW to bring current to parking current value from Step 1.
+6. Set Heater 1 Main to 1 (on).
+7. Wait ~1 minute for main switch to go normal.
+8. Slowly decrease Voltage (CCW) until -0.3 V observed on voltmeter (MAIN COIL position).
+9. Adjust voltage during rampdown per Table 2-1:
+
+| Main Coil Voltage | Main Coil Current Range |
+|---|---|
+| -0.30 V | Start to 720 A |
+| -0.50 V | 720-700 A |
+| -0.60 V | 700-675 A |
+| -0.75 V | 675-650 A |
+| -1.00 V | 650-625 A |
+| -1.50 V | 625-500 A |
+| Gradually turn Voltage to zero then Current to zero | 500-0 A |
+
+10. When voltmeter reads zero on both voltage and current meters: magnet is fully discharged.
+11. Set Heater 1 Main and Heater 2 Shim Axial to 0 (off).
+12. Set Main Power and Power On to OFF. Disconnect input power cables.
+13. Open V2 — depressurize to 0.25 psig. Close V2.
+14. Remove Main Lead Extensions one at a time:
+    a. Install screw into flow hole of one extension.
+    b. Remove ice around ramp lead port compression nut.
+    c. Unscrew compression nut, remove extension. Immediately cap Ramp Lead Port.
+    d. Repeat for other extension.
+
+## Post-Rampdown Flow Rate Checks
+
+- F2 Instrumentation Lead Flowmeter: 0.8-1.2 SCFH
+- F1 Shim Lead Flowmeter: 1.8-2.2 SCFH
+- Cryostat Gauge Pressure: 0.25-0.50 psig
+
+Recheck after 3 days and 1 week.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_siv_ramp_up',
+      title: 'GE 1.5T SIV Magnet Ramp Up — Step Ramp Procedure (Direction 46-015345)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['ramp up', 'SIV', '1.5T', 'step ramp', '740 amps', '15000 gauss', '63.87 MHz', 'shimming', 'magnet'],
+      content: `# GE 1.5T SIV Magnet Ramp Up — Step Ramp Procedure
+
+Direction 46-015345 Rev 2 — Section 9
+
+## Overview
+
+The SIV 1.5T magnet uses a Step Ramp method: park at 1.3T, allow 4 hours to settle, then ramp to 1.5T. This minimizes quench risk. Parking current ~740 amps. Target field: 14,986-14,987 gauss (63.805-63.809 MHz).
+
+NOTE: For Sierra System magnets, adjust to 14,962-14,964 gauss (63.64-63.76 MHz).
+
+Average field change during Mechanical Shim and QuickShim: 14-15 gauss (59.6-63.9 KHz). Consider parking below target by this amount to avoid field adjustment after shimming.
+
+Helium must be >= 90% before starting.
+
+## Safety Requirements
+
+1. Magnet room vent exhaust fan ON (or hatch open if mobile).
+2. Notify site administration.
+3. Post 5 Gauss warning signs at magnet room level AND above/below.
+4. Remove all ferromagnetic objects; pull power supplies as far as possible.
+5. Verify MRU installed and operational.
+6. He level >= 90% before starting.
+7. Verify magnet venting is installed (Section 1-2).
+8. Verify Coldhead is operational and shield temperatures have stabilized before ramping.
+
+## Section 9-1: Preparation
+
+Polarity: Normal ramp polarity = + on left, - on right (viewed from Cold Head side of magnet).
+
+1. Set up Teslameter per Section 5.
+2. Perform Magnet Electrical Checks (Section 3).
+3. Verify He level >= 90%.
+4. Verify Main Power Supply is installed and calibrated.
+5. Ensure Shim Lead Assembly is Engaged (Section 6).
+6. Disconnect Input Power Cable.
+7. Connect Power Supply per Section 8. Record polarity in DATA SHEETS Table 6-1.
+8. Set all heater switches OFF; controls to zero.
+9. Connect Input Power Cable. Ensure V2 closed.
+
+## Section 9-2: Resistance Checks
+
+1. Set Main Power and Power On to ON.
+2. Set Heater 2 Shim Axial to 1 (on) — observe 800-820 mA. Main Heater must be OFF.
+3. Connect DVM to Voltage Sense Leads.
+4. Set Current Adjust to maximum (full CW).
+5. Slowly turn Voltage to set 500A through Main Power Leads.
+6. Record DVM voltage.
+
+WARNING: DVM > 150 mV at 500A = unacceptable.
+
+7. If > 150 mV: wait 1 min; tighten nuts; tighten bolts; reseat leads. Repeat.
+8. Increase to 735A — voltage < 2.2V = acceptable resistance.
+9. Turn controls off.
+
+## Section 9-3: Step Ramp Procedure
+
+Inductance expected: ~22.0 H (acceptable: 20-24 H). If outside range: stop, contact MAC Team Representative.
+
+Teslameter locks on at ~350A (0.6-0.7 T, 25.5-29.8 MHz).
+
+WARNING: Axial Shim Switch Heaters MUST be ON during ramping to prevent coil damage and quench.
+
+### Phase 1: Ramp to 1.3T Parking
+
+1. Set power supply Voltage to zero (full CCW).
+2. Set Current Adjust to maximum (full CW).
+3. Set Heater 1 Main to 1 (on). Wait 3 minutes.
+4. Set Voltmeter Select to MAIN COIL position.
+5. Adjust Voltage to 4.5 V (allow to decay — do NOT readjust until directed).
+6. When field reaches 1.0 T (42.576 MHz): slowly adjust Voltage to 2.0 V (current ~510A).
+7. As field approaches 1.3 T (55.35 MHz): slowly decrease Voltage to 0.00 V.
+8. Maintain field at 1.3T for 5 minutes.
+9. Turn off Main Switch Heater. Wait 8-10 minutes to go persistent.
+10. Record parking current.
+11. Slowly turn Voltage to zero (CCW) over 2 minutes. Turn Current to zero (over 1 minute).
+12. Set Heater 2 Shim Axial to 0 (off). Set Main Power to OFF. Disconnect Input Power Cable.
+13. Open V2 — depressurize to 0.25 psig. Close V2.
+14. Remove Ramp Lead Hold-Down Tool. Replace Flow Hole Screws in Lead Extensions.
+15. Remove ice around Ramp Lead Port Compression Nuts. Unscrew and remove extensions. Immediately cap ports.
+16. Allow magnet to stabilize for minimum 4 hours before Phase 2.
+
+### Phase 2: Ramp from 1.3T to 1.5T
+
+1. Re-perform Preparation (Section 9-1) and Resistance Checks (Section 9-2).
+2. Set Axial Shim Heater on; connect Ramp Leads with polarity from DATA SHEETS.
+3. Set Voltmeter to MAIN COIL position. Set Current Adjust to maximum.
+4. Set Voltage to bring current to Phase 1 parking current value.
+5. Turn on Main Switch Heater. Allow ~3 minutes for Main Switch to go normal.
+6. When switch goes normal: slowly adjust Voltage to 1.0 V.
+7. When field approaches 1.48 T (63.013 MHz): slowly reduce Voltage to 150 mV (0.150 V).
+8. As field approaches 14,986-14,987 gauss (63.805-63.809 MHz): slowly decrease Voltage to zero.
+9. Adjust Voltage to bring field precisely to target. Total current ~740A. Allow to stabilize — only last 2 digits on Teslameter should change.
+10. Maintain final field for 5 minutes.
+11. Turn off Main Switch Heater. Wait 8-10 minutes to go persistent.
+12. Record current and field in DATA SHEETS Table 6-1.
+13. Slowly turn Voltage to zero over 2 minutes. Turn Current to zero over 1 minute.
+14. Set all heaters and power supply to OFF. Disconnect Input Power Cable.
+15. Open V2 — depressurize. Close V2. Remove Ramp Lead Hold-Down Tool and extensions. Cap ports.
+16. Remove induced transverse currents (Section 10-2) before shimming.
+
+## Post-Ramp Flow Rate Checks
+
+- Instrumentation Lead Flowmeter (F1): 0.8-1.2 SCFH
+- Shim Lead Flowmeter (F2): 1.8-2.2 SCFH
+- Cryostat Gauge Pressure: 0.25-0.50 psig
+
+Recheck after 3 days and 1 week.
+
+## Step Ramp Checklist
+
+1. Axial and Main Heaters on — wait 3 min
+2. Adjust Voltage to 4.5V — allow to decay
+3. At 1.0T — adjust to 2.0V — allow to decay
+4. At 1.3T — park — record current and polarity
+5. Remove ramp leads — stabilize 4 hours
+6. Reconnect — perform resistance checks
+7. Axial Heater on — wait 3 min
+8. Set to Phase 1 parking current
+9. Main Heater on — wait 3 min
+10. After switch normal — adjust to 1.0V
+11. At 1.48T — adjust to 150 mV
+12. Park at target field — record final current and field`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_lcc_shim_lead_resistance',
+      title: 'GE LCC Magnet Shim Lead Electrical Resistance Checks (Direction 2192624)',
+      system: 'GE MRI',
+      category: 'Magnet/Cryogen',
+      tags: ['shim lead', 'LCC', 'resistance check', 'coil resistance', 'magnet electrical check', 'cold resistance', 'P1', 'J5'],
+      content: `# GE LCC Magnet Shim Lead Electrical Resistance Checks
+
+GE Healthcare Direction 2192624, Revision 17 — Chapter 4 / Chapter 5
+
+## Purpose
+
+Verify Main Coil and S/C Shim Coil resistances before ramping to ensure magnet integrity. All values measured cold at 4.2K.
+
+## Procedure
+
+1. Engage Shim Lead Assembly per Shim Lead Engagement and Disengagement procedure.
+2. Locate connector pins using Tables 4-5, 4-6, 4-7 and Illustration 4-20.
+3. Use digital meter to measure resistance across identified connector pins.
+4. Record measured values and compare to typical values below.
+5. Report any value outside acceptable range to Regional Magnet and Cryogens (MAC) Team Leader before ramping.
+
+---
+
+## Table 4-5: Main Coil Resistance Checks — Cold (4.2K)
+
+| Location | Connector / Pins | Resistance Typical |
+|---|---|---|
+| Main Coil Power Lugs | +/- | < 6 milliohms |
+| J5-1 on Shim Lead | Pins 9, 10 | < 6 milliohms |
+
+---
+
+## Table 4-6: S/C Shim Coil Resistance Checks — Cold (4.2K), on Shim Lead
+
+| Function | Connector / Pins | Typical Resistance |
+|---|---|---|
+| AX1 (Z1) | P1-A, Pins 1, 19 | RA: 0.3 ohm / RB: 0.5 ohm / typical: 0.04 / 0.80 ohm |
+| AX2 (Z2) | Pins 2, 20 | same |
+| AX3 (Z3) | Pins 3, 21 | same |
+| AX4 (Z4) | Pins 4, 22 | same |
+| AX5 (Z5) | Pins 5, 23 | same |
+| AX6 (Z6) | Pins 6, 24 | same |
+| T1-1 (C31) | Pins 13, 23 | same |
+| T1-2 (C11+) | Pins 16, 19 | same |
+| T1-3 (C22+) | Pins 14, 21 | same |
+| T1-4 (C11-) | Pins 17, 20 | same |
+| T1-5 (C22-) | Pins 15, 22 | same |
+| T1-6 (C33) | Pins 18, 24 | same |
+| T2-1 (S31) | Pins 11, 23 | same |
+| T2-2 (S11+) | Pins 9, 19 | same |
+| T2-3 (S22+) | Pins 7, 21 | same |
+| T2-4 (S11-) | Pins 10, 20 | same |
+| T2-5 (S22-) | Pins 8, 22 | same |
+| T2-6 (S33) | Pins 12, 24 | same |
+
+### S/C Switch Heater Resistances
+
+| Switch | Pins | Typical Resistance |
+|---|---|---|
+| Main Switch | J5-1 or J5-2, Pins 1, 2 | 22-27 ohm |
+| Axial Shims | J5-1 or J5-2, Pins 5, 6 | 27-33 ohm (28* or 22-18 ohm) |
+| Transverse 1 | Pins 7, 6 | 8-10 ohm / 12-18 ohm |
+| Transverse 2 | Pins 8, 6 | same |
+
+*New switch configuration incorporated around R216 and Q063.
+
+---
+
+## Table 4-7: S/C Shim Coil Resistance Checks — Cold (4.2K), on Shim Lead Pigtail Cable
+
+| Function | Connector / Pins | Typical |
+|---|---|---|
+| AX1 (Z1) | P2 A*, (K,L) | 0.3 / 0.6 / 0.04 / 0.80 ohm |
+| AX2 (Z2) | P2-W | same |
+| AX3 (Z3) | P2 B, (M,N) | same |
+| AX4 (Z4) | P2-W | same |
+| AX5 (Z5) | P2 C, P | same |
+| AX6 (Z6) | P2-W | same |
+| T1-1 (C31) | P2 D, P | same |
+| T1-2 (C11+) | P2 F, (K,L) | same |
+| T1-3 (C22+) | P2 G, (M,N) | same |
+| T1-4 (C11-) | P2-W F, (K,L) | same |
+| T1-5 (C22-) | P2-W G, (M,N) | same |
+| T1-6 (C33) | P2 D, P | same |
+| T2-1 (S31) | P2 E, P | same |
+| T2-2 (S11+) | P2 H, (K,L) | same |
+| T2-3 (S22+) | P2 J, (M,N) | same |
+| T2-4 (S11-) | P2-W H, (K,L) | same |
+| T2-5 (S22-) | P2-W J, (M,N) | same |
+| T2-6 (S33) | P2 E, P | same |
+
+*New switch configuration incorporated around R216 and Q063.
+
+---
+
+## Notes
+
+- Enclosure removal may be required to access connector pins — refer to Chapter 5, Upper and Side Wide Open Enclosure Removal.
+- Chapter 6 (Magnet System Wiring) shows full wiring diagrams.
+- Report ALL readings outside acceptable range to Regional MAC Team Leader before proceeding with ramp.`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_ge_mr_host_info',
+      title: 'GE MRI Host System — Usernames, Passwords, Filesystem, and Commands Reference',
+      system: 'GE MRI',
+      category: 'Host/Software',
+      tags: ['host', 'Linux', 'IRIX', 'filesystem', 'commands', 'passwords', 'root', 'signa', 'sdc', 'config files', 'shell'],
+      content: `# GE MRI Host System — Usernames, Passwords, Filesystem, and Commands Reference
+
+GE MR Host Info — Updated July 2024
+
+---
+
+## System Usernames and Passwords
+
+| System Version | Username | Password |
+|---|---|---|
+| Applications login (5.x) | signa | 4$apps |
+| Applications login (9.x) | signa | adw2.0 |
+| Applications login (11.x and above) | sdc | adw2.0 |
+| Applications login (Profile, Contour) | signa | gemr 7 |
+| su (superuser/admin) | root | operator |
+| Report Manager | mrgo1 | — |
+| Sun ICN web utility | root | changeme |
+
+---
+
+## Key Filesystem Paths
+
+### Executables and Application Directories
+- /usr/g/bin — most executable MR apps/commands
+- /usr/g — shortcut to /export/home/signa
+- /usr/g/service — shortcut to /export/home/service
+- /w — shortcut to /export/home/signa/w
+- /usr/g/mrraw — shortcut to /export/home/signa/research/mrraw
+
+### Configuration Files
+- /w/config — all system configuration files (gradient, coil, stage, etc.)
+- /w/config/CoilConfig.cfg — individual coil configurations
+- /w/config/DcbCalib.cfg — DD open threshold values
+- /w/config/DcbConfig.cfg — Driver Module configuration (10.x and newer)
+- /w/config/ipg_stage — emulate MR system parts (9.1 and older)
+- /w/config/mgd_stage — emulate MR system parts (10.0 and newer)
+- /w/config/MRconfig.cfg — main MR configuration file
+- /w/config/PM.config — change all values to zero to remove PM required message (11.x only)
+- /w/config/ShimConfig.cfg — installed shim currents and gradshim values
+- /w/config/spt_nesting — delete to make SPT ask which loader to use again
+- /w/config/Temperature.cfg — bore temp and gradient amp temp warning settings
+
+### Calibration Files
+- /usr/g/caldir — all calibration files (shim, grafidy, group delay, back, etc.)
+- /usr/g/caldir/ecccoeff.dat — Grafidy calibration data
+- /usr/g/caldir/grafidyx.cal, grafidyy.cal, grafidyz.cal — Grafidy calibration data
+- /usr/g/caldir/gram_tune.dat — Grafidy calibration
+
+### Service, Log, and Data Files
+- /usr/g/service/log — error logs and core files
+- /usr/g/service/log/gesys_systemID.log — extended error log (use: gedit /usr/g/service/log/gesys*)
+- /usr/g/service/log/pcft.log — patient comfort temperature sensor log
+- /usr/g/service/log/scn.out — last two days of scan details
+- /usr/g/service/log/system_health.log — output of sys_health tool
+- /usr/g/service/data — test files (lvshim, SPT, EPT, etc.)
+- /usr/g/service/cclass/spt/cal.spt — head and body gain specs
+- /usr/g/service/cclass/spt/snr.spt — SNR, TG, Ziso, Gradcal specs
+- /usr/g/service/cclass/spt/fsestb.spt — FSE stability specs
+- /usr/g/service/cclass/spt/grestb.spt — GRE stability specs
+- /usr/g/service/cclass/sys_health — generates detailed system health report
+- /usr/g/service/cclass/report/rptmgr — GE report manager (password: mrgo1)
+- /usr/g/service/protocols — all protocols
+- /usr/g/service/license/license.db — installed options (short names)
+- /usr/g/mrraw — raw data files
+
+### Network and Install Files
+- /etc/config/static-route.options — router/gateway addresses (LX, Excite)
+- /etc/rc2.d/S93route — gateway addresses (Profile, Contour, 5.x)
+- /etc/sysconfig/network-scripts/ifcfg-eth0 — tied to MACADDR (11.x and up)
+- /export/home/signa/vre/install/getipandmac.pl sun — shows current IP and MAC
+- /export/home/signa/vre/install/icnRemoteConsole.pl --bmcip=x.x.x.x — opens ICN remote console
+- /usr/local/bin/install/java/Guided_Install — opens guided install (must be root)
+- /usr/local/bin/install/log/install_logfile — guided install log
+- /usr/local/bin/install/configure/mgdSubnetChoices — allowable MGD subnets
+- /export/home/vre/netinstall — VRE software location on host
+
+### Allowable MGD Subnets
+10.217.x, 10.121.x, 192.168.x, 10.47.x, 10.0.x, 172.22.x
+
+---
+
+## Useful Commands — All Systems
+
+| Command | Function |
+|---|---|
+| blanktime 0 | Disable screensaver until next reboot |
+| checkINFO -pre / -post / (none) | Check saveinfo data on HD / MOD / both |
+| df -h | Show disk usage by partition |
+| endsession | Shut down apps and go to login (faster than reboot) |
+| fdisk -l | Show all USB and hard drives |
+| find / -name "*filename*" | Find all files with filename on host |
+| find / -size +nc | Find all files over size n bytes |
+| getver | Show current software revision and patches |
+| hinv | Show current hardware configuration |
+| ls -al | List all files with all attributes |
+| md5sum filename | Show MD5 checksum |
+| mount /dev/xxxx /yourfolder | Mount USB drive |
+| ps -A | Show all active processes |
+| kill 1234 | Kill process by PID |
+| prune | Pop-up to prune error log |
+| rlogin hostname | Log in to another host remotely |
+| su | Enter root superuser (password: operator) |
+| tail -f filename | Watch file live as it grows |
+| top | Show all processes with CPU and memory usage |
+| tps_reset | Perform TPS reset from shell |
+| umount /yourfolder | Unmount USB drive |
+| resetftg | Enable Fast TG |
+| setftg | Disable Fast TG |
+
+## Linux-Specific Commands
+
+| Command | Function |
+|---|---|
+| ethtool eth0 | Show ethernet port health |
+| gedit | Text editor (Ctrl+F to search) |
+| ifconfig -a | Show network configuration |
+| mgd_term | Open 3 log screens (AGP, APS, SCP output) |
+| mgd_termc | Kill open mgd_term windows |
+| nautilus | Open file explorer window |
+| popupmsg "TEXT" | Display pop-up message |
+| pkgmgr -i | Install .rpm patch files |
+| cu scp | Open communication shell with SCP board |
+| ~. | Close communication window with IPG/CERD/TPS |
+
+## Key Executable Files
+
+- /usr/g/bin/EndExam — kills open exam if button greyed out
+- /usr/g/bin/GetPCHart — displays PC hardware config
+- /usr/g/bin/installTool FE_MODE — forces open guided install (23.x)
+- /usr/g/bin/Notepad — enters a line of text in error log
+- /usr/g/bin/showVREConfig — displays VRE hardware info
+- /usr/g/bin/startBoreViewer — patient comfort sensor data graphs (23.x and up)
+- /usr/g/bin/sw_config_status — shows installed software (similar to getver)
+- /usr/g/bin/webCfgEditor — GE config file manager (works without apps up)
+- /usr/g/bin/webRptMgr — opens report manager if ResSvc loaded
+- /usr/g/tools/lvshim/runlvshim — force open LV shim tool (15.x and up)
+- /usr/g/service/cclass/sys_health — detailed system health report
+- cu scp then startBoreTemp -s — real-time bore temp sensor reading`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_mri_install_checklist',
+      title: 'GE MRI System Installation Checklist (Rev 3)',
+      system: 'GE MRI',
+      category: 'Installation',
+      tags: ['install', 'installation', 'checklist', 'MRI install', 'ramp', 'shim', 'calibration', 'noise scan', 'network', 'PACS'],
+      content: `# GE MRI System Installation Checklist
+
+Rev 3 — OEM/Van Install Procedure
+
+---
+
+## Section 1: System Physical Installation
+
+1. Move cabinets into place in equipment room — check for best placement and service access space.
+2. Install pen panel — fix helium gas lines and coldhead power cables through pen panel.
+3. Start installing cables by separating into three groups:
+   - Blue cables: Magnet room
+   - Green or brown cables: Console
+   - Remaining cables: Equipment room
+4. Leave 2 ft service loop for RF cabinet SSM module connections and any component that pulls out.
+5. Use cable map to check off all connections — make list of any cables missing or needed.
+6. Layout console-to-equipment-room cables to verify length before running (green or brown = console side).
+7. Install MRU on wall, hook up to 120V power or outlet, run MRU cable.
+8. Verify Last Best Known shim currents and center frequency of magnet — record Magnet Serial Number.
+9. Verify all power and ground connections to each cabinet.
+
+---
+
+## Section 2: Power Up
+
+1. Verify all cable connections to all equipment and magnet.
+2. Make sure all breakers are OFF (both equipment and main).
+3. Check main input power voltage with DVM:
+   - Leg to leg: 480V (+/- 10V)
+   - Each leg to ground: 240V (+/- 10V)
+4. If main input power is good: turn on main breaker. Re-check power from cabinet.
+5. Turn on gradient cabinet fan first — make sure door sucks closed (not blows open).
+   - If door blows open: turn off power and swap 2 input phases.
+   - If E-stop does not reset with bypass: phase may need to be swapped on gradients (ACGD cabinet).
+6. Verify system comes all the way up. Check table movement, height, and home sensor flag.
+7. Run head and body noise scans. Check standard deviation and means using ROI under image viewer.
+
+| Scan | Standard Deviation | Mean Value |
+|---|---|---|
+| Head Noise | | |
+| Body Noise | | |
+
+8. PDU should be closest to main disconnect. RF and Gradient cabinets need room to pull out components.
+9. Verify cryogens are ordered and ready for ramp and shim.
+
+### Magnet Status at Power Up
+
+| Parameter | Value |
+|---|---|
+| He Level 1 | |
+| Pressure | |
+| Flow One | |
+| Flow Two (HFO only) | |
+| He Level 2 | |
+| Compressor 1 — Hours / DY / ST | |
+| Compressor 2 — Hours / DY / ST | |
+| Inner/RuO temperature | |
+| Outer/Coldhead temperature | |
+| Magnet RuO | |
+| Magnet Si-410 | |
+| Water Temp | |
+| Water Flow | |
+
+---
+
+## Section 3: Calibrations
+
+1. Before ramping: de-ice magnet, ensure shim lead connection is very clean. He level must be above 85%.
+2. Ramp up magnet to last best known center frequency (or closest Tesla to magnet type) using AX shim currents. Follow ramp procedure for specific magnet type.
+3. Ensure last best known shim currents and center frequency are available.
+4. After AX currents are set and ramp probes are out: enter T1 and T2 shim currents.
+5. Supercon shim until inhomogeneity is under 100 Hz and all coefficients are under 100 as well.
+6. Run L-coil, DC offsets, isocenter, and gradient cals. If TwinSpeed system: also run Zoom mode cals.
+7. Run first image test scan (same as isocenter) — check for GE logo orientation (should be in top right corner).
+8. Run Grafidy in all three planes (X, Y, Z) until all are black or green. If TwinSpeed: also run Zoom mode.
+9. Re-run L-coil, DC offsets — re-supercon shim until inhomogeneity is under 50 Hz and coefficients pass specs.
+10. Re-run L-coil, DC offsets, isocenter, and gradient cals.
+11. Re-run Grafidy in all three planes until all are green.
+12. Run gradient shim until currents no longer change.
+13. Run Echo Planar Imaging (EPI) scans for head and body (EPT).
+14. Check multicoil scans using CTL coil — scan CTLTOP and CTLBOT. For 8ch or 16ch systems: check all receivers.
+
+---
+
+## Section 4: System Final Installation
+
+1. Test all coils for signal on each channel.
+2. Clean up and put everything away.
+3. Run one last multi-coil, body, and head scan before leaving.
+4. Make list of all coils on site — check against quote of coils sold.
+5. Test network connections and camera (PACS/worklist) to verify working.
+6. Make list of anything missing or needing follow-up.
+7. Setup network information: PACS, worklists, camera configuration.
+
+---
+
+## Key Acceptance Criteria
+
+- Inhomogeneity: < 50 Hz after final shimming
+- Shim coefficients: < 100 (all axes)
+- Grafidy: All green in X, Y, and Z planes
+- GE logo: Top right corner on first image
+- Noise scans: Within spec (check cal.spt for limits)
+- All coils: Signal confirmed on each channel`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_sga_power_supply_leds',
+      title: 'GE MRI SGA Power Supply LED Diagnostics',
+      system: 'GE MRI',
+      category: 'Gradient System',
+      tags: ['SGA', 'gradient', 'power supply', 'LED', 'IGBT', 'over current', 'over voltage', 'fault', 'diagnostics'],
+      content: `# GE MRI SGA Power Supply LED Diagnostics
+
+GD4TSC2.DOC Rev 0 (May 23, 2001)
+
+## Overview
+
+The SGA (Switched Gradient Amplifier) Power Supply contains 3 transformers — one per axis (X, Y, Z). Primary current is controlled by the power supply; secondaries feed the SGAs. Over-current faults are separated into primary-side and secondary-side faults.
+
+---
+
+## LED Indicators and Meanings
+
+### 1. ISECX, ISECY, ISECZ — Secondary Currents
+Meaning: Indicate secondary currents for each axis.
+Normal: Light when SGA for that axis draws current from power supply.
+
+### 2. IPX OC, IPY OC, IPZ OC — Primary Over-Current
+Meaning: Over-current in transformer primaries.
+Significance: Uncommon — indicates shorted transformer primary.
+Action: Investigate power supply transformer.
+
+### 3. ISX OC, ISY OC, ISZ OC — Secondary Over-Current
+Meaning: Over-current in transformer secondaries.
+Main causes:
+- Blown IGBT in SGA — check gate drive indicators above heatsink on SGA; they will be out if IGBT blown.
+- Shorted diode module in power supply.
+Action: Check SGA gate drive LEDs first. If gate drive LEDs out: SGA IGBT blown. If gate drive LEDs normal: suspect diode module in power supply.
+
+### 4. OVX, OVY, OVZ — Over-Voltage
+Meaning: Over-voltage on power supply output for that axis.
+Main cause: Loose connectors to the SGA.
+Action: Check and tighten all SGA connectors.
+
+### 5. UVX, UVY, UVZ — Under-Voltage
+Meaning: Under-voltage on power supply output.
+Main cause: Shorted semiconductors in SGA or Power Supply.
+Action: Inspect SGA and power supply for shorted diode modules or IGBTs.
+
+### 6. ITANK OC — Input Tank Over-Current
+Meaning: Sum of transformer primary currents is too large.
+Significance: Uncommon — indicates heavy loads on all three axes simultaneously.
+Action: Check for multiple simultaneous gradient faults.
+
+### 7. BUS OV — Bus Over-Voltage
+Meaning: Over-voltage on input bus. 420 VAC on rear goes through 3-phase rectifier to feed this bus.
+Action: Check PDU tapping — measure 420 VAC at terminal block on rear of power supply.
+
+### 8. BUS UV — Bus Under-Voltage
+Meaning: Under-voltage on input bus.
+Causes: Mis-tapping the PDU; line voltage sags.
+Action: Verify PDU tap is correct for site voltage; check incoming line voltage.
+
+### 9. PSWF — Power Supply Wire Fault
+Meaning: One of three faults: undervoltage on 5V or 15V on control board; wire fault (internal connector came unplugged).
+Also seen with line voltage sags.
+Action: Check internal power supply connectors. Check 5V and 15V on control board. Check incoming line quality.
+
+### 10. FREQ — Frequency Control Signal
+Meaning: Indicates frequency at which IGBTs are switching.
+Normal: Flashing/blinking.
+
+### 11. GD — Gate Drive
+Meaning: Shows switching of Gate Drive power supply.
+CRITICAL: If GD LED is solid red or solid green (not flashing) — problem with control board or gate driver; IGBTs will NOT switch.
+Action: Replace power supply if GD is ever solid (not pulsing).
+
+### 12. TJOT
+Meaning: Ignore — this control signal is not meaningful.
+
+### 13. HSOT — Heat Sink Over-Temperature
+Meaning: Heat sink over-temperature.
+Action: Check that cabinet fan is running in the correct direction. Verify airflow path is clear.
+
+### 14. FAULT
+Meaning: Lights whenever any fault condition is true, or when reset pushbutton is pressed.
+Action: Identify which specific LED is lit to determine root cause.
+
+### 15. LEFT FF, RIGHT FF — IGBT Switching Indicators
+Meaning: Indicate IGBT switching activity. Both should be pulsing during operation.
+
+### 16. VINV — IGBT Switching Control Signal
+Meaning: Indicates IGBTs are switching. Should be active during operation.
+
+### 17. ENABLE
+Meaning: Lights when power supply is enabled by the GP (Gradient Processor).
+Action: If not lit during scan attempt, check GP communication to power supply.
+
+### 18. TJ
+Meaning: Ignore — usually red all the time (not a fault indicator).
+
+---
+
+## Quick Fault Isolation Summary
+
+| Fault LED | First Check | Likely Cause |
+|---|---|---|
+| ISX/ISY/ISZ OC | SGA gate drive LEDs above heatsink | Blown IGBT in SGA (gate LEDs out) OR shorted diode in PS |
+| OVX/OVY/OVZ | SGA cable connections | Loose SGA connector |
+| UVX/UVY/UVZ | SGA and PS semiconductors | Shorted IGBT or diode |
+| BUS OV | PDU tapping; measure 420V at terminal block | Wrong PDU tap |
+| BUS UV | PDU tap; incoming line voltage | Under-voltage or line sag |
+| PSWF | Internal PS connectors; 5V/15V control board | Loose internal connector or line sag |
+| GD solid | Replace power supply | Control board or gate driver failure |
+| HSOT | Cabinet fan direction | Fan running backward |
+| FAULT | Identify which other LED is lit | Composite indicator |`,
+      created: '2026-05-25T00:00:00.000Z'
+    },
+    {
+      id: 'dg_isocenter_gradcal_datasheet',
+      title: 'GE MRI Isocenter / Gradcal Field Data Sheet and Procedure (Rev 1)',
+      system: 'GE MRI',
+      category: 'Calibrations',
+      tags: ['isocenter', 'gradcal', 'gradient calibration', 'system gain', 'recon scale', 'IsoVectorZ', 'quadrature', 'data sheet'],
+      content: `# GE MRI Isocenter / Gradcal Field Data Sheet and Procedure
+
+Isocenter / Gradcal Data Sheet Rev 1 — AMT Imaging Solutions Field Service Reference
+
+---
+
+## Purpose
+
+This data sheet guides the FE through isocenter calibration and gradient calibration (gradcal), and documents before/after measurements for service records.
+
+---
+
+## Section 1: Initial Measurement
+
+Record gradient calibration values BEFORE any adjustments:
+
+| Gradient | Initial cfxfull / cfyfull / cfzfull | Spec 99-101 | Final CV Value |
+|---|---|---|---|
+| X Gradient | | | |
+| Y Gradient | | | |
+| Z Gradient | | | |
+
+---
+
+## Section 2: New Measurement
+
+Record gradient calibration values AFTER adjustment:
+
+| Gradient | New cfxfull / cfyfull / cfzfull | Spec 99-101 | Final CV Value |
+|---|---|---|---|
+| X Gradient | | | |
+| Y Gradient | | | |
+| Z Gradient | | | |
+
+Acceptance Specification: All gradient calibration values must be 99 to 101.
+
+---
+
+## Section 3: Forward/Reverse Quadrature Check
+
+Check forward/reverse quadrature — check signal and swap the blue cables in the rear pedestal if needed.
+
+| | IsoVectorZ |
+|---|---|
+| Old isoVectorZ | |
+| New isoVectorZ | |
+
+Initial connections: R1% ___ R2% ___
+Switched connections: R1% ___ R2% ___
+
+---
+
+## Section 4: Isocenter Checks
+
+| Exam/Series/Image | Plane | Error Value |
+|---|---|---|
+| | Axial | |
+| | Sagittal | |
+| | Coronal | |
+
+---
+
+## Section 5: System Gain Data
+
+### Body Coil Gain
+
+| Exam/Series/Image | Initial Recon Scale | R1/R2/TG | System Frequency | Pixel Avg | Pixel Std Dev | New Recon Scale |
+|---|---|---|---|---|---|---|
+| Body | | | | | | |
+
+Formula: New Recon Scale = (1100 / Average Pixel Intensity) x Current Recon Scale Factor
+Acceptance: Pixel intensity 1000-1200
+
+### Head Coil Gain
+
+| Exam/Series/Image | Initial Recon Scale | R1/R2/TG | System Frequency | Pixel Avg | Pixel Std Dev | New Recon Scale |
+|---|---|---|---|---|---|---|
+| Head | | | | | | |
+
+Formula: New Recon Scale = (1100 / Average Pixel Intensity) x Current Recon Scale Factor
+Acceptance: Pixel intensity 1000-1200
+
+---
+
+## Default IsoVectorZ Values by Magnet Type
+
+| Magnet Type | IsoVectorZ Default |
+|---|---|
+| Oxford, SI-SV (except Magnishield), SX, SX2C | 12520 |
+| Magnishield magnet | 15250 |
+| CX and LCC magnet | 8981 |
+
+---
+
+## Calibration Sequence Best Practice
+
+1. Run L-coil and DC offsets.
+2. Run Isocenter calibration (use DQA-III phantom, protocol o.22.1).
+3. If IsoVectorZ updated: TPS Reset to install new value.
+4. Re-run isocenter until No adjustment required.
+5. Run Gradient calibration (Gradcal) — verify cfxfull/cfyfull/cfzfull = 99-101.
+6. Run system gain calibration for head and body.
+7. Run Grafidy in all three planes — must be all green before completing.
+8. Document all values on this data sheet for service record.
+
+---
+
+## Gradcal Troubleshooting
+
+| Problem | Likely Cause | Action |
+|---|---|---|
+| Gradcal values outside 99-101 | Gradient scale factor incorrect | Rerun gradcal; check cable connections |
+| IsoVectorZ keeps changing | Table longitudinal drive not calibrated | Run longitudinal drive calibration first |
+| Poor quadrature (unequal R1/R2) | Phase error in gradient output | Swap blue cables in rear pedestal; recheck |
+| Pixel average out of 1000-1200 | Gain too high or too low | Recalculate Recon Scale Factor and update |`,
+      created: '2026-05-25T00:00:00.000Z'
     }
 ];
 
