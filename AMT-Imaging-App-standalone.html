@@ -7117,7 +7117,58 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['LCC','rampdown','degauss','emergency','quench'],
-      content: `## GE LCC Magnet Rampdown Procedure\n\n### Prerequisites\n- Access to LCC (Liquid Cooled Cryostat) cabinet\n- Ramp-down authorization from site physicist\n- Cryogen safety PPE\n\n### Steps\n1. Notify all personnel and clear the scan room.\n2. At the LCC cabinet, locate the RAMP CONTROL panel.\n3. Set the ramp rate to the approved value (typically 0.1-1.0 A/min depending on field strength).\n4. Press **RAMP DOWN** and confirm on the LCD prompt.\n5. Monitor current on the LCC display -- should decrease steadily.\n6. When field reaches <0.5 T, verify cold head status is normal.\n7. At field = 0, switch persistent switch heater **OFF**.\n8. Log ramp-down time, starting field, and ending field in the site logbook.\n\n### Caution\n- Never ramp faster than site-specified rate -- thermal stress on coils.\n- If field spikes or rate deviates >20%, abort and contact GE FSE.\n- Confirm cryo pressures remain <10 psi during ramp.`,
+      content: `## GE LCC Magnet Rampdown Procedure
+
+### When To Use
+Planned rampdown for magnet service, emergency site decommission, or unplanned quench recovery requiring controlled rampdown to zero.
+
+### Tools & Prerequisites
+- LCC service authorization from site (written approval or work order)
+- Cryogen PPE (face shield, cryo gloves, lab coat)
+- Site physicist or RSO notification — **required before starting**
+- Laptop with LCC service software (or local LCC keypad access)
+- Logbook / job report form
+
+### Safety Warnings
+⚠️ **The magnetic field does not disappear instantly.** Even at 0 A displayed, residual field may remain for hours.
+⚠️ Do NOT allow ferromagnetic tools in scan room until Gauss meter confirms <5 Gauss at bore entrance.
+⚠️ Never exceed site-approved ramp rate — thermal stress can permanently damage superconducting coils.
+⚠️ Keep all non-essential personnel out of scanner room during ramp.
+
+### Pre-Ramp Checklist
+1. Confirm quench pipe and quench vent are unobstructed.
+2. Verify cryogen levels: He level >30% required for controlled ramp (do NOT ramp if He <20%).
+3. At MRI console: go to **Service → Magnet → Ramp Control** and note starting current (display in Amps).
+4. Record starting field strength (displayed in Tesla on LCC panel or service software).
+5. Notify site staff — post "Magnet Rampdown In Progress" signs on all scan room doors.
+6. Power OFF the RF amplifier cabinet before starting ramp.
+
+### Rampdown Steps
+1. At the LCC cabinet, open the front panel and locate the **RAMP CONTROL** keypad.
+2. Enter service passcode (site-specific; default GE service code: **5-2-3-1**).
+3. On the display, navigate to **Ramp → Down → Set Rate**.
+4. Enter the approved ramp rate:
+   - 1.5T systems: **0.5 A/min** standard; **2.0 A/min** maximum
+   - 3.0T LCC300: **0.2 A/min** standard; **0.5 A/min** maximum
+5. Press **START RAMP** and confirm on the LCD prompt — display will show "RAMPING ↓".
+6. Monitor current on LCC display every 5 minutes. Expected decrease: rate × time elapsed.
+7. At 50% of starting current, verify:
+   - Cold head compressor is running (audible hum, green LED on compressor panel)
+   - He pressure gauge: 240–280 psi on high side, 50–80 psi on low side
+   - No quench alarms on LCC display
+8. At ~0.5T (roughly 25–30 A on 1.5T systems), set persistent switch heater **OFF** at LCC.
+9. Continue ramp to 0 A. LCC display will show "RAMP COMPLETE" or "FIELD = 0".
+10. At 0 A displayed, wait **15 minutes** before entering scan room.
+11. Use calibrated Gauss meter — verify <5 Gauss at bore entrance before ferrous tools allowed.
+12. Log: start time, end time, starting current, final current, any anomalies.
+
+### Completion
+- Leave LCC powered ON — cold head must continue running to keep coil at 4K.
+- Update site logbook and work order.
+- If rampdown was for coil service, follow GE magnet service procedure for coil access.
+
+### Abort Criteria
+If current rate deviates >20% from set rate, or any quench alarm triggers → press **STOP RAMP** immediately and call GE Technical Support.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7144,7 +7195,57 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['cold head','cryogen','helium','cryo cooler','replacement'],
-      content: `## GE Signa Cold Head Replacement\n\n### Prerequisites\n- New cold head (Sumitomo RDK-305D2 or equiv.)\n- Helium reclaim line or outdoor vent\n- Torque wrench, cryo gloves, face shield\n- Scheduled downtime >= 4 hours\n\n### Procedure\n1. **Verify magnet is ramped down** to safe field level or fully degaussed.\n2. At the compressor, close the **high-pressure** valve first, then low-pressure. Tag out.\n3. Carefully loosen the cold head flange bolts (4x) -- release slowly to allow cryo gas to vent safely.\n4. Using cryo gloves, remove the old cold head straight upward.\n5. Inspect the cold head port O-ring. Replace if deformed or cracked (GE p/n 46-323092P1).\n6. Insert new cold head -- align keyway. Hand-tighten flange bolts.\n7. Torque bolts in cross pattern to 8 N?m.\n8. Reconnect compressor lines -- low-pressure first, then high-pressure.\n9. Open both valves. Verify no leaks at flange (apply leak detection solution).\n10. Power on compressor; confirm cold head RPM on compressor display (within 60 s).\n11. Monitor helium level -- initial boiloff expected; should stabilize within 2-4 hours.\n\n### Post-Replacement\n- Log cold head serial number, installation date, and starting hours.\n- Schedule helium fill if level < 65%.`,
+      content: `## GE Signa Cold Head Replacement
+
+### Overview
+The cold head (cryocooler) maintains the superconducting coils at ~4 Kelvin. A failed cold head causes rapid helium boiloff. Replace within 48–72 hours of confirmed failure to avoid quench.
+
+### Tools Required
+- Replacement cold head (Sumitomo RDK-408D2 or RDK-415D for most GE Signa systems)
+- He-rated flex line wrench set (1-1/4" and 1-1/2")
+- Torque wrench (15–20 ft-lb range)
+- Teflon thread tape (He-grade, not standard plumbing)
+- Clean lint-free gloves (no cotton — fibers contaminate He circuit)
+- Portable He leak detector (preferred) or snoop solution
+- Compressor flex line fittings and dust caps
+
+### Safety
+⚠️ Never disconnect the cold head with the compressor running.
+⚠️ Helium escaping from fittings is cold (~4K) — cryo gloves required.
+⚠️ Magnet remains at field during cold head swap — maintain ferrous tool exclusion zone.
+
+### Pre-Replacement Checks
+1. Confirm cold head failure via LCC service software: cold head temperature >10K or compressor pressure alarms.
+2. Check He level. If <30%, schedule He fill before or immediately after cold head swap.
+3. Power OFF cold head compressor at the compressor cabinet (large grey box, typically plant room).
+4. Wait 10 minutes for pressure to equalize before disconnecting flex lines.
+
+### Replacement Steps
+1. **Disconnect compressor flex lines** at the cold head end (not the compressor end):
+   - High-pressure (HP) line — larger fitting, typically marked red
+   - Low-pressure (LP) line — smaller fitting, marked blue
+   - Cap both fittings immediately with dust caps to prevent moisture ingress.
+2. Loosen cold head retaining ring (counter-clockwise, requires 1-1/4" wrench — approx 6 turns).
+3. Lift old cold head straight UP — it will resist slightly from the vacuum seal. Use steady upward force; do NOT twist.
+4. Immediately cover the turret port with a clean lint-free cloth — prevents air/moisture entry.
+5. Inspect the turret O-ring for damage. Replace O-ring if cracked or flat (part: GE 46-299654G1 or equivalent Sumitomo O-ring kit).
+6. Apply thin layer of Krytox vacuum grease to new O-ring. Seat O-ring in groove.
+7. Lower new cold head straight DOWN into turret — align key slot to prevent rotation.
+8. Hand-tighten retaining ring clockwise until snug, then torque to **15 ft-lb**.
+9. Remove dust caps from flex lines. Apply He-grade Teflon tape to male fittings (2 wraps).
+10. Reconnect LP line first, then HP line. Torque to **18 ft-lb** — do not overtighten.
+11. Power ON compressor. Listen for 3–5 second startup surge, then steady operation.
+12. At LCC display, navigate to **Diagnostics → Cold Head → Temperature**. Monitor Stage 1 and Stage 2 temperatures.
+13. Expected cool-down profile:
+    - Stage 1 (30–50K range): should drop within 20–30 minutes
+    - Stage 2 (4K range): may take 2–4 hours to reach operating temperature
+14. He leak check all fittings with detector or snoop solution.
+15. Log replacement: serial numbers (old and new cold head), He level before/after, cool-down start time.
+
+### Pass Criteria
+- Stage 2 temperature ≤ 4.5K within 4 hours of startup
+- No He leaks at any fitting
+- LCC shows no cold head alarms after 30 minutes runtime`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7153,7 +7254,67 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Gradient',
       tags: ['gradient','E410','overheat','driver','GPA','fault'],
-      content: `## GE Signa Gradient Driver Fault -- E410\n\n### Fault Description\nE410 indicates gradient amplifier overtemperature or gradient driver fault. Scans abort; gradient cooling system investigation required.\n\n### Immediate Actions\n1. Note which gradient axis faulted (X, Y, or Z) -- check error log at **Service > Gradient > Fault Log**.\n2. Verify gradient chiller is running (listen for pump, feel chiller exhaust).\n3. Check chiller coolant level -- sight glass on chiller tank must show >=50%.\n4. Inspect gradient amp inlet/outlet temps on chiller display -- delta T should be 5-12 degreesC.\n\n### Diagnostic Steps\n| Check | Pass Criterion | Action if Fail |\n|-------|---------------|----------------|\n| Chiller flow rate | >=3 GPM | Clean filter, check pump |\n| Inlet water temp | <=20 degreesC | Check building chilled water |\n| Gradient amp fans | All spinning | Replace failed fan |\n| GPA board temp sensor | <75 degreesC at idle | Replace thermal sensor or GPA board |\n\n### GPA Board Replacement\n1. Power down gradient subsystem from **Service > Power > GPA Off**.\n2. Discharge bus capacitors -- wait >=5 min after power off.\n3. Remove GPA board (slide-out design, 2 retention screws).\n4. Seat new board; torque retention screws to 1.2 N?m.\n5. Power on GPA and run **Gradient Calibration** sequence.\n\n### Parts\n- GPA X-axis board: 46-295673G1\n- GPA Y-axis board: 46-295673G2\n- GPA Z-axis board: 46-295673G3`,
+      content: `## GE Signa Gradient Driver Fault (E410)
+
+### Error Overview
+**E410** (also displayed as GRD FAULT, Gradient Driver Fault, or gradient amplifier fault) indicates the gradient subsystem has detected an over-current, over-temperature, or communication failure in one or more gradient amplifier channels (X, Y, or Z axis).
+
+### Tools Required
+- Service laptop with Signa service software (GE RHESA or equivalent)
+- DVM / oscilloscope
+- Spare gradient driver board (if available): GE part 2107246-x or 2107247-x (check system BOM)
+
+### Initial Assessment
+1. At MRI console: **Service → Diagnostics → Gradient** — note exact sub-fault code.
+2. Common E410 sub-codes:
+   | Sub-code | Meaning |
+   |----------|---------|
+   | E410-01 | X-axis over-current |
+   | E410-02 | Y-axis over-current |
+   | E410-03 | Z-axis over-current |
+   | E410-10 | Gradient amplifier over-temperature |
+   | E410-20 | Gradient communication fault (serial link) |
+3. Check the Gradient Driver Cabinet (GDC) — typically located in the equipment room rack.
+4. Look for red fault LEDs on the gradient driver boards. Note which axis (X/Y/Z) is lit.
+
+### Troubleshooting Steps
+**Step 1 — Thermal Check**
+1. Confirm GDC cooling fans are running (audible, visible through vents).
+2. Check inlet air temperature: must be <25°C (77°F). If over-temp, improve room cooling before proceeding.
+3. Allow 30 minutes cool-down if over-temp fault, then attempt system restart.
+
+**Step 2 — Power Cycle and Restart**
+1. At the MRI console: **Service → System → Shutdown** (graceful shutdown).
+2. At GDC: set gradient power breaker to OFF. Wait 60 seconds.
+3. Set gradient power breaker back to ON.
+4. Restart console software. Attempt prescan — if gradient fault clears, document and monitor.
+
+**Step 3 — Communication Fault (E410-20)**
+1. At GDC, locate the gradient controller board (top board in GDC rack).
+2. Reseat the gradient serial communication cable (typically DB-9 or fiber) at both ends.
+3. Check the fiber optic cable for visible bends or damage (min bend radius 30mm).
+4. Restart system and retest.
+
+**Step 4 — Single-Axis Hardware Fault**
+1. Identify faulted axis from sub-code or LED.
+2. Power down GDC fully.
+3. Remove faulted gradient driver board — note slot position.
+4. Inspect PCB for burn marks, bulging capacitors, damaged FETs.
+5. If spare board available, substitute and test.
+6. If no spare: call GE parts for driver board — typical lead time 24–48 hours.
+
+**Step 5 — Gradient Cable Check**
+1. At the gradient driver output, measure DC resistance on each gradient coil pair:
+   - X-axis: ~0.15–0.25 Ω (Signa HDxt values; varies by system)
+   - Y-axis: ~0.15–0.25 Ω
+   - Z-axis: ~0.10–0.20 Ω (Z coil is larger, lower resistance)
+2. Open circuit (>10 MΩ) = broken gradient cable. Short to ground = coil failure.
+3. Gradient coil failures require magnet service — escalate to GE.
+
+### Resolution
+- If fault clears after cooling: add room cooling or clean GDC air filters (inspect monthly).
+- If driver board replaced: run **Gradient Calibration** from service menu before returning to clinical use.
+- If gradient coil suspected: escalate — do not attempt further scanning.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7162,7 +7323,59 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['RF amp','E305','RF fault','transmitter','power'],
-      content: `## GE MRI RF Amplifier Troubleshooting -- E305\n\n### Fault Description\nE305 = RF Amplifier fault. Affects transmit chain; scans fail at RF calibration or mid-scan.\n\n### Quick Checks\n1. Inspect RF amp cabinet ventilation -- vents must be unobstructed.\n2. Verify RF amp cooling fans (2x) are spinning.\n3. Check RF amp cabinet temperature display -- must be <45 degreesC ambient.\n\n### Console Diagnostics\n1. Go to **Service > RF > Amplifier Status**.\n2. Review: Forward Power, Reflected Power, VSWR.\n   - Forward power at rated output: within +/-10% of spec.\n   - Reflected power: <5% of forward power.\n   - VSWR: <1.5:1.\n3. If VSWR high: check body coil connection and RF cage integrity.\n\n### RF Chain Signal Path\n(code)\nConsole ? RF Synthesizer ? Pre-Amp ? RF Power Amp ? T/R Switch ? Body Coil\n(code)\n\n### Swap Test\n- Replace RF amp module with known-good spare.\n- If fault clears: defective RF amp module.\n- If fault persists: suspect RF cabling or body coil.\n\n### Common Parts\n| Part | GE P/N |\n|------|--------|\n| RF Power Amp Module | 46-295110G1 |\n| T/R Switch Assembly | 46-312445P1 |\n| RF Synthesizer Board | 2294300-10 |\n\n### After Repair\nRun full **RF Calibration** sequence and document output power readings.`,
+      content: `## GE MRI RF Amplifier Troubleshooting (E305)
+
+### Error Overview
+**E305** (RF Amplifier Fault) indicates the RF transmit chain has detected an over-reflected power condition, RF amplifier output failure, or transmit watchdog trip. The system will not scan when this fault is active.
+
+### Tools Required
+- DVM and RF power meter (if available)
+- Service laptop with GE service software
+- Spare TR switch or RF driver board (if available)
+
+### Safety
+⚠️ The RF amplifier outputs up to 35 kW peak RF power. Never operate the RF amplifier with waveguide disconnected.
+⚠️ Never bypass the watchdog circuit — the E305 exists to protect the patient from excessive RF energy.
+
+### Initial Assessment
+1. At the console: **Service → Diagnostics → RF** — note sub-fault:
+   | Sub-code | Meaning |
+   |----------|---------|
+   | E305-01 | RF amplifier output low |
+   | E305-02 | Over-reflected power (RF reflected back from coil/TR switch) |
+   | E305-03 | RF watchdog trip |
+   | E305-10 | RF driver board fault |
+2. Check the RF amplifier cabinet LEDs (usually labeled PA FAULT, REFLECTED POWER, TEMP).
+
+### Troubleshooting Steps
+**Step 1 — Over-Reflected Power (E305-02) — Most Common**
+1. Over-reflected power usually means a TR (Transmit/Receive) switch fault or a mismatched coil.
+2. Remove the currently connected RF coil. Attempt prescan without any coil connected (system will fault, but the reflected power reading will change).
+3. If fault clears without coil: the coil itself is mismatched or has a broken pin. Test with a known-good coil.
+4. If fault persists without coil: the TR switch is the likely culprit.
+
+**Step 2 — TR Switch Check**
+1. TR switch is located inside the magnet bore housing, accessed via the right side panel.
+2. Visually inspect TR switch for burn marks, damaged PIN diodes, or corroded connectors.
+3. With DVM in diode mode, measure PIN diode forward voltage: should be 0.5–0.7V. Open or shorted diodes indicate failed TR switch.
+4. TR switch replacement part: GE 46-319394G1 (HDxt) or 2118025 (Excite) — verify BOM.
+5. After swap, run RF calibration before returning to service.
+
+**Step 3 — RF Amplifier Output Low (E305-01)**
+1. At the RF amplifier cabinet, check the filament/bias power supplies (typically ±15V and +5V).
+2. Measure DC output at test points TP1 (B+), TP2 (filament) per the service manual for your amplifier model.
+3. Nominal: B+ = 115–125V DC; filament = 6.3V AC or 7.0V DC (tube-based amps).
+4. If B+ is low: check the phase converter input voltage (must be within ±5% of nominal).
+5. If solid-state RF amp: check IGBT driver board for fault LED.
+
+**Step 4 — RF Watchdog Trip (E305-03)**
+1. Watchdog trips when reflected/transmitted power ratio exceeds threshold.
+2. Reset via: **Service → RF → Reset Watchdog**.
+3. If watchdog trips on every attempt: verify coil impedance and TR switch operation before escalating.
+
+### After Repair
+- Run **RF Calibration** (Service → Calibration → RF) before clinical use.
+- Document peak RF output power and reflected power levels in job report.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7171,7 +7384,59 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['frequency','calibration','prescan','center frequency','shimming'],
-      content: `## GE MRI Frequency Calibration Failure\n\n### Symptom\nPrescan fails at frequency calibration step, or center frequency drifts >50 Hz between scans.\n\n### Root Causes\n1. Helium level low (<60%) ? field drift\n2. Cold head degraded ? magnet thermal instability\n3. RF synthesizer drift\n4. External interference (nearby ferromagnetic movement)\n\n### Diagnostic Steps\n1. Check helium level on cryostat display. If <70%, schedule fill.\n2. Review field drift log: **Service > Magnet > Field Drift**.\n   - Acceptable drift: <0.1 ppm/hr.\n3. Run manual frequency scout: **Service > RF > Manual Prescan**.\n   - If center frequency is >1 kHz from baseline, suspect magnet or shim issue.\n4. Check shim currents at **Service > Shim > Current Status** -- compare to baseline.\n\n### Corrective Actions\n| Finding | Action |\n|---------|--------|\n| Helium <60% | Schedule emergency helium fill |\n| Drift >0.5 ppm/hr | Contact GE -- possible leak or quench event |\n| Shim current fault | Run automated shimming sequence |\n| RF synth drift | Replace RF synthesizer module |\n\n### Verification\nAfter correction, run 3 consecutive prescan frequency measurements at 10-minute intervals.\nPass: all readings within +/-25 Hz of each other.`,
+      content: `## GE MRI Frequency Calibration Failure
+
+### Overview
+Frequency calibration (prescan step) locks the transmit/receive frequency to the Larmor frequency of the magnet. Failure means the system cannot find the correct center frequency, usually caused by field drift, shimming issues, or LO chain faults.
+
+### Tools Required
+- Service laptop (optional — most steps use console menu)
+- Known-good phantom (preferred: GE Circular Brainstem Phantom or similar)
+
+### Common Causes
+| Cause | Symptom |
+|-------|---------|
+| Magnet field drift | Freq error >500 Hz from baseline |
+| Failed shim current | Poor field homogeneity → broad FID |
+| LO synthesizer fault | Freq jumps or cannot lock |
+| Low He level | Field instability as magnet partially normal-conducts |
+| Vibration / quench | Sudden large frequency offset |
+
+### Troubleshooting Steps
+**Step 1 — Check System Frequency vs. Baseline**
+1. At console: **Service → Diagnostics → Frequency** — note current center frequency.
+2. Compare to site baseline (recorded at last PM). Acceptable drift: ±200 Hz for 1.5T, ±100 Hz for 3.0T.
+3. If within range: problem may be a specific coil or positioning. Continue with Step 2.
+4. If large drift (>500 Hz): check He level (Step 4) and shim currents (Step 3).
+
+**Step 2 — Manual Frequency Calibration**
+1. Load a water phantom (or saline phantom) in the bore, isocenter.
+2. At console: **Service → Calibration → Frequency → Manual Sweep**.
+3. Set sweep range ±5000 Hz around estimated center. Run sweep.
+4. Identify peak in FID spectrum — this is the true Larmor frequency.
+5. Set frequency offset to align peak to center. Save as new center frequency.
+6. Re-attempt automatic prescan.
+
+**Step 3 — Shim Current Check**
+1. At console: **Service → Magnet → Shim → Active Shim Status**.
+2. Verify all shim currents are within nominal range (see site baseline document).
+3. If any shim channel is saturated or zero: run **Auto Shim** sequence to reset.
+4. If auto shim fails on same channel repeatedly: check shim power supply for that channel (shim cabinet, individual board).
+
+**Step 4 — Helium Level Check**
+1. At LCC cabinet, read He level gauge (% fill).
+2. Critical threshold: <30% He level causes field instability on some magnets.
+3. If He is low: schedule emergency He fill before resuming scanning. System may be marginal for clinical use.
+
+**Step 5 — LO Synthesizer Fault**
+1. If frequency jumps erratically or cannot lock even with phantom: LO (local oscillator) chain is suspect.
+2. At RF cabinet, check synthesizer board for fault LED or error code.
+3. Power cycle the RF cabinet (not the whole system) — synthesizer may need PLL reset.
+4. If problem persists: synthesizer board replacement required. Document board part number from cabinet BOM.
+
+### Completion
+- Run full prescan with clinical coil before returning to service.
+- Log new center frequency in site PM record.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7180,7 +7445,59 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['shim','E203','power supply','homogeneity','calibration'],
-      content: `## GE Signa Shim Power Supply Fault -- E203\n\n### Fault Description\nE203 = Shim power supply fault. Affects magnetic field homogeneity; scans show banding or distortion.\n\n### Initial Checks\n1. Verify shim supply LED status on the shim cabinet (should be solid green).\n2. Check shim supply DC output voltages at the shim cabinet test points:\n   - +/-15 V rails: +/-15.0 V +/-0.3 V\n   - +5 V logic rail: 5.0 V +/-0.1 V\n3. Inspect shim cable connections from cabinet to magnet bore.\n\n### Console Diagnostics\n1. **Service > Shim > Supply Status** -- lists voltage and current for each shim channel (X1, X2, Y1, Y2, Z1, Z2, ZX, ZY, etc.).\n2. Check for any channel showing FAULT or zero current.\n3. Run **Shim Calibration** -- note which axis fails.\n\n### Shim Coil Short Test\n1. Disconnect shim cable at magnet end.\n2. Measure resistance of each shim coil with DMM:\n   - Expected: 1-20 ohm per coil (varies by model)\n   - Short: <0.5 ohm (replace shim coil assembly)\n   - Open: >1 Mohm (check wiring, connector)\n\n### Supply Board Replacement\n- Shim Supply Control Board: 46-295680G1\n- After replacement, run full **Automated Shim** sequence.`,
+      content: `## GE Signa Shim Power Supply Fault (E203)
+
+### Error Overview
+**E203** indicates a fault in the active shimming subsystem — either a shim power supply rail has failed, a shim board has faulted, or a shim coil winding is open/shorted.
+
+### Tools Required
+- DVM
+- Service laptop with GE service software
+- Spare shim board (if available)
+
+### Background
+The active shim system corrects magnetic field non-uniformity using small DC currents through shim coils wound in/around the magnet bore. The shim power supply cabinet feeds up to 18 shim channels.
+
+### Initial Assessment
+1. Console: **Service → Diagnostics → Shim** — note which shim channel(s) are faulted.
+2. Shim power supply cabinet (typically labeled "SHIM PWR" or "SPS") — check for red fault LEDs on individual boards.
+3. Common sub-faults:
+   | Code | Meaning |
+   |------|---------|
+   | E203-01 to 18 | Individual shim channel fault (channel # = offset) |
+   | E203-50 | Shim power supply bus undervoltage |
+   | E203-99 | Shim controller communication fault |
+
+### Troubleshooting Steps
+**Step 1 — Bus Voltage Check**
+1. At shim power supply cabinet, measure main bus voltage at test point TP_BUS (or per service manual): nominal ±50V or ±75V depending on system.
+2. If bus voltage is low: check AC input to shim supply — must be within ±5% of 208V (3-phase) or 240V (1-phase).
+3. If AC is correct but DC bus is low: shim supply rectifier or capacitor bank failure — replace shim supply module.
+
+**Step 2 — Individual Channel Fault**
+1. Power down shim supply cabinet (front panel breaker OFF).
+2. Reseat the faulted shim board (identified by fault LED or console error channel number).
+3. Inspect connector pins for corrosion or bent pins.
+4. Power up and retest. If same channel faults: swap board with a known-good spare.
+5. If fault follows the board: faulty shim driver board — order replacement.
+6. If fault stays on same slot: check wiring harness continuity to that shim coil.
+
+**Step 3 — Shim Coil Continuity**
+1. At shim power supply output terminal block, disconnect wiring for faulted channel.
+2. With DVM, measure resistance of shim coil winding (values vary 0.5–10 Ω by channel — see service manual).
+3. Open circuit (>1 MΩ) = broken shim winding — magnet service required.
+4. Short to ground = insulation failure — magnet service required.
+5. Normal resistance but fault persists = shim board or cable issue.
+
+**Step 4 — Communication Fault (E203-99)**
+1. Check serial/fiber cable from main system controller to shim controller board.
+2. Reseat connectors. Look for fiber damage (bend radius violations).
+3. Power cycle shim controller. If fault clears, monitor for recurrence.
+
+### After Repair
+- Run **Auto Shim** from console service menu.
+- Perform a B0 field map scan to verify homogeneity is within spec.
+- Document shim currents on all active channels in PM log.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7189,7 +7506,65 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['DAS','E601','data acquisition','communication','cable'],
-      content: `## GE MRI DAS Communication Fault -- E601\n\n### Fault Description\nE601 = Data Acquisition System (DAS) communication fault. Scans abort; no image data received from DAS.\n\n### System Overview\n(code)\nRF Coil ? Preamplifier ? DAS Receiver Boards ? Reconstruction Computer\n(code)\n\n### Diagnostic Steps\n1. Check DAS cabinet power -- all DAS boards should have green status LEDs.\n2. Inspect the DAS fiber optic cables:\n   - Optical cables must be undamaged and clean at connectors.\n   - Bend radius must be >30 mm.\n3. At the console: **Service > DAS > Board Status** -- identify any board showing FAULT.\n4. Check DAS timing board (slot 0) -- it must sync first before receiver boards.\n\n### DAS Board Reseating\n1. Power down DAS subsystem: **Service > Power > DAS Off**.\n2. With ESD wrist strap, reseat all DAS boards (press firmly into backplane connectors).\n3. Power on DAS and check LED status.\n\n### Loopback Test\n1. At **Service > DAS > Loopback Test** -- tests each receiver channel.\n2. Pass: all channels return test data correctly.\n3. Fail on specific channel: replace that DAS receiver board.\n\n### Common Parts\n| Part | GE P/N |\n|------|--------|\n| DAS Receiver Board | 2294300-22 |\n| DAS Timing/Sync Board | 2294300-21 |\n| DAS Fiber Optic Cable | 46-312500P1 |`,
+      content: `## GE MRI DAS Communication Fault (E601)
+
+### Error Overview
+**E601** (Data Acquisition System fault) indicates the DAS (receiver chain from RF coil through ADC to reconstruction) has a communication or data integrity fault. The system cannot complete image acquisition.
+
+### Tools Required
+- Service laptop with GE service software
+- DVM (to check power rails)
+
+### DAS Overview (GE Signa Architecture)
+Signal path: RF coil → TR switch → Pre-amp → DAS receive board → A/D converter → Fiber to reconstruction rack → Image reconstruction processor.
+
+### Initial Assessment
+1. Console: **Service → Diagnostics → DAS** — note sub-code:
+   | Sub-code | Meaning |
+   |----------|---------|
+   | E601-01 | DAS board not responding |
+   | E601-02 | DAS FIFO overflow |
+   | E601-03 | Data checksum error |
+   | E601-10 | DAS fiber link fault |
+   | E601-20 | DAS power fault |
+2. In the RF/DAS cabinet (located at back of magnet or in equipment room), check DAS board LEDs.
+
+### Troubleshooting Steps
+**Step 1 — Power Cycle DAS**
+1. At console: graceful shutdown (**Service → System → Shutdown**).
+2. At RF/DAS cabinet: set DAS power breaker to OFF. Wait 30 seconds.
+3. Power ON. Restart console software. Retest.
+4. Clears approximately 40% of E601 faults — often a transient firmware hang.
+
+**Step 2 — Fiber Link Check (E601-10)**
+1. Locate the fiber optic cables connecting DAS board to reconstruction chassis.
+2. Inspect for kinks, damage, or loose connectors (LC or SC type connectors typical).
+3. Clean fiber connectors with approved fiber cleaning kit — dust is a common cause.
+4. Reseat connectors firmly. Retest.
+5. If fiber is damaged: measure fiber loss with optical power meter if available. Replace if >3 dB loss.
+
+**Step 3 — DAS Board Power Check (E601-20)**
+1. At DAS board test points: measure +5V, +12V, -12V rails.
+2. Nominal tolerances: ±5% of rated voltage.
+3. If rails are low: check the backplane power supply (typically in same cabinet).
+4. Replace power supply if rails do not recover.
+
+**Step 4 — DAS Board Swap**
+1. Power down system fully.
+2. Remove DAS board from chassis (ESD precautions — wrist strap required).
+3. Install spare DAS board if available.
+4. Power up and run DAS diagnostics from service menu.
+5. If fault clears with new board: original board is faulty. Order replacement.
+
+**Step 5 — DAS FIFO Overflow (E601-02)**
+1. Overflow usually means the reconstruction processor is not consuming data fast enough.
+2. Check reconstruction CPU load (console: **System → Status → CPU**).
+3. If CPU at 100%: reconstruction PC may have a runaway process. Restart reconstruction software.
+4. Check available disk space on reconstruction drive: must be >20 GB free.
+
+### After Repair
+- Run **DAS Calibration** (noise figure calibration) from service menu.
+- Acquire a phantom scan and verify image SNR is within 10% of baseline.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7198,7 +7573,54 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['quench','emergency','cryogen','helium','safety'],
-      content: `## GE MRI Magnet Quench Response\n\n### IMMEDIATE ACTIONS (First 2 Minutes)\n1. **Evacuate the scan room immediately** -- activate emergency room evacuation.\n2. Activate the facility quench alarm if not triggered automatically.\n3. Do NOT re-enter the scan room until confirmed safe by FSE.\n4. Call 911 if anyone is in the room and cannot exit.\n\n### What Happens During a Quench\n- Liquid helium rapidly boils off ? vents through quench pipe.\n- Magnetic field collapses over 10-60 seconds.\n- Loud booming sound and fog/steam from quench vent are normal.\n- Oxygen displacement risk in scan room (asphyxiation hazard).\n\n### After Evacuation -- FSE Arrival Checks\n1. Verify scan room oxygen level with O2 meter before entry (must be >19.5%).\n2. Confirm magnetic field = 0 on Gaussmeter before removing any metallic objects.\n3. Check quench vent pipe for blockages (ice formation).\n4. Inspect magnet bore for damage -- quench pressure can displace components.\n\n### Recovery Sequence\n1. Contact GE site support / cryogenics vendor for emergency helium fill.\n2. After helium fill (must be >=80%), perform full magnet ramp-up per site-specific ramp sheet.\n3. Run full system calibration (frequency, shim, gradient) after field is stable.\n4. Document incident for site records and GE FSE report.\n\n### Prevention\n- Maintain helium level >65% at all times.\n- Inspect cold head compressor pressure and oil monthly.\n- Never allow ferromagnetic projectiles near bore.`,
+      content: `## GE MRI Magnet Quench Response
+
+### What Is A Quench
+A quench is the sudden loss of superconductivity in the magnet coils, causing rapid conversion of stored magnetic energy to heat. Liquid helium vaporizes rapidly. This is an emergency situation.
+
+### Immediate Signs of Quench
+- Loud rushing/hissing sound from scan room
+- White fog or vapor from scan room (helium gas)
+- LCC alarm klaxon and red indicator
+- Sudden loss of magnetic field (metal objects may fall)
+- Console shows QUENCH alarm or field rapidly dropping
+
+### IMMEDIATE ACTIONS (First 2 Minutes)
+1. **EVACUATE SCAN ROOM IMMEDIATELY** — alert anyone inside.
+2. **Do NOT re-enter** the scan room — oxygen displacement hazard (He gas displaces O2).
+3. Call out to clear the area — "QUENCH — EVACUATE".
+4. Hit the **EMERGENCY FIELD SHUTDOWN** button (red mushroom button, typically at scan room door) if quench has not completed — this protects any person trapped.
+5. Call 911 if any person was inside during quench — treat as potential asphyxiation emergency.
+6. Notify site safety officer and hospital facilities manager.
+
+### After Quench — Ventilation Phase (First 30 Minutes)
+1. Open scan room door(s) only after verifying O2 level with O2 monitor (>19.5% = safe).
+   - If no O2 monitor: wait minimum 20 minutes with doors open and room HVAC running before entry.
+2. Confirm quench vent duct is discharging outside. Check outside quench vent port — visible steam/fog is normal.
+3. Do NOT allow smoking or open flames near quench vent exhaust.
+4. Once O2 verified safe: enter with caution. Note any frost on magnet exterior.
+
+### Documentation (Do Immediately After Scene Is Safe)
+1. Record exact time quench started (from console alarm log if accessible).
+2. Note helium level before (if known) and remaining % after (check He level gauge after 30 min cool).
+3. Take photos of scan room condition.
+4. Pull the LCC event log: **Service → Magnet → Event Log** — download before power cycle.
+5. Call GE Emergency MRI Line for quench support: **1-800-437-1171** (GE Healthcare 24/7 MRI support).
+
+### Post-Quench Assessment (Technical Steps)
+1. After gas dissipation (~1 hour), check:
+   - He level gauge (most magnets retain some He — level <5% may mean complete boiloff)
+   - Quench tube integrity — visually inspect for ice blockage or damage
+   - Quench resistor panel — check for any signs of arcing or burn marks
+2. Do NOT attempt to ramp magnet until GE engineer has assessed.
+3. If He level is >20% and no visible damage: controlled ramp-up may be possible after GE assessment.
+4. If He level is 0% or < 5%: full He fill required before ramp. This is a multi-day process.
+
+### Cost & Timeline Expectations (For Customer Communication)
+- Full He refill: 500–1500 liters He required. Cost: $8,000–$25,000 depending on market rate.
+- Ramp-up after refill: 24–48 hours minimum.
+- If magnet requires additional service (quench resistor damage, coil winding damage): 2–8 week timeline.
+- Always direct customer to GE for warranty/contract coverage assessment before agreeing to cost.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7207,7 +7629,56 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Power',
       tags: ['MGD','boot','NVRAM','MCP820','startup','fault'],
-      content: `## GE Signa MGD Boot Failure\n\n### Symptom\nSystem fails to complete boot sequence; MGD (Master Gradient Driver) reports fault or console shows "Waiting for MGD" indefinitely.\n\n### MGD Boot Sequence\n(code)\nMGD Power On ? NVRAM Load ? DSP Init ? Comm Link to Console ? Ready\n(code)\n\n### Step 1 -- Check MGD Power\n1. Verify MGD cabinet power switch is ON.\n2. Check MGD power supply LEDs (should be solid green for +5V, +/-15V, +/-40V).\n3. Measure supply rails at test points on MGD PSU board.\n\n### Step 2 -- NVRAM Check\n1. Enter service mode at console ? **Service > MGD > NVRAM Status**.\n2. If NVRAM checksum error shown: run **NVRAM Reset** (loads factory defaults).\n3. After NVRAM reset, reload site-specific calibration files from backup.\n\n### Step 3 -- Communication Link\n1. Verify MGD-to-console fiber cable connections (both ends).\n2. Run **Service > MGD > Comm Loopback** -- should report PASS.\n3. If fail: replace fiber cable or MGD communication board.\n\n### MCP820 CPU Board (if above fails)\n- Location: MGD chassis, slot 7F (APS) or 70F (AGP).\n- Replacement P/N: 2294300-16 (HDx 15.x MGD).\n- After board swap: reload NVRAM calibration data and run gradient calibration.\n\n### Notes\n- Always ground yourself (ESD strap) before handling MCP820 boards.\n- Document NVRAM calibration values before replacing board.`,
+      content: `## GE Signa MGD Fault -- Boot Failure
+
+### Error Overview
+**MGD** (Master Gradient Driver) boot failure prevents the system from completing startup. The MRI console cannot communicate with the gradient controller, leaving the system unable to scan.
+
+### Tools Required
+- Service laptop with GE service software
+- DVM
+- MGD boot disk or NVRAM reset procedure (system-specific)
+
+### Boot Sequence Overview
+On power-up, the MGD board runs a self-test, loads firmware from NVRAM/flash, and broadcasts a ready signal to the host. If any step fails, the host reports MGD FAULT at startup.
+
+### Troubleshooting Steps
+**Step 1 — Identify Exact Failure Point**
+1. At the console monitor, note the boot progress:
+   - "Waiting for MGD..." = MGD not responding at all
+   - "MGD boot failed" = MGD responds but firmware load failed
+   - "MGD version mismatch" = Firmware version incompatibility
+2. At the gradient cabinet, note the MGD board LED status at power-up.
+
+**Step 2 — Power Cycle Gradient Cabinet**
+1. Shut down console software gracefully.
+2. At the gradient cabinet: breaker OFF → 60 seconds → breaker ON.
+3. Restart console. Watch MGD boot messages. Resolves transient firmware hangs ~30% of the time.
+
+**Step 3 — MGD NVRAM Reflash**
+1. If MGD shows "boot failed" or no response after power cycle:
+2. At gradient cabinet, locate the MGD board (typically top board, has RJ45 and DB9 connections).
+3. Connect service laptop to MGD via RS-232 (DB9) at 9600 baud, 8N1.
+4. Use GE service tool: **RHESA → Gradient → MGD → Flash Firmware**.
+5. Load firmware file matching the system version (from GE service software package).
+6. Flash takes 3–5 minutes. Do not interrupt power.
+7. Restart system after flash completes.
+
+**Step 4 — NVRAM Battery Check**
+1. MGD NVRAM retains calibration data. If battery dead, NVRAM corrupts on power loss.
+2. MGD board typically has a CR2032 or equivalent coin cell on the PCB.
+3. Measure voltage with DVM: must be >2.9V. Replace if <2.8V.
+4. After battery replacement: NVRAM must be re-initialized. Run **Gradient Calibration** from service menu — this takes 20–40 minutes.
+
+**Step 5 — MGD Board Swap**
+1. If reflash fails or board shows burn damage: replace MGD board.
+2. Power down fully. Remove MGD board (note cable positions before disconnecting).
+3. Install replacement board. MGD firmware will auto-load on first boot if host is running.
+4. Run full gradient calibration after replacement.
+
+### After Repair
+- Verify gradient noise figure (Service → Diagnostics → Gradient → Noise).
+- Run a phantom scan and confirm geometric accuracy (no gradient scaling errors).`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7216,7 +7687,58 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['helium','fill','cryogen','level','LHe'],
-      content: `## Helium Fill Procedure -- GE MRI\n\n### Prerequisites\n- Certified cryogenics vendor on-site with liquid helium dewar\n- Site cryogenics PPE (cryo gloves, face shield, cryo apron)\n- System must be operational (not quenched)\n- Site physicist notified\n\n### Pre-Fill Checks\n1. Confirm current helium level via level gauge on cryostat (or **Service > Magnet > Cryo Status**).\n2. Verify cold head is running (listen for characteristic clicking/running).\n3. Check helium pressure gauge on cryostat: must be slightly positive (0.5-2 psi).\n\n### Fill Procedure\n1. Locate helium fill port on magnet (typically marked "He Fill").\n2. Purge fill line with gaseous helium for 30 seconds before opening cryostat port.\n3. Slowly open cryostat fill port valve (1/4 turn increments).\n4. Insert fill tube -- allow slow cool-down before opening dewar valve.\n5. Open dewar valve slowly -- monitor cryostat pressure gauge (keep <5 psi).\n6. Monitor helium level gauge -- fill to 90-95%.\n7. Close dewar valve; allow fill tube to warm up 5 minutes before removal.\n8. Close cryostat fill port. Verify pressure normalizes to <=2 psi.\n\n### Post-Fill\n- Document: date, vendor, starting level, ending level, quantity filled.\n- Monitor helium level over next 48 hours -- verify cold head is maintaining level.\n\n### Normal Boiloff Rates\n| Cold Head Status | Boiloff Rate |\n|-----------------|-------------|\n| Cold head OK | <0.1% / day |\n| Cold head degraded | 0.5-2% / day |\n| Cold head failed | >3% / day |`,
+      content: `## Helium Fill Procedure -- GE MRI
+
+### Overview
+Liquid helium (LHe) fills maintain the superconducting coils at 4.2K. Most modern GE zero-boiloff magnets require fills every 3–5 years; older systems may require annual fills. He level should be maintained above 50% (never below 20%).
+
+### Tools & Equipment Required
+- LHe dewar (capacity appropriate for system — typically 250–500L)
+- LHe transfer line (vacuum-jacketed flex line, 3/4" or 1" diameter)
+- Cryogen PPE: cryo gloves (elbow-length), face shield, lab coat
+- He leak detector or soapy water
+- O2 monitor for scan room
+- Fill adapter fittings (check magnet fill port thread — GE uses CGA 295 typically)
+
+### Safety
+⚠️ LHe boils at -269°C (4K). Direct skin contact causes immediate frostbite.
+⚠️ He gas displaces O2. Ventilate scan room. Monitor O2 throughout fill.
+⚠️ Dewar pressure: never exceed 22 psi (1.5 bar) during transfer.
+⚠️ Magnet remains energized during fill — maintain ferrous tool exclusion.
+
+### Pre-Fill Preparation
+1. Verify dewar weight and estimated LHe content. Order 20% more than estimated magnet deficit.
+2. Check magnet He level (LCC display or service software) — record starting level.
+3. Turn off cold head compressor **only if** directed by GE service note for your model. Most modern systems: leave compressor ON during fill.
+4. Clear and ventilate scan room. Post "Cryogen Fill In Progress" signs on all doors.
+5. Have O2 monitor running continuously — alarm at <19.5% O2.
+6. Position dewar on dolly close to magnet fill port. Lock dewar wheels.
+
+### Fill Procedure
+1. Remove fill port cap from magnet (upper fill port — larger diameter). Keep cap accessible.
+2. Inspect fill port for ice buildup. Clear any ice with a dry wooden dowel — never metal tools.
+3. Connect transfer line to dewar outlet valve (hand-tight first, then snug with wrench).
+4. Insert transfer line cold end into magnet fill port — gentle downward pressure until seated.
+5. Slowly open dewar outlet valve 1/4 turn. Listen for gas flow — normal at start (cold line warming).
+6. After 2–3 minutes, gas flow will reduce and liquid transfer begins (indicated by heavier flow sound, possible visible fog at vent port).
+7. Monitor He level gauge on LCC — should begin to rise within 10 minutes of liquid transfer.
+8. Maintain dewar pressure 5–15 psi. Adjust pressure relief valve on dewar if needed.
+9. Continue fill until He level reaches 90–95% (do NOT fill to 100% — leave thermal expansion room).
+10. Close dewar outlet valve. Allow transfer line to warm (5 minutes) before removing.
+11. Pull transfer line from fill port slowly. Replace fill port cap immediately.
+12. Disconnect transfer line from dewar. Return dewar.
+
+### Post-Fill Steps
+1. Restart cold head compressor if it was shut down.
+2. Monitor He level and LCC temperature for 30 minutes — level should stabilize.
+3. Verify cold head Stage 2 temperature returns to <4.5K.
+4. Log: fill date, start level %, end level %, LHe volume used (liters), dewar batch number.
+5. Update PM record and site He consumption history.
+
+### Fill Volume Estimation
+- 1.5T Signa LCC: magnet holds ~1,500L total. Each 10% level = ~150L.
+- 3.0T LCC300: magnet holds ~2,000L total. Each 10% = ~200L.
+- Actual fill volume = (Target% - Start%) × total capacity.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7225,7 +7747,58 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['RF shield','E720','RF cage','interference','door gasket'],
-      content: `## GE MRI RF Shield Integrity Check -- E720\n\n### Fault Description\nE720 = RF shield breach detected. External RF interference enters scan room; images show noise bands or herringbone artifacts.\n\n### Visual Inspection\n1. Inspect scan room door seals: RF finger gaskets should be continuous with no gaps or bent fingers.\n2. Check all RF penetration panels (electrical, pneumatic, intercom) -- covers must be fully seated.\n3. Inspect the door frame for bent or damaged frame material.\n4. Check waveguide penetrations for missing covers or damaged honeycomb.\n\n### RF Leakage Test\n1. Set up a spectrum analyzer (or RF leakage meter) just outside the room.\n2. Inside room, tune the analyzer to 63 MHz (1.5T) or 128 MHz (3T).\n3. Walk the room perimeter with a dipole antenna -- note any signal >-90 dBm as a potential breach.\n4. Mark breach locations with painter's tape.\n\n### Common Breach Locations\n| Location | Fix |\n|----------|-----|\n| Door gasket gaps | Replace worn finger gaskets (GE p/n 46-288560P1) |\n| Penetration panels | Reseat or replace copper mesh |\n| Wall seam cracks | Apply copper tape and re-solder seam |\n| Cable trays | Ensure all cable trays have copper bonding straps |\n\n### After Repair\n- Re-run RF leakage test -- verify breach location reads <-110 dBm.\n- Perform a clinical-quality scan and verify no noise artifacts.`,
+      content: `## GE MRI RF Shield Integrity Check (E720)
+
+### Error Overview
+**E720** (RF Shield / Faraday Cage Fault) indicates the system has detected excessive RF noise entering the scan room, which degrades image quality and triggers this protection fault.
+
+### Tools Required
+- RF shield continuity tester (or DVM with μA sensitivity)
+- Spectrum analyzer (preferred) or RF noise evaluation scan
+- Copper tape and conductive caulk (for repairs)
+- Flashlight
+
+### Background
+The RF-shielded room (Faraday cage) blocks external RF interference (cell phones, WiFi, radio). Any breach — a gap in the copper/aluminum paneling, a compromised RF door seal, or a penetration without proper waveguide-below-cutoff — allows RF noise in, raising the noise floor and triggering E720.
+
+### Troubleshooting Steps
+**Step 1 — Confirm It Is RF Noise, Not System Fault**
+1. At console: **Service → Diagnostics → RF → Noise Floor Test**.
+2. Run scan with no coil connected. Record noise level (baseline).
+3. If noise floor >10 dB above expected: RF ingress confirmed. Proceed to Step 2.
+4. If noise floor is normal: E720 may be a spurious alarm — check threshold settings.
+
+**Step 2 — RF Door Seal Inspection**
+1. RF doors are the most common failure point (opens/closes thousands of times).
+2. Inspect the perimeter copper finger stock seal around the door frame:
+   - Look for bent, missing, or corroded fingers.
+   - Press door closed and look for visible light gaps — gaps = RF leaks.
+3. Check door hinge contacts — must maintain electrical continuity.
+4. Inspect door frame for impact damage or warping.
+5. If fingers are damaged: replace copper finger stock (available from RF shield vendors: AMSCAN, ETS-Lindgren).
+
+**Step 3 — Penetration Panel Inspection**
+1. All electrical penetrations (power, signal, cooling) must pass through waveguide-below-cutoff (WBC) tubes or EMI filters.
+2. Locate the penetration panel (usually at one wall of scan room).
+3. Inspect for: broken WBC tubes, missing filter canisters, gaps around conduit entries.
+4. Any unsealed gap — even 1mm — can be significant. Seal with copper tape and conductive caulk.
+
+**Step 4 — Wall and Ceiling Panel Inspection**
+1. RF panels are soldered or clamped copper (older) or aluminum with conductive gaskets (newer).
+2. Inspect panel seams for separation, missing screws, or damaged gaskets.
+3. Look for any recent construction work near the scan room — workers sometimes drill into RF panels.
+4. Tap panels with knuckle — a hollow sound may indicate a delaminated panel section.
+
+**Step 5 — Spectrum Analyzer Survey**
+1. If source is not obvious: use a spectrum analyzer with a small loop antenna.
+2. Walk the room perimeter with antenna near walls/door — signal peaks identify the breach location.
+3. Common sources: WiFi at 2.4 GHz, cellular at 700–2100 MHz, fluorescent light ballasts at 50–100 kHz.
+
+### Repair Methods
+- Door finger stock: replace damaged sections, realign door to restore contact pressure.
+- Small panel gaps: clean surfaces, apply copper tape, solder seam if accessible.
+- Penetration gaps: stuff with conductive EMI foam, seal with conductive caulk.
+- After repair: repeat noise floor test. Must return to within 3 dB of original spec.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7234,7 +7807,57 @@ const DIAG_GUIDES_SEED = [
       system: 'GE CT',
       category: 'X-Ray Tube',
       tags: ['CT','tube warmup','conditioning','focal spot','X-ray'],
-      content: `## GE CT X-Ray Tube Warmup Procedure\n\n### When Required\n- System cold start (off >4 hours)\n- After tube replacement\n- After extended idle period (>24 hours)\n- After error code indicating tube thermal issue\n\n### Procedure\n1. At the operator console, select **Utilities > Tube Warmup**.\n2. Choose warmup protocol:\n   - **Standard Warmup** (15-20 min) -- daily use after 4+ hour idle.\n   - **Full Conditioning** (45-60 min) -- after replacement or long downtime.\n3. Click **Start**. System will cycle through ascending kV/mA steps automatically.\n4. Monitor the warmup status bar -- do not interrupt once started.\n\n### Manual Warmup Steps (if automated protocol fails)\n| Step | kVp | mA | Duration |\n|------|-----|-----|----------|\n| 1 | 80 | 10 | 3 min |\n| 2 | 100 | 20 | 3 min |\n| 3 | 120 | 50 | 3 min |\n| 4 | 120 | 100 | 5 min |\n| 5 | 140 | 200 | 5 min |\n\n### Important Notes\n- Tube must reach operating temperature before clinical scanning.\n- Do not run high-mA protocols (e.g., cardiac, perfusion) without completed warmup.\n- If warmup aborts with arc fault: allow 10-min cool-down and retry x 2. If persistent, contact GE FSE.\n\n### Documentation\nLog each tube warmup in the site CT log: date, protocol, and outcome.`,
+      content: `## GE CT Tube Warmup Procedure
+
+### Purpose
+X-ray tube warmup conditions the anode after a period of inactivity (>1 hour idle, cold start after shutdown, or after tube storage). Skipping warmup can cause anode cracking, cathode filament failure, or focal spot damage.
+
+### When Required
+- After any system that has been OFF for >4 hours
+- After tube replacement
+- After any overnight or weekend shutdown
+- After power outage recovery
+
+### Tools Required
+- None (procedure is performed via CT operator console)
+- CT operator console access (tech or service login)
+
+### Warmup Procedure (GE LightSpeed / Discovery CT)
+1. At CT operator console, log in with operator or service credentials.
+2. Navigate to **Scan → Utilities → Tube Warmup** (exact menu path varies by software version):
+   - Discovery CT750 HD: **System → Tube Warmup**
+   - LightSpeed VCT: **Utilities → Tube Conditioning**
+   - Optima CT660: **Setup → Tube Warmup**
+3. Select **Automatic Warmup** — this runs a pre-programmed ramp sequence.
+4. System will display estimated warmup time (typically 5–20 minutes depending on tube temperature).
+5. Warmup sequence runs automatically:
+   - Stage 1: Low kVp, low mA pulses (degasses anode surface)
+   - Stage 2: Progressively higher kVp exposures at increasing mA
+   - Stage 3: Full power conditioning shots at rated kVp/mA
+6. Monitor for any fault or ABORT message. If warmup aborts: note kVp/mA at abort point.
+7. On completion, console displays "Tube Warmup Complete" or returns to scan-ready state.
+
+### Manual Warmup (If Automatic Not Available)
+If automatic warmup menu is unavailable, perform manual conditioning:
+1. Set up a scout scan (low dose localizer):
+   - kVp: 80, mA: 20, scan time: 1 second
+   - Run 3 exposures, wait 30 seconds between each.
+2. Increase to: kVp: 100, mA: 50 — run 3 exposures.
+3. Increase to: kVp: 120, mA: 100 — run 3 exposures.
+4. Increase to: kVp: 120, mA: 200 — run 2 exposures.
+5. System is now conditioned for clinical use.
+
+### Tube Warmup Fault Responses
+| Fault During Warmup | Likely Cause | Action |
+|---------------------|--------------|--------|
+| "Tube arc fault" at low kVp | Anode contamination or gas in tube | Repeat warmup from start; 3 attempts max |
+| "Over-current" at low mA | Filament failure or HV breakdown | Replace tube — do NOT continue |
+| "Rotor fault" | Bearing failure, anode not spinning | Check rotor drive frequency; replace tube if persistent |
+| Warmup aborts above 120 kVp | Focal spot damage | Replace tube |
+
+### Post-Warmup
+- Run a quick air calibration before first clinical scan (see Air Calibration guide).
+- Log warmup completion time in the daily QA log.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7243,7 +7866,49 @@ const DIAG_GUIDES_SEED = [
       system: 'GE CT',
       category: 'Calibration',
       tags: ['CT','air calibration','detector','HU','calibration'],
-      content: `## GE CT Air Calibration Procedure\n\n### Overview\nAir calibration corrects detector channel-to-channel gain variations. Must be performed daily before first patient, after tube replacement, or after DAS board replacement.\n\n### Prerequisites\n- Gantry bore must be clear of all objects\n- CT table fully retracted (outside bore)\n- Tube warmup must be complete\n\n### Procedure\n1. At the console, go to **Utilities > Calibration > Air Calibration**.\n2. Confirm bore is clear in the dialog prompt.\n3. Select calibration protocols to run:\n   - Select ALL kVp settings used clinically (80, 100, 120, 140 kVp typically).\n4. Click **Start**. Gantry will rotate and acquire calibration data at each kVp.\n5. System processes data automatically (~5-10 minutes total).\n6. Review calibration report -- all channels should show PASS.\n\n### Failure Analysis\n| Finding | Probable Cause | Action |\n|---------|---------------|--------|\n| Single channel fail | Bad detector element | Note channel; proceed (minor) |\n| Row of channels fail | DAS board fault | Replace DAS receiver board |\n| All channels fail | Tube issue or DAS timing | Check tube output; run tube QA |\n| Calibration drift | Environmental temp change | Re-run after 20-min warm-up |\n\n### Verification\nAfter air calibration, scan the QA phantom:\n- Water HU: 0 +/- 5\n- Air HU: -1000 +/- 10`,
+      content: `## GE CT Air Calibration Procedure
+
+### Purpose
+Air calibration (also called air scan or detector calibration scan) establishes the zero-reference for CT detectors — what the detector sees when no object is in the beam. This corrects for detector-to-detector sensitivity differences, beam hardening, and scatter baseline. Must be run at least daily and after any hardware change.
+
+### When Required
+- Every morning before first patient scan
+- After tube warmup following any extended shutdown
+- After detector or DAS board replacement
+- After any gantry mechanical work
+- Whenever image rings or shading artifacts appear
+
+### Tools Required
+- None (automated — performed via console)
+- Ensure gantry bore is completely empty (no phantom, no coil, no patient accessories)
+
+### Procedure (GE LightSpeed / Discovery / Optima CT)
+1. Clear the gantry bore completely. Confirm no objects inside — even small items cause artifacts.
+2. At console: **Utilities → Calibrations → Air Calibration** (or **Daily QA → Air Cal** on some versions).
+3. Select calibration set:
+   - **Full Air Cal**: runs all kVp settings (80, 100, 120, 140 kVp). Use after shutdown or hardware change. Takes 10–15 minutes.
+   - **Quick Air Cal**: runs current kVp only. Use for daily routine. Takes 3–5 minutes.
+4. Select table position: **IN** (table fully in bore for isocenter cal) and **OUT** (table pulled out for full bore coverage). Most systems run both automatically.
+5. Press **START**. Gantry will rotate while making exposures at each kVp/mA combination.
+6. Monitor for "Cal In Progress" status. Do not interrupt.
+7. On completion: "Calibration Complete" message. System logs cal pass/fail for each channel.
+
+### Interpreting Cal Results
+- **All channels PASS**: proceed to clinical scanning.
+- **1–3 channels FAIL**: note channel numbers. Run cal again — occasional transient failures are normal.
+- **Same channels fail repeatedly**: potential detector or DAS issue. Proceed to detector troubleshooting.
+- **>5 channels fail**: DAS or HV generator problem. Do not scan patients. Escalate.
+
+### Ring Artifact After Air Cal
+If images show concentric ring artifacts after a passed air cal:
+1. Confirm bore was truly empty during cal — even dust or residue on bore liner can cause rings.
+2. Wipe bore liner with clean dry cloth. Repeat cal.
+3. If rings persist: specific detector channel may be out of spec. Run **Detector Diagnostics** from service menu and compare channel-by-channel readings.
+4. If a single ring corresponds to a specific detector row: that detector may need replacement.
+
+### Documentation
+- Log date and time of each air calibration in the system QA log.
+- Most GE CT systems automatically log cal results — verify logs are accessible for accreditation review.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7252,7 +7917,63 @@ const DIAG_GUIDES_SEED = [
       system: 'Siemens MRI',
       category: 'Magnet',
       tags: ['Siemens','coolant','gradient cooling','water','Avanto','Aera'],
-      content: `## Siemens MRI Coolant System Check -- Avanto / Aera\n\n### Overview\nSiemens MRI systems use a closed-loop gradient cooling system. Inadequate flow causes gradient derating or thermal fault shutdowns.\n\n### Coolant System Components\n- Gradient coil cooling channels (embedded in gradient assembly)\n- Heat exchanger (building water to gradient water)\n- Circulation pump\n- Expansion tank\n- Flow switch / flow sensor\n\n### Checks\n1. **Coolant level**: Sight glass on expansion tank must show >=50% full.\n2. **Coolant type**: Must be distilled water + 10-15% corrosion inhibitor. Check concentration with refractometer.\n3. **Flow rate**: Check flow sensor reading on SRS (Service Remote System) or local display -- must be >=X L/min (model-dependent; see site specifications).\n4. **Inlet temperature**: Should be 18-22 degreesC. Higher inlet temp reduces gradient duty cycle.\n5. **Pump operation**: Listen for smooth pump hum; no cavitation noise.\n\n### Fault Codes\n| Code | Meaning | Action |\n|------|---------|--------|\n| GC_FLOW_LOW | Gradient coolant flow below threshold | Check pump; check filter |\n| GC_TEMP_HIGH | Coolant inlet too warm | Check building chilled water |\n| GC_LEVEL_LOW | Expansion tank low | Refill with approved coolant mix |\n\n### Coolant Flush (Annual)\n1. Drain system via drain valve on lowest point of gradient assembly.\n2. Flush with 3 passes of distilled water.\n3. Refill with fresh mix (distilled water + approved inhibitor).\n4. Bleed air via bleed valves at high points of the circuit.`,
+      content: `## Siemens MRI Coolant System Check (Avanto/Aera)
+
+### Overview
+Siemens Avanto and Aera MRI systems use a closed-loop water cooling system (WCS) to cool the gradient coils, RF amplifier, and gradient amplifiers. The coolant is deionized (DI) water with corrosion inhibitor. Regular checks prevent gradient thermal shutdowns and coil damage.
+
+### Tools Required
+- DVM (for coolant conductivity check if meter not available)
+- Conductivity/DI meter (preferred: target <10 μS/cm)
+- pH test strips or meter (target pH 7.0–8.0)
+- Coolant sample vial
+
+### Coolant System Components (Avanto/Aera)
+- Water chiller unit (external — in plant room or rooftop)
+- Expansion tank (in equipment room — check coolant level here)
+- Circulation pump (in equipment room)
+- Deionization cartridge (DI canister — in equipment room)
+- Flow sensor (monitors flow to gradient and RF)
+- Gradient coil inlet/outlet lines
+
+### Inspection Procedure
+**Step 1 — Visual Check**
+1. Check expansion tank level: fill to marked "FULL" line with DI water + inhibitor if low.
+2. Inspect all coolant lines for discoloration (green/brown = corrosion), swelling, or leaks.
+3. Check DI canister — most have a conductivity indicator that changes color when exhausted. Replace if indicated.
+4. Inspect pump housing for moisture or drips.
+
+**Step 2 — Flow Rate Verification**
+1. At the Siemens service interface: **Service → Hardware → WCS → Flow Rate**.
+2. Nominal flow rates:
+   - Avanto: Gradient coil 12–16 L/min; RF amp 5–8 L/min
+   - Aera: Gradient coil 15–20 L/min; RF amp 5–8 L/min
+3. If flow is low: check pump pressure, look for kinked lines, check filter screen.
+
+**Step 3 — Coolant Conductivity**
+1. Take a sample from the expansion tank test port.
+2. Measure conductivity: must be <10 μS/cm. If >20 μS/cm: DI canister is exhausted — replace.
+3. Measure pH: must be 7.0–8.0. Low pH (acidic) indicates corrosion inhibitor depletion.
+4. If pH <6.5: drain and refill with fresh DI water + Siemens-approved inhibitor (Cortec or equivalent).
+
+**Step 4 — Coolant Temperature Check**
+1. Service interface: **WCS → Temperatures**.
+2. Inlet temperature: must be 15–22°C (chiller setpoint). Higher = chiller fault.
+3. Outlet temperature: typically 3–8°C above inlet. If outlet >> inlet: gradient coils generating excess heat (possible gradient fault).
+4. Check chiller unit for proper operation (compressor running, no fault lights).
+
+**Step 5 — Leak Check**
+1. Inspect under and around gradient coil housing for water stains or moisture.
+2. Check all QD (quick-disconnect) fittings on gradient and RF connections.
+3. Look inside equipment room for drips from ceiling (gradient lines run overhead in many installations).
+
+### Common Faults
+| Fault | Cause | Action |
+|-------|-------|--------|
+| WCS FLOW LOW | Clogged filter, kinked line, failed pump | Clean filter, check lines, replace pump |
+| WCS TEMP HIGH | Chiller fault or flow restriction | Check chiller, increase flow |
+| High conductivity | Exhausted DI cartridge | Replace DI canister |
+| Discolored coolant | Corrosion (no inhibitor) | Drain, flush, refill with inhibitor |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7261,7 +7982,63 @@ const DIAG_GUIDES_SEED = [
       system: 'Siemens MRI',
       category: 'Power',
       tags: ['Siemens','Avanto','boot','startup','ICE','MPC'],
-      content: `## Siemens MRI Boot Fault -- Avanto\n\n### Symptom\nSystem fails to reach **Syngo MR Ready** state. Console freezes at MARS, ICE, or MPC initialization screen.\n\n### Boot Sequence Overview\n(code)\nPower On ? MARS (hardware init) ? MPC (measurement processor) ? ICE (image calculation) ? Console UI Ready\n(code)\n\n### MARS Failure\n1. Check all gradient and RF cabinet LEDs -- any red LED blocks MARS completion.\n2. Review MARS error log via service terminal: '/opt/mdm/bin/mars_log'\n3. Common causes: gradient coolant flow fault, RF cabinet power supply fault.\n\n### MPC Failure\n1. MPC runs on a dedicated Linux server in the electronics rack.\n2. SSH to MPC host or check MPC display: 'systemctl status mpc_service'\n3. If MPC service crashed: restart with 'systemctl restart mpc_service'\n4. If persistent: check /var/log/mpc.err for fault code.\n\n### ICE Failure\n1. ICE (Image Calculation Environment) reconstruction cards in the computer rack.\n2. Check ICE card status LEDs -- all should be green.\n3. Reboot ICE: at console ? **System > Service > ICE Restart**.\n4. If an ICE card shows solid red: reseat or replace ICE reconstruction card.\n\n### Console UI Hang\n- Restart console application: **Ctrl+Alt+T** ? 'syngo_restart'\n- If no improvement: full system reboot via **System > Shutdown > Restart All**.`,
+      content: `## Siemens MRI System Boot Fault (Avanto)
+
+### Overview
+Siemens Avanto boot failures prevent the system from reaching scan-ready state. The boot sequence involves multiple subsystems: host computer (SyngoMR), gradient system, RF system, and patient handling. Any subsystem failure at startup will halt the boot.
+
+### Tools Required
+- Siemens service software (syngo MR Service Access, aka "Service Desktop")
+- USB keyboard for host computer direct access (if console is unresponsive)
+- Network cable (for remote service access if needed)
+
+### Boot Sequence Overview
+1. Main cabinet powers up → Host PC boots (Windows)
+2. SyngoMR software initializes
+3. Gradient system connection established
+4. RF system initialized
+5. Patient table initialized
+6. Scan room interface check
+7. System ready
+
+### Troubleshooting Steps
+**Step 1 — Identify Where Boot Stalls**
+1. Watch the boot progress screen on the operator console.
+2. Note exact message where boot halts:
+   - "Waiting for gradient system" → Step 3
+   - "RF system not ready" → Step 4
+   - "Table fault" → Step 5
+   - Black screen after Windows logo → Step 2
+
+**Step 2 — Host Computer Issues (Black Screen)**
+1. Connect USB keyboard directly to the host computer (in equipment room — large rack, labeled "HOST").
+2. Press Ctrl+Alt+Del — if Windows responds, the display connection is the issue (check DVI/DisplayPort cable to console).
+3. If no response: hard reboot host (hold power button 5 sec). Allow full reboot.
+4. Check Windows event logs: **Event Viewer → Windows Logs → System** — look for recent critical errors.
+
+**Step 3 — Gradient System Not Connecting**
+1. Check gradient cabinet power (equipment room rack) — all breakers ON?
+2. Siemens gradient cabinets have status LEDs: GREEN = ready, RED = fault, AMBER = initializing.
+3. If gradient cabinet is in fault: check display on gradient controller for error code.
+4. Power cycle gradient cabinet: main breaker OFF, 30 seconds, ON.
+5. Service Desktop: **Hardware → Gradient → Status** — look for connection error details.
+
+**Step 4 — RF System Not Ready**
+1. Locate RF amplifier cabinet (separate rack, typically labeled "RFPA").
+2. Check for fault LEDs on RF amplifier boards.
+3. RFPA cabinets have a local fault reset button (usually blue or white push button on front panel) — press to attempt reset.
+4. If RFPA shows over-temperature: check room cooling. RFPA needs ambient <25°C.
+5. Allow 30 minutes cool-down then retry.
+
+**Step 5 — Patient Table Fault at Boot**
+1. Look for error on table control unit (small panel at table base).
+2. Check if table inhibit switch is engaged (safety feature — check under table for red inhibit button).
+3. Power cycle table controller: small breaker on table base electrical panel.
+4. If table has position fault: manually move table to full home position (fully extended, mid-height) using pendant, then retry boot.
+
+### After Successful Boot
+- Run prescan to verify RF, gradient, and table are all functional.
+- Check system log (**Service Desktop → System Log**) for any non-fatal warnings — address before next scheduled maintenance.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7270,7 +8047,63 @@ const DIAG_GUIDES_SEED = [
       system: 'Siemens MRI',
       category: 'RF',
       tags: ['Siemens','RF','transmitter','RFPA','fault','Aera'],
-      content: `## Siemens MRI RF Chain Fault -- Aera / Avanto\n\n### Fault Description\nRF hardware fault preventing transmit. Error displayed on console during preparation or scan.\n\n### RF Chain Overview\n(code)\nFrequency Synthesizer ? Pre-Driver ? RFPA (RF Power Amplifier) ? T/R Switch ? Body Coil\n(code)\n\n### Step 1 -- Identify Failed Component\n1. At console ? **System > Service > RF Status**.\n2. Note which component reports fault: synthesizer, pre-driver, RFPA, or T/R switch.\n\n### Step 2 -- RFPA Check\n1. Locate RFPA in the RF cabinet (large module, typically bottom of cabinet).\n2. Check RFPA LED status indicators:\n   - Green = normal operation\n   - Yellow = fault/warning\n   - Red = shutdown fault\n3. Check RFPA cooling -- dedicated fan must be spinning.\n4. Check RFPA gate voltage supply (service manual TP values).\n\n### Step 3 -- Body Coil Check\n1. Verify body coil plug is fully seated in the gantry.\n2. Check body coil matching network (accessible via gantry service panel).\n3. Measure body coil capacitor values if VSWR is elevated.\n\n### Step 4 -- T/R Switch Check\n1. T/R switch is in the gantry RF shielding area.\n2. Check T/R switch control voltages (PIN diode bias -- see TR bias guide).\n3. Swap T/R switch if bias voltages are correct but switching still fails.\n\n### After Repair\nRun **RF Calibration** and verify transmit voltage, 90 degrees pulse width, and SAR monitor functionality.`,
+      content: `## Siemens MRI RF Chain Fault (Aera/Avanto)
+
+### Error Overview
+RF chain faults on Siemens Aera and Avanto typically appear as "RF Amplifier Fault," "Transmit Chain Error," or "SAR Monitoring Fault" in the SyngoMR interface. These prevent scanning until resolved.
+
+### Tools Required
+- Service Desktop (Siemens service software)
+- RF power meter (optional but helpful)
+- DVM
+
+### RF Chain Architecture (Siemens Avanto/Aera)
+Host → RF synthesizer → RFPA (RF Power Amplifier) → transmit/receive switch → body coil → patient → receive coil → pre-amp → receiver boards → digitizer → reconstruction.
+
+### Troubleshooting Steps
+**Step 1 — Read the Fault Code**
+1. At SyngoMR: **System → Error Manager** — note full error string.
+2. At Service Desktop: **Hardware → RF → Status** — provides more detailed sub-component status.
+3. Common codes:
+   | Code | Meaning |
+   |------|---------|
+   | RF.RFPA_FAULT | RF amplifier hardware fault |
+   | RF.SAR_EXCEEDED | SAR monitor detected over-limit |
+   | RF.TX_CHAIN | General transmit chain fault |
+   | RF.REFLECTED_PWR | Excessive reflected power |
+
+**Step 2 — RFPA Reset**
+1. In Service Desktop: **Hardware → RF Amplifier → Reset**.
+2. If reset clears fault: monitor for recurrence over next 3 scans.
+3. If fault recurs immediately: proceed to hardware check.
+
+**Step 3 — RFPA Cabinet Physical Check**
+1. RFPA cabinet (separate rack in equipment room).
+2. Open front panel. Check for:
+   - FAULT LEDs on amplifier modules (usually row of modules, each with green/red LED)
+   - Over-temperature indicator (high ambient = modules shut down to protect)
+   - Blown fuses on RFPA power supply modules
+3. If one amplifier module has fault LED: that module may need replacement.
+4. Note: Siemens Avanto RFPA typically has 4–8 amplifier modules operating in parallel. One failed module reduces power but may not fully prevent scanning at some power levels.
+
+**Step 4 — Reflected Power Check**
+1. Reflected power fault means RF is not being absorbed efficiently by the patient/coil.
+2. Most common cause: coil connector dirty or mismatched.
+3. Remove all coils. Attempt system calibration with body coil only.
+4. If calibration passes with body coil: the problem is with a surface coil. Test coils individually.
+5. If body coil cal also fails: TR switch or coil tuning circuit issue.
+
+**Step 5 — SAR Monitoring Fault**
+1. SAR monitoring fault means the system cannot verify patient RF dose is within limits.
+2. This is a patient safety system — do NOT bypass.
+3. Check that correct patient weight and height are entered in the exam setup.
+4. Run SAR calculation verification scan (**Service Desktop → RF → SAR Test**).
+5. If SAR monitor hardware fault: SAR monitoring board in RFPA or controller cabinet needs service.
+
+### After RF Chain Repair
+- Run RF calibration: **Service Desktop → Calibration → RF → Full RF Cal**.
+- Calibration takes 15–30 minutes.
+- Acquire a phantom scan and verify image uniformity before returning to clinical use.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7279,7 +8112,64 @@ const DIAG_GUIDES_SEED = [
       system: 'GE CT',
       category: 'Calibration',
       tags: ['CT','detector','DAS','calibration','phantom','HU'],
-      content: `## GE CT Detector Calibration\n\n### Overview\nDetector calibration includes air calibration, water phantom scan, and dark current calibration. Required after any DAS board replacement or when image quality degrades.\n\n### Required Equipment\n- QA water phantom (16 cm and 32 cm)\n- Phantom positioning aids\n\n### 1. Dark Current Calibration\n1. Console ? **Utilities > Calibration > Dark Current**.\n2. System shuts off X-ray tube during acquisition.\n3. Measures intrinsic detector noise floor -- must be run with bore unobstructed.\n4. Should complete in <2 minutes. All channels PASS expected.\n\n### 2. Air Calibration\n(See Air Calibration guide for full procedure.)\n\n### 3. Water Phantom Calibration\n1. Place 16 cm water phantom at isocenter using table laser.\n2. Console ? **Utilities > Calibration > Water Phantom**.\n3. Scan at each clinical kVp setting.\n4. System calculates HU correction factors.\n5. Water CT number must be 0 +/- 4 HU at center.\n\n### 4. Acceptance Criteria\n| Metric | Pass Criterion |\n|--------|---------------|\n| Water CT# center | 0 +/- 4 HU |\n| Water CT# periphery | 0 +/- 5 HU |\n| Noise (SD in water) | <= site baseline + 10% |\n| Uniformity | <= 5 HU center-to-edge |\n\n### When to Escalate\n- If water phantom scan shows ring artifacts: suspect individual detector element failure.\n- Report to GE FSE if >2 channels fail and replacement of DAS board does not resolve.`,
+      content: `## GE CT Detector Calibration
+
+### Overview
+Detector calibration (also called detector gain calibration or normalized detector calibration) corrects individual detector element sensitivity variations. It's more comprehensive than air calibration and should be run after any detector or DAS repair, after an extended shutdown, or when ring artifacts persist after routine air cal.
+
+### When Required
+- After DAS board replacement
+- After detector module replacement
+- After HV generator service
+- When ring artifacts do not clear after air calibration
+- Quarterly as part of PM schedule
+
+### Tools Required
+- Calibration phantom (GE-supplied water phantom or air phantom — see system documentation)
+- Clean, empty gantry bore for air scans
+
+### Calibration Types
+| Type | Purpose | Duration |
+|------|---------|----------|
+| Air Calibration | Zero-reference (daily) | 5–15 min |
+| Detector Gain Cal | Sensitivity normalization | 20–40 min |
+| Beam Hardening Cal | Energy correction curves | 30–60 min |
+| Full Detector Cal | All of the above | 60–90 min |
+
+### Detector Gain Calibration Procedure
+1. Clear gantry bore completely.
+2. At console: **Service → Calibrations → Detector Calibration → Gain Cal**.
+3. Select all kVp settings to calibrate (80, 100, 120, 140 kVp).
+4. System runs multiple rotations at each kVp, collecting raw detector readings.
+5. Progress displayed — do not interrupt. If aborted, restart from beginning.
+6. On completion: system normalizes each detector element to the mean response.
+7. System prompts to run verification scan — do so and inspect for ring artifacts.
+
+### Beam Hardening Calibration (If Required)
+1. Fill calibration phantom with water. Ensure no bubbles. Place at isocenter.
+2. Console: **Service → Calibrations → Beam Hardening**.
+3. System runs scans at multiple kVp and mA settings through the water column.
+4. Generates beam hardening correction tables — stored in detector calibration database.
+5. After completion: run a 20 cm water phantom scan at 120 kVp and inspect CT number uniformity:
+   - Center CT#: 0 ± 5 HU
+   - Edge vs. center difference: <5 HU
+
+### Identifying Bad Detector Channels
+1. After failed cal: console may list specific detector channel numbers.
+2. At Service: **Diagnostics → Detector → Channel Status** — view channel-by-channel readings.
+3. A channel deviating >10% from neighboring channels = suspect.
+4. A channel reading 0 or max = dead channel — DAS board or detector module failure.
+5. Dead channels produce ring artifacts at the corresponding radius in reconstructed images.
+
+### DAS Board vs. Detector Failure
+- **DAS board failure**: multiple consecutive channels from same DAS board fail together.
+- **Detector element failure**: isolated single or dual channels in random positions.
+- DAS boards are more commonly the failure point and are more easily replaced.
+
+### After Calibration
+- Run complete QA scan set (water phantom) at 80, 120 kVp.
+- Document pass/fail for each channel.
+- Compare CT number uniformity to acceptance test baseline.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7288,7 +8178,57 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['RF coil','QA','SNR','coil test','surface coil'],
-      content: `## GE MRI RF Coil QA Procedure\n\n### Purpose\nVerify receive coil performance. Perform after coil repair, patient complaint of image quality, or per preventive maintenance schedule.\n\n### Required Equipment\n- Appropriate coil QA phantom (doped water bottle or site-specific phantom)\n- Known baseline SNR values for this coil\n\n### Setup\n1. Place QA phantom in coil. Ensure phantom is centered.\n2. Connect coil to system as for clinical use.\n3. Select appropriate QA protocol for coil type.\n\n### Acquisition\n1. At console ? **Protocol > QA > [Coil Name] SNR**\n2. Acquire images per QA protocol (usually 2D GRE, no acceleration).\n3. Check images display -- no motion artifact, no wrap, uniform signal expected.\n\n### SNR Measurement\n1. Place ROI in center of phantom: record mean signal and SD (noise).\n2. Place ROI in background (air): record SD as noise.\n3. SNR = Mean Signal / Noise SD x 0.655 (Rayleigh correction for background noise).\n4. Compare to coil's baseline SNR value.\n\n### Pass/Fail Criteria\n| Status | SNR vs. Baseline |\n|--------|------------------|\n| Pass | >= 90% |\n| Warning | 80-90% |\n| Fail | < 80% |\n\n### Common Coil Faults\n| Symptom | Probable Cause | Fix |\n|---------|---------------|-----|\n| Low SNR uniform | Damaged coil element | Replace element or coil |\n| Dark stripes | Open coil element | Check coil cable and plug |\n| High noise | Preamp fault | Replace coil preamp board |`,
+      content: `## GE MRI RF Coil QA Procedure
+
+### Purpose
+RF coil QA verifies that receive coils are functioning within SNR (Signal-to-Noise Ratio) specifications. Run at each PM, after any coil repair, or when image quality complaints are reported.
+
+### Tools Required
+- GE uniform phantom (spherical or cylindrical, filled with doped water — typically 3.75g NiSO4 per liter + 5g NaCl)
+- Tape measure (for phantom positioning)
+- Service laptop with GE service software (for SNR measurement)
+- Excel or paper log for SNR trending
+
+### Procedure
+**Step 1 — Phantom Setup**
+1. Place uniform phantom at isocenter, centered in the coil under test.
+2. Align phantom with laser crosshairs. Centering error >1cm affects SNR measurement.
+3. Allow phantom to equilibrate to room temperature (cold phantoms give different SNR).
+
+**Step 2 — Coil SNR Scan**
+1. At console: **Service → Diagnostics → Coil QA** (preferred — standardized acquisition).
+   Or manually: set up a standard SNR sequence:
+   - Sequence: Spin Echo
+   - TR: 500ms, TE: 20ms
+   - FOV: 24cm, Matrix: 256×256
+   - Slice thickness: 5mm, single slice at isocenter
+   - No fat sat, no parallel imaging
+2. Run scan. Save images.
+
+**Step 3 — SNR Measurement**
+1. At console or on workstation: draw a circular ROI in the center 50% of the phantom (avoid edges).
+2. Record mean signal (S) and standard deviation (σ) of the ROI.
+3. Draw an ROI in a corner of the image (air background, no signal).
+4. Record standard deviation of air ROI (σ_noise).
+5. Calculate SNR = S / σ_noise × 0.655 (correction factor for magnitude images).
+
+**Step 4 — Compare to Baseline**
+1. Compare measured SNR to site baseline (established at acceptance testing or last passing PM).
+2. Acceptable tolerance: SNR must be ≥85% of baseline.
+3. If SNR is 70–85% of baseline: investigate (coil connector, phantom positioning) and repeat.
+4. If SNR <70% of baseline: coil likely has internal failure. Remove from service.
+
+### Common Coil Failures and SNR Impact
+| Failure | SNR Impact | Symptom |
+|---------|-----------|---------|
+| Broken coil element | SNR drop in affected region | Focal dark area on uniformity scan |
+| Faulty preamp | Uniform SNR loss | Overall image appears noisy |
+| Damaged coil connector | Variable SNR (position dependent) | Intermittent noise |
+| Detuning capacitor failure | Severe SNR loss | Ghosting or wraparound artifacts |
+
+### Documentation
+- Log: coil ID, date, phantom type, SNR value, pass/fail.
+- Compare to 6-month trend — gradual SNR decline indicates aging coil components.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7297,7 +8237,64 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'RF',
       tags: ['Signa Excite','prescan','calibration','failure','noise','SNR'],
-      content: `## GE Signa Excite Prescan Failure Diagnostic\n\n### Symptom\nPrescan aborts with error: "Prescan Failed" or "Noise Calibration Failed." Scan cannot proceed.\n\n### Prescan Sequence\n(code)\n1. Center Frequency ? 2. Transmit Gain ? 3. Receive Gain ? 4. Noise Check ? 5. Ready\n(code)\n\n### Failure at Center Frequency Step\n- See Frequency Calibration Failure guide (dg_seed_007).\n\n### Failure at Transmit Gain Step\n- System cannot achieve target flip angle.\n- Check RF amp output power (see RF Amp guide dg_seed_006).\n- Verify body coil or transmit coil is properly connected.\n\n### Failure at Receive Gain Step\n- Suspect: coil not connected, coil cable fault, receive preamp failure.\n- Reconnect coil. Try alternate coil if available.\n\n### Failure at Noise Check Step\n1. Remove all patients/occupants from scan room.\n2. Confirm scan room door is fully closed and latched (RF shielding).\n3. Verify no portable electronic devices in scan room.\n4. Run **Service > RF > Noise Floor Test** -- note noise figure in dBm.\n   - Pass: noise floor < -110 dBm\n   - Fail: investigate RF shield breach (see E720 guide dg_seed_013)\n\n### Systematic Swap Test\n| Step | Action |\n|------|--------|\n| 1 | Try a different coil (known good) |\n| 2 | Run body coil prescan (no receive coil) |\n| 3 | If body coil prescan passes: suspect receive coil |\n| 4 | If body coil prescan fails: suspect RF chain |\n\n### Documentation\nRecord prescan failure code, step at which failure occurred, and resolution.`,
+      content: `## GE Signa Excite Prescan Failure Diagnostic
+
+### Overview
+Prescan is the automatic calibration routine that runs before every scan — it sets center frequency, RF transmit gain, and receive gain. A prescan failure means the system cannot optimize these parameters and will not allow scanning.
+
+### Common Prescan Failure Messages
+- "Prescan failed — frequency not found"
+- "Prescan failed — transmitter gain too high/low"
+- "Prescan failed — receiver overflow"
+- "Prescan timeout"
+
+### Troubleshooting Steps
+**Step 1 — Coil and Patient Check**
+1. Confirm the correct coil is selected in the scan setup (wrong coil selection causes prescan failure).
+2. Verify coil is properly connected — push connector firmly until it clicks.
+3. If scanning a patient: confirm no large metallic implants that would detune the coil.
+4. For body imaging: confirm patient is positioned within the coil's active region.
+
+**Step 2 — "Frequency Not Found" Failure**
+1. This means the system cannot find the Larmor resonance peak.
+2. See separate guide: **GE MRI Frequency Calibration Failure** for full procedure.
+3. Quick check: load water phantom at isocenter, retry prescan. If phantom passes, the issue is patient positioning or helium level.
+
+**Step 3 — "Transmitter Gain Too High"**
+1. Means the system needed more RF power than the amplifier can deliver to achieve the desired flip angle.
+2. Possible causes:
+   - Very large patient (high load on RF coil)
+   - Coil detuned or malfunctioning
+   - RF amplifier output degraded
+3. Try: switch to a larger coil (e.g., body coil instead of surface coil for high-load situation).
+4. Check RF amplifier output (see RF Amplifier Troubleshooting guide).
+5. If only for large patients: normal — document and discuss scan parameter adjustments with tech.
+
+**Step 4 — "Transmitter Gain Too Low"**
+1. Means the system reached minimum transmit gain but still detects too much signal.
+2. Usually caused by: very small load (pediatric patient, head coil at low frequency), or a stuck attenuator in the transmit chain.
+3. Check transmit attenuator settings in service menu: **Service → RF → Transmit → Attenuator**.
+4. If attenuator stuck at minimum: RF transmit chain service required.
+
+**Step 5 — "Receiver Overflow"**
+1. Receiver is saturated — too much signal coming into the ADC.
+2. Causes: receive gain stuck at maximum, TR switch not properly switching to receive mode, RF amplifier leakthrough.
+3. At console: **Service → RF → Receive → Manual Gain** — try reducing receive gain by 6 dB. Retry prescan.
+4. If receiver overflow on every sequence: TR switch leak likely. See RF Amplifier guide.
+
+**Step 6 — Prescan Timeout**
+1. Prescan is taking too long to converge on optimal parameters.
+2. Often caused by: field drift, poor homogeneity, very challenging patient geometry.
+3. Increase prescan timeout: **Service → Scan → Prescan Timeout** — change from 60s to 120s.
+4. If persistent: run B0 shimming first (**Service → Magnet → Shim → Auto Shim**), then retry.
+
+### Quick Reference — Prescan Failure by Coil Type
+| Coil | Most Common Prescan Issue |
+|------|--------------------------|
+| Head coil | Frequency offset (patient motion, field drift) |
+| Body coil | Transmitter gain too high (large patients) |
+| Knee coil | Receiver overflow (small FOV, high SNR) |
+| Cardiac coil | Prescan timeout (complex geometry, breathing) |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7306,7 +8303,57 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Power',
       tags: ['ground fault','earth','electrical safety','isolation','chassis'],
-      content: `## GE MRI Ground / Earth Fault Detection\n\n### Overview\nMRI systems require isolated ground monitoring to detect leakage currents that could create patient safety hazards or interfere with signal quality.\n\n### Symptoms\n- Ground fault indicator lamp lit on PDC (Power Distribution Cabinet)\n- Image noise correlated with building activity (HVAC, elevators)\n- System ground fault alarm\n\n### Check 1 -- PDC Ground Monitor\n1. At the PDC, check the ground fault monitor display.\n2. Ground leakage >5 mA indicates a fault requiring investigation.\n3. Note which branch circuit shows the fault.\n\n### Check 2 -- Branch Circuit Isolation\n1. Power down non-essential equipment on the faulted branch.\n2. After each shutdown, check if ground leakage decreases.\n3. Identify the equipment causing leakage -- remove from service.\n\n### Check 3 -- Chassis Bonds\n1. With system powered down (de-energized and locked out):\n2. Measure chassis-to-chassis resistance between cabinets and building ground.\n3. All measurements must be <0.1 ohm.\n4. High resistance: clean bond connection; replace bonding strap if corroded.\n\n### Check 4 -- Scan Room Ground Plane\n1. Measure resistance from scan room copper ground plane to PDC ground bus: <0.05 ohm.\n2. Inspect all bond connections at penetration panels.\n\n### Electrical Safety Note\n- All ground fault work must comply with NFPA 99 and local electrical codes.\n- Engage licensed electrician for building-side ground issues.`,
+      content: `## GE MRI Ground / Earth Fault Detection
+
+### Overview
+Ground faults in MRI systems are both a patient safety and equipment protection issue. The MRI environment — with high currents in gradient coils and RF systems — requires robust grounding. A ground fault can cause image artifacts, equipment damage, or patient injury.
+
+### Tools Required
+- DVM with milliohm capability (or dedicated ground bond tester)
+- Clamp-type current meter
+- GE service software
+
+### Types of Ground Faults in MRI
+| Type | Where | Risk |
+|------|-------|------|
+| RF ground | Coil/TR switch to chassis | RF artifacts, patient burn |
+| Gradient ground | Gradient amplifier to coil wiring | Gradient fault, E410 |
+| System chassis ground | Main equipment to building ground | Shock hazard, noise |
+| Patient table ground | Table metal to PE conductor | Patient safety |
+
+### Troubleshooting Steps
+**Step 1 — System Earth Continuity Check**
+1. At main equipment cabinet: measure resistance from chassis ground lug to building ground star point.
+2. Acceptable: <0.1 Ω. Must be measured with current flowing (use ground bond tester at 25A).
+3. A high resistance ground means the equipment is not properly protected.
+4. Check ground cable connections at both ends — tighten any loose lugs.
+
+**Step 2 — Patient Table Ground**
+1. Table must have continuous ground path to magnet room ground.
+2. Measure from table frame to scan room ground point: must be <0.1 Ω.
+3. Tables on casters: check ground cable between table and floor. This cable can be damaged by repeated movement.
+4. Replace table ground cable if measurement fails.
+
+**Step 3 — RF Coil Ground Check**
+1. With coil disconnected from system: measure from coil housing to coil connector shield pin.
+2. Should be <0.5 Ω for a properly grounded coil.
+3. Open circuit between coil housing and shield = damaged coil ground connection — do not use coil.
+
+**Step 4 — Gradient Ground Fault**
+1. If gradient fault E410 appears in conjunction with ground concerns:
+2. At gradient cabinet: disconnect gradient output cables one axis at a time.
+3. Measure resistance from each gradient coil terminal to ground (should be >1 MΩ — no path to ground).
+4. If <100 kΩ to ground: gradient coil winding has ground fault — magnet service required.
+
+**Step 5 — Leakage Current Test (Patient Contact)**
+1. Measure leakage current from any patient-contact surface (table pad, coil surface) to ground using a leakage current analyzer.
+2. IEC standard (IEC 60601): max 100 μA continuous, 500 μA single fault.
+3. If leakage exceeds limits: take system out of service until source is identified and repaired.
+
+### Documentation
+- Record all resistance measurements with date.
+- Ground system should be measured at every annual PM.
+- If building has recently had electrical work: verify ground integrity before resuming scanning.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7315,7 +8362,61 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Power',
       tags: ['PDC','power distribution','breakers','power supply','voltage','UPS'],
-      content: `## GE MRI PDC Checks -- Power Distribution Cabinet\n\n### Overview\nThe PDC supplies and conditions AC power for all MRI subsystems. It includes main breakers, isolation transformer, and distribution branches.\n\n### Input Power Check\n1. Measure line-to-line input voltage at PDC input terminals:\n   - 480V 3-phase (US): each phase-to-phase 480V +/-5% (456-504V)\n   - 208V 3-phase: 208V +/-5%\n2. Measure phase balance -- no phase should deviate >2% from others.\n3. Check input frequency: 60.0 Hz +/-0.5 Hz.\n\n### Branch Circuit Voltages\n| Branch | Nominal | Tolerance |\n|--------|---------|----------|\n| Gradient supply | 480V / 3? | +/-3% |\n| RF subsystem | 208V / 1? | +/-3% |\n| Computer/console | 120V / 1? | +/-5% |\n| Magnet utilities | 208V / 1? | +/-3% |\n\n### Breaker Inspection\n1. Inspect all breakers for tripped state (middle position).\n2. Check breakers for heat damage (discoloration, melted plastic).\n3. Cycle each breaker slowly OFF then ON -- confirm it holds.\n\n### Isolation Transformer Check\n1. Measure primary and secondary voltages -- confirm turns ratio.\n2. Check transformer case temperature: <70 degreesC during operation.\n3. Listen for buzzing or humming beyond normal 60 Hz hum.\n\n### Maintenance Schedule\n- Clean PDC interior: quarterly (compressed air, ESD-safe vacuum)\n- Torque all terminal blocks: annually\n- Thermal imaging of PDC: annually (contracted electrician)`,
+      content: `## GE MRI Power Distribution Cabinet (PDC) Checks
+
+### Overview
+The Power Distribution Cabinet supplies regulated AC power to all MRI subsystems — gradient amplifiers, RF amplifier, magnet cold head compressor, cooling systems, and the computer systems. PDC issues cause downstream faults across multiple systems.
+
+### Tools Required
+- DVM (true RMS, CAT III rated)
+- Clamp meter
+- Flashlight
+
+### Safety
+⚠️ PDC contains high voltages (up to 480V 3-phase). Use full arc flash PPE (face shield, arc flash gloves) when measuring live voltages.
+⚠️ Never work alone on PDC with power on — use 2-person rule.
+
+### Inspection Points
+**Step 1 — Visual Inspection**
+1. Open PDC panel (typically in equipment room, large steel enclosure).
+2. Check for: tripped breakers (handle in middle position), burn marks, discolored terminals, or damaged insulation.
+3. Check power factor correction capacitors (if present): look for bulging or leaking.
+4. Check cooling fans inside PDC (most cabinets have internal fans): all should be running.
+5. Check ambient temperature inside cabinet: should be <45°C. Excessive heat = ventilation problem.
+
+**Step 2 — Input Voltage Check**
+1. Measure AC input voltage phase-to-phase (L1-L2, L2-L3, L1-L3).
+2. Nominal for most US MRI sites: 208V 3-phase or 480V 3-phase.
+3. Acceptable tolerance: ±5% of nominal (198–218V for 208V input).
+4. Phase imbalance: all three phases should be within 2% of each other.
+5. High imbalance (>3%): contact facilities to check transformer secondary.
+
+**Step 3 — Output Branch Voltages**
+1. Measure output voltages for each PDC branch:
+   - Gradient supply branch: 208V (or 480V for high-power systems)
+   - RF supply branch: 208V single or 3-phase
+   - Coldhead/compressor: 208V or 460V
+   - Computer/console supply: 120V (from isolation transformer)
+2. Any branch >10% out of spec: check that branch breaker and isolation transformer.
+
+**Step 4 — Isolation Transformer Check**
+1. Computer and patient care circuits typically feed through an isolation transformer.
+2. Measure isolation: secondary to ground should be >1 MΩ (DC). Low isolation = insulation breakdown.
+3. Isolation transformers run warm — feel for excessive heat (>60°C surface = failing transformer).
+
+**Step 5 — Harmonic Distortion Check**
+1. Use a true-RMS meter and compare RMS vs. average readings.
+2. Large difference between RMS and average indicates high harmonic distortion.
+3. High THD (>8%): gradient amplifiers and switch-mode supplies generate harmonics. Check if external harmonic filters are installed and functioning.
+
+### Common PDC Faults and Symptoms
+| Fault | Downstream Symptom |
+|-------|-------------------|
+| Tripped gradient breaker | E410 gradient fault, no scanning |
+| Tripped RF breaker | E305 RF fault at startup |
+| Low phase voltage | Gradient overcurrent, frequent fault trips |
+| Phase imbalance | Uneven gradient amplifier loading, thermal shutdowns |
+| Noisy ground | Image artifacts, baseline noise |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7324,7 +8425,55 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Power',
       tags: ['HDxt','startup','initialization','boot','power on','sequence'],
-      content: `## GE Signa HDxt System Initialization Sequence\n\n### Overview\nProper startup sequence is critical to prevent software faults and ensure all subsystems initialize in correct order.\n\n### Startup Sequence (Cold Start)\n(code)\n1. PDC Main Breaker ON\n2. Magnet Utilities (cold head compressor, shim supply)\n3. Gradient Power Supply (GPA)\n4. RF Subsystem\n5. Console Computer (host CPU)\n6. Reconstruction Computer\n7. DAS / Data Acquisition\n8. Patient Table Control\n(code)\n\n### Step-by-Step Procedure\n1. **PDC**: Close main breaker. Verify all branch circuit breakers are in correct position.\n2. **Cryo**: Turn on cold head compressor. Verify compressor runs (LED on compressor unit).\n3. **GPA**: Turn on GPA cabinet main switch. Wait for GPA status LEDs to go green (2-3 min).\n4. **RF Cabinet**: Power on RF cabinet switch. Verify RF amp fans start.\n5. **Console**: Power button on console workstation. Wait for Syngo MR to load (~5 min).\n6. **Recon**: Recon computer should auto-start with console -- verify recon status in Syngo.\n7. **DAS**: Auto-initialized by console -- verify no DAS fault in system status.\n8. **Table**: Power on table control pendant. Move table to home position.\n\n### Expected Time to Ready\n- Full cold start: 10-15 minutes\n- Restart from standby: 3-5 minutes\n\n### Common Boot Issues\n| Issue | Step | Resolution |\n|-------|------|------------|\n| GPA fault on startup | Step 3 | Check GPA cooling; reseat GPA control board |\n| Console hangs at init | Step 5 | Force reboot; check disk space on console |\n| DAS comm fault | Step 7 | Reseat DAS boards; check fiber cable |`,
+      content: `## GE Signa HDxt System Initialization Sequence
+
+### Overview
+Understanding the full HDxt initialization sequence helps you pinpoint exactly where a startup failure occurs. The HDxt uses a distributed boot architecture — each subsystem initializes independently and reports ready status to the host.
+
+### Initialization Sequence (Normal Boot ~8–12 Minutes)
+| Step | Subsystem | Expected Duration | Indicator |
+|------|-----------|------------------|-----------|
+| 1 | Host PC (Windows XP/7) boots | 2–3 min | Windows logo |
+| 2 | SigOS (scan operating system) starts | 1–2 min | "SigOS Initializing" |
+| 3 | Gradient system connects | 30–90 sec | "Gradient ready" |
+| 4 | RF subsystem connects | 30–60 sec | "RF ready" |
+| 5 | EXCITE (hardware) connects | 30 sec | "EXCITE ready" |
+| 6 | Patient table initializes | 20–30 sec | "Table ready" |
+| 7 | Full prescan ready | — | "System ready" |
+
+### Startup Failures by Step
+**Step 1–2 Failure (Host/SigOS)**
+1. Host PC may have disk errors: boot into Windows diagnostic mode, run chkdsk.
+2. SigOS application crash: check SigOS log at C:\sigos\log\boot.log.
+3. If Windows reports hardware failure: check RAM (memtest) and hard drive health (CrystalDiskInfo).
+
+**Step 3 Failure (Gradient Not Ready)**
+1. Most common cause: gradient controller board lost firmware after power outage.
+2. Check gradient cabinet LED indicators — power present?
+3. Perform gradient controller power cycle (see E410 guide for detailed procedure).
+4. Reflash gradient firmware if power cycle does not resolve.
+
+**Step 4 Failure (RF Not Ready)**
+1. RF PA (power amplifier) cabinet fault — check PA fault LEDs.
+2. RF driver board communication fault — reseat driver board.
+3. RF subsystem temperature fault — check room temperature and cabinet fans.
+
+**Step 5 Failure (EXCITE Not Ready)**
+1. EXCITE module is the gradient waveform controller.
+2. Located in the equipment room — small chassis above gradient cabinet.
+3. Check EXCITE front panel LED: should blink green during boot, solid green when ready.
+4. Power cycle EXCITE chassis (dedicated small breaker on EXCITE front panel).
+
+**Step 6 Failure (Table Not Ready)**
+1. Table fault at boot: table has not reached home position or has drive fault.
+2. Check table pendant — manually move table to full home position (fully extended, lowest position).
+3. Check table drive cabinet (under table cover): look for fault indicator.
+4. Power cycle table drive system (breaker on table service panel, accessible by removing side cover).
+
+### After Successful Initialization
+1. Run Auto Prescan to verify all subsystems stable.
+2. Check system event log for non-critical warnings accumulated during boot.
+3. If system took >15 minutes to boot: flag for investigation — indicates marginal component.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7333,7 +8482,58 @@ const DIAG_GUIDES_SEED = [
       system: 'Siemens MRI',
       category: 'Magnet',
       tags: ['Siemens','Avanto','shim','homogeneity','B0','shimming'],
-      content: `## Siemens MRI Shim Coil Fault -- Avanto\n\n### Symptom\nSystem reports shim fault; automated shimming fails; images show geometric distortion or banding.\n\n### Shim Architecture (Avanto)\n- Active shim coils: Z1, Z2, X, Y, ZX, ZY, X2-Y2, XY (8 channels)\n- Shim power supply: SPS (Shim Power Supply) cabinet\n- Control: via Gradient/Shim controller board in electronics rack\n\n### Diagnostic Steps\n1. At the SRS (Service Remote System): **Shim > Channel Status**.\n2. Note any channel reporting FAULT, OVERCURRENT, or UNDERVOLTAGE.\n3. Inspect SPS cabinet LEDs -- each channel LED should be green.\n\n### Shim Coil Resistance Check\n1. Shutdown shim supply from SRS.\n2. Disconnect shim cable at electronics rack end.\n3. Measure each shim coil resistance with 4-wire DMM:\n\n| Coil | Typical Resistance |\n|------|-------------------|\n| Z1, Z2 | 2-8 ohm |\n| X, Y | 5-15 ohm |\n| Higher order | 10-30 ohm |\n\n4. Short circuit (<0.2 ohm) or open circuit (>1 Mohm) indicates coil fault.\n\n### SPS Board Replacement\n1. Identify faulty channel from channel status.\n2. Note channel assignment on SPS board label.\n3. Replace faulty SPS output board (Siemens p/n per board label).\n4. After replacement, run **Automated B0 Shim** and verify convergence.\n\n### Shimming Verification\n- Run B0 map acquisition before and after shimming.\n- Post-shim B0 uniformity: <=1 ppm over 40 cm DSV (model-dependent).`,
+      content: `## Siemens MRI Shim Coil Fault (Avanto)
+
+### Error Overview
+Shim coil faults on Siemens Avanto appear as "Shim Fault," "Shim Power Supply Error," or specific channel errors in the SyngoMR error log. Shim failures degrade image quality through poor B0 homogeneity.
+
+### Tools Required
+- Service Desktop (Siemens service software)
+- DVM
+
+### Shim System Architecture (Avanto)
+The Avanto uses an active shim system with up to 18 channels of precision current sources. The shim power supply (SHPS) cabinet provides DC current to each shim winding embedded in the magnet bore. A shim controller board manages all channels under software control.
+
+### Troubleshooting Steps
+**Step 1 — Read Fault Details**
+1. Service Desktop: **Hardware → Shim → Channel Status**.
+2. Identify which channel(s) are faulted: note channel number and fault type (over-current, open circuit, communication).
+3. Check SHPS cabinet LEDs — individual board fault indicators usually glow red for failed channels.
+
+**Step 2 — Software Reset**
+1. Service Desktop: **Hardware → Shim → Reset All**.
+2. Restart SyngoMR software.
+3. If fault clears: run auto shim and monitor for recurrence.
+
+**Step 3 — SHPS Channel Board Check**
+1. Locate SHPS cabinet (equipment room, separate rack or section of main rack).
+2. Power down SHPS using dedicated breaker.
+3. Reseat the faulted channel board (identified by LED or fault number).
+4. Power up and retest.
+5. If same channel faults: swap board with a spare from a non-faulted slot (Avanto SHPS boards are often identical across channels).
+6. If fault follows the board: that board is defective — replace.
+7. If fault stays on same slot: wiring harness or shim coil issue.
+
+**Step 4 — Shim Coil Winding Check**
+1. At SHPS output terminal block, disconnect the faulted channel wires.
+2. Measure resistance of shim winding: typical range 2–15 Ω (see Siemens service manual for your system).
+3. Open circuit (>1 MΩ): broken shim winding — magnet service required.
+4. Short circuit (<0.1 Ω): shorted winding — magnet service required.
+5. Normal resistance but persistent fault: signal cable or SHPS board issue.
+
+**Step 5 — Auto Shim Verification**
+After resolving hardware fault:
+1. Service Desktop: **Calibration → B0 Shim → Auto Shim**.
+2. System runs shimming sequence (3–5 minutes), then measures B0 homogeneity.
+3. Acceptable result: B0 homogeneity <5 ppm over 40cm DSV (diameter spherical volume).
+4. If auto shim fails to meet spec: manual shim current optimization may be needed — escalate to Siemens.
+
+### Impact on Image Quality
+| Shim Fault Type | Image Effect |
+|-----------------|-------------|
+| 1 channel faulted | Mild banding or shading in one plane |
+| Multiple channels | Significant image distortion, fat sat failure |
+| All channels failed | Unacceptable image quality — system should not scan |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7342,7 +8542,58 @@ const DIAG_GUIDES_SEED = [
       system: 'GE CT',
       category: 'Mechanical',
       tags: ['CT','gantry','tilt','motor','encoder','mechanical'],
-      content: `## GE CT Gantry Tilt Fault\n\n### Symptom\nGantry cannot tilt or tilts to incorrect angle. Console reports tilt position error or motor fault.\n\n### Safety First\n- Never manually force gantry tilt -- risk of mechanical damage and personal injury.\n- Ensure no patient is on the table before working on gantry mechanics.\n\n### Initial Checks\n1. Verify gantry tilt control at console responds -- if no response, check tilt motor power fuse in gantry electronics cabinet.\n2. Attempt to command gantry back to 0 degrees tilt from console.\n3. Inspect tilt motor drive belt (if belt-drive model) -- inspect for wear, breakage, slipping.\n\n### Encoder Check\n1. At console ? **Service > Gantry > Tilt Encoder** -- read current position.\n2. Compare displayed position to actual gantry tilt (use gantry angle indicator).\n3. If >1 degrees discrepancy: recalibrate tilt encoder.\n\n### Tilt Motor Check\n1. At service panel: command +/-5 degrees tilt while measuring motor current.\n2. Excessive current (>15A for small tilt) suggests mechanical binding.\n3. No current: motor drive board fault ? replace motor controller board.\n\n### Mechanical Binding\n1. Inspect tilt pivot mechanism for foreign objects, damaged bearings.\n2. Check tilt gear for stripped teeth.\n3. Lubricate tilt pivot bearings per service manual (lithium grease or specified lubricant).\n\n### After Repair\n1. Run tilt calibration: **Service > Gantry > Tilt Calibration**.\n2. Verify tilt over full range (+/-30 degrees or per model spec) -- smooth motion, no binding.\n3. Confirm tilt readout matches actual angle with inclinometer.`,
+      content: `## GE CT Gantry Tilt Fault
+
+### Overview
+The CT gantry tilt mechanism allows angled scans (typically ±30°). Tilt faults prevent gantry rotation at requested angles and may prevent scanning entirely if the tilt safety interlock is triggered.
+
+### Tools Required
+- DVM
+- Service laptop with GE service software
+- GE CT service manual (for motor/encoder specifications)
+
+### Gantry Tilt Architecture
+- Tilt motor (DC or stepper motor on gantry frame)
+- Tilt encoder (measures current angle — typically optical encoder)
+- Tilt limit switches (mechanical safety limits at ±30° and 0°)
+- Tilt controller board (in gantry electronics bay)
+
+### Troubleshooting Steps
+**Step 1 — Reset and Zero**
+1. At operator console: **Utilities → Gantry → Tilt → Return to Zero**.
+2. System attempts to drive gantry to 0° (vertical). If successful: fault was transient.
+3. If motor runs but gantry does not move: mechanical binding or motor coupling failure.
+4. If motor does not run: controller, driver, or motor issue.
+
+**Step 2 — Limit Switch Check**
+1. Carefully tilt gantry manually to the extremes (with power on, via service menu jogging).
+2. At +30° and -30°: verify limit switches are activated (display shows "LIMIT" in tilt control).
+3. If limit switch not activating at correct angle: adjust switch position (Torx screw adjustment on switch bracket).
+4. If switch damaged: replace switch. Part varies by CT model — check service manual.
+
+**Step 3 — Encoder Fault**
+1. If tilt angle display reads incorrectly or jumps erratically: encoder failure.
+2. Locate tilt encoder (attached to tilt motor shaft or gantry pivot).
+3. Inspect encoder cable for damage (this cable flexes with tilt — common failure point).
+4. With DVM: verify encoder supply voltage (+5V typical).
+5. Encoder output (quadrature pulses): with oscilloscope, verify clean digital signal during tilt motion.
+6. Replace encoder if signal is absent or corrupted.
+
+**Step 4 — Motor and Driver Check**
+1. At tilt motor connector: measure motor winding resistance (see service manual — typically 5–20 Ω for DC motors).
+2. Open winding = failed motor.
+3. At tilt driver board: measure output voltage during commanded motion (should be ~24–48V DC depending on system).
+4. If output voltage is correct but motor doesn't move: mechanical issue (seized bearing, locked brake).
+
+**Step 5 — Mechanical Inspection**
+1. With power OFF: attempt to tilt gantry manually (some systems allow, some do not — check service manual).
+2. Normal resistance: light — motor and gearing should allow hand movement.
+3. Stiff or locked: check for foreign objects, verify tilt brake is released (some systems have electromagnetic brake — must be powered to release).
+4. Grinding or roughness: bearing wear — mechanical service required.
+
+### Safety Note
+⚠️ Never operate CT with gantry tilt fault if patient is in bore. Unexpected gantry movement is a patient safety risk.
+⚠️ Verify tilt zeroing is complete and stable before returning system to clinical use.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7351,7 +8602,63 @@ const DIAG_GUIDES_SEED = [
       system: 'Siemens CT',
       category: 'X-Ray Tube',
       tags: ['Siemens CT','HV','generator','kVp','tube','high voltage'],
-      content: `## Siemens CT HV Generator Check\n\n### Overview\nThe HV (High Voltage) generator supplies kVp and mA to the X-ray tube. Faults present as tube arcing, scan aborts, or image quality issues.\n\n### Pre-Check\n1. Review error log for HV-related codes: **Service > System Log > HV Events**.\n2. Note tube hours from **Service > Tube > Statistics** -- heavy usage can indicate tube wear.\n\n### kVp Accuracy Check\n1. Connect HV divider probe to tube output test points (requires service access to generator area -- only trained FSE).\n2. Command each clinical kVp (80, 100, 120, 140 kVp) via service test exposure.\n3. Verify actual kVp vs commanded:\n   - Pass: +/-2% of commanded kVp\n   - Fail: Adjust HV calibration trimpot or replace HV generator board\n\n### mA Linearity Check\n1. Using exposure meter or built-in service test:\n2. Step mA from 50 to 500 mA in steps.\n3. Verify mAs linearity: R? > 0.995 across range.\n\n### Common HV Faults\n| Code | Meaning | Action |\n|------|---------|--------|\n| HV_ARC | Tube arcing | Reduce mA; condition tube; if frequent ? replace tube |\n| HV_OVP | Overvoltage protection trip | Check HV regulator; check tube for internal arc |\n| HV_FILAMENT | Filament fault | Check filament current; replace tube if filament open |\n| HV_COMM | Generator communication fault | Check CAN bus cable; restart generator |\n\n### After HV Work\n- Always run tube warmup protocol before returning to clinical use.\n- Document any HV calibration adjustments in site log.`,
+      content: `## Siemens CT HV Generator Check
+
+### Overview
+The High Voltage (HV) generator in a Siemens CT (Definition, Somatom, Emotion) produces the kVp and mA required for X-ray tube operation. HV generator faults cause scan aborts, tube faults, or kVp/mA errors.
+
+### Tools Required
+- Service laptop with Siemens Service Mode (SSP or Siemens Service Software)
+- DVM (for some checks)
+- Oscilloscope (for waveform verification if available)
+
+### HV Generator Architecture (Siemens Somatom)
+- Input: 3-phase 380–480V AC
+- Output: up to 140 kVp, up to 800–1200 mA (varies by model)
+- Typical configuration: single tank (tube + generator combined) or separate generator feeding tube via HV cable
+
+### Troubleshooting Steps
+**Step 1 — Read Error Codes**
+1. At console: **Service → Error Log → HV Generator**.
+2. Siemens CT error codes for HV issues:
+   | Code | Meaning |
+   |------|---------|
+   | HV001 | HV output undervoltage |
+   | HV002 | HV overcurrent / arc |
+   | HV003 | Filament fault |
+   | HV010 | HV generator communication fault |
+   | HV020 | Input voltage out of range |
+3. Note the kVp and mA at which fault occurs — important for root cause.
+
+**Step 2 — Input Voltage Check**
+1. Measure AC input to HV generator at main breaker: must be within ±5% of rated voltage.
+2. Phase imbalance >3%: contact site electrical — inadequate power supply is the fault.
+3. Check for voltage sags during scan (use recording voltmeter during exposure): sags indicate undersized transformer.
+
+**Step 3 — HV Arc Fault (HV002)**
+1. Arcs occur inside the X-ray tube or HV tank when surface contamination or micro-cracks allow breakdown.
+2. First response: run tube conditioning sequence (lower kVp/mA, gradually increase).
+3. If arcs occur only above specific kVp (e.g., only at 140 kVp): focal spot damage at that energy level — tube replacement likely needed.
+4. If arcs occur at all kVp settings: high voltage cable or connector contamination. Inspect HV cable connectors for oil or tracking marks.
+
+**Step 4 — Filament Fault (HV003)**
+1. Filament provides the electron source (thermionic emission) for X-ray production.
+2. Measure filament resistance at tube socket (with HV generator powered OFF, HV discharged — follow lockout procedure):
+   - Small focus filament: typically 0.3–1.5 Ω
+   - Large focus filament: typically 0.1–0.8 Ω
+   - Open circuit = blown filament = replace tube.
+3. If filament resistance is normal but mA is low: filament driver/regulator issue in HV generator.
+
+**Step 5 — Communication Fault (HV010)**
+1. HV generator communicates with gantry controller via serial or fiber link.
+2. Reseat communication cable at both ends.
+3. Power cycle HV generator using dedicated breaker (labeled on gantry electronics panel).
+4. If fault persists: HV controller board replacement needed.
+
+### Post-HV Service
+- Always run tube conditioning warmup after any HV generator work.
+- Run air calibration before returning to clinical use.
+- Document: fault code, repair action, post-repair test results.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7360,7 +8667,63 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Gradient',
       tags: ['LX','gradient driver','GPA board','replacement','calibration'],
-      content: `## GE LX Platform Gradient Driver Board\n\n### Overview\nThe LX platform gradient driver boards (X, Y, Z axes) are housed in the GPA cabinet. Each axis has a dedicated driver board that interfaces between the MGD and the gradient power amplifier IGBT modules.\n\n### Fault Identification\n1. Review **Service > Gradient > Fault Log** -- note which axis (X/Y/Z) faulted.\n2. Check GPA cabinet LEDs -- faulted axis LED will be red or amber.\n3. Check GPA cabinet temperature -- overtemp on one axis suggests cooling issue on that board.\n\n### Driver Board Replacement\n**Caution**: Gradient bus capacitors store lethal voltages. Always verify capacitors are fully discharged before handling.\n\n1. Power down GPA subsystem: **Service > Power > GPA Off**.\n2. Wait minimum **10 minutes** after power-off for bus cap discharge.\n3. Verify bus voltage at GPA test points = 0 VDC before proceeding.\n4. With ESD strap, remove faulted driver board (typically 2 slide rails + 1 retention latch).\n5. Compare new board part number to removed board -- must match.\n6. Seat new board firmly into backplane connector.\n7. Secure retention latch; replace any removed cooling hardware.\n\n### Post-Replacement\n1. Power on GPA -- verify new board LED goes green.\n2. Run **Gradient Calibration**: **Service > Gradient > Calibration > All Axes**.\n3. Verify eddy current compensation values load correctly from system backup.\n4. Perform a clinical test scan -- verify no gradient artifacts.\n\n### Common Part Numbers (LX Series)\n| Board | P/N |\n|-------|-----|\n| X Gradient Driver | 46-295673G1 |\n| Y Gradient Driver | 46-295673G2 |\n| Z Gradient Driver | 46-295673G3 |`,
+      content: `## GE LX Platform Gradient Driver Board
+
+### Overview
+The GE Signa LX platform (including Excite and early HDxt) uses a modular gradient driver architecture. The gradient driver boards (GDB) amplify gradient waveforms to the high current levels needed to drive the gradient coils (~300–500A peak). Failed GDB boards are a common field replacement.
+
+### Tools Required
+- ESD wrist strap and mat (mandatory — boards are ESD sensitive)
+- Torque screwdriver (4 Nm for board retention)
+- DVM
+- Replacement GDB board (part number varies by system — verify from cabinet BOM)
+
+### Gradient Driver Cabinet Layout
+The LX GDC contains three identical axis channels (X, Y, Z) each with:
+- 1 or 2 GDB boards (depending on power level)
+- 1 Gradient Amplifier Controller (GAC) board
+- Power supply bus (shared between channels)
+
+### Identifying the Failed Board
+1. Check fault LEDs on GDB boards (power on, do not scan): red LED on board = fault.
+2. Console: **Service → Diagnostics → Gradient → Channel Status** — identifies faulted axis.
+3. Pull console system logs: **Service → Log Viewer → Gradient** — look for overcurrent or driver fault entries.
+
+### Board Replacement Procedure
+1. Shut down system (console graceful shutdown).
+2. At GDC: gradient power breaker to OFF. Verify DC bus discharged (wait 60 seconds — GDC has large filter capacitors).
+3. Verify DC bus voltage at test point TP_DCBUS is <5V before touching boards.
+4. Don ESD wrist strap. Connect to GDC chassis ground.
+5. Identify and photograph cable connections on target GDB board before disconnecting.
+6. Disconnect:
+   - Gate drive ribbon cable (top connector)
+   - Current sense cable (side connector)
+   - Gradient coil output bus bars (2 bolts each — 4 Nm)
+7. Remove board retention screws (typically 4 × M4 screws).
+8. Slide board out of chassis. Place on ESD mat.
+9. Install new board in reverse order:
+   - Seat board into guide rails
+   - Install retention screws — 4 Nm
+   - Reconnect output bus bars — 4 Nm
+   - Reconnect current sense and gate drive cables
+10. Double-check all connections before applying power.
+11. Gradient power breaker to ON.
+12. Start console. Run **Gradient Diagnostics** — new board should show green.
+
+### Post-Replacement Calibration
+1. After any GDB replacement: gradient calibration is **required**.
+2. Console: **Service → Calibration → Gradient → Full Calibration**.
+3. Calibration runs X, Y, Z sequentially — takes 20–40 minutes.
+4. After calibration: run a phantom scan and verify image geometric accuracy.
+5. Check gradient noise figure: **Service → Diagnostics → Gradient → Noise** — should be <−130 dBm.
+
+### Common GDB Failure Modes
+| Symptom | Likely Cause |
+|---------|-------------|
+| Single axis fault (E410-01/02/03) | Driver IGBT failed on that axis |
+| All axes fault simultaneously | DC bus undervoltage, shared power supply |
+| Intermittent fault during scan | Thermal failure (cooling issue) |
+| GDB fails again after replacement | Gate drive overdrive from GAC board — check GAC |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7369,7 +8732,58 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet',
       tags: ['cryogen','boiloff','helium level','cold head','leak'],
-      content: `## MRI Cryogen Boiloff Rate Assessment\n\n### Purpose\nMeasure helium boiloff rate to determine cold head effectiveness and predict fill schedule. Excessive boiloff indicates cold head degradation or cryostat leak.\n\n### Measurement Method\n1. Record helium level (%) and timestamp at start -- use cryostat level gauge or **Service > Magnet > Cryo Status**.\n2. Record again 24 hours later.\n3. Calculate: Boiloff Rate = (Level_Start - Level_End) / 24 hours\n\n### Interpretation\n| Rate | Status | Action |\n|------|--------|--------|\n| < 0.1%/day | Excellent | No action needed |\n| 0.1-0.5%/day | Normal | Monitor monthly |\n| 0.5-1.0%/day | Elevated | Schedule cold head service |\n| 1-3%/day | High | Replace cold head within 2-4 weeks |\n| > 3%/day | Critical | Emergency cold head replacement; schedule fill |\n\n### Cold Head Performance Verification\n1. Check cold head running hours on compressor display.\n2. Check compressor supply and return pressures:\n   - Supply (high): 280-320 psi\n   - Return (low): 50-80 psi\n3. Listen for cold head running smoothly -- irregular clicking may indicate worn displacer.\n\n### Cold Head Compressor Oil Level\n1. Power off compressor briefly -- check oil sight glass.\n2. Oil level must be >=50% of sight glass.\n3. Low oil: add approved compressor oil (Sumitomo SC-4).\n4. Milky/discolored oil: oil contaminated with moisture ? oil change required.\n\n### Trending\n- Log helium level weekly.\n- Graph level over time -- linear decrease confirms steady boiloff; sudden step down may indicate a cryostat issue.`,
+      content: `## MRI Cryogen Boiloff Rate Assessment
+
+### Purpose
+Monitoring helium boiloff rate helps predict when the next He fill is needed and detects early signs of cold head degradation, vacuum jacket failure, or excessive heat leak into the cryostat.
+
+### Tools Required
+- LCC He level readings (two readings 24–72 hours apart)
+- Calculator
+- Site He consumption history log
+
+### Normal Boiloff Rates
+| Magnet Type | Expected Boiloff |
+|-------------|-----------------|
+| GE Signa LX/HDxt (zero-boiloff with cold head) | 0–2% per year |
+| GE Signa SP open MRI | 2–5% per week |
+| Older non-ZBO magnets | 1–3% per month |
+| Any system with failed cold head | 5–20% per day |
+
+### Measurement Procedure
+1. Record He level (%) from LCC display at a specific time — note time and date (T1, L1).
+2. Do NOT take He measurement immediately after a fill (helium sloshes — wait 24 hours for level to stabilize).
+3. Return after 24–72 hours. Record He level again (T2, L2).
+4. Calculate boiloff rate:
+   - Daily rate (%) = (L1 - L2) / (T2 - T1 in days)
+   - Annualized rate (%) = daily rate × 365
+5. For ZBO magnets: expected daily change is ~0% to 0.01%. Anything >0.05% per day warrants investigation.
+
+### Elevated Boiloff Investigation
+**If daily boiloff >0.1% on a ZBO system:**
+1. Verify cold head is running (compressor on, cold head physically spinning — you can feel vibration on coldhead body).
+2. Check cold head temperatures (LCC service menu: Stage 1 and Stage 2 temps):
+   - Stage 1 normal: 30–50K
+   - Stage 2 normal: 3.5–4.5K
+   - Stage 2 > 7K: cold head degraded, replace soon.
+3. Check compressor flex line pressures: HP 240–280 psi, LP 50–80 psi.
+4. Low HP pressure: check adsorber canister (replace if overdue — typically 20,000 hours or 2 years).
+5. Check room temperature around cold head and compressor: must be <25°C.
+
+**If daily boiloff >1% on ZBO system:**
+1. Cold head is likely failed — order replacement (see Cold Head Replacement guide).
+2. Estimate time to critical He level (<20%): remaining% / daily boiloff rate.
+3. If <5 days: schedule emergency He fill AND cold head replacement.
+4. Notify site immediately — they must plan for potential system downtime.
+
+### He Level and Magnet Safety Thresholds
+| He Level | Status | Action Required |
+|----------|--------|----------------|
+| >60% | Normal | Routine monitoring |
+| 40–60% | Low-normal | Schedule He fill within 30 days |
+| 20–40% | Low | Schedule He fill within 1–2 weeks |
+| <20% | Critical | Emergency He fill — risk of quench |
+| <5% | Emergency | Immediate He fill + GE on-site support |`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7378,7 +8792,56 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Power',
       tags: ['ground','earth','bond','safety','electrical','chassis'],
-      content: `## GE MRI System Ground Check\n\n### Why Ground Integrity Matters\n- Proper grounding protects patients from leakage current.\n- Single-point ground system prevents ground loops that degrade image quality.\n- Required by IEC 60601-1 and NFPA 99.\n\n### Equipment Required\n- 4-wire milli-ohmmeter or precision DMM with kelvin clips\n- Ground bond resistance target: <0.1 ohm per connection\n\n### Measurement Points\n| Connection | Expected | Action if Fail |\n|------------|----------|---------------|\n| Console chassis to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Gradient cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| RF cabinet to PDC ground bus | <0.1 ohm | Clean connector, replace strap |\n| Magnet cryostat to PDC ground bus | <0.1 ohm | Inspect bond plate on magnet |\n| Scan room copper plate to PDC ground | <0.05 ohm | Inspect penetration bond |\n| PDC to building ground | <0.1 ohm | Refer to facility electrician |\n\n### Procedure\n1. **De-energize and lock out / tag out** system before measuring.\n2. Connect kelvin clips -- one pair at each end of bond path.\n3. Measure resistance. Record value.\n4. Any measurement >0.1 ohm: clean contact surfaces (remove oxidation with fine abrasive), retorque connection, re-measure.\n5. If after cleaning resistance remains high: replace bonding strap or wire.\n\n### Documentation\nRecord all bond resistance values annually and after any PDC or cabinet relocation.`,
+      content: `## GE MRI System Ground Check
+
+### Overview
+A thorough system ground check confirms all equipment grounding paths meet IEC/NFPA 99 requirements. This should be performed at every annual PM and after any electrical work in the scan room or equipment room.
+
+### Tools Required
+- Ground bond tester (preferred: capable of 25A test current) or DVM with milliohm function
+- Leakage current analyzer (required for patient contact surfaces)
+- Clamp meter
+
+### Ground Check Points — GE Signa
+Test resistance from each point to the main system ground star point (master grounding bar in equipment room). All measurements taken at 25A DC (or DVM milliohm measurement).
+
+| Test Point | Acceptable Resistance |
+|------------|----------------------|
+| MRI console chassis | <0.1 Ω |
+| Patient table frame | <0.1 Ω |
+| Magnet bore housing (inner) | <0.1 Ω |
+| RF coil connector chassis | <0.1 Ω |
+| Gradient cabinet chassis | <0.1 Ω |
+| RF amplifier cabinet chassis | <0.1 Ω |
+| Scan room penetration panel | <0.1 Ω |
+| RF shield (copper panels) | <0.01 Ω (via bonding straps) |
+
+### Ground Measurement Procedure
+1. Identify the main system ground bar (labeled "SYSTEM GROUND" or "MRI GROUND" in equipment room).
+2. Connect one DVM lead to ground bar (or bond tester reference).
+3. At each test point: probe the metal chassis/frame (not paint — use scraped area or ground lug).
+4. Record measurement. Flag any point >0.1 Ω for investigation.
+
+### Common High-Resistance Ground Paths
+| Location | Common Cause |
+|----------|-------------|
+| Patient table | Caster wheels in non-conductive mode, cut ground cable |
+| Scan room wall panels | Loose bonding strap, corroded connection |
+| Coil connector chassis | Paint over ground contact surface |
+| Console | Loose PE (protective earth) screw on power inlet |
+
+### Leakage Current Tests
+1. Using leakage current analyzer: measure current from patient-accessible surfaces to ground.
+2. Standards (IEC 60601-2-33 for MRI):
+   - Applied part leakage: ≤10 μA (patient contact coils)
+   - Chassis leakage: ≤100 μA under normal conditions
+3. If leakage exceeds limits: identify path (typically damaged insulation on RF coil) and remove from service.
+
+### Ground System Documentation
+- Complete ground check record with all measurements and dates.
+- Compare to previous PM records — increasing resistance trend indicates developing problem.
+- Any point failing: correct before returning system to service.
+- If building electrical system modified: re-verify full ground system.`,
       created: '2026-05-23T00:00:00.000Z'
     },
     {
@@ -7387,13 +8850,76 @@ const DIAG_GUIDES_SEED = [
       system: 'GE MRI',
       category: 'Magnet/Cryogen',
       tags: ['ramp up', '3T', 'LCC300', 'magnet', 'ramping', 'cryogen', 'superconducting'],
-      content: `# GE LCC300 3.0T Magnet Ramp Up Procedure
+      content: `## GE LCC300 3.0T Magnet Ramp Up Procedure
 
-Direction 2325852 Rev 3
+### Overview
+Ramping up a 3.0T LCC300 magnet restores it to full field after a rampdown or quench. This is a slow, carefully monitored process. Total ramp time: 24–48 hours. Requires continuous monitoring.
 
-## Overview
+### Prerequisites
+- He level ≥ 70% before starting ramp (do NOT ramp with He < 60%)
+- Cold head operating normally (Stage 2 temp ≤ 4.5K)
+- GE engineer authorization (3T ramp up typically requires GE on-site support)
+- Site physicist present or available by phone
+- Uninterrupted power supply confirmed (no planned maintenance on building power)
+- Quench pipe and vent clear and unobstructed
 
-The 3.0T Corona magnet is ramped to a nominal current of **356 amps** to achieve a 3.0 Tesla field, using voltage control for ramping. Target parking field: \`3.0000 ± 0.0005 Tesla\` (\`30,000 ± 5.0 Gauss\`; \`127.728 MHz ± 21.328 KHz\`).
+### Safety Warnings
+⚠️ 3.0T ramp up generates significant forces on the magnet structure. Never exceed 0.2 A/min.
+⚠️ Ferrous tools must be excluded from scan room for entire ramp period — field builds gradually but is hazardous above 50 Gauss.
+⚠️ Post "Magnet Ramping — No Ferrous Objects" signs on ALL entry points.
+⚠️ Monitor continuously — do not leave system unattended during ramp.
+
+### Pre-Ramp Checklist
+1. Verify He level ≥ 70%. Record in log.
+2. Verify cold head Stage 2 temperature ≤ 4.5K.
+3. Verify cold head compressor: HP pressure 250–280 psi, LP 55–80 psi.
+4. Verify quench vent duct is clear. Check outside vent port is unobstructed.
+5. Verify building power is stable (no scheduled outages for next 48 hours).
+6. Set up monitoring station — someone must be available to check every 30 minutes.
+7. Enable LCC alarm notifications (if available).
+
+### Ramp Sequence
+**Phase 1 — Initial Energization (0 to 50A)**
+1. At LCC service software: **Ramp → Up → Set Rate = 0.1 A/min**.
+2. Press START RAMP. LCC display shows "RAMPING ↑ 0.1 A/min".
+3. Monitor every 15 minutes:
+   - Current increasing at expected rate
+   - Stage 2 temp ≤ 5K
+   - No quench alarms
+   - He level stable (slight decrease is normal)
+4. At 50A: pause ramp for 30-minute soak. Verify system is stable.
+
+**Phase 2 — Mid Ramp (50A to 200A)**
+1. Set rate to 0.2 A/min (maximum safe rate for LCC300).
+2. Resume ramp. Monitor every 20–30 minutes.
+3. Verify He level remains ≥ 50% — He consumption increases during ramp.
+4. At 100A (approximately 1.5T): brief pause to verify all monitoring systems.
+5. Continue to 200A (approximately 3.0T on LCC300 — verify target current in system documentation).
+
+**Phase 3 — Final Current and Persistent Mode**
+1. At nominal current (verify exact value from magnet data plate or service manual):
+   - LCC300 3.0T nominal: approximately 192–205A (system-specific)
+2. Set rate to 0.05 A/min for final approach.
+3. Ramp to exact target current. Press STOP RAMP.
+4. Wait 15 minutes for current to fully stabilize.
+5. Switch persistent switch heater ON: menu **Magnet → Persistent Switch → Heater ON**.
+6. Wait 5 minutes, then set persistent switch heater OFF — magnet is now in persistent mode.
+7. Slowly reduce LCC supply current to 0. Monitor that field holds steady (it should — persistent mode maintains field with superconducting loop).
+8. LCC display should show 0A supply current but full field reading.
+
+### Post-Ramp Verification
+1. Verify field with handheld Gaussmeter — confirm 3.0T at isocenter (3.0T = 30,000 Gauss).
+2. Allow magnet to thermally stabilize — 24 hours before precise field shimming.
+3. After stabilization: run full system shim (Auto Shim from service menu).
+4. Run prescan with test phantom. Verify center frequency is at expected value.
+5. Document: total ramp time, He level before/after, any anomalies.
+
+### Emergency Abort During Ramp
+If at any point during ramp: quench alarm, sudden He loss, unusual noises, or power instability:
+1. Press STOP RAMP immediately.
+2. Do NOT try to continue ramp.
+3. Call GE Emergency: 1-800-437-1171.
+4. Do not ramp down unless directed by GE — holding at mid-current is usually safer than ramping down.`3.0000 ± 0.0005 Tesla\` (\`30,000 ± 5.0 Gauss\`; \`127.728 MHz ± 21.328 KHz\`).
 
 The magnet is initially ramped until helium level is reduced to 80%, then parked and refilled before final ramp to 3.0T. Start with magnet at **100% helium**.
 
@@ -7631,15 +9157,54 @@ Ramp down uses Shim Lead. If Shim Lead cannot be engaged (ice/damage to P100 Sav
       system: 'GE MRI',
       category: 'Host/Software',
       tags: ['SCP', 'NVRAM', 'MGD', 'reflash', 'Excite', 'boot', 'firmware', 'TPS reset'],
-      content: `# GE Signa Excite SCP Board NVRAM Reflashing
+      content: `## GE Signa Excite SCP Board NVRAM Reflashing (MGD)
 
-Effectivity: All 10.0 EXCITE MR System SCP Boards (P/N 2294300-2) in MGD Chassis slot 11.
+### Overview
+The SCP (Scan Control Processor) board and MGD (Master Gradient Driver) controller use NVRAM to store firmware and calibration data. NVRAM can corrupt after power surges, failed system updates, or battery failure. Reflashing restores the firmware without hardware replacement.
 
-## Problem
+### When Required
+- System shows "MGD boot fail" or "SCP not responding" after power cycle
+- System update/upgrade failed partway through
+- Gradient calibration data lost
+- Console cannot communicate with gradient or RF hardware after power event
 
-Failed SCP Boards returned from field because MGD would not download or boot are often found to have corrupted NVRAM. Corrupted NVRAM prevents successful TPS Reset.
+### Tools Required
+- GE service laptop with RHESA (or applicable service software for your version)
+- RS-232 serial cable (DB9) or USB-to-serial adapter
+- Correct firmware image files (from GE service software package — must match system version)
 
-**If the \`EPPC-Bug>\` prompt is seen after logging into the SCP Board — NVRAM is corrupted.** Perform re-flash before replacing the board.
+### Pre-Flash Steps
+1. Identify exact system software version: **Help → About** in service software.
+2. Confirm you have matching firmware files for:
+   - SCP firmware (filename typically: scp_vX.X.bin or similar)
+   - MGD firmware (filename: mgd_vX.X.bin)
+3. DO NOT flash mismatched firmware — this can permanently damage the board.
+4. If unsure of version: call GE technical support before proceeding.
+
+### SCP Board Reflash
+1. Connect serial cable from service laptop to SCP board RS-232 port (equipment room, on main system rack — look for DB9 connector labeled "SCP").
+2. Configure terminal: 9600 baud, 8 data bits, no parity, 1 stop bit, no flow control.
+3. Power cycle the main system.
+4. At boot, press any key in terminal window when prompted "Press any key to enter boot menu" (within 3 seconds).
+5. At boot menu: select **Flash Firmware**.
+6. Use XMODEM or RHESA file transfer to send firmware binary.
+7. Flash takes 3–7 minutes. Progress shown in terminal. Do not interrupt power.
+8. Reboot system when prompted.
+
+### MGD NVRAM Reflash
+1. Connect to MGD board (gradient cabinet, top board — serial connector on front edge).
+2. Same terminal settings: 9600 baud, 8N1.
+3. In RHESA: **Gradient → MGD → Flash NVRAM**.
+4. Follow RHESA prompts to select and upload firmware file.
+5. After flash: MGD will reboot automatically.
+
+### Post-Flash Steps
+1. Full system restart (console, gradient, RF).
+2. Verify MGD is now recognized: **Service → Diagnostics → Gradient → MGD Status = READY**.
+3. **Required: Run full gradient calibration** — NVRAM reflash wipes calibration data.
+4. Gradient calibration: 20–40 minutes. Do not skip.
+5. After calibration: phantom scan to verify geometric accuracy.
+6. Log: board serial, firmware version before/after, reason for reflash.`EPPC-Bug>\` prompt is seen after logging into the SCP Board — NVRAM is corrupted.** Perform re-flash before replacing the board.
 
 ## Procedure
 
@@ -7844,13 +9409,65 @@ Use when ice prevents interaction with ramp pins or fill port.
       system: 'GE MRI',
       category: 'Magnet/Cryogen',
       tags: ['ramp up', '1.5T', 'SV', 'cryostable', 'magnet', 'ramping', '705 amps'],
-      content: `# GE 1.5T Cryostable Magnet (SV) Ramp Up Procedure
+      content: `## GE 1.5T Cryostable Magnet (SV) Ramp Up Procedure
 
-Direction 2141548 Rev 2
+### Overview
+This guide covers ramp-up of older GE 1.5T "cryostable" or "persistent" magnets (Signa LX, Signa CV/i, GEMS 1.5T) that do not use an active cold head for zero boiloff. These magnets boiloff helium continuously and are ramped up from a partially or fully quenched state.
 
-## Overview
+### Applies To
+- GE Signa LX 1.5T (non-ZBO systems)
+- GE Signa CV/i
+- GE GEMS 1.5T
+- GE MR MAX (open)
+Does NOT apply to LCC300 (see separate 3.0T guide) or HDxt with zero-boiloff cryo system.
 
-Ramping current: approximately **705 amps**. Uses Voltage Control for ramping. Target parking field: \`1.4999–1.5001 Tesla\` (\`63.866–63.874 MHz\`).
+### Prerequisites
+- He level ≥ 60% (minimum for safe ramp — more is better)
+- GE engineer on-site (1.5T SV ramp is still a 2-person job minimum)
+- Site physicist available
+- Clear access to LCC or magnet control panel
+
+### Tools Required
+- LCC keypad or magnet control electronics access
+- Gauss meter (field verification)
+- Logbook
+
+### Ramp Procedure
+**Step 1 — Verify He Level and Cryo Status**
+1. He level: ≥ 60% required. If <60%: schedule He fill before ramp.
+2. Non-ZBO systems: He will continue to boiloff during ramp (~5–15L per hour at full field). Plan He level to account for boiloff.
+
+**Step 2 — Initial Energization**
+1. At magnet control panel: verify persistent switch heater is ON (must be on before applying current).
+2. Set LCC power supply output voltage to 0. Enable output.
+3. Slowly increase current: recommended ramp rate 0.5–1.0 A/min for LX class magnets.
+4. Watch for any irregular behavior: unusual sounds, pressure spikes, field gauge jumping.
+
+**Step 3 — Mid-Ramp Monitoring**
+1. Record current and estimated field every 10 minutes in log.
+2. Monitor He pressure (boiloff vent should show light steady flow — vigorous boiloff means excessive heat leak).
+3. At ~50% of target current: pause 15 minutes. Verify all parameters stable.
+
+**Step 4 — Final Approach and Persistent Mode**
+1. At 90% of target current: slow ramp rate to 0.2 A/min.
+2. At target current (1.5T Signa LX nominal: approximately 185–198A — check magnet data plate):
+   - Hold for 10 minutes at target current.
+3. Switch persistent switch heater OFF.
+4. Wait 5 minutes — watch current display for any drift.
+5. Slowly reduce LCC supply current to 0 while monitoring field.
+6. Magnet is in persistent mode — field maintained by superconducting loop.
+
+**Step 5 — Verification**
+1. Verify field with Gauss meter at isocenter: 1.5T = 15,000 Gauss.
+2. Perform field map scan (service menu) to verify homogeneity.
+3. Run auto shim.
+4. Prescan with phantom — verify center frequency is within ±500 Hz of expected.
+5. Record in log: ramp date, start He %, end He %, start time, end time, target current achieved.
+
+### Ongoing He Management
+After ramp: non-ZBO magnets require He monitoring and fills. Typical boiloff:
+- At field: 5–15 liters/day depending on magnet vintage.
+- Schedule fills before He drops below 40% level.`1.4999–1.5001 Tesla\` (\`63.866–63.874 MHz\`).
 
 Minimum He level before ramping: **85%**.
 
@@ -10374,14 +11991,3 @@ function deleteDiagGuide(id) {
             <option>GE MRI</option><option>Siemens MRI</option><option>GE CT</option><option>Siemens CT</option><option>Injector</option><option>General</option>
           </select>
         </div>
-        <div class="form-group"><label class="form-label">Category</label><input class="form-control" id="dg_category" placeholder="RF / Gradient / Magnet…"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="dg_tags" placeholder="RF amp, E305, cooling"></div>
-      <div class="form-group"><label class="form-label">Content * (Markdown supported)</label><textarea class="form-control" id="dg_content" style="min-height:200px;font-family:monospace;font-size:.82rem" placeholder="## Title&#10;### Step 1&#10;Details here…"></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
-      <button class="btn btn-outline" onclick="closeModal('addDiagGuideModal')">Cancel</button>
-    </div>
-  </div>
-</div>
