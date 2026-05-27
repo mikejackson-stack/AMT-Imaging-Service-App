@@ -6286,10 +6286,27 @@ if(!partsDB){
   partsDB = [...PARTS_SEED];
   localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
 } else {
-  // Merge new seeds
-  const newSeeds = PARTS_SEED.filter(s=>!partsDB.find(p=>p.id===s.id));
+  // Merge new seeds (only seeds with explicit ids — avoids undefined===undefined ambiguity for CT parts)
+  const newSeeds = PARTS_SEED.filter(s=>s.id && !partsDB.find(p=>p.id===s.id));
   if(newSeeds.length){ partsDB=[...newSeeds,...partsDB]; saveParts(); }
 }
+// Normalize: assign stable ids to any parts missing them (CT FRU seed parts)
+(function(){
+  let changed = false;
+  const usedIds = new Set(partsDB.filter(p=>p.id).map(p=>p.id));
+  partsDB.forEach((p,i)=>{
+    if(!p.id){
+      let base = 'ct_'+(p.num||'part').replace(/[^a-z0-9]/gi,'_');
+      let uid = base;
+      let n = 2;
+      while(usedIds.has(uid)) uid = base+'_'+n++;
+      p.id = uid;
+      usedIds.add(uid);
+      changed = true;
+    }
+  });
+  if(changed) localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
+})();
 
 function saveParts(){ localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB)); }
 
@@ -6303,13 +6320,15 @@ function searchParts(q){
 
   const qLow = (q||'').toLowerCase().trim();
   let hits = partsDB.filter(p=>{
-    const matchBrand = !brand || p.brand===brand;
+    const matchBrand = !brand || p.brand===brand
+        || p.brand.startsWith(brand+' ')
+        || (brand==='CT' && (p.cat||'').toLowerCase().includes('ct'));
     const matchType  = !type  || p.type===type || p.cat===type;
     if(!matchBrand||!matchType) return false;
     if(!qLow) return true;
     return (p.num||'').toLowerCase().includes(qLow)
         || (p.desc||'').toLowerCase().includes(qLow)
-        || (p.models||'').toLowerCase().includes(qLow)
+        || (p.models||p.model||'').toLowerCase().includes(qLow)
         || (p.notes||'').toLowerCase().includes(qLow)
         || (p.cat||'').toLowerCase().includes(qLow)
         || (p.section||'').toLowerCase().includes(qLow)
@@ -6331,7 +6350,7 @@ function searchParts(q){
     return str.replace(new RegExp('('+qLow.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark style="background:#fef08a;border-radius:2px">$1</mark>');
   }
 
-  const brandColors={'GE':'#1a5fa8','Siemens':'#e3701a','Philips':'#6d28d9','Injector':'#0f766e','CT':'#0369a1','General':'#374151'};
+  const brandColors={'GE':'#1a5fa8','GE LightSpeed':'#1565c0','GE HiSpeed':'#1976d2','GE Brivo':'#0d47a1','GE ProSpeed':'#283593','GE GOC':'#1a237e','Siemens':'#e3701a','Philips':'#6d28d9','Injector':'#0f766e','CT':'#0369a1','General':'#374151'};
 
   res.innerHTML = '<ul class="file-list">' + hits.map(p=>{
     const manualUrl = p.manual ? ghManualUrl(p.manual) : null;
@@ -6348,7 +6367,7 @@ function searchParts(q){
             +cost
           +'</div>'
           +'<div style="font-size:.83rem;margin-bottom:3px">'+hl(p.desc)+'</div>'
-          +(p.models?'<div style="font-size:.75rem;color:var(--text2)">📟 '+hl(p.models)+'</div>':'')
+          +((p.models||p.model)?'<div style="font-size:.75rem;color:var(--text2)">📟 '+hl(p.models||p.model)+'</div>':'')
           +(p.notes?'<div style="font-size:.74rem;color:var(--text2);margin-top:2px">💡 '+p.notes+'</div>':'')
           +(manualUrl?'<div style="margin-top:5px"><a href="'+manualUrl+'" target="_blank" rel="noopener" title="Source: Manuals/'+p.manual+'" style="font-size:.75rem;color:var(--blue2)">📖 '+manualLabel+' ↗</a></div>':'')
           +(()=>{
