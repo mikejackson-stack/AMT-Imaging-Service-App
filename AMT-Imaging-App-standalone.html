@@ -463,6 +463,64 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   font-weight:700!important;
 }
 .snav-item:hover{background:rgba(255,255,255,.08)!important}
+
+/* ══════════════════════════════════════════════
+   VISUAL REFINEMENTS v3 — May 2026
+   Branding · Quick Actions · Guide Cards · KB
+══════════════════════════════════════════════ */
+
+/* 1. Topbar — AMT gold accent bar */
+#topBar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold) 0%,#f7c94e 50%,var(--gold) 100%)}
+
+/* 2. Quick-action cards */
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.qa-card{background:var(--card-bg);border-radius:var(--r);padding:16px 12px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border-top:3px solid transparent;transition:all .2s;-webkit-tap-highlight-color:transparent;position:relative;overflow:hidden}
+.qa-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s}
+.qa-card:hover{transform:translateY(-3px);box-shadow:var(--shadow2)}
+.qa-card:hover::before{opacity:1}
+.qa-card:active{transform:scale(.97)}
+.qa-icon{font-size:1.75rem;line-height:1}
+.qa-label{font-size:.76rem;font-weight:800;letter-spacing:.2px}
+
+.qa-job{border-top-color:#1565c0}.qa-job:hover{background:#f0f7ff}.qa-job .qa-label{color:#1565c0}
+.qa-inv{border-top-color:var(--gold)}.qa-inv:hover{background:#fffbf0}.qa-inv .qa-label{color:#c8860a}
+.qa-exp{border-top-color:var(--red)}.qa-exp:hover{background:#fff5f5}.qa-exp .qa-label{color:var(--red)}
+.qa-dist{border-top-color:var(--green)}.qa-dist:hover{background:#f0faf0}.qa-dist .qa-label{color:var(--green)}
+
+/* 3. Dashboard section headers */
+.dash-hd{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--text2);margin:0 0 8px;display:flex;align-items:center;gap:6px}
+.dash-hd::after{content:'';flex:1;height:1px;background:var(--gray2)}
+
+/* 4. Diagnostic Guide cards */
+.dg-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:9px;overflow:hidden;border-left:5px solid var(--gray3);transition:box-shadow .15s,transform .15s}
+.dg-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
+.dg-ge-mri{border-left-color:#1565c0}
+.dg-ge-ct{border-left-color:#0288d1}
+.dg-siemens-mri{border-left-color:#e65100}
+.dg-siemens-ct{border-left-color:#bf360c}
+.dg-philips{border-left-color:#6a1b9a}
+.dg-injector{border-left-color:#00695c}
+.dg-general{border-left-color:var(--gray3)}
+.dg-card-body{padding:12px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.dg-meta{flex:1;min-width:0}
+.dg-title{font-weight:800;font-size:.92rem;color:var(--text);margin-bottom:5px;line-height:1.3}
+.dg-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px}
+.dg-sys-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:10px;color:white}
+.dg-cat-badge{font-size:.62rem;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--gray);color:var(--text2)}
+.dg-tags{display:flex;gap:4px;flex-wrap:wrap}
+.dg-tag{font-size:.63rem;padding:1px 6px;border-radius:8px;background:#e0f2fe;color:#0369a1;font-weight:600}
+.dg-actions{display:flex;gap:5px;flex-shrink:0;align-items:flex-start}
+
+/* 5. KB entry cards */
+.kb-card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:9px;overflow:hidden;border-left:4px solid var(--gray3)}
+.kb-card-body{padding:12px 14px}
+.kb-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.kb-title{font-weight:800;font-size:.93rem;color:var(--text);line-height:1.3;flex:1;min-width:0}
+.kb-pill{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:10px;color:white;white-space:nowrap;flex-shrink:0}
+.kb-field{font-size:.82rem;margin-top:5px;line-height:1.5}
+.kb-field strong{color:var(--text2);font-weight:700}
+.kb-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.kb-tag{font-size:.63rem;padding:1px 7px;border-radius:10px;background:var(--gray);color:var(--text2);font-weight:600}
 </style>
 </head>
 <body>
@@ -561,19 +619,19 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="stat-grid-4" id="statsGrid"></div>
 
   <!-- Profit sharing summary -->
-  <div class="dash-section-title" style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin:0 0 8px">📊 Profit Sharing Summary</div>
+  <div class="dash-hd">📊 Profit Sharing</div>
   <div class="owner-cards" id="dashOwnerCards"></div>
 
   <!-- Quick actions -->
-  <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin-bottom:8px">⚡ Quick Actions</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-    <div style="background:var(--card-bg);border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .18s" onclick="showTab('newjob')"><span style="font-size:1.6rem">➕</span><span style="font-size:.76rem;font-weight:700">New Job</span></div>
-    <div style="background:var(--card-bg);border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .18s" onclick="showTab('money');setMoneyTab('invoices')"><span style="font-size:1.6rem">🧾</span><span style="font-size:.76rem;font-weight:700">New Invoice</span></div>
-    <div style="background:var(--card-bg);border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .18s" onclick="showTab('money');setMoneyTab('expenses')"><span style="font-size:1.6rem">💸</span><span style="font-size:.76rem;font-weight:700">Add Expense</span></div>
-    <div style="background:var(--card-bg);border-radius:var(--r);padding:14px 10px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;border:2px solid transparent;transition:all .18s" onclick="showTab('money');setMoneyTab('distributions')"><span style="font-size:1.6rem">🏦</span><span style="font-size:.76rem;font-weight:700">Pay Distribution</span></div>
+  <div class="dash-hd">⚡ Quick Actions</div>
+  <div class="qa-grid">
+    <div class="qa-card qa-job" onclick="showTab('newjob')"><span class="qa-icon">🔧</span><span class="qa-label">New Job</span></div>
+    <div class="qa-card qa-inv" onclick="showTab('money');setMoneyTab('invoices')"><span class="qa-icon">🧾</span><span class="qa-label">New Invoice</span></div>
+    <div class="qa-card qa-exp" onclick="showTab('money');setMoneyTab('expenses')"><span class="qa-icon">💸</span><span class="qa-label">Add Expense</span></div>
+    <div class="qa-card qa-dist" onclick="showTab('money');setMoneyTab('distributions')"><span class="qa-icon">💰</span><span class="qa-label">Pay Distribution</span></div>
   </div>
 
-  <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text2);margin-bottom:8px">🕐 Recent Jobs</div>
+  <div class="dash-hd">🕐 Recent Jobs</div>
   <div id="recentJobsList"></div>
 </div>
 
@@ -3165,25 +3223,20 @@ function renderKBEntries(){
   }
   const catColors={GE:'#1565c0',Siemens:'#e65100',Philips:'#6a1b9a',Injector:'#2e7d32',CT:'#006064','Error Code':'#c62828',General:'#546e7a'};
   list.innerHTML = entries.map(e=>`
-    <div style="background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:10px;overflow:hidden;border-left:4px solid ${catColors[e.cat]||'var(--gray3)'}">
-      <div style="padding:12px 14px">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">
-          <div style="flex:1;min-width:0">
-            <div style="font-weight:800;font-size:.95rem">${e.title||'Untitled'}</div>
-            <div style="font-size:.74rem;color:var(--text2);margin-top:2px">
-              <span class="badge" style="background:${catColors[e.cat]||'var(--gray2)'};color:white;font-size:.62rem">${e.cat||'General'}</span>
-              ${e.model?' · '+e.model:''}${e.error?' · <strong style="color:var(--red)">'+e.error+'</strong>':''}
-              ${e.date?' · '+e.date:''}
-            </div>
-          </div>
-          <div style="display:flex;gap:5px;flex-shrink:0">
-            <button class="btn btn-sm btn-warning" style="padding:5px 9px;min-height:0" onclick="editKBEntry('${e.id}')">✏️</button>
-            <button class="btn btn-sm btn-danger" style="padding:5px 9px;min-height:0" onclick="deleteKBEntry('${e.id}')">🗑</button>
+    <div class="kb-card" style="border-left-color:${catColors[e.cat]||'var(--gray3)'}">
+      <div class="kb-card-body">
+        <div class="kb-card-head">
+          <div class="kb-title">${e.title||'Untitled'}</div>
+          <div style="display:flex;gap:5px;align-items:center;flex-shrink:0">
+            <span class="kb-pill" style="background:${catColors[e.cat]||'var(--gray4)'}">${e.cat||'General'}</span>
+            <button class="btn btn-sm btn-outline" style="padding:4px 8px;min-height:0;font-size:.72rem" onclick="editKBEntry('${e.id}')">✏️</button>
+            <button class="btn btn-sm btn-danger" style="padding:4px 8px;min-height:0;font-size:.72rem" onclick="deleteKBEntry('${e.id}')">🗑</button>
           </div>
         </div>
-        ${e.problem?'<div style="margin-top:8px;font-size:.82rem"><strong>Problem:</strong> '+e.problem.substring(0,120)+(e.problem.length>120?'…':'')+'</div>':''}
-        ${e.solution?'<div style="margin-top:4px;font-size:.82rem"><strong>Fix:</strong> '+e.solution.substring(0,120)+(e.solution.length>120?'…':'')+'</div>':''}
-        ${e.tags&&e.tags.length?'<div style="margin-top:6px">'+e.tags.map(t=>'<span style="background:var(--gray);padding:2px 8px;border-radius:12px;font-size:.66rem;margin-right:4px;font-weight:600">'+t+'</span>').join('')+'</div>':''}
+        ${e.model||e.error?`<div style="font-size:.74rem;color:var(--text2);margin-bottom:5px">${e.model?e.model+' ':''} ${e.error?'<strong style="color:var(--red)">'+e.error+'</strong>':''}</div>`:''}
+        ${e.problem?'<div class="kb-field"><strong>Problem:</strong> '+e.problem.substring(0,140)+(e.problem.length>140?'…':'')+'</div>':''}
+        ${e.solution?'<div class="kb-field"><strong>Fix:</strong> '+e.solution.substring(0,140)+(e.solution.length>140?'…':'')+'</div>':''}
+        ${e.tags&&e.tags.length?'<div class="kb-tags">'+e.tags.map(t=>'<span class="kb-tag">'+t+'</span>').join('')+'</div>':''}
       </div>
     </div>`).join('');
 }
@@ -11949,21 +12002,33 @@ function renderDiagGuides() {
     list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q ? ' for "' + q + '"' : '') + '.</div>';
     return;
   }
+  const sysCls = {
+    'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
+    'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
+    'Philips':'dg-philips','Injector':'dg-injector'
+  };
+  const sysBg = {
+    'GE MRI':'#1565c0','GE CT':'#0288d1',
+    'Siemens MRI':'#e65100','Siemens CT':'#bf360c',
+    'Philips':'#6a1b9a','Injector':'#00695c'
+  };
   list.innerHTML = guides.map(g => {
-    const tags = (g.tags||[]).map(t => '<span style="background:#e0f2fe;color:#0369a1;font-size:.65rem;padding:1px 6px;border-radius:8px">#' + t + '</span>').join(' ');
-    return '<div style="background:var(--gray);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;border:1px solid var(--gray2)">'
-      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap">'
-        + '<div style="flex:1;min-width:0">'
-          + '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px">'
-            + '<span style="font-weight:700;font-size:.93rem;color:var(--navy)">' + g.title + '</span>'
-            + '<span style="background:var(--blue2);color:white;font-size:.62rem;padding:2px 7px;border-radius:10px">' + g.system + '</span>'
-            + '<span style="background:var(--gray2);color:var(--text2);font-size:.62rem;padding:2px 7px;border-radius:10px">' + (g.category||'') + '</span>'
+    const cls = sysCls[g.system] || 'dg-general';
+    const bg  = sysBg[g.system]  || 'var(--gray4)';
+    const tags = (g.tags||[]).slice(0,6).map(t => '<span class="dg-tag">#' + t + '</span>').join('');
+    return '<div class="dg-card ' + cls + '">'
+      + '<div class="dg-card-body">'
+        + '<div class="dg-meta">'
+          + '<div class="dg-title">' + g.title + '</div>'
+          + '<div class="dg-badges">'
+            + '<span class="dg-sys-badge" style="background:' + bg + '">' + g.system + '</span>'
+            + (g.category ? '<span class="dg-cat-badge">' + g.category + '</span>' : '')
           + '</div>'
-          + (tags ? '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">' + tags + '</div>' : '')
+          + (tags ? '<div class="dg-tags">' + tags + '</div>' : '')
         + '</div>'
-        + '<div style="display:flex;gap:4px;flex-shrink:0">'
-          + '<button class="btn btn-outline btn-sm" onclick="openDiagGuideDetail(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:4px 10px">👁 View</button>'
-          + (isViewOnly() ? '' : '<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:4px 10px">🗑</button>')
+        + '<div class="dg-actions">'
+          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
+          + (isViewOnly() ? '' : '<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
         + '</div>'
       + '</div>'
     + '</div>';
