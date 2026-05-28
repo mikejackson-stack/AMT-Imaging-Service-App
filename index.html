@@ -171,6 +171,8 @@ img{max-width:100%;display:block}
 .dg-pill.ge-ct.active{background:#0288d1;border-color:#0288d1}
 .dg-pill.siemens-ct.active{background:#bf360c;border-color:#bf360c}
 .dg-pill.injector.active{background:#00695c;border-color:#00695c}
+.dg-pill.hitachi-mri.active{background:#7b1fa2;border-color:#7b1fa2}
+.dg-pill.toshiba-mri.active{background:#c62828;border-color:#c62828}
 .mst-btn{flex:0 0 auto;padding:11px 16px;font-size:.76rem;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;background:none;border-top:none;border-left:none;border-right:none;-webkit-tap-highlight-color:transparent}
 .mst-btn.active{color:var(--navy);border-bottom-color:var(--accent);background:var(--white)}
 .money-subpanel{display:none}
@@ -659,7 +661,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <select class="form-control" id="nj_modality">
           <option value="">Select…</option>
           <option>GE MRI</option><option>Siemens MRI</option><option>Philips MRI</option>
-          <option>GE CT</option><option>Siemens CT</option><option>Stellant Injector</option><option>Solaris/Spectris Injector</option><option>Other</option>
+          <option>GE CT</option><option>Siemens CT</option><option>Hitachi MRI</option><option>Toshiba MRI</option><option>Stellant Injector</option><option>Solaris/Spectris Injector</option><option>Other</option>
         </select>
       </div>
       <div class="form-group"><label class="form-label">Scanner Model</label><input class="form-control" id="nj_model" placeholder="Signa Voyager 1.5T"></div>
@@ -1272,6 +1274,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <button class="dg-pill ge-ct" onclick="setDGSys('GE CT')" data-sys="GE CT">GE CT</button>
       <button class="dg-pill siemens-ct" onclick="setDGSys('Siemens CT')" data-sys="Siemens CT">Siemens CT</button>
       <button class="dg-pill injector" onclick="setDGSys('Injector')" data-sys="Injector">Injectors</button>
+      <button class="dg-pill hitachi-mri" onclick="setDGSys('Hitachi MRI')" data-sys="Hitachi MRI">Hitachi MRI</button>
+      <button class="dg-pill toshiba-mri" onclick="setDGSys('Toshiba MRI')" data-sys="Toshiba MRI">Toshiba MRI</button>
     </div>
     <!-- Category chips -->
     <div style="display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:.75rem" id="dgCatChips"></div>
@@ -13179,6 +13183,676 @@ PAC configuration selects which PAC version is installed (older vs. newer PAC bo
 | \`snapshot\` | Screenshot of screen or selected area |`,
       created: '2026-05-28T00:00:00.000Z'
     }
+  ,
+  {
+    id: 'dg_seed_050',
+    title: 'GE LCC Magnet Ramp-Up Procedure',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['ramp up','LCC','magnet','cryogens','shimming','TCR','field'],
+    content: `## GE LCC 1.0T / 1.5T Active Shield Magnet — Ramp-Up Procedure
+Source: Direction 2192624, Rev 9 — GE Medical Systems
+
+### Required Equipment
+- 750 A Ramp Cart/Cable Kit (2135435) OR 1000 A Ramp Cart/Cable Kit (2353394)
+- Field Shim Case & Cable Kit (2135558)
+- MetroLab Teslameter Kit (46-251865G4)
+- Non-absorbent long-sleeve clothing, non-ferrous shoes
+- Minimum 2 persons required
+
+### Target Parameters
+- 1.0T LCC: nominal current = **736 A**
+- 1.5T LCC: nominal current = **740 A**
+
+### Pre-Ramp Checklist
+1. Verify He level ≥ 95%; cold head running, compressor pressures normal
+2. Confirm all shim lead connections seated and continuity checks pass
+3. Perform ice removal from Sav-Con and Vertical Penetration if needed
+4. Check all penetration panel connections (VRE, gradient, RF)
+5. Verify AC power at ramp cart location
+
+### Ramp-Up Sequence
+1. Complete preparations and resistance checks (Section 7.2–7.3)
+2. Connect ramp cart; set initial current to 0 A
+3. Ramp in stages: 0 → 100 A → 300 A → 500 A → 736/740 A
+4. Pause 5 min at each stage; verify no alarms, pressure <0.5 psi, temp stable
+5. Monitor He boiloff — should not exceed 4 L/hr during ramp
+6. At field: verify center frequency with MetroLab; perform field mapping
+7. Engage shim leads; optimize field homogeneity (Section 8)
+
+### Power Supply Settings (TCR 7.5T750)
+- Use voltage mode (not current mode)
+- Ramp rate: 0.5–1.0 A/min through each 100 A increment
+- Hold at each checkpoint for 5 minutes before proceeding
+
+### Key Warnings
+- NEVER exceed 140 cfh He flow during any de-icing steps
+- If magnet pressure rises >0.5 psi — pause ramp immediately
+- Keep all ferromagnetic tools/carts >2 m from bore
+- If quench occurs: evacuate room, follow quench response procedure
+
+### Post-Ramp
+1. Verify center frequency within ±5 ppm of target
+2. Log final parking current, date, He level in magnet log
+3. Complete field mapping and shim adjustment
+4. Restore all penetration panel covers`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_051',
+    title: 'Leybold RW-Series Compressor — Fault Isolation Guide',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['Leybold','compressor','RW4000','RW6000','helium','cryocooler','fault'],
+    content: `## Leybold RW 4000/4200/6000/6200 Compressor — Troubleshooting
+Source: GA 12.110/6.02 — Leybold Vacuum Operating Instructions
+
+### Normal Operating Parameters
+- Static He pressure (room temp, off): **14–16 bar** (200–232 psi)
+- Coolant inlet temp: <15°C recommended
+
+### Fault Table
+| # | Symptom | Cause | Action |
+|---|---------|-------|--------|
+| 1 | No start, no fault light | Power interrupted | Check cord, plug, mains voltage |
+| 1 | No start, no fault light | Motor protection switch tripped | Check/reset; if re-trips call Leybold |
+| 1 | No start, no fault light | Overheated | Eliminate heat cause (see #6) |
+| 2 | No start — LOW PRESSURE light | Low pressure switch open | Check He pressure; if OK press reset |
+| 3 | No start — TEMPERATURE light | Thermal switch tripped | Cool down, press reset; if re-trips see #4,#5 |
+| 3 | No start — TEMPERATURE light | Wrong phase rotation | Check phase sequence |
+| 4 | No start — circuit breaker tripped | Wiring/overload | Check cold head connections; reset breaker |
+| 5 | Shuts down — LOW PRESSURE | He circuit leak | Check pressure; top up He; contact Leybold if frequent |
+| 6 | Shuts down — TEMPERATURE | Coolant flow insufficient | Verify coolant supply and flow rate |
+| 6 | Shuts down — TEMPERATURE | Coolant inlet temp too high | Ensure coolant <15°C |
+| 6 | Shuts down — TEMPERATURE | Coolant connections reversed | Correct IN/OUT orientation |
+| 6 | Shuts down — TEMPERATURE | Heat exchanger clogged | Contact service technician |
+| 6 | Shuts down — TEMPERATURE | Wrong phase sequence | Reverse phase sequence |
+| 6 | Shuts down — TEMPERATURE | Oil level low | Contact service technician |
+| 9 | Cold head performance degraded | Adsorber saturated (>18,000 hrs) | Replace adsorber — mandatory every 18,000 hrs |
+| 9 | Cold head performance degraded | He pressure dropped | Check for leaks, top up |
+
+### Preventive Maintenance Schedule
+- **Every 9,000 hours**: Replace cold head displacer
+- **Every 18,000 hours**: Replace oil adsorber (MANDATORY)
+- **Annual**: Check He pressure, inspect flexlines for wear
+- **Flexlines**: No kinks, minimum bend radius 8 in (20 cm)
+
+### Helium Top-Up
+1. Shut down compressor; cool to room temp
+2. Connect Grade 5 He (99.999%) via correct adapter
+3. Slowly fill to 14–16 bar static pressure
+4. Disconnect; check for leaks; restart
+
+### Safety
+- Flexlines pressurized >200 psi — vent before disassembly
+- Grade 5 helium ONLY — lower grades freeze inside cold head
+- Power OFF before any electrical work`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_052',
+    title: 'Leybold RGD Cold Head — Troubleshooting & Maintenance',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['Leybold','cold head','RGD','displacer','valve motor','helium','leak'],
+    content: `## Leybold RGD 5/100-2 & RGD 580-GE Cold Head — Troubleshooting
+Source: GA 12.118/1.02 — Leybold Vacuum, GE Cryocooler Systems
+
+### Cold Head Specs
+- Two-stage: Stage 1 → 35–60 K; Stage 2 → 10–20 K
+- Normal operating cycle: **2.4 Hz at 60 Hz mains**
+- Max magnetic field at motor: **300 gauss** (above this can damage motor)
+
+### Simple Problem Checklist (Run First)
+1. Is cold head receiving power? Is compressor cable at penetration panel seated?
+2. Is compressor rotating in correct direction?
+3. Has displacer been replaced within last 9,000 hours?
+4. Are cold head and compressor being properly cooled?
+5. Is He pressure adequate? Any leaks present?
+6. Is helium contaminated (moisture, air)?
+7. Are flexlines correct (high → high, low → low)?
+8. Is valve motor operating properly (audible 2.4 Hz cycle)?
+
+### Valve Motor Fault
+- **Symptom**: Cold head warming gradually; audible cycle <2.4 Hz
+- **Field Action**: Remove cold head and send to authorized repair depot — NOT a field repair
+- **Check**: Valve motor resistance with ohmmeter (compressor OFF, unplugged)
+- **Wrong direction**: Check cable connection from cold head to compressor
+
+### Helium Leak Check
+Best method: mass spectrometer leak detector with sniffing probe
+Alternative: Snoop LC soap solution
+1. Coat joint fully; wait for small bubbles
+2. After test: rinse all soap with water (poppet face contamination risk)
+3. Isolate subassemblies by disconnecting Aeroquip couplings one at a time
+4. Check: pressure safety valve, low-pressure switch, any rubbing tubing
+5. After fix: add He per compressor manual; restart
+
+### Key Maintenance Intervals
+| Interval | Action |
+|----------|--------|
+| 9,000 hours | Replace displacer |
+| 18,000 hours | Replace compressor oil adsorber |
+| Annual | Inspect flexlines, check He pressure, verify 2.4 Hz cycle |
+
+### Critical Safety
+- Warm cold head to room temp BEFORE disassembly — frostbite risk if cold
+- Use Grade 5 helium ONLY (99.999% pure)
+- Moisture limit in helium supply: <10 ppm`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_053',
+    title: 'GE Analog DASM — Setup, Jumpers & Error Codes',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['DASM','laser camera','SCSI','LX','Horizon','error codes','LED','setup'],
+    content: `## GE Analog DASM-LCAM — Setup & Error Code Reference
+Source: GE Medical Systems OW2SCAB.DOC Rev 1 — Valid for Signa Horizon LX
+
+### What It Is
+SCSI-based interface between Signa Horizon LX host and laser camera.
+Connects to host SCSI port; camera connects to DASM data ports.
+
+### Front Panel LEDs
+| LED | Meaning |
+|-----|---------|
+| Power | DASM powered — off at startup = check power cable |
+| CPU | Blinks continuously = CPU active and normal |
+| SCSI | Activity on SCSI bus |
+| PMI | Personality Module Interface — camera data activity |
+
+### J2 Jumper Configuration (LX Standard = Example D)
+Located on motherboard back panel:
+- SCSI ID: Positions 5–7 (binary, bit 0=pos5, bit 1=pos6, bit 2=pos7) — LX default = ID 3
+- RAM size: Positions 3–4 — LX = 1 MB SIMM
+- RAM diagnostic: Position 2 — shunt = disabled
+- Do NOT remove shunts at positions 0 and 1
+
+### DASM Error Code Display
+LEDs flash two-digit binary sequence:
+1. All LEDs flash briefly = start of sequence
+2. CPU LED = first digit; pause; SCSI LED = second digit
+3. Pattern repeats — first error halts startup sequence
+
+### DASM Error Code Table
+| Code | Meaning |
+|------|---------|
+| 1 | Failed to Set Timer |
+| 2 | Failed to Set Baud Rate |
+| 3 | Failed to Access Rcvr Status Reg (Serial I/O) |
+| 4 | Failed to Start Refresh Clock |
+| 5 | Failed in Setup of Serial I/O |
+| 6 | Checksum Failed |
+| 7 | Failed Static RAM Test |
+| 11 | Failed I/O RAM Test |
+| 12 | Failed SCSI Interface Test |
+| 13 | Failed to Start VRTX Operating System |
+| 21 | Bus Error |
+| 22 | Address Error |
+| 23 | Illegal Instruction |
+| 24 | Undefined MFP (MC68901) Interrupt |
+| 25 | Zero-divide / Trace Trap |
+| 26 | Chk / Trapv / Privilege / Trace Interrupt |
+| 31 | Unknown Interrupt |
+
+### Common Issues
+- **Power LED off**: Check power cable and receptacle
+- **CPU not blinking**: Processor fault — power cycle; if persists replace DASM
+- **Error 7 (Static RAM)**: RAM SIMM issue — check seating or replace
+- **Error 12 (SCSI)**: Check cable, terminator, SCSI ID conflicts
+- **Error 13 (VRTX OS)**: Firmware issue — likely needs unit replacement
+
+### SCSI Requirements
+- Max cable length: 6.0 m
+- Terminate BOTH ends of SCSI bus
+- If DASM is last device, attach terminator to second SCSI port`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_054',
+    title: 'GE LCC Turret & Vertical Penetration De-Icing Procedure',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['de-icing','LCC','turret','shim lead','Sav-Con','vertical penetration','ice removal'],
+    content: `## GE LCC — Turret & Vertical Penetration De-Icing
+Source: Direction 2192624 Rev 17 — GE Healthcare, Section 9
+
+### When Required
+- Shim lead cannot seat in Sav-Con connector
+- Shim coil resistance checks fail
+- Shim lead cannot be engaged
+- Visible ice at turret or vertical penetration
+
+### Equipment
+- Grade 5 helium gas cylinder with regulator
+- Tygon tubing and Nupro valve
+- Flow meter calibrated for helium (20–140 cfh scale)
+- DVM for LOTO verification
+
+### ⚠️ Critical Limits
+- **NEVER exceed 140 cfh helium flow** — quench risk
+- Maintain magnet pressure **<0.5 psi** at all times
+
+---
+
+### Procedure A — Sav-Con Connector De-Icing
+1. Connect helium hose to Nupro Valve
+2. Open Helium Vent Valve V2 (prevents magnet pressure rise)
+3. Set flow meter to **80 cfh**
+4. Slowly open Nupro Valve; monitor pressure — keep <0.5 psi
+5. Flow helium over Sav-Con for **1 minute**
+6. Close gas; attempt to seat shim lead (align with keyway)
+7. If still frozen: increase to **140 cfh for 2 minutes**; repeat
+8. Once seated: verify continuity on all correction coils
+9. Disconnect He line; close V2 and Nupro Valve
+
+---
+
+### Procedure B — Vertical Penetration De-Icing (Level 2)
+*Use when Procedure A fails or shim coil resistance checks fail*
+
+1. Disable Magnet Monitor Master Alarm and Vessel Pressure Control
+2. Engage shim lead; perform resistance checks
+   - Checks pass → de-icing NOT required; stop
+   - Checks fail → continue
+3. **Ramp magnet to zero** using 50 ft Auxiliary Rampdown Cable (2217315)
+4. Shut off cryocooler:
+   a. Set Coldhead Drive Switch ON (compressor back panel)
+   b. Front panel Drive Switch → O (Off)
+   c. Run coldhead **10 seconds only** with compressor off
+   d. Turn OFF Coldhead Drive Switch AND Main Power Switch
+   e. **LOTO input power** — verify 0 V with DVM
+5. Vent magnet to **0.2 psig** via Vent Valve V2
+6. Proceed with controlled He flow to clear vertical penetration ice
+7. **Do NOT contact Instrumentation Lead Connector** with tools
+8. After clearance: re-engage shim lead; repeat resistance checks
+9. Restart compressor then cryocooler in correct sequence
+10. Re-enable Magnet Monitor alarms
+11. If ice cannot be cleared: contact GE Magnet Plant, Florence SC
+
+### Post-Procedure
+- Log de-icing work in site service records
+- If at field: ramp back up per LCC Ramp-Up Procedure`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_055',
+    title: 'Siemens MAGNETOM SEP Cooling — Fault Codes & Fill Procedures',
+    system: 'Siemens MRI',
+    category: 'Cooling System',
+    tags: ['SEP','cooling','chiller','IFP','Aera','Skyra','Avanto','Prisma','fault codes','glycol'],
+    content: `## Siemens MAGNETOM Cooling System — SEP & Chiller TSG
+Source: M7-000.840.18.06.02 — Aera, Skyra, Avanto fit, Skyra fit, Prisma, Prisma fit
+
+### SEP Controller Error Codes
+| Code | Description |
+|------|-------------|
+| ECO | ECO mode active (normal — energy saving) |
+| CAL | Calibrating mixing valve (normal at startup) |
+| F01 | Overload MREF compressor — motor protection switch warning |
+| F02 | Low water flow MBB circuit |
+| F03 | Low water flow CBB circuit |
+| F04 | Low water flow primary water circuit |
+| F05 | Water pump overload |
+| F06 | Inverter error (variable speed drive fault) |
+| F07 | Phase sequence error — check 3-phase wiring |
+| F11 | Secondary water temp <16.0°C — WARNING |
+| F12 | Secondary water temp >25.0°C — WARNING |
+| F14 | Secondary water temp <10.0°C — ERROR |
+| F15 | Secondary water temp >30.0°C — ERROR |
+| F16 | Secondary water temp >35.0°C — STOP |
+| F17 | Secondary temperature sensor error |
+| F21 | Primary water temp <4.0°C — WARNING |
+| F22 | Primary water temp >14.0°C — WARNING |
+| F24 | Primary water temp <1.0°C — ERROR |
+| F25 | Primary water temp >25.0°C — ERROR |
+
+### Chiller IFP Board Fault LEDs (Positions 1–8)
+| Pattern | Meaning |
+|---------|---------|
+| All flash | Lamp test / Reset (hold reset 1 sec) |
+| 1,2 | Emergency stop — open circuit |
+| 3 | Refrigerant high pressure warning |
+| 4 | Refrigerant low pressure warning |
+| 3,4,5,6 | Water temp return high (may occur at startup) |
+| 5 | Superheat <3K |
+
+### Event Log MRI_PFW 260
+- **IFPK2300 error: component reset unexpectedly**
+- Cause: SD memory card in chiller defective
+- Fix: Replace SD card → Reboot Meas&Recon → Switch MR off/on
+
+### Key Procedures
+
+**SEP Drain (3.1.1)**
+1. Isolate SEP from primary water supply
+2. Open drain valve at lowest circuit point
+3. Capture drained coolant (distilled water + inhibitor mix)
+
+**SEP Fill (3.1.2)**
+1. Connect distilled water supply to fill port
+2. Open bleeder valves at high points; fill until no air bubbles
+3. Close bleeders; verify expansion vessel level
+
+**Auto-Refill Device Fill (3.1.3)**
+1. Fill reservoir to MAX with distilled water
+2. Verify float valve triggers at low-level setpoint
+
+**Strainer Cleaning (3.1.4)**
+1. Shut down SEP pump; isolate strainer
+2. Remove basket; clean with water and soft brush
+3. Reinstall; verify no leaks
+
+**Chiller Glycol Level Test (3.2.4)**
+- Use refractometer on chiller circuit sample
+- Target: **30–35% ethylene glycol** (protects to -15°C)
+- Use approved glycol inhibitor mix only
+
+**Chiller Reset — KSC 215 (3.2.6)**
+- Press and hold reset button for 1 second
+- Verify restart; confirm fault codes cleared
+
+**Chiller Reset — ECO Unit (3.2.7)**
+- Keypad: Service Mode → Reset
+- Confirm no active faults after reset`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_056',
+    title: 'Hitachi AIRIS MRI — Error Fault Table & LED Reference',
+    system: 'Hitachi MRI',
+    category: 'Error Codes',
+    tags: ['Hitachi','AIRIS','error','fault','LED','gradient','X-FAULT','Y-FAULT','Z-FAULT','RF amplifier'],
+    content: `## Hitachi AIRIS MRI — Error Fault Table & LED Reference
+Source: Direction LlE-BM5053-1 — Hitachi Medical Corporation Technical Guide
+
+### System Overview
+The AIRIS is a permanent magnet 0.3T open MRI. Error signals from gradient controller,
+heater, and RF amplifier are latched on the front panel LEDs and reported to the CCC as error codes.
+Magnet thermostatic controller maintains magnet temperature at **32.5°C**.
+
+### Fault Table — LED & CCC Message Reference
+| Error Condition | LED 1 (Red) | LED 2 (Red) | LED 3 (Red) | LED 4 (Green) | LED 5 (Green) | LED 6 (Green) | CCC Message |
+|----------------|:-----------:|:-----------:|:-----------:|:-------------:|:-------------:|:-------------:|------------|
+| Overcurrent X-axis DC amp | ● | | | | | | GClC X-FAULT |
+| Overcurrent Y-axis DC amp | | ● | | | | | GCOC Y-FAULT |
+| Overcurrent Z-axis DC amp | | | ● | | | | CC14 Z-FAULT |
+| CC primary power supply abnormal | | | | ● | | | CC04 POWER FAULT |
+| Overheat X-axis DC amp | ● | | ● | | | | CC19 X-OVER HEAT |
+| Overheat Y-axis DC amp | | ● | ● | | | | CC09 Y-OVER HEAT |
+| Overheat Z-axis DC amp | | | | ● | ● | | CC11 Z-OVER HEAT |
+| RF PA Ready (normal state) | | | | | | ● | PA36 NOT READY |
+| RF PA Shut Down | | | | ● | | ● | PA26 SHUT DOWN |
+| Upper magnet high temperature | | | | ● | ● | | HT3A MAGNET TEMP (U) |
+| Lower magnet high temperature | | | | | ● | ● | HT28 MAGNET TEMP (L) |
+| Power supply upper heater abnormal | ● | | ● | | ● | | HT33 POWER FAULT (U) |
+| Power supply lower heater abnormal | | ● | ● | | | ● | HT23 POWER FAULT (L) |
+
+*● = LED illuminated*
+
+### Gradient Fault Isolation (X/Y/Z-FAULT)
+- Check DC power amplifier for the faulted axis — inspect for burns
+- Verify gradient coil connections; check for shorts to ground
+- Inspect GC controller board — time constants: X,Y = 0.22 ms; Z = 0.15 ms
+- Check for blocked ventilation to gradient amp cabinet (OVER HEAT faults)
+- Verify room ambient temp <22°C; confirm cooling fans running
+
+### RF Amplifier Faults
+
+**PA26 SHUT DOWN** — RF PA self-shutdown:
+- Check RF PA power supply input voltage
+- Inspect active decoupler: Tx coil = 1500 mA; Rx coil = 80 mA
+- Verify frequency synthesizer clock outputs: 50 MHz, 25.8 MHz, 10 MHz, 3.7 MHz
+
+**PA36 NOT READY** — PA not reporting ready:
+- Check PA power supply
+- Verify RF chain: synthesizer → frequency mixer → PA
+
+### Magnet Temperature Faults (Heater Units)
+**HT3A / HT28 MAGNET TEMP (U/L)** — magnet above temperature limit:
+- Verify thermostatic controller setpoint = 32.5°C
+- Check room HVAC — room too hot or too cold affects permanent magnet stability
+- Inspect heater element and thermostat wiring
+
+**HT33 / HT23 POWER FAULT (U/L)** — heater power supply abnormal:
+- Check heater power supply output voltage
+- Inspect wiring to upper/lower heater elements at magnet penetration`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_057',
+    title: 'Hitachi AIRIS MRI — Maintenance & Inspection Checklist',
+    system: 'Hitachi MRI',
+    category: 'PM Checklist',
+    tags: ['Hitachi','AIRIS','PM','maintenance','inspection','monthly','gantry','table','CCC','safety'],
+    content: `## Hitachi AIRIS MRI — Maintenance & Inspection Guide
+Source: Direction L3E-BM5055-2 — Hitachi Medical Corporation
+
+### MRI Room Safety Rules (Strictly Enforce)
+- Remove ALL ferromagnetic items before entering: tools, watches, ID cards, floppy disks, magnetic tape
+- NEVER admit pacemaker users or anyone with metallic implants or surgical clips
+- Post warning signs at: room entrance door, power distribution board
+- ONLY non-magnetic jigs and tools permitted inside MRI room
+- Keep out: wheelchairs, crutches, stretchers, IV stands, stethoscopes, BP cuffs, scissors, spanners, hammers, vacuum cleaners, ferromagnetic carts
+
+### Pre-Work Check (Sign Off Each Item)
+- [ ] All workers verified free of magnetic substances
+- [ ] All tools confirmed non-magnetic
+- [ ] Warning sign posted at MRI room entrance
+- [ ] Warning sign posted at power distribution board
+- [ ] Work scope and estimated duration communicated to customer
+- [ ] Appropriate clothing and non-ferrous shoes worn
+- [ ] Heavy object work: sufficient number of persons secured
+
+---
+
+### Monthly Inspection Tasks
+
+**Gantry**
+- [ ] Exterior inspection — no damage or abnormal sounds
+- [ ] Bore lighting functional
+- [ ] Warning labels legible and in place
+- [ ] Magnet temperature reading ~32.5°C (no variation >1°C)
+- [ ] Heater system — no fault LEDs on indication panel
+- [ ] Ventilation grilles clean, airflow unobstructed
+
+**Patient Table**
+- [ ] Longitudinal movement smooth, no binding
+- [ ] Patient stop switches functional
+- [ ] Table padding intact, no wear or damage
+- [ ] Weight limit indicator functional
+
+**Central Control Console (CCC)**
+- [ ] All monitors functional, no artifacts
+- [ ] Keyboard, trackball, function keys all responsive
+- [ ] Scan start/stop functions working
+- [ ] RF coil connection indicators normal
+
+---
+
+### Periodic Inspection Tasks
+
+**Gantry (Periodic)**
+- [ ] Clean bore interior
+- [ ] Verify magnet temperature controller calibration (target: 32.5°C)
+- [ ] Inspect magnet heater wiring at penetration panel
+- [ ] Check gradient coil connections at all penetrations
+- [ ] RF shielding integrity at bore entrance — no gaps or damage
+
+**Patient Table (Periodic)**
+- [ ] Lubricate table drive mechanism per Hitachi spec
+- [ ] Inspect and lubricate longitudinal drive motor coupling and gear box
+- [ ] Clean and inspect table rail guides
+- [ ] Verify table docking electrical connectors for corrosion
+- [ ] Test emergency stop circuit
+
+**CCC (Periodic)**
+- [ ] Clean monitor screens and keyboard
+- [ ] Verify system software version indicators
+- [ ] Check hard drive free space (minimum 20% free)
+- [ ] Archive or delete old patient data per site policy
+- [ ] Run maintenance program diagnostic checks
+
+**MRI Unit Electronics (Periodic)**
+- [ ] Check all LEDs on gradient controller board (no fault LEDs)
+- [ ] Verify AC and DC power supply output voltages
+- [ ] Inspect connector panels for corrosion
+- [ ] Verify RF amplifier output power level
+- [ ] Check active decoupler: Tx = 1500 mA; Rx = 80 mA
+- [ ] Verify frequency synthesizer clock outputs (50, 25.8, 10, 3.7 MHz)
+
+**Filter Box (Periodic)**
+- [ ] Inspect RF filter box for damage
+- [ ] Clean filter contacts
+- [ ] Verify penetration panel RF shielding seal integrity
+
+### Completing Maintenance
+1. Complete and sign maintenance inspection table
+2. Complete pre-work check list
+3. Report completion to responsible supervisor in writing
+4. Responsible person is released from duties after supervisor acknowledges completion`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_058',
+    title: 'GE MRI Ramp Down — CX, SIV, SV, SX Magnet Families',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['ramp down','CX','SIV','SV','SX','magnet','zero field','de-energize','750 amp'],
+    content: `## GE MRI Controlled Ramp Down — CX / SIV / SV / SX Systems
+Source: GE Extra & Notes — Ramp Down CX.pdf, Ramp Down SIV.pdf, Ramp Up SV.pdf
+
+### When Required
+- Magnet relocation or site decommission
+- Major coil repair or cryostat work
+- Quench recovery
+- Any procedure requiring confirmed zero field
+
+### Equipment
+- 750 A Ramp Cart + appropriate cables (system-specific)
+- DVM for LOTO/safety verification
+- Hall probe or Tesla meter for field confirmation
+- Personal protective equipment
+
+### CX Magnet Ramp Down
+**Nominal current**: ~150–180 A
+1. Clear exam room; post lockout signs at all entrances
+2. Connect ramp cart — verify polarity before powering on
+3. Switch to **current mode**; match displayed current to magnet current
+4. Ramp down at ≤1 A/min in final 50 A; faster rate OK at mid-field
+5. At 0 A: open persistent switch via heater if applicable
+6. Disconnect ramp cart; install shorting plug on leads
+7. Log: date, current=0, He level, service person
+
+### SIV / SV Ramp Down
+**Nominal current**: SIV ≈ 120 A; SV ≈ 130 A
+1. Verify He level ≥ 50% before starting (boiloff increases during ramp)
+2. Disable gradient amplifiers before connecting ramp cart
+3. Connect cart; match current; ramp at 1–2 A/min final stages
+4. Monitor magnet pressure — should not rise >1 psi above baseline
+5. At zero: confirm with Tesla meter or Hall probe
+
+### SX / 9X Platform Ramp Down
+1. Boot host to service mode; disable RF and gradient enables
+2. Document current parking frequency before ramp
+3. Connect ramp cart; ramp in 50 A steps with 2-min holds
+4. Below 50 A: 1 A/min maximum
+5. At zero: verify <1 mT at isocenter with probe
+
+### 3.0T Long Bore — Special Requirements
+- Minimum He level before ramp: **≥ 80%**
+- Stored energy ~10 MJ — NEVER emergency ramp without GE guidance
+- Use only factory-approved procedures and equipment rated for 3T
+
+### Emergency Ramp Down (Quench Trigger — Life Safety Only)
+1. Install auxiliary rampdown cable (2217315 for LCC) at external ramp port
+2. Place 2–5 Ω resistor load on quench port per system spec
+3. **This will likely trigger a quench** — evacuate room first, open quench valve
+4. After quench: ventilate ≥15 min before re-entry
+
+### Post-Ramp Documentation
+- Log: ramp date, final He level, person performing ramp
+- Document any anomalies: pressure spikes, arcing, unexpected quench
+- If de-install: cap all penetrations; secure and label flex lines`,
+    created: '2026-05-28T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_059',
+    title: 'GE Magnet Monitor — Setup, Alarms & Vessel Pressure Control',
+    system: 'GE MRI',
+    category: 'Magnet/Cryogens',
+    tags: ['magnet monitor','alarms','vessel pressure','He level','LCC','quench','vent valve','setup'],
+    content: `## GE Magnet Monitor — Setup, Alarms & Pressure Control
+Source: GE Extra & Notes — Magnet Monitor Setup.pdf (Direction 2192624)
+
+### Magnet Monitor Functions
+- He Level Monitoring: capacitance probe measures liquid He fill level (%)
+- Vessel Pressure Control: maintains magnet at target operating pressure (0.2–0.5 psi)
+- Temperature Monitoring: magnet vessel and coldhead temperatures
+- Alarm Output: local alarm + optional remote notification
+- Vent Valve Control: auto-opens V1 when pressure exceeds setpoint
+
+### Normal Operating Parameters (LCC)
+| Parameter | Normal Range | Alarm Threshold |
+|-----------|-------------|-----------------|
+| He Level | 80–95% | <50% (warning), <40% (critical) |
+| Vessel Pressure | 0.2–0.5 psi | <0.1 psi or >0.8 psi |
+| Coldhead 1st Stage | 35–55 K | >60 K |
+| Coldhead 2nd Stage | 10–18 K | >22 K |
+| Recondenser | >50% | <30% |
+
+### Setup Procedure
+1. **Power on** — verify all displays illuminate
+2. **He Level Probe calibration**:
+   - Zero = empty vessel (probe fully in gas)
+   - Span = full vessel (probe fully submerged)
+3. **Pressure Setpoints**:
+   - Low alarm: 0.1 psi; High alarm: 0.8 psi
+   - Vent valve opens at: 0.5 psi (adjust per site)
+4. **Temperature setpoints**: per system spec
+5. **Verify vent valve V1**: manually trigger; observe open/close
+6. **Test alarm outputs**: local and remote both activate
+
+### Alarm Response Guide
+| Alarm | Cause | Action |
+|-------|-------|--------|
+| He Level Low (Warning) | Level 50–60% | Schedule helium fill |
+| He Level Low (Critical) | Level <40% | Fill IMMEDIATELY — quench risk |
+| High Pressure | >0.8 psi | Check vent valve V1; verify coldhead running |
+| Low Pressure | <0.1 psi | Check for He leak; verify V1 not stuck open |
+| Coldhead Warm | Stage 2 temp rising | Check compressor pressures, flexlines, adsorber |
+
+### Master Alarm Disable (for Maintenance)
+Required before: de-icing, He fills, compressor work
+1. Navigate to alarm setup menu
+2. Set Master Alarm Disable → ON
+3. Log time and reason
+4. **Re-enable IMMEDIATELY after maintenance completes**
+
+### Vessel Pressure Control Modes
+- **Auto**: Monitor maintains pressure via V1 vent valve automatically
+- **Manual**: Technician controls vent valve directly
+- Switch to Manual during: He fills, de-icing, vent valve diagnostics
+
+### Helium Fill with Magnet Monitor
+1. Disable pressure control (prevents V1 fighting the fill)
+2. Fill at standard rate (60–80 L/hr typical)
+3. After fill: re-enable pressure control
+4. Verify He level reading matches actual fill amount
+5. Log: date, He level before/after, liters added, tech name
+
+### Magnet Monitor Troubleshooting
+| Issue | Check |
+|-------|-------|
+| He Level stuck at 0% | Probe connection at vessel top; harness continuity |
+| He Level stuck at 100% | Probe ground; damaged probe |
+| Pressure reading stuck | Transducer connection; calibration |
+| V1 vent always open | High pressure setpoint too low; V1 stuck open |
+| V1 never opens | V1 solenoid failed; wiring to valve |
+| No alarms triggering | Relay wiring; notification system power |`,
+    created: '2026-05-28T00:00:00.000Z'
+  }
 ];
 
 let diagGuidesDB = [];
@@ -13246,12 +13920,14 @@ function renderDiagGuides() {
   const sysBg = {
     'GE MRI':'#1565c0','GE CT':'#0288d1',
     'Siemens MRI':'#e65100','Siemens CT':'#bf360c',
-    'Philips':'#6a1b9a','Injector':'#00695c'
+    'Philips':'#6a1b9a','Injector':'#00695c',
+    'Hitachi MRI':'#7b1fa2','Toshiba MRI':'#c62828'
   };
   const sysCls = {
     'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
     'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
-    'Philips':'dg-philips','Injector':'dg-injector'
+    'Philips':'dg-philips','Injector':'dg-injector',
+    'Hitachi MRI':'dg-hitachi-mri','Toshiba MRI':'dg-toshiba-mri'
   };
 
   list.innerHTML = guides.map(g => {
@@ -13269,8 +13945,8 @@ function renderDiagGuides() {
           + (tags?'<div class="dg-tags" style="margin-top:5px">'+tags+'</div>':'')
         + '</div>'
         + '<div class="dg-actions">'
-          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(\"'+g.id+'\")" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
-          + (isViewOnly()?'':'<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(\"'+g.id+'\")" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
+          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(&quot;'+g.id+'&quot;)" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
+          + (isViewOnly()?'':'<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;'+g.id+'&quot;)" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
         + '</div>'
       + '</div>'
     + '</div>';
