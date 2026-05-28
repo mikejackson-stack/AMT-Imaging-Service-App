@@ -11964,6 +11964,1098 @@ Acceptance: Pixel intensity 1000-1200
 | Poor quadrature (unequal R1/R2) | Phase error in gradient output | Swap blue cables in rear pedestal; recheck |
 | Pixel average out of 1000-1200 | Gain too high or too low | Recalculate Recon Scale Factor and update |`,
       created: '2026-05-25T00:00:00.000Z'
+    }    ,
+    {
+      id: 'dg_seed_031',
+      title: 'GE ACGD Cabinet Troubleshooting — SGA & PS Fault Tree',
+      system: 'GE MRI',
+      category: 'Gradient',
+      tags: ['ACGD', 'SGA', 'gradient', 'fault', 'PDU', 'power supply'],
+      content: `## GE ACGD Cabinet Troubleshooting (GD4TSC1)
+REV 4 — Feb 2008
+
+> **⚠️ Warning:** If gradient cables are swapped between axes for troubleshooting, always run Geometry Verification before returning to clinical use.
+
+## Priority Fault Order (Check in This Sequence)
+
+### 1 — SGA Rollover Fault (highest priority)
+- Error codes: **2244582, 2244583, 2244584**
+- Action: STOP — ignore all other faults until resolved
+
+### 2 — SGA Overrange Fault
+- Error codes: **2244579, 2244580, 2244581**
+- Action: STOP — ignore all other faults until resolved
+
+### 3 — SGA PS Cable Off Fault (2244586)
+- Check cable connections between GP and SGA PS
+
+### 4 — SGA PS Power Off Fault (2244587)
+- Push EMO reset button, then check 402V connection from SGA PS to PDU
+- If connection OK → Replace SGA PS
+
+## SGA Fault Isolation Tree
+
+| Fault | Error Code | First Check | If OK |
+|-------|-----------|-------------|-------|
+| SGA Cable OFF | 2244571 | Check 208V connection on SGA to PDU | Check SGA control board seated → Replace SGA |
+| SGA Power OFF | 2244572 | Check cable connections GP ↔ SGA | Replace SGA |
+| SGA Wiring & PS Under Voltage | 2244573 | Check connections | Replace SGA |
+| SGA Over Current | 2244574 | Check IGBT gate drives | Replace SGA |
+| SGA Over Voltage | 2244575 | Check output cables to PDU | Replace SGA |
+| SGA Under Voltage | 2244576 | Check input supply | Replace SGA |
+| SGA Current Distortion | 2244577 | Low priority — review after others clear | — |
+| SGA Over Temperature | 2244578 | Check cabinet fan direction | Replace SGA |
+| SGA Fails Ready | 2244570 | All above clear? | Replace SGA |
+| SGA Fails Standby | 2244593 | Power cycling | Replace SGA |
+| SGA Internal Wiring Under Voltage | 2244588 | Internal wiring | — |
+
+## SGA-PS Fault Isolation
+
+| Fault | Error Code | First Check |
+|-------|-----------|-------------|
+| PS Cable Off | 2244586 | Cable between GP and SGA-PS |
+| PS Power Off | 2244587 | 402V connection; push EMO reset |
+| PS Over Temperature | 2244589 | Cabinet fan running correct direction |
+| PS Over Current | 2244590 | Check for shorted diode module |
+| PS Over Voltage | 2244591 | Loose connectors to SGA |
+| PS Under Voltage | 2244592 | Shorted semiconductors in SGA or PS |
+| PS Fails Ready | 2244585 | All others clear → Replace PS |
+
+## PDU Troubleshooting
+- Check all EMO loop connections
+- Verify 208V and 402V tap settings
+- Measure voltages at PDU terminal blocks
+- Inspect E-stop loop continuity
+
+## Hardware Fault vs. Software Fault
+- **Hardware faults**: Follow the fault trees above using error code numbers
+- **Software faults**: Listed in Table 2-1 as Invalid Update Error — typically requires reflash`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_032',
+      title: 'GE SGA-PS LED Reference — All 16 Indicators Explained',
+      system: 'GE MRI',
+      category: 'Gradient',
+      tags: ['SGA', 'power supply', 'LED', 'IGBT', 'fault', 'gradient amplifier'],
+      content: `## SGA Power Supply LED Reference (GD4TSC2)
+REV 0 — May 2001
+
+The SGA-PS contains 3 transformers (one per axis). Primary current is controlled by the PS; secondaries feed the SGAs.
+
+## LED Descriptions
+
+| LED | Meaning | Common Cause When Lit Fault |
+|-----|---------|---------------------------|
+| **ISEC X/Y/Z** | Secondary current flowing to SGA for that axis | Normal when scanning |
+| **IPX/Y/Z OC** | Over current on transformer primary | Shorted transformer primary (uncommon) |
+| **ISX/Y/Z OC** | Over current on transformer secondary | Blown IGBT in SGA, or shorted diode module in PS |
+| **OVX/Y/Z** | Over voltage on PS output | Loose connectors to SGA |
+| **UVX/Y/Z** | Under voltage on PS output | Shorted semiconductors in SGA or PS |
+| **ITANK OC** | Sum of all primary currents too large | Heavy load on all 3 axes simultaneously (uncommon) |
+| **BUS OV** | Over voltage on input bus (420 VAC → 3-phase rectifier) | Check PDU tapping, measure 420V at terminal block |
+| **BUS UV** | Under voltage on input bus | Mis-tapped PDU, or line sags |
+| **PSWF** | Power Supply Wire Fault: 5V/15V low OR internal connector loose | Line sags (known issue — engineering fix on control transformer/gate driver) |
+| **FREQ** | IGBT switching frequency indicator | Control signal only — not a fault |
+| **GD** | Gate Drive power supply switching | **Solid red or solid green = problem** on control board or gate driver → IGBTs will not switch → Replace PS |
+| **TJOT** | Ignore — not meaningful | — |
+| **HSOT** | Heatsink over temperature | Check cabinet fan direction |
+| **FAULT** | Any fault above is active, OR reset pushbutton pressed | Check other LEDs for root cause |
+| **LEFT FF / RIGHT FF** | IGBT switching indicators | Normal flicker during scanning |
+| **VINV** | IGBTs are switching | Control signal only |
+
+## Quick ISX/Y/Z OC Diagnosis
+1. Check gate drive indicators on the SGA heatsink
+2. If gate drive LEDs are **out** → SGA has blown IGBT → Replace SGA
+3. If gate drive LEDs are **on** → shorted diode module in PS → Replace PS`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_033',
+      title: 'GE Multicoil TR Bias Fault Isolation',
+      system: 'GE MRI',
+      category: 'RF / Coils',
+      tags: ['multicoil', 'TR bias', 'PIN diode', 'SSM', 'CPD', 'phased array'],
+      content: `## GE Multicoil TR Bias Fault Isolation (Section 10)
+
+## Theory Overview
+TR bias is supplied from the SSM through the Multicoil Select Switch and Preamp Protect Module to switch PIN diode circuitry inside phased-array coils.
+
+| Signal | Purpose |
+|--------|---------|
+| **−5V** (receive phase) | Reverse-bias PIN switch → **tunes** the coil |
+| **+5V** (transmit phase) | Forward-bias PIN switch → **detunes** the coil |
+| **+5V** (receive, unused coils) | Detuning coils not selected → "hard off" = biased + switched from receive line |
+
+- **Hard off**: coil reverse-biased AND switched from receive line — most effective isolation
+- **Soft off**: coil reverse-biased but not switched — less effective
+
+## Isolation Procedure
+
+### Step 1 — Setup
+1. Set up a scan using the **CTLTOP coil** (even if site doesn't have it)
+2. Run **Manual Prescan → Done**
+3. Refer to CTLTOP Multicoil diagram on the 8.X Service CD-ROM: *Coils → Multicoil Control Diagrams → "1.5T Teledyne, USAI As Well As 1.0T CTL Coils"*
+   - This diagram works for 1.0T systems as well
+
+### Step 2 — Measure at J20 MC SIGNALS (rear of SSM)
+Use a DMM to measure between Multicoil Driver pins and Common pins.
+
+#### Expected Voltages for CTLTOP Coil Selection
+
+| Driver | Pin | Expected Voltage | Common Pins |
+|--------|-----|-----------------|-------------|
+| 1 | 8 | −5 VDC | 10, 11, 12, 13, 14, 15 |
+| 2 | 6 | −5 VDC | 10, 11, 12, 13, 14, 15 |
+| 3 | 3 | −5 VDC | 10, 11, 12, 13, 14, 15 |
+| 4 | 1 | +5 VDC | 10, 11, 12, 13, 14, 15 |
+
+Trace voltages through chain to Preamp Protect Module in Low Profile Carriage Assembly if needed.
+
+### Step 3 — Diagnosis
+- If multicoil drive voltage **missing from SSM** → **Replace CPD Board**
+- If voltages present at SSM but absent downstream → trace connector chain to Preamp Protect Module
+
+### Notes
+- Reconnect all cables after testing
+- Return to the fault flowchart after each step`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_034',
+      title: 'GE HFO ShimConfig & Z2 Shim Power Supply Commands',
+      system: 'GE MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['HFO', 'shim', 'ShimConfig', 'Z2', 'power supply', 'OpenSpeed', 'C-shell'],
+      content: `## GE HFO ShimConfig & Z2 Power Supply Communication
+
+## ShimConfig.cfg File
+**Location:** \`/usr/ng/w/config/ShimConfig.cfg\`
+
+**Contains (per coil):**
+- Harmonic naming order
+- Current calculation: on or off
+- Existing coil current value
+- Perturbation current value
+- Maximum power supply current
+- Power supply or gradient coil name
+- Harmonic name
+
+**Editor:** Use \`vi\` or \`jot\` to edit the file
+> The file contains information for ALL magnets in a site — be careful to edit only the correct magnet's section (Illustration 6-1 highlights OpenSpeed shim section)
+
+## Communicating with the Z2 Power Supply
+Open a C-shell and use the following commands:
+
+| Command | Action |
+|---------|--------|
+| \`cu z2supply\` | Connect to Z2 power supply |
+| \`gv\` | Read software revision |
+| \`re\` | Reset the supply (requires software rev 4.07 or higher) |
+| \`gc z5\` | Read current to supply (8192 counts = 1 amp; max 32767) |
+| \`sc z5 <value>\` | Set current (value in counts) |
+| \`~ .\` | Exit connection |
+
+## Count Conversion
+- **8192 counts = 1 amp**
+- **32767 counts = maximum current**
+- Formula: Amps = counts ÷ 8192`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_035',
+      title: 'GE LCC Shim Lead De-icing Procedure',
+      system: 'GE MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['LCC', 'shim lead', 'de-ice', 'helium', 'nupro', 'quench', 'V2'],
+      content: `## GE LCC Shim Lead De-icing Procedure
+
+> **⚠️ WARNING — RISK OF QUENCH**
+> Do NOT attempt this procedure unless instructed by magnet service engineers or a GE MR specialist.
+> Do NOT increase flow over **140 CFH** or allow magnet pressure above **0.5 PSI**.
+
+## Required Conditions
+- Minimum helium level: **85%** prior to start
+- Magnet pressure: set between **0.2 and 0.4 PSI** (ideally adjusted the week prior)
+
+## Tools Required
+- 3 ft hose with quick disconnect on one side and Nupro valve fitting on the other
+- 20 ft hose with quick disconnects on both sides
+- Flow meter (keep **vertical** to read correctly)
+- Shim supply and cables for continuity check
+- One cylinder of pure He gas
+
+## Procedure
+
+1. **Lower magnet pressure in advance to 0.4 PSI** if possible
+2. Purge flow meter → connect 20 ft hose → purge as well
+3. Keep flow meter **vertical** at all times
+4. Set flow to **140 CFH** (start at 60–80 CFH and increase gradually)
+   > Starting at 80–100 CFH and increasing is best practice to verify flow before going to max
+5. Connect 3 ft hose to Nupro valve → open valve to purge → close valve
+6. **Open V2** to lower magnet pressure to 0.2 PSI
+7. Connect 20 ft hose to 3 ft hose
+8. Keep **V2 open** throughout (prevents rapid pressure increase) — watch pressure continuously
+9. Lower shim lead until it reaches the top of the ice or sav-con connector
+10. **Open Nupro valve slowly** — leave open for **maximum 2–3 minutes**
+    - Do NOT let magnet pressure exceed **0.5 PSI**
+    - Keep V2 closed when NOT flowing He or attempting insertion
+11. Try reseating the shim lead and repeat until good connectivity is achieved
+
+## If Unsuccessful After Several Attempts
+- Heat shim lead with **heat gun**
+- Lower down with Nupro valve open
+- Repeat procedure`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_036',
+      title: 'GE LCC Magnet — Helium Loss & High Pressure Troubleshooting',
+      system: 'GE MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['LCC', 'helium', 'helium loss', 'high pressure', 'coldhead', 'leak', 'cryogen'],
+      content: `## GE LCC He Loss & High Pressure Troubleshooting (Direction 2192624, Rev 8)
+
+> **Note:** On a Zero Boil-Off magnet, helium loss should be **immeasurable** over weeks to months. Any measurable loss requires investigation.
+
+## Establishing the Loss
+1. Magnet must be in **normal operating mode**, stabilized after ramp or fill
+2. Take **two data sets over time** (2 days to 2 weeks depending on leak size) with calibrated instrumentation at the same vessel pressure
+
+## Troubleshooting Tools Required
+- Portable Liquid Helium Level Meter (2270571)
+- Leak detector: Bird Dog Quart Spray (DOG-1Q), Big Blue (Rt100S/Rt100G), Snoop, or portable leak detector
+- Leybold Leak Detector
+- Portable RuO Temperature Monitor (2171219) from Kit 2183710
+- Plexiglass Heat Exchanger Cover Plate (2174214)
+- Helium gas tubing
+- O-Rings from Spare Parts Kit (46-294744G5)
+- Transition Flange O-Ring (46-281247P1)
+
+## Helium Flow Path (Key Reference Points)
+Liquid He (LHe) and Gaseous He (GHe) travel through:
+\`Recondenser → Coldhead Sleeve → Plenum → Vent Check Valve → Room Vent\`
+Pressure relief: **5.25 PSIG relief valve** | **10 PSIG burst disc**
+
+## Common Leak Locations to Check
+1. Fill port and fill port cap O-rings
+2. Coldhead sleeve / recondenser interface
+3. Shim lead connector seals (if icing present — see LCC Shim Lead De-icing guide)
+4. Helium flexlines to/from coldhead
+5. Transition flange O-ring
+6. Pump-out port plug
+7. Vent check valve
+
+## De-icing Tools (Shim Lead / Vertical Penetration)
+- Lexan Cover Plate (46-294765G1)
+- Helium Pressure Regulator and Hose Kit (46-306734G1)
+- Nonmagnetic He cylinders
+- Tygon tubing
+- Deicing Purge Tube (2347725)
+- Ice-coring saws: 1/2 in (2280035) and 3/4 in (2278972)
+
+## Coldhead Replacement Tools (if coldhead change required)
+- New/reconditioned Coldhead (2218465)
+- Coldhead Replacement Gasket Kit (2171620)
+- Getter Bag (2290272 — 12 bags, 1 per change)
+- Universal Coldhead Replacement Tool Kit (2300306)
+- Coldhead Insertion and Purge Cover Tools Kit (2232674) for fixed sites
+- LCC Mobile Coldhead Tool Kit (2275779) for mobile sites
+- Portable O2 Monitor (2106236 or 2106237)`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_037',
+      title: 'GE MRI PM Checklist — 9x through 12x Systems (Full Field Steps)',
+      system: 'GE MRI',
+      category: 'PM / Preventive Maintenance',
+      tags: ['PM', 'preventive maintenance', '9x', '10x', '11x', '12x', 'DQA', 'LVshim', 'SNR', 'gradient cal'],
+      content: `## GE MRI Preventive Maintenance — 9x through 12x Systems
+
+> **📸 Take photos of everything throughout the PM**
+
+## On Arrival
+1. Talk to customer/tech — document any reported issues
+2. Review previous scans for image quality issues
+3. Run **Save Info** to check MOD/CD drives functionality
+4. **Set date and time** after restart (login root → operator to set)
+
+## Scan Room Checks
+5. Test patient alert systems: squeeze ball, Gating Cable, Respiratory Bellows, PG Probe
+6. Check **patient table release** at end of table and arm boards on sides
+7. Test **dock emergency release** — pull handle out and push back in; re-dock table
+8. Run table halfway in → press down foot lever → verify table does NOT go down while in bore
+9. Unhook patient table → flip over → check each wheel spins freely
+   - **Once a year:** switch out or soak wheels
+10. Run table to full back (end of bore)
+11. Inspect bore for any metal objects
+12. Go to doghouse (back of magnet) → check **cable release lever** under back of doghouse
+13. Flip table motor → check wheels
+14. Remove doghouse side covers → check underneath with flashlight for metal
+15. Set table back → run to home position
+
+## Magnet Checks
+16. Check **coldhead** for condensation
+17. Clean patient table and front covers with magic eraser
+
+## System Shutdown for Service
+18. Place head coil and DQA phantom on table
+19. Shut down the system from host computer (press red button on cabinets when down)
+20. Vacuum all filters on cabinets
+21. **Record MagMon data:** compressor hours, pressure, check water lines and helium lines
+22. Inspect chiller — ensure adequate water/glycol level
+
+## System Restart
+23. Vacuum out console fans and graphics card
+24. Turn on cabinets: pull lever up → push down → press green button
+
+## Semi-Annual / Annual Checks (Twice a Year)
+- Check ERU
+- Check all cables on pin panel for tightness
+- Check magnet room door frame
+- Check water chiller filter (if very dirty, clean next PM and note)
+- Check placement of magnet room warning signs
+- Test emergency stop buttons (**NOT** the quench button)
+
+## Calibrations & Image Quality
+
+### ISO Center
+- Run ISO center per separate procedure document
+- **TPS reset** after ISO (9x systems must shut down completely)
+
+### DQA Calibration
+- Run DQA calibration per separate procedure document
+
+### Gradient Calibration (NEMA Cals/Check)
+- Run grad cal → **two images for X, Y, and Z**
+- Verify correct images are selected in DQA cal
+- Write down old **and** new numbers; find the difference
+- Go to Research Options → Display CVs → enter CV name (e.g., cfxfull)
+- **⚠️ WRITE DOWN OLD NUMBER — DO NOT WRITE NEW NUMBER DIRECTLY**
+- Add or subtract the difference from the value shown in CVs
+
+### Head SNR
+- Use TLT phantom in head coil
+- Scan axial, sagittal, and coronal
+- **Acceptance specs:** 1.0T: 18, 1.5T: 29.1, 3T: 21.8
+
+### Body SNR
+- Use large TLT phantom, no coil
+- Scan axial, sagittal, and coronal
+- **Acceptance specs:** 1.0T: 39–53, 1.5T: 74–79
+
+### CTL Coil Scan Parameters
+| Parameter | Value |
+|-----------|-------|
+| Patient ID | geservice |
+| Coil | CTL Top then CTL Bottom |
+| Plane | Sagittal |
+| Mode | 2D |
+| Pulse Seq | Spin Echo |
+| Grad Mode | Whole (also Zoom if functioning) |
+| # of TEs | 1 |
+| TE | Minimum |
+| TR | 300 |
+| Bandwidth | 15.63 |
+| FOV | 48 |
+| Slice Thickness | 3 mm |
+| Spacing | 0 |
+| Frequency | 256 |
+| Phase | 256 |
+| NEX | 1 |
+| Phase FOV | 1 |
+| # of slices | 1 |
+
+- Before scan: right-click → Research Options → Display CVs → **Saveinter → current value = 1**
+
+### DC Offsets
+- No coil needed
+- **TPS reset** after DC offsets
+
+### LV Shim
+- Use Dino ball phantom
+- Refer to LVshim steps document
+
+## Wrap-Up
+- Once scans complete: C-shell → \`storelog\` → Enter
+- Run Save Info: Guided Install → Save/Restore → Save Info
+- Remove all phantoms and coils
+- Follow site shutdown procedures (up or down per site preference)
+- **Update site logbook and clean up**`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_038',
+      title: 'Sumitomo Compressor Test Reference — Pressures, Water & Oil',
+      system: 'GE MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['compressor', 'Sumitomo', 'CSW', 'static pressure', 'dynamic pressure', 'water cooling', 'adsorber'],
+      content: `## Sumitomo Compressor Test Reference (Water-Cooled CSW)
+
+## Electrical
+| Parameter | Value |
+|-----------|-------|
+| Incoming power | **480 VAC** |
+
+## Adsorber Service Life
+| Parameter | Value |
+|-----------|-------|
+| Adsorber service interval | **27,000 hours** |
+
+## Water Cooling Requirements
+| Parameter | Value |
+|-----------|-------|
+| Water temperature range | **10°C to 20°C** |
+| Water flow rate | **1.3 GPM** (water) to **2.6 GPM** (glycol) |
+
+## CSW Pressure Specifications
+| Measurement | Specification |
+|-------------|--------------|
+| Static pressure | **1.6 to 1.65 MPa** |
+| Dynamic pressure | **2.1 to 2.3 MPa** |
+
+## Gas Line Feel Check
+| Line | Expected Feel |
+|------|--------------|
+| Supply line | **Cold** |
+| Return line | **Warm** |
+
+## Oil Contamination Detection
+- Visible under **black light** on the connection between coldhead and compressor lines
+- Check connection points at the flex line fittings`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_039',
+      title: 'Siemens VLM Gradient Supervision — Troubleshooting Guide',
+      system: 'Siemens MRI',
+      category: 'Gradient',
+      tags: ['VLM', 'gradient supervision', 'airflow', 'pressure', 'LED', 'Espree', 'Avanto', 'Aera'],
+      content: `## Siemens VLM Gradient Supervision Troubleshooting
+
+## VLM LED Status Indicators
+
+| LED | Color | Meaning |
+|-----|-------|---------|
+| OK | Green | System operating normally |
+| FAULT | Red | Fault condition detected |
+| FIRE | Red (flashing) | Fire/overtemp detected |
+
+## Airflow Specifications
+| Parameter | Specification |
+|-----------|--------------|
+| Normal airflow range | **12 to 24 L/min** |
+| Pressure differential (max) | **< 40 Pa** |
+
+## Common VLM Faults
+
+### Differential Pressure Fault
+- **Cause:** Clogged filter, blocked airflow path, or fan failure
+- **Check:** Inspect filter condition (replace if >6 months or visibly clogged)
+- **Check:** Verify fan is spinning (listen/feel at exhaust)
+- **Measure:** Pressure differential across gradient coil — must be < 40 Pa
+- **Action:** Replace filter → reset VLM → verify pressure drops to normal range
+
+### Low Airflow Fault
+- **Cause:** Filter restriction, fan degradation, or duct obstruction
+- **Check:** Flow rate at 12–24 L/min spec
+- **Action:** Replace filter first; if persists, inspect fan motor and ducting
+
+### VLM Software / Password Recovery
+- VLM Passwords stored locally (see VLM Passwords.txt in site documentation)
+- VLM Software Guide available for Win7 installations
+
+## Filter Replacement
+- Old filter appearance: yellowed/grey buildup (see site photo reference)
+- Replace filter whenever: visually dirty, fault occurs, or at each semi-annual PM
+- Part: see site-specific VLM filter part number
+
+## VLM Connection
+- See VLM Connection Overview document for wiring topology
+- Software installation: VLM_SW_Win7 package (DW201802011816)
+
+## Related Documents
+- MR059_11_S Espree Gradient Supervision Yes_6M_4.5h (performance data)
+- RE: Gradient Supervision VLM Troubleshooting (field notes)`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_040',
+      title: 'Siemens Aera / Avanto — Cooling System Troubleshooting (TSG)',
+      system: 'Siemens MRI',
+      category: 'Cooling',
+      tags: ['Aera', 'Avanto', 'Espree', 'cooling', 'chiller', 'water', 'TSG', 'gradient cooling'],
+      content: `## Siemens Aera / Avanto Cooling System Troubleshooting
+
+Reference: Aera Cooling TSG M7-000.840.18.06.02 / Avanto Cooling TSG M6-020.840.18.07.02
+
+## Cooling System Overview
+The gradient cooling system removes heat generated by the gradient coils during scanning. The system includes:
+- Gradient coil water cooling loop
+- RF amplifier cooling
+- Cabinet air cooling
+- Body chiller (for patient comfort)
+
+## Common Cooling Faults
+
+### Gradient Overtemperature
+- **Symptom:** Scanning stops, GradTempFault message
+- **Check:** Water flow rate and temperature at inlet
+- **Check:** Chiller status — is chiller running and maintaining setpoint?
+- **Check:** Inspect for air locks in gradient cooling loop
+- **Action:** Purge air from lines → check chiller coolant level → verify flow rate
+
+### Chiller Not Reaching Setpoint
+- **Check:** Ambient temperature — room must be within spec
+- **Check:** Coolant level in chiller reservoir
+- **Check:** Chiller condenser fins for dust buildup (clean if needed)
+- **Check:** Water/glycol concentration — test with refractometer
+
+### Water Leak Detection
+- Inspect all hose connections at gradient coil, RF amp, and cabinet heat exchangers
+- Check drip tray under gradient cabinet for pooling
+- Inspect flex hose condition (replace if cracked or hardened)
+
+### Body Chiller Issues
+- Check water temp and flow at body chiller inlet
+- Verify chiller setpoint matches specification
+- Check for refrigerant charge if temperature not reaching setpoint
+
+## Cooling Specifications (Reference)
+| Parameter | Typical Value |
+|-----------|--------------|
+| Gradient inlet water temp | 15–20°C |
+| Maximum gradient outlet temp | 35°C |
+| Body chiller setpoint | ~18°C |
+
+## Aera Cooling System Documents
+- Aera Cooling TSG: M7-000.840.18.06.02
+- Aera Cooling TSG (alternate): Aera cooling TSG.pdf`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_041',
+      title: 'Siemens Aera / Avanto — Patient Table & Handling Troubleshooting',
+      system: 'Siemens MRI',
+      category: 'Patient Table',
+      tags: ['Aera', 'Avanto', 'Skyra', 'patient table', 'cradle', 'transport', 'TSG', 'docking', 'undocking'],
+      content: `## Siemens Aera / Avanto Patient Table & Handling Troubleshooting
+
+Reference: Aera-Skyra Patient Table TSG M7-000.841.15.19.02 / Avanto Patient Handling M6-020.841.15.14.02
+
+## Common Table Faults
+
+### Table Will Not Dock
+- **Check:** Table alignment — must be centered on dock rails
+- **Check:** Dock sensor cleanliness (wipe with dry cloth)
+- **Check:** Table lock mechanism for debris or damage
+- **Check:** Table battery charge level (powers dock detection)
+- **Action:** Manually align → retry docking → if sensor fault persists, check dock sensor wiring
+
+### Table Will Not Undock / Emergency Release
+- **Emergency release location:** Below table at the docking mechanism
+- Pull release handle fully to manually disengage
+- **Verify:** Emergency release functions during each PM
+
+### Table Drive Not Working
+- **Check:** Table enable signal from system console
+- **Check:** Table motor power supply (check fuse)
+- **Check:** Table control board connections
+- **Action:** Power cycle table controller; if persistent, replace table drive board
+
+### Table Height Not Adjusting
+- **Check:** Height motor limit switches (top and bottom limits)
+- **Check:** Motor drive fuse
+- **Action:** Manually verify full travel range; replace motor or drive if failed
+
+### Cradle Not Moving / Cradle Error
+- **Check:** Cradle position sensor alignment
+- **Check:** Cradle drive belt tension and condition
+- **Check:** Cradle latch engagement
+- **Action:** Re-align position sensors; replace belt if worn
+
+### Patient Alert / Emergency Stop from Table
+- Test squeeze ball and all emergency stop functions at each PM
+- Check cable connections at table base and at bore end
+
+## Caster and Arm Board Maintenance
+- Check caster spin freely — replace or soak if seized
+- Check arm board set screws for tightness at each PM
+
+## PM Inspection Checklist (Table)
+- [ ] Test dock and undock
+- [ ] Test emergency undock release
+- [ ] Check all casters spin freely
+- [ ] Verify arm board set screws tight
+- [ ] Test height adjustment (full travel)
+- [ ] Test cradle movement
+- [ ] Test patient alert systems
+- [ ] Clean table surface and rails
+- [ ] Check all cable routing for wear
+
+## Reference Documents
+- Aera Patient Table TSG: M7-000.840.15.10.02
+- Aera-Skyra Patient Table TSG: M7-000.841.15.19.02`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_042',
+      title: 'Siemens Coldhead Compressor Static Pressure Reference',
+      system: 'Siemens MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['compressor', 'coldhead', 'static pressure', 'Aera', 'Skyra', 'Avanto', 'Espree', 'APD', 'Leybold'],
+      content: `## Siemens Coldhead Compressor Static Pressure Reference
+
+Static pressures measured when compressor is **off and system is at ambient temperature** (not running).
+
+## Static Pressure Specifications
+
+| System / Model | Compressor Type | Static Pressure (Bar) |
+|---------------|----------------|----------------------|
+| Aera 1.5T | APD HC-10 | **13.5 – 14.0** |
+| Skyra 3T | APD HC-10 | **13.5 – 14.0** |
+| Avanto 1.5T | APD HC-10 | **13.5 – 14.0** |
+| Espree 1.5T | APD HC-10 | **13.5 – 14.0** |
+| Symphony / Sonata | Leybold | Check Leybold spec (varies by model) |
+
+## Notes
+- Static pressure must be checked **before** system startup after a compressor change
+- Low static pressure indicates **adsorber saturation** or **He gas loss**
+- Adsorber requires replacement if static pressure is consistently low
+- Use **F75-05A MXR Refrigeration Field Data Sheet** to record arrival, during, and final readings
+- Also record: dynamic pressure, water temps, flow rates, compressor hours
+
+## Field Data to Record (F75-05A)
+| Parameter | Record |
+|-----------|--------|
+| Temp In (°C) | Water inlet temp |
+| Temp Out | Water outlet temp |
+| Flow (L/min) | Coolant flow rate |
+| Static Press | Before startup |
+| Dynamic Press | During operation |
+| Comp Hours | From compressor display |
+| HP / LP gas temps | He supply/return |`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_043',
+      title: 'Siemens De-ice Parts List — Symphony, Espree/Avanto, Aera',
+      system: 'Siemens MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['de-ice', 'parts', 'Symphony', 'Espree', 'Avanto', 'Aera', 'turret', 'syphon', 'seal', 'MXR'],
+      content: `## Siemens De-ice Parts List (MXR/Siemens)
+
+## Symphony OR70 De-ice Parts
+
+| MXR Part # | Siemens Part # | Description | Price |
+|-----------|---------------|-------------|-------|
+| 74-81030067 | 3228678 | C-Seal, QV to Turret | $300 |
+| 74-81050169 | 3108078 | Ferrule Syphon CU | $25 |
+| 74-81050170 | 3108086 | Ring Compression He Syphon | $15 |
+| 74-81030094 | 3108094 | Seal He Syphon CU | $10 |
+| 74-81031134 | 4763342 | All three compression seals kit | — |
+| 74-81030095 | 3228710 | Seal Baffle CU | $75 |
+| 74-81030062 | 10100140 | O-Ring QV Poppet | $25 |
+| 74-81030072 | 1564025 | Seal High Vacuum NW25 | $75 each × 3 = $225 |
+| — | 4763483 | DCL Baffle | $500 |
+| 74-81050146 | 10104867 | Guide Tube Assembly | $2,300 |
+| 74-81040133 | 4295437 | Pressure Gauge (Color Bands) | $2,350 |
+| — | 10129360 | Burst Disc Graphite 10 PSI 90mm NB | $600 |
+| 74-81031123 | 10100171 | NW40 Helicoflex Seal | $200 |
+| — | 10100483 | NW40 Blank ST Polaron KF40B | $75 |
+| 74-81050168 | 3228249 | Ring Nut He-Syphon | $60 |
+
+## Espree / Avanto De-ice Parts
+
+| MXR Part # | Siemens Part # | Description | Price |
+|-----------|---------------|-------------|-------|
+| 74-81031085 | 10614121 | Turret Top Seal — Helicoflex 117.5mm OD | $129 |
+| 74-81031116 | — | Syphon Port Seal | $30 |
+| 74-81031123 | — | NW40 High Load Seal | $219 |
+| — | 10614119 | Helicoflex Seal 54.7mm OD (auxiliary line, top plate) | — |
+| — | 10121913 | Auxiliary Burst Disc | — |
+| — | 10129362 | Main Burst Disc | — |
+| — | 10100140 | Poppet O-Ring | — |
+| 74-81140837 | — | RDK-408L2 Coldhead | — |
+| 74-81150812 | — | F70 Adsorber | — |
+
+## Aera De-ice Parts
+
+| Siemens Part # | Description |
+|---------------|-------------|
+| 10614120 | Turret Top Seal — Helicoflex 188.5mm OD |
+| 10614119 | Helicoflex Seal 54.7mm OD (auxiliary line, top plate) |
+| 03108094 | Syphon Port Seal |`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_044',
+      title: 'Siemens Mobile Helium Fill Line — Parts & Pricing Reference',
+      system: 'Siemens MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['helium fill', 'mobile fill line', 'syphon', 'parts', 'pricing', 'Siemens'],
+      content: `## Siemens Mobile Helium Fill Line Parts Reference
+
+Pricing based on 35% off Siemens list price.
+
+## Fill Line Parts
+
+| Siemens Part # | MXR Part # | Description | Our Cost | 35% Off List Quote | Siemens List |
+|---------------|-----------|-------------|----------|-------------------|--------------|
+| 10102897 | — | Extended Syphon | $1,615.36 | $4,150 (outright) | $6,394 outright / $3,536.35 exchange |
+| 3228249 | 74-81050168 | Ring Nut He-Syphon | $29.18 | $75 (outright) | $112 list / $84 current |
+| 4763392 | 74-81301134 | Syphon Sealing Kit | $22.75 | $60 (outright) | $87 list / $65.25 current |
+| 10103250 | 74-81031116 | Copper Seal Syphon Port Upper | $4.90 | $15 (outright) | $25 list / $18.75 current |
+| 8396967 | — | Syphon Ext Leg Assembly (140L) × 2 | $51.44 × 2 = $102.88 | $200 × 2 = $400 | $312.79 |
+| 10111795 | — | PTFE Syphon Diffuser | $39.57 | $100 (outright) | $198 list / $148.50 current |
+
+**Total Cost:** $1,814.64
+**Total Sale (35% off):** $4,800
+
+## Notes
+- Pricing reflects 35% discount off Siemens list price (standard discount tier)
+- Exchange pricing available on Extended Syphon
+- Confirm current pricing with Siemens Parts before quoting`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_045',
+      title: 'Siemens 4K MXR Refrigeration Field Data Sheet — De-ice Recordkeeping',
+      system: 'Siemens MRI',
+      category: 'Magnet / Cryogen',
+      tags: ['de-ice', 'field data', 'recordkeeping', 'refrigeration', 'MXR', '4K', 'F75-05A', 'magnet data'],
+      content: `## Siemens 4K MXR Refrigeration Field Data Sheet (F75-05A Rev A)
+
+Use this form structure to record all data during a Siemens de-ice or compressor service visit.
+
+## Compressor Data (Record Arrival and Final)
+
+| Parameter | Arrival | After Exit | Final |
+|-----------|---------|-----------|-------|
+| Temp In (°C) | | | |
+| Temp Out | | | |
+| Flow (L/min) | | | |
+| Static Press. | | | |
+| Dynamic Press. | | | |
+| Comp Hours | | | |
+
+## Magnet Data (Record Arrival, After, Exit, Final)
+
+### Gas Temperatures (°C)
+
+| Parameter | Arrival | After | Exit | Final |
+|-----------|---------|-------|------|-------|
+| HP | | | | |
+| LP | | | | |
+| Helium Level (%) | | | | |
+| Battery Volts (V) | | | | |
+
+### Magnet Temperatures (K)
+
+| Parameter | Arrival | After | Exit | Final |
+|-----------|---------|-------|------|-------|
+| 50K Link (K) | | | | |
+| 50K Bore (K) | | | | |
+| Carbon Res. 1 (Ω) | | | | |
+| Carbon Res. 2 (Ω) | | | | |
+| Carbon Res. 3 (Ω) | | | | |
+| Carbon Res. 4 (Ω) | | | | |
+| Turret 1 (K) | | | | |
+| Turret 2 (K) | | | | |
+| Switch Heater (Ω) | | | | |
+| Quench Heater (Ω) | | | | |
+| Cold Head (K) | | | | |
+| ERDU | | | | |
+| Magnet Pressure (psia) | | | | |
+| Pressure Heater (%) | | | | |
+| Press. Heater Avg. (W) | | | | |
+| EIS | | | | |
+
+### System Self-Tests
+
+| Check | Result |
+|-------|--------|
+| Self-Test | |
+| Compressor | |
+| LVQD Trigger | |
+
+### Magnet Ramping
+
+| Parameter | Value |
+|-----------|-------|
+| Old Set Point | |
+| New Set Point | |
+| Old Center Frequency | |
+| New Center Frequency | |
+
+**Technician Signature and Date:** ___________________________`,
+      created: '2026-05-27T00:00:00.000Z'
+    }    ,
+    {
+      id: 'dg_seed_046',
+      title: 'GE SSM Troubleshooting — Cradle, Dock, Bore Fan, Bore Light, PAC',
+      system: 'GE MRI',
+      category: 'Patient Table',
+      tags: ['SSM', 'cradle', 'dock', 'bore fan', 'bore light', 'PAC', 'SRI', '8x', '1.5T', '1.0T'],
+      content: `## GE 8.x SSM Troubleshooting Overview (RC3TSC8)
+Applies to: 1.5T and 1.0T Signa systems with SSM
+
+## Required Tools
+- 100 MHz Oscilloscope (46-183029P61)
+- RF Power Measurement Kit (46-317724G1 or G2)
+- 50Ω 200W 30dB Attenuator (46-317724P14)
+- RF Test Cables Kit (46-255816G1)
+- Digital Multimeter (DMM) (46-194427P49)
+- TPS RF Service Interface Kit (46-301927G1)
+- 2-inch Copper Tape (46-258218P5)
+
+## Main Flowchart — Which Section to Use
+
+| Symptom | Go To |
+|---------|-------|
+| SRI power problem | SRI Troubleshooting |
+| Cradle motion problem | Cradle Motion TSG |
+| Dock motor doesn't run | Dock Motor TSG |
+| Bore light problem | Bore Light TSG |
+| Patient alignment light problem | Alignment Light TSG |
+| Gradient fan problem | Gradient Fan TSG |
+| Bore fan problem | Bore Fan TSG |
+| PAC power missing | PAC TSG |
+| Image quality problem related to SSM | IQ TSG |
+| Faults interrupting scans | Fault Code Tree (page 19) |
+| ATD III no power | ATD III TSG |
+
+## Cradle Motion Troubleshooting
+
+**Step 1:** Check for "Table is not docked" error in Desktop Manager.
+- If YES → Table uplimit switch not fully depressed by plunger. Adjust table (ref: PT1SCA2.DOC)
+
+**Step 2:** Use emergency release handle on end of cradle to disengage carriage.
+- If carriage travels normally → Check adjustment of cradle latch plunger on carriage
+
+**Step 3:** Check longitudinal drive motor.
+- If motor not turning → See Section 3: Troubleshooting Longitudinal Drive Failures
+- If mechanical clutch slipping → See Longitudinal Drive Clutch Adjustment (PT1SCA1.DOC)
+- If RF interference during scanning → Re-route encoder cable away from body hybrid/RF coil
+
+## Dock Motor Troubleshooting
+
+**Step 1:** Measure at SSM rear test points: +38.5V DOCK and RTN DOCK
+- If OK → Check cable at J47 both sides of Pen Panel and at P1 at Dock
+- If NOT OK → Disconnect J36 DOCK cable and re-measure
+
+**Step 2:** Measure PA LIGHT: +14.25 to +15.75 VDC; BORE LIGHT: +11.4 to +12.6 VDC (use RTN LIGHT)
+- If not in spec → Replace Dock/Light Board
+- If spec OK → Disconnect RUN 387 at dock in magnet room → Check J47 filter on Pen Panel
+
+## Bore Fan Troubleshooting
+
+1. Press Bore Fan button on magnet enclosure keypad
+2. Reset BORE FAN CB1 on SSM rear — if CB1 trips:
+   - **CAUTION:** Ensure CB1 is OFF before touching F5/F6 — they carry 120VAC when energized
+   - Check F5 and F6 filters on Penetration Panel for discoloration or short to ground
+3. Check cable connections at J1 on Fan Cabinet in magnet room
+4. If fan still won't run → Replace CB1 or refer to Section 4 (Bore Fan TSG)
+5. If motor failed → Replace bore fan blower motor (MI0REA2.DOC)
+
+## Bore Light Troubleshooting
+
+1. Check Desktop Manager error window — if "SCB in emulation mode":
+   - Disable emulation via SYSSUC5.DOC Section 2-2 (Stage and Custom Configurations)
+2. Check halogen lamp for broken filament (visual or DMM low-resistance check)
+   - Remove lamp from magnet room before checking with DMM
+3. Measure BORE LIGHT test point vs RTN LIGHT on SSM rear: **+11.4 to +12.6 VDC**
+   - If not in spec → Disconnect RUN 769 from J34 BORE LIGHT and re-measure
+   - Check cable at J15 both sides of Pen Panel and filter for corrosion
+   - If still failed → Replace Dock/Light Board
+4. If in spec → Check cable at bore light fixture; check bulb filament
+
+## PAC (Physiological Acquisition Controller) Troubleshooting
+
+**If all PAC lights extinguished:**
+1. Check PAC voltage configuration (CPD Board Setup RC3SCA2.DOC Section 8)
+2. Measure at SSM rear (reference RTN PAC):
+   - −8V PAC: −7.6 to −8.4 VDC
+   - −15V PAC: −14.25 to −15.75 VDC
+   - +15V PAC: +14.25 to +15.75 VDC
+   - +9V PAC: +8.55 to +9.45 VDC
+3. If all OK → Disconnect J35 PAC and bypass Repeater Panel (re-route RUN 773 from J1 to J89)
+4. If voltages out of spec → Replace Buck/H-Bridge Board
+5. If PAC still dead → Replace PAC (ref appropriate replacement procedure)
+
+## SRI (Scan Room Interface) Voltage Specs
+
+Measure at SSM rear test points:
+
+| Test Point Pair | Specification |
+|----------------|--------------|
+| +24V SRI and RTN +24 SRI | +22.8 to +25.2 VDC |
+| +12V SRI and RTN +12 +8 SRI | +11.4 to +12.6 VDC |
+| +8V SRI and RTN +12 +8 SRI | +7.6 to +8.4 VDC |
+
+If out of spec: Disconnect RUN 772 from J40 SRI → re-measure → check J14 on Pen Panel → Replace Buck/H-Bridge Board
+
+## SSM Error Codes
+| Error # | System Area |
+|---------|------------|
+| 2225510–2225558 | SSM subsystems (cradle, dock, fan, lights, PAC) |
+| 2225570 | SSM fault |
+| 2225737, 2225738 | SSM fault pair |
+| 2225769, 2225770 | SSM fault pair |`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_047',
+      title: 'GE CPD Board — Setup, Calibration & TR Voltage Adjustment',
+      system: 'GE MRI',
+      category: 'RF / Coils',
+      tags: ['CPD', 'SSM', 'TR driver', 'multicoil', 'PAC', 'pin driver', '1.0T', '1.5T'],
+      content: `## GE CPD Board Setup & Calibration (RC3SCA2, Rev 7)
+Applies to: 1.0T and 1.5T RF/PEN II cabinet, RF/PDU cabinet, 1.5T SRF cabinet
+
+## Tools Required
+- 100 MHz Oscilloscope (46-183029P61)
+- Digital Multimeter (DMM) (46-194427P49)
+- Pot Tweaker (46-194427P361)
+
+## Critical Prerequisite — HV Board Jumper JP1
+
+> **⚠️ WARNING:** Incorrect JP1 configuration can cause SNR degradation, Dynamic Disable failures, or Direct Drive failures.
+
+| System | JP1 Position |
+|--------|-------------|
+| 1.5T | **1000V position** |
+| 1.0T | **500V position** |
+
+JP1 sets high voltage bias for Body 1/Body 2 Dynamic Disable circuits and Direct Drive circuitry. Always verify on new HV board installations.
+
+## SSM CAL Switch — Normal vs. Test States
+
+The SSM front panel has 10 test switches. In normal operation all switches are in the DOWN position.
+
+| Switch # | Normal Position | Test Purpose |
+|----------|----------------|-------------|
+| 1–3 | Down | — |
+| 4 | Down | — |
+| 5–10 | Down | — |
+
+Switches are toggled UP to enter specific calibration or test modes. Refer to Table 4-1 in the full document for each switch's specific test function.
+
+## TR Voltage Adjustment (with Pulse Train)
+
+### Hardware Preparation
+1. Enter the appropriate TR voltage adjustment mode using the SSM CAL switch
+2. Connect scope per the procedure
+3. Ensure system is in service mode before making any adjustments
+
+### TR Voltage (Positive) Adjustment Steps
+1. Set CAL switch to appropriate position
+2. Measure TR output with scope
+3. Adjust pot on CPD board to achieve specified voltage
+4. Verify adjustment holds across expected output range
+5. Restore cables and test switches after adjustment (see Section 6-3)
+
+## Multi-Coil Option
+
+### Driver Enable/Disable (Section 7-1)
+- Multicoil driver enable/disable controlled by CPD board jumper setting
+- Refer to Section 7-1 for specific enable/disable configuration
+
+### Multi-Coil −5 VDC Supply Adjustment (Section 7-2)
+- Measures −5 VDC supply to Multicoil Select Switch at J20 (MC SIGNALS)
+- Adjust pot on CPD board to set −5 VDC within spec
+- Out-of-spec −5V causes TR bias faults in phased-array coils
+
+## PAC Voltage Configuration (Section 8)
+Configure from the front panel switches — no tools required:
+
+| PAC Voltage | Configuration |
+|-------------|--------------|
+| −8V, −15V, +15V, +9V | Verify via SSM rear test points (see SSM TSG) |
+
+PAC configuration selects which PAC version is installed (older vs. newer PAC boards have different voltage requirements).
+
+## Power Monitor Type Configuration (Section 9)
+- Configured via front panel switches
+- Sets whether SSM uses a Standard Power Monitor or Universal Power Monitor (UPM)
+- Must match the physical hardware installed in the system`,
+      created: '2026-05-27T00:00:00.000Z'
+    },
+    {
+      id: 'dg_seed_048',
+      title: 'GE MRI Known Artifacts — Identification & Solutions',
+      system: 'GE MRI',
+      category: 'Image Quality',
+      tags: ['artifact', 'image quality', 'ghosting', 'Gibbs', 'fineline', 'Annefact', 'Twinspeed', 'phase wrap', 'Maxwell'],
+      content: `## GE MRI Known Artifacts — Identification & Solutions
+
+## Applications-Related Artifacts
+
+### Annefact
+**Description:** Peripheral signal artifact common on sagittal spine scans with CTL coil.
+**Solution:** Use recommended coil selection and correct FOV size.
+- Each coil segment covers 12 cm, so:
+  - 2 segments (e.g., CS12) → FOV 24 cm
+  - 3 segments (e.g., LS456) → FOV 36 cm
+  - 4 segments (e.g., CTLMID) → FOV > 42 cm
+- Center FOV (S-I direction) in front of the middle of the used elements
+
+### Startifact
+**Description:** Peripheral signal artifact on axial plane scans.
+**Solution:** Use recommended coil selection and correct FOV size to minimize probability.
+
+### Maxwell Term Artifact
+**Description:** Ghosting, blurring, and signal void toward ends of FOV.
+**Root cause:** Running flow compensation while phase and frequency are swapped. Flow comp is applied on the frequency axis — when swapped, generates large Maxwell term down Z axis (S-I).
+**Solution:** Turn off flow compensation when phase and frequency are swapped. There is no benefit — flow comp is no longer in the direction of flow.
+
+### Gibbs Artifact (Ringing)
+**Description:** Series of lines parallel to a sharp intensity edge in the image.
+**Root cause:** Incomplete digitization of the echo — signal not decayed to zero by end of acquisition window; small acquisition matrix exacerbates it.
+**Solution:** Increase matrix size toward a squared matrix (e.g., 256×256 instead of 512×128).
+
+### Fineline Artifact
+**Description:** Fine lines in the image — most visible on small FOV / thin slice scans.
+**Common settings where it appears:** FSE-IR, small FOV, thin slice, very bony structure (foot, knee). Caused by FID from 180° RF pulses. ZIP option can enhance finelines.
+**Solution — Elimination of Fineline Artifacts:**
+- Use true even NEX (e.g., 2 NEX)
+- When NPW selected: use 4 NEX (NPW with 2 NEX = 1 effective NEX → fineline artifact)
+
+### Twinspeed Zoom Artifacts
+**Description:** Looks like an RF zipper artifact; caused by peripheral signal excited outside the FOV.
+**Root cause:** Spatial SAT excites tissue beyond the Zoom coil → crusher gradient becomes ineffective → 3-coil CTL in Zoom mode receives signal from outside FOV → wraps into phase direction.
+**Applications Workarounds:**
+- Eliminate or narrow the SAT pulse width (30 mm)
+- Select coils inside the Zoom limit
+- In almost all cases → **use Whole Mode** to eliminate the artifact
+- Note: 2-coil CTL has ~27% more SNR than 3-coil when FOV allows
+
+### Fat Sat Issues (TwinSpeed)
+**Solution:** Use a **high-order shim** for Fat Sat scans — significantly improves fat suppression uniformity.
+
+### Dot Artifact
+**Solution:** Apply **phase correction** to remove dot artifact.
+
+## Hardware-Related Artifacts
+
+### Motion / Ghosting
+- Check patient motion during scan
+- Check gradient cable seating at rear pedestal
+- Verify gradient waveform integrity — run gradient calibration
+
+### RF Zipper
+- Check for RF intrusion (doors, penetration panel seals, waveguides)
+- Check RF coil connections and cable integrity
+
+### Phase Wrap (Aliasing)
+- Reduce FOV to match anatomy, or
+- Increase Phase FOV (1.0 covers full FOV)
+- Use No Phase Wrap (NPW) option if available
+
+### Respiratory Motion Artifacts
+- Use respiratory gating (Respiratory Bellows or NAV)
+- Use BLADE/PROPELLER sequences for motion-robust imaging`,
+      created: '2026-05-27T00:00:00.000Z'
     }
 ];
 
