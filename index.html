@@ -164,6 +164,13 @@ img{max-width:100%;display:block}
 /* ── MONEY TABS (sub-navigation) ── */
 .money-subtabs{display:flex;overflow-x:auto;scrollbar-width:none;background:var(--gray);border-radius:var(--r) var(--r) 0 0;border-bottom:2px solid var(--gray2)}
 .money-subtabs::-webkit-scrollbar{display:none}
+.dg-pill{font-size:.72rem;padding:4px 11px;border-radius:20px;border:1.5px solid var(--gray2);background:var(--bg);color:var(--text);cursor:pointer;font-weight:600;transition:.15s}
+.dg-pill.active,.dg-pill:hover{background:var(--blue2);color:#fff;border-color:var(--blue2)}
+.dg-pill.ge-mri.active{background:#1565c0;border-color:#1565c0}
+.dg-pill.siemens-mri.active{background:#e65100;border-color:#e65100}
+.dg-pill.ge-ct.active{background:#0288d1;border-color:#0288d1}
+.dg-pill.siemens-ct.active{background:#bf360c;border-color:#bf360c}
+.dg-pill.injector.active{background:#00695c;border-color:#00695c}
 .mst-btn{flex:0 0 auto;padding:11px 16px;font-size:.76rem;font-weight:700;color:var(--text2);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;transition:all .18s;background:none;border-top:none;border-left:none;border-right:none;-webkit-tap-highlight-color:transparent}
 .mst-btn.active{color:var(--navy);border-bottom-color:var(--accent);background:var(--white)}
 .money-subpanel{display:none}
@@ -1165,12 +1172,11 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div id="errResults" style="margin-bottom:8px"></div>
 
   <!-- Sub-tabs -->
-  <div style="display:flex;overflow-x:auto;scrollbar-width:none;background:var(--gray);border-radius:var(--r) var(--r) 0 0;border-bottom:2px solid var(--gray2);margin-bottom:0">
-    <button class="mst-btn active" id="kb-tab-files" onclick="setKBTab('files')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">📁 Manuals</button>
-    <button class="mst-btn" id="kb-tab-parts" onclick="setKBTab('parts')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🔩 Parts</button>
-    <button class="mst-btn" id="kb-tab-kb" onclick="setKBTab('kb')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">🧠 Knowledge Base</button>
-    <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.74rem;padding:9px 12px;white-space:nowrap">⚠️ Error Codes</button>
-          <button class="mst-btn" id="kb-tab-diagguides" onclick="setKBTab('diagguides')">🔧 Diagnostic Guides</button>
+  <div style="display:flex;overflow-x:auto;scrollbar-width:none;background:var(--navy);border-radius:var(--r) var(--r) 0 0;border-bottom:2px solid var(--gold);margin-bottom:0">
+    <button class="mst-btn active" id="kb-tab-diagguides" onclick="setKBTab('diagguides')" style="font-size:.74rem;padding:9px 13px;white-space:nowrap">🔧 Guides</button>
+    <button class="mst-btn" id="kb-tab-files" onclick="setKBTab('files')" style="font-size:.74rem;padding:9px 13px;white-space:nowrap">📁 Manuals</button>
+    <button class="mst-btn" id="kb-tab-parts" onclick="setKBTab('parts')" style="font-size:.74rem;padding:9px 13px;white-space:nowrap">🔩 Parts</button>
+    <button class="mst-btn" id="kb-tab-errcodes" onclick="setKBTab('errcodes')" style="font-size:.74rem;padding:9px 13px;white-space:nowrap">⚠️ Error Codes</button>
   </div>
 
   <!-- FILE EXPLORER -->
@@ -1239,56 +1245,37 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     </div>
   </div>
 
-  <!-- KNOWLEDGE BASE -->
-  <div id="kbp-kb" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
-      <strong style="font-size:.88rem">🧠 Saved Knowledge Entries</strong>
-      <button class="btn btn-success btn-sm" onclick="openKBEntryModal()">+ Add Entry</button>
-    </div>
-    <div class="filter-bar" id="kbCatFilter">
-      <div class="filter-chip active" onclick="setKBCatFilter('')" data-kbcat="">All</div>
-      <div class="filter-chip" onclick="setKBCatFilter('GE')" data-kbcat="GE">GE</div>
-      <div class="filter-chip" onclick="setKBCatFilter('Siemens')" data-kbcat="Siemens">Siemens</div>
-      <div class="filter-chip" onclick="setKBCatFilter('Philips')" data-kbcat="Philips">Philips</div>
-      <div class="filter-chip" onclick="setKBCatFilter('Injector')" data-kbcat="Injector">Injector</div>
-      <div class="filter-chip" onclick="setKBCatFilter('CT')" data-kbcat="CT">CT</div>
-      <div class="filter-chip" onclick="setKBCatFilter('Error Code')" data-kbcat="Error Code">Error Codes</div>
-    </div>
-    <!-- PDF Upload to KB -->
-    <div id="pdfDropZone"
-         style="border:2px dashed var(--gray3);border-radius:var(--r);padding:18px 16px;text-align:center;margin-bottom:12px;transition:.2s;background:var(--gray);cursor:pointer"
-         ondrop="handlePDFDrop(event)" ondragover="event.preventDefault();document.getElementById('pdfDropZone').style.borderColor='var(--blue2)'" ondragleave="document.getElementById('pdfDropZone').style.borderColor='var(--gray3)'">
-      <div style="font-size:1.6rem;margin-bottom:4px">📄</div>
-      <div style="font-size:.82rem;font-weight:600;color:var(--text);margin-bottom:2px">Drop a PDF to add it to the Knowledge Base</div>
-      <div style="font-size:.72rem;color:var(--text2);margin-bottom:10px">Text is extracted and saved as searchable entries</div>
-      <button class="btn btn-primary btn-sm" onclick="document.getElementById('pdfKBInput').click()">📁 Choose PDF</button>
-      <input type="file" id="pdfKBInput" accept=".pdf" style="display:none" onchange="handlePDFUpload(this.files[0]);this.value=''">
-      <div id="pdfUploadStatus" style="font-size:.75rem;color:var(--text2);margin-top:8px;min-height:16px"></div>
-    </div>
-    <div id="kbEntryList"></div>
-  </div>
-
+  
   <!-- ERROR CODE DB -->
   <div id="kbp-errcodes" style="display:none">
     <div class="alert alert-info" style="margin-bottom:10px">📋 Built-in error code reference. Entries from completed jobs are added automatically.</div>
     <div id="errCodeList"></div>
   </div>
 
-  <div id="kbp-diagguides" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
-      <h2 style="margin:0;color:var(--navy)">🔧 Diagnostic Guides</h2>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-        <select id="diagFilterSystem" class="form-control" style="width:auto" onchange="renderDiagGuides()">
-          <option value="">All Systems</option>
-          <option value="GE MRI">GE MRI</option>
-          <option value="Siemens MRI">Siemens MRI</option>
-          <option value="GE CT">GE CT</option>
-          <option value="Siemens CT">Siemens CT</option>
-        </select>
-        <input id="diagSearch" type="text" class="form-control" style="width:200px" placeholder="🔍 Search guides..." oninput="renderDiagGuides()">
-        <button class="btn btn-success" onclick="openDiagGuideModal()">+ Add Guide</button>
+  <div id="kbp-diagguides" style="display:block">
+    <!-- Header row -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:.75rem">
+      <div>
+        <span style="font-size:1.05rem;font-weight:700;color:var(--navy)">🔧 Diagnostic Guides</span>
+        <span id="dgCount" style="font-size:.74rem;color:var(--text2);margin-left:.5rem"></span>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        <input id="diagSearch" type="text" class="form-control" style="width:190px;font-size:.8rem" placeholder="🔍 Search..." oninput="renderDiagGuides()">
+        <button class="btn btn-success btn-sm" onclick="openDiagGuideModal()">+ Add</button>
       </div>
     </div>
+    <!-- System pills -->
+    <div style="display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.6rem" id="dgSysPills">
+      <button class="dg-pill active" onclick="setDGSys('')" data-sys="">All</button>
+      <button class="dg-pill ge-mri" onclick="setDGSys('GE MRI')" data-sys="GE MRI">GE MRI</button>
+      <button class="dg-pill siemens-mri" onclick="setDGSys('Siemens MRI')" data-sys="Siemens MRI">Siemens MRI</button>
+      <button class="dg-pill ge-ct" onclick="setDGSys('GE CT')" data-sys="GE CT">GE CT</button>
+      <button class="dg-pill siemens-ct" onclick="setDGSys('Siemens CT')" data-sys="Siemens CT">Siemens CT</button>
+      <button class="dg-pill injector" onclick="setDGSys('Injector')" data-sys="Injector">Injectors</button>
+    </div>
+    <!-- Category chips -->
+    <div style="display:flex;gap:.3rem;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-bottom:.75rem" id="dgCatChips"></div>
+    <!-- Results -->
     <div id="diagGuidesList"></div>
   </div>
 </div>
@@ -1896,7 +1883,7 @@ function showTab(t){
   if(t==='money'){renderMoney();renderInvoiceList();renderExpenseList();renderDistList();}
   if(t==='pm'){populatePMDropdown();setPMDate();}
   if(t==='manuals'){
-    setKBTab('files');
+    setKBTab('diagguides');
     setTimeout(initManuals, 50);
   }
   // Populate job dropdowns when money tab opens
@@ -3193,13 +3180,12 @@ let editingKBId = null;
 function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); }
 
 function setKBTab(t){
-  ['files','parts','kb','errcodes','diagguides'].forEach(s=>{
+  ['files','parts','errcodes','diagguides'].forEach(s=>{
     const btn = document.getElementById('kb-tab-'+s);
     if(btn) btn.classList.toggle('active', s===t);
     const el = document.getElementById('kbp-'+s);
     if(el) el.style.display = s===t ? 'block' : 'none';
   });
-  if(t==='kb') renderKBEntries();
   if(t==='errcodes') renderErrCodeList();
   if(t==='diagguides') renderDiagGuides();
   if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
@@ -13056,6 +13042,142 @@ PAC configuration selects which PAC version is installed (older vs. newer PAC bo
 - Use respiratory gating (Respiratory Bellows or NAV)
 - Use BLADE/PROPELLER sequences for motion-robust imaging`,
       created: '2026-05-27T00:00:00.000Z'
+    }    ,
+    {
+      id: 'dg_seed_049',
+      title: 'GE MR Host Info — System Paths, Commands & Credentials',
+      system: 'GE MRI',
+      category: 'Host/Software',
+      tags: ['host', 'linux', 'paths', 'commands', 'credentials', 'filesystem', 'MGD', 'SPT'],
+      content: `## GE MR Host Info (Rev 7/24/2025 — Kenneth W. Parr)
+
+## System Usernames & Passwords
+| Account | Username | Password |
+|---------|----------|----------|
+| Applications (5.x) | signa | 4$apps |
+| Applications (9.x) | signa | adw2.0 |
+| Applications (11.x+) | sdc | adw2.0 |
+| Applications (Profile/Contour) | signa | gemr7 |
+| Superuser / root | root | operator |
+| Report Manager | mrgo1 | — |
+| Sun ICN web utility | root | changeme |
+
+## Key Filesystem Paths
+| Path | Contents |
+|------|----------|
+| \`/usr/g/bin\` | Most MR executable app commands |
+| \`/w/config\` | All system config files (gradient, coil, stage, shim) |
+| \`/usr/g/service/cclass/spt\` | System performance test spec files |
+| \`/usr/g/caldir\` | All calibration files (shim, grafidy, group delay) |
+| \`/usr/g/mrraw\` | Raw data files |
+| \`/usr/g/service/data\` | Test files (lvshim, spt, ept) |
+| \`/usr/g/service/log\` | Error logs and core files |
+| \`/usr/g/service/protocols\` | Protocols location |
+| \`/export/home/signa/protocols/site\` | Alternate site protocols location |
+| \`/export/home/signa/tools\` | Calibration and test programs |
+| \`/export/home/vre/netinstall\` | VRE software save location |
+
+## Symlink Reference
+| Shortcut | Points To |
+|----------|-----------|
+| \`/usr/g\` | \`/export/home/signa\` |
+| \`/usr/g/mrraw\` | \`/export/home/signa/research/mrraw\` |
+| \`/usr/g/service\` | \`/export/home/service\` |
+| \`/w\` | \`/export/home/signa/w\` |
+
+## Key Files Reference
+| File | Purpose |
+|------|---------|
+| \`/crontab\` | Automated nightly tasks (Profile, Contour) |
+| \`/etc/passwd\` | Change password of current user |
+| \`/etc/sysconfig/network-scripts/ifcfg-eth0\` | Network config tied to MACADDR (11.x+) |
+| \`/w/config/CoilConfig.cfg\` | Individual coil configurations |
+| \`/w/config/DcbCalib.cfg\` | DD open threshold values |
+| \`/w/config/ipg_stage\` | System emulation config (9.1 and older) |
+| \`/w/config/mgd_stage\` | System emulation config (10.0+) |
+| \`/w/config/MRconfig.cfg\` | Main MR configuration file |
+| \`/w/config/PM.config\` | Set all values to zero to clear "PM required" message (11.x) |
+| \`/w/config/ShimConfig.cfg\` | Installed shim currents and gradshim values |
+| \`/w/config/Temperature.cfg\` | Bore temp and gradient amp temp warning settings |
+| \`/usr/g/service/cclass/spt/cal.spt\` | Head and body gain specs |
+| \`/usr/g/service/cclass/spt/snr.spt\` | Head/body SNR, TG, Ziso, Gradcal specs |
+| \`/usr/g/service/cclass/spt/fsestb.spt\` | FSE stability specs |
+| \`/usr/g/service/cclass/spt/grestb.spt\` | GRE stability specs |
+| \`/usr/g/service/log/gesys_*.log\` | Extended error log (use \`gedit /usr/g/service/log/gesys*\`) |
+| \`/usr/g/service/log/scn.out\` | Last two days of scan details |
+| \`/usr/g/service/license/license.db\` | All installed options (short names) |
+| \`/usr/g/caldir/ecccoeff.dat\` | Grafidy calibration data |
+| \`/usr/g/caldir/gram_tune.dat\` | Grafidy calibration data |
+
+## Useful Executables
+| Command | Action |
+|---------|--------|
+| \`/usr/g/bin/EndExam\` | Kill open exam (if button greyed out) |
+| \`/usr/g/bin/GetPCHart\` | Display PC hardware config |
+| \`/usr/g/bin/showVREConfig\` | Display VRE hardware info |
+| \`/usr/g/bin/startBoreViewer\` | Patient comfort sensor graphs (23.x+) |
+| \`/usr/g/bin/sw_config_status\` | Installed software (similar to getver) |
+| \`/usr/g/bin/webCfgEditor\` | GE config file manager (works without apps) |
+| \`/usr/g/bin/Notepad\` | Enter a line of text in the error log |
+| \`/usr/g/service/cclass/sys_health\` | Generate detailed system health report |
+| \`/usr/g/service/cclass/report/rptmgr\` | Report manager (password: mrgo1) |
+| \`/usr/g/tools/lvshim/runlvshim\` | Force LV shim tool open (15.x+) |
+| \`/usr/g/tools/epiwp_tool/run_epiwp\` | EPI white pixel tool manual start |
+| \`/usr/g/tools/mc_qa_tool/run_mcqa\` | MCQA manual start |
+| \`/usr/local/bin/install/java/Guided_Install\` | Open guided install (even without apps) |
+
+## Common Shell Commands
+| Command | Action |
+|---------|--------|
+| \`getver\` | Show software revision and patches |
+| \`su\` | Enter root superuser (password: operator) |
+| \`endsession\` | Shut down apps to login screen (faster than reboot) |
+| \`tps_reset\` | TPS reset from shell |
+| \`blanktime 0\` | Disable screensaver until next reboot |
+| \`df -h\` | Disk usage by partition |
+| \`top\` | Active processes, CPU/memory usage |
+| \`ps -A\` | All active processes |
+| \`kill <PID>\` | Kill any active task |
+| \`prune\` | Pop-up to prune error log file |
+| \`sok_test\` | Show currently installed options |
+| \`hinv\` | Current hardware configuration |
+| \`fdisk -l\` | All USB and hard drives connected |
+| \`find / -name "*filename*"\` | Find files by name |
+| \`tail -f <file>\` | Watch file grow live |
+| \`cu ipg\` / \`~.\` | Communicate with IPG board / exit |
+| \`cu cerd\` | Communicate with CERD |
+| \`cu tps\` | Communicate with TPS CPU board |
+| \`mgd_term\` | Open 3 log screens: AGP, APS, SCP |
+| \`mgd_termc\` | Kill mgd_term windows |
+| \`resetftg\` | Enable Fast TG |
+| \`setftg\` | Disable Fast TG |
+| \`epiwp\` | Run EPI white pixel test from shell |
+
+## MGD Allowed Subnets
+\`10.217.x\` | \`10.121.x\` | \`192.168.x\` | \`10.47.x\` | \`10.0.x\` | \`172.22.x\`
+
+## Linux-Specific Commands (11.x+)
+| Command | Action |
+|---------|--------|
+| \`gedit\` | Text editor (Ctrl+F to search) |
+| \`ifconfig -a\` | Network configuration |
+| \`ethtool eth0\` | Ethernet port health |
+| \`nautilus\` | File explorer window |
+| \`gimp\` | Image editor / screenshots |
+| \`popupmsg "TEXT"\` | Pop-up message on screen |
+| \`pkgmgr -i\` | Install .rpm patch files |
+
+## Octane-Specific Commands (older systems)
+| Command | Action |
+|---------|--------|
+| \`jot\` | Text editor (like Notepad) |
+| \`confidence\` | Test keyboard, mouse, monitor |
+| \`swmgr\` | Software manager for patches |
+| \`hw_config_status\` | TPS chassis board configuration |
+| \`imgview\` | Image viewer (converts .rgb to .jpg) |
+| \`scrsave <filename>\` | Screenshot to SGI .rgb file |
+| \`snapshot\` | Screenshot of screen or selected area |`,
+      created: '2026-05-28T00:00:00.000Z'
     }
 ];
 
@@ -13076,51 +13198,79 @@ function saveDiagGuides() {
   localStorage.setItem('amt_diagguides_v30', JSON.stringify(diagGuidesDB));
 }
 
+let _dgSys = '', _dgCat = '';
+function setDGSys(s){ _dgSys=s; _dgCat=''; renderDiagGuides(); }
+function setDGCat(c){ _dgCat=c; renderDiagGuides(); }
+
 function renderDiagGuides() {
   if (!diagGuidesDB.length) loadDiagGuides();
-  const sys = (document.getElementById('diagFilterSystem')||{}).value || '';
-  const q   = ((document.getElementById('diagSearch')||{}).value || '').toLowerCase();
+  const q    = ((document.getElementById('diagSearch')||{}).value||'').toLowerCase();
   const list = document.getElementById('diagGuidesList');
   if (!list) return;
+
+  // Update system pill active state
+  document.querySelectorAll('.dg-pill').forEach(p => p.classList.toggle('active', p.dataset.sys===_dgSys));
+
+  // Build filtered set
   let guides = diagGuidesDB;
-  if (sys) guides = guides.filter(g => g.system === sys);
-  if (q)   guides = guides.filter(g =>
+  if (_dgSys) guides = guides.filter(g => g.system === _dgSys);
+  if (_dgCat) guides = guides.filter(g => (g.category||'') === _dgCat);
+  if (q) guides = guides.filter(g =>
     g.title.toLowerCase().includes(q) ||
     (g.category||'').toLowerCase().includes(q) ||
     (g.tags||[]).join(' ').toLowerCase().includes(q) ||
     g.content.toLowerCase().includes(q)
   );
+
+  // Update count
+  const countEl = document.getElementById('dgCount');
+  if (countEl) countEl.textContent = guides.length + ' guide' + (guides.length!==1?'s':'') + (q||_dgSys||_dgCat?' found':'');
+
+  // Build category chips from current sys filter (not q)
+  const catBase = _dgSys ? diagGuidesDB.filter(g=>g.system===_dgSys) : diagGuidesDB;
+  const cats = [...new Set(catBase.map(g=>g.category||'').filter(Boolean))].sort();
+  const chipsEl = document.getElementById('dgCatChips');
+  if (chipsEl) {
+    chipsEl.innerHTML = ['All',...cats].map(cat => {
+      const val = cat==='All'?'':cat;
+      const active = val===_dgCat ? 'style="background:var(--navy);color:#fff;border-color:var(--navy)"' : '';
+      return '<button class="filter-chip" onclick="setDGCat(\'' + val + '\')" '+active+'>' + cat + '</button>';
+    }).join('');
+  }
+
   if (!guides.length) {
-    list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q ? ' for "' + q + '"' : '') + '.</div>';
+    list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q?' for "'+q+'"':'') + '.</div>';
     return;
   }
-  const sysCls = {
-    'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
-    'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
-    'Philips':'dg-philips','Injector':'dg-injector'
-  };
+
   const sysBg = {
     'GE MRI':'#1565c0','GE CT':'#0288d1',
     'Siemens MRI':'#e65100','Siemens CT':'#bf360c',
     'Philips':'#6a1b9a','Injector':'#00695c'
   };
+  const sysCls = {
+    'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
+    'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
+    'Philips':'dg-philips','Injector':'dg-injector'
+  };
+
   list.innerHTML = guides.map(g => {
+    const bg  = sysBg[g.system] || '#555';
     const cls = sysCls[g.system] || 'dg-general';
-    const bg  = sysBg[g.system]  || 'var(--gray4)';
-    const tags = (g.tags||[]).slice(0,6).map(t => '<span class="dg-tag">#' + t + '</span>').join('');
-    return '<div class="dg-card ' + cls + '">'
+    const tags = (g.tags||[]).slice(0,5).map(t=>'<span class="dg-tag">#'+t+'</span>').join('');
+    return '<div class="dg-card '+cls+'">'
       + '<div class="dg-card-body">'
         + '<div class="dg-meta">'
-          + '<div class="dg-title">' + g.title + '</div>'
-          + '<div class="dg-badges">'
-            + '<span class="dg-sys-badge" style="background:' + bg + '">' + g.system + '</span>'
-            + (g.category ? '<span class="dg-cat-badge">' + g.category + '</span>' : '')
+          + '<div class="dg-title">'+g.title+'</div>'
+          + '<div class="dg-badges" style="margin-top:4px">'
+            + '<span class="dg-sys-badge" style="background:'+bg+'">'+g.system+'</span>'
+            + (g.category?'<span class="dg-cat-badge" style="cursor:pointer" onclick=\'setDGCat(&quot;'+g.category+'&quot;)\'>'+g.category+'</span>':'')
           + '</div>'
-          + (tags ? '<div class="dg-tags">' + tags + '</div>' : '')
+          + (tags?'<div class="dg-tags" style="margin-top:5px">'+tags+'</div>':'')
         + '</div>'
         + '<div class="dg-actions">'
-          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
-          + (isViewOnly() ? '' : '<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;' + g.id + '&quot;)" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
+          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(\"'+g.id+'\")" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
+          + (isViewOnly()?'':'<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(\"'+g.id+'\")" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
         + '</div>'
       + '</div>'
     + '</div>';
