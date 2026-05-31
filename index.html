@@ -887,7 +887,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   </div>
   <div class="btn-row mt-12">
     <button class="btn btn-gold" onclick="showTab('money');setMoneyTab('invoices');openInvoiceModal()">📝 Generate Invoice</button>
-    <button class="btn btn-outline" onclick="window.print()">🖨 Print Rates</button>
+    <button class="btn btn-outline" onclick="printRates()">🖨 Print Rates</button>
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
@@ -2539,7 +2539,9 @@ function ghManualLink(manualPath, label, style){
 const FALLBACK_FOLDERS=[
   {name:'GE MRI',       icon:'🧲', path:'GE'},
   {name:'GE CT',        icon:'🔵', path:'GE CT'},
-  {name:'Siemens',      icon:'🟧', path:'Siemens'},
+  {name:'Siemens MRI',  icon:'🟧', path:'Siemens'},
+  {name:'Siemens CT',   icon:'🔶', path:'Siemens CT'},
+  {name:'Hitachi',      icon:'🔷', path:'Hitachi'},
   {name:'Parts',        icon:'🔩', path:'Parts'},
   {name:'Training Info',icon:'📚', path:'Training Info'},
   {name:'Error Codes',  icon:'⚠️', path:'Error codes and Troubleshooting All Systems'},
@@ -2589,10 +2591,37 @@ const GE_CT_SUBFOLDERS=[
   {name:'pre_ls',               icon:'📁', path:'GE CT/pre_ls'},
 ];
 
-// Real Siemens sub-folders
+// Real Siemens MRI sub-folders
 const SIEMENS_SUBFOLDERS=[
   {name:'Aera',   icon:'📁', path:'Siemens/Aera'},
   {name:'Avanto', icon:'📁', path:'Siemens/Avanto'},
+];
+
+// Siemens CT sub-folders (from OneDrive CT Manuals)
+const SIEMENS_CT_SUBFOLDERS=[
+  {name:'Definition AS',           icon:'📁', path:'Siemens CT/Definition AS'},
+  {name:'Emotion (2003)',          icon:'📁', path:'Siemens CT/Emotion 2003'},
+  {name:'Emotion CT',             icon:'📁', path:'Siemens CT/Emotion CT'},
+  {name:'Perspective CT',         icon:'📁', path:'Siemens CT/Perspective CT'},
+  {name:'Sensation 64',           icon:'📁', path:'Siemens CT/Sensation 64'},
+  {name:'Somatom Confidence',     icon:'📁', path:'Siemens CT/Somatom Confidence'},
+  {name:'Somatom Definition',     icon:'📁', path:'Siemens CT/Somatom Definition'},
+  {name:'Somatom Definition Edge',icon:'📁', path:'Siemens CT/Somatom Definition Edge'},
+  {name:'Somatom Definition Flash',icon:'📁', path:'Siemens CT/Somatom Definition Flash'},
+  {name:'Somatom Drive CT',       icon:'📁', path:'Siemens CT/Somatom Drive CT'},
+  {name:'Somatom Edge Plus CT',   icon:'📁', path:'Siemens CT/Somatom Edge Plus CT'},
+  {name:'Somatom Force CT',       icon:'📁', path:'Siemens CT/Somatom Force CT'},
+  {name:'Somatom GO All CT',      icon:'📁', path:'Siemens CT/Somatom GO All CT'},
+  {name:'Somatom Go NOW / Go UP', icon:'📁', path:'Siemens CT/Somatom Go NOW_GoUP'},
+  {name:'Somatom Scope',          icon:'📁', path:'Siemens CT/Somatom Scope'},
+];
+
+// Hitachi sub-folders (from OneDrive Hitachi Manuals)
+const HITACHI_SUBFOLDERS=[
+  {name:'AII',              icon:'📁', path:'Hitachi/AII'},
+  {name:'Airis Elite',      icon:'📁', path:'Hitachi/Airis Elite'},
+  {name:'Altaire',          icon:'📁', path:'Hitachi/Altaire'},
+  {name:'AIRIS (Classic)',  icon:'📁', path:'Hitachi/Old Hitachi Manual'},
 ];
 function initManuals(){
   const grid = document.getElementById('explorerGrid');
@@ -3624,9 +3653,15 @@ function renderFallbackFolders(currentPath){
   } else if(currentPath && currentPath.startsWith('GE')) {
     folders = GE_SUBFOLDERS;
     notice = '⚠️ Not connected -- known GE MRI folders';
+  } else if(currentPath && currentPath.startsWith('Siemens CT')) {
+    folders = SIEMENS_CT_SUBFOLDERS;
+    notice = '⚠️ Not connected -- known Siemens CT folders';
   } else if(currentPath && currentPath.startsWith('Siemens')) {
     folders = SIEMENS_SUBFOLDERS;
-    notice = '⚠️ Not connected -- known Siemens folders';
+    notice = '⚠️ Not connected -- known Siemens MRI folders';
+  } else if(currentPath && currentPath.startsWith('Hitachi')) {
+    folders = HITACHI_SUBFOLDERS;
+    notice = '⚠️ Not connected -- known Hitachi folders';
   }
   
   grid.innerHTML = 
@@ -6752,6 +6787,62 @@ function copyEmailSigHTML(){
   });
 }
 
+
+function printCapability(){
+  const body = document.getElementById('capabilityBody');
+  if(!body){ alert('Capability statement not found.'); return; }
+  const logoSrc = document.getElementById('topbarLogo')?.src || '';
+  const w = window.open('','_blank','width=860,height=1100');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions -- Capability Statement</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.6;max-width:780px;margin:0 auto}'+
+    'img{max-height:80px;object-fit:contain}'+
+    'h2{color:#0a1628;margin:0}p{margin:.25rem 0}'+
+    'ul{margin:.3rem 0;padding-left:1.3rem;line-height:1.8}'+
+    'strong{color:#0a1628}'+
+    'a{color:#0a1628}'+
+    '@media print{body{padding:20px}@page{margin:.75in}}'+
+    '</style></head><body>'+
+    body.innerHTML+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
+  w.document.close();
+}
+
+function printRates(){
+  const panel = document.getElementById('panel-rates');
+  if(!panel){ alert('Rates panel not found.'); return; }
+  // Clone and remove buttons/alerts from the print copy
+  const clone = panel.cloneNode(true);
+  clone.querySelectorAll('.btn-row,.alert').forEach(el => el.remove());
+  const w = window.open('','_blank','width=860,height=1100');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions -- Rates &amp; Contracts</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.6;max-width:780px;margin:0 auto}'+
+    '.sec-title{font-size:1.3rem;font-weight:700;color:#0a1628;margin-bottom:16px}'+
+    '.card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:14px}'+
+    '.rate-head{padding:8px 14px;font-weight:700;font-size:.9rem;color:#fff}'+
+    '.rh-navy{background:#0a1628}.rh-blue{background:#1565c0}.rh-cyan{background:#0288d1}'+
+    '.rh-orange{background:#e65100}.rh-green{background:#2e7d32}'+
+    '.rate-row{display:flex;justify-content:space-between;padding:6px 14px;font-size:.84rem;border-top:1px solid #f0f0f0}'+
+    '.rate-row.hi{background:#f8f9fa}'+
+    '.rate-val{font-weight:700;color:#0a1628}'+
+    '.rates-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}'+
+    '.rate-card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}'+
+    '.pop-row{background:#fffde7}.pop-tag{font-size:.7rem;background:#f59e0b;color:#fff;border-radius:10px;padding:1px 6px;margin-left:4px}'+
+    '@media print{body{padding:20px}.rates-grid{grid-template-columns:1fr 1fr}@page{margin:.75in}}'+
+    '</style></head><body>'+
+    '<div style="text-align:center;margin-bottom:18px"><strong style="font-size:1.1rem;color:#0a1628">AMT Imaging Solutions LLC</strong><br>'+
+    '<span style="font-size:.85rem;color:#555">Veteran-Owned | MRI · CT · Injector Service | 754-263-6089 | mike.jackson@amtimagingsolutions.com</span></div>'+
+    clone.innerHTML+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
+  w.document.close();
+}
 
 function printHoldHarmless(){
   updateHHPreview();

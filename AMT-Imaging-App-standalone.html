@@ -887,7 +887,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   </div>
   <div class="btn-row mt-12">
     <button class="btn btn-gold" onclick="showTab('money');setMoneyTab('invoices');openInvoiceModal()">📝 Generate Invoice</button>
-    <button class="btn btn-outline" onclick="window.print()">🖨 Print Rates</button>
+    <button class="btn btn-outline" onclick="printRates()">🖨 Print Rates</button>
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
@@ -2539,7 +2539,9 @@ function ghManualLink(manualPath, label, style){
 const FALLBACK_FOLDERS=[
   {name:'GE MRI',       icon:'🧲', path:'GE'},
   {name:'GE CT',        icon:'🔵', path:'GE CT'},
-  {name:'Siemens',      icon:'🟧', path:'Siemens'},
+  {name:'Siemens MRI',  icon:'🟧', path:'Siemens'},
+  {name:'Siemens CT',   icon:'🔶', path:'Siemens CT'},
+  {name:'Hitachi',      icon:'🔷', path:'Hitachi'},
   {name:'Parts',        icon:'🔩', path:'Parts'},
   {name:'Training Info',icon:'📚', path:'Training Info'},
   {name:'Error Codes',  icon:'⚠️', path:'Error codes and Troubleshooting All Systems'},
@@ -2589,10 +2591,37 @@ const GE_CT_SUBFOLDERS=[
   {name:'pre_ls',               icon:'📁', path:'GE CT/pre_ls'},
 ];
 
-// Real Siemens sub-folders
+// Real Siemens MRI sub-folders
 const SIEMENS_SUBFOLDERS=[
   {name:'Aera',   icon:'📁', path:'Siemens/Aera'},
   {name:'Avanto', icon:'📁', path:'Siemens/Avanto'},
+];
+
+// Siemens CT sub-folders (from OneDrive CT Manuals)
+const SIEMENS_CT_SUBFOLDERS=[
+  {name:'Definition AS',           icon:'📁', path:'Siemens CT/Definition AS'},
+  {name:'Emotion (2003)',          icon:'📁', path:'Siemens CT/Emotion 2003'},
+  {name:'Emotion CT',             icon:'📁', path:'Siemens CT/Emotion CT'},
+  {name:'Perspective CT',         icon:'📁', path:'Siemens CT/Perspective CT'},
+  {name:'Sensation 64',           icon:'📁', path:'Siemens CT/Sensation 64'},
+  {name:'Somatom Confidence',     icon:'📁', path:'Siemens CT/Somatom Confidence'},
+  {name:'Somatom Definition',     icon:'📁', path:'Siemens CT/Somatom Definition'},
+  {name:'Somatom Definition Edge',icon:'📁', path:'Siemens CT/Somatom Definition Edge'},
+  {name:'Somatom Definition Flash',icon:'📁', path:'Siemens CT/Somatom Definition Flash'},
+  {name:'Somatom Drive CT',       icon:'📁', path:'Siemens CT/Somatom Drive CT'},
+  {name:'Somatom Edge Plus CT',   icon:'📁', path:'Siemens CT/Somatom Edge Plus CT'},
+  {name:'Somatom Force CT',       icon:'📁', path:'Siemens CT/Somatom Force CT'},
+  {name:'Somatom GO All CT',      icon:'📁', path:'Siemens CT/Somatom GO All CT'},
+  {name:'Somatom Go NOW / Go UP', icon:'📁', path:'Siemens CT/Somatom Go NOW_GoUP'},
+  {name:'Somatom Scope',          icon:'📁', path:'Siemens CT/Somatom Scope'},
+];
+
+// Hitachi sub-folders (from OneDrive Hitachi Manuals)
+const HITACHI_SUBFOLDERS=[
+  {name:'AII',              icon:'📁', path:'Hitachi/AII'},
+  {name:'Airis Elite',      icon:'📁', path:'Hitachi/Airis Elite'},
+  {name:'Altaire',          icon:'📁', path:'Hitachi/Altaire'},
+  {name:'AIRIS (Classic)',  icon:'📁', path:'Hitachi/Old Hitachi Manual'},
 ];
 function initManuals(){
   const grid = document.getElementById('explorerGrid');
@@ -3624,9 +3653,15 @@ function renderFallbackFolders(currentPath){
   } else if(currentPath && currentPath.startsWith('GE')) {
     folders = GE_SUBFOLDERS;
     notice = '⚠️ Not connected -- known GE MRI folders';
+  } else if(currentPath && currentPath.startsWith('Siemens CT')) {
+    folders = SIEMENS_CT_SUBFOLDERS;
+    notice = '⚠️ Not connected -- known Siemens CT folders';
   } else if(currentPath && currentPath.startsWith('Siemens')) {
     folders = SIEMENS_SUBFOLDERS;
-    notice = '⚠️ Not connected -- known Siemens folders';
+    notice = '⚠️ Not connected -- known Siemens MRI folders';
+  } else if(currentPath && currentPath.startsWith('Hitachi')) {
+    folders = HITACHI_SUBFOLDERS;
+    notice = '⚠️ Not connected -- known Hitachi folders';
   }
   
   grid.innerHTML = 
@@ -6752,6 +6787,62 @@ function copyEmailSigHTML(){
   });
 }
 
+
+function printCapability(){
+  const body = document.getElementById('capabilityBody');
+  if(!body){ alert('Capability statement not found.'); return; }
+  const logoSrc = document.getElementById('topbarLogo')?.src || '';
+  const w = window.open('','_blank','width=860,height=1100');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions -- Capability Statement</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.6;max-width:780px;margin:0 auto}'+
+    'img{max-height:80px;object-fit:contain}'+
+    'h2{color:#0a1628;margin:0}p{margin:.25rem 0}'+
+    'ul{margin:.3rem 0;padding-left:1.3rem;line-height:1.8}'+
+    'strong{color:#0a1628}'+
+    'a{color:#0a1628}'+
+    '@media print{body{padding:20px}@page{margin:.75in}}'+
+    '</style></head><body>'+
+    body.innerHTML+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
+  w.document.close();
+}
+
+function printRates(){
+  const panel = document.getElementById('panel-rates');
+  if(!panel){ alert('Rates panel not found.'); return; }
+  // Clone and remove buttons/alerts from the print copy
+  const clone = panel.cloneNode(true);
+  clone.querySelectorAll('.btn-row,.alert').forEach(el => el.remove());
+  const w = window.open('','_blank','width=860,height=1100');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions -- Rates &amp; Contracts</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.6;max-width:780px;margin:0 auto}'+
+    '.sec-title{font-size:1.3rem;font-weight:700;color:#0a1628;margin-bottom:16px}'+
+    '.card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;margin-bottom:14px}'+
+    '.rate-head{padding:8px 14px;font-weight:700;font-size:.9rem;color:#fff}'+
+    '.rh-navy{background:#0a1628}.rh-blue{background:#1565c0}.rh-cyan{background:#0288d1}'+
+    '.rh-orange{background:#e65100}.rh-green{background:#2e7d32}'+
+    '.rate-row{display:flex;justify-content:space-between;padding:6px 14px;font-size:.84rem;border-top:1px solid #f0f0f0}'+
+    '.rate-row.hi{background:#f8f9fa}'+
+    '.rate-val{font-weight:700;color:#0a1628}'+
+    '.rates-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}'+
+    '.rate-card{border:1px solid #e5e7eb;border-radius:8px;overflow:hidden}'+
+    '.pop-row{background:#fffde7}.pop-tag{font-size:.7rem;background:#f59e0b;color:#fff;border-radius:10px;padding:1px 6px;margin-left:4px}'+
+    '@media print{body{padding:20px}.rates-grid{grid-template-columns:1fr 1fr}@page{margin:.75in}}'+
+    '</style></head><body>'+
+    '<div style="text-align:center;margin-bottom:18px"><strong style="font-size:1.1rem;color:#0a1628">AMT Imaging Solutions LLC</strong><br>'+
+    '<span style="font-size:.85rem;color:#555">Veteran-Owned | MRI · CT · Injector Service | 754-263-6089 | mike.jackson@amtimagingsolutions.com</span></div>'+
+    clone.innerHTML+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
+  w.document.close();
+}
 
 function printHoldHarmless(){
   updateHHPreview();
@@ -13961,99 +14052,4 @@ function openDiagGuideDetail(id) {
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px">$1</h5>')
     .replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:12px 0 6px">$1</h4>')
-    .replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:14px 0 8px">$1</h3>')
-    .replace(/`([^`]+)`/g,'<code style="background:var(--gray2);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>')
-    .replace(/^\| .+$/gm, m => {
-      if (m.includes('---')) return '';
-      const cells = m.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
-      return '<tr>' + cells.map(cell=>'<td style="padding:4px 10px;border:1px solid var(--gray2)">' + cell.trim() + '</td>').join('') + '</tr>';
-    })
-    .replace(/(<tr>.*<\/tr>\n?)+/gs, t => '<table style="border-collapse:collapse;margin:8px 0;font-size:.82rem;width:100%">' + t + '</table>')
-    .replace(/^\d+\. (.+)$/gm,'<li style="margin:3px 0">$1</li>')
-    .replace(/^- (.+)$/gm,'<li style="margin:3px 0">$1</li>')
-    .replace(/(<li.*<\/li>\n?)+/g, t => '<ul style="margin:6px 0;padding-left:20px">' + t + '</ul>')
-    .replace(/\n\n/g,'</p><p style="margin:6px 0">')
-    .replace(/\n/g,'<br>');
-  document.getElementById('dgDetailTitle').textContent = g.title;
-  document.getElementById('dgDetailBody').innerHTML = '<p style="margin:6px 0">' + html + '</p>';
-  openModal('dgDetailModal');
-}
-
-function openDiagGuideModal(prefill) {
-  if (writeGuard('Add Diagnostic Guide')) return;
-  document.getElementById('dg_title').value    = (prefill&&prefill.title)    || '';
-  document.getElementById('dg_system').value   = (prefill&&prefill.system)   || 'GE MRI';
-  document.getElementById('dg_category').value = (prefill&&prefill.category) || '';
-  document.getElementById('dg_tags').value     = (prefill&&prefill.tags)     ? prefill.tags.join(', ') : '';
-  document.getElementById('dg_content').value  = (prefill&&prefill.content)  || '';
-  document.getElementById('dg_edit_id').value  = (prefill&&prefill.id)       || '';
-  openModal('addDiagGuideModal');
-}
-
-function saveDiagGuide() {
-  if (writeGuard('Save Guide')) return;
-  const title   = document.getElementById('dg_title').value.trim();
-  const content = document.getElementById('dg_content').value.trim();
-  if (!title || !content) { alert('Title and Content are required.'); return; }
-  const editId = document.getElementById('dg_edit_id').value;
-  const guide = {
-    id: editId || 'dg_' + Date.now(),
-    title,
-    system:   document.getElementById('dg_system').value,
-    category: document.getElementById('dg_category').value.trim(),
-    tags:     document.getElementById('dg_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    content,
-    created:  new Date().toISOString()
-  };
-  if (editId) {
-    const idx = diagGuidesDB.findIndex(x => x.id === editId);
-    if (idx >= 0) diagGuidesDB[idx] = guide; else diagGuidesDB.unshift(guide);
-  } else {
-    diagGuidesDB.unshift(guide);
-  }
-  saveDiagGuides();
-  closeModal('addDiagGuideModal');
-  renderDiagGuides();
-}
-
-function deleteDiagGuide(id) {
-  if (!confirm('Delete this diagnostic guide?')) return;
-  diagGuidesDB = diagGuidesDB.filter(g => g.id !== id);
-  saveDiagGuides();
-  renderDiagGuides();
-}
-</script>
-
-<!-- Diag Guide Detail Modal -->
-<div class="modal-overlay" id="dgDetailModal" style="display:none">
-  <div class="modal" style="max-width:700px">
-    <div class="modal-header"><h3 id="dgDetailTitle">Guide</h3><button class="modal-close" onclick="closeModal('dgDetailModal')">✕</button></div>
-    <div class="modal-body" id="dgDetailBody" style="max-height:70vh;overflow-y:auto;font-size:.88rem;line-height:1.6"></div>
-    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('dgDetailModal')">Close</button></div>
-  </div>
-</div>
-
-<!-- Add Diagnostic Guide Modal -->
-<div class="modal-overlay" id="addDiagGuideModal" style="display:none">
-  <div class="modal" style="max-width:640px">
-    <div class="modal-header"><h3>🔧 Add / Edit Diagnostic Guide</h3><button class="modal-close" onclick="closeModal('addDiagGuideModal')">✕</button></div>
-    <div class="modal-body">
-      <input type="hidden" id="dg_edit_id">
-      <div class="form-group"><label class="form-label">Title *</label><input class="form-control" id="dg_title" placeholder="e.g. GE Signa E305 RF Amp Fault"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">System</label>
-          <select class="form-control" id="dg_system">
-            <option>GE MRI</option><option>Siemens MRI</option><option>GE CT</option><option>Siemens CT</option><option>Injector</option><option>General</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Category</label><input class="form-control" id="dg_category" placeholder="RF / Gradient / Magnet…"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="dg_tags" placeholder="RF amp, E305, cooling"></div>
-      <div class="form-group"><label class="form-label">Content * (Markdown supported)</label><textarea class="form-control" id="dg_content" style="min-height:200px;font-family:monospace;font-size:.82rem" placeholder="## Title&#10;### Step 1&#10;Details here…"></textarea></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
-      <button class="btn btn-outline" onclick="closeModal('addDiagGuideModal')">Cancel</button>
-    </div>
-  </div>
-</div>
+    .replace(/^## (.+)$/gm,'<h3 style="color:var(
