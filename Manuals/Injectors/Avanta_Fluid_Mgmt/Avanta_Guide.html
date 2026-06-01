@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad Avanta — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>💧 Medrad Avanta Fluid Management System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Catalog:</strong> DCB-AVT &nbsp;|&nbsp;
+  <strong>Type:</strong> Automated contrast fluid management for high-throughput CT &nbsp;|&nbsp;
+  <strong>Support:</strong> 1-800-633-7231<br>
+  <strong>Bayer Service:</strong> <a href="https://www.radiologysolutions.bayer.com/services" target="_blank">radiologysolutions.bayer.com/services</a>
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Multi-Bottle Rack</td><td>Holds contrast bottles; automated spike and fill mechanism</td></tr>
+  <tr><td>Dual-Head Pump</td><td>A-head: contrast delivery; B-head: saline flush</td></tr>
+  <tr><td>Check Valve Manifold</td><td>Prevents backflow between contrast and saline paths</td></tr>
+  <tr><td>Inventory Software</td><td>Tracks contrast usage; alerts at low-bottle threshold</td></tr>
+  <tr><td>Contrast Warmer</td><td>Maintains contrast at 37°C (optional on some configurations)</td></tr>
+</table>
+
+<h2>Troubleshooting Guide</h2>
+<table>
+  <tr><th>Issue</th><th>Likely Cause</th><th>Action</th></tr>
+  <tr><td>Fill cycle fails</td><td>Bottle spike connection not sealed</td><td>Reseat contrast bottle until spike fully engages. Check spike tip for damage.</td></tr>
+  <tr><td>Air in system after bottle change</td><td>Air admitted during changeover</td><td>Run extended prime cycle. Check all connections. Verify bottle fully pierced by spike.</td></tr>
+  <tr><td>Incorrect volume delivered</td><td>Flow calibration drift</td><td>Run flow calibration from service menu. Verify pump output at 1 and 5 ml/sec.</td></tr>
+  <tr><td>Inventory software alarm</td><td>Bottle below minimum threshold</td><td>Replace contrast bottle. Update inventory in software.</td></tr>
+  <tr><td>Pump motor noise</td><td>Worn pump head bearings</td><td>Inspect pump head. Replace if bearing noise audible during operation.</td></tr>
+  <tr><td>Backflow detected</td><td>Failed check valve</td><td>Test each check valve individually. Replace failed valve. Do not operate with backflow.</td></tr>
+  <tr><td>Warmer not reaching temperature</td><td>Heater element or sensor fault</td><td>Verify setpoint (37°C). Check heater element continuity. Inspect temperature sensor.</td></tr>
+</table>
+
+<h2>Annual PM Checklist</h2>
+<table>
+  <tr><th>#</th><th>Task</th><th>Acceptance</th></tr>
+  <tr><td>1</td><td>All tubing inspection — no kinks, cracks, discoloration</td><td>Pass visual; no soft spots or staining</td></tr>
+  <tr><td>2</td><td>Check valves — verify one-way function each valve</td><td>No backflow in either direction when tested</td></tr>
+  <tr><td>3</td><td>Bottle spike and connection port inspection</td><td>No cracking, wear, or deformation</td></tr>
+  <tr><td>4</td><td>Pump head O-rings and seals inspection</td><td>No compression set or extrusion; replace if degraded</td></tr>
+  <tr><td>5</td><td>Flow calibration — A-head (contrast) and B-head (saline)</td><td>Delivered rate within ±5% of set rate at 1 and 5 ml/sec</td></tr>
+  <tr><td>6</td><td>Full fill cycle test — time cycle, verify no errors</td><td>Cycle completes without fault; time within spec</td></tr>
+  <tr><td>7</td><td>Auto-prime function — verify clears all air</td><td>Fluid exits tubing end air-free within 30 sec</td></tr>
+  <tr><td>8</td><td>Pressure alarm test</td><td>Alarm activates at set threshold; injection halts</td></tr>
+  <tr><td>9</td><td>Air detection test with test air bubble</td><td>Air detector triggers; system halts injection</td></tr>
+  <tr><td>10</td><td>Warming system calibration (if equipped)</td><td>Setpoint 37°C; reaches temp within 30 min</td></tr>
+  <tr><td>11</td><td>Inventory tracking accuracy</td><td>Software shows correct bottle level after known volume used</td></tr>
+  <tr><td>12</td><td>Clean all surfaces and bottle rack</td><td>No contrast residue; rack secure</td></tr>
+  <tr><td>13</td><td>Emergency stop test</td><td>E-stop halts all pump and fill activity immediately</td></tr>
+  <tr><td>14</td><td>Service report to HTM/Biomedical</td><td>Signed, dated, serial number, all readings documented</td></tr>
+</table>
+
+<h2>Tubing Replacement Schedule</h2>
+<table>
+  <tr><th>Tubing Type</th><th>Replacement Interval</th></tr>
+  <tr><td>Patient-side disposable tubing</td><td>Single-use per procedure — never reuse</td></tr>
+  <tr><td>System-side permanent tubing</td><td>Inspect annually; replace at 2-year intervals or if degraded</td></tr>
+  <tr><td>Check valves</td><td>Inspect annually; replace every 2 years or immediately if backflow detected</td></tr>
+</table>
+
+<h2>Useful Resources</h2>
+<ul>
+  <li><a href="https://www.radiologysolutions.bayer.com/products/injection-systems" target="_blank">Bayer Injection Systems — Product Page</a></li>
+  <li><a href="https://www.radiologysolutions.bayer.com/services" target="_blank">Bayer TechCare Service Support</a></li>
+  <li><a href="https://www.manualslib.com/brand/bayer-healthcare/medical-equipment.html" target="_blank">Bayer Healthcare Manuals — ManualsLib</a></li>
+</ul>
+</body>
+</html>

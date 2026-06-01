@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad MRXperion MR — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  h3{color:#0a1628;border-bottom:2px solid #c9a84c;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .mr-safe{background:#e0f2fe;border-left:4px solid #0284c7;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>🧲 Medrad MRXperion MR Injection System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Catalog:</strong> DCB-MRXP &nbsp;|&nbsp;
+  <strong>MR Safety:</strong> MR-Conditional 1.5T &amp; 3.0T &nbsp;|&nbsp;
+  <strong>Support:</strong> 1-800-633-7231<br>
+  <strong>ManualsLib:</strong> <a href="https://www.manualslib.com/brand/bayer-healthcare/medical-equipment.html" target="_blank">Bayer Healthcare Manuals</a> &nbsp;|&nbsp;
+  <strong>Bayer Service:</strong> <a href="https://www.radiologysolutions.bayer.com/services" target="_blank">radiologysolutions.bayer.com/services</a>
+</div>
+
+<div class="mr-safe">
+  <strong>⚠️ MR Safety:</strong> MRXperion is MR-Conditional — verify site-specific Conditions of Use before each procedure. Drive unit must be positioned per MR safety documentation. Use ONLY Medrad-approved MRXperion syringes — not interchangeable with Stellant syringes.
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Drive Head (A + B)</td><td>Dual-head unit — A: contrast, B: saline. MR-Conditional housing. Fiber optic communication.</td></tr>
+  <tr><td>Certegra Workstation</td><td>Control unit located in MRI control room. Connects to drive head via fiber optic cable.</td></tr>
+  <tr><td>Fiber Optic Cable</td><td>MR-safe communication link. Minimum bend radius 30mm. Inspect before every use.</td></tr>
+  <tr><td>Patient Tubing</td><td>Single-use per patient. Use only Bayer-approved MRXperion tubing sets.</td></tr>
+</table>
+
+<h2>Error Messages &amp; Troubleshooting</h2>
+<table>
+  <tr><th>Error</th><th>Cause</th><th>Action</th></tr>
+  <tr><td><code>HEAD COMM FAULT</code></td><td>Communication between head and Certegra lost</td><td>Check fiber optic cable at both ends. Clean connectors with IPA swab. Power off head and Certegra. Power on Certegra first, then head.</td></tr>
+  <tr><td><code>SYRINGE ERROR</code></td><td>Syringe not detected or incorrect type</td><td>Remove syringe, wipe sensor window and syringe bayonet with dry cloth. Reseat until audible click. Try sealed new syringe. Inspect sensor LED (should illuminate).</td></tr>
+  <tr><td><code>PRESSURE FAULT</code></td><td>Injection pressure exceeded limit</td><td>Assess IV site for infiltration. Reduce flow rate. Verify catheter gauge. Check tubing for kink.</td></tr>
+  <tr><td><code>AIR IN LINE</code></td><td>Air detected in fluid path</td><td>Prime system completely. Remove patient tubing, hold end up, advance plunger slowly until air-free.</td></tr>
+  <tr><td><code>MOTOR FAULT</code></td><td>Drive motor error</td><td>Power cycle system. Run self-test from Certegra service menu. Inspect drive mechanism for obstruction.</td></tr>
+  <tr><td><code>LOW FLUID</code></td><td>Syringe nearly empty</td><td>Replace syringe before next injection. Prime before use.</td></tr>
+  <tr><td><code>TEMP ALARM</code></td><td>System temperature out of spec</td><td>Check ambient temp (15-30°C). Verify warmer function if installed.</td></tr>
+</table>
+
+<h2>Annual PM Checklist</h2>
+<div class="tip">Full PM checklist available in App → PM tab → Stellant Injector PM (use as baseline for MRXperion). Key items below.</div>
+<table>
+  <tr><th>#</th><th>Task</th><th>Acceptance Criteria</th></tr>
+  <tr><td>1</td><td>MR-Conditional label present and legible on drive head</td><td>Label intact; serial number matches facility records</td></tr>
+  <tr><td>2</td><td>Fiber optic cable full-length inspection</td><td>No kinks, bends &lt;30mm radius, no damage</td></tr>
+  <tr><td>3</td><td>Fiber optic connectors cleaned with IPA swab</td><td>Connectors clean, no contamination</td></tr>
+  <tr><td>4</td><td>Syringe sensor window inspection and cleaning</td><td>Sensor clear; "Syringe Detected" on test load</td></tr>
+  <tr><td>5</td><td>Plunger through full stroke — both heads</td><td>Smooth, no binding; homes correctly</td></tr>
+  <tr><td>6</td><td>Plunger tip seals inspection</td><td>No cracking, deformation, or leakage</td></tr>
+  <tr><td>7</td><td>System self-test from Certegra service menu</td><td>All tests pass; no errors in log</td></tr>
+  <tr><td>8</td><td>Air detector function test</td><td>Triggers with test air bubble</td></tr>
+  <tr><td>9</td><td>Flow rate verification: 1 ml/sec and 5 ml/sec</td><td>Delivered rate within ±10% of set rate</td></tr>
+  <tr><td>10</td><td>Pressure transducer calibration check</td><td>Reads within spec vs. known reference</td></tr>
+  <tr><td>11</td><td>Software version documented</td><td>Record on service report</td></tr>
+  <tr><td>12</td><td>Service report to HTM/Biomedical Engineering</td><td>Signed, dated, serial number recorded</td></tr>
+</table>
+
+<h2>Key Parts (OEM Only)</h2>
+<table>
+  <tr><th>Part</th><th>Notes</th></tr>
+  <tr><td>Fiber optic cable</td><td>Replace if any visible damage. Min bend radius 30mm. Source from Bayer or authorized distributor.</td></tr>
+  <tr><td>Plunger tip seal set</td><td>Annual replacement recommended. Replace immediately if any leakage.</td></tr>
+  <tr><td>Syringe sensor board</td><td>Replace if syringe not detected after thorough cleaning.</td></tr>
+  <tr><td>MRXperion syringes 65ml / 115ml / 200ml</td><td>OEM only. NOT interchangeable with Stellant syringes.</td></tr>
+  <tr><td>Patient administration tubing sets</td><td>Single-use per patient. Bayer-approved sets only.</td></tr>
+</table>
+
+<h2>Useful Resources</h2>
+<ul>
+  <li><a href="https://www.manualslib.com/brand/bayer-healthcare/medical-equipment.html" target="_blank">Bayer Healthcare Manuals — ManualsLib</a></li>
+  <li><a href="https://www.radiologysolutions.bayer.com/products/injection-systems" target="_blank">Bayer Injection Systems Product Page</a></li>
+  <li><a href="https://www.radiologysolutions.bayer.com/services" target="_blank">Bayer TechCare Service Support</a></li>
+</ul>
+</body>
+</html>

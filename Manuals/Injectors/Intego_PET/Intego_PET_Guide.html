@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad Intego PET — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .rad{background:#ffe4e1;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;font-weight:bold;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>☢️ Medrad Intego PET Infusion System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="rad">
+  ☢️ RADIATION HAZARD — This system handles radioactive PET tracers (FDG, etc.).<br>
+  NEVER service while radioactive material is loaded. Obtain RSO clearance before ALL maintenance.
+  All waste handled per radioactive materials disposal protocol.
+</div>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Catalog:</strong> DCB-INTG &nbsp;|&nbsp;
+  <strong>Application:</strong> PET radiopharmaceutical automated delivery &nbsp;|&nbsp;
+  <strong>Support:</strong> 1-800-633-7231<br>
+  <strong>Bayer Service:</strong> <a href="https://www.radiologysolutions.bayer.com/services" target="_blank">radiologysolutions.bayer.com/services</a>
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Shielded Infusion Pump Head</td><td>Lead/tungsten radiation shielding enclosure containing pump mechanism</td></tr>
+  <tr><td>Dose Calibrator Interface</td><td>Connects to facility dose calibrator for automated activity measurement</td></tr>
+  <tr><td>Dosimetry Software</td><td>Tracks radiopharmaceutical activity; calculates patient dose</td></tr>
+  <tr><td>Patient Administration Tubing</td><td>Inline filter and radiation-shielded tubing set; single-use</td></tr>
+  <tr><td>Control Console</td><td>Automated injection protocol management; audit log function</td></tr>
+</table>
+
+<h2>Error Messages</h2>
+<table>
+  <tr><th>Error</th><th>Cause</th><th>Action</th></tr>
+  <tr><td><code>PUMP FAULT</code></td><td>Motor or encoder error</td><td>Ensure no radioactive material loaded. Power cycle. Check tubing for kinks. Run self-test.</td></tr>
+  <tr><td><code>DOSE CALIBRATOR COMM</code></td><td>Interface cable fault or calibrator offline</td><td>Check interface cable at both ends. Verify calibrator is powered and online.</td></tr>
+  <tr><td><code>TEMP OUT OF RANGE</code></td><td>System temperature fault</td><td>Check ambient temperature (15-30°C). Allow warm-up time. Inspect temperature sensor.</td></tr>
+  <tr><td><code>FLOW DEVIATION</code></td><td>Pump calibration drift or tubing issue</td><td>Check tubing for kinks. Run gravimetric flow calibration.</td></tr>
+  <tr><td><code>FILTER OCCLUDED</code></td><td>Inline filter blocked</td><td>Replace inline filter per procedure protocol. Do not bypass filter.</td></tr>
+  <tr><td><code>DOSE CAL ERROR</code></td><td>Activity measurement outside expected range</td><td>Verify calibrator calibration. Check syringe position. Confirm tracer lot and concentration.</td></tr>
+</table>
+
+<h2>Annual PM Checklist</h2>
+<div class="warn">Coordinate with Nuclear Medicine department and RSO before starting PM. Obtain written RSO clearance.</div>
+<table>
+  <tr><th>#</th><th>Task</th><th>Acceptance</th></tr>
+  <tr><td>1</td><td>RSO clearance documentation obtained</td><td>Written clearance in hand before any work begins</td></tr>
+  <tr><td>2</td><td>Radiation shielding integrity — no cracks or gaps</td><td>Visual inspection; no damage to shield housing</td></tr>
+  <tr><td>3</td><td>All seals on shielding housing</td><td>No breach; any gap reported to RSO immediately</td></tr>
+  <tr><td>4</td><td>Pump head inspection: drive mechanism, O-rings, tubing ports</td><td>No wear, cracking, or contamination</td></tr>
+  <tr><td>5</td><td>Flow rate calibration — gravimetric method</td><td>Delivered rate within ±5% of set rate</td></tr>
+  <tr><td>6</td><td>Dose calibrator interface communication verified</td><td>Calibrator data appears on console without errors</td></tr>
+  <tr><td>7</td><td>All alarms and fault conditions tested</td><td>Each alarm triggers correctly; audible and visual</td></tr>
+  <tr><td>8</td><td>Inline filter and tubing connections inspected</td><td>No blockage, cracking, or leakage points</td></tr>
+  <tr><td>9</td><td>Software version and audit log verified</td><td>Audit log accessible; software version documented</td></tr>
+  <tr><td>10</td><td>Emergency stop function tested</td><td>E-stop halts all pump activity immediately</td></tr>
+  <tr><td>11</td><td>Service report completed with RSO sign-off</td><td>Signed by tech and RSO; delivered to Nuclear Medicine</td></tr>
+</table>
+
+<div class="warn">
+  <strong>Important:</strong> All waste materials from PM must be handled per radioactive materials disposal protocol.
+  Service records must include RSO documentation of radiation safety clearance.
+</div>
+
+<h2>Useful Resources</h2>
+<ul>
+  <li><a href="https://www.radiologysolutions.bayer.com/products/injection-systems" target="_blank">Bayer Injection Systems — Product Page</a></li>
+  <li><a href="https://www.radiologysolutions.bayer.com/services" target="_blank">Bayer TechCare Service Support</a></li>
+  <li><a href="https://www.manualslib.com/brand/bayer-healthcare/medical-equipment.html" target="_blank">Bayer Healthcare Manuals — ManualsLib</a></li>
+  <li><a href="https://www.nrc.gov/materials/miau/med-use-toolkit/policy-guidance/p-g-med-prod.html" target="_blank">NRC Medical Use Guidance</a></li>
+</ul>
+</body>
+</html>

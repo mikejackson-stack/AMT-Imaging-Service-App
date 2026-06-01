@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medrad Stellant FLEX — AMT Field Service Guide</title>
+<style>
+  body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:16px;background:#f8f9fa;color:#1f2937;}
+  h1{background:#0a1628;color:#c9a84c;padding:16px;border-radius:8px;margin:0 0 16px;}
+  h2{background:#1e3a5f;color:#fff;padding:8px 12px;border-radius:6px;margin-top:24px;}
+  h3{color:#0a1628;border-bottom:2px solid #c9a84c;padding-bottom:4px;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+  th{background:#0a1628;color:#c9a84c;padding:8px 10px;text-align:left;font-size:13px;}
+  td{padding:7px 10px;border-bottom:1px solid #e5e7eb;font-size:13px;vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:#f0f4ff;}
+  .warn{background:#fef9c3;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .crit{background:#fee2e2;border-left:4px solid #dc2626;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .info{background:#dbeafe;border-left:4px solid #2563eb;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  .tip{background:#dcfce7;border-left:4px solid #16a34a;padding:10px 14px;border-radius:4px;margin:10px 0;}
+  code{background:#e5e7eb;padding:1px 5px;border-radius:3px;font-family:monospace;}
+</style>
+</head>
+<body>
+<h1>💉 Medrad Stellant FLEX CT Injection System<br><small style="font-size:14px;font-weight:normal">AMT Imaging Solutions — Field Service Quick Reference</small></h1>
+
+<div class="info">
+  <strong>Manufacturer:</strong> Bayer Radiology (formerly Medrad) &nbsp;|&nbsp;
+  <strong>Catalog:</strong> DCB-FLEX &nbsp;|&nbsp;
+  <strong>Type:</strong> Dual-head CT contrast injector with Certegra workstation &nbsp;|&nbsp;
+  <strong>Support:</strong> 1-800-633-7231<br>
+  <strong>ManualsLib:</strong> <a href="https://www.manualslib.com/manual/2889382/Bayer-Healthcare-Certegra-Medrad-Stellant-Flex.html" target="_blank">Bayer Certegra / Stellant FLEX Manual</a> &nbsp;|&nbsp;
+  <strong>Bayer Service:</strong> <a href="https://www.radiologysolutions.bayer.com/services" target="_blank">TechCare Service</a>
+</div>
+
+<div class="warn">
+  <strong>VISN 23 Contract Note:</strong> Certegra software updates, error diagnosis, and telephone support for Certegra software are included service requirements under this contract. All PM kits must be OEM Bayer parts. OEM parts only — no refurbished or reverse-engineered parts.
+</div>
+
+<h2>System Overview</h2>
+<table>
+  <tr><th>Component</th><th>Description</th></tr>
+  <tr><td>Injector Head (A + B)</td><td>Dual syringe — A: contrast, B: saline. Optical syringe sensors. Flex ring connectors.</td></tr>
+  <tr><td>Certegra Workstation</td><td>Touchscreen control console. P3T software. ISI scanner integration. Located in CT control room.</td></tr>
+  <tr><td>ISI 700 Module</td><td>Scanner trigger interface — synchronizes injection with CT scan start.</td></tr>
+  <tr><td>TechCare Basic</td><td>Remote service monitoring (required under VISN 23 contract for Stellant D systems).</td></tr>
+</table>
+
+<h2>Error Code Reference</h2>
+<table>
+  <tr><th>Code</th><th>Description</th><th>Action</th></tr>
+  <tr><td><code>3016</code></td><td>Plunger or motor sync failure</td><td>Check plunger alignment. Run self-test from Certegra. Inspect drive mechanism. Replace drive motor if persists.</td></tr>
+  <tr><td><code>867</code></td><td>Syringe size sensor / detection fault</td><td>Clean sensor window with dry lint-free cloth. Reseat syringe until click. Inspect flex ring contacts for contamination. Try new sealed syringe.</td></tr>
+  <tr><td><code>2115</code></td><td>Calibration or limit switch issue</td><td>Run calibration from Certegra service menu. Inspect limit switch for debris or misalignment.</td></tr>
+  <tr><td><code>2212</code></td><td>Drive stall or plunger stuck</td><td>Check for obstruction. Manually retract plunger via service menu. Inspect drive screw for damage.</td></tr>
+  <tr><td><code>1001</code></td><td>Communication / data transfer error</td><td>Check ISI cable at both ends. Reboot Certegra. Inspect serial port on head.</td></tr>
+  <tr><td><code>1010</code></td><td>Pressure limit exceeded / transducer fault</td><td>Verify IV site patent. Check pressure transducer calibration. Inspect high-pressure tubing.</td></tr>
+  <tr><td><code>1022</code></td><td>Air detection sensor triggered</td><td>Prime both heads completely. Inspect air detector. Check syringe seating.</td></tr>
+  <tr><td><code>1050</code></td><td>Flow rate deviation / blockage</td><td>Check IV catheter patency. Inspect tubing for kink. Verify syringe fully seated.</td></tr>
+  <tr><td><code>4001</code></td><td>System initialization / startup failure</td><td>Power cycle. Verify power supply voltages. Run system self-test from Certegra.</td></tr>
+  <tr><td>Invalid Syringe</td><td>Syringe not recognized (most common error)</td><td>1) Clean sensor window. 2) Reseat syringe until click. 3) Try sealed new syringe. 4) Inspect flex ring contacts. 5) Check syringe well for deformation.</td></tr>
+  <tr><td>White Screen / MEDRAD Stuck</td><td>Communication or software fault</td><td>Power off head and Certegra. Disconnect cables, wait 30 sec. Power Certegra first, then head. If persists, reload Certegra software.</td></tr>
+</table>
+
+<h2>Annual PM Checklist</h2>
+<table>
+  <tr><th>#</th><th>Task</th><th>Spec / Acceptance</th></tr>
+  <tr><td>1</td><td>Power cord and inlet connector inspection</td><td>No damage, no burn marks, secure</td></tr>
+  <tr><td>2</td><td>Head mounting arm — no wobble</td><td>Arm locks securely in all positions</td></tr>
+  <tr><td>3</td><td>High-pressure tubing inspection</td><td>No cracks, kinks, or discoloration</td></tr>
+  <tr><td>4</td><td>Syringe wells A and B — clean, no damage</td><td>No contrast buildup, no deformation</td></tr>
+  <tr><td>5</td><td>Syringe sensor windows — cleaned</td><td>Clean with dry lint-free cloth; sensors clear</td></tr>
+  <tr><td>6</td><td>Flex ring contacts inspection</td><td>No corrosion or damage on both ports</td></tr>
+  <tr><td>7</td><td>Drive screws inspection</td><td>No pitting, scoring, or contamination</td></tr>
+  <tr><td>8</td><td>Test syringe load (A and B)</td><td>"Syringe Detected" displayed for both</td></tr>
+  <tr><td>9</td><td>Full plunger stroke — both heads</td><td>Smooth, no binding; homes correctly</td></tr>
+  <tr><td>10</td><td>Plunger tip seals inspection</td><td>No cracking, deformation, or leakage</td></tr>
+  <tr><td>11</td><td>Contrast warmer verification (if installed)</td><td>Reaches 37°C within 30 min</td></tr>
+  <tr><td>12</td><td>System self-test — Certegra service menu</td><td>All tests pass; no errors in log</td></tr>
+  <tr><td>13</td><td>Air detector function test</td><td>Triggers with test air bubble</td></tr>
+  <tr><td>14</td><td>Pressure transducer calibration</td><td>Reads within spec vs. known reference</td></tr>
+  <tr><td>15</td><td>Flow test: 1 ml/sec saline (A and B)</td><td>No leaks; smooth delivery</td></tr>
+  <tr><td>16</td><td>Flow test: max protocol rate (7-10 ml/sec)</td><td>Smooth; delivered rate within ±10%</td></tr>
+  <tr><td>17</td><td>Software version documented</td><td>Record on service report</td></tr>
+  <tr><td>18</td><td>Event log review</td><td>Note any recurring errors; address root causes</td></tr>
+  <tr><td>19</td><td>Clean syringe wells with 70% IPA</td><td>All contrast residue removed</td></tr>
+  <tr><td>20</td><td>Service report to HTM/Biomedical</td><td>Signed, dated, serial numbers recorded</td></tr>
+</table>
+
+<h2>Certegra Software (VISN 23 Contract Requirement)</h2>
+<div class="info">Under the VISN 23 contract, AMT must provide: software updates, error diagnosis, and telephone support for Certegra software on Stellant-C configurations.</div>
+<table>
+  <tr><th>Task</th><th>Notes</th></tr>
+  <tr><td>Certegra software updates</td><td>Apply updates for Stellant-C systems per Bayer release schedule</td></tr>
+  <tr><td>Error log review</td><td>Pull Certegra event log; identify recurring software errors</td></tr>
+  <tr><td>Protocol backup</td><td>Export protocol configuration if system supports backup</td></tr>
+  <tr><td>Telephone support</td><td>Available within 2 hours during business hours for Certegra issues</td></tr>
+</table>
+
+<h2>Key Parts (OEM Only)</h2>
+<table>
+  <tr><th>Part</th><th>Notes</th></tr>
+  <tr><td>Flex ring assembly (A-head)</td><td>High failure rate after contrast spills. Inspect at every PM.</td></tr>
+  <tr><td>Plunger tip seal set</td><td>Replace if any leakage. Annual replacement recommended.</td></tr>
+  <tr><td>Drive motor assembly</td><td>Replace if error 3016 persists after troubleshooting.</td></tr>
+  <tr><td>Syringe sensor board</td><td>Replace if syringe not detected after thorough cleaning.</td></tr>
+  <tr><td>65ml / 200ml Stellant syringes</td><td>Single-use. Order by case. OEM only.</td></tr>
+  <tr><td>High-pressure patient tubing</td><td>Single-use per procedure.</td></tr>
+  <tr><td>Certegra power supply</td><td>Swap-test if console will not power on.</td></tr>
+</table>
+
+<h2>Useful Resources</h2>
+<ul>
+  <li><a href="https://www.manualslib.com/manual/2889382/Bayer-Healthcare-Certegra-Medrad-Stellant-Flex.html" target="_blank">Bayer Certegra / Stellant FLEX Operation Manual — ManualsLib</a></li>
+  <li><a href="https://fdmenterprises.com/pages/stellant-error-codes" target="_blank">Stellant Error Codes — FDM Enterprises</a></li>
+  <li><a href="https://fdmenterprises.com/pages/stellant-preventive-maintenance" target="_blank">Stellant PM Guide — FDM Enterprises</a></li>
+  <li><a href="https://www.radiologysolutions.bayer.com/services" target="_blank">Bayer TechCare Service Support</a></li>
+</ul>
+</body>
+</html>
