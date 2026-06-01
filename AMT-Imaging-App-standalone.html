@@ -891,7 +891,10 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     <button class="btn btn-primary" onclick="printHoldHarmless()">📄 Print Hold Harmless</button>
     <button class="btn btn-accent" onclick="toggleEmailSig()">📧 Email Signature</button>
   </div>
-  <div class="alert alert-info mt-12">💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</div>
+  <div class="alert alert-info mt-12" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+  <span>💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</span>
+  <button class="btn btn-sm" onclick="openStripeSettings()" style="background:#635bff;color:#fff;font-size:.75rem;padding:5px 12px;white-space:nowrap">💳 Stripe Settings</button>
+</div>
 
   <!-- EMAIL SIGNATURE GENERATOR -->
   <div id="emailSigSection" style="display:none" class="card mt-12">
@@ -1339,8 +1342,53 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
     </div>
     <div class="form-group"><label class="form-label">Notes</label><input class="form-control" id="inv_notes" placeholder="Payment terms, etc."></div>
   </div>
-  <div class="modal-footer"><button class="btn btn-success" onclick="saveInvoice()">💾 Save Invoice</button><button class="btn btn-outline" onclick="closeModal('invoiceModal')">Cancel</button></div></div>
+  <!-- Stripe payment link section -->
+  <div id="stripePaySection" style="padding:0 16px 12px;display:none">
+    <div style="background:#f0f7ff;border:1.5px solid #1565c0;border-radius:8px;padding:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span style="font-weight:700;font-size:.85rem;color:#1565c0">💳 Stripe Payment Link</span>
+        <span id="stripeLinkStatus" style="font-size:.75rem;color:#666"></span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="stripeLinkUrl" class="form-control" readonly placeholder="Click Generate to create link..." style="font-size:.78rem;flex:1">
+        <button class="btn btn-sm" onclick="copyStripeLink()" style="background:#1565c0;color:#fff;white-space:nowrap;font-size:.78rem" id="stripeCopyBtn" disabled>📋 Copy</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" onclick="generateStripePaymentLink()" id="stripeGenBtn" style="display:none">💳 Get Payment Link</button>
+    <button class="btn btn-success" onclick="saveInvoice()">💾 Save Invoice</button>
+    <button class="btn btn-outline" onclick="closeModal('invoiceModal')">Cancel</button>
+  </div></div>
 </div>
+
+<!-- ══ STRIPE SETTINGS MODAL ══ -->
+<div class="modal-overlay" id="stripeSettingsModal" style="display:none">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header"><h3>💳 Stripe Payment Settings</h3><button class="modal-close" onclick="closeModal('stripeSettingsModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="alert alert-info" style="font-size:.8rem;margin-bottom:12px">
+        Stripe payment links let customers pay invoices online by card or ACH. You need a <strong>Stripe restricted API key</strong> with <em>Payment Links: Write, Prices: Write, Products: Write</em> permissions.
+      </div>
+      <div class="form-group">
+        <label class="form-label">Stripe Restricted API Key</label>
+        <input class="form-control" id="stripeKeyInput" type="password" placeholder="rk_live_... or rk_test_..." style="font-family:monospace;font-size:.82rem">
+        <div style="font-size:.73rem;color:var(--text2);margin-top:4px">Use a restricted key — never your secret key. <a href="https://dashboard.stripe.com/apikeys" target="_blank" style="color:var(--blue2)">Get one at dashboard.stripe.com/apikeys →</a></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Default Payment Description</label>
+        <input class="form-control" id="stripeDescInput" placeholder="AMT Imaging Solutions — Field Service" style="font-size:.85rem">
+      </div>
+      <div id="stripeTestResult" style="font-size:.8rem;margin-top:8px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="saveStripeSettings()">💾 Save</button>
+      <button class="btn btn-outline" onclick="testStripeKey()">🔌 Test Key</button>
+      <button class="btn btn-outline" onclick="closeModal('stripeSettingsModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <!-- New Expense -->
 <div class="modal-overlay" id="expenseModal">
   <div class="modal"><div class="modal-header"><h3 id="expModalTitle">💸 Add Expense</h3><button class="modal-close" onclick="closeModal('expenseModal')">✕</button></div>
@@ -2107,6 +2155,12 @@ function openInvoiceModal(id){
     document.getElementById('inv_notes').value='';
   }
   openModal('invoiceModal');
+  refreshStripeUI();
+  document.getElementById('stripePaySection').style.display='none';
+  document.getElementById('stripeLinkUrl').value='';
+  document.getElementById('stripeLinkStatus').innerHTML='';
+  document.getElementById('stripeCopyBtn').disabled=true;
+  window._currentStripeLink=null;
 }
 function editInvoice(id){openInvoiceModal(id);}
 
@@ -3857,6 +3911,21 @@ function buildInvoicePDF(invId){
   doc.rect(0,285,W,12,'F');
   doc.setTextColor(255,255,255); doc.setFontSize(7);
   doc.text('AMT Imaging Solutions LLC  |  754-263-6089  |  mike.jackson@amtimagingsolutions.com  |  www.amtimagingsolutions.net  |  Veteran-Owned Business',W/2,292,{align:'center'});
+
+  // Payment link if available
+  if(window._currentStripeLink){
+    doc.setFillColor(240,247,255);
+    doc.rect(margin, y, W-margin*2, 14, 'F');
+    doc.setDrawColor(21,101,192);
+    doc.rect(margin, y, W-margin*2, 14);
+    doc.setTextColor(21,101,192);
+    doc.setFontSize(8); doc.setFont('helvetica','bold');
+    doc.text('Pay Online:', margin+3, y+5.5);
+    doc.setFont('helvetica','normal');
+    doc.text(window._currentStripeLink, margin+24, y+5.5);
+    doc.setTextColor(100,100,100); doc.setFontSize(7);
+    doc.text('Click the link above or scan with your phone to pay by card or bank transfer.', margin+3, y+11);
+  }
 
   return doc;
 }
@@ -6690,6 +6759,132 @@ function generateHoldHarmless(){
 
 // Auto-update preview when any HH field changes
 // ── GitHub Settings & Scan functions ──
+// ══ STRIPE PAYMENT LINK FUNCTIONS ══
+
+function openStripeSettings(){
+  document.getElementById('stripeKeyInput').value = localStorage.getItem('amt_stripe_key')||'';
+  document.getElementById('stripeDescInput').value = localStorage.getItem('amt_stripe_desc')||'AMT Imaging Solutions - Field Service';
+  document.getElementById('stripeTestResult').innerHTML = '';
+  openModal('stripeSettingsModal');
+}
+
+function saveStripeSettings(){
+  const key = document.getElementById('stripeKeyInput').value.trim();
+  const desc = document.getElementById('stripeDescInput').value.trim();
+  if(!key){ alert('Please enter your Stripe restricted API key.'); return; }
+  localStorage.setItem('amt_stripe_key', key);
+  localStorage.setItem('amt_stripe_desc', desc || 'AMT Imaging Solutions - Field Service');
+  closeModal('stripeSettingsModal');
+  refreshStripeUI();
+}
+
+function refreshStripeUI(){
+  const key = localStorage.getItem('amt_stripe_key');
+  const btn = document.getElementById('stripeGenBtn');
+  const section = document.getElementById('stripePaySection');
+  if(btn) btn.style.display = key ? '' : 'none';
+  if(section && !key) section.style.display = 'none';
+}
+
+async function testStripeKey(){
+  const key = document.getElementById('stripeKeyInput').value.trim();
+  const res = document.getElementById('stripeTestResult');
+  if(!key){ res.innerHTML='<span style="color:red">Enter a key first.</span>'; return; }
+  res.innerHTML = '..Testing..';
+  try {
+    const r = await fetch('https://api.stripe.com/v1/products?limit=1', {
+      headers: { 'Authorization': 'Bearer '+key }
+    });
+    if(r.ok){
+      res.innerHTML = '<span style="color:green">Key is valid - Stripe connected!</span>';
+    } else {
+      const err = await r.json();
+      res.innerHTML = '<span style="color:red">Invalid: '+( err.error&&err.error.message||'Bad key')+'</span>';
+    }
+  } catch(e){
+    res.innerHTML = '<span style="color:red">Network error: '+e.message+'</span>';
+  }
+}
+
+async function generateStripePaymentLink(){
+  const key = localStorage.getItem('amt_stripe_key');
+  if(!key){ openStripeSettings(); return; }
+
+  const amount = parseFloat(document.getElementById('inv_amount').value)||0;
+  if(amount <= 0){ alert('Enter an invoice amount first.'); return; }
+
+  const client = document.getElementById('inv_client').value || 'Customer';
+  const invNum = document.getElementById('inv_num').value || '';
+  const statusEl = document.getElementById('stripeLinkStatus');
+  const urlInput = document.getElementById('stripeLinkUrl');
+  const copyBtn = document.getElementById('stripeCopyBtn');
+  const section = document.getElementById('stripePaySection');
+
+  section.style.display = '';
+  statusEl.innerHTML = 'Creating...';
+  urlInput.value = '';
+  copyBtn.disabled = true;
+
+  try {
+    const amountCents = Math.round(amount * 100);
+    const productName = (invNum ? invNum+' - ' : '') + client;
+
+    const priceBody = new URLSearchParams();
+    priceBody.append('unit_amount', amountCents);
+    priceBody.append('currency', 'usd');
+    priceBody.append('product_data[name]', productName);
+
+    const priceResp = await fetch('https://api.stripe.com/v1/prices', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer '+key,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: priceBody.toString()
+    });
+
+    if(!priceResp.ok){ const e=await priceResp.json(); throw new Error(e.error&&e.error.message||'Price error'); }
+    const price = await priceResp.json();
+
+    const linkBody = new URLSearchParams();
+    linkBody.append('line_items[0][price]', price.id);
+    linkBody.append('line_items[0][quantity]', '1');
+    if(invNum) linkBody.append('metadata[invoice_num]', invNum);
+    linkBody.append('metadata[client]', client);
+
+    const linkResp = await fetch('https://api.stripe.com/v1/payment_links', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer '+key,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: linkBody.toString()
+    });
+
+    if(!linkResp.ok){ const e=await linkResp.json(); throw new Error(e.error&&e.error.message||'Link error'); }
+    const link = await linkResp.json();
+
+    urlInput.value = link.url;
+    copyBtn.disabled = false;
+    statusEl.innerHTML = '<span style="color:green">Ready - $'+amount.toFixed(2)+'</span>';
+    window._currentStripeLink = link.url;
+
+  } catch(e) {
+    statusEl.innerHTML = '<span style="color:red">'+e.message+'</span>';
+  }
+}
+
+function copyStripeLink(){
+  const url = document.getElementById('stripeLinkUrl').value;
+  if(!url) return;
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn = document.getElementById('stripeCopyBtn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=>{ btn.textContent = orig; }, 2000);
+  });
+}
+
 function openGHSettings(){
   const tokenInput = document.getElementById('gh_token_input');
   if(tokenInput) tokenInput.value = GH.token || '';
@@ -14052,4 +14247,99 @@ function openDiagGuideDetail(id) {
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px">$1</h5>')
     .replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:12px 0 6px">$1</h4>')
-    .replace(/^## (.+)$/gm,'<h3 style="color:var(
+    .replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:14px 0 8px">$1</h3>')
+    .replace(/`([^`]+)`/g,'<code style="background:var(--gray2);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>')
+    .replace(/^\| .+$/gm, m => {
+      if (m.includes('---')) return '';
+      const cells = m.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
+      return '<tr>' + cells.map(cell=>'<td style="padding:4px 10px;border:1px solid var(--gray2)">' + cell.trim() + '</td>').join('') + '</tr>';
+    })
+    .replace(/(<tr>.*<\/tr>\n?)+/gs, t => '<table style="border-collapse:collapse;margin:8px 0;font-size:.82rem;width:100%">' + t + '</table>')
+    .replace(/^\d+\. (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/^- (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, t => '<ul style="margin:6px 0;padding-left:20px">' + t + '</ul>')
+    .replace(/\n\n/g,'</p><p style="margin:6px 0">')
+    .replace(/\n/g,'<br>');
+  document.getElementById('dgDetailTitle').textContent = g.title;
+  document.getElementById('dgDetailBody').innerHTML = '<p style="margin:6px 0">' + html + '</p>';
+  openModal('dgDetailModal');
+}
+
+function openDiagGuideModal(prefill) {
+  if (writeGuard('Add Diagnostic Guide')) return;
+  document.getElementById('dg_title').value    = (prefill&&prefill.title)    || '';
+  document.getElementById('dg_system').value   = (prefill&&prefill.system)   || 'GE MRI';
+  document.getElementById('dg_category').value = (prefill&&prefill.category) || '';
+  document.getElementById('dg_tags').value     = (prefill&&prefill.tags)     ? prefill.tags.join(', ') : '';
+  document.getElementById('dg_content').value  = (prefill&&prefill.content)  || '';
+  document.getElementById('dg_edit_id').value  = (prefill&&prefill.id)       || '';
+  openModal('addDiagGuideModal');
+}
+
+function saveDiagGuide() {
+  if (writeGuard('Save Guide')) return;
+  const title   = document.getElementById('dg_title').value.trim();
+  const content = document.getElementById('dg_content').value.trim();
+  if (!title || !content) { alert('Title and Content are required.'); return; }
+  const editId = document.getElementById('dg_edit_id').value;
+  const guide = {
+    id: editId || 'dg_' + Date.now(),
+    title,
+    system:   document.getElementById('dg_system').value,
+    category: document.getElementById('dg_category').value.trim(),
+    tags:     document.getElementById('dg_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    content,
+    created:  new Date().toISOString()
+  };
+  if (editId) {
+    const idx = diagGuidesDB.findIndex(x => x.id === editId);
+    if (idx >= 0) diagGuidesDB[idx] = guide; else diagGuidesDB.unshift(guide);
+  } else {
+    diagGuidesDB.unshift(guide);
+  }
+  saveDiagGuides();
+  closeModal('addDiagGuideModal');
+  renderDiagGuides();
+}
+
+function deleteDiagGuide(id) {
+  if (!confirm('Delete this diagnostic guide?')) return;
+  diagGuidesDB = diagGuidesDB.filter(g => g.id !== id);
+  saveDiagGuides();
+  renderDiagGuides();
+}
+</script>
+
+<!-- Diag Guide Detail Modal -->
+<div class="modal-overlay" id="dgDetailModal" style="display:none">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3 id="dgDetailTitle">Guide</h3><button class="modal-close" onclick="closeModal('dgDetailModal')">✕</button></div>
+    <div class="modal-body" id="dgDetailBody" style="max-height:70vh;overflow-y:auto;font-size:.88rem;line-height:1.6"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('dgDetailModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- Add Diagnostic Guide Modal -->
+<div class="modal-overlay" id="addDiagGuideModal" style="display:none">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header"><h3>🔧 Add / Edit Diagnostic Guide</h3><button class="modal-close" onclick="closeModal('addDiagGuideModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="dg_edit_id">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-control" id="dg_title" placeholder="e.g. GE Signa E305 RF Amp Fault"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">System</label>
+          <select class="form-control" id="dg_system">
+            <option>GE MRI</option><option>Siemens MRI</option><option>GE CT</option><option>Siemens CT</option><option>Injector</option><option>General</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Category</label><input class="form-control" id="dg_category" placeholder="RF / Gradient / Magnet…"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="dg_tags" placeholder="RF amp, E305, cooling"></div>
+      <div class="form-group"><label class="form-label">Content * (Markdown supported)</label><textarea class="form-control" id="dg_content" style="min-height:200px;font-family:monospace;font-size:.82rem" placeholder="## Title&#10;### Step 1&#10;Details here…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
+      <button class="btn btn-outline" onclick="closeModal('addDiagGuideModal')">Cancel</button>
+    </div>
+  </div>
+</div>
