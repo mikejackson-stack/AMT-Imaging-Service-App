@@ -661,7 +661,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <select class="form-control" id="nj_modality">
           <option value="">Select…</option>
           <option>GE MRI</option><option>Siemens MRI</option><option>Philips MRI</option>
-          <option>GE CT</option><option>Siemens CT</option><option>Hitachi MRI</option><option>Toshiba MRI</option><option>Stellant Injector</option><option>Solaris/Spectris Injector</option><option>Other</option>
+          <option>GE CT</option><option>Siemens CT</option><option>Hitachi MRI</option><option>Toshiba MRI</option><option>Stellant Injector</option><option>Solaris/Spectris Injector</option><option>MRXperion MR Injector</option><option>Mark 7 Arterion Injector</option><option>Intego PET Injector</option><option>Avanta Fluid Management</option><option>Other</option>
         </select>
       </div>
       <div class="form-group"><label class="form-label">Scanner Model</label><input class="form-control" id="nj_model" placeholder="Signa Voyager 1.5T"></div>
@@ -676,7 +676,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="card"><div class="card-header">🔧 Job Details</div><div class="card-body">
     <div class="form-row">
       <div class="form-group"><label class="form-label">Job Type *</label>
-        <select class="form-control" id="nj_type" onchange="onTypeChange()">
+        <select class="form-control" id="nj_type" onchange="checkInjectorPMTrigger()" onchange="onTypeChange()">
           <option value="">Select…</option>
           <option>PM</option><option>Repair</option><option>Ramp/Shim</option>
           <option>Install</option><option>Consultation</option><option>Emergency</option>
@@ -6887,6 +6887,23 @@ function copyStripeLink(){
     btn.textContent = 'Copied!';
     setTimeout(()=>{ btn.textContent = orig; }, 2000);
   });
+}
+
+
+function checkInjectorPMTrigger(){
+  const jt = (document.getElementById('nj_type')||{}).value||'';
+  const mod = (document.getElementById('nj_modality')||{}).value||'';
+  if (jt !== 'PM') return;
+  const MAP = {
+    'Stellant Injector':'stellant',
+    'Solaris/Spectris Injector':'solaris',
+    'MRXperion MR Injector':'solaris',
+    'Mark 7 Arterion Injector':'stellant',
+    'Intego PET Injector':'stellant',
+    'Avanta Fluid Management':'stellant',
+  };
+  const cl = MAP[mod];
+  if (cl) { showTab('pm'); setTimeout(()=>switchChecklist(cl), 300); }
 }
 
 function openGHSettings(){
@@ -14073,4 +14090,826 @@ Source: GE Extra & Notes — Ramp Down CX.pdf, Ramp Down SIV.pdf, Ramp Up SV.pdf
     system: 'GE MRI',
     category: 'Magnet/Cryogens',
     tags: ['magnet monitor','alarms','vessel pressure','He level','LCC','quench','vent valve','setup'],
-    content: `## GE Magne
+    content: `## GE Magnet Monitor — Setup, Alarms & Pressure Control
+Source: GE Extra & Notes — Magnet Monitor Setup.pdf (Direction 2192624)
+
+### Magnet Monitor Functions
+- He Level Monitoring: capacitance probe measures liquid He fill level (%)
+- Vessel Pressure Control: maintains magnet at target operating pressure (0.2–0.5 psi)
+- Temperature Monitoring: magnet vessel and coldhead temperatures
+- Alarm Output: local alarm + optional remote notification
+- Vent Valve Control: auto-opens V1 when pressure exceeds setpoint
+
+### Normal Operating Parameters (LCC)
+| Parameter | Normal Range | Alarm Threshold |
+|-----------|-------------|-----------------|
+| He Level | 80–95% | <50% (warning), <40% (critical) |
+| Vessel Pressure | 0.2–0.5 psi | <0.1 psi or >0.8 psi |
+| Coldhead 1st Stage | 35–55 K | >60 K |
+| Coldhead 2nd Stage | 10–18 K | >22 K |
+| Recondenser | >50% | <30% |
+
+### Setup Procedure
+1. **Power on** — verify all displays illuminate
+2. **He Level Probe calibration**:
+   - Zero = empty vessel (probe fully in gas)
+   - Span = full vessel (probe fully submerged)
+3. **Pressure Setpoints**:
+   - Low alarm: 0.1 psi; High alarm: 0.8 psi
+   - Vent valve opens at: 0.5 psi (adjust per site)
+4. **Temperature setpoints**: per system spec
+5. **Verify vent valve V1**: manually trigger; observe open/close
+6. **Test alarm outputs**: local and remote both activate
+
+### Alarm Response Guide
+| Alarm | Cause | Action |
+|-------|-------|--------|
+| He Level Low (Warning) | Level 50–60% | Schedule helium fill |
+| He Level Low (Critical) | Level <40% | Fill IMMEDIATELY — quench risk |
+| High Pressure | >0.8 psi | Check vent valve V1; verify coldhead running |
+| Low Pressure | <0.1 psi | Check for He leak; verify V1 not stuck open |
+| Coldhead Warm | Stage 2 temp rising | Check compressor pressures, flexlines, adsorber |
+
+### Master Alarm Disable (for Maintenance)
+Required before: de-icing, He fills, compressor work
+1. Navigate to alarm setup menu
+2. Set Master Alarm Disable → ON
+3. Log time and reason
+4. **Re-enable IMMEDIATELY after maintenance completes**
+
+### Vessel Pressure Control Modes
+- **Auto**: Monitor maintains pressure via V1 vent valve automatically
+- **Manual**: Technician controls vent valve directly
+- Switch to Manual during: He fills, de-icing, vent valve diagnostics
+
+### Helium Fill with Magnet Monitor
+1. Disable pressure control (prevents V1 fighting the fill)
+2. Fill at standard rate (60–80 L/hr typical)
+3. After fill: re-enable pressure control
+4. Verify He level reading matches actual fill amount
+5. Log: date, He level before/after, liters added, tech name
+
+### Magnet Monitor Troubleshooting
+| Issue | Check |
+|-------|-------|
+| He Level stuck at 0% | Probe connection at vessel top; harness continuity |
+| He Level stuck at 100% | Probe ground; damaged probe |
+| Pressure reading stuck | Transducer connection; calibration |
+| V1 vent always open | High pressure setpoint too low; V1 stuck open |
+| V1 never opens | V1 solenoid failed; wiring to valve |
+| No alarms triggering | Relay wiring; notification system power |`,
+    created: '2026-05-28T00:00:00.000Z'
+  }
+
+  ,
+  {
+    id: 'dg_seed_060',
+    title: 'Medrad Stellant FLEX CT Injector - Error Codes and Troubleshooting',
+    system: 'Injector',
+    category: 'Error Codes',
+    tags: ['Stellant','FLEX','CT','injector','Medrad','Bayer','error codes','troubleshooting'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Stellant FLEX CT Injector - Error Codes and Troubleshooting
+Source: Bayer/Medrad Stellant FLEX Operation Manual; FDM Enterprises field experience
+
+### System Overview
+Dual-head CT contrast injector (A-head: contrast, B-head: saline). Certegra workstation controls the head unit. Used in CT suites across VA and hospital systems nationwide.
+
+### Error Code Reference
+| Code | Description | Action |
+|------|-------------|--------|
+| 3016 | Plunger or motor sync failure | Check plunger alignment; run self-test; replace drive motor if persists |
+| 867 | Syringe size sensor / detection fault | Clean sensor window; reseat syringe; inspect flex ring contacts |
+| 2115 | Calibration or limit switch issue | Run calibration from service menu; inspect limit switch for debris |
+| 2212 | Drive stall or plunger stuck | Check for obstruction; manually retract plunger; inspect drive screw |
+| 1001 | Communication / data transfer error | Check Certegra cable connections; reboot workstation; inspect serial port |
+| 1010 | Pressure limit exceeded / transducer fault | Verify IV site; check pressure transducer; inspect high-pressure tubing |
+| 1022 | Air detection sensor triggered | Prime both heads fully; inspect air detector; check syringe seating |
+| 1050 | Flow rate deviation / blockage | Check IV catheter patency; verify tubing for kink; verify syringe seated |
+| 4001 | System initialization / startup failure | Power cycle; verify power supply; run system self-test from console |
+
+### "Invalid Syringe" Error (Most Common)
+Causes in order of likelihood:
+1. Contrast residue on optical sensor window - clean with dry lint-free cloth
+2. Syringe not fully locked - push in until audible click
+3. Wrong syringe size for configured protocol
+4. Worn or cracked flex ring - inspect ring contacts, replace if needed
+5. Damaged syringe well - inspect for deformation
+
+### "White Screen / MEDRAD Display Stuck"
+Communication or software fault:
+1. Power off head and Certegra workstation
+2. Disconnect all cables; wait 30 seconds
+3. Reconnect and power on Certegra first, then head
+4. If persists: reload Certegra software or replace communication board
+
+### Pressure Abort During Injection
+1. Assess IV site - check for infiltration (swelling, pain)
+2. Straighten any tubing kinks; warm contrast to 37 C (reduces viscosity ~30%)
+3. Reduce flow rate by 0.5 ml/sec and retry
+4. Verify catheter size is appropriate (18-20G for high flow rates)
+5. Increase pressure limit only if IV is confirmed patent
+
+### Key Service Notes
+- Self-test: Hold PRIME + INJECT simultaneously during power-on for service mode
+- Head software version: viewable on Certegra System Info screen
+- Parts: Bayer Part numbers changed post-2020 rebranding from Medrad`
+  },
+  {
+    id: 'dg_seed_061',
+    title: 'Medrad Stellant FLEX CT Injector - Annual PM Checklist',
+    system: 'Injector',
+    category: 'PM Checklist',
+    tags: ['Stellant','FLEX','CT','injector','PM','preventive maintenance','annual','checklist'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Stellant FLEX CT Injector - Annual Preventive Maintenance
+
+### Pre-PM Requirements
+- Schedule during scanner downtime (60-90 min)
+- Supplies: lint-free cloths, IPA 70%, Dow Corning 111 lubricant, test syringes, test saline
+
+### Safety Check
+- [ ] Inspect power cord and inlet connector for damage or burn marks
+- [ ] Verify head secured to mounting arm - no wobble
+- [ ] Check all high-pressure tubing for cracks or kinks
+- [ ] Verify patient tubing connectors intact and locking properly
+
+### Visual Inspection
+- [ ] Inspect syringe wells (A and B) - no cracks or contrast buildup
+- [ ] Inspect syringe sensor windows - clean with dry lint-free cloth
+- [ ] Inspect flex ring contacts on both ports - no corrosion
+- [ ] Inspect drive screws - no pitting or scoring
+- [ ] Check all external cable connections - seated and latched
+- [ ] Inspect Certegra workstation screen and touchpad
+
+### Mechanical Checks
+- [ ] Load test syringes into A and B heads - verify "syringe detected"
+- [ ] Cycle plunger through full stroke - smooth, no binding
+- [ ] Verify plunger homes correctly at full retract
+- [ ] Check plunger tip seals - no cracking or leakage
+- [ ] Verify contrast warmer heats to 37 C within 30 min (if installed)
+
+### Electrical and Sensor Checks
+- [ ] Run system self-test from Certegra service menu - all tests pass
+- [ ] Verify air detector function using air bubble test
+- [ ] Verify pressure transducer calibration
+- [ ] Check limit switch function at both ends of stroke
+- [ ] Verify communication between head and workstation - no errors
+
+### Flow Rate and Pressure Verification
+- [ ] Inject test saline at 1 ml/sec - verify flow and no leaks
+- [ ] Inject at max protocol rate (7-10 ml/sec) - verify smooth delivery
+- [ ] Check B-head saline flush - verify flow rate and pressure
+- [ ] Document tested flow rates and pressure readings
+
+### Software and Configuration
+- [ ] Verify software version - document on service report
+- [ ] Review system event log for recurring errors
+- [ ] Verify all installed protocols intact and accessible
+- [ ] Confirm contrast warmer setpoint (37 C)
+
+### Cleaning
+- [ ] Clean syringe wells with 70% IPA - remove all contrast residue
+- [ ] Apply thin film of approved lubricant to drive screws
+- [ ] Clean exterior with damp cloth - no cleaners on sensor windows
+- [ ] Clean Certegra workstation screen and touchpad
+
+### Documentation
+- [ ] Record PM date, technician name, serial number
+- [ ] Document all readings (flow rate, pressure, software version)
+- [ ] Note any parts replaced or repairs performed
+- [ ] Provide service report to biomedical/HTM department`
+  },
+  {
+    id: 'dg_seed_062',
+    title: 'Medrad Spectris Solaris EP MR Injector - Troubleshooting and MR Safety',
+    system: 'Injector',
+    category: 'Error Codes',
+    tags: ['Spectris','Solaris','EP','MR injector','MRI','Medrad','Bayer','MR-conditional','troubleshooting'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Spectris Solaris EP MR Injector - Troubleshooting and MR Safety
+Source: Bayer/Medrad Spectris Solaris EP Operation Manual; Catalog: DCB-SMRS
+
+### MR Safety - Critical Rules
+- ONLY the Spectris Solaris EP is approved for use INSIDE the MRI scan room
+- Approved at 1.5T and 3.0T; keep drive unit at least 1.5 m from isocenter
+- Never bring the control unit into the scan room
+- Verify MR-Conditional label before each use - missing label = do not use
+- Inspect fiber optic cable before each use - no sharp bends or damage
+
+### Error Messages and Troubleshooting
+| Error | Cause | Action |
+|-------|-------|--------|
+| COMM ERROR | Fiber optic cable fault | Inspect cable full length; clean connectors; replace if damaged |
+| SYRINGE NOT DETECTED | Syringe not seated; sensor fault | Remove and reseat syringe; clean sensor window; try new syringe |
+| PRESSURE LIMIT | Pressure exceeded | Reduce flow rate; check IV site; verify syringe seated correctly |
+| AIR DETECTED | Air in line | Prime injection line fully; inspect for air entry points |
+| DRIVE FAULT | Motor or drive error | Power cycle; run self-test; inspect drive mechanism |
+| LOW BATTERY | Battery below 20% | Connect to AC power; allow 30-min charge before use |
+| TEMP FAULT | Head temperature out of range | Allow to acclimate to room temp; check warmer if installed |
+
+### Fiber Optic Cable Care
+- Minimum bend radius: 30 mm - never kink sharply
+- Clean connectors with IPA swab before each connection
+- Replace cable if any bend or crimp damage is visible
+- Store coiled (not folded) in the storage pouch
+
+### Syringe Notes
+- EP uses proprietary Solaris EP syringes ONLY - Stellant syringes NOT compatible
+- "Syringe Not Detected" most often = contrast residue on sensor window or not clicked in
+- Run saline flush after every contrast injection to clear tubing
+
+### Battery and Power
+- Battery life: approximately 4 hours on full charge
+- Green LED = fully charged; charge via AC adapter
+- Battery replacement: internal Li-ion - factory service or trained tech only
+- Replace when runtime falls below 2 hours`
+  },
+  {
+    id: 'dg_seed_063',
+    title: 'Medrad Spectris Solaris EP - Annual PM Checklist',
+    system: 'Injector',
+    category: 'PM Checklist',
+    tags: ['Spectris','Solaris','EP','MR injector','PM','preventive maintenance','annual'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Spectris Solaris EP MR Injector - Annual PM Checklist
+
+### Pre-PM Requirements
+- Coordinate with MRI suite during downtime (45-60 min)
+- Supplies: fiber optic test tool or known-good cable, test syringes, test saline, IPA 70%, lint-free cloths
+
+### MR Safety Verification
+- [ ] Confirm MR-Conditional label present and legible on drive unit
+- [ ] Confirm serial number matches facility asset record
+- [ ] Verify max field rating (3.0T) documented in facility records
+- [ ] Inspect for any unauthorized modifications
+
+### Visual Inspection
+- [ ] Inspect drive unit exterior - no cracks or contrast contamination
+- [ ] Inspect syringe port and sensor window - clean if needed
+- [ ] Inspect fiber optic cable full length - no kinks or pinch points
+- [ ] Inspect fiber optic connectors both ends - clean with IPA swab
+- [ ] Inspect battery compartment - no leakage or corrosion
+- [ ] Inspect AC adapter cable and connector
+
+### Mechanical Checks
+- [ ] Load test syringe - verify "Syringe Detected" on display
+- [ ] Advance plunger through full stroke - smooth, no binding
+- [ ] Retract plunger to home - smooth return
+- [ ] Inspect plunger tip seal - no cracks or wear
+- [ ] Verify syringe locking mechanism engages and releases properly
+
+### Electrical and Communication
+- [ ] Power on from battery - verify charge level (80%+ at PM)
+- [ ] Connect AC adapter - verify charging indicator activates
+- [ ] Connect fiber optic to control unit - verify communication established
+- [ ] Run system self-test - all tests pass
+- [ ] Verify control unit display and keypad function
+
+### Flow Rate and Pressure
+- [ ] Fill test syringe with saline; inject at 1 ml/sec - verify no leaks
+- [ ] Inject at 5 ml/sec - verify smooth delivery
+- [ ] Verify pressure limit alarm at set threshold
+- [ ] Verify air detector triggers with test air bubble
+
+### Battery Test
+- [ ] Fully charge battery (green LED)
+- [ ] Disconnect AC power; operate on battery 10 minutes
+- [ ] Verify battery percentage decreases at expected rate (~4% per 10 min)
+
+### Documentation
+- [ ] Record PM date, tech name, serial number
+- [ ] Document battery condition (good/degraded/replace)
+- [ ] Document fiber optic cable condition
+- [ ] Provide service report to MRI and biomedical/HTM departments`
+  },
+  {
+    id: 'dg_seed_064',
+    title: 'Medrad MRXperion MR Injection System - Troubleshooting Guide',
+    system: 'Injector',
+    category: 'Error Codes',
+    tags: ['MRXperion','MR injector','MRI','Medrad','Bayer','troubleshooting','DCB-MRXP'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad MRXperion MR Injection System - Troubleshooting Guide
+Source: Bayer/Medrad MRXperion Operation Manual; VA VISN 23 Service Experience; Catalog: DCB-MRXP
+
+### System Overview
+Dedicated MR injection system, MR-Conditional at 1.5T and 3.0T. Dual-head configuration with Certegra workstation. Used in MRI suites across VA VISN 23.
+
+### Common Error Messages
+| Error | Action |
+|-------|--------|
+| HEAD COMM FAULT | Check cables; reboot system; inspect communication board |
+| SYRINGE ERROR | Reseat syringe; clean sensor; try sealed new syringe |
+| PRESSURE FAULT | Check IV site; reduce flow rate; verify tubing not kinked |
+| AIR IN LINE | Prime system completely; inspect syringe seating and connections |
+| MOTOR FAULT | Power cycle; run self-test; inspect drive mechanism |
+| LOW FLUID | Replace syringe; prime before next injection |
+| TEMP ALARM | Check ambient temp (15-30 C); check warmer function |
+
+### MR Safety
+- Verify drive head placement per site-specific MR Conditions of Use document
+- Use only Medrad-approved MRXperion syringes - no substitutions
+- Fiber optic communication cable: inspect before every use
+
+### Syringe Not Recognized
+1. Remove syringe; wipe sensor window and syringe bayonet with dry cloth
+2. Reseat syringe until audible click/tactile lock
+3. Check sensor LED through syringe port (should illuminate red)
+4. Replace with sealed new syringe - if resolved, previous syringe was defective
+5. If persists: inspect sensor board connections
+
+### Head Communication Fault
+1. Power off head and Certegra
+2. Disconnect and reconnect all cables (fiber optic, power, data)
+3. Power on Certegra first, wait for ready state, then power on head
+4. Check for bent pins on connectors
+5. If persists: swap with known-good communication cable
+
+### Annual PM Highlights
+- Visual inspection: syringe wells, fiber optic cable, drive screws
+- Plunger seal inspection and replacement if needed
+- System self-test and calibration verification
+- Flow rate verification at 1, 3, 5 ml/sec
+- Pressure transducer calibration check
+- Syringe sensor cleaning and function test
+- Software version documentation`
+  },
+  {
+    id: 'dg_seed_065',
+    title: 'Medrad Mark 7 Arterion Angiography Injector - Service Guide',
+    system: 'Injector',
+    category: 'Error Codes',
+    tags: ['Mark 7','Arterion','angio','angiography','Medrad','Bayer','injector','DCB-ART','cardiovascular'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Mark 7 Arterion Angiography Injection System - Service Guide
+Source: Bayer/Medrad Mark 7 Arterion Operation Manual; Catalog: DCB-ART 700
+
+### System Overview
+High-pressure angiographic injection system for cardiovascular and interventional radiology.
+Delivers at up to 1200 PSI with precise flow control for angio suites.
+NOT MR-compatible - CT/Angio use only.
+
+### Key Specs
+- Maximum injection pressure: 1200 PSI (82.7 bar)
+- Maximum flow rate: 30 ml/sec
+- Syringe sizes: 60 ml, 130 ml, 200 ml
+
+### Common Error Messages
+| Error | Cause | Action |
+|-------|-------|--------|
+| SYRINGE NOT LOADED | Syringe not locked in cradle | Remove and reseat until latches engage; check latch springs |
+| PRESSURE LIMIT EXCEEDED | Patient line occlusion or PSI too low | Check catheter; verify PSI limit for procedure type |
+| INJECTOR BUSY | System in previous injection sequence | Allow sequence to complete; check for held state |
+| DRIVE FAULT | Motor or encoder error | Power cycle; run self-test; inspect drive assembly |
+| COMM ERROR | Console/cradle communication loss | Check interface cable; reboot console and cradle |
+| FILL ERROR | Auto-fill system fault | Check contrast connection; verify fill tubing is primed |
+| TEMPERATURE FAULT | Contrast warmer error | Check warmer setpoint; inspect heater element |
+
+### High Residual Pressure After Injection
+1. Verify contrast bag/bottle is still pressurized (if using pressure bag)
+2. Check that fill valve fully closed after auto-fill
+3. Inspect check valves in fill line - replace if sticking open
+
+### Syringe Leaking at High Pressure
+1. Inspect syringe for hairline cracks - discard if found
+2. Check plunger O-ring - replace if compressed or extruded
+3. Verify cradle connection is fully locked
+4. Check for contrast residue preventing full seal - clean cradle seat
+
+### Annual PM Overview
+- Syringe cradle inspection and cleaning
+- Drive mechanism inspection and lubrication (Bayer-approved lubricant only)
+- Plunger seal inspection and replacement
+- Check valve inspection and function test
+- Pressure transducer calibration (critical for accurate PSI reporting)
+- Auto-fill system inspection and test
+- Contrast warmer calibration and temperature verification
+- High-pressure tubing inspection - replace if discolored or stiff
+- All error alarms verified functional`
+  },
+  {
+    id: 'dg_seed_066',
+    title: 'Medrad Intego PET Infusion System - Service Guide',
+    system: 'Injector',
+    category: 'PM Checklist',
+    tags: ['Intego','PET','infusion','nuclear medicine','Medrad','Bayer','DCB-INTG','radiopharmacy'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Intego PET Infusion System - Service Guide
+Source: Bayer/Medrad Intego PET System Manual; Catalog: DCB-INTG
+
+### CRITICAL: Radiation Safety
+- RADIATION HAZARD: Intego handles radioactive PET tracers (FDG etc.)
+- Follow all RSO (Radiation Safety Officer) protocols at all times
+- NEVER service while radioactive material is loaded
+- Verify system is fully discharged and cleared per RSO before any maintenance
+- Shielding inspection is mandatory at every PM - any damage = remove from service
+
+### System Overview
+Radiation-shielded automated injection system for PET radiopharmaceutical administration.
+Manages radioactive FDG delivery with automated dosimetry and activity measurement.
+
+### Common Error Messages
+| Error | Cause | Action |
+|-------|-------|--------|
+| PUMP FAULT | Motor or encoder error | Power cycle; check tubing; run self-test |
+| DOSE CALIBRATOR COMM | Interface cable fault | Check cable connections; verify calibrator online |
+| TEMP OUT OF RANGE | Temperature fault | Check ambient; allow warm-up; inspect temp sensor |
+| FLOW DEVIATION | Flow rate discrepancy | Check tubing; verify pump calibration |
+| FILTER OCCLUDED | Inline filter blocked | Replace inline filter per procedure protocol |
+
+### Annual PM Checklist (Must coordinate with Nuclear Medicine and RSO)
+- [ ] RSO clearance obtained before starting PM
+- [ ] Verify radiation shielding integrity - no cracks, gaps in shield housing
+- [ ] Check all seals on shielding housing - breach = report to RSO immediately
+- [ ] Inspect pump head: drive mechanism, tubing port, O-rings
+- [ ] Calibrate pump flow rate using gravimetric method
+- [ ] Verify dose calibrator interface communication
+- [ ] Test all alarms and fault conditions
+- [ ] Inspect and clean tubing connections and filters
+- [ ] Verify software version and audit log function
+- [ ] Check emergency stop function
+- [ ] Document all values with RSO sign-off on service report
+
+### Special Notes
+- All waste materials: handle per radioactive materials disposal protocol
+- Service records: must include RSO documentation of radiation safety clearance
+- Calibration intervals may be required more frequently per facility RSO`
+  },
+  {
+    id: 'dg_seed_067',
+    title: 'Medrad Avanta Fluid Management System - PM Guide',
+    system: 'Injector',
+    category: 'PM Checklist',
+    tags: ['Avanta','fluid management','Medrad','Bayer','DCB-AVT','contrast','PM','injector'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Medrad Avanta Fluid Management Injection System - PM Guide
+Source: Bayer/Medrad Avanta System Documentation; Catalog: DCB-AVT
+
+### System Overview
+Automated fluid management and contrast delivery system for high-throughput CT suites.
+Manages contrast delivery and saline flush with automated fill cycles and inventory tracking.
+
+### Common Issues and Troubleshooting
+| Issue | Cause | Action |
+|-------|-------|--------|
+| Fill cycle fails | Bottle connection not sealed | Reseat contrast bottle; check spike connection |
+| Air in system | Air admitted during bottle change | Run extended prime cycle; check all connections |
+| Incorrect dose | Flow calibration drift | Run flow calibration; verify pump output |
+| Software alarm - inventory | Bottle below minimum threshold | Replace contrast bottle; update inventory |
+| Pump motor noise | Worn pump head | Inspect pump head; replace if bearing noise heard |
+
+### Annual PM Checklist
+- [ ] Inspect all tubing - no kinks, cracks, or discoloration
+- [ ] Inspect check valves in manifold - verify one-way function (no backflow)
+- [ ] Inspect bottle spike and connection ports - no cracking or wear
+- [ ] Inspect pump head O-rings and seals - replace per schedule
+- [ ] Run flow calibration for both heads (A: contrast, B: saline)
+- [ ] Verify fill cycle completes without error - time full fill cycle
+- [ ] Verify auto-prime function clears all air
+- [ ] Test pressure alarm - activates at set threshold
+- [ ] Test air detection - triggers with test air bubble
+- [ ] Inspect warming system (if equipped) - verify 37 C setpoint holds
+- [ ] Verify inventory tracking software accuracy
+- [ ] Clean all external surfaces and bottle rack
+- [ ] Test emergency stop function
+- [ ] Document all values - tech name, serial number, date
+
+### Tubing Replacement Schedule
+- Patient-side disposable tubing: replace per procedure (single-use)
+- System-side permanent tubing: inspect annually; replace at 2-year intervals or if degraded
+- Check valves: inspect annually; replace every 2 years or if any backflow detected`
+  },
+  {
+    id: 'dg_seed_068',
+    title: 'Bayer/Medrad Contrast Injector - Parts Reference and Sourcing',
+    system: 'Injector',
+    category: 'Parts',
+    tags: ['Medrad','Bayer','parts','Stellant','Spectris','injector','FRU','syringe','plunger','flex ring'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Bayer/Medrad Contrast Injector - Common Parts Reference
+Source: Bayer Medical Field Service Parts Catalog; Industry experience
+
+### Stellant FLEX CT Injector Key Parts
+| Part | Notes |
+|------|-------|
+| Flex ring assembly (A-head) | Syringe detection ring; inspect at every PM; high failure rate after contrast spills |
+| Plunger tip seal set | Replace if any leakage during injection |
+| Drive motor assembly | Replace if error 3016 or drive fault persists after troubleshooting |
+| Syringe sensor board | Replace if syringe not detected after cleaning |
+| High-pressure patient tubing | Single-use per procedure; order by case |
+| 65 ml Stellant syringe (CT) | Standard volume CT protocol |
+| 200 ml Stellant syringe | For high-volume protocols |
+| Certegra power supply | Swap test if console will not power on |
+
+### Spectris Solaris EP MR Injector Key Parts
+| Part | Notes |
+|------|-------|
+| Fiber optic cable | Replace if any visible damage; min bend radius 30 mm |
+| Syringe plunger seal | Annual replacement recommended |
+| Sensor board assembly | Replace if syringe not detected after cleaning |
+| Battery pack (Li-ion) | Replace when runtime falls below 2 hours |
+| Solaris EP syringe 65 ml | NOT interchangeable with Stellant syringes |
+| Patient administration tubing | Single-use per patient |
+
+### Mark 7 Arterion Angio Key Parts
+| Part | Notes |
+|------|-------|
+| Plunger O-ring set | Critical for high-pressure; replace if any leakage |
+| Check valve assembly | Inspect annually; replace if backflow detected |
+| Pressure transducer | Replace if PSI readings drift or error |
+| 60 ml / 130 ml Arterion syringe | High-pressure rated; single-use |
+| High-pressure tubing set | 1200 PSI rated; single-use per procedure |
+
+### Where to Source Parts
+- **Bayer Medical direct**: Authorized account required; longest lead time but guaranteed OEM
+- **Tri-Imaging Solutions**: US distributor for Bayer/Medrad parts; faster shipping
+- **Maull Biomedical**: Third-party injector parts; some Medrad-compatible items
+- **eBay / MedWrench marketplace**: Used/refurb parts - verify authenticity
+- **Important**: Bayer part numbers changed post-2020 rebranding from Medrad - verify current catalog numbers before ordering`
+  },
+  {
+    id: 'dg_seed_069',
+    title: 'Contrast Injector - MR Safety, Catheter Sizing and General Operator Tips',
+    system: 'Injector',
+    category: 'Safety',
+    tags: ['injector','contrast','MR safety','MRI','CT','catheter','flow rate','extravasation','operator'],
+    created: '2026-06-01T00:00:00.000Z',
+    content: `## Contrast Injector - MR Safety, Catheter Sizing and General Operator Tips
+Source: AMT Imaging Solutions field experience; ACR guidance; Bayer safety bulletins
+
+### MR Safety Rule - Most Important
+ONLY the Medrad Spectris Solaris EP is approved for use INSIDE the MRI scan room.
+ALL other injectors (Stellant, Mark 7 Arterion, EmpowerCTA, OptiVantage, MRXperion head unit) are CT/Angio ONLY or must remain outside the MRI room.
+NEVER bring a non-MR-conditional injector into an MRI scan room.
+
+### Pre-Injection Safety Checklist
+- [ ] Verify contrast media matches protocol (concentration, volume, rate)
+- [ ] Warm contrast to 37 C - reduces viscosity by ~30%, improves flow, less patient discomfort
+- [ ] Prime both A and B heads completely - zero air in line
+- [ ] Confirm IV site patent before injection - flush with saline first
+- [ ] Set pressure limit appropriate for patient and catheter size
+- [ ] Verify catheter gauge matches planned flow rate (see table below)
+
+### Catheter Size vs Maximum Safe Flow Rate
+| Catheter | Max Safe Flow Rate |
+|----------|-------------------|
+| 24 Gauge | 1.0 ml/sec |
+| 22 Gauge | 2.0 ml/sec |
+| 20 Gauge | 4.0 ml/sec |
+| 18 Gauge | 7.0 ml/sec |
+| 16 Gauge | 10+ ml/sec |
+Exceeding these rates risks extravasation and catheter rupture.
+
+### Pressure Abort During Injection
+1. Check IV site for swelling, infiltration, or pain - stop immediately if present
+2. Warm contrast to 37 C if not already done
+3. Reduce flow rate 0.5-1 ml/sec and retry
+4. Verify catheter gauge is appropriate
+5. Increase pressure limit in small increments ONLY if site is confirmed patent
+
+### Syringe Not Detected (Any System)
+1. Remove syringe; clean sensor window with dry lint-free cloth
+2. Reseat syringe firmly until click/lock
+3. Try fresh syringe from sealed package
+4. Inspect flex ring contacts (Stellant) for contamination or damage
+
+### Air in Line - Any System
+1. Remove patient tubing from IV catheter
+2. Hold tubing end up and advance plunger slowly to purge air
+3. Continue prime until consistent fluid flow, no bubbles
+4. Reconnect only when air-free
+
+### Communication Error (Injector to Console)
+1. Power off both injector head and console
+2. Disconnect and reconnect interface cable
+3. Power console on first; wait for ready state; then power head
+4. If persists: swap cable with known-good
+
+### Post-Injection Documentation
+- Contrast agent, volume delivered, flow rate, peak pressure achieved
+- Patient response and any adverse events
+- Any error codes displayed during injection
+- Most injectors store injection history - export/print for facility records`
+  }
+];
+
+// DIAG_GUIDES_SEED INTEGRITY GUARD
+(function() {
+  const MIN_GUIDES = 65;
+  if (typeof DIAG_GUIDES_SEED === 'undefined') {
+    console.error('[AMT] CRITICAL: DIAG_GUIDES_SEED undefined - guides will not load!');
+    return;
+  }
+  const n = DIAG_GUIDES_SEED.length;
+  if (n < MIN_GUIDES) {
+    console.warn('[AMT] WARNING: Only ' + n + ' guides (expected ' + MIN_GUIDES + '+) - file may be truncated!');
+    window._guidesTruncated = true;
+  } else {
+    console.log('[AMT] Guides OK: ' + n + ' loaded.');
+  }
+})();
+
+
+let diagGuidesDB = [];
+function loadDiagGuides() {
+  const stored = JSON.parse(localStorage.getItem('amt_diagguides_v30')||'null');
+  if (!stored) {
+    diagGuidesDB = DIAG_GUIDES_SEED.slice();
+  } else {
+    diagGuidesDB = stored.slice();
+    DIAG_GUIDES_SEED.forEach(s => {
+      if (!diagGuidesDB.find(g => g.id === s.id)) diagGuidesDB.push(s);
+    });
+  }
+  saveDiagGuides();
+}
+function saveDiagGuides() {
+  localStorage.setItem('amt_diagguides_v30', JSON.stringify(diagGuidesDB));
+}
+
+let _dgSys = '', _dgCat = '';
+function setDGSys(s){ _dgSys=s; _dgCat=''; renderDiagGuides(); }
+function setDGCat(c){ _dgCat=c; renderDiagGuides(); }
+
+function renderDiagGuides() {
+  if (!diagGuidesDB.length) loadDiagGuides();
+  const q    = ((document.getElementById('diagSearch')||{}).value||'').toLowerCase();
+  const list = document.getElementById('diagGuidesList');
+  if (!list) return;
+
+  // Update system pill active state
+  document.querySelectorAll('.dg-pill').forEach(p => p.classList.toggle('active', p.dataset.sys===_dgSys));
+
+  // Build filtered set
+  let guides = diagGuidesDB;
+  if (_dgSys) guides = guides.filter(g => g.system === _dgSys);
+  if (_dgCat) guides = guides.filter(g => (g.category||'') === _dgCat);
+  if (q) guides = guides.filter(g =>
+    g.title.toLowerCase().includes(q) ||
+    (g.category||'').toLowerCase().includes(q) ||
+    (g.tags||[]).join(' ').toLowerCase().includes(q) ||
+    g.content.toLowerCase().includes(q)
+  );
+
+  // Update count
+  const countEl = document.getElementById('dgCount');
+  if (countEl) countEl.textContent = guides.length + ' guide' + (guides.length!==1?'s':'') + (q||_dgSys||_dgCat?' found':'');
+
+  // Build category chips from current sys filter (not q)
+  const catBase = _dgSys ? diagGuidesDB.filter(g=>g.system===_dgSys) : diagGuidesDB;
+  const cats = [...new Set(catBase.map(g=>g.category||'').filter(Boolean))].sort();
+  const chipsEl = document.getElementById('dgCatChips');
+  if (chipsEl) {
+    chipsEl.innerHTML = ['All',...cats].map(cat => {
+      const val = cat==='All'?'':cat;
+      const active = val===_dgCat ? 'style="background:var(--navy);color:#fff;border-color:var(--navy)"' : '';
+      return '<button class="filter-chip" onclick="setDGCat(\'' + val + '\')" '+active+'>' + cat + '</button>';
+    }).join('');
+  }
+
+  if (!guides.length) {
+    list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q?' for "'+q+'"':'') + '.</div>';
+    return;
+  }
+
+  const sysBg = {
+    'GE MRI':'#1565c0','GE CT':'#0288d1',
+    'Siemens MRI':'#e65100','Siemens CT':'#bf360c',
+    'Philips':'#6a1b9a','Injector':'#00695c',
+    'Hitachi MRI':'#7b1fa2','Toshiba MRI':'#c62828'
+  };
+  const sysCls = {
+    'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
+    'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
+    'Philips':'dg-philips','Injector':'dg-injector',
+    'Hitachi MRI':'dg-hitachi-mri','Toshiba MRI':'dg-toshiba-mri'
+  };
+
+  list.innerHTML = guides.map(g => {
+    const bg  = sysBg[g.system] || '#555';
+    const cls = sysCls[g.system] || 'dg-general';
+    const tags = (g.tags||[]).slice(0,5).map(t=>'<span class="dg-tag">#'+t+'</span>').join('');
+    return '<div class="dg-card '+cls+'">'
+      + '<div class="dg-card-body">'
+        + '<div class="dg-meta">'
+          + '<div class="dg-title">'+g.title+'</div>'
+          + '<div class="dg-badges" style="margin-top:4px">'
+            + '<span class="dg-sys-badge" style="background:'+bg+'">'+g.system+'</span>'
+            + (g.category?'<span class="dg-cat-badge" style="cursor:pointer" onclick=\'setDGCat(&quot;'+g.category+'&quot;)\'>'+g.category+'</span>':'')
+          + '</div>'
+          + (tags?'<div class="dg-tags" style="margin-top:5px">'+tags+'</div>':'')
+        + '</div>'
+        + '<div class="dg-actions">'
+          + '<button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail(&quot;'+g.id+'&quot;)" style="font-size:.72rem;padding:5px 11px;white-space:nowrap">📖 View</button>'
+          + (isViewOnly()?'':'<button class="btn btn-danger btn-sm" onclick="deleteDiagGuide(&quot;'+g.id+'&quot;)" style="font-size:.72rem;padding:5px 9px;min-height:0">🗑</button>')
+        + '</div>'
+      + '</div>'
+    + '</div>';
+  }).join('');
+}
+
+function openDiagGuideDetail(id) {
+  const g = diagGuidesDB.find(x => x.id === id);
+  if (!g) return;
+  let html = g.content
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px">$1</h5>')
+    .replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:12px 0 6px">$1</h4>')
+    .replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:14px 0 8px">$1</h3>')
+    .replace(/`([^`]+)`/g,'<code style="background:var(--gray2);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>')
+    .replace(/^\| .+$/gm, m => {
+      if (m.includes('---')) return '';
+      const cells = m.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
+      return '<tr>' + cells.map(cell=>'<td style="padding:4px 10px;border:1px solid var(--gray2)">' + cell.trim() + '</td>').join('') + '</tr>';
+    })
+    .replace(/(<tr>.*<\/tr>\n?)+/gs, t => '<table style="border-collapse:collapse;margin:8px 0;font-size:.82rem;width:100%">' + t + '</table>')
+    .replace(/^\d+\. (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/^- (.+)$/gm,'<li style="margin:3px 0">$1</li>')
+    .replace(/(<li.*<\/li>\n?)+/g, t => '<ul style="margin:6px 0;padding-left:20px">' + t + '</ul>')
+    .replace(/\n\n/g,'</p><p style="margin:6px 0">')
+    .replace(/\n/g,'<br>');
+  document.getElementById('dgDetailTitle').textContent = g.title;
+  document.getElementById('dgDetailBody').innerHTML = '<p style="margin:6px 0">' + html + '</p>';
+  openModal('dgDetailModal');
+}
+
+function openDiagGuideModal(prefill) {
+  if (writeGuard('Add Diagnostic Guide')) return;
+  document.getElementById('dg_title').value    = (prefill&&prefill.title)    || '';
+  document.getElementById('dg_system').value   = (prefill&&prefill.system)   || 'GE MRI';
+  document.getElementById('dg_category').value = (prefill&&prefill.category) || '';
+  document.getElementById('dg_tags').value     = (prefill&&prefill.tags)     ? prefill.tags.join(', ') : '';
+  document.getElementById('dg_content').value  = (prefill&&prefill.content)  || '';
+  document.getElementById('dg_edit_id').value  = (prefill&&prefill.id)       || '';
+  openModal('addDiagGuideModal');
+}
+
+function saveDiagGuide() {
+  if (writeGuard('Save Guide')) return;
+  const title   = document.getElementById('dg_title').value.trim();
+  const content = document.getElementById('dg_content').value.trim();
+  if (!title || !content) { alert('Title and Content are required.'); return; }
+  const editId = document.getElementById('dg_edit_id').value;
+  const guide = {
+    id: editId || 'dg_' + Date.now(),
+    title,
+    system:   document.getElementById('dg_system').value,
+    category: document.getElementById('dg_category').value.trim(),
+    tags:     document.getElementById('dg_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    content,
+    created:  new Date().toISOString()
+  };
+  if (editId) {
+    const idx = diagGuidesDB.findIndex(x => x.id === editId);
+    if (idx >= 0) diagGuidesDB[idx] = guide; else diagGuidesDB.unshift(guide);
+  } else {
+    diagGuidesDB.unshift(guide);
+  }
+  saveDiagGuides();
+  closeModal('addDiagGuideModal');
+  renderDiagGuides();
+}
+
+function deleteDiagGuide(id) {
+  if (!confirm('Delete this diagnostic guide?')) return;
+  diagGuidesDB = diagGuidesDB.filter(g => g.id !== id);
+  saveDiagGuides();
+  renderDiagGuides();
+}
+</script>
+
+<!-- Diag Guide Detail Modal -->
+<div class="modal-overlay" id="dgDetailModal" style="display:none">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header"><h3 id="dgDetailTitle">Guide</h3><button class="modal-close" onclick="closeModal('dgDetailModal')">✕</button></div>
+    <div class="modal-body" id="dgDetailBody" style="max-height:70vh;overflow-y:auto;font-size:.88rem;line-height:1.6"></div>
+    <div class="modal-footer"><button class="btn btn-outline" onclick="closeModal('dgDetailModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- Add Diagnostic Guide Modal -->
+<div class="modal-overlay" id="addDiagGuideModal" style="display:none">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header"><h3>🔧 Add / Edit Diagnostic Guide</h3><button class="modal-close" onclick="closeModal('addDiagGuideModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="dg_edit_id">
+      <div class="form-group"><label class="form-label">Title *</label><input class="form-control" id="dg_title" placeholder="e.g. GE Signa E305 RF Amp Fault"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">System</label>
+          <select class="form-control" id="dg_system">
+            <option>GE MRI</option><option>Siemens MRI</option><option>GE CT</option><option>Siemens CT</option><option>Injector</option><option>General</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Category</label><input class="form-control" id="dg_category" placeholder="RF / Gradient / Magnet…"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Tags (comma separated)</label><input class="form-control" id="dg_tags" placeholder="RF amp, E305, cooling"></div>
+      <div class="form-group"><label class="form-label">Content * (Markdown supported)</label><textarea class="form-control" id="dg_content" style="min-height:200px;font-family:monospace;font-size:.82rem" placeholder="## Title&#10;### Step 1&#10;Details here…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" onclick="saveDiagGuide()">💾 Save Guide</button>
+      <button class="btn btn-outline" onclick="closeModal('addDiagGuideModal')">Cancel</button>
+    </div>
+  </div>
+</div>
