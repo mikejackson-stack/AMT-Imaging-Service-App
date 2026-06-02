@@ -767,7 +767,10 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 <!-- ══ MONEY TRACKER ══ -->
 <div id="panel-money" class="panel">
-  <div class="sec-title">💵 Money Tracker</div>
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+    <div class="sec-title" style="margin-bottom:0">💵 Money Tracker</div>
+    <button class="btn btn-sm" onclick="openStripeSettings()" style="background:#635bff;color:#fff;font-size:.75rem;padding:5px 14px;white-space:nowrap">💳 Stripe Settings</button>
+  </div>
 
   <!-- Summary hero -->
   <div class="money-hero">
@@ -1355,8 +1358,9 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       </div>
     </div>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer" style="flex-wrap:wrap;gap:6px">
     <button class="btn btn-primary" onclick="generateStripePaymentLink()" id="stripeGenBtn" style="display:none">💳 Get Payment Link</button>
+    <button class="btn btn-sm" onclick="openStripeSettings()" id="stripeSetupBtn" style="background:#635bff;color:#fff;font-size:.75rem;padding:5px 12px;white-space:nowrap">💳 Stripe Setup</button>
     <button class="btn btn-success" onclick="saveInvoice()">💾 Save Invoice</button>
     <button class="btn btn-outline" onclick="closeModal('invoiceModal')">Cancel</button>
   </div></div>
@@ -6845,9 +6849,11 @@ function saveStripeSettings(){
 
 function refreshStripeUI(){
   const key = localStorage.getItem('amt_stripe_key');
-  const btn = document.getElementById('stripeGenBtn');
-  const section = document.getElementById('stripePaySection');
-  if(btn) btn.style.display = key ? '' : 'none';
+  const genBtn   = document.getElementById('stripeGenBtn');
+  const setupBtn = document.getElementById('stripeSetupBtn');
+  const section  = document.getElementById('stripePaySection');
+  if(genBtn)   genBtn.style.display   = key ? '' : 'none';
+  if(setupBtn) setupBtn.style.display = key ? 'none' : '';
   if(section && !key) section.style.display = 'none';
 }
 
