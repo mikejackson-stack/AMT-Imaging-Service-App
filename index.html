@@ -1619,15 +1619,16 @@ async function sha256(str){
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-// Init: store real hashes on first run
+// Init: store pre-computed hashes on first run (PINs are NOT stored in source — hashes only)
+const PIN_HASHES_DEFAULT={
+  michael:    'c6e8eeae3dbdc424838f855a3d6b34e292b9590bfc5ea70cb3038d8f460f87bd',
+  antonio:    'cb21080b07c817c24cc5091d10c7ff29e197e1441ce97dd3496e37e6acd2f9cc',
+  candelario: '507e6a42583ef241f4e8417ddc19315701b83ef46cbf4dbfb631cf5026c0aa52'
+};
 async function initPinHashes(){
   let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null');
   if(!stored){
-    stored={
-      michael:    await sha256('7591_amt_salt_mikejackson'),
-      antonio:    await sha256('0325_amt_salt_antoniojackson'),
-      candelario: await sha256('0216_amt_salt_candelariojuarez')
-    };
+    stored=Object.assign({},PIN_HASHES_DEFAULT);
     localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   }
   return stored;
