@@ -15405,7 +15405,7 @@ AMT Imaging Solutions — Field Service Reference
 ### ICN Won't Boot
 1. Verify ICN power LED is on (front of ICN chassis). If off → check IEC power cable and socket.
 2. At ICN monitor (if present): watch for Sun boot messages. Should reach "ok" prompt then start MR software.
-3. If stuck at OpenBoot PROM ("ok" prompt): type `boot disk` to force boot from hard disk.
+3. If stuck at OpenBoot PROM ("ok" prompt): type \`boot disk\` to force boot from hard disk.
 4. If disk errors at boot: ICN hard drive may be failing. Use saveinfo to back up before replacing.
 5. Check ICN network cable to host (see Network Cable Requirements guide).
 
@@ -15417,7 +15417,7 @@ rlogin icn             # Log in to ICN remotely
 \`\`\`
 If ping fails:
 1. Check CAT5 cable between host network port and ICN network port.
-2. Verify ICN IP address: on ICN, run `ifconfig -a` and confirm IP matches host's expected peer address.
+2. Verify ICN IP address: on ICN, run \`ifconfig -a\` and confirm IP matches host's expected peer address.
 3. Check /etc/hosts on MR host — ICN hostname must be listed with correct IP.
 
 ### Sun ICN Remote Console Access
@@ -15459,7 +15459,7 @@ ping 10.217.1.1                # Test MGD (typical IP; check /etc/hosts for actu
 2. Verify network cables seated at host motherboard NICs and at MGD rear connector.
 3. Check /etc/hosts: all subsystem hostnames must have correct IPs.
 4. Check /etc/sysconfig/network-scripts/ifcfg-eth0 — verify IP and subnet match connected device.
-5. Restart network: `service network restart` (run as root).
+5. Restart network: \`service network restart\` (run as root).
 6. If MGD shows no link: check MGD subnet configuration — see Network Cable Requirements guide.
 
 ### VRE Software Reinstall
@@ -15551,14 +15551,14 @@ The MGD (Motor/Gradient Driver) requires its network interface to be on one of t
 | 10.0.x.x | 10.0.0.1 | Generic private range |
 | 172.22.x.x | 172.22.1.1 | Less common; verify with GE if used |
 
-Allowed subnet list stored at: `/usr/local/bin/install/configure/mgdSubnetChoices`
+Allowed subnet list stored at: \`/usr/local/bin/install/configure/mgdSubnetChoices\`
 
 **To check current host IP and MAC:**
 \`\`\`
 /export/home/signa/vre/install/getipandmac.pl sun
 \`\`\`
 
-**To change MGD subnet:** Edit `/etc/sysconfig/network-scripts/ifcfg-eth0` (11.x and up), or `/etc/config/static-route.options` (LX/Excite). Reboot after change.
+**To change MGD subnet:** Edit \`/etc/sysconfig/network-scripts/ifcfg-eth0\` (11.x and up), or \`/etc/config/static-route.options\` (LX/Excite). Reboot after change.
 
 ---
 
@@ -15573,7 +15573,7 @@ GE MRI hosts typically have 2–4 NICs. Correct assignment is critical:
 | eth2 | DAS or RFPA subsystem | Some HDxt/Discovery configs |
 | hme0 | MGD (Solaris/IRIX systems) | LX/Excite Sun workstations |
 
-Verify NIC assignments: `ifconfig -a` shows all interfaces and their IPs.
+Verify NIC assignments: \`ifconfig -a\` shows all interfaces and their IPs.
 
 ---
 
@@ -15600,8 +15600,8 @@ Use this sequence when troubleshooting a "subsystem not found" or network fault:
 1. **Physical check:** Verify RJ-45 clips fully locked (audible click), no bent pins.
 2. **Link light:** Confirm green link light at both ends of cable.
 3. **Correct port:** Verify cable is in the correct NIC port on host (photograph cabling at install).
-4. **Ping test:** From host root shell — `ping <subsystem_IP>`. Success = network layer OK.
-5. **IP mismatch:** Run `ifconfig -a` and compare to /etc/hosts. Fix mismatches.
+4. **Ping test:** From host root shell — \`ping <subsystem_IP>\`. Success = network layer OK.
+5. **IP mismatch:** Run \`ifconfig -a\` and compare to /etc/hosts. Fix mismatches.
 6. **Subnet mismatch:** Verify host IP and subsystem IP are on the same /24 subnet.
 7. **Cable swap:** Swap cable with known-good CAT5e to rule out cable fault.
 8. **Switch vs. direct:** If using a network switch — try removing switch and direct-connecting to isolate switch fault.
@@ -15619,7 +15619,7 @@ Siemens systems use a similar dedicated internal network architecture:
 | Syngo host → Hospital DICOM | Customer-provided switch; VLAN configuration varies |
 | Remote service | VPN via Siemens Remote Service Center; requires active contract |
 
-Siemens IP configuration: `/etc/sysconfig/network-scripts/ifcfg-*` files; edit via Syngo service desktop for system interfaces.
+Siemens IP configuration: \`/etc/sysconfig/network-scripts/ifcfg-*\` files; edit via Syngo service desktop for system interfaces.
 
 ---
 
@@ -15722,7 +15722,7 @@ Provides power to superconducting shim coils for active shimming.
 
 1. Applications → Service → Shim → Shim Status.
 2. Identify which channel(s) show fault.
-3. Check ShimConfig.cfg: `/w/config/ShimConfig.cfg` — verify shim current values not set to extreme values.
+3. Check ShimConfig.cfg: \`/w/config/ShimConfig.cfg\` — verify shim current values not set to extreme values.
 4. Set all shim values to zero in ShimConfig.cfg and retry prescan — if fault clears, ShimConfig was corrupted.
 5. If fault persists with all shim values zeroed: Z2 power supply or shim coil hardware fault.
 6. Z2 PS fuse check: Z2 PS has 10A fuses on rear panel — inspect and replace if blown.
