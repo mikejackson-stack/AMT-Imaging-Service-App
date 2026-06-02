@@ -16368,6 +16368,566 @@ If system experiences intermittent MCBias faults:
 - [ ] r1GainCal log reviewed — channels outside 3 dB ± 0.5 dB documented
 - [ ] RFSB swap performed if receiver swap did not move fault
 - [ ] All P-port quick-disconnect connectors inspected (intermittent MCBias fault)`
+  },
+
+  // ─── GUIDES FROM UPLOADED SERVICE DOCUMENTS ───
+
+  {
+    id: 'dg_rf_body_coil_dd_boards',
+    title: 'GE MRI RF Body Coil DD Board Connections — 3T TRM and 1.5T BRM',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['DD boards','dynamic disable','body coil','3T TRM','1.5T BRM','hybrid','HV BNC','J72','J73','J74','J75','J76','run numbers','DD board connections'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI RF Body Coil DD Board Connections — 3T TRM and 1.5T BRM
+Source: AMT Imaging Solutions Field Notes
+
+---
+
+## 3T TRM RF Body Coil — Dynamic Disable (DD) Board Connections
+
+| Board Position | Connects To |
+|----------------|------------|
+| Front 1, 2, 3, 4 | J4 / J6 |
+| Front 5, 6, 7, 8 | J3 / J5 |
+| Rear 1, 2, 3, 4 | J4 / J6 |
+| Rear 5, 6, 7, 8 | J3 / J5 |
+
+**High-Voltage BNC Connections (Magnet Room):**
+| Run | Connector |
+|-----|-----------|
+| Run 778 | J72-FJ3 |
+| Run 779 | J73-FJ4 |
+| Run 780 | J74-HJG (Hybrid) |
+| Run 781 | J75-RJ5 |
+| Run 782 | J76-RJ6 |
+
+⚠️ **Note: Verify correct run numbers before connecting — labeled "Need to Verify Correct Run Numbers" in field notes.**
+
+---
+
+## 1.5T BRM RF Body Coil — Dynamic Disable (DD) Board Connections
+
+| Board Position | Connects To |
+|----------------|------------|
+| Front 1, 2 | J3 / J5 |
+| Front 3, 4 | J4 / J6 |
+| Front 5 & Rear 5 | Resistor Splitter Board |
+| Rear 1, 2 | J3 / J5 |
+| Rear 3, 4 | J4 / J6 |
+
+**High-Voltage BNC Connections (Magnet Room) — same as 3T:**
+| Run | Connector |
+|-----|-----------|
+| Run 778 | J72-FJ3 |
+| Run 779 | J73-FJ4 |
+| Run 780 | J74-HJG (Hybrid Splitter) |
+| Run 781 | J75-RJ5 |
+| Run 782 | J76-RJ6 |
+
+---
+
+## Notes
+
+- HV BNC cables carry the Dynamic Disable high-voltage signals (+150V / -15V) to the body coil
+- J74 connects to the Hybrid splitter which distributes the DD signal to both body coil halves
+- Resistor Splitter Board on position 5 (both Front and Rear) divides the DD signal for 1.5T BRM
+- See "TR DD MC Path Troubleshooting" guide for fault isolation procedures using these connections`
+  },
+
+  {
+    id: 'dg_set_time_date',
+    title: 'GE MRI System Time & Date Setting — 5x, LX, Advantage Workstation',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['time','date','set time','set date','5x','LX','Advantage Workstation','root','operator','sdc','bigguy','YYMMDDHHMM'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI System Time & Date Setting
+Source: AMT Imaging Solutions Field Notes
+
+---
+
+## 5x System (Signa 5.x — IRIX)
+
+1. Hold **L1** and press **B** to get to boot screen
+2. Login: \`root\` / Password: \`#bigguy\`
+3. Type: \`date YYMMDDHHMM\` (example: \`date 2106141530\` for June 14, 2021 at 3:30 PM)
+4. Reboot system
+
+---
+
+## LX System (Signa LX — Guided Install method)
+
+1. Click the **Tools icon** (top left of desktop)
+2. Select **Guided Install → Start**
+3. Type \`operator\` in the pop-up
+4. The **Set Date/Time** window will appear
+5. Click **Set Date/Time** and enter correct date/time
+6. Click **Close**
+7. **Shutdown and restart** the system
+
+---
+
+## Advantage Workstation / Signa Excite (Linux)
+
+1. Bottom left → **Admin → Command Window**
+2. Enter root: \`su root\` / Password: \`operator\`
+3. Set date/time: \`date MMDDHHMMYY\`
+   Example: \`date 0614153021\` = June 14, 3:30 PM, 2021
+4. Type \`exit\` twice, then logout
+5. Login as \`sdc\` / Password: \`adw2.0\` (or adw4.1 or adw4.2 depending on version)
+
+---
+
+## Date Format Reference
+
+| Platform | Format | Example |
+|----------|--------|---------|
+| 5x (IRIX) | YYMMDDHHMM | 2106141530 |
+| LX | GUI (Guided Install) | — |
+| Excite / ADW (Linux) | MMDDHHMMYY | 0614153021 |
+
+---
+
+## Notes
+
+- Incorrect system time causes log timestamps to be wrong — makes troubleshooting harder
+- After any time change, perform a TPS Reset
+- On networked systems: check if NTP server is configured (/etc/ntp.conf) — automatic time sync may be available`
+  },
+
+  {
+    id: 'dg_sga_power_supply_leds_detailed',
+    title: 'GE MRI SGA Power Supply LED Diagnostics — Meanings and Causes (All Axes)',
+    system: 'GE MRI',
+    category: 'Power System',
+    tags: ['SGA','power supply','LED','gradient amp','IGBT','overcurrent','overvoltage','undervoltage','TJOT','HSOT','GD','gate driver','BUS OV','BUS UV','PSWF','X Y Z axis'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI SGA Power Supply LED Diagnostics
+Source: GE Medical Systems REV 0, May 23, 2001 (GD4TSC2.DOC)
+
+The SGA power supply contains 3 transformers (one per gradient axis: X, Y, Z). The following LEDs are present on each power supply module.
+
+---
+
+## LED Reference Table
+
+| LED | What It Means | Likely Cause / Action |
+|-----|--------------|----------------------|
+| ISEC X/Y/Z | Secondary current flowing — **normal operation** | SGA drawing current — expected during scanning |
+| IPX/Y/Z OC | Primary overcurrent | Shorted transformer primary — uncommon |
+| ISX/Y/Z OC | Secondary overcurrent | Blown SGA IGBT or shorted diode module in PS |
+| OVX/Y/Z | Output overvoltage | Loose connectors to SGA — check all SGA connections |
+| UVX/Y/Z | Output undervoltage | Shorted semiconductors in SGA or PS |
+| ITANK OC | Sum of primary currents too large | Heavy load on all 3 axes simultaneously — uncommon |
+| BUS OV | Input bus overvoltage | Check PDU voltage tapping; measure 420 VAC at terminal block |
+| BUS UV | Input bus undervoltage | Mis-tapped PDU or line voltage sag |
+| PSWF | Power Supply Wire Fault | 5V or 15V undervoltage on control board, or internal connector unplugged |
+| FREQ | IGBT switching frequency indicator | Control signal only — not a fault indicator |
+| GD | Gate Drive switching | Solid red or solid green = control board or gate driver failure → **replace PS** |
+| TJOT | Junction over-temperature | **Ignore — not meaningful in field** |
+| HSOT | Heatsink over-temperature | Check cabinet fan direction and airflow; clean filter |
+| FAULT | Any fault present, or reset pressed | General fault — check other LEDs to identify specific cause |
+| LEFT FF / RIGHT FF | IGBT switching indicators | Normal switching activity during gradient pulses |
+| VINV | IGBTs switching control signal | Control signal only |
+| ENABLE | PS enabled by Gradient Processor | Normal when system running |
+| TJ | Junction temperature indicator | **Ignore — usually red all the time, not meaningful** |
+
+---
+
+## Quick Diagnosis Guide
+
+| Symptom | First Check |
+|---------|-------------|
+| E410 gradient fault, one axis | Check ISX, ISY, or ISZ OC LED on that axis PS |
+| Gradient fault at high slew rates | ITANK OC — loading all 3 axes simultaneously |
+| System won't boot, no gradient | BUS UV or BUS OV — check facility voltage and PDU tapping |
+| GD LED solid (not flashing) | Replace that SGA power supply — gate driver failure |
+| HSOT lit | Check cabinet cooling fan and direction (blow air INTO cabinet from bottom) |
+| OVX/Y/Z | Inspect SGA cable connections — typically loose connector |
+| UVX/Y/Z | Suspect shorted IGBT in SGA — test SGA or swap with spare |
+
+---
+
+## SGA Cabinet Fan Check
+
+Fan direction is critical: air must blow **into the cabinet from the bottom**, exhausting out the top. Reversed fan direction causes HSOT faults, especially in warm equipment rooms.
+
+**To verify:** Hold paper strip at bottom of cabinet — it should be drawn in (sucked toward cabinet). If paper blows away, fan is reversed.`
+  },
+
+  {
+    id: 'dg_tps_host_monitor_errors',
+    title: 'GE MRI TPS and Host Monitor Errors — Term Server, AP Board, VxWorks',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['TPS','host monitor','term server','AP board','VxWorks','BIT3','Octane','IPG','cu tps','cu ipg','dgrp','mgd_term','term server reset','fiber optic'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI TPS and Host Monitor Errors — Term Server, AP Board, VxWorks
+Source: AMT Imaging Solutions Field Notes
+
+---
+
+## Host Monitor Not Running
+
+1. Check BIT3 connections and power (Octane computer and systems cabinet)
+2. Try changing BIT3 fiber optic connections (swap TX/RX)
+3. Try restoring info / disconnecting network cable from Octane
+4. Remove all TPS boards except CPU and BIT3; check error log for "IPG boot failed"
+
+---
+
+## Service Cable Diagnostics (3 C-shells simultaneously)
+
+Open 3 separate C-shells and run:
+- \`cu tps\` — connects to TPS processor
+- \`cu ipg\` — connects to IPG (Image Processor)
+- \`cu cerd\` — connects to CERD
+
+Allows watching boot messages from each subsystem in real time.
+
+---
+
+## VxWorks Stall / AP Board
+
+**Symptoms:** VxWorks stalls during boot; framebuffer errors in log.
+**Cause:** AP (Array Processor) board fault.
+
+**AP Board LED Behavior:**
+- Normal: LEDs cycle through CPU/memory check, then **all turn off** = ready
+- Fault: VME LEDs constantly ON = VME error on AP board → replace AP board
+
+**Action:** Replace AP board if LEDs remain on after boot cycle completes.
+
+---
+
+## Signa Excite — Diagnostics
+
+- Run \`mgd_term\` to view system cabinet boards booting
+- Run \`more /etc/hosts\` to view all system boards and their IPs
+- Ping each board to verify communication
+
+---
+
+## HP Computer — Network Connection
+
+Network cable to systems cabinet goes into the **left side bottom** port (when viewed from the rear of the computer).
+
+---
+
+## Term Server Reset Procedure
+
+1. Remove power from term server
+2. Hold **reset button** while reconnecting power
+3. Continue holding reset until LED blinks in **1:5:1 pattern** (1 blink, pause, 5 blinks, pause, 1 blink)
+4. Release button; wait for power LED to go steady = term server received IP from host
+
+**Configure via browser:** Use the term server's IP address in a browser to access the web interface and set port mode to **RealPort**.
+
+---
+
+## Term Server Troubleshooting
+
+**Required services must be running:**
+- \`/etc/rc.d/init.d/dgrp_daemon\` — Digi RealPort daemon
+- \`/etc/rc.d/init.d/rarpd\` — RARP daemon for IP assignment
+
+**Check dgrp_daemon status:**
+\`\`\`
+/etc/rc.d/init.d/dgrp_daemon status
+\`\`\`
+Should show: **State: READY, 4 ports**
+
+**Check messages log:**
+\`\`\`
+grep dgrp /var/log/messages
+\`\`\`
+Look for successful connection entries.
+
+**Check ethers file:**
+\`\`\`
+more /etc/ethers
+\`\`\`
+Must contain MAC address and hostname of the term server.
+
+---
+
+## Quick Checklist
+
+- [ ] BIT3 fiber optic connections verified (try swapping TX/RX)
+- [ ] All TPS boards except CPU and BIT3 removed for diagnostic
+- [ ] AP board LEDs cycle off after boot (not stuck ON)
+- [ ] \`mgd_term\` run — all system boards visible
+- [ ] Term server at State: READY with 4 ports in dgrp_daemon
+- [ ] /etc/ethers contains term server MAC and hostname
+- [ ] HP computer network cable in correct port (left bottom, rear view)`
+  },
+
+  {
+    id: 'dg_tr_dd_mc_path',
+    title: 'GE MRI TR/DD/MC System Path Troubleshooting — HDxt Fault Isolation',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['TR','DD','MC','multicoil','system path','Driver Module','DTRSW','DD filter','16ch switch','pen panel','fault isolation','open circuit','short circuit','HDxt','Direction 5440001'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI TR/DD/MC System Path Troubleshooting — HDxt
+Source: Direction 5440001-3, Rev 6 — Signa HDxt Service Methods
+
+---
+
+## Tools Required
+
+- 50-ohm dummy load (P/N 2372868)
+- Phillips #0 and #00 screwdrivers
+- Digital Multimeter (DMM)
+- RF Test Cables Kit
+- MCR Tool (software)
+
+---
+
+## Fault Table — TR/DD/MC System Path
+
+| Fault Type | Description | Field Action |
+|------------|-------------|--------------|
+| T/R Open Circuit (Body/Head/MNS) | TR open circuit with source, value, limit in mA | Swap cables to isolate: Driver Module → RF Amp → Pen Panel |
+| T/R Short Circuit (Body/Head/MNS) | TR short circuit fault | Disconnect each segment, repeat diagnostic to localize |
+| DD HV Fault (BD1–BD4) | DD HV value exceeds limit (volts) | Disconnect J21–J25 on Driver Module; swap cables at DD Filter |
+| DD Open / DD Short | DD bias path open or shorted (mV or mA limit exceeded) | Swap cables to isolate filter board vs. cable |
+| MC Open/Short/Receive/Transmit | MC bias fault on connector A/B/C/L | Swap MC cables at Driver Module, Pen Panel, 16-ch switch |
+| Head/Body TR Cables Swapped | Voltage signature difference detected | Swap at Driver Module J6/J7 or RF Amp J9/J10 |
+| MC Cables Swapped/Disconnected | MC cable identity error | Check Driver Module J5/J10, Pen Panel J203/J78, 16-ch switch J11/J10 |
+
+---
+
+## System Path Routing
+
+**Body T/R Path:**
+Driver Module J7 → RF Amp J10 / J4 → Pen Panel J44 → Body TR Switch J1
+
+**Head T/R Path (Upgrade Systems):**
+Driver Module J6 → RF Amp J9 / J3 → Pen Panel J4 → Splitter J152 → Cable Interface J1/J2
+
+**Head T/R Path (Forward Production):**
+Driver Module J6 → RF Amp J9 / J3 → Pen Panel J4 → single head signal (no splitter)
+
+**MNS Path:**
+Driver Module J8 → MNS Amp → Pen Panel J83 → Cable Interface J3 → MNS TR Switch
+
+**DD Paths:**
+Driver Module J21–J25 → DD Filter J92–J96 → Pen Panel J72–J76 → RF Body Coil BD boards → Body Hybrid J6
+
+**Multicoil (MC) Paths:**
+Driver Module J5/J10 → MC Filter J203/J78 → Pen Panel → 16-ch Switch J11/J10
+
+---
+
+## Key Diagnostic Command
+
+View system path log:
+\`\`\`
+more /usr/g/service/log/System_Path*
+\`\`\`
+
+---
+
+## Finalization After Any TR/DD/MC Repair
+
+1. Return all cables to original configuration
+2. Remove LOTO (Lock Out Tag Out) — turn on RF Amp breakers
+3. Run **TR DD MC System Path Diagnostic** for final verification
+4. Perform **TPS Reset**
+5. Complete **Head scan, Body scan, and MNS scan** to verify normal operation
+
+---
+
+## Quick Checklist
+
+- [ ] System Path log checked before and after repairs
+- [ ] All cables returned to original configuration after diagnostic
+- [ ] 50-ohm dummy load used during path isolation (not open termination)
+- [ ] DD HV cables (J72–J76) connected at Pen Panel
+- [ ] MC cables verified at Driver Module J5/J10 and 16-ch switch J11/J10
+- [ ] TPS Reset performed after all repairs
+- [ ] Head, Body, MNS scans passed`
+  },
+
+  {
+    id: 'dg_lvshim_crude_image',
+    title: 'GE MRI LVShim — Crude Image Procedure, Gradient Shim, Frequency Specs',
+    system: 'GE MRI',
+    category: 'Calibration',
+    tags: ['LVShim','shim','crude image','gradient shim','frequency','parking frequency','phantom','shimming','Z4','Z6','axial currents','DSV','geservice'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI LVShim — Crude Image Procedure, Gradient Shim & Frequency Specs
+Source: GE Medical Systems — LVShim Release 8.x/9.x/10.x, REV 10, SYSSCA8A.DOC
+
+---
+
+## System Frequency Parking Specifications
+
+| Field Strength | Frequency | Acceptable Range |
+|---------------|-----------|-----------------|
+| 1.5T | 63.864000 MHz (15,000 G) | ±31.932 kHz (±7.5 G) |
+| 1.0T | 42.682440 MHz (10,025 G) | ±21.288 kHz (±5.0 G) |
+
+---
+
+## Gradient LVShim Procedure (Section 3-7)
+
+**Goal:** Clean up shim over 22-cm DSV using gradients only.
+
+1. Bandwidth: **200 Hz** during acquisition; use manual prescan to center best signal
+2. In LVShim: select **Gradient** as Shim Type
+3. Use **_22dsv** calibration file for epoxy-filled body coil
+4. Iterate until delta currents on all 3 gradients are **< 1,000**
+5. Check higher-order harmonics if bandwidth change from 500 to 200 Hz affected them:
+   - X3(3,-3), Y3(3,3), Z3(3,0), Z2Y(3,1), Z2X(3,-1)
+
+**Gradient to Shim Coil Equivalents:**
+| Gradient | Shim Coil | Multiplier |
+|----------|-----------|-----------|
+| Z gradient | AX1 coil | +0.0042 |
+| Y gradient | T1-2 and T1-4 | +0.0080 each |
+| X gradient | T2-2 and T2-4 | -0.0077 each |
+
+---
+
+## Localizer Scan Setup (Section 3-8-1)
+
+- Tools: LVShim Phantom Assembly 2125245, Nesting Plate Assembly 2125247
+- Patient ID: \`geservice\`, Patient Name: \`LVShim\`, Weight: 300 lb
+- Landmark: Sternal Notch
+- Protocol field: \`o.19.1\`
+- Perform **DC offset before each LVShim scan**
+- Verify phantom centered in Z direction with 150mm grid spacing
+
+---
+
+## Crude Image Procedure (Section 3-8-2)
+
+**When to use:** No signal or very weak signal — e.g., reversed I and Q cables.
+
+- Tools: 100mm Sphere Phantom 46-317586G1, EPI Foam Positioner 2138870
+- Patient Position Coil: **HEAD**
+- Acquisition Timing Phase: **128 + Autoshim**
+- FOV: **12**
+- Perform **Auto Prescan twice**
+- Verify Gradshim values and System Frequency after prescan
+
+**If image does not resemble phantom:** Perform mechanical plotting procedure to verify magnet bore geometry.
+
+---
+
+## Axial Currents — Active Shield Magnets (Section 3-8-3)
+
+Magnets S-IV, S-V, S-X, S-XC_1, S-XC_2 are difficult to reduce Z4 and Z6 simultaneously.
+
+**Solution:** Run LVShim with **"no Z6 coil"** option — allows software to solve Z4 without pushing center frequency out of spec.
+
+**CX and LCC magnets:** Should use Z6 coil normally.
+
+---
+
+## Quick Checklist
+
+- [ ] System frequency within parking spec (±31.932 kHz for 1.5T)
+- [ ] DC offset performed before each LVShim scan
+- [ ] Phantom centered in Z (150mm grid spacing)
+- [ ] Gradient shim: all 3 axis delta currents < 1,000
+- [ ] If no image: use crude image phantom (100mm sphere) and verify I/Q cable orientation
+- [ ] Active shield magnets (S-IV, S-V, S-X): use "no Z6 coil" option if Z4/Z6 conflict`
+  },
+
+  {
+    id: 'dg_ellis_chiller',
+    title: 'GE MRI Gradient Coil Chiller — Ellis & Watts LTL-4 Troubleshooting (Mobile Units)',
+    system: 'GE MRI',
+    category: 'Cooling',
+    tags: ['chiller','Ellis','gradient coil cooling','LTL-4','mobile MRI','bore temperature','pcft.log','glycol','flow restriction','pump','cover interlock','mobile'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Gradient Coil Chiller — Ellis & Watts LTL-4
+Source: AMT Imaging Solutions Field Notes — GE Mobile MRI Reference
+
+---
+
+## Overview
+
+The **Ellis & Watts LTL-4 Heat Exchanger** is used on most GE MR mobile trailers for gradient coil cooling. High failure rate AND frequently replaced unnecessarily — diagnose before replacing.
+
+**Reference:** Installation/Operation Manual DOC1738330 in GE Common Document Library.
+
+---
+
+## Key Specifications
+
+| Parameter | Value |
+|-----------|-------|
+| Power | 110 VAC ±10%, single phase |
+| Running current | 12.5A |
+| Max startup current | 75A |
+| Minimum wiring | 12-3 wire, 20A circuit |
+| Primary chiller coolant | 50/50 glycol (from facility) |
+| Max primary coolant temp | 52°F (11°C) |
+| Ambient operating limit | 113°F (45°C) |
+| Gradient coil flow rate | 3.3 GPM ±0.3 GPM |
+| Gradient coil coolant | 35% Ethylene glycol / 65% distilled water |
+| Max outlet pressure | 60 PSI (over 60 PSI = air bubbles or restriction) |
+
+---
+
+## Bore Temperature Fault
+
+- "Patient Comfort Warmer Than Normal" triggers at **31°C (88°F)**
+- Scanning inhibited at **36°C (97°F)**
+
+**Check bore temperature history:**
+\`\`\`
+gedit /usr/g/service/log/pcft.log
+\`\`\`
+
+**Plot bore temperature data (16.x+ only):**
+\`\`\`
+/usr/g/service/bin/startBoreViewer
+\`\`\`
+Note: \`startBoreViewer\` not available on 11.x or below.
+
+---
+
+## Pump/Motor Not Turning — Checklist
+
+1. **Cover interlock switch** — DVM test: cover ON = short (OK); cover OFF = open
+   - If cover is off during troubleshooting: tape or zip-tie the switch closed
+2. **Low-level switch in reservoir** — DVM: OK level = short; low level = open
+   - Fills with distilled water if low
+3. **Primary side flow** — verify all facility valves open; check primary coolant supply
+4. **Gradient coolant return temperature** — unit shuts off at **100°F (37°C)**
+   - Will NOT restart until temp drops below **80°F (27°C)** OR is manually reset with temp below 100°F
+
+---
+
+## Pump Stops 30 Seconds After Startup
+
+**Cause:** Flow restriction on gradient coil loop — flow under 1 GPM triggers automatic shutoff.
+
+**Note:** Cycling power resets the 30-second timer. Air trapped in the gradient coil side can require **10–50 power cycles** to fully purge.
+
+**Resolution:**
+1. Check for kinked or restricted gradient coil hoses
+2. Verify all inline valves are fully open
+3. Systematically cycle power to purge air — monitor outlet pressure (should be < 60 PSI)
+4. If pressure above 60 PSI: air pocket or blockage in gradient coil loop
+
+---
+
+## Quick Checklist
+
+- [ ] Cover interlock switch verified (short when cover on)
+- [ ] Reservoir coolant level OK (low-level switch continuity check)
+- [ ] Primary coolant supply flowing and temp < 52°F
+- [ ] Gradient coil return temp < 100°F (unit shuts off at 100°F)
+- [ ] Outlet pressure < 60 PSI (> 60 PSI = blockage or air)
+- [ ] Flow rate 3.3 GPM ±0.3 GPM verified
+- [ ] Bore temp history checked in pcft.log`
   }
 ];
 
