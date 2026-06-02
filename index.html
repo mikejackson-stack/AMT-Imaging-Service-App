@@ -15804,6 +15804,570 @@ Provides power to superconducting shim coils for active shimming.
 - [ ] RFPA +48V supply verified
 - [ ] No tripped fuses in any power supply module
 - [ ] AC input voltages verified at facility disconnect`
+  },
+
+  // ─── GUIDES FROM GE SERVICE MANUALS (MR355/MR360) ───
+
+  {
+    id: 'dg_vre_troubleshooting',
+    title: 'GE MRI VRE Troubleshooting — ICN, Cat-6 Cables, Image Recon, TPS Reset',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['VRE','ICN','Cat-6','TPS reset','image reconstruction','network','GOC','recon slow','MR355','MR360','Brivo','Optima'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI VRE Troubleshooting — ICN, Cat-6, Image Recon, TPS Reset
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## Common Reported Problems
+
+| Problem | Go To |
+|---------|-------|
+| Image reconstruction is slow | Check Cat-6 cable speeds; see below |
+| TPS Reset does not complete | Cat-6 cable fault or ICN IP mismatch |
+| Image not reconstructing / losing images / artifacts | VRE/ICN communication fault |
+
+---
+
+## Cat-6 Cable Issues — Most Common VRE Cause
+
+Problems from a defective Cat-6 cable in the Power Gradient RF (PGR) Cabinet:
+- TPS reset hang-up
+- Slow recon times
+- Loss of connectivity between Host and PGR Cabinet
+
+**Long Cable (part 5160267-3) — Host to Ethernet Switch:**
+1. Check port activity LEDs on back of GOC for Ethernet cable (left port):
+   - **Orange LED = GOOD** (1000 Mb/s / 1Gb/s)
+   - **Green LED = BAD** (100 Mb/s — replace cable)
+   - Ignore the right Ethernet port.
+2. Check link/activity LED on front of network switch for the tested port:
+   - **Green = GOOD** (1000 Mb/s)
+   - **Yellow = BAD** (100 Mb/s)
+3. Test from shell: open C Shell, run: \`more /var/log/messages | grep "e1000: eth1: e1000_w"\` — look for "100" in output (bad if found).
+
+**Short Cables (parts 5146974 / 5146974-2) — ICN/VRE to Ethernet Switch:**
+1. Open C Shell, telnet to ICN, switch to root (\`su -\`), run: \`more /var/log/messages | grep "NIC Link is U"\` — look for "100 Mbs" (bad).
+2. Check port activity LED on 16-Port Ethernet Switch (left LED):
+   - **Green = GOOD** (1Gb/s)
+   - **Orange = BAD** (100 Mb/s)
+
+**Fix:** Replace Cat-6 cable(s) running at 100 Mb/s with known-good 1000 Mb/s Cat-6.
+
+---
+
+## ICN ON/OFF Procedure
+
+1. ICNs power ON automatically when HP GOC powers ON (after login prompt).
+2. ICNs power OFF automatically when HP computer shuts down via software.
+   - **Never turn off power directly** — always use software shutdown.
+   - Steady green light = ICN power ON; blinking = ICN OFF.
+3. If GOC is locked or dead — manual ICN shutdown:
+   - MOMENTARY press of ICN power button begins clean OS shutdown (30-second delay — wait up to 3 minutes).
+   - If not shut down in 3 minutes: hold button to force shutdown.
+
+---
+
+## ICN Connections
+
+Each ICN must have 3 connections to the Ethernet switch:
+- Left connection = diagnostics port (for firmware loading)
+- Two on right = data ports
+
+---
+
+## ICN Software Notes
+
+- FE must enter correct number of ICNs during software load. System auto-detects and reconciles.
+- **System sees MORE ICNs than expected:** Turn OFF CAM Chassis, load OS, turn back ON.
+- **System sees FEWER ICNs than expected:** Check power and IPMI cables (leftmost Ethernet connection at back of ICN). Swap cables or ports before replacing ICN.
+- After ICN OS load, a connection error from Infiniband board is **normal** — acknowledge and continue.
+- Green LED blinks until TPS reset is complete.
+- If CAM Chassis has boot problems: host communication timeout error. Ping APS, AGP, SCP, term server. If pings successful, run \`mgd_term\` to watch boot errors.
+
+---
+
+## IP Address Changes — Must Reconfigure VRE
+
+After any IP address change on the system, run the "Configuring the ICN - VRE" procedure. Otherwise:
+- TPS Reset failures
+- VRE config files will retain old IP addresses
+
+Config files to update: /w/config/MRconfig.cfg and /etc/hosts (see Network Cable Requirements guide).
+
+---
+
+## Power Failure Recovery
+
+In power outage: go through normal GOC power-up. If ICN does not power on automatically, reload ICN OS from Service Desktop: Applications → Service → ICN → Reload ICN OS.
+
+---
+
+## Quick Checklist
+
+- [ ] Cat-6 cable speeds verified at 1Gb/s (check LEDs — orange/green on GOC and switch)
+- [ ] All 3 ICN Ethernet connections present (left = diagnostics, right two = data)
+- [ ] ICN LED steady green (ON) — not blinking
+- [ ] /etc/hosts updated after any IP address change
+- [ ] VRE config reconfigured after IP change
+- [ ] Ping test: host can reach ICN, APS, AGP, SCP`
+  },
+
+  {
+    id: 'dg_tr_dd_troubleshooting',
+    title: 'GE MRI T/R and Dynamic Disable (DD) Troubleshooting — MR355/MR360',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['TR switch','DD','dynamic disable','body drive','BD1','BD2','DTRSW','Driver Module','RF chain','T/R bias','dual drive','MR355','MR360'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI T/R and Dynamic Disable (DD) Troubleshooting
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## TR and DD Bias Voltage Reference
+
+| Circuit | Transmit | Receive |
+|---------|----------|---------|
+| Head TR Bias (RF Amp Input, loaded) | +8.2 V | -14.4 V |
+| Body TR Bias (RF Amp Input, loaded) | +2.9 V | -14.4 V |
+| Head DD Bias (BD1/BD2) | +150.0 V | +150.0 V |
+| Body DD Bias (BD1/BD2) | -15.0 V | -15.0 V |
+| Head TR Bias (Driver Module Output, loaded) | +8.3 V | -14.4 V |
+| Body TR Bias (Driver Module Output, loaded) | +4.3 V | -14.4 V |
+| Head TR Bias (Driver Module Output, unloaded) | +8.4 V | -14.4 V |
+| Body TR Bias (Driver Module Output, unloaded) | +5.0 V | -14.4 V |
+
+---
+
+## Dynamic Disable (DD) — Overview
+
+DD switching bias tunes and detunes the RF body coil. Dual DD bias levels are generated in the Driver Module and routed through high-voltage coaxial lines to the DTRSW. DD bias must be applied to both ports before RF pulsing.
+
+---
+
+## DD Short-Circuit Fault — BD1 (Body Drive 1)
+
+1. Set RF ENB switch on DTX-1 Exciter module to DOWN (disable).
+2. Perform TR DD System Path Check — confirm BD1 short-circuit fault.
+3. Remove RF Channel 1 transmission cable from J2 at bottom of DTRSW (right side of magnet, inside RF screen room).
+4. Repeat TR DD System Path Check:
+   - **Short-circuit fault still present:** Fault is between DTRSW and Driver Module. Work back from DTRSW, removing DD bias connections until open-circuit is reported. If fault remains at Driver Module — replace Driver Module.
+   - **Open-circuit fault now present:** Reconnect RF Channel 1 at J2, then disconnect at RF body coil end.
+     - Open-circuit: Short inside RF body coil — repair/replace coil.
+     - Short-circuit: Short inside transmission line — repair/replace line.
+5. Reconnect all cables, set RF ENB switch UP (enable).
+6. If RF body coil replaced: run Dual Drive Quadrature Tool. If other transmit components replaced: run Forward Reverse Quadrature Check.
+7. Run DQA II to confirm system in normal working order.
+
+**DD Short-Circuit Fault — BD2:** Same procedure using RF Channel 2 cable at J3 on DTRSW.
+
+---
+
+## DD Open-Circuit Fault — BD1
+
+1. Disable RF (RF ENB switch DOWN).
+2. Perform TR DD System Path Check — confirm BD1 open-circuit fault.
+3. Swap RF Channel 1 and RF Channel 2 cables at bottom of DTRSW.
+4. Repeat TR DD System Path Check:
+   - **Open-circuit fault REMAINS on BD1:** Fault between DTRSW and Driver Module. Work back, swap connections until fault moves to BD4. If fault stays at Driver Module — replace it.
+   - **Open-circuit fault moves to BD4:** Swap RF Ch1 and Ch2 at RF body coil connectors.
+     - Fault stays on BD4: RF Channel 1 transmission line faulty — repair/replace.
+     - Fault moves to BD1: RF body coil faulty — repair/replace.
+5. Reconnect cables, enable RF, run Dual Drive Quadrature Tool or Forward Reverse Quadrature Check, then DQA II.
+
+**DD Open-Circuit Fault — BD2:** Same procedure with BD2/BD4 logic reversed.
+
+---
+
+## TR Fault Troubleshooting — Head TR Short-Circuit
+
+Body and head TR bias are always applied regardless of circuit use. A fault on an unused circuit can inhibit scanning.
+
+1. Disable RF (RF ENB DOWN).
+2. Remove all coils from P2 connectors.
+3. Perform TR DD System Path Check:
+   - No fault present: Removed coil is faulty — repair/replace the coil.
+   - Fault still present: Work back through the TR bias path (RF amp input → Driver Module output) using bias voltage table above to isolate the faulty component.
+
+**Note on Body TR:** Body TR bias is split and shared between channels 1 and 2 inside the XRFD amplifier. System cannot isolate a fault to either channel — reports generic "body TR fault." Use DTRSW cable swap procedure to identify which channel is at fault.
+
+---
+
+## Quick Checklist
+
+- [ ] DD bias voltages verified at Driver Module output (see table above)
+- [ ] RF ENB switch disabled before any cable disconnection
+- [ ] DTRSW cable swap test performed to isolate channel
+- [ ] Body coil cables inspected for shorts (use RF Channel 1/2 swap at DTRSW)
+- [ ] All coils removed from P2 during Head TR fault check
+- [ ] DQA II run after any TR/DD component replacement`
+  },
+
+  {
+    id: 'dg_upm_detailed',
+    title: 'GE MRI UPM (Universal Power Monitor) Troubleshooting — Fault Messages & LEDs',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['UPM','Universal Power Monitor','RF power','CAM','KASC','ASC','detector board','processor board','Inhibit LED','CAN','calibration','fault','MR355','MR360','HDxt'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI UPM (Universal Power Monitor) Troubleshooting
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## Overview
+
+The UPM (Universal Power Monitor) monitors forward and reflected RF power. Identical boards can be swapped for troubleshooting. All unused RF ports on RF detector boards must be loaded with 50 ohm SMB terminators. If MNS option not installed, all MNS RF ports must be terminated.
+
+---
+
+## UPM LED Indicators
+
+| LED | Status | Meaning |
+|-----|--------|---------|
+| Sense | ON | RF detected on one of three ports on that channel |
+| Sense | OFF | No signal on channel |
+| 1.5V | ON | Processor board receiving 3.3V from CAM/KASC and generating 1.5V |
+| CAN Power | ON | 24V detected from Driver Module CAN supply via backplane |
+| CAN Status | Blinks once | Attempting MGD communication |
+| CAN Status | Blinks twice | Communicating with MGD host — normal operation |
+| CAN Status | OFF | Not attempting communication — fault |
+| Inhibit | ON | UPM detected disconnected FWD/REF cable, interrupted unblank signal, or unsafe condition — scanning inhibited |
+
+**ASC reset button** resets both UPMs. Does NOT reset measured RF power.
+
+---
+
+## UPM Calibration
+
+- Runs APB cal scan, adjusts digital attenuators to match expected RF signal.
+- Config file: \`/export/home/signa/tools/upm/upm.config\`
+- Calibration values written to: \`/w/config/Upm1Cal.cfg\` and \`Upm2Cal.cfg\` (12 hex values each)
+- View config: UPM Tool → File → View Config
+
+---
+
+## UPM Functional Check
+
+Runs prescribed scan, compares measured RF power to expected value (±12%). Confirms UPM will stop scanning if power exceeds trip limit.
+
+- Fails to run: check system error log first
+- Fails due to inaccurate power: re-calibrate UPM, then retry
+
+---
+
+## Troubleshooting — Common UPM Problems
+
+**1. UPM Calibration Fails:**
+- Check error log; use fault message table below
+- If unresolved: TPS reset, open new exam (Patient ID = geservice, Weight = 111), select Service > Other, select apb cal
+- Series 1 = body, Series 2 = head
+- Click Manual Prescan, set TG to 63 for reflected or above 149 for forward power
+- Check Inhibit light on CAM/KASC and Driver Module
+- Check Sense LEDs flashing on correct channel
+- If Sense LEDs not flashing: place 50 ohm terminator in port under test; put UPM RF cable into 50-ohm terminated scope — confirm RF signal. If no signal, trace cable path. If signal exists, swap/replace RF detector boards.
+
+**2. Config File CRC Mismatch:**
+- Checksum of upm.config does not match — file edited or corrupted
+- Restore from backup or reload from service desktop
+
+**3. RF Amplifier Does Not Output Power During Calibration:**
+- Solution 1 (RF amp tripped excessive power): Launch RF amp cal through UPM Tool, increase TG to non-faulting level, recalibrate per RF chain procedure
+- Solution 2 (UPM indicated SAR limit exceeded): Re-launch RF amp or UPM calibration through UPM Tool to reset measured power
+
+**4. UPM Tool Fails ("ERROR" / "Incorrect Rx"):**
+- Incorrect coil: use correct coil (no coil for body, head coil for head, 31P MNS TR switch for MNS)
+- No landmark: landmark with correct coil, press Advance to Scan
+
+---
+
+## UPM Fault Message Reference
+
+| Fault | Problem | Field Action |
+|-------|---------|-------------|
+| EM_LARGE_DIFFERENCE_DETECTED | UPM1 vs UPM2 readings differ greatly | 1. Calibrate + functional check. 2. Swap RF detector boards; recalibrate — if lower value follows board, replace it. 3. If fault does not follow board, swap cables; if value moves, check cable resistance then replace RF couplers. 4. Replace UPM processor board. |
+| EM_TOO_MUCH_REFLECTED_POWER | More reflected than forward power | 1. If during reflected cal, ignore. 2. Verify UPM cabling per block diagrams. 3. Check for opens in transmit chain. 4. Swap detector boards — if error moves, replace that board. |
+| EM_UPM_FPGA_SN_FLT | FPGA cannot read serial number | 1. Swap detector boards. 2. Swap processor boards. 3. Replace CAM/KASC chassis. |
+| EM_UPM_PWR_FLT_DETECT | Invalid power detected from amp port | 1. Swap affected RF detector boards. 2. Swap processor boards. 3. If both UPMs indicate fault or steps fail: troubleshoot unblank signal and RF amplifier; check for external RF noise. Check error log ±5 seconds around event. |
+| EM_UPM_PWR_LIMIT_EXCEED | Detected power exceeds trip limit | 1. Check protocol for excessive SAR. 2. If protocol acceptable: calibrate + functional check. 3. If consistently one UPM: swap RF detector boards, recalibrate. If fault follows board, replace it. If not, replace CAM/KASC chassis. |
+| EM_RF_NB_BOARD_MISSING | NB RF detector board missing | 1. Reseat both detector boards, check for bent pins. 2. Swap detector boards. 3. Swap processor boards. 4. Replace CAM/KASC chassis. |
+
+---
+
+## Quick Checklist
+
+- [ ] All unused RF ports have 50 ohm SMB terminators
+- [ ] Sense LEDs flashing on correct channel during scan
+- [ ] CAN Status LED blinking twice (normal communication)
+- [ ] Inhibit LED OFF during normal operation
+- [ ] UPM calibration file valid (no CRC mismatch)
+- [ ] UPM Functional Check passes (±12% power accuracy)`
+  },
+
+  {
+    id: 'dg_dual_drive_rfamp',
+    title: 'GE MRI Dual Drive RF Amplifier Troubleshooting — MR355/MR360',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['dual drive','RF amplifier','RFPA','DTX','exciter','body channel','head channel','gain encoder','CAN','AIF','water cooled','15kW','MR355','MR360'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Dual Drive RF Amplifier Troubleshooting
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## Overview
+
+The solid-state, water-cooled dual drive RF amplifier accepts two independent RF inputs from independent DTX (Digital Exciter) units to produce dual drive body and single drive head RF outputs.
+
+| Mode | Channel | Input | Output | Peak Power |
+|------|---------|-------|--------|-----------|
+| Body | CH1 | J14 | Body CH1 out (J4) | 15 kW peak |
+| Body | CH2 | J21 | Body CH2 out (J22) | 15 kW peak |
+| Head | CH1 only | J14 | Head RF out (J3) | 4.5 kW peak |
+
+- Single unblank signal at J20 controls both body output ports.
+- Internal RF circulator dissipates reflected power as heat (unlike single drive which uses external dummy load).
+- CAN open protocol for communication with SCP via AIF (Amplifier Interface) board.
+- **The amplifier is a single replaceable FRU — no internal FRUs are field-replaceable.**
+
+---
+
+## Key Connector Reference
+
+| Connector | Label | Description | Type |
+|-----------|-------|-------------|------|
+| J4 | BODY FWD OUT CH1 | Body RF power output CH1 | 7/16 DIN female (high power) |
+| J22 | BODY FWD OUT CH2 | Body RF power output CH2 | 7/16 DIN female (high power) |
+| J3 | HEAD RF OUT | Head RF power output | N female (high power) |
+| J5 | BODY FWD 1 | Forward RF power sample CH1 | BNC female (low level) |
+| J6 | BODY FWD 2 | Forward RF power sample CH1 | BNC female (low level) |
+| J11 | BODY REF 1 | Reflected RF power sample CH1 | BNC female (low level) |
+| J12 | BODY REF 2 | Reflected RF power sample CH1 | BNC female (low level) |
+| J9 | HEAD TR | Head TR bias input | BNC female |
+| J10 | BODY TR | Body TR bias input (shared CH1 and CH2) | BNC female |
+| J13 | HSS/TEST | RF test port output (400 mW ±10%) | BNC female |
+| J14 | RF IN CH1 | RF input CH1 (body + head mode) | BNC female (-4 to +4 dBm) |
+| J21 | RF IN CH2 | RF input CH2 (body mode only) | BNC female (-4 to +4 dBm) |
+| J18 | CAN IN | CAN communication input | 9-pin sub-D female |
+| J19 | CAN OUT | CAN communication output | 9-pin sub-D male |
+| J1 | WATER IN | Coolant inlet | |
+| J2 | WATER OUT | Coolant outlet | |
+
+---
+
+## Gain Adjustment Encoders
+
+Two rotary encoders on front of amplifier:
+- **CH1/HD encoder:** Adjusts body CH1 gain (body mode) or head gain (head mode)
+- **CH2 encoder:** Adjusts body CH2 gain only
+
+⚠️ **CRITICAL: Only adjust encoders when amplifier is actively pulsing. Changes are not visible when idle.**
+
+---
+
+## Circuit Breaker
+
+The dual drive RF amplifier is protected by a circuit breaker on the rear panel. If amplifier will not power on or is intermittently losing output:
+1. Check circuit breaker position — reset if tripped.
+2. If trips immediately on reset: internal fault — replace amplifier FRU.
+
+---
+
+## Water Cooling Check
+
+1. Verify coolant flow at J1 (WATER IN) and J2 (WATER OUT) fittings — no leaks.
+2. Check water flow meter (if installed) in PGR cabinet — should show flow during operation.
+3. Thermal shutdown activates if coolant flow is lost or temp exceeds threshold — presents as E305 or intermittent RF amp fault.
+4. Verify gradient chiller/water cooling system is operational before replacing RF amp for thermal faults.
+
+---
+
+## Common Fault Symptoms
+
+| Symptom | Likely Cause | Action |
+|---------|-------------|--------|
+| E305-01 (forward power low) both channels | RF input cable fault or exciter issue | Check J14, J21 RF input cables; verify DTX output |
+| E305-01 one channel only | Gain encoder misadjusted or internal amp fault | Verify gain encoder; replace amp FRU if gain correct |
+| E305-02 (high reflected power) | TR switch or body coil fault — not amp | See TR/DD Troubleshooting guide |
+| Amp not pulsing, no output | Circuit breaker tripped or CAN fault | Check CB; verify CAN communication via service desktop |
+| Intermittent E305 | Cooling fault (thermal shutdown) | Check water flow and coolant level |
+| E305 clears after cool-down | Confirmed thermal shutdown | Fix cooling system — do not replace amp until cooling resolved |
+
+---
+
+## Quick Checklist
+
+- [ ] Circuit breaker ON position
+- [ ] RF input cables J14 and J21 seated and not damaged
+- [ ] Head TR (J9) and Body TR (J10) bias cables connected
+- [ ] Water cooling verified (flow present, no leaks)
+- [ ] Gain encoders set correctly (only adjust during active pulsing)
+- [ ] CAN communication verified in service desktop`
+  },
+
+  {
+    id: 'dg_mns_rf_chain',
+    title: 'GE MRI MNS RF Chain Troubleshooting — Spectroscopy RF Transmit/Receive',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['MNS','spectroscopy','MNS RF','T/R bias','CPC amplifier','8kW AMT','UPM sense','ASC','receive chain','31P','MNS coil','MR355','MR360'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI MNS RF Chain Troubleshooting — Spectroscopy RF Transmit/Receive
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## Overview
+
+Covers troubleshooting for MNS (Multi-Nuclear Spectroscopy) RF Transmit and Receive chains. Not an exhaustive list — unlisted MNS faults should be reported to GE Service Engineering.
+
+**Important:** MNS T/R Module should be removed from system when spectroscopy scanning is complete — its presence may cause IQ degradation in standard imaging.
+
+---
+
+## RF Receive Chain — Problem/Solution Table
+
+| Symptom | Probable Cause | Action |
+|---------|---------------|--------|
+| FUNC Test runs without errors, no signal | Wrong channel select | Verify Multicoil Channel Select in P31_Flex Coil Config = 128; save and reboot if changed |
+| FUNC Test runs without errors, no signal | Wrong switch select | Verify Multicoil Switch Select in P31_Flex Coil Config = 0; save and reboot if changed |
+| FUNC Test runs without errors, no signal (8-ch switch only) | MNS receive line plugged into wrong port | MNS receive line must be in AUX CH 8 (bottom of 8-channel switch module). Not applicable to 16-channel switch. |
+| FUNC Test runs without errors, no signal (8-ch switch only) | Switch not routing AUX input | Green LED for CH 8 on switch module should be switched to AUX input. Diagnose switch if not. Not applicable to 16-channel switch. |
+| FUNC Test runs without errors, no signal (8-ch switch only) | +15V missing on AUX CH 8 | Verify +15 VDC on AUX CH 8 Input connector. Replace switch if not present. Not applicable to 16-channel switch. |
+| FUNC Test runs without errors, no signal | TX signal out of spec | Verify RF TX pulse amplitude at RF amp input: disconnect cable at RF IN port, connect to 50 ohm DC input of oscilloscope. During scan: square pulse amplitude should be >0.5V peak-to-peak at TG = 200. If not, run Slave Exciter diagnostics. |
+| T/R Bias fault | Cable path incomplete | Verify T/R bias path from bias driver module in system cabinet to TR switch on LPCA cover. Check connections at RFPA, pen-wall, and rear pedestal. |
+| High reflected power on RF amplifier (>50% of forward) | Amp not connected to MNS coil | CPC amp: press button on front to read reflected power — should be <50W. AMT 8kW amp: no diagnostic tool available — check all connections between amp and coil. |
+| UPM Sense fault | UPM not connected to 50 ohm load | Check power coupler cables to UPM. Ensure 50 ohm terminators are connected to all unused ports. |
+| UPM Sense and/or Inhibit light constantly ON | Hardware causing signal always present | 1. Systematically swap circuit boards inside ASC chassis — if error follows a board, try replacing it. 2. Swap amplifier connections to ASC boards — indicates if problem is from amplifier. |
+| UPM errors at GOC: "spectro amp not ready" | 50 ohm terminators missing | Check that 50 ohm loads (BNC male snap-on) are on all 6 power monitor inputs on SSM: Head A, B (J101, J102); Body A, B (J106, J107); Spectro A, B (J108, J110). |
+
+---
+
+## 50 Ohm Terminator Map — SSM Ports
+
+When MNS is not installed, all 6 SSM power monitor ports must be terminated:
+
+| Port | Label | Connector |
+|------|-------|-----------|
+| J101 | Head A | BNC male 50 ohm |
+| J102 | Head B | BNC male 50 ohm |
+| J106 | Body A | BNC male 50 ohm |
+| J107 | Body B | BNC male 50 ohm |
+| J108 | Spectro A | BNC male 50 ohm |
+| J110 | Spectro B | BNC male 50 ohm |
+
+---
+
+## Quick Checklist
+
+- [ ] MNS T/R Module removed after spectroscopy scan
+- [ ] Multicoil Channel Select = 128 in P31_Flex Coil Config
+- [ ] Multicoil Switch Select = 0 in P31_Flex Coil Config
+- [ ] MNS receive line connected to AUX CH 8 (8-channel switch systems)
+- [ ] RF TX pulse verified >0.5V p-p at TG=200
+- [ ] T/R bias path complete from driver module through RFPA, pen-wall, rear pedestal
+- [ ] All 6 SSM power monitor ports have 50 ohm terminators (when MNS not active)
+- [ ] UPM Inhibit LED OFF during normal operation`
+  },
+
+  {
+    id: 'dg_receive_chain_rrx',
+    title: 'GE MRI Receive Chain Troubleshooting (RRX / RFSB) — Bad Channel, Loopback, MCR',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['receive chain','RRX','RFSB','RFCB','MCDB','PDBv','bad channel','MCR','MCRv','MCQA','MCBias','TPS reset','loopback','R1','SNR','coil','MR355','MR360'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Receive Chain Troubleshooting (RRX / RFSB)
+Source: SIGNA MR355/MR360 Service Manual, Rev 7.0
+
+---
+
+## Overview — Receive Chain Fault Symptoms
+
+A typical receive chain fault appears as a **striped or missing coil element image** (one or more channels showing no signal or low SNR).
+
+**Diagnostic Tools:**
+1. **Multicoil Bias Tool** — confirms faulted channels (Service → Diagnostics → Hardware → Magnet Room)
+2. **CDD (Coil Datapath Diagnostic) / MCRv Tool** — isolates receive chain components (Service → Diagnostics → Hardware → Magnet Room)
+3. **MCQA** — identifies coil image quality issues
+
+---
+
+## RF Hub / Receive Chain Components
+
+| Board | Function |
+|-------|---------|
+| RFSB (RF Signal Board) | Amplifies signals (R1 gain), down-converts to 16 MHz, switches/routes channels, delivers Multicoil Bias |
+| MCDB (Multicoil Driver Board) | Provides DC Bias to PIN diode decoupling networks in multi-coil arrays; sends bias to RFSB via backplane |
+| RFCB (RF Control Board) | Reads/validates Coil ID; delivers preamp power to coil ports; distributes LO and exciter loopback to RFSBs; monitors multicoil bias driver |
+| PDBv (Power Distribution Board) | Generates voltage levels (+X V) for RFSB, RFCB, MCDB; one PDBv supports up to 32 receive channels |
+
+---
+
+## Step-by-Step: Diagnosing a Bad Channel
+
+**Symptom:** Poor image quality or low SNR on one coil array element.
+
+Example: 8 HR brain coil, channel 4 shows no/little signal.
+
+1. Run phantom scan in GESERVICE mode with saveinter CV (9 intermediate images). Identify which image(s) are bad.
+2. Use MCRv tool to determine if fault is in coil or receive chain. If MCRv unavailable, try a different known-good 8-channel A-port coil.
+3. If coil confirmed good — fault is in receive chain. **Swap both receiver cables** (J1 and J2) between Receiver 1 and Receiver 2.
+4. Re-scan with saveinter CV:
+   - **Failing image is now GOOD** (all 8 images good): **Receiver 1 is suspect** — replace Receiver 1.
+   - **Failing image is still BAD** (receiver is good): **RFSB is suspect.**
+     - Swap RFSB1 with RFSB2.
+     - Re-scan with saveinter CV.
+     - Failing image now GOOD: Replace **RFSB1**.
+     - Failing image still BAD: Contact GE support or OLC for additional help.
+
+---
+
+## TPS Reset Fails — Receive Chain Loopback
+
+During every TPS reset, the RRx chain runs a loopback test calibrating each receive channel at each R1 setting.
+
+**Log file location:** \`/usr/g/service/log\`
+**Log file name:** \`r1GainCal_date.dat\` (e.g., r1GainCal_2011Sep14_12_28_42.dat)
+
+**To review log:**
+1. Open C-shell.
+2. Run: \`ls -altr r1Gain*\` (lists all files; most recent is last).
+3. View file: \`more r1GainCal_[date].dat\` or open in gedit.
+
+**Interpreting results:**
+- For each R1 value / each channel: measured energy should drop by **3 dB ± 0.5 dB**
+- Pass/fail column shows "fail" if outside tolerance
+- No entry = pass
+
+**Diagnosis:**
+- **Only channel 6 fails for all R1 values:** Exciter is NOT the issue (same exciter signal goes to all channels). RFSB is suspect — run bad channel procedure above.
+- **Multiple channels fail same R1:** R1 gain calibration issue — may be RFSB or Receiver board.
+- **All channels fail:** Exciter loopback signal problem — check exciter and RFCB distribution.
+
+---
+
+## Intermittent Multicoil Bias Faults
+
+If system experiences intermittent MCBias faults:
+1. Run scan with RF enabled vs. RF disabled — compare results.
+2. If difference observed: noise may be entering bias lines from a loose quick-disconnect.
+3. Inspect all P-port quick-disconnect connectors on coil ports.
+4. Check MCDB board seating in RFSB chassis.
+
+---
+
+## Quick Checklist
+
+- [ ] MCRv / MCBias tool run — identified which channel(s) failing
+- [ ] Swap coil test performed — fault confirmed in system (not coil)
+- [ ] Receiver cable swap test performed (J1/J2 on Receiver 1 and 2)
+- [ ] r1GainCal log reviewed — channels outside 3 dB ± 0.5 dB documented
+- [ ] RFSB swap performed if receiver swap did not move fault
+- [ ] All P-port quick-disconnect connectors inspected (intermittent MCBias fault)`
   }
 ];
 
