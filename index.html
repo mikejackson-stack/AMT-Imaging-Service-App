@@ -14850,8 +14850,964 @@ AMT Imaging Solutions — Field Service Reference
 - **Domain vs. local accounts**: Hospital-networked systems may use domain accounts instead of local defaults above
 - **BIOS access**: Hit F2 or Del at POST; timing varies — be ready when powering on
 - **Syngo licensing**: License file at C:\\MedCom\\config\\licenses\\ — do not delete`
+  },
+
+  // ─── NEW GUIDES: TR Switch, Exciter, UPM, RF Amps, ICN/VRE, Network, Power Supplies ───
+
+  {
+    id: 'dg_tr_switch',
+    title: 'GE MRI TR Switch Troubleshooting — Head TR, Body TR / Hybrid, 16ch Switch',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['TR switch','Head TR','Body TR','Hybrid','16ch switch','PIN diode','SSM','T/R','RF','transmit receive','E305','multicoil'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI TR Switch Troubleshooting — Head TR, Body TR / Hybrid, 16ch Switch
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Overview
+
+The T/R (Transmit/Receive) switch routes RF power to the transmit coil during the TX phase and connects the receive coil to the preamplifiers during the RX phase. PIN diodes are switched by DC bias voltages supplied from the SSM (System Support Module) via the CPD board.
+
+| Switch | SSM Cable | SSM Test Point | Target Voltage | Adjust |
+|--------|-----------|----------------|----------------|--------|
+| Body TR | J408 | TP18 BTR-OUT | +4.00 VDC (pos) / -12.25 VDC (neg) | R99 |
+| Head TR | J409 | TP22 HTR-OUT | +8.00 VDC (pos) / -12.25 VDC (neg) | R104 |
+| Multicoil (16ch) | J408/J409 bus | CPD MCx outputs | +4.00 VDC nominal | MC drivers 1–4 |
+
+---
+
+## Symptom → Fault Matrix
+
+| Symptom | Most Likely Cause |
+|---------|------------------|
+| No signal — body coil only | Body TR not switching to receive; failed PIN diode or low BTR voltage |
+| No signal — head coil only | Head TR not switching; failed PIN diode or low HTR voltage |
+| E305 RF amp fault with body coil scan | Body TR shorted (RF reflected back to RFPA) |
+| E305 only when head coil used | Head TR shorted |
+| Prescan fails — "Cal Failure" body coil | Body TR not switching properly during prescan |
+| Noise / artifact only in body coil images | Body TR partially failed — leakage during receive |
+| MCQA failure on 16ch coil | 16ch multicoil switch issue or MCBias fault |
+| MCBias Fault alarm | TR bias voltage out of spec for multicoil channel |
+
+---
+
+## Step 1 — Isolate Coil vs. TR Switch
+
+1. Run prescan with body coil first (no surface coil loaded). Note fault or symptom.
+2. Load a known-good head coil. Run prescan. Note if fault follows coil or stays on system.
+3. If fault is body-coil-only → Body TR or body coil suspect.
+4. If fault is head-coil-only → Head TR or head coil suspect.
+5. If fault on all coils → upstream issue (RFPA, RF synthesizer, PDU power).
+
+---
+
+## Step 2 — Check TR Bias Voltages at SSM
+
+⚠️ **These are factory-set. Only adjust if troubleshooting a known TR fault.**
+
+**Equipment:** 100 MHz scope, DMM, pot tweaker.
+
+1. Extend SSM chassis from rack. Open both lids.
+2. Verify cables J408 (Body TR) and J409 (Head TR) are fully seated.
+3. Disconnect J5 (UNBLK EN) at SSM rear.
+4. Set DIP switches: Switch #3 UP first, then Switch #1 UP. All others DOWN. (Generates periodic unblank pulse train.)
+
+**Body TR — TP18 (BTR-OUT):**
+- Connect scope to TP18
+- Normal: positive swing = +4.00 VDC, negative swing ≈ -12.25 VDC
+- If positive swing < 3.5V → adjust R99 clockwise to increase
+- If negative swing incorrect → CPD board power supply issue (not adjustable)
+
+**Head TR — TP22 (HTR-OUT):**
+- Connect scope to TP22
+- Normal: positive swing = +8.00 VDC, negative swing ≈ -12.25 VDC
+- If positive swing < 7.5V → adjust R104 clockwise to increase
+
+**Restore:** DIP switches all DOWN → Reconnect J5 → Cycle CB4.
+
+---
+
+## Step 3 — PIN Diode Check (TR Switch Removed)
+
+When TR voltages are correct but fault persists, check the TR switch itself:
+
+1. Remove TR switch assembly (right side panel, inside bore housing).
+2. Set DMM to diode mode.
+3. Measure forward voltage across each PIN diode:
+   - **Normal:** 0.5–0.7 VDC forward, OL (open) reverse
+   - **Failed open:** OL in both directions — coil will see no RF
+   - **Failed shorted:** ~0 VDC forward AND reverse — causes E305 (reflected power)
+4. Any shorted diode = replace TR switch assembly.
+
+**Common GE TR Switch Part Numbers:**
+| System | Part Number | Description |
+|--------|-------------|-------------|
+| HDxt 15.x / 16.x | 46-319394G1 | 1.5T Body TR Switch |
+| Signa Excite | 2118025 | Body TR Switch |
+| HDx 15.x / 16.x | 5115268 | 1.5T Head T/R Switch |
+| HDx (31P option) | 2354050 | 1.5T 31P TR Switch |
+
+---
+
+## Step 4 — 16-Channel Switch / Multicoil TR Troubleshooting
+
+The 16ch switch matrix routes 16 receive channels through the SSM multicoil drivers (MC1–MC4).
+
+**Symptom:** MCQA failure, MCBias fault, dead channel in 16ch array coil scan.
+
+1. Check P-port connector on coil cable — inspect all pins for bent, loose, or corroded contacts.
+2. Try same coil at a different P-port to isolate coil vs. port.
+3. Run MCBias tool from service browser:
+   - Applications → Service → MCBias Tool
+   - Checks bias current on each MC channel
+   - Failing channel will show out-of-spec current
+4. If one MC channel fails on all ports → that MC driver on CPD board is suspect.
+5. Enable/disable individual MC drivers via SSM DIP switch procedure (Section 7 of SSM CPD calibration guide).
+6. After isolating bad driver: replace CPD board or return for depot repair.
+
+---
+
+## Step 5 — Hybrid Body Coil T/R Note
+
+On systems with the Hybrid body coil (HDxt and newer), the body coil transmit and receive paths are combined through a hybrid combiner network rather than a discrete PIN-diode switch:
+
+- Hybrid body coil failures often present as **asymmetric signal** or **body coil prescan failure** rather than a clean fault code
+- Check body coil tuning cap (accessible through right bore panel) — capacitor failure is more common than switch failure on hybrid designs
+- Body coil tune voltage check: service desktop → RF → Body Coil Tune → should show tune voltage within ±500 mV of center
+- If tune voltage rail (maxed or zero) → tuning capacitor or driver board fault
+
+---
+
+## Quick Checklist
+
+- [ ] Verified J408 and J409 cables fully seated at SSM
+- [ ] Confirmed BTR-OUT voltage +4.00V at TP18
+- [ ] Confirmed HTR-OUT voltage +8.00V at TP22
+- [ ] Inspected TR switch PIN diodes — no shorted diodes
+- [ ] Checked P-port connector pins on coil cable
+- [ ] Ran MCBias check if 16ch coil involved
+- [ ] Body coil tune voltage in spec (hybrid body coil systems)`
+  },
+
+  {
+    id: 'dg_rf_exciter',
+    title: 'GE MRI RF Exciter & Synthesizer Troubleshooting',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['exciter','synthesizer','RF exciter','frequency calibration','E401','E305','RF rack','PEN cabinet','PDU','RF chain','transmitter'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI RF Exciter & Synthesizer Troubleshooting
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## What the Exciter Does
+
+The RF exciter generates the precise Larmor frequency RF signal used for MRI transmit pulses. It takes a reference frequency from the synthesizer and modulates it to produce the shaped RF pulse envelope sent to the RF power amplifier (RFPA).
+
+**Signal path:** Synthesizer → Exciter → RF Driver → RFPA → TR Switch → Body/Head Coil
+
+---
+
+## System Location by Platform
+
+| Platform | Exciter Location | Notes |
+|----------|-----------------|-------|
+| Signa Profile/Contour | RF/PEN cabinet, upper shelf | Standalone exciter module |
+| Signa LX / Excite 8.x–9.x | RF/PEN cabinet | Exciter + Synthesizer boards |
+| Signa Excite 11.x–12.x | RF/PDU cabinet | Integrated exciter assembly |
+| HDx / HDxt 15.x–16.x | RF/PDU cabinet | GEMS exciter board in PDU rack |
+| Discovery 450/750 | RFPA cabinet | Fully integrated — exciter on RFPA board |
+
+---
+
+## Common Fault Codes — Exciter Related
+
+| Code | Description | First Check |
+|------|-------------|-------------|
+| E401 | RF hardware fault / exciter not responding | Power cycle; check exciter board seated |
+| E305-01 | Forward power low | Check exciter output level; synthesizer locked |
+| E305-03 | RF subsystem fault | Check exciter → RFPA cable |
+| Freq Cal Failure | System cannot lock to Larmor frequency | Check synthesizer reference; FID tuning |
+| Prescan failure — Cal | Cannot complete calibration | Exciter output or TR switch |
+
+---
+
+## Step 1 — Verify Synthesizer Lock
+
+The synthesizer must be phase-locked to the main frequency reference. If unlocked, no valid RF is generated.
+
+1. On service desktop: Applications → Service → RF → Synthesizer Status
+2. Verify "Lock" indicator is green.
+3. If unlocked:
+   a. Power cycle the RF cabinet (CB in PDU cabinet, or CB in RF/PEN cabinet).
+   b. Allow 2 minutes for synthesizer warm-up.
+   c. Re-check lock status.
+4. Persistent unlocked condition → check 10 MHz reference cable between synthesizer and frequency reference board. Inspect for damaged BNC connector.
+
+---
+
+## Step 2 — FID Frequency Check
+
+If synthesizer is locked but images are poor or prescan fails:
+
+1. Applications → Service → RF → FID Test
+2. FID should appear as a clean decaying sinusoid.
+3. **Good FID:** Clean decay, frequency peak centered near system Larmor frequency (63.8 MHz for 1.5T).
+4. **No FID:** Exciter not producing output, or TR switch not switching.
+5. **Noisy / distorted FID:** Exciter output level low, or RF shielding fault.
+
+Verify exciter output level:
+- Applications → Service → RF → Exciter Level
+- Adjust if below spec per service manual for that platform.
+
+---
+
+## Step 3 — RF Chain Continuity Check
+
+Check cables in order from exciter output to TR switch input:
+
+1. Exciter output → RF Driver input (usually N-type or SMA connectors — check for bent pins or damaged center conductor)
+2. RF Driver output → RFPA input (verify cable not kinked at cabinet edge)
+3. RFPA output → TR switch input (high-power cable, inspect for cracked jacket near strain relief)
+4. Use power meter at each stage to verify output; typical exciter output: 0 dBm ± 3 dB
+
+---
+
+## Step 4 — Exciter Board Swap Procedure
+
+If exciter board is suspected faulty:
+
+1. Power down system via normal shutdown procedure. Wait 5 minutes for capacitors to discharge.
+2. Open RF/PEN or RF/PDU cabinet — right side, upper section.
+3. Label all cable connections before removal (photograph if possible).
+4. Loosen the two captive screws on exciter module front panel.
+5. Slide board out. Note any DIP switch or jumper settings before swapping.
+6. Install replacement board. Confirm DIP/jumper settings match.
+7. Reconnect all cables. Power up system.
+8. After boot: run FID check and prescan to verify.
+
+---
+
+## Known Issues by Platform
+
+| Platform | Common Exciter Issue | Notes |
+|----------|---------------------|-------|
+| Signa LX 9.x | Synthesizer PLL unlocks after warm-up | Replace 10 MHz reference oscillator |
+| Signa Excite 12.x | Exciter output drifts at temperature | Check for poor solder joint on exciter board |
+| HDxt 16.x | RF subsystem E401 after power outage | Cycle CB in PDU cabinet; recalibrate after |
+| Discovery 750 | Body coil calibration intermittent | Check exciter output connector (loose SMA) |
+
+---
+
+## Quick Checklist
+
+- [ ] Synthesizer locked — verified in service desktop
+- [ ] FID test shows clean waveform
+- [ ] No damaged RF cables (bent center pins, cracked jackets)
+- [ ] Exciter output level within spec
+- [ ] RF cabinet power cycling performed if unlocked
+- [ ] 10 MHz reference cable intact and connected`
+  },
+
+  {
+    id: 'dg_upm',
+    title: 'GE MRI UPM (Universal Power Module) Troubleshooting',
+    system: 'GE MRI',
+    category: 'Power System',
+    tags: ['UPM','Universal Power Module','power module','power supply','PDC','AC power','power distribution','CB','circuit breaker','E101','system power'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI UPM (Universal Power Module) Troubleshooting
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## What is the UPM?
+
+The **Universal Power Module (UPM)** is the main AC power distribution and conditioning unit for GE MRI systems. It receives facility AC power and distributes conditioned, filtered power to all system subsystems. On some platforms it also contains the system power-on sequencing logic.
+
+**Alternate names by platform:**
+- **UPM** — Signa Profile, Contour, LX, Excite 8.x–12.x
+- **PDC (Power Distribution Cabinet)** — HDx, HDxt, Discovery 450/750
+- **PPC (Power Panel Cabinet)** — some older configurations
+
+---
+
+## UPM / PDC Location and Layout
+
+| System | Location | Key Components Inside |
+|--------|----------|----------------------|
+| Signa LX / Excite | Stand-alone unit, equipment room | Main CB, sub-CBs, filter caps, contactor relay |
+| HDx / HDxt | Integrated cabinet rear bay | Main breaker, PDC sub-breakers, UPS module |
+| Discovery 450/750 | Lower rear section of system | Electronic CB panel, power sequencer board |
+
+---
+
+## Common Fault Symptoms and First Steps
+
+| Symptom | Likely Cause | First Action |
+|---------|-------------|-------------|
+| System will not power on | Main CB tripped or UPM fault | Check main CB; reset if tripped |
+| E101 / Power fault alarm | UPM output voltage out of spec | Check UPM output voltages with DMM |
+| System trips to standby during scan | AC input dropout or UPM contactor | Check facility AC voltage under load |
+| Intermittent power loss | Loose connection inside UPM or CB contacts worn | Inspect main lug connections |
+| Gradient or RF faults clearing with power cycle | UPM output ripple or sag during gradient load | Measure UPM outputs during scan |
+| UPM fan alarm | Internal cooling fan failure | Replace UPM cooling fan |
+
+---
+
+## UPM Output Voltage Checks
+
+Use a DMM to verify output voltages at the UPM output distribution terminals:
+
+| Rail | Nominal | Acceptable Range | Common Load |
+|------|---------|-----------------|-------------|
+| Main AC (208V) | 208 VAC | 198–218 VAC | Gradient amp, RF amp |
+| Main AC (480V, 3-phase) | 480 VAC | 456–504 VAC | Gradient amp primary |
+| Logic supply (120V) | 120 VAC | 114–126 VAC | Computers, monitors |
+| Isolated ground | < 1 VAC noise | < 1 VAC to chassis | RF shielding |
+
+⚠️ **Measure voltage under load (during scan) if intermittent — voltage may be normal at idle.**
+
+---
+
+## Circuit Breaker Map (Typical LX/Excite UPM)
+
+| CB Label | Supplies | Reset Procedure |
+|----------|----------|----------------|
+| CB1 — Main | All system power | Main shutoff — facility coordination required |
+| CB2 — Gradient | Gradient amplifier (GEMS/Sonata) | Reset with system in standby |
+| CB3 — RF | RF/PEN or RF/PDU cabinet | Reset; allow 2 min warm-up |
+| CB4 — SSM/Control | SSM, host computers | Reset; system will re-initialize |
+| CB5 — Patient Support | Table, bore light, fan | Reset |
+| CB6 — Chiller | Gradient chiller / water cooling | Reset |
+
+⚠️ **Always check reason CB tripped before resetting. Repeated tripping = underlying fault.**
+
+---
+
+## Step-by-Step: System Won't Power On
+
+1. Check main facility AC feed: verify voltage at wall disconnect (208V or 480V per spec sheet).
+2. Open UPM cabinet: find main circuit breaker. Verify not tripped (handle position, indicator light).
+3. If tripped: reset by moving to full OFF then ON. If immediately trips again → short circuit in load.
+4. Check all sub-CBs — any tripped? Reset individually.
+5. Check UPM contactor: listen for click when power-on attempted. No click → contactor coil failed or control signal missing.
+6. Check UPM control PCB fuses (1A–5A glass fuses on control board). Replace if blown.
+7. Verify UPM internal fan operation — thermal shutdown can prevent power-on if fan failed.
+
+---
+
+## Step-by-Step: Intermittent Power Loss During Scan
+
+Gradient amplifiers create large current spikes during gradient pulses. The UPM must handle this without voltage droop.
+
+1. Connect oscilloscope (AC-coupled) to 208V output during gradient echo scan.
+2. **Normal:** < 5 VAC ripple / sag during gradient pulses.
+3. **Abnormal:** > 15 VAC sag → UPM capacitor bank degraded or main CB contact resistance high.
+4. Check all input lug connections — torque to spec (typically 35–50 ft-lbs for main lugs).
+5. Check facility power: some sites have undersized transformer for 3T systems.
+6. Replace UPM filter capacitors if > 5 years old and sag is confirmed.
+
+---
+
+## PDC Specific Checks (HDx/HDxt/Discovery)
+
+On HDxt and Discovery systems the PDC is integrated into the main cabinet:
+
+1. Power on: press green POWER ON button on PDC front panel. Sequence LEDs should progress left to right (5 steps).
+2. If sequence stops at any LED: that subsystem failed to power up. Note which LED.
+3. PDC LED map (left to right): Facility Power OK → Main CB Closed → Logic Power OK → Gradient Power OK → RF Power OK
+4. Check PDC sub-breakers on front panel — any tripped (orange indicator)?
+5. PDC uses 10A fuses for sub-circuits — locate fuse panel on PDC right side, inspect all fuses.
+
+---
+
+## Quick Checklist
+
+- [ ] Facility AC voltage verified at wall disconnect
+- [ ] Main CB not tripped — position verified
+- [ ] All sub-CBs checked and reset if tripped
+- [ ] UPM output voltages within spec (DMM measurement)
+- [ ] UPM internal fan operating
+- [ ] No abnormal AC ripple during scan (scope measurement if intermittent)
+- [ ] All power lug connections torqued and tight
+- [ ] PDC sequence LEDs (HDxt/Discovery) progressed through all 5 steps`
+  },
+
+  {
+    id: 'dg_rf_amp_all',
+    title: 'RF Amplifier Troubleshooting — GE & Siemens All Systems',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['RFPA','RF amplifier','RF power amplifier','E305','body RF','forward power','reflected power','RF fault','Siemens RF','F042','cooling fan','RF cabinet'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# RF Amplifier Troubleshooting — GE & Siemens All Systems
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Signal Path Overview
+
+**GE MRI:**
+RF Synthesizer → Exciter → RF Driver → RFPA (RF Power Amplifier) → TR Switch → Body/Head Coil
+
+**Siemens MRI:**
+Frequency Reference → Modulator → RFPA Module → TR Switch → Body Coil
+
+---
+
+## GE MRI — RF Amplifier Fault Codes
+
+| Code | Meaning | Common Cause |
+|------|---------|-------------|
+| E305-01 | RF forward power low | RFPA output low, exciter fault, cable |
+| E305-02 | RF reflected power high | TR switch shorted PIN diode, coil mismatch |
+| E305-03 | RF subsystem fault | RFPA hardware failure, power supply to RFPA |
+| E305-04 | RF timing fault | Exciter/gating signal issue |
+| E305-05 | RF watchdog trip | Repeated E305 — RFPA protection circuit |
+| E401 | RF hardware not responding | RFPA board failed, cable to RFPA |
+
+---
+
+## GE — Step-by-Step RFPA Troubleshooting
+
+### Step 1: Isolate Coil vs. RFPA
+1. Unload all surface coils. Run prescan with body coil only.
+2. If E305-02 (reflected power): try removing body coil → body coil tune capacitor or TR switch shorted.
+3. If E305-01 (forward power low) persists without any coil: RFPA output or exciter fault.
+
+### Step 2: RFPA Visual Inspection
+1. Open RF/PEN or RF/PDU cabinet.
+2. Check RFPA cooling fans — all fans must be running. Fan failure triggers thermal shutdown, presenting as intermittent E305.
+3. Inspect RFPA for burn marks on heat sink or PCB.
+4. Check RFPA power supply: typically ±28V or ±50V rails feeding final stage transistors. Measure at RFPA power connector.
+
+### Step 3: RFPA Power Supply Check
+| RFPA Rail | Nominal | Measurement Point |
+|-----------|---------|------------------|
+| +28V (driver stage) | +28 VDC ± 1V | RFPA power connector J2 pin 1 |
+| +50V or +48V (final stage) | +50 VDC ± 2V | RFPA power connector J3 |
+| -28V | -28 VDC ± 1V | RFPA power connector J2 pin 3 |
+| Logic +5V | +5 VDC ± 0.25V | RFPA logic connector |
+
+### Step 4: Forward/Reflected Power Measurement
+Use a directional coupler and power meter on RFPA output:
+- Expected forward power (1.5T body coil prescan): 8–15 kW peak (platform dependent)
+- Reflected power should be < 3% of forward power
+- High reflected: TR switch or body coil problem
+- Low forward with good driver: RFPA final stage failed
+
+### Step 5: RFPA Fuse Check
+GE RF amplifiers contain internal fuses for final stage protection:
+1. Power down system, lock out.
+2. Open RFPA chassis (requires removing from rack).
+3. Inspect fuse locations (marked on board silkscreen): typically 3A–10A fast-blow fuses.
+4. Replace any blown fuses — but investigate WHY it blew before returning to service.
+
+---
+
+## GE — RF Amplifier by Platform
+
+| Platform | RFPA Module | Key Notes |
+|----------|------------|-----------|
+| Signa LX 9.x | GEMS RFPA Module | 4 kW peak, air-cooled, in RF/PEN cabinet |
+| Signa Excite 11.x–12.x | Enhanced RFPA | 8 kW peak, improved thermal protection |
+| HDx 15.x | GEMS RFPA Enhanced | DRF board controls RF gating |
+| HDxt 16.x | HDxt RFPA | 15 kW peak, integrated directional coupler |
+| Discovery 450/750 | Integrated RFPA | Built into RFPA cabinet; field replaceable modules |
+| 3T Signa HDx | 3T RFPA | Higher power — 25 kW peak; dedicated cooling required |
+
+---
+
+## Siemens MRI — RF Amplifier Troubleshooting
+
+### Fault Codes
+| Code | Description | First Check |
+|------|-------------|-------------|
+| F042 | RF power fault | Check RFPA cooling fans, measure forward/reflected power, inspect TR switch |
+| F043 | RF transmit overflow | Body coil detuning or RFPA oscillation |
+| F044 | Body coil fault | TR switch, body coil tuning, RFPA output |
+| Seq. abort — RF | SAR limit exceeded | Usually software/protocol — not hardware |
+
+### Siemens RFPA Location
+- **Avanto / Aera:** RF amplifier in equipment room electronics rack (separate from magnet room).
+- **Skyra / Verio:** Integrated RFPA cabinet, left side of electronics rack.
+
+### Siemens RFPA Check Procedure
+1. Check Syngo Service Desktop → RF → RF Amplifier Status — verify green.
+2. Inspect cooling fans on RFPA chassis (typically 2–3 fans). Replace if any failed.
+3. Measure 48V supply to RFPA at rear power connector.
+4. Check body coil tune: Service Desktop → RF → Body Coil Tune. Tune voltage should be within ±500 mV of center.
+5. If tune rail (maxed): TR switch or body coil fault.
+6. Run RF amp self-test: Service Desktop → Service → Test → RF Amplifier Self-Test.
+
+---
+
+## Body Coil Detuning / Tuning Capacitor Check
+
+A common GE and Siemens RFPA fault that looks like an amplifier problem but is actually the body coil:
+
+1. Body coil tune voltage check (GE): Applications → Service → RF → Body Coil Tune
+2. Should land between 2.0V–4.5V (center ~3.0V typical for 1.5T)
+3. If voltage at maximum or minimum: tuning capacitor has failed
+4. Tuning cap is accessible through right bore panel — inspect for cracked ceramic or burnt contacts
+5. Replace capacitor — part varies by system, typically < $200 OEM
+
+---
+
+## Quick Checklist — All Systems
+
+- [ ] RFPA cooling fans all running
+- [ ] RFPA power supply rails within spec
+- [ ] No blown internal fuses
+- [ ] Body coil tune voltage within spec
+- [ ] TR switch PIN diodes verified (see TR Switch guide)
+- [ ] Forward power within spec — directional coupler measurement
+- [ ] Reflected power < 3% of forward power
+- [ ] All RF cable connectors tight, no bent center pins`
+  },
+
+  {
+    id: 'dg_icn_vre',
+    title: 'GE MRI ICN / VRE Network Troubleshooting',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['ICN','VRE','network','Sun ICN','ICN2','VRE network','host network','system network','HMCS','DICOM','ethernet','network fault','boot','connectivity'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI ICN / VRE Network Troubleshooting
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Architecture Overview
+
+| Platform | Control Node | Notes |
+|----------|-------------|-------|
+| Signa LX / Excite 8.x–10.x | Sun ICN (Integrated Control Node) | Sun Microsystems workstation; IRIX OS |
+| Signa Excite 11.x–12.x | ICN2 | Updated Sun hardware; still IRIX |
+| HDx 15.x / HDxt 16.x | VRE (Virtual Reality Engine) | Linux-based; embedded on host motherboard |
+| Discovery 450/750/750w | VRE2 | Updated VRE architecture |
+
+**What ICN/VRE does:** Manages communication between the host computer and all MRI hardware subsystems (DAS, MGD, SSM, RFPA, patient table, etc.) over a dedicated internal network.
+
+---
+
+## ICN Troubleshooting (Signa LX / Excite 8.x–12.x)
+
+### ICN Won't Boot
+1. Verify ICN power LED is on (front of ICN chassis). If off → check IEC power cable and socket.
+2. At ICN monitor (if present): watch for Sun boot messages. Should reach "ok" prompt then start MR software.
+3. If stuck at OpenBoot PROM ("ok" prompt): type `boot disk` to force boot from hard disk.
+4. If disk errors at boot: ICN hard drive may be failing. Use saveinfo to back up before replacing.
+5. Check ICN network cable to host (see Network Cable Requirements guide).
+
+### ICN Network Connectivity Test
+From the MR host shell (as root or sdc):
+\`\`\`
+ping <ICN_IP>          # Test ICN reachable from host (typical ICN IP: 192.168.1.2 or 10.0.x.x)
+rlogin icn             # Log in to ICN remotely
+\`\`\`
+If ping fails:
+1. Check CAT5 cable between host network port and ICN network port.
+2. Verify ICN IP address: on ICN, run `ifconfig -a` and confirm IP matches host's expected peer address.
+3. Check /etc/hosts on MR host — ICN hostname must be listed with correct IP.
+
+### Sun ICN Remote Console Access
+From the MR host:
+\`\`\`
+/export/home/signa/vre/install/icnRemoteConsole.pl --bmcip=x.x.x.x
+\`\`\`
+Replace x.x.x.x with ICN BMC (Baseboard Management Controller) IP address.
+- BMC IP is set during installation (usually ICN main IP + 1)
+- Remote console allows full graphical access to ICN even if MR software won't start
+
+### ICN Web Utility (Sun ICN only)
+- Access via browser: http://\<ICN_IP\>/
+- Login: root / changeme (default — change after install)
+- Shows ICN hardware status, fan speeds, temperatures, disk health
+
+---
+
+## VRE Troubleshooting (HDx / HDxt / Discovery)
+
+### VRE Network Overview
+On HDx/HDxt/Discovery systems, the VRE is embedded in the host motherboard. It communicates with hardware subsystems (MGD, RFPA, DAS, SSM) over a dedicated private Ethernet network separate from the DICOM/PACS network.
+
+### VRE Network Connections
+| Connection | Cable Type | Subnet |
+|------------|-----------|--------|
+| Host ↔ MGD (Gradient) | CAT5e crossover or switch | 10.x.x.x (see MGD subnet table) |
+| Host ↔ DAS | CAT5e | Dedicated DAS subnet |
+| Host ↔ RFPA (newer systems) | CAT5e | RF control subnet |
+| Host ↔ HMCS | CAT5e | 192.168.x.x typical |
+| DICOM / PACS | CAT5e to hospital network | Customer-provided subnet |
+
+### VRE Won't Connect to Hardware Subsystems
+1. From host (as sdc or root): check network interfaces:
+\`\`\`
+ifconfig -a                    # List all interfaces and IPs
+ping 10.217.1.1                # Test MGD (typical IP; check /etc/hosts for actual)
+\`\`\`
+2. Verify network cables seated at host motherboard NICs and at MGD rear connector.
+3. Check /etc/hosts: all subsystem hostnames must have correct IPs.
+4. Check /etc/sysconfig/network-scripts/ifcfg-eth0 — verify IP and subnet match connected device.
+5. Restart network: `service network restart` (run as root).
+6. If MGD shows no link: check MGD subnet configuration — see Network Cable Requirements guide.
+
+### VRE Software Reinstall
+If VRE software is corrupted (after drive replacement or software error):
+1. Software location on host: /export/home/vre/netinstall/
+2. Full install guide: /usr/local/bin/install/java/Guided_Install (run as root)
+3. Install log: /usr/local/bin/install/log/install_logfile
+4. After install: reboot host. VRE will auto-start.
+
+### Checking VRE Version
+\`\`\`
+/usr/g/bin/showVREConfig        # Display VRE hardware configuration
+/usr/g/bin/sw_config_status     # Show installed software (similar to getver)
+getver                          # Show current software revision
+\`\`\`
+
+---
+
+## HMCS (Host Monitoring and Control System) Troubleshooting
+
+HMCS monitors magnet field, helium level, and quench status. Connected to host via dedicated network port.
+
+1. Check HMCS network cable (CAT5e from host NIC to HMCS module).
+2. Verify HMCS IP: typically 192.168.1.x, configured in /w/config/MRconfig.cfg.
+3. If HMCS shows "not connected" in service desktop: restart HMCS process:
+\`\`\`
+/usr/g/bin/startMagMonitor      # Restart magnet monitor process
+\`\`\`
+
+---
+
+## Quick Checklist
+
+- [ ] ICN/VRE power LED on
+- [ ] Network cable between host and ICN/VRE physically seated
+- [ ] Ping test between host and ICN/VRE/MGD succeeds
+- [ ] /etc/hosts has correct entries for all subsystems
+- [ ] Network interface IP matches expected subnet
+- [ ] VRE software version verified after any reinstall
+- [ ] HMCS connection verified`
+  },
+
+  {
+    id: 'dg_network_cables',
+    title: 'GE MRI Network Cable Requirements & Configuration — All Systems',
+    system: 'GE MRI',
+    category: 'Host/Software',
+    tags: ['network','cables','MGD subnet','ethernet','CAT5','crossover','HMCS','network config','IP','subnet','DAS','RFPA','connectivity','installation'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Network Cable Requirements & Configuration — All Systems
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Why Network Configuration Matters
+
+GE MRI systems use multiple dedicated internal Ethernet networks to communicate between subsystems. Wrong cable type, wrong IP, or wrong subnet will cause subsystem faults, prescan failures, or complete boot failure — even if all hardware is otherwise functional.
+
+---
+
+## Cable Types Required by Connection
+
+| Connection | Cable Type | Connector | Max Length | Notes |
+|------------|-----------|-----------|-----------|-------|
+| Host NIC → MGD (older LX/Excite) | CAT5e **crossover** | RJ-45 | 100m | Direct connection, no switch |
+| Host NIC → MGD (HDx 15.x+) | CAT5e **straight-through** | RJ-45 | 100m | Auto-MDIX; straight-through OK |
+| Host NIC → ICN (Sun ICN systems) | CAT5e straight-through | RJ-45 | 100m | Via dedicated NIC on host |
+| Host NIC → DAS | CAT5e straight-through | RJ-45 | 50m | DAS has fixed IP; see /etc/hosts |
+| Host NIC → HMCS | CAT5e straight-through | RJ-45 | 30m | Magnet monitor subsystem |
+| Host → Hospital DICOM network | CAT5e or CAT6 straight-through | RJ-45 | 100m | Customer-provided network |
+| RFPA → Host (newer systems) | CAT5e straight-through | RJ-45 | 20m | RF control channel |
+| SSM → Host (some platforms) | RS-232 serial cable | DB-9 | 15m | Not Ethernet — check platform |
+
+⚠️ **When in doubt, use straight-through CAT5e. Most NICs made after 2010 use Auto-MDIX and accept either type. Older systems (LX, early Excite) require crossover for direct host↔MGD connection.**
+
+---
+
+## Allowable MGD Subnets
+
+The MGD (Motor/Gradient Driver) requires its network interface to be on one of these approved subnets — other subnets will cause gradient communication faults:
+
+| Allowed Subnet | Example IP | Notes |
+|---------------|-----------|-------|
+| 10.217.x.x | 10.217.1.1 | Most common for GE installations |
+| 10.121.x.x | 10.121.1.1 | Alternate common subnet |
+| 192.168.x.x | 192.168.1.1 | Used on older/smaller sites |
+| 10.47.x.x | 10.47.1.1 | Some hospital-integrated installs |
+| 10.0.x.x | 10.0.0.1 | Generic private range |
+| 172.22.x.x | 172.22.1.1 | Less common; verify with GE if used |
+
+Allowed subnet list stored at: `/usr/local/bin/install/configure/mgdSubnetChoices`
+
+**To check current host IP and MAC:**
+\`\`\`
+/export/home/signa/vre/install/getipandmac.pl sun
+\`\`\`
+
+**To change MGD subnet:** Edit `/etc/sysconfig/network-scripts/ifcfg-eth0` (11.x and up), or `/etc/config/static-route.options` (LX/Excite). Reboot after change.
+
+---
+
+## Network Interface Card (NIC) Assignment
+
+GE MRI hosts typically have 2–4 NICs. Correct assignment is critical:
+
+| Interface | Typical Assignment | Platform |
+|-----------|------------------|---------|
+| eth0 | MGD / gradient subsystem | HDx/HDxt/Discovery |
+| eth1 | Hospital DICOM/PACS network | All networked systems |
+| eth2 | DAS or RFPA subsystem | Some HDxt/Discovery configs |
+| hme0 | MGD (Solaris/IRIX systems) | LX/Excite Sun workstations |
+
+Verify NIC assignments: `ifconfig -a` shows all interfaces and their IPs.
+
+---
+
+## /etc/hosts Requirements
+
+The /etc/hosts file maps hostnames to IPs for all subsystems. Required entries typically include:
+
+\`\`\`
+127.0.0.1       localhost
+10.217.1.1      mrimgd mgd               # Gradient subsystem
+192.168.1.2     icn icnnode              # ICN (if present)
+192.168.1.3     hmcs magnet-monitor      # HMCS magnet monitor
+10.217.1.5      das dasnode              # DAS boards
+\`\`\`
+
+If a subsystem hostname is missing or has wrong IP, ping will fail and the system will report a network fault at boot.
+
+---
+
+## Cable Verification Procedure
+
+Use this sequence when troubleshooting a "subsystem not found" or network fault:
+
+1. **Physical check:** Verify RJ-45 clips fully locked (audible click), no bent pins.
+2. **Link light:** Confirm green link light at both ends of cable.
+3. **Correct port:** Verify cable is in the correct NIC port on host (photograph cabling at install).
+4. **Ping test:** From host root shell — `ping <subsystem_IP>`. Success = network layer OK.
+5. **IP mismatch:** Run `ifconfig -a` and compare to /etc/hosts. Fix mismatches.
+6. **Subnet mismatch:** Verify host IP and subsystem IP are on the same /24 subnet.
+7. **Cable swap:** Swap cable with known-good CAT5e to rule out cable fault.
+8. **Switch vs. direct:** If using a network switch — try removing switch and direct-connecting to isolate switch fault.
+
+---
+
+## Siemens MRI Network Notes
+
+Siemens systems use a similar dedicated internal network architecture:
+
+| Connection | Notes |
+|-----------|-------|
+| Syngo host → Patient table | CAT5e, dedicated NIC |
+| Syngo host → RFPA | Internal bus on newer systems; CAT5e on older |
+| Syngo host → Hospital DICOM | Customer-provided switch; VLAN configuration varies |
+| Remote service | VPN via Siemens Remote Service Center; requires active contract |
+
+Siemens IP configuration: `/etc/sysconfig/network-scripts/ifcfg-*` files; edit via Syngo service desktop for system interfaces.
+
+---
+
+## Quick Checklist
+
+- [ ] All RJ-45 connectors fully locked with audible click
+- [ ] Link lights green at all network ports
+- [ ] Host-to-MGD cable type correct (crossover for pre-HDx; straight-through for HDx+)
+- [ ] MGD subnet is in the approved list
+- [ ] /etc/hosts has correct entries for all subsystems
+- [ ] All NIC assignments verified (ifconfig -a)
+- [ ] Ping test passes for MGD, DAS, ICN (where applicable)
+- [ ] DICOM network on separate NIC from internal subsystem network`
+  },
+
+  {
+    id: 'dg_power_supply_all',
+    title: 'Power Supply Checks — GE & Siemens MRI All Systems',
+    system: 'GE MRI',
+    category: 'Power System',
+    tags: ['power supply','PS check','SGA','HFO','Z2','PDC','UPM','shim PS','gradient PS','RF PS','voltage check','E203','E204','power fault','Siemens PSU','all systems'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# Power Supply Checks — GE & Siemens MRI All Systems
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Overview
+
+MRI systems contain multiple regulated power supplies for different subsystems. A methodical check of all supplies is the first step in diagnosing system-wide faults, boot failures, or subsystem errors.
+
+---
+
+## GE MRI — Power Supply Map by Subsystem
+
+### SGA (System Gradient Amplifier) Power Supplies
+
+Located in the ACGD (Advanced Controller Gradient Driver) cabinet.
+
+| Supply | Nominal | LED Color (Healthy) | Fault LED |
+|--------|---------|--------------------|-----------
+| +5V Logic | +5.0 VDC | Green | Red |
+| +15V Analog | +15.0 VDC | Green | Red |
+| -15V Analog | -15.0 VDC | Green | Red |
+| +24V Gradient control | +24.0 VDC | Green | Red |
+| +48V Gradient driver | +48.0 VDC | Green | Red |
+| ±250V or ±450V DC bus | ±250V or ±450V | Green | Red |
+
+See guide: "GE MRI SGA Power Supply LED Diagnostics" for full 16-LED map.
+
+**Measurement points:** TP (test point) block on SGA front panel or via service connector J-test.
+
+---
+
+### HFO (High Frequency Oscillator) Power Supply
+
+The HFO power supply is also called the Z0 supply on some platforms.
+
+| Rail | Nominal | Fault Symptom |
+|------|---------|--------------|
+| +15V | +15 VDC ± 0.5V | E203 shim fault, noisy images |
+| -15V | -15 VDC ± 0.5V | E203, gradient baseline shift |
+| +5V logic | +5 VDC ± 0.25V | System won't initialize |
+
+**HFO location:** RF/PEN or RF/PDU cabinet, upper shelf.
+**Measurement:** TP1 (+15V), TP2 (-15V), TP3 (+5V) on HFO board.
+
+If HFO output drifts (intermittent): check HFO capacitors and replace board if > 10 years.
+
+---
+
+### Z2 Shim Power Supply
+
+Provides power to superconducting shim coils for active shimming.
+
+| Rail | Nominal | Fault | Error Code |
+|------|---------|-------|-----------|
+| Shim A | ±10A max | E203-04 | Shim A overcurrent |
+| Shim B | ±10A max | E203-05 | Shim B overcurrent |
+| Shim C | ±10A max | E203-06 | Shim C overcurrent |
+| Z2 offset | ±2.5A | E203-08 | Z2 shim fault |
+
+**Z2 location:** ACGD cabinet (left side on most systems).
+**Check:** Applications → Service → Shim → Z2 Status — verify all channels enabled and current within spec.
+
+---
+
+### GE MRI Full Power Supply Check Procedure
+
+1. Open UPM/PDC: verify all circuit breakers ON (no tripped CBs).
+2. Open ACGD cabinet: check SGA PS LEDs — all green (16 LEDs on SGA-PS board).
+3. Open RF/PEN or RF/PDU cabinet: check HFO board — LEDs green.
+4. At service desktop: Applications → Service → System → Power Status. All supplies should show "OK".
+5. If any rail red or out of spec: note which rail and consult SGA fault tree guide.
+
+---
+
+### GE MRI Shim Power Supply (E203) Fault Procedure
+
+1. Applications → Service → Shim → Shim Status.
+2. Identify which channel(s) show fault.
+3. Check ShimConfig.cfg: `/w/config/ShimConfig.cfg` — verify shim current values not set to extreme values.
+4. Set all shim values to zero in ShimConfig.cfg and retry prescan — if fault clears, ShimConfig was corrupted.
+5. If fault persists with all shim values zeroed: Z2 power supply or shim coil hardware fault.
+6. Z2 PS fuse check: Z2 PS has 10A fuses on rear panel — inspect and replace if blown.
+7. For persistent shim faults after Z2 PS confirmed OK: superconducting shim coil fault (rare; magnet service required).
+
+---
+
+## GE CT — Power Supply Checks
+
+| Supply | Location | Nominal | Fault Symptom |
+|--------|----------|---------|--------------|
+| +12V Logic | PDC | +12 VDC | Console won't boot |
+| ±15V Analog | Data acquisition | ±15 VDC | Detector calibration errors |
+| HV (80–140 kV) | HV generator | 80–140 kVp | Tube arcing, image quality |
+| Filament supply | Tube bay | 3–8V AC | No X-ray, tube fault |
+
+**GE CT PDC checks:** Open PDC panel — all breaker handles horizontal (ON). Check indicator lights on front of each supply module.
+
+---
+
+## Siemens MRI — Power Supply Checks
+
+### PSU1 and PSU2 (Main Logic Power)
+
+| Rail | Nominal | Acceptable Range |
+|------|---------|-----------------|
+| +5V | +5.0 VDC | 4.75–5.25V |
+| +12V | +12.0 VDC | 11.4–12.6V |
+| -12V | -12.0 VDC | -11.4 to -12.6V |
+| +24V | +24.0 VDC | 22.8–25.2V |
+| +48V (gradient control) | +48 VDC | 45.6–50.4V |
+
+**Location:** PSU modules in electronics rack (equipment room).
+**Access:** Service Desktop → System → PSU Status — all supplies should show green.
+
+### Siemens Gradient Power Supply
+
+- **Location:** Gradient controller cabinet, equipment room.
+- **DC bus voltage (1.5T Aera/Avanto):** ±350 VDC typical at capacitor bank.
+- **Check:** Service Desktop → Gradient → Gradient Power Status → confirm DC bus at spec.
+- **Common fault:** F401 gradient power fault → check 480V input to gradient PS, check gradient PS fuses (30A–100A located in gradient cabinet fuse block).
+
+### Siemens RF Power Supply
+
+- **+48V to RFPA:** Most common Siemens RFPA supply rail.
+- Measurement: rear of RFPA chassis, connector P48V — red (+) and black (GND).
+- If +48V low or absent: check 208V/240V input to RFPA power supply module.
+
+### Siemens — Full PS Check Sequence
+1. Service Desktop → System → PSU Status — all green?
+2. Service Desktop → Gradient → Power → DC bus voltage in spec?
+3. Service Desktop → RF → RF Amplifier Status — green?
+4. Service Desktop → Cooling → Cooling Status — no over-temp alarms?
+5. Check equipment room for any power indicator lights red on standalone supply modules.
+6. Open PSU access panel: inspect PSU1/PSU2 fuses (20A glass fuses on rear of PSU chassis).
+
+---
+
+## Power Supply Quick Reference — All Systems
+
+| System | Critical Rails | First Check If System Won't Boot |
+|--------|---------------|--------------------------------|
+| GE Signa LX/Excite | +5V, ±15V, +24V (SGA), HFO ±15V | UPM CBs, SGA LED board |
+| GE HDx/HDxt | +5V, ±15V, +48V, DC bus | PDC sequence LEDs (5 steps) |
+| GE Discovery 450/750 | +5V, ±15V, +48V, DC bus | PDC panel breakers |
+| Siemens Aera/Avanto | +5V, ±12V, +24V, +48V | Service Desktop → PSU Status |
+| Siemens Skyra/Verio | +5V, ±12V, +24V, +48V, DC bus | PSU Status + gradient DC bus |
+
+---
+
+## Quick Checklist — All Systems
+
+- [ ] All UPM/PDC circuit breakers in ON position
+- [ ] SGA PS LED board — all 16 LEDs green (GE MRI)
+- [ ] HFO power supply ±15V and +5V verified
+- [ ] Z2 shim power supply channels enabled and current in spec
+- [ ] Service Desktop power status — all supplies green
+- [ ] Gradient DC bus voltage in spec
+- [ ] RFPA +48V supply verified
+- [ ] No tripped fuses in any power supply module
+- [ ] AC input voltages verified at facility disconnect`
   }
 ];
+
+// DIAG_GUIDES_SEED INTEGRITY GUARD
 
 // DIAG_GUIDES_SEED INTEGRITY GUARD
 (function() {
