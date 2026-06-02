@@ -6821,11 +6821,9 @@ function generateHoldHarmless(){
 
 // Auto-update preview when any HH field changes
 // ── GitHub Settings & Scan functions ──
-// ═══ STRIPE CONFIGURATION ═══
-// Restricted key — Payment Links/Prices/Products:Write only — safe for app code
-const STRIPE_KEY = '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';
-
 // ══ STRIPE PAYMENT LINK FUNCTIONS ══
+// Key is stored in localStorage only (amt_stripe_key) — never hardcoded in source.
+// Enter your restricted key via the 💳 Stripe Settings button on the invoice panel.
 
 function openStripeSettings(){
   document.getElementById('stripeKeyInput').value = localStorage.getItem('amt_stripe_key')||'';
@@ -6845,7 +6843,7 @@ function saveStripeSettings(){
 }
 
 function refreshStripeUI(){
-  const key = (typeof STRIPE_KEY !== 'undefined' && STRIPE_KEY) ? STRIPE_KEY : localStorage.getItem('amt_stripe_key');
+  const key = localStorage.getItem('amt_stripe_key');
   const btn = document.getElementById('stripeGenBtn');
   const section = document.getElementById('stripePaySection');
   if(btn) btn.style.display = key ? '' : 'none';
@@ -6873,7 +6871,7 @@ async function testStripeKey(){
 }
 
 async function generateStripePaymentLink(){
-  const key = (typeof STRIPE_KEY !== 'undefined' && STRIPE_KEY) ? STRIPE_KEY : localStorage.getItem('amt_stripe_key');
+  const key = localStorage.getItem('amt_stripe_key');
   if(!key){ openStripeSettings(); return; }
 
   const amount = parseFloat(document.getElementById('inv_amount').value)||0;
