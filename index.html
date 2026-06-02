@@ -16928,8 +16928,266 @@ Note: \`startBoreViewer\` not available on 11.x or below.
 - [ ] Outlet pressure < 60 PSI (> 60 PSI = blockage or air)
 - [ ] Flow rate 3.3 GPM ±0.3 GPM verified
 - [ ] Bore temp history checked in pcft.log`
+  },
+
+  {
+    id: 'dg_rf_amp_peak_power_trips',
+    title: 'GE MRI RF Amplifier Peak Power Trips — MR450/MR450w/Explorer Troubleshooting',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['RF amplifier','peak power','power trip','SRFD2','8120','DV24','TG','prescan','calibration','MR450','MR450w','Explorer','prescan_config','UPM'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI RF Amplifier Peak Power Trips
+Source: SIGNA Creator/Explorer/Star/Aviator Service Manual, 5756356-2EN Rev 11.0
+Applies to: MR450, MR450w, Signa Explorer/Creator/Star/Aviator
+
+---
+
+## Overview
+
+The 1.5T RF amplifiers stop transmitting (aborting a scan) when output exceeds **17.8 kW** — a "peak power trip" — to protect hardware.
+
+**Affected Amplifier Types:**
+| Amplifier | Error Code | Fault Description |
+|-----------|-----------|------------------|
+| SRFD2 (air-cooled) | 2254212 | "SRFD2 RF Amplifier Peak Power Fault. Peak power from RF Amplifier exceeds specification (72.5 dBm). Possible causes: PSD exceeds system limits, RF Gain mis-calibration, defective Exciter, or defective RF Amplifier." |
+| 8120 (water-cooled) | 101257 | "RF Amplifier Peak Forward Power Fault (BODY mode). Peak forward power exceeds threshold. Possible causes: PSD exceeds system limits, RF input to amplifier exceeds limits, Load VSWR is out of range." |
+
+**Note:** DV24 and later software requires up to 10 more TG counts than prior versions — this caused ~30-40% of MR450/MR450w sites with DV24_R01 to experience increased peak power trips.
+
+---
+
+## Scenario 1 — Existing Site With Trips
+
+1. Review error logs for peak power trip messages (2254212 or 101257).
+2. If present — go directly to "Correcting Excessive Peak Power Trips" section below.
+
+---
+
+## Scenario 2 — New Installation / Preventive Check
+
+1. Complete RF body output calibration and UPM Functional Check (Body Mode).
+2. If trips occur during calibration → skip to "Correcting Excessive Peak Power Trips."
+3. If no trips during calibration, run the peak power stress test:
+   - Patient ID: \`geservice\`, Weight: 300 lb (136.08 kg)
+   - Protocol Library: Service → apbcal → Body Scan, Cal: RF Cabinet
+   - Scan arrow menu: Research → Display CVs → set CV \`calmode\` = 5 → Download
+   - Scan arrow: Manual Prescan → Scan TR (R1/R2)
+   - Slowly advance TG to 200. Hold at TG=200 for 3 minutes.
+   - Note TG value at any trip.
+
+| Result | Action |
+|--------|--------|
+| Trip at TG=200 | See "Correcting Excessive Peak Power Trips" |
+| Trip at TG=193 | See "Additional Troubleshooting" |
+| No trips | Confirm max TG = 200, system is good |
+
+---
+
+## Correcting Excessive Peak Power Trips
+
+1. Visually inspect body coil and end ring gaps — must be uniform (no shift or tilt). Bridge must not contact inner bore walls.
+2. Request another RF calibration kit; recheck max output value of 16 kW. If kit confirms high output, recalibrate and retest.
+3. Inspect all transmit cables and components for damage — repair as needed.
+4. If no other fault found (**DV24 with service pack or DV25**): change prescan max TG to 193.
+5. For older DV software without "max value of TG" parameter: escalate to GE support.
+
+---
+
+## Set Maximum Prescan TG Value
+
+⚠️ **Set TG to 193 ONLY on systems confirmed prone to peak power trips. Setting to 193 on healthy systems prematurely limits peak power.**
+
+1. In CSD, go to **Configuration File Manager**
+2. Select **prescan_config**
+3. Set parameter **"The max value of TG"** to 193 (or 200 to restore default)
+4. Click **Save Changes**
+5. **Reboot host PC** for settings to take effect
+
+---
+
+## Additional Troubleshooting (Trips Still Occurring)
+
+A persistent fault after all above steps indicates a transmit chain problem.
+
+- Sites with **water-cooled XRFD amplifier**: run "RF Amp Power Check Tool" (at reduced TG) to isolate source.
+- **SRFD2 air-cooled** amplifier: NOT compatible with RF Amp Power Check Tool — escalate.
+
+---
+
+## Finalization
+
+1. Complete a **Check Scan**
+2. If all calibrations pass: **SaveInfo** to save UPM calibration results
+
+---
+
+## Quick Checklist
+
+- [ ] Error log reviewed for code 2254212 or 101257
+- [ ] Body coil end ring gap inspected — uniform, bridge not contacting bore
+- [ ] All transmit cables inspected, no damage
+- [ ] RF calibration kit rechecked (16 kW max output)
+- [ ] Prescan TG stress test run (TG=200 for 3 min)
+- [ ] Max TG set to 193 in prescan_config if DV24/DV25 peak power issue confirmed
+- [ ] Host PC rebooted after prescan_config change
+- [ ] SaveInfo performed after successful calibration`
+  },
+
+  {
+    id: 'dg_coolant_leaks',
+    title: 'GE MRI Gradient Coolant Leak Troubleshooting — HEC, Valves, Teflon Tape',
+    system: 'GE MRI',
+    category: 'Cooling',
+    tags: ['coolant leak','HEC','gradient cooling','Teflon tape','valve','hose','leak','water cooling','gradient coil','check valve','ball valve'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Gradient Coolant Leak Troubleshooting — HEC Valves
+Source: GE Signa Explorer/Creator/Star/Aviator, 5543247-2EN Rev 7
+
+---
+
+## Leak at Valve or Fitting
+
+| Condition | Corrective Steps |
+|-----------|-----------------|
+| Teflon tape applied incorrectly (not covering threads consistently, or torn) | Remove existing Teflon tape. To access the check or ball valve, drain hoses external to HEC first. Re-apply tape: wrap clockwise, covering threads consistently, without tears. |
+| Valve connection improperly tightened (too loose, or overtightened causing fitting to break) | Hand-tighten fitting, then turn wrench **exactly 3 turns**. Do not overtighten. Inspect valve for damage — replace if cracked. If replacement required, drain hoses external to HEC before disconnecting. |
+
+---
+
+## Teflon Tape Application — Correct Method
+
+1. Clean threads before applying tape
+2. Wrap tape **clockwise** (same direction as thread engagement) starting from the first thread
+3. Cover all threads uniformly — 2–3 wraps minimum, no gaps
+4. Tape must not be torn or folded unevenly
+5. Thread fitting until hand-tight, then turn wrench 3 full turns
+6. Do not exceed 3 turns — overtightening cracks plastic fittings
+
+---
+
+## Verifying Coolant System After Leak Repair
+
+1. **Refill the system** with coolant per filling procedure (35% ethylene glycol / 65% distilled water per chiller spec)
+2. **Turn on pump drives** from HEC control panel
+3. **Check for leaks** at ALL hose connections — especially the repaired connection
+4. Allow system to run for 10 minutes and recheck
+5. If leak returns at same connection: fittings damaged → replace valve or fitting
+
+---
+
+## Draining Before Valve Replacement
+
+Before disconnecting any valve:
+1. Turn off pump from HEC control panel
+2. Place absorbent mats under work area
+3. Close upstream isolation valve (if installed)
+4. Have a bucket ready — coolant will drain from hose when disconnected
+5. Dispose of coolant per site environmental policy (glycol is regulated in some municipalities)
+
+---
+
+## Quick Checklist
+
+- [ ] Leak location identified precisely — valve body, fitting, or hose
+- [ ] Teflon tape condition inspected (not torn, consistent coverage)
+- [ ] Fitting tightened correctly (hand-tight + exactly 3 wrench turns)
+- [ ] Damaged fitting replaced (do not try to re-seal cracked plastic)
+- [ ] System refilled and pump running after repair
+- [ ] Leak check performed after 10 minutes of operation
+- [ ] No new leaks at any other connections`
+  },
+
+  {
+    id: 'dg_gradient_troubleshooting_mr750',
+    title: 'GE MRI Gradient Driver Troubleshooting — XGD, XG2, XG5 (MR750/450/Discovery)',
+    system: 'GE MRI',
+    category: 'Gradient System',
+    tags: ['gradient','gradient amplifier','XGA','XGA2','XGA5','XPS','XPS2','XPS5','gradient driver','Cronus','IXG','CAM','ICE','PEM','DQA','MR750','Discovery 750','XGD'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# GE MRI Gradient Driver Troubleshooting — XGD, XG2, XG5
+Source: 5690009-2EN Rev 6 — Discovery MR750 3.0T Service Manual
+
+---
+
+## Gradient Driver Hardware Generations
+
+GE MRI systems use different gradient driver generations. Know which one is installed before troubleshooting.
+
+| Component | XGD (Original) | XG2 (2013+) | XG5 (2022+) |
+|-----------|---------------|-------------|-------------|
+| Gradient Amplifier | XGA | XGA2 | XGA5 |
+| Gradient Power Supply | XPS | XPS2 | XPS5 |
+| Gradient Input Source | Cronus Chassis | IXG within CAM chassis/ICE | ICE |
+| Monitoring / Leak Sensor | Aux | PEM | PEM |
+
+---
+
+## Critical Warning — Cable Swaps
+
+⚠️ **If any gradient cables are swapped between different axes or polarities for troubleshooting, run DQA II Tool after reconnecting to verify cables are back in original position before clinical use.**
+
+Swapped gradient cables cause image geometric distortion and can be a patient safety issue.
+
+---
+
+## Gradient Troubleshooting Decision Flow
+
+The service manual contains a gradient troubleshooting flowchart (GradientTroubleshootingFlow image) accessible in the electronic service manual. Navigate to: Troubleshooting → Gradient Troubleshooting.
+
+**General fault isolation approach:**
+
+1. **Check gradient power supply (XPS/XPS2/XPS5) first:**
+   - Verify DC bus voltage is within spec (see Power Supplies guide)
+   - Check XPS fault LEDs and error log
+   - Verify facility 480V 3-phase input at XPS
+
+2. **Isolate to axis (X, Y, or Z):**
+   - Service Desktop → Gradient → Gradient Status — identifies which axis faulted
+   - Fault on single axis: likely that axis amplifier or PS
+   - Fault on all axes: power supply, communication, or Cronus/IXG/ICE issue
+
+3. **Check gradient amplifier (XGA/XGA2/XGA5):**
+   - Inspect for error lights on amplifier front panel
+   - Check coolant flow (water-cooled) or air flow (air-cooled)
+   - Verify all output cable connections tight
+
+4. **Check gradient input controller (Cronus/IXG/ICE):**
+   - XGD: Cronus Chassis — check fiber cables to gradient amp
+   - XG2/XG5: IXG/ICE within CAM chassis — check PEM monitoring board
+   - Run MGD boot diagnostics: \`mgd_term\` from host shell
+
+5. **Run DQA II after any repair:**
+   - Confirms gradients are performing correctly after hardware changes
+   - Required any time cables were disconnected or swapped
+
+---
+
+## Gradient IBC Temperature Sensor Fault
+
+If gradient coil temperature fault (high IBC temperature):
+1. Check gradient coil cooling water flow and temperature at inlet
+2. Inspect IBC temperature sensor connections at gradient coil connector panel
+3. Typical spec: IBC temp sensor resistance 1000 ohms at 0°C — verify with DMM
+
+---
+
+## Quick Checklist
+
+- [ ] Gradient hardware generation identified (XGD / XG2 / XG5)
+- [ ] Gradient power supply DC bus voltage verified
+- [ ] Fault isolated to specific axis (X, Y, or Z) via Service Desktop
+- [ ] Gradient amplifier fault LEDs checked
+- [ ] Coolant flow verified at gradient amplifier
+- [ ] Cronus/IXG/ICE communication checked (mgd_term)
+- [ ] **DQA II run after any cable disconnection or swap**
+- [ ] Gradient cables confirmed in original X/Y/Z positions`
   }
 ];
+
+// DIAG_GUIDES_SEED INTEGRITY GUARD
+
+// DIAG_GUIDES_SEED INTEGRITY GUARD
 
 // DIAG_GUIDES_SEED INTEGRITY GUARD
 
