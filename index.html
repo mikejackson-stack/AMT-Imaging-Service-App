@@ -3463,12 +3463,53 @@ function kbSearch(q){
   const diagMatches = DIAGNOSTIC_DB.filter(d=>
     d.issue.toLowerCase().includes(ql)||d.desc.toLowerCase().includes(ql)||
     d.keywords.some(k=>k.includes(ql)||ql.includes(k)));
-  if(!errMatches.length && !kbMatches.length && !diagMatches.length){
+  // Search the full diag guides DB (97 guides with complete content)
+  if(!diagGuidesDB.length) loadDiagGuides();
+  const guideMatches = diagGuidesDB.filter(g=>
+    g.title.toLowerCase().includes(ql)||
+    (g.category||'').toLowerCase().includes(ql)||
+    (g.tags||[]).join(' ').toLowerCase().includes(ql)||
+    g.content.toLowerCase().includes(ql)
+  );
+  if(!errMatches.length && !kbMatches.length && !diagMatches.length && !guideMatches.length){
     res.innerHTML=`<div class="alert alert-info">No results for "${q}". Try: zipper, ghosting, noise, gradient, helium, quench, RF, artifact, DAS, table, shim.</div>`; return;
   }
+  const sysBg = {'GE MRI':'#1565c0','GE CT':'#0288d1','Siemens MRI':'#e65100','Siemens CT':'#bf360c','Injector':'#00695c','Hitachi MRI':'#7b1fa2','Toshiba MRI':'#c62828'};
   let html = '';
+  // Diag Guides — shown first, include content snippet + View Full Guide button
+  if(guideMatches.length){
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">📖 Reference Guides ('+guideMatches.length+')</div>'+
+      guideMatches.slice(0,8).map(g=>{
+        const cl = g.content.toLowerCase();
+        const idx = cl.indexOf(ql);
+        let snippet = '';
+        if(idx >= 0){
+          const start = Math.max(0, idx - 60);
+          const end = Math.min(g.content.length, idx + 220);
+          snippet = (start>0?'…':'')+g.content.slice(start,end).replace(/[#`|\\*]/g,'').replace(/\n+/g,' ').trim()+(end<g.content.length?'…':'');
+        } else {
+          snippet = g.content.slice(0,200).replace(/[#`|\\*]/g,'').replace(/\n+/g,' ').trim()+'…';
+        }
+        const bg = sysBg[g.system]||'#555';
+        return `<div style="padding:12px 14px;border-bottom:1px solid var(--gray2)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:.9rem;color:var(--navy)">${g.title}</strong>
+              <div style="margin-top:4px">
+                <span style="background:${bg};color:#fff;font-size:.63rem;padding:2px 7px;border-radius:10px;margin-right:4px">${g.system}</span>
+                ${g.category?'<span style="background:var(--gray);color:var(--text2);font-size:.63rem;padding:2px 7px;border-radius:10px">'+g.category+'</span>':''}
+              </div>
+              <div style="font-size:.78rem;color:var(--text2);margin-top:5px;font-style:italic;word-break:break-word">${snippet}</div>
+            </div>
+            <button class="btn btn-accent btn-sm" onclick="openDiagGuideDetail('${g.id}')" style="font-size:.72rem;white-space:nowrap;flex-shrink:0;margin-top:2px">📖 View Full Guide</button>
+          </div>
+        </div>`;
+      }).join('')+
+      (guideMatches.length>8?`<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">${guideMatches.length-8} more guides — go to <a href="#" onclick="showTab('manuals');setKBTab('diag');return false" style="color:var(--blue2)">Diagnostic Guides tab</a> to see all.</div>`:'')+
+    '</div>';
+  }
   if(diagMatches.length){
-    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🔧 Diagnostic Guide ('+diagMatches.length+')</div>'+
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🔧 Legacy Diagnostic ('+diagMatches.length+')</div>'+
       diagMatches.map(d=>`<div style="padding:12px 14px;border-bottom:1px solid var(--gray2)">
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px">
           <strong style="font-size:.92rem;color:var(--navy)">${d.issue}</strong>
@@ -3487,11 +3528,32 @@ function kbSearch(q){
   }
   if(kbMatches.length){
     html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🧠 Knowledge Base ('+kbMatches.length+')</div>'+
-      kbMatches.slice(0,5).map(e=>`<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
-        <strong style="font-size:.9rem">${e.title||'--'}</strong>
-        ${e.error?'<span class="badge br" style="margin-left:6px;font-size:.64rem">'+e.error+'</span>':''}
-        <div style="font-size:.8rem;color:var(--text2);margin-top:3px">${(e.solution||e.problem||'').substring(0,120)}</div>
-      </div>`).join('')+'</div>';
+      kbMatches.slice(0,8).map(e=>{
+        const parts = [
+          e.solution ? '✅ Solution: ' + e.solution : '',
+          e.problem  ? '🔧 Problem: '  + e.problem  : '',
+          e.parts    ? '🔩 Parts: '    + e.parts    : ''
+        ].filter(Boolean);
+        const fullText = parts.join('\n\n');
+        const preview  = fullText.replace(/\n/g,' ').slice(0, 160) + (fullText.length > 160 ? '…' : '');
+        return `<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <div style="flex:1;min-width:0">
+              <strong style="font-size:.9rem">${e.title||'--'}</strong>
+              ${e.model?'<span style="font-size:.72rem;color:var(--text2);margin-left:6px">'+e.model+'</span>':''}
+              ${e.error?'<span class="badge br" style="margin-left:6px;font-size:.64rem">'+e.error+'</span>':''}
+            </div>
+          </div>
+          <details style="margin-top:5px">
+            <summary style="cursor:pointer;font-size:.79rem;color:var(--blue2);font-weight:600;list-style:none">
+              ▶ ${preview}
+            </summary>
+            <div style="margin-top:6px;font-size:.8rem;color:var(--text);white-space:pre-wrap;background:var(--gray);border-radius:4px;padding:8px 10px;border-left:3px solid var(--blue2)">${fullText}</div>
+          </details>
+        </div>`;
+      }).join('')+
+      (kbMatches.length>8?'<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">'+kbMatches.length+' total matches — go to Knowledge Base tab to see all.</div>':'')+
+    '</div>';
   }
   if(errMatches.length){
     html += '<div class="card"><div class="card-header">⚠️ Error Code Reference ('+errMatches.length+')</div>'+
@@ -14694,6 +14756,95 @@ Exceeding these rates risks extravasation and catheter rupture.
 - Patient response and any adverse events
 - Any error codes displayed during injection
 - Most injectors store injection history - export/print for facility records`
+  },
+  {
+    id: 'dg_siemens_credentials',
+    title: 'Siemens MRI & CT — Default Logins, BIOS Passwords, and Service Accounts',
+    system: 'Siemens MRI',
+    category: 'Host/Software',
+    tags: ['siemens','login','credentials','BIOS','MEDUSER','syngo','service account','Administrator','password','CT','MRI'],
+    created: '2026-06-02T00:00:00.000Z',
+    content: `# Siemens MRI & CT — Default Logins, BIOS Passwords & Service Accounts
+
+AMT Imaging Solutions — Field Service Reference
+
+---
+
+## Windows / Syngo User Accounts (MRI and CT)
+
+| Account | Username | Default Password | Notes |
+|---------|----------|-----------------|-------|
+| Standard service login | MEDUSER | meduser1 | Most common FSE login |
+| Local administrator | Administrator | adm$pwd$4$med | Full Windows admin rights |
+| Syngo application user | syngo | syngo | Syngo software account |
+| Remote service | siemens | siemens | Some systems only |
+| Service account | service | service | Older platform systems |
+
+---
+
+## BIOS Passwords
+
+| System Type | BIOS Password | Notes |
+|-------------|--------------|-------|
+| Siemens MRI host (Aera, Avanto, Verio, Skyra, etc.) | pwrd4mr | At POST splash screen |
+| Siemens CT host (SOMATOM Definition, go, etc.) | intel | Standard CT host BIOS |
+| Older Numaris 4 systems | siemens | Some variants |
+
+---
+
+## Magnet / Cooling System Access
+
+| Component | Username / Access | Password / Code | Notes |
+|-----------|------------------|-----------------|-------|
+| Magnet cooling controller (Linde / Air Liquide) | local panel only | 0000 or 1234 | Physical keypad; varies by site |
+| Quench panel (QCCS) | keyswitch | — | Physical key required |
+| Helium compressor controller | service menu | 1111 | Some Sumitomo/Linde units |
+| Magnet field control (system software) | via service desktop | MEDUSER credentials | No separate login |
+
+---
+
+## Syngo Software Access
+
+| Function | How to Access |
+|----------|--------------|
+| Service desktop | Right-click desktop → Service Mode, or press Ctrl+Alt+S |
+| Numaris 4 service menu | Applications → Service → Enter service password |
+| Numaris X service mode | SyngoVia service login — MEDUSER account |
+| System configuration | Applications → System → Configuration → Admin rights required |
+| Log viewer | Applications → Service → Logfiles |
+| Error log (MRI) | Service desktop → Logviewer → Filter by error level |
+
+---
+
+## Remote Access
+
+| Method | Details |
+|--------|---------|
+| RDP into host | Enable in Windows → use MEDUSER or Administrator |
+| TeamViewer (factory) | Siemens installs factory version; requires Siemens backend activation |
+| VPN access | Via Remote Service Center — requires active service contract |
+| SSH (Linux subsystems) | Some older hosts have SSH; root access varies |
+
+---
+
+## Common First Steps on a New-to-You Siemens System
+
+1. Log in as MEDUSER → check Syngo version (Help → About)
+2. Check Windows Event Viewer for recent errors (run as Administrator)
+3. Open Service Desktop → System Status → verify all subsystems green
+4. Check error log for recurring faults: Applications → Service → Logfiles
+5. Verify TIM (Total Imaging Matrix) config: Service Desktop → Configuration → Coils
+6. Check helium level and compressor runtime: Service Desktop → Magnet → Status
+
+---
+
+## Important Notes
+
+- **Change default passwords after contract award** — MEDUSER/meduser1 is well-known; many sites require password rotation per cybersecurity policy
+- **Account lockout**: Wrong password 5× will lock account; unlock in Windows User Management as Administrator
+- **Domain vs. local accounts**: Hospital-networked systems may use domain accounts instead of local defaults above
+- **BIOS access**: Hit F2 or Del at POST; timing varies — be ready when powering on
+- **Syngo licensing**: License file at C:\\MedCom\\config\\licenses\\ — do not delete`
   }
 ];
 
