@@ -14812,29 +14812,56 @@ function renderDiagGuides() {
   }).join('');
 }
 
+function buildMdTable(rows) {
+  return '<table style="border-collapse:collapse;margin:10px 0;width:100%;font-size:.82rem">'
+    + rows.map((row, i) => {
+        const cells = row.split('|').filter((_,j,a) => j > 0 && j < a.length - 1);
+        const isHeader = i === 0;
+        const tag = isHeader ? 'th' : 'td';
+        const st = isHeader
+          ? 'padding:5px 10px;border:1px solid var(--gray2);background:var(--gray);font-weight:600;text-align:left'
+          : 'padding:5px 10px;border:1px solid var(--gray2);vertical-align:top';
+        return '<tr>' + cells.map(c => '<' + tag + ' style="' + st + '">' + c.trim() + '</' + tag + '>').join('') + '</tr>';
+      }).join('')
+    + '</table>';
+}
+
+function mdToHtml(md) {
+  let t = md.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  t = t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  t = t.replace(/`([^`\n]+)`/g,'<code style="background:var(--gray2);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>');
+  t = t.replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px;font-size:.88rem">$1</h5>');
+  t = t.replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:14px 0 6px">$1</h4>');
+  t = t.replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:16px 0 8px">$1</h3>');
+  t = t.replace(/^# (.+)$/gm,'<h2 style="color:var(--navy);margin:18px 0 10px">$1</h2>');
+  const lines = t.split('\n');
+  const out = [];
+  let tableRows = [];
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    if (/^\|/.test(ln)) {
+      if (/^\|[\s\-:|]+\|/.test(ln)) continue;
+      tableRows.push(ln);
+    } else {
+      if (tableRows.length) { out.push(buildMdTable(tableRows)); tableRows = []; }
+      out.push(ln);
+    }
+  }
+  if (tableRows.length) out.push(buildMdTable(tableRows));
+  t = out.join('\n');
+  t = t.replace(/^\d+\. (.+)$/gm, '<li style="margin:3px 0">$1</li>');
+  t = t.replace(/^- (.+)$/gm, '<li style="margin:3px 0">$1</li>');
+  t = t.replace(/(<li[^>]*>[\s\S]*?<\/li>\n?)+/g, s => '<ul style="margin:6px 0;padding-left:20px">' + s + '</ul>');
+  t = t.replace(/\n\n/g,'</p><p style="margin:8px 0">');
+  t = t.replace(/\n/g,'<br>');
+  return '<p style="margin:6px 0">' + t + '</p>';
+}
+
 function openDiagGuideDetail(id) {
   const g = diagGuidesDB.find(x => x.id === id);
   if (!g) return;
-  let html = g.content
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/^#### (.+)$/gm,'<h5 style="color:var(--navy);margin:10px 0 4px">$1</h5>')
-    .replace(/^### (.+)$/gm,'<h4 style="color:var(--navy);margin:12px 0 6px">$1</h4>')
-    .replace(/^## (.+)$/gm,'<h3 style="color:var(--navy);margin:14px 0 8px">$1</h3>')
-    .replace(/`([^`]+)`/g,'<code style="background:var(--gray2);padding:1px 4px;border-radius:3px;font-family:monospace;font-size:.85em">$1</code>')
-    .replace(/^\| .+$/gm, m => {
-      if (m.includes('---')) return '';
-      const cells = m.split('|').filter((_,i,a)=>i>0&&i<a.length-1);
-      return '<tr>' + cells.map(cell=>'<td style="padding:4px 10px;border:1px solid var(--gray2)">' + cell.trim() + '</td>').join('') + '</tr>';
-    })
-    .replace(/(<tr>.*<\/tr>\n?)+/gs, t => '<table style="border-collapse:collapse;margin:8px 0;font-size:.82rem;width:100%">' + t + '</table>')
-    .replace(/^\d+\. (.+)$/gm,'<li style="margin:3px 0">$1</li>')
-    .replace(/^- (.+)$/gm,'<li style="margin:3px 0">$1</li>')
-    .replace(/(<li.*<\/li>\n?)+/g, t => '<ul style="margin:6px 0;padding-left:20px">' + t + '</ul>')
-    .replace(/\n\n/g,'</p><p style="margin:6px 0">')
-    .replace(/\n/g,'<br>');
   document.getElementById('dgDetailTitle').textContent = g.title;
-  document.getElementById('dgDetailBody').innerHTML = '<p style="margin:6px 0">' + html + '</p>';
+  document.getElementById('dgDetailBody').innerHTML = mdToHtml(g.content);
   openModal('dgDetailModal');
 }
 
