@@ -18051,7 +18051,60 @@ If you replace the RF amp, these calibrations must be run in order:
 
 Alternate method with Bird Wattmeter: See *3T Dual Drive RF Amplifier Alternate Calibration with Bird Wattmeter* in the Premier manual (Premier/root/t_3T_Dual_Drive_RF_Amplifier_Alternate_Calibration_with_Bird_Wattmeter.html).
 
-*Source: SIGNA Premier 3.0T Service Manual 5777451-3 Rev 7 — Dual Drive RF Amplifier Troubleshooting (id_SL4017625), UPM Troubleshooting, RFA Loopback Test Theory, Dual Drive Theory. AMT Imaging Solutions, 2026-06-23.*`
+*Source: SIGNA Premier 3.0T Service Manual 5777451-3 Rev 7 — Dual Drive RF Amplifier Troubleshooting (id_SL4017625), UPM Troubleshooting, RFA Loopback Test Theory, Dual Drive Theory. AMT Imaging Solutions, 2026-06-23.*
+
+---
+
+## Field Notes — RF Amp Replacement (2026-06-23)
+
+### Symptom
+- ICE Terminal flooding with repeating RF amp errors from \`Srfd3RFNbCanHWOlcanServer\`:
+  - Error code **0x67** (ermes_code 2254163) cycling with error code **0x13d** (ermes_code 101253)
+  - All value parameters = 0 (value0–value4 all zero)
+  - Status bar: "Recovery in progress, see log"
+- RF amp front panel LEDs cycling: **FAULT** (orange, ~5 sec) → **WAIT** (yellow, ~10 sec) → FAULT → repeat
+
+### What the LED Cycle Means
+
+Per SIGNA Premier service manual Table 51 (XRFD front status indicators):
+- **FAULT** (orange) = "internal fault of unit on any channel" — real hardware condition inside the amp
+- **WAIT** (yellow) = "transient state such as processing a command" — system sending recovery command, amp processes it, briefly clears, then the fault condition immediately re-triggers
+
+This cycle confirms the fault source is still present — the amp keeps recovering and re-faulting. The system is in an auto-recovery loop it cannot escape because the root cause is hardware.
+
+### Diagnosis: PSU2 at 0 Volts
+
+Ran \`printVolts\` in ice_term SCPWindow → **PSU2 reported 0V** (PSU1 normal).
+
+**Verified AC input at amp terminal block:** All 3 phases measured — L1-L2, L2-L3, L1-L3 all measured **208V** ✓ — incoming 3-phase power confirmed good.
+
+**Circuit breaker on amp:** Not tripped.
+
+**Conclusion:** With good 3-phase AC input and breaker intact, PSU2 internal failure confirmed. The dual drive RF amp is a **single FRU with no internally replaceable components** → entire amp must be replaced.
+
+### RF Amp Replacement Procedure
+
+**Before removing:**
+1. Power down system via proper shutdown sequence
+2. Apply LOTO to ISC / PDU
+3. Label ALL cables before disconnecting — RF cables, CAN, comm, AC power
+   - J4 = BODY FWD OUT CH1, J22 = BODY FWD OUT CH2, J3 = HEAD RF OUT
+   - J14 = RF IN CH1, J21 = RF IN CH2, J13 = HSS/TEST
+   - J18 = CAN IN, J19 = CAN OUT, J20 = COMM
+   - J1 = WATER IN, J2 = WATER OUT
+   - AC terminal block: L1, L2, L3, ground
+4. **Disconnect coolant lines at J1/J2 first** — have towels ready, there will be residual water in the lines even after system shutdown
+
+**After installing replacement amp:**
+Run post-swap calibrations in this exact order:
+1. **Amplifier Forward Power Calibration** (CSD → Adjustments/Calibrations)
+2. **UPM Calibration — Body Mode** (CSD → Adjustments/Calibrations)
+3. **UPM Calibration — Head Mode** (CSD → Adjustments/Calibrations)
+4. **UPM Functional Check** (CSD → Functional Checks → RF)
+
+Do NOT skip or reorder — UPM cal depends on the amplifier forward power being set correctly first.
+
+*Field notes: AMT Imaging Solutions, 2026-06-23. SIGNA Premier 3.0T install.*`
   }
 ];
 
