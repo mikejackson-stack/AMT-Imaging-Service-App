@@ -17824,6 +17824,234 @@ If VRE config fails and engineering support needed, gather from host:
 - \`/usr/local/bin/install/log/icn1_install.log\`
 
 *Source: SIGNA Premier 3.0T Service Manual 5777451-3 Rev 7 — ICE/ICN Troubleshooting, pICC Troubleshooting, ICE Theory sections. Field notes: AMT Imaging Solutions, 2026-06-22.*`
+  },
+
+  {
+    id: 'dg_ge_premier_rfamp_ts',
+    title: 'GE SIGNA Premier — Dual Drive RF Amplifier Troubleshooting',
+    system: 'GE MRI',
+    category: 'Troubleshooting',
+    tags: ['Premier','RF amp','dual drive','RF','transmit','UPM','CAN','DTX','exciter','RFA','loopback','image quality','RF fault','body coil','head coil','calibration'],
+    created: '2026-06-23T00:00:00.000Z',
+    content: `# GE SIGNA Premier — Dual Drive RF Amplifier Troubleshooting
+*Source: SIGNA Premier 3.0T Service Manual 5777451-3 Rev 7 — RF Troubleshooting, Theory, UPM sections*
+
+## RF Amp Overview
+
+The Premier uses a **solid-state, water-cooled dual drive RF amplifier** that accepts two independent RF inputs from two Digital Exciter (DTX) units.
+
+| Spec | Value |
+|------|-------|
+| Frequency | 127.72 MHz |
+| Body CH1 peak power | 15 kW |
+| Body CH2 peak power | 15 kW |
+| Head peak power | 4.5 kW |
+| Cooling | Water (closed loop) |
+| Communication | CAN bus (from SCP) |
+| Replacement | Single FRU — no internal serviceable boards |
+
+**Key difference from older GE systems:** CH1 and CH2 body transmit cables carry both RF + DC TR bias. You cannot isolate which body channel is failing from the system error alone — both share the same TR bias signal from the driver module.
+
+---
+
+## RF Amp LED Indicators
+
+The RF amp has two parallel banks of 6 LEDs each:
+
+**Top bank (left to right):**
+| LED | Meaning |
+|-----|---------|
+| Fault | RF amp fault active |
+| RFLock | RF locked to system clock |
+| Operate | Amp in operate mode |
+| Unblank | Unblank signal present (system scanning) |
+| Standby | Amp in standby |
+| Power Off | Amp powered off |
+
+**Bottom bank (left to right):**
+| LED | Meaning |
+|-----|---------|
+| Head | Head mode selected |
+| Body | Body mode selected |
+| Test | Test mode active |
+| Wait | Amp waiting |
+| DC High Voltage | HV rail present |
+| AC Power | AC input power present |
+
+**Gain encoders:** Two digital rotary encoders on the front panel — CH1/HD (body CH1 and head gain) and CH2 (body CH2 gain). **Only adjust while amp is actively pulsing** — no effect at idle.
+
+---
+
+## Connector Reference
+
+**CH1 (Body Channel 1):**
+| Connector | Label | Signal |
+|-----------|-------|--------|
+| J4 | BODY FWD OUT | High power RF + TR bias to coil |
+| J5/J6 | BODY FWD 1/2 | Forward power sample (BNC) |
+| J11/J12 | BODY REF 1/2 | Reflected power sample (BNC) |
+| J10 | BODY TR | TR bias input from driver module |
+
+**CH2 (Body Channel 2):**
+| Connector | Label | Signal |
+|-----------|-------|--------|
+| J22 | BODY FWD OUT | High power RF (shares TR bias from J10) |
+| J23/J24 | BODY FWD 1/2 | Forward power sample |
+| J25/J26 | BODY REF 1/2 | Reflected power sample |
+
+**Head:**
+| Connector | Label | Signal |
+|-----------|-------|--------|
+| J3 | HEAD RF OUT | High power RF + TR bias |
+| J7/J8 | HEAD FWD 1/2 | Forward power sample |
+| J9 | HEAD TR | Head TR bias input |
+| J15/J16 | HEAD REF 1/2 | Reflected power sample |
+
+**Other:**
+| Connector | Label | Signal |
+|-----------|-------|--------|
+| J14 | RF IN CH1 | DTX input for CH1/head (-4 to +4 dBm) |
+| J21 | RF IN CH2 | DTX input for CH2 (-4 to +4 dBm) |
+| J13 | HSS/TEST | HSS test port (26 ± 0.4 dBm) |
+| J18/J19 | CAN IN/OUT | CAN communication (9-pin sub-D) |
+| J20 | COMM | RS422 general comm (25-pin sub-D) |
+| J1/J2 | WATER IN/OUT | Coolant connections |
+| — | 3-phase AC | L1, L2, L3 + ground from PDU |
+
+---
+
+## Step 1: Check the Error Log First
+
+**Path:** Common Service Desktop → Error Log → GE System Log
+
+- Look for RF amp fault messages — they usually include an **extended error message** (highlighted in blue, click it for details)
+- The extended message will tell you: which channel faulted, fault type (overcurrent, VSWR, temperature, PSU voltage, etc.)
+- Do the recommended action in the extended error first before running diagnostics
+
+---
+
+## Step 2: Quick CAN Connectivity Check
+
+If the error suggests RF amp communication failure:
+
+1. CSD → Diagnostics → **CAN Link Diagnostic**
+2. Verify all CAN devices show up, including the RF amp
+3. If RF amp missing from CAN: check J18/J19 CAN connectors, CAN cable path from ICE J49 → RF amp
+
+---
+
+## Step 3: Peripheral Hardware Reset (if amp locked up)
+
+If the RF amp microprocessor appears locked up (amp not responding, no CAN comm but power is good):
+
+1. CSD → **Utilities** tab → Toolbox → **Peripheral Hardware Reset**
+2. **Clear all checkboxes EXCEPT RF Amplifier Reset**
+3. Run — this is a hard-line reset more aggressive than the TPS CAN node reset
+
+---
+
+## Step 4: RF Amp Power Check Tool
+
+For power-related faults or faults that only occur at certain power levels:
+
+1. CSD → Diagnostics → **RF Amp Power Check Tool**
+2. Reports: output RF power, input RF power, unblank period, PSU voltages
+3. Compare reported values to tolerance limits shown in the tool
+
+**Real-time terminal commands (alternative — connect via C-shell):**
+\`\`\`
+ice_term                  # Connect to SCP terminal
+printVolts                # View PSU voltages real-time
+printTemps                # View FET junction temperatures real-time
+printPower                # View RF power values real-time
+\`\`\`
+Note: \`printPower\` values are for troubleshooting only — accuracy depends on RF waveform. RF Amp Power Check Tool gives more accurate readings.
+
+---
+
+## Step 5: RF Analysis (RFA) Tool — For Image Quality Problems
+
+If the issue shows as RF-related image artifacts (shading, non-uniformity, hot/cold spots):
+
+1. CSD → Diagnostics → **RFA Tool**
+2. Tests each component in the transmit chain individually
+3. Can isolate to: DTX, cable, amp CH1 or CH2, body coil, TR switch
+
+**RFA Loopback Test:** Tests signal stability (phase and magnitude) across an FSE scan. Look for:
+- Peak magnitude variation >2% = instability in transmit chain
+- Phase drift = DTX or cable problem
+- Asymmetry between CH1 and CH2 = one side of dual drive chain
+
+---
+
+## Step 6: Isolate RF Amp from Bad Load
+
+If you suspect the RF fault is caused by a bad RF load (coil, TR switch, cable) rather than the amp itself:
+
+1. Disconnect the failing body or head RF output cable from the amp
+2. Connect a known-good **35 kW dummy load** from the power measurement kit
+3. **Energize the dummy load fan** before pulsing
+4. Run RF Amp Power Check Tool or scan sequence
+5. If faults clear → problem is downstream (coil, TR switch, patient cable, body coil tuning)
+6. If faults persist → RF amp is the issue
+
+---
+
+## Step 7: UPM (Universal Power Monitor) Troubleshooting
+
+The UPM monitors RF power and protects the system. UPM faults can look like RF amp faults.
+
+**UPM LEDs (on CAM/ISC front panel):**
+| LED | Meaning |
+|-----|---------|
+| Sense | ON = RF detector board detecting RF on at least one port |
+| 1.5V | ON = processor board receiving 3.3V, generating 1.5V |
+| CAN Power | ON = 24V from driver module CAN supply present |
+| CAN Status | Blink 1x = trying to comm with MGD; Blink 2x = comm OK; OFF = not attempting comm |
+| Inhibit | ON = scanning inhibited (disconnected FWD/REF cable, or excessive power fault) |
+
+**If Inhibit LED is ON:** Check the error log — find which RF port triggered the inhibit (FWD, REF1, or REF2 cable disconnected, or power over limit).
+
+**UPM Diagnostics path:**
+\`\`\`
+Diagnostics → System Function → RF → UPM Diagnostics
+\`\`\`
+- **I/O Data test:** Checks chassis power supply, 5V isolated, FPGA init, flash power, NB/MNS board presence, unblank cable
+- **Analog Data test:** Checks all voltage rails (+1.5V, +3.3V, +5V, +12V, -12V on UPB, RFNB, RFBB boards) every 5 seconds for up to 300 seconds
+
+**UPM Board Swap:** The two UPM boards are identical — swap them to isolate a bad board.
+
+**UPM Config file:** \`/export/home/signa/tools/upm/upm.config\` — view from CSD UPM Calibration tool → File → View Config. Shows trip limits and calibration parameters.
+
+---
+
+## Common RF Amp Fault Scenarios
+
+| Symptom | Likely Cause | First Check |
+|---------|-------------|-------------|
+| RF amp fault on every scan, all coils | RF amp PSU rail down | printVolts in ice_term; check 3-phase AC input, circuit breaker on amp |
+| RF amp fault only with body coil | Bad body coil cable or TR switch | Dummy load test on body output |
+| RF fault only at high power sequences | Marginal RF amp or bad coil load VSWR | RF Amp Power Check Tool at multiple power levels |
+| Image shading / non-uniformity body | Dual drive calibration needed, or one channel weak | RFA Tool; check gain encoders CH1 and CH2 |
+| RF amp no CAN communication | CAN bus break, or amp microprocessor locked | CAN Link Diagnostic; Peripheral Hardware Reset |
+| UPM Inhibit ON, no RF fault | FWD or REF cable disconnected from UPM | Check all BNC cables at UPM RF ports — every unused port needs 50Ω terminator |
+| RF fault only head coil | Bad head TR switch or head cable | Dummy load on HEAD RF OUT (J3) |
+| Intermittent RF fault | Coolant flow low (water cooling), connector intermittent | Check water cooling lines J1/J2; reseat all BNC and signal connectors |
+
+---
+
+## RF Calibration After Replacement
+
+If you replace the RF amp, these calibrations must be run in order:
+
+1. **Amplifier Forward Power Cal** — sets CH1 and CH2 output levels
+2. **UPM Calibration (Body Mode)** — calibrates UPM power monitoring for body
+3. **UPM Calibration (Head Mode)** — calibrates UPM for head
+4. **UPM Functional Check** — verifies calibration
+
+Alternate method with Bird Wattmeter: See *3T Dual Drive RF Amplifier Alternate Calibration with Bird Wattmeter* in the Premier manual (Premier/root/t_3T_Dual_Drive_RF_Amplifier_Alternate_Calibration_with_Bird_Wattmeter.html).
+
+*Source: SIGNA Premier 3.0T Service Manual 5777451-3 Rev 7 — Dual Drive RF Amplifier Troubleshooting (id_SL4017625), UPM Troubleshooting, RFA Loopback Test Theory, Dual Drive Theory. AMT Imaging Solutions, 2026-06-23.*`
   }
 ];
 
