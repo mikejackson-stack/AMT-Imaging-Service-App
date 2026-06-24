@@ -18104,7 +18104,381 @@ Run post-swap calibrations in this exact order:
 
 Do NOT skip or reorder — UPM cal depends on the amplifier forward power being set correctly first.
 
+### Confirmed Resolution
+
+**Root cause confirmed:** Internal PSU2 failure inside the dual drive RF amplifier (XRFD).
+
+**Fix:** RF amp FRU replaced. Error codes **0x67** (ermes_code 2254163) and **0x13d** (ermes_code 101253) cleared completely after amp swap and post-replacement calibrations.
+
+**Summary for future reference:**
+- 0x67 + 0x13d cycling from \`Srfd3RFNbCanHWOlcanServer\` → check \`printVolts\` immediately
+- PSU2 = 0V with good incoming 3-phase AC = internal PSU2 failure → RF amp FRU replacement required
+- These codes will NOT clear with software resets — root cause is hardware
+
 *Field notes: AMT Imaging Solutions, 2026-06-23. SIGNA Premier 3.0T install.*`
+  },
+
+  {
+    id: 'dg_ge_excite_dcerd_ts',
+    title: 'GE Signa Excite HDxt — DCERD Troubleshooting (RRF Chassis Master Exciter)',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['DCERD','DCERD2','RRF','RRF chassis','Master Exciter','slot 7','TNS','exciter','HDxt','Excite','26x','15x','12x','old revision','2261011','2247157','2261002','2247144','Dcerd.cpp','Dcerddif.cpp','Rldif.cpp','RF transmit','RRF power','MGD','IRF2','CAN','mgd_tns','TNS software','Transmit Notch Suppression'],
+    created: '2026-06-23T00:00:00.000Z',
+    content: `# GE Signa Excite HDxt — DCERD Troubleshooting
+
+Source: HDxt Service Methods (Direction 5440001-3, Rev 6) + AMT Imaging Solutions Field Notes
+
+---
+
+## What Is the DCERD?
+
+**DCERD = Digital Controlled Exciter/Reference Driver** (also called Digital CERD).
+
+The DCERD is the **Master Exciter board**, located in the **RRF (Rear RF) chassis, slot 7**. It is the digital replacement for the older analog CERD board.
+
+| Item | Detail |
+|------|--------|
+| Board name | DCERD / DCERD2 |
+| Location | RRF chassis (rear RF cabinet), **slot 7** |
+| Function | Master RF exciter — provides reference RF signal for the transmit chain |
+| Also controls | TNS (Transmit Notch Suppression) function (DCERD2 only) |
+| Software version | HDxt 15x, 26x |
+| Related file | Dcerd.cpp, Dcerddif.cpp, Rldif.cpp |
+
+**DCERD vs DCERD2:** DCERD2 is the newer hardware revision. Systems running 26x software expect DCERD2. If an older DCERD revision is installed, the system will throw error 2261011 and refuse to fully initialize the board.
+
+---
+
+## Error Codes
+
+| Error Code | File | Meaning |
+|------------|------|---------|
+| **2261011** | Dcerd.cpp:258 | OLD DCERD DIGITAL BOARD FOUND — old revision detected, replace with newer DCERD2 |
+| **2247157** | Dcerd.cpp:174 | Master Exciter in RRF chassis (slot 7) not detected — system will not function |
+| **2261002** | Dcerd.cpp:149 | Failed to confirm RRF DC power presence — check RRF power, reset TPS |
+| **2247144** | Dcerddif.cpp:261 | IRF driver Dcerddif::rldif_get_dcerd_variation called with bad parm = 0 (software cascade) |
+| **2247144** | Rldif.cpp:413 | IRF driver Rldif::rldif_get_revision called with bad parm = 0 (software cascade) |
+| **2247156** | Irf.cpp:86 | APS did not detect IRF2 board in MGD chassis — could be bad AGP, APS, or Bridge Board |
+| **2249418** | mgdArp.c:1032 | Network problem detected — check MGD subnet network configuration |
+
+---
+
+## Cascade Pattern
+
+The typical cascade when DCERD has a problem:
+
+1. **2261011** or **2247157** fires first — board not detected or wrong revision
+2. **2247144** (×2) cascade — IRF driver calls fail because the board never initialized (bad parm = 0 is a software null, not a real parameter value)
+3. **2261002** may accompany — RRF power confirmation fails when the board is not responding
+4. **2247156** (IRF2 / AGP) may appear — downstream RF chain errors from exciter being absent
+
+If you see 2247144 with bad parm = 0 in both Dcerddif.cpp and Rldif.cpp together, the exciter board is the root cause — the driver is getting no valid response.
+
+---
+
+## Troubleshooting Steps
+
+### Step 1 — Verify RRF Power First
+- Check RRF chassis power supply status LEDs
+- Confirm RRF circuit breaker not tripped
+- Error 2261002 alone (without 2261011 or 2247157) could be a pure power issue
+
+### Step 2 — Reseat DCERD in Slot 7
+- Power down and LOTO
+- Remove and reseat DCERD board in RRF chassis slot 7
+- Check connector for bent pins or corrosion
+- Power up and check if errors clear
+
+### Step 3 — Check Error 2261011 Specifically
+- If 2261011 appears: "OLD DCERD DIGITAL BOARD FOUND"
+  - This is a **hardware revision mismatch** — the board physically present is an older DCERD, not DCERD2
+  - Reseating will NOT fix this — the board must be upgraded
+  - Obtain DCERD2 upgrade kit and replace the board in slot 7
+
+### Step 4 — After Board Replacement
+- Power up system
+- Reset TPS
+- Verify errors cleared in ICE terminal
+- Run RF calibrations and functional checks
+
+---
+
+## TNS (Transmit Notch Suppression) — DCERD2 Software Control
+
+If the system has **DCERD2**, the TNS function can be controlled via software:
+
+**To stop TNS:**
+1. CSD → Utilities Tab → start **[TNS Software Control]**
+2. At the command line type: \`mgd_tns -b m=a 0\` then Enter
+3. Confirm: "Notching Write successful"
+4. **Leave the window open** — closing it will re-enable TNS
+
+**To restart TNS:**
+1. CSD → Utilities Tab → start **[TNS Software Control]**
+2. Type: \`mgd_tns -b m=a 1\` then Enter
+3. Confirm: notching enabled for all channels
+4. Type \`q\` to exit
+
+> Note: Software TNS control only works with UTNS3 or DCERD2. Does NOT apply to UTNS or UTNS2 systems.
+
+---
+
+## Field Notes — DCERD Error (2026-06-19)
+
+System: GE Signa Excite HDxt 26x
+
+**Errors observed in ICE terminal:**
+- 2261011 — OLD DCERD DIGITAL BOARD FOUND → replace with newer revision
+- 2247157 — Master Exciter in RRF chassis slot 7 not detected
+- 2261002 — Failed to confirm RRF DC power presence
+- 2247144 (×2) — IRF driver bad parm = 0 (cascading from exciter not initializing)
+- 2247156 — APS did not detect IRF2 in MGD chassis
+- 2249418 — MGD subnet network problem detected
+
+**Assessment:** Hardware revision mismatch. System running 26x software expects DCERD2. Old revision DCERD present in slot 7. Board must be upgraded — reseating will not resolve 2261011.
+
+*Field notes: AMT Imaging Solutions, 2026-06-23. GE Signa Excite HDxt 26x.*`
+  },
+
+  {
+    id: 'dg_ge_premier_ice_cable_connections',
+    title: 'GE SIGNA Premier — ICE Cable Connections (J01–J55)',
+    system: 'GE MRI',
+    category: 'System / ICE',
+    tags: ['ICE','IDB','IMB','cable','connector','J50','J28','J03','CAN','RFA','DVMRlink','SFP','DPP','RGA','RPS','SRI','PAC','Exciter','Rx Dist','RRx','clock','Premier','6200100','fiber optic','SMC','PCHWK','Dual Drive'],
+    created: '2026-06-23T00:00:00.000Z',
+    content: `# GE SIGNA Premier — ICE Cable Connections (J01–J55)
+
+Source: SIGNA Premier 3.0T Service Manual, Direction 5777451-3, Rev 7
+ICE part numbers: **6200100-10** and **6200100-110**
+
+---
+
+## ICE Front Panel — IDB Board (J01–J20)
+
+| J# | Conn Type | Signal Type | Connected To |
+|----|-----------|-------------|--------------|
+| J01 | SFP | DVMRlink | DPP1 |
+| J02 | SFP | DVMRlink | DPP1 |
+| J03 | SFP | DVMRlink | **Exciter** |
+| J04 | SFP | DVMRlink | N/C |
+| J05 | SFP | DVMRlink | DPP2 |
+| J06 | SFP | DVMRlink | DPP2 |
+| J07 | SFP | DVMRlink | N/C |
+| J08 | SFP | DVMRlink | N/C |
+| J09 | SMB | Rep1 Scope Trigger | N/C |
+| J10 | SMB | Rep2 Scope Trigger | N/C |
+| J11 | SMB | Rep3 Scope Trigger | N/C |
+| J12 | SMB | Rep4 Scope Trigger | N/C |
+| J13 | SFP | DVMRlink | DPP3 |
+| J14 | SFP | DVMRlink | DPP3 |
+| J15 | SFP | DVMRlink | N/C |
+| J16 | SFP | DVMRlink | N/C |
+| J17 | SFP | DVMRlink | DPP4 |
+| J18 | SFP | DVMRlink | DPP4 |
+| J19 | SFP | DVMRlink | N/C |
+| J20 | SFP | DVMRlink | N/C |
+
+---
+
+## ICE Front Panel — IMB Board (J21–J50)
+
+| J# | Conn Type | Signal Type | Connected To |
+|----|-----------|-------------|--------------|
+| J21 | DB15 | Engineering Use | N/C |
+| J22 | SFP | DVMRlink | RGA X |
+| J23 | SFP | DVMRlink | RPS X |
+| J24 | SFP | DVMRlink | RGA Y |
+| J25 | SFP | DVMRlink | RPS Y |
+| J26 | SFP | DVMRlink | RGA Z |
+| J27 | SFP | DVMRlink | RPS Z |
+| J28 | TwinBNC | System Clock | **Exciter** |
+| J29 | SFP | DVMRlink | N/C |
+| J30 | SFP | DVMRlink | Rx Dist |
+| J31 | SFP | DVMRlink | DPP5 |
+| J32 | SFP | DVMRlink | DPP5 |
+| J33 | DB15 | DABOUT | N/C |
+| J34 | DB15 | Engineering Use | N/C |
+| J35 | USB | USB | Host |
+| J36 | SMB | PSC Scope Trigger | N/C |
+| J37 | SMB | XGP Scope Trigger | N/C |
+| J38 | LC | PAC FO | PAC |
+| J39 | LC | PAC FO | PAC |
+| J40 | LC | SRI FO CAN | SRI |
+| J41 | LC | SRI FO CAN | SRI |
+| J42 | LC | SRI FO CAN | SRI |
+| J43 | BNC | AC Trigger | Cab Mon |
+| J44 | BNC | External Trigger 1 | N/C |
+| J45 | BNC | External Trigger 2 | N/C |
+| J47 | DB25 | SMC/PCHWK | Various |
+| J48 | DB25 | DVMRlink / Rx Chain Status | Rx Dist |
+| J49 | DB9 | SPU Aux | N/C |
+| J50 | DB9 | **CAN** | **Dual Drive RFA** |
+
+> Note on J28: The Clock splitter exists in **RRx systems** with ICE, or in systems upgraded to ICE.
+
+---
+
+## ICE Rear Panel — IDB / IMB (J51–J55)
+
+| J# | Conn Type | Signal Type | Connected To |
+|----|-----------|-------------|--------------|
+| J51 | PCIe x4 | PCI Express | ICN |
+| J52 | 7W2 | 48V DC Power | DC PS |
+| J53 | RJ45 | Ethernet | Ethernet Switch |
+| J54 | RJ45 | Ethernet | Ethernet Switch |
+| J55 | PCIe x4 | PCI Express | N/C |
+
+---
+
+## Key Connections for Troubleshooting
+
+| What you're chasing | Connector |
+|---------------------|-----------|
+| RF amp (Dual Drive RFA) CAN | **J50** (DB9, front IMB) |
+| Exciter DVMRlink | **J03** (SFP, front IDB) |
+| Exciter System Clock | **J28** (TwinBNC, front IMB) |
+| Gradient X/Y/Z RGA | J22 / J24 / J26 (SFP, front IMB) |
+| Gradient X/Y/Z RPS | J23 / J25 / J27 (SFP, front IMB) |
+| Receive distribution | J30, J48 (front IMB) |
+| PAC fiber optic CAN | J38, J39 (LC, front IMB) |
+| SRI fiber optic CAN | J40–J42 (LC, front IMB) |
+| Cabinet monitor AC trigger | J43 (BNC, front IMB) |
+| ICE to host USB | J35 (USB, front IMB) |
+| ICE network (Ethernet) | J53, J54 (RJ45, rear IMB) |
+| ICE to ICN (PCIe) | J51 (rear IDB) |
+| 48V DC power input | J52 (7W2, rear IMB) |
+
+---
+
+## Abbreviations
+
+| Term | Meaning |
+|------|---------|
+| IDB | ICE Digital Board |
+| IMB | ICE Management Board |
+| DVMRlink | Digital Virtual MR Link (high-speed fiber data) |
+| SFP | Small Form-factor Pluggable (fiber optic transceiver) |
+| DPP1–5 | Digital Processing Pipelines (receive chain) |
+| RGA | Receive Gradient Amplifier |
+| RPS | Receive Power Supply |
+| SRI | System Reference Interface |
+| PAC | Patient Accessory Controller |
+| Rx Dist | Receive Distributor |
+| Cab Mon | Cabinet Monitor |
+| RRx | Rear Rack — system configuration with clock splitter |
+| ICN | ICE Communications Node |
+| SMC/PCHWK | System Monitor Controller / Patchwork |`
+  },
+
+  {
+    id: 'dg_ge_premier_icn_firmware_upgrade',
+    title: 'GE SIGNA Premier — ICN Firmware Upgrade (Dell R630/R640, iDRAC/BIOS/LCC)',
+    system: 'GE MRI',
+    category: 'System / ICE',
+    tags: ['ICN','firmware','iDRAC','BIOS','LCC','Dell','R630','R640','Gen6','Gen7','VRE','Volume Recon Engine','MakeSystemReady','ApplyGoldenXML','ApplyGoldenJson','2.60.100.60','upgrade','VRE configuration','Premier','icnFWUpgradeUtils','license','maintenance'],
+    created: '2026-06-23T00:00:00.000Z',
+    content: `# GE SIGNA Premier — ICN Firmware Upgrade
+
+Source: SIGNA Premier 3.0T Service Manual, Direction 5777451-3, Rev 7
+
+Applies to: **Dell R630 (Gen6)** and **R640 (Gen7 / Gen7-DL)** ICNs
+
+---
+
+## Why This Matters
+
+Dell Lifecycle Controller (LCC) and iDRAC firmware have an intermittent flaw that causes **Volume Recon Engine (VRE) configuration to fail** — especially when the ICN loses power. The LCC database becomes corrupted during such failures.
+
+GE's solution: perform an ICN firmware check and upgrade step before every ICN VRE configuration.
+
+---
+
+## When Is an Upgrade Needed?
+
+- Applies to **software revision 27 and earlier**
+- Any iDRAC/LCC firmware version **not at 2.60.100.60** requires an upgrade
+- Check is performed automatically at the start of VRE configuration
+
+---
+
+## Firmware Upgrade — 6 Steps (Up to 1 hr 30 min total)
+
+| Step | Task | Est. Time |
+|------|------|-----------|
+| 1 | MakeSystemReady | ~15 min |
+| 2 | ApplyGoldenXML | ~5 min |
+| 3 | iDRAC upgrade | ~30 min |
+| 4 | MakeSystemReady (again) | ~15 min |
+| 5 | BIOS upgrade | ~30 min |
+| 6 | ApplyGoldenJson | ~5 min |
+
+> **Do not unplug or reboot the system during maintenance.**
+
+---
+
+## Outcome States
+
+**Success:**
+\`\`\`
+ICN Firmware upgrade is successful.
+FirmwareUpgrade:success
+ICN maintenance Completed
+\`\`\`
+
+**Aborted (firmware already current — no action needed):**
+\`\`\`
+Reading the Version File...  Firmware upgrade not needed
+upgradeNeeded=0
+FirmwareUpgrade:abort
+ICN maintenance Completed
+\`\`\`
+
+**Failed:**
+\`\`\`
+ICN Firmware upgrade failed.
+FirmwareUpgrade:fail
+ICN iDRAC/LCC - Firmware upgrade error: please rerun VRE configuration again.
+If that doesn't fix the problem, order an ICN replacement.
+\`\`\`
+
+---
+
+## Failure Modes and Solutions
+
+| Failure | What It Means | Solution |
+|---------|---------------|----------|
+| **MakeSystemReady** | ICN cannot respond to setup commands. Tries twice, then fails. ~20 min to failure from VRE config start. | 1. Check Ethernet / networking. 2. Remove ICN power cables ~60 sec, then retry. 3. If still fails → replace ICN. |
+| **iDRAC Update** | iDRAC upgrade failed — logged in file, but VRE config continues. Must be resolved to ensure update takes. | 1. Remove ICN power cables ~60 sec, retry. 2. If still fails → replace ICN. |
+| **BIOS Update** | iDRAC upgraded but BIOS failed. **Site will be down until resolved** — VRE config fails. | 1. Remove ICN power cables ~60 sec, retry. 2. If still fails → replace ICN. |
+| **iDRAC license missing** | Error: "ERROR: ICN iDRAC license is Missing!" during Step 2 (ApplyGoldenJson). | Acquire iDRAC license file from Dell and apply manually. |
+
+---
+
+## iDRAC License Missing — Error Signature
+
+\`\`\`
+ApplyGoldenJson:Completed with Errors
+ERROR: ICN iDRAC license is Missing!
+CheckTaskComplete:Completed with errors
+ICN Firmware upgrade failed.
+FirmwareUpgrade:fail
+\`\`\`
+
+---
+
+## Key Terms
+
+| Term | Meaning |
+|------|---------|
+| ICN | Image Compute Node (Dell server — R630 Gen6 or R640 Gen7) |
+| iDRAC | Integrated Dell Remote Access Controller (remote management firmware) |
+| LCC | Dell Lifecycle Controller (embedded management layer) |
+| VRE | Volume Recon Engine (GE image reconstruction software on ICN) |
+| MakeSystemReady | GE script that prepares ICN for firmware operations |
+| ApplyGoldenXML/Json | GE scripts that apply baseline configuration to ICN |
+| 2.60.100.60 | Required minimum iDRAC/LCC firmware version |`
   }
 ];
 
