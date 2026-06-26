@@ -18479,6 +18479,224 @@ FirmwareUpgrade:fail
 | MakeSystemReady | GE script that prepares ICN for firmware operations |
 | ApplyGoldenXML/Json | GE scripts that apply baseline configuration to ICN |
 | 2.60.100.60 | Required minimum iDRAC/LCC firmware version |`
+  },
+
+  {
+    id: 'dg_lcc_shim_lead_resistance_checks',
+    title: 'GE LCC 1.5T/1.0T — Magnet Shim Lead Resistance Checks (Direction 2192624)',
+    system: 'GE MRI',
+    category: 'Magnet / Cryogens',
+    tags: ['LCC','shim lead','shim coil','resistance','magnet electrical','main coil','S/C switch','heater','P1-A','J5-1','J5-2','P2','P2-W','Cannon connector','pigtail','AX1','Z1','axial','transverse','ramping','4.2K','cold','2192624','1.5T','1.0T','active shield'],
+    created: '2026-06-25T00:00:00.000Z',
+    content: `# GE LCC 1.5T/1.0T — Shim Lead Resistance Checks
+
+Source: GE Healthcare Direction 2192624, Rev 17 — 1.5T & 1.0T LCC Active Shield Magnet and Cryogens Subsystem
+
+**Perform at 4.2K (magnet cold, superconducting).** Report any readings outside acceptable range to MAC Team Leader before ramping.
+
+---
+
+## Prerequisites
+
+1. Engage Shim Lead Assembly (Shim Lead Engagement and Disengagement procedure)
+2. Use a calibrated digital multimeter
+3. Enclosure removal may be required — see Chapter 5, Upper and Side Wide Open Enclosure Removal
+
+---
+
+## Connector Reference (Illustration 4-20)
+
+**Shim Lead (Main Extension Lead) Housing:**
+- **J5-1 / J5-2** — 10-pin circular connectors (Pin View)
+- **P1-A** — 26-pin Cannon Connector (Pin View)
+
+**Shim Lead Pigtail Cable (p/n 2135362):**
+- **P2** and **P2-W** — alpha-labeled circular connectors (Pin View)
+
+---
+
+## Table 4-5: Main Coil Resistance Checks (Cold, 4.2K)
+
+| Connector | Pins (+, -) | Typical (Ω) |
+|-----------|-------------|-------------|
+| Main Coil Power Lugs | +, - | < 6 |
+| J5-1 on Shim Lead | 9, 10 | < 6 |
+
+---
+
+## Table 4-6: S/C Shim Coil Checks — Measured on Shim Lead (P1-A)
+
+All shim coil circuits measured at **Cannon Connector P1-A**.
+
+**Typical resistance:** R/RA = 0.3–0.5 Ω | RB = 0.04–0.80 Ω
+
+| Shim PS | Coil Circuit | Pins (+, -) |
+|---------|-------------|------------|
+| AX1 | Z1 | 1, 19 |
+| AX2 | Z2 | 2, 20 |
+| AX3 | Z3 | 3, 21 |
+| AX4 | Z4 | 4, 22 |
+| AX5 | Z5 | 5, 23 |
+| AX6 | Z6 | 6, 24 |
+| T1-1 | C31 | 13, 23 |
+| T1-2 | C11+ | 16, 19 |
+| T1-3 | C22+ | 14, 21 |
+| T1-4 | C11- | 17, 20 |
+| T1-5 | C22- | 15, 22 |
+| T1-6 | C33 | 18, 24 |
+| T2-1 | S31 | 11, 23 |
+| T2-2 | S11+ | 9, 19 |
+| T2-3 | S22+ | 7, 21 |
+| T2-4 | S11- | 10, 20 |
+| T2-5 | S22- | 8, 22 |
+| T2-6 | S33 | 12, 24 |
+
+### S/C Switch Heater Resistances (J5-1 or J5-2)
+
+| Circuit | Pins | Typical (Ω) |
+|---------|------|-------------|
+| Main Switch | 1, 2 | 22–27 |
+| Axial Shims | 5, 6 | 27–33 (or 22–28*) / RB: 18–22 |
+| Transverse 1 | 7, 6 | 8–10 / RB: 12–18 |
+| Transverse 2 | 8, 6 | 8–10 / RB: 12–18 |
+
+*New switch config incorporated around R216 and Q063.
+
+---
+
+## Table 4-7: S/C Shim Coil Checks — Measured on Shim Lead Pigtail Cable (P2 / P2-W)
+
+**Typical resistance:** R/RA = 0.3–0.6 Ω | RB = 0.04–0.80 Ω
+
+| Shim PS | Coil Circuit | Connector | Pins (+, -) |
+|---------|-------------|-----------|------------|
+| AX1 | Z1 | P2 | A*, (K,L) |
+| AX2 | Z2 | P2-W | A*, (K,L) |
+| AX3 | Z3 | P2 | B, (M,N) |
+| AX4 | Z4 | P2-W | B, (M,N) |
+| AX5 | Z5 | P2 | C, P |
+| AX6 | Z6 | P2-W | C, P |
+| T1-1 | C31 | P2 | D, P |
+| T1-2 | C11+ | P2 | F, (K,L) |
+| T1-3 | C22+ | P2 | G, (M,N) |
+| T1-4 | C11- | P2-W | F, (K,L) |
+| T1-5 | C22- | P2-W | G, (M,N) |
+| T1-6 | C33 | P2-W | D, P |
+| T2-1 | S31 | P2 | E, P |
+| T2-2 | S11+ | P2 | H, (K,L) |
+| T2-3 | S22+ | P2 | J, (M,N) |
+| T2-4 | S11- | P2-W | H, (K,L) |
+| T2-5 | S22- | P2-W | J, (M,N) |
+| T2-6 | S33 | P2-W | E, P |
+
+*New switch config incorporated around R216 and Q063.
+
+---
+
+## Out-of-Range Action
+
+Report **any reading outside the acceptable range** to the **Regional Magnet & Cryogens (MAC) Team Leader** for investigation before ramping.`
+  },
+  {
+    id: 'dg_ge_premier_icc_deionize_gradient',
+    title: 'GE SIGNA Premier — Deionizing Gradient Coil Coolant (ICC / GCU)',
+    system: 'GE MRI',
+    category: 'Cooling / ICC',
+    tags: ['ICC','GCU','deionization','coolant','gradient','resistivity','deionization kit','filter','chemical additive','pump','suction','drain','fill port','tank adapter','service outlet','600 kohm','10 kohm','15 kohm','cabmon','Machine Data Viewers','Cooling Cabinet','Premier','5777451'],
+    created: '2026-06-25T00:00:00.000Z',
+    content: `# GE SIGNA Premier — Deionizing Gradient Coil Coolant
+
+Source: SIGNA Premier 3.0T Service Manual, Direction 5777451-3, Rev 7
+
+**Purpose:** Deionize and filter the gradient coil coolant in the Integrated Cooling Cabinet (ICC).
+
+> CAUTION: Wear goggles and gloves when handling coolant chemicals.
+
+---
+
+## Target Resistivity
+
+| Stage | Target |
+|-------|--------|
+| After deionization (pump running) | >= 600 kOhm-cm |
+| After chemical additive added | 10-15 kOhm-cm (stable >= 15 min) |
+
+---
+
+## Procedure
+
+### 1. Setup
+
+1. Open the ICC door.
+2. Open the deionization kit case, place on floor in front of cabinet — pump closest to floor, horizontal.
+3. Uncoil hoses by unfastening Velcro straps.
+4. Using the wrench tool, unscrew both the deionization and filter housings.
+
+### 2. Install Cartridges
+
+5. Install deionization cartridge — **arrow must point UP**. Screw housing into port labeled **Deionization**, fully tighten.
+6. Install filter cartridge. Screw housing into port labeled **Filter**, fully tighten.
+
+### 3. Connect to GCU Tank
+
+7. Remove yellow cap from GCU tank fill port. Connect tank funnel extension, thread deionization tank adapter, **open vent on tank adapter**.
+   - (1) Deionization tank adapter  (2) Tank funnel extension  (3) GCU dirt separator drain port
+
+8. Remove yellow cap from GCU drain labeled **"drain valve dirt trap"**. Connect suction line to that port.
+   - Connect to **"drain valve dirt trap"** ONLY — NOT "drain valve for pump"
+
+9. Connect deionization kit return line quick disconnect to deionization tank adapter.
+
+### 4. Power Up
+
+10. Connect power cord to extension cord.
+11. Connect extension cord to **deionization kit power outlet** on right side of ICC control unit. Turn on service outlet breaker.
+
+### 5. Prime the Pump
+
+12. Monitor suction line — coolant should be trickling in.
+    - If no coolant: verify return line connected to GCU tank fill port
+    - **DO NOT run pump until primed**
+    - Briefly start pump 3-5 seconds; confirm flow into deionization and filter housings
+    - If flow stops: stop pump, drain filter housing, check: filter tool below ICC tanks, hoses not kinked, vent open; repeat until primed
+
+### 6. Monitor Resistivity
+
+**SW RX29.1 and earlier (command line):**
+
+    cd /usr/g/service/log/paramdata
+    sed -n '/Grad Coolant Resist1/{n;p}' cabmon.xml
+
+Values shown in **0.01 kOhm-cm** units — divide by 100 to get kOhm-cm. (Updates only when change >=10 units.)
+
+**SW 30 and later (CSD):**
+1. CSD -> Utilities -> Machine Data Viewers -> Click here to start
+2. Select **Cooling Cabinet Data** from Files_in menu -> Accept
+3. Select **Cooling Cabinet** radio button -> View
+4. Select **Grad Coil Coolant Resistivity**
+5. Scroll to bottom, click **Refresh** every 5-10 seconds (scroll back down after each refresh)
+
+**Target: 600 kOhm-cm -> turn off service outlet breaker.**
+If resistivity stalls: check GCU pressure gauge to confirm circulation.
+
+### 7. Disconnect and Drain Hoses
+
+13. Have a **service tank ready** — coolant will spill when disconnecting.
+14. Disconnect return line from tank adapter at fill port, drain into service tank.
+15. Disconnect suction line from GCU dirt separator drain port, drain into service tank.
+16. Replace yellow cap on GCU dirt separator drain port.
+
+### 8. Remove Adapter
+
+17. **Wear goggles and gloves.** Remove deionization tank adapter from GCU tank fill port.
+
+### 9. Restore Coolant and Add Chemical Additive
+
+18. Put funnel into GCU tank fill port. Pour coolant back from service tank into GCU tank.
+19. **Gradually** pour gradient coil deionization chemical additive into GCU tank until resistivity reaches **10-15 kOhm-cm**, stable for >= 15 minutes.
+    - Pour SLOWLY — adding too fast can cause resistivity to trip and interrupt a patient scan
+    - Dispose of chemicals per local regulations
+20. Remove funnel, replace cap on GCU tank fill port.`
   }
 ];
 
