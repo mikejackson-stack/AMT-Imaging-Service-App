@@ -14821,7 +14821,26 @@ Ran \`printVolts\` in ice_term SCPWindow → **PSU2 reported 0V** (PSU1 normal).
 - PSU2 = 0V with good incoming 3-phase AC = internal PSU2 failure → RF amp FRU replacement required
 - These codes will NOT clear with software resets — root cause is hardware
 
-*Field notes: AMT Imaging Solutions, 2026-06-23. SIGNA Premier 3.0T.*`
+*Field notes: AMT Imaging Solutions, 2026-06-23. SIGNA Premier 3.0T.*
+
+---
+
+## Field Notes — DD1 Box Bias Fault (2026-06-29)
+
+### Symptom
+- Error 2252310: "DD Driver Fault Detected - Open Circuit. Source of Fault is DD (Direct Drive inside the Body Hybrid Assembly). Value = 12856 mV  Limit: 3422 mV"
+- Followed by 2252357 (RF Bias Driver Module error) and 2224667 (Manual Prescan failed, Universal Power Monitor error)
+- Auto and Manual prescan both failing — body coil unusable
+
+### Key Finding
+The error message text says "Body Hybrid Assembly" but **on the Premier 3T the Hybrid does NOT have the bias cable**. The bias cable is in the **DD1 box on the back of the magnet**.
+
+Going to the Hybrid first wastes time. Go straight to the DD1 box.
+
+### Resolution
+Inspect and reseat the bias cable at the DD1 box. If cable or connector is damaged, replace it. Errors 2252310, 2252357, and 2224667 should all clear once the bias path is restored.
+
+*Field notes: AMT Imaging Solutions, 2026-06-29. SIGNA Premier 3.0T.*"
   },
 
   {
@@ -15396,6 +15415,78 @@ If resistivity stalls: check GCU pressure gauge to confirm circulation.
     - Pour SLOWLY — adding too fast can cause resistivity to trip and interrupt a patient scan
     - Dispose of chemicals per local regulations
 20. Remove funnel, replace cap on GCU tank fill port.`
+  },
+  {
+    id: 'dg_ge_premier_dd1_bias_fault',
+    title: 'GE SIGNA Premier 3T — DD Driver Bias Open Circuit (Error 2252310 / DD1 Box)',
+    system: 'GE MRI',
+    category: 'RF / Body Coil',
+    tags: ['DD1','Direct Drive','DD Driver','bias','open circuit','2252310','2252357','2224667','2224666','body hybrid','RF bias','prescan fail','UPM','Universal Power Monitor','Premier','CF3T','body coil','DD1 box'],
+    created: '2026-06-29T00:00:00.000Z',
+    content: `# GE SIGNA Premier 3T — DD Driver Bias Open Circuit
+
+## Error Pattern
+
+| Error | Function | Message |
+|-------|----------|---------|
+| 2252310 | RF: RF Bias | DD Driver Fault Detected - Open Circuit. Source of Fault is DD (Direct Drive inside the Body Hybrid Assembly). Value = 12856 mV  Limit: 3422 mV |
+| 2252357 | RF: RF Bias | Driver Module error occurred |
+| 2224666 | Prescan: Host Autoprescan | Auto Prescan failed, Driver Module error occurred |
+| 2224667 | Prescan: Host Manual Prescan | Manual Prescan failed, Universal Power Monitor error occurred |
+
+---
+
+## Critical Field Note
+
+**The error text says "Direct Drive inside the Body Hybrid Assembly" — this wording is MISLEADING on the Premier 3T.**
+
+On the GE SIGNA Premier 3T (CF3T):
+- The **Hybrid does NOT have the bias cable**
+- The bias cable lives in the **DD1 box on the back of the magnet**
+- Go to the **DD1 box first** — not the Hybrid
+
+---
+
+## Fault Interpretation
+
+Value = **12856 mV** vs Limit = **3422 mV** — nearly 4x over limit = hard **open circuit**, not a marginal reading.
+
+---
+
+## Troubleshooting Path
+
+### Step 1 — DD1 Box (Back of Magnet)
+- Locate the **DD1 box** on the back of the magnet
+- Inspect the bias cable connector: look for unseated/disconnected connector, bent pins, unlatched lock
+- Reseat firmly and retry prescan
+
+### Step 2 — DD1 Box Power
+- Verify DD1 box has power and status LEDs look normal
+- Confirm all cables into DD1 box are fully seated
+
+### Step 3 — Hybrid (Secondary Check)
+- If DD1 box is fine, inspect the cable from DD1 box through the bore to the Hybrid as a secondary check
+- The Hybrid itself does not carry the bias cable on the Premier 3T, but verify the body coil cabling is intact
+
+### Step 4 — UPM / Prescan Errors
+- Error 2224667 "Universal Power Monitor error occurred" is downstream of the bias fault
+- Once the bias path is restored, UPM errors and prescan failures should clear automatically
+
+---
+
+## Expected After Fix
+
+- Auto Prescan completes normally
+- Errors 2252310 and 2252357 gone
+- UPM errors (2224667) clear
+
+---
+
+## System Info
+
+- **System:** GE SIGNA Premier 3T (CF3T)
+- **Scan at fault time:** Spin Echo / FSE-XL, Coil: BODY
+- **Processes affected:** NSP (DD bias) and psc (prescan)`
   }
 ];
 
