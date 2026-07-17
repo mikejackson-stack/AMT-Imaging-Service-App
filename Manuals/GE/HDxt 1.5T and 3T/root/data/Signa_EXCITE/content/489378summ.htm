@@ -1,0 +1,39 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE></TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR><BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/25/07</P></td></tr></table><H1 ID="top">HART Hardware Tracker</H1><CENTER><P>(<A HREF="489378.htm"><FONT>Click Here to Return to
+Detailed Procedure</FONT></A>)
+				</P></CENTER><H2>1&nbsp;&nbsp;Procedure</H2><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="ov-1291397500056">1.1&nbsp;&nbsp;
+Log File Operations<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><OL START="1" CLASS="STEP1" ID="ov-1291397500056-dup.1"><LI CLASS="STEP1"><P>On boot up, if a HART log file, either Current or History, is not present,
+HART will create the new log file.</P></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291397500056-dup.2"><LI CLASS="STEP1"><P>The HART logger will detect changes to the hardware configuration with
+reference to the contents of the current status file.</P></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291397500056-dup.3"><LI CLASS="STEP1"><P>When a HART log file grows to a size of 3 MB, a backup will be made.
+Any existing backup will be overwritten.</P></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291397500056-dup.4"><LI CLASS="STEP1"><P>After a backup for a HART log file is made, a fresh log file will be
+started.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291397500057"><LI CLASS="STEP1"><P>HART log files are kept encrypted in the system.</P></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291397500057-dup.1"><LI CLASS="STEP1"><P>Log files will be saved on the Save/Restore Info MOD.</P></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="ov-1291397500057-dup.2">1.2&nbsp;&nbsp;
+Opening the HART Viewer<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><OL START="1" CLASS="STEP1" ID="ov-1291397500057-dup.3"><LI CLASS="STEP1"><P>On the host computer, open the Common Service Desktop.</P></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291397500057-dup.4"><LI CLASS="STEP1"><P>In the Common Service Desktop, select the <SPAN CLASS="GUIBUTTON">[Error Logs]</SPAN> tab.
+Follow the instructions on <A HREF="489378.htm#">
+Step&nbsp;</A> below.</P><DIV CLASS="STEPDETAILS"><P>(<A HREF="javascript:(window.open('489378summd0e78.htm','stepdetail','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes') || window).focus();">Step Details</A>)</P></DIV></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="ov-1291397500585-dup.3">1.3&nbsp;&nbsp;
+HART Current System Log<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><OL START="1" CLASS="STEP1" ID="ov-1291397500585-dup.4"><LI CLASS="STEP1"><P>The Current Status Log will display the current hardware configuration
+in the MGD Chassis, RRF Chassis, and Driver Module. During every system reboot
+and TPS Reset, HART and queries an ID chip on most of the newer boards. The
+results of this query are displayed in the current HART log. This gives the
+HART log information about each board&#8217;s install date, board type, board
+location, board revision, firmware revision, serial number, current date,
+and power-on diagnostic results. See <A HREF="javascript:winopen('489378tbld0e114.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> for a breakdown of the information in the HART log.</P><DIV CLASS="STEPDETAILS"><P>(<A HREF="javascript:(window.open('489378summd0e113.htm','stepdetail','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes') || window).focus();">Step Details</A>)</P></DIV></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="ov-1291397501111">1.4&nbsp;&nbsp;
+HART History Log<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">The HART History Log displays a history of board replacements within
+the MGD Chassis, RRF Chassis, and Driver Module. The history file is created
+when the Current HART Log is created.  At first-time startup, the history
+log content should match the current log.</P><OL START="1" CLASS="STEP1" ID="ov-1291397501111-dup.1"><LI CLASS="STEP1"><P>If a board is replaced or fails in such a way that HART cannot read
+the ID chip, an entry is added to the History log indicating that either a
+different board has been installed or a board is missing. The HART History
+file is triggered after querying the hardware. It compares the values to the
+current log. A change is flagged if it detects a change in board serial number,
+revision number or firmware revision. In this case, a new row is created with
+the replacement board name, etc., but also the old serial number and the new
+serial number. In addition, a user can leave comments in history log entries.
+This feature is intended to be used by service to document the cause for events.</P></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291397501112"><LI CLASS="STEP1"><P>The HART History Log will be useful in the following cases:</P><DIV CLASS="STEPDETAILS"><P>(<A HREF="javascript:(window.open('489378summd0e189.htm','stepdetail','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes') || window).focus();">Step Details</A>)</P></DIV></LI></OL></DIV><H2>2&nbsp;&nbsp;Finalization</H2><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P><CENTER><P>(<A HREF="489378.htm" TARGET="mainFrame"><FONT>Click Here to Return to
+Detailed Procedure</FONT></A>)</P></CENTER></BODY></HTML>

@@ -1,0 +1,31 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Troubleshooting SPT Problems</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;3/7/08</P></td></tr></table><H1 ID="top">Troubleshooting SPT Problems </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291399655874">1&nbsp;&nbsp;System Shutdown<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">If there is a stop scan condition (such as a hardware error) during
+a run of SPT, then it is recommended that the system be rebooted. This condition
+may be caused by the test software being out of sync with the scan software.
+The only way to clear this condition is to reboot. Follow these instructions:</P><OL><LI CLASS="numlist"><P>Right-click on the desktop wallpaper area and select <SPAN CLASS="GUIBUTTON">[Service
+Tools]</SPAN> from the root menu, then select <SPAN CLASS="GUIBUTTON">[System Shutdown]</SPAN>.
+ Click <SPAN CLASS="GUIBUTTON">[Yes]</SPAN> to confirm.</P></LI><LI CLASS="numlist"><P>When the message &#8220;Okay to power off the system now.
+Press any key to restart&#8221; appears, double-click on the Signa icon (or
+type <SPAN CLASS="KEYBOARD">&lt;Signa&gt;</SPAN> in the Login name field), then click the <SPAN CLASS="GUIBUTTON">[Log
+In]</SPAN> button. Enter the password <SPAN CLASS="KEYBOARD">&lt;adw2.0&gt;</SPAN> and
+click<SPAN CLASS="GUIBUTTON">[ Log In]</SPAN> again. Allow initialization to fully complete
+before any user interaction.</P></LI><LI CLASS="numlist"><P>Continue with the SPT test.</P></LI></OL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291399655875-dup.1">2&nbsp;&nbsp;Utilities for SPT<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">There are five utilities that are useful when you use SPT. To view a
+short description of them, refer to the following:</P><UL><LI CLASS="bulletlist"><P>Sptreset - If a problem occurs when exiting SPT in an unusual
+manner, and the system seems to be in an unusual configuration, type the following
+in a C-Shell: <SPAN CLASS="KEYBOARD">&lt;cd  /usr/g/service/cclass/spt&gt;</SPAN></P><P>sptreset <SPAN CLASS="GUIBUTTON">[Enter]</SPAN>. This puts all the files and configuration
+values back in their original condition.</P></LI><LI CLASS="bulletlist"><P>"T" File Cleanup - "T" File Cleanup is a file space management
+tool. It cleans up the /usr/g/service/data directory. See the procedure for
+"T" File Cleanup for more information on how to use it. (This can be found
+in Software &#8211; System level software utilities in the documentation)</P></LI><LI CLASS="bulletlist"><P>"whatFailed" - This utility scans through user-selected SPT
+result files and reports what portion of the test failed, and the actual result
+and test spec for that test. See <A HREF="javascript:winopen('497117illd0e87.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P></LI></UL><DIV CLASS="ILLUSTRATION" id="SL500274-497117"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">whatFailed Application</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/497117-500270.jpg" BORDER="0" usemap="#SL500271-497117"></P></DIV><P CLASS="sect1">To run the "whatFailed" utility, you can either:</P><UL><LI CLASS="bulletlist"><P>Open a C-shell from the Service Desktop, then type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>whatFailed</B></FONT></SPAN> (Case
+Sensitive) and press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>, or</P></LI><LI CLASS="bulletlist"><P>Select the whatFailed button from the System Performance Test
+GUI. See <A HREF="javascript:winopen('497117illd0e87.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P></LI></UL><P CLASS="sect1">A menu of all the SPT files for that system will pop up. Select one
+of the tests displayed (or quit). The utility will then read the file comparing
+each test (except for Coherent Noise) against its limits. If there are no
+failing values in the file, you&#8217;ll see the following message:</P><P CLASS="sect1">"This utility does not check for Coherent Noise failures." </P><P CLASS="sect1">Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to continue. For each failure it finds,
+it will print out each failure one at a time. Press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> to
+move through each failure listed. See <A HREF="javascript:winopen('497117illd0e123.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> for a whatFailed example.</P><DIV CLASS="ILLUSTRATION" id="SL497130-497117"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">What Failed Example</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/497117-42194.jpg" BORDER="0" usemap="#SL497132-497117"></P></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

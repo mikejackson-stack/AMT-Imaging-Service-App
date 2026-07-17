@@ -1,0 +1,148 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Hardware Link Devices Status Check</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/25/07</P></td></tr></table><H1 ID="top">Hardware Link Devices Status Check </H1><P CLASS="descriptive">This material covers checking the status of the Hardware Link devices,
+including the use of the hwStatus command.  On occasion, it is helpful to
+know the status of the peripheral devices. The Serial Peripheral Interface
+(SPI), which is located on the Scan Control Processor (SCP) Board, reports
+the status of each peripheral device on the MDS Link. </P><P CLASS="descriptive">Sometimes, when there is a fault on the MDS Link or CAN link, the LEDs
+on the hardware peripheral devices do not match the state reported by SPI.
+This is when the <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>hwStatus</B></FONT></SPAN> command is useful. It can check
+the SPI view of the state of the hardware. For example, if the scanner will
+not go to Ready, and it is not obvious what is causing the problem, the command
+can help you locate the cause of the problem. </P><P CLASS="descriptive">It is most helpful to use the error log in conjunction with the hwStatus
+command. <A HREF="579065.htm#SL63878-57385">
+Step&nbsp;</A> describes
+how to execute this command.  </P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e39"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>hwStatus</B></FONT></SPAN> command cannot be used to change
+the state or status of any piece of hardware on the MDS Link or CAN link.
+It is used only for reporting what the SPI thinks the state of the MDS peripheral
+devices are.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL63878-579065">1&nbsp;&nbsp;USING THE HWSTATUS COMMAND<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Insert the Service Key.</P></LI><LI CLASS="numlist"><P>Click the <SPAN CLASS="GUIicon"><IMG SRC="../media/579065-57403.jpg" BORDER="0"></SPAN> (Service Tools) icon to open the Service
+Desktop Manager.</P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIicon"><IMG SRC="../media/579065-57411.jpg" BORDER="0"></SPAN> in the lower part of the Service Desktop
+Manager if the Common Service Desktop is not already visible.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e64"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">It takes a few seconds for the Common Service Desktop to appear.
+If the Common Service Desktop never appears, then confirm that it isn&#8217;t
+already open and that it hasn&#8217;t been dragged partially off the screen
+or that it isn&#8217;t hidden behind another open window.  </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Click the <SPAN CLASS="GUIicon"><IMG SRC="../media/579065-57407.jpg" BORDER="0"></SPAN> (Utilities) icon at the top of the Common
+Service Desktop.</P></LI><LI CLASS="numlist"><P>Select <SPAN CLASS="GUIBUTTON">[Log Into APS/AGP/SCP]</SPAN> from the
+menu on the left side of the screen.</P></LI><LI CLASS="numlist"><P>Under Log Into APS/AGP/SCP window on the right side of the
+screen, select <SPAN CLASS="KEYBOARD">&lt;Click here to start this tool&gt;</SPAN>.  The SCP
+window opens in front of the APS and AGP windows.</P></LI><LI CLASS="numlist"><P>Place the cursor inside the SCP window and press <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> once
+so that a prompt displays inside the window. </P></LI><LI CLASS="numlist"><P>Type <SPAN CLASS="KEYBOARD">&lt;hwStatus&gt;</SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> in
+the SCP window as shown in <A HREF="javascript:winopen('579065illd0e101.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P></LI></OL><DIV CLASS="ILLUSTRATION" id="SL579077-579065"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Type hwStatus Command in SCP Window</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/579065-57409.jpg" BORDER="0" usemap="#SL579079-579065"></P></DIV><P CLASS="sect1">Many lines of information like those shown below will be listed in the
+SCP window.  Use the scroll bar on the side of the window to view all the
+information. Compare the information received to information below.</P><PRE>SCP_LX-&gt;hwStatus
+value = 0 = 0x0
+SCP_LX-&gt;(HWO Status:tShell): HWO name: ScanTimerHWO, Address = 0x2c130e0
+(HWO Status:tShell): HWO name: AutovoiceHWO, Address = 0x2c13470
+(HWO Status:tShell): HWO name: IrfHWO, Address = 0x2c14ab8
+(HWO Status:tShell): 
+(HWO Status:tShell):   IRF is NOT EMULATED, System Monitoring/Control is NOT EMULATED
+(HWO Status:tShell):   IRF Monitoring: OFF
+(HWO Status:tShell):   Alignment lights: OFF, Bore light: OFF, Bore fan: ON
+(HWO Status:tShell):   PDU ready condition state: Ready
+(HWO Status:tShell):   RF door: CLOSED
+(HWO Status:tShell):   Coil temp ready condition state: Ready
+(HWO Status:tShell):   System temp ready condition state: Ready
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: CanAutoConfig, Address = 0x2c15678
+(HWO Status:tShell): HWO name: CanLinkHWO, Address = 0x2c15b48
+(HWO Status:tShell): HWO name: CanDriverHWO, Address = 0x2c1a490
+(HWO Status:tShell): 
+(HWO Status:tShell): Coil Setting = 0xe2
+(HWO Status:tShell): Switch Select = (16-ch) 0x0, (32-ch) 0x0
+(HWO Status:tShell): Switch Select (SOF) = (16-ch) 0x0, (32-ch) 0x0
+(HWO Status:tShell): Bias Enable 0-1 = 0x0 0x0
+(HWO Status:tShell): Volt 0-1 = 0x0 0x0
+(HWO Status:tShell): Open Circuit 0-3 = 0x0 0x0 0x0 0x0
+(HWO Status:tShell): Short Circuit 0-3 = 0x0 0x0 0x0 0x0
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: CanRrfDifMasterHwo, Address = 0x2c1b9a8
+(HWO Status:tShell): 
+(HWO Status:tShell): Current Cmd = 0
+(HWO Status:tShell): I/O BitMap = 0x4f78
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: CanShimHWO, Address = 0x2c242f0
+(HWO Status:tShell): 
+(HWO Status:tShell): Channel 1 = 0, Channel 2 = 0
+(HWO Status:tShell): Channel 3 = 0, Channel 4 = 0
+(HWO Status:tShell): Channel 5 = 0, Channel 6 = 0
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: MdsLinkHWO, Address = 0x2c249a8
+(HWO Status:tShell): HWO name: RfNbHwo, Address = 0x2c28de0
+(HWO Status:tShell): 
+(HWO Status:tShell):   RF NB amp is NOT EMULATED
+(HWO Status:tShell):   RF NB amp frequency type: 0x90
+(HWO Status:tShell):   RF NB amp is SELECTED
+(HWO Status:tShell):   Requested amp state: STANDBY, Mode: HEAD
+(HWO Status:tShell):   Actual amp state: STANDBY, Mode: HEAD
+(HWO Status:tShell):   RF amp is NOT IN recovery
+(HWO Status:tShell):   Ready condition state: Ready
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: RfBbHwo, Address = 0x2c29b48
+(HWO Status:tShell): HWO name: PowerMonitorHWO, Address = 0x2c2a2a0
+(HWO Status:tShell): 
+(HWO Status:tShell):   Power monitor HWO is NOT EMULATED
+(HWO Status:tShell):   Power monitor type = 150
+(HWO Status:tShell):   Power monitor status is PM_OK
+(HWO Status:tShell):   Current requested state (HEAD): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell):   Current requested state (BODY): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell):   Current requested state (SPEC): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell):   Current control state (HEAD): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell):   Current control state (BODY): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell):   Current control state (SPEC): Am: 0, Pw: 0, Dc: 0
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: TrDriverHwo, Address = 0x2c2a980
+(HWO Status:tShell): HWO name: MdsRspDriver, Address = 0x251fea8
+(HWO Status:tShell): HWO name: OpWorkspaceHWO, Address = 0x2c2ebf8
+(HWO Status:tShell): HWO name: KeyboardHWO, Address = 0x2c366a8
+(HWO Status:tShell): HWO name: SriLinkHWO, Address = 0x2c397e8
+(HWO Status:tShell): HWO name: PatientHandlingHWO, Address = 0x2c3bea8
+(HWO Status:tShell): 
+(HWO Status:tShell):   SRI is NOT EMULATED, Table is NOT EMULATED
+(HWO Status:tShell):   Table calibration: 2518, Alignment To Isocenter: 8958
+(HWO Status:tShell):   Patient orientation: UNKNOWN
+(HWO Status:tShell):   Landmark control: OFF
+(HWO Status:tShell):   Landmark: 2553
+(HWO Status:tShell):   Auto advance: OFF, Advance wait time: 0 ms
+(HWO Status:tShell):   Scan location: 0
+(HWO Status:tShell):   Scan plane status: ON
+(HWO Status:tShell):   Table docked: ON, Table home: OFF, Table idle: OFF
+(HWO Status:tShell):   Scan plane ready condition state: Ready
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: SrbHWO, Address = 0x2c3c538
+(HWO Status:tShell): HWO name: BoreTempHWO, Address = 0x2c3ca18
+(HWO Status:tShell): 
+
+(HWO Status:tShell):   Bore temp is NOT EMULATED, SRI is NOT EMULATED
+(HWO Status:tShell):   Config: Temp offset: 0, Trip 1: 28, Trip 2: 32, Hysteresi
+s: 3
+(HWO Status:tShell):   App: App Alarm Limit: 0
+(HWO Status:tShell):   Sensor type: DUAL, Temp 1: 25, Temp2: 25
+(HWO Status:tShell):   Bore Temp: 25, Bore Temp Level: 0, NORMAL
+(HWO Status:tShell):   Ready condition state: Ready
+(HWO Status:tShell): 
+(HWO Status:tShell): HWO name: SrdHWO, Address = 0x2c3cfd8
+(HWO Status:tShell): HWO name: CoilIdHWO, Address = 0x2c3d4f0
+(HWO Status:tShell): 
+(HWO Status:tShell):   SRI is NOT EMULATED, Coil ID is NOT EMULATED
+(HWO Status:tShell):   Coil Connector: 0, Head T/R Upper, Status: DISCONNECTED
+(HWO Status:tShell):     Coil Used Status: DONT_CARE, REQUIRED
+(HWO Status:tShell):   Coil Connector: 1, Multicoil Lower, Status: DISCONNECTED
+(HWO Status:tShell):     Coil Used Status: DONT_CARE, REQUIRED
+(HWO Status:tShell):   Coil Connector: 2, Multicoil A, Status: DISCONNECTED
+(HWO Status:tShell):     Coil Used Status: DONT_CARE, REQUIRED
+(HWO Status:tShell):   Coil Connector: 3, Multicoil B, Status: DISCONNECTED
+(HWO Status:tShell):     Coil Used Status: DONT_CARE, REQUIRED
+(HWO Status:tShell):   Set Valid: VALID
+(HWO Status:tShell):   Ready condition state: Ready
+(HWO Status:tShell): HWO name: AutoStartHWO, Address = 0x2c3e990
+2708bc vxTaskEntry    +64 : shell ()
+137f88 shell          +1e8: 137fb8 ()
+1381c8 shell          +428: 21a950 ()
+21a950 ledRead        +f30: read ()
+207be4 read           +58 : iosRead ()
+2091a4 iosRead        +c4 : tyRead ()
+215f88 tyRead         +60 : semTake ()
+2636d4 semTake        +130: semBTake ()
+tShell restarted.
+</PRE></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397498804">2&nbsp;&nbsp;System Restoration<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>Close the SCP, AGP, and APS windows when done.</P></LI><LI CLASS="numlist"><P>Perform a head or body scan to ensure system functionality.</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

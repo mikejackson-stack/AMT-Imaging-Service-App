@@ -1,0 +1,62 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Troubleshooting Communication Errors</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/26/07</P></td></tr></table><H1 ID="top">Troubleshooting Communication Errors </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397854929">1&nbsp;&nbsp;Ethernet Communication Between MGD and System Host<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Ethernet communication is via the second Ethernet port on the LINUX
+PC Host computer. This path is used for Application code download to the controllers,
+including downloading of PSDs to the MGD Chassis in the system cabinet. It
+is also used for serial communication between the host and three (3) MGD processor
+boards and STIF board.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397854929-dup.1">2&nbsp;&nbsp;VRE Subsystem Communications<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">For details on troubleshooting the VRE subsystem see <SPAN CLASS="MODULEREF"><A HREF="637616.htm#SL639447-637616" TARGET="_blank"><I>VRE Troubleshooting</I></A></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397855105">3&nbsp;&nbsp;Communication Errors<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Booting the system up to Applications software. The Host Monitor will
+time out after 400 seconds (6 min, 40 secs) if communication has failed between
+the system cabinet and the host computer the system will fail to initialize.</P><P CLASS="sect1"><A HREF="javascript:winopen('547471tbld0e49.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> gives examples
+of errors that will be seen.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL547484-547471"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">COMMUNICATION ERRORS</SPAN> </P><table summary="COMMUNICATION ERRORS" border="1"><colgroup><col width="286"><col width="286"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="top">Error
+Description</th><th align="center" valign="top">Error
+Code</th></tr></thead><tbody valign=""><tr valign="top"><td align="left" valign="top">Thu Jul
+11 07:47:45 2006</td><td rowspan="5" align="center" valign="middle">Error:
+2223851</td></tr><tr valign="top"><td align="left" valign="top">Host:
+b3a Proc: NSP</td></tr><tr valign="top"><td align="left" valign="top">File:
+TardisReset.cc  Line: 524</td></tr><tr valign="top"><td align="left" valign="top">Reset
+TPS was not successful.</td></tr><tr valign="top"><td align="left" valign="top">errno
+: 2-&gt;</td></tr><tr valign="top"><td align="left" valign="top">Thu Jul
+11 07:47:45 2006</td><td rowspan="4" align="center" valign="middle">Error:
+2223817</td></tr><tr valign="top"><td align="left" valign="top">Host:
+b3a   Proc: NSP</td></tr><tr valign="top"><td align="left" valign="top">File:
+TardisReset.cc  Line: 451</td></tr><tr valign="top"><td align="left" valign="top">TPS is
+not responding. Please reset TPS.</td></tr></tbody></table></div></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397855282">4&nbsp;&nbsp;COMMUNICATION PATH<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Refer to <A HREF="javascript:winopen('547471illd0e100.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A> for
+Signa Excite communication path block diagram.</P><DIV CLASS="ILLUSTRATION" id="SL547487-547471"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">COMMUNICATION PATH DIAGRAM</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/547471-547958.jpg" BORDER="0" usemap="#SL547965-547471"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397855622">5&nbsp;&nbsp;TROUBLESHOOTING<SPAN CLASS="SECT1EFF"> </SPAN></H2><OL><LI CLASS="numlist"><P>First determine which communication path is failing: the Reset
+serial Path or the Ethernet Path.</P><OL TYPE="a"><LI CLASS="numlist"><P>Either from Common Service Desktop <SPAN CLASS="GUILABEL"><I>Utilities</I></SPAN> tab,
+select &#8220;Log into APS,APG,SCP&#8221; or from C-shell, type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>mgd_term</B></FONT></SPAN> that
+opens up three (3) separate windows that tries to communicate with the controllers
+via the serial link.</P></LI><LI CLASS="numlist"><P>Then select TPS Reset. All three (3) controllers should report
+VxWorks boot status.  If serial connection is successful to all three controllers,
+serial path is okay.</P><P>Check the boot status of each of the controllers.  Specifically, check
+the area where the Host tries to establish a network connection to the Controllers.</P><P>For APS and AGP, attach TCP/IP interface to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>fei0</B></FONT></SPAN>.</P><P>For SCP, attach TCP/IP interface to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>motfec0</B></FONT></SPAN>.</P><P>Pinging host at 10.217.255.255 to determine IP address.</P><P>Pinging host at 172.22.255.255 to determine IP address.</P><P>Pinging host at 10.121.255.255 to determine IP address.</P><P>Pinging host at 192.168.255.255 to determine IP address.</P><P>Pinging host at 10.47.255.255 to determine IP address.</P><P>Pinging host at 10.0.255.255 to determine IP address.</P><P>MGD Host IP = 10.0.1.1</P><P>Attaching network interface lo0... done.</P><P>If all three (3) controllers indicate successful connection, Ethernet
+connection is okay.</P></LI><LI CLASS="numlist"><P>If all three windows fail to open, the Host does not see or
+recognize the Term Server.</P></LI><LI CLASS="numlist"><P>Check: Power to the term server box.</P></LI><LI CLASS="numlist"><P>SCP ONLY:  If the Ethernet and Serial Links are both down
+only to the SCP Controller board, verify the RJ45 connectors are in the proper
+configuration for this board.  Since there are two (2) RJ45 connectors, it
+can easily be connected wrong.</P></LI></OL></LI><LI CLASS="numlist"><P>Serial TPS reset connection from Terminal server port1 to
+STIF Host serial port is needed to receive the reset command from the host.
+Check connection. See <A HREF="javascript:winopen('547471illd0e100.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P></LI><LI CLASS="numlist"><P>View boot progress through serial interface sessions to each
+processor (that is, &#8220;cu APS&#8221;, &#8220;cu AGP&#8221;, &#8220;cu
+SCP&#8221;, &#8220;mgd_term&#8221;, or Common Service Desktop Utility &#8220;Log
+Into APS/AGP/SCP&#8221;).</P></LI><LI CLASS="numlist"><P>Ethernet runs from second PCI-Ethernet card in host to hub
+in system cabinet, then is routed to APS, AGP, and SCP. All cables have RJ45-style
+connectors. Connections are interchangeable and can be swapped to isolate
+cable or hub issues.</P></LI><LI CLASS="numlist"><P>The Ethernet connections are interchangeable at the face of
+the APS, AGP, and SCP.</P></LI><LI CLASS="numlist"><P>Host Fiber interface from IT-PCI card in host to IT-PMC card
+mounted on APS. Communicates image data from MGD to Host. Extensive diagnostic
+tests are available to check this.</P></LI><LI CLASS="numlist"><P>When a scanner completes TPS reset, is able to prescribe and
+download a series, and auto-prescans but fails during scan with a MRMail,
+the problem has typically been with the IT communication set (IT-PCI in host,
+IT-PMC on APS)</P></LI><LI CLASS="numlist"><P>If one board fails to establish a Network connection and the
+other two (2) boards are successful, the problem may be isolated to the connection
+between the Hub in the System Cabinet to the failing board. Swap Ethernet
+cable connections between the failing board and passing board at the board
+side only. If the problem remains on the same board, possible bad Controller
+board.  If the problem moves to the other Controller, Possible bad cable or
+Hub port. Try a different Hub port and/or cable.</P></LI><LI CLASS="numlist"><P>If all three (3) controllers failed the Ethernet connection,
+check: Power on the Hub/Ethernet Switch. Check <SPAN CLASS="MODULEREF"><A HREF="477569.htm#SL648770-477569" TARGET="_blank"><I>Host Inventory (hinv)</I></A></SPAN> for second Ethernet card (ef1).  Check Cable connection between
+2nd Ethernet board and Hub/Ethernet Switch. </P></LI><LI CLASS="numlist"><P>It is possible to connect a laptop directly to serial port
+on one of the three (3) processor boards. You might want to do this to bypass
+the term server. )</P></LI></OL></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -1,0 +1,75 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>UTNS 3 Theory and Functionality</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/25/07</P></td></tr></table><H1 ID="top">UTNS 3 Theory and Functionality </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397677657">1&nbsp;&nbsp;Summary<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">UTNS stands for &#8220;Universal Transient Noise Suppression&#8221;.
+ In EXCITE II systems, the UTNS 3 is the replacement for what was previously
+used to block white pixels: the TNF, or &#8220;Transient Noise Filter&#8221;.
+ This document explains some theory as to how the UTNS 3 works as well as
+some of the major differences between the TNF and the UNTS 3.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397677658">2&nbsp;&nbsp;Reference Documents / Vendor Manuals<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"><SPAN CLASS="MODULEREF"><A HREF="536045.htm#SL536048-536045"><I>UTNS3
+Troubleshooting</I></A></SPAN>.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397677833">3&nbsp;&nbsp;Functional Overview of UTNS<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The Universal Transient Noise Suppressor (UTNS) is a detection circuit
+designed to detect &#8220;spike noise&#8221; before it enters the Receiver.
+The UTNS is located in the Remote RF (RRF) chassis with inputs coming from
+the MUX board and outputs going to the Receiver board. The control of the
+UTNS is accomplished from the Remote RF &#8211; Digital Interface (RF-DIF) board.
+ </P><P CLASS="sect1">The &#8220;spike noise&#8221; generated during MRI scans can result
+in &#8220;white pixel&#8221; artifacts in the image and potential damage to
+hardware in the system. Therefore, an effective means to detect and remove
+these spikes as they enter the Receiver should both improve image quality
+and also provide further protection of over-voltage conditions to components
+in the signal path.  </P><P CLASS="sect1">The UTNS 3 receives 8 channels of RF signals at its input. The signal
+first passes through the blanking switch. This switch on each channel is shunted
+to a 50-Ohm load whenever the Receiver is commanded to a &#8220;blanking&#8221;
+condition. Each channel is then passed through a &micro;-wave amplifier, one
+of two possible attenuators and a second &micro;-wave amplifier. The two possible
+gain paths, due to different value attenuators, are coordinated with the attenuation
+control of the Receiver board. This &#8220;distributed gain&#8221; approach
+of splitting the channel gain across both the Receiver and UTNS was implemented
+because the UTNS 3 provides a much &#8220;quieter&#8221; environment than
+the Receiver, in terms of noise from clocks and other sources on the board.
+The signal is then passed through a notching switch before leaving the UTNS
+on its way to the Receiver. </P><P CLASS="sect1">The UTNS 3 has a dedicated detection path. This signal path originates
+in the magnet room from a magnetic loop antenna attached to the rear pedestal.
+ A 50-Ohm cable then carries the output of the magnetic loop to the UTNS detection
+port. The detection path uses a logarithmic amplifier for broadband detection
+of spike events picked up by the magnetic loop antenna in the scan room. This
+detection method allows the design to be a &#8220;universal TNS&#8221; in
+that it could be used over the entire operating frequency range of 8 &#8211; 128
+MHz, which includes the MR signals for 0.2 T to 3.0 T systems. This is possible
+because the design does not allow the spike to be shaped by the path of the
+receive signal, which is frequency dependent.  </P><P CLASS="sect1">The output of the logarithmic amplifier is then conditioned and sent
+through a comparator, where the magnitude of any spike is compared to a certain
+detection threshold level that is programmable via the RF-DIF. If the spike&#8217;s
+magnitude exceeds this threshold, a one-shot device is triggered. The output
+of the one-shot is then sent to the RF-DIF signaling that a spike event had
+occurred. If &#8220;notching&#8221; is enabled for any one of eight channels
+on the UTNS, then the output of the one-shot is also used to activate an analog
+switch that will &#8220;notch&#8221; out the MR signal in the signal path.
+This notch duration is also controlled by the RF-DIF.</P><P CLASS="sect1">The UTNS is designed to notch the received RF signal by shunting it
+to a load instead of allowing it to pass to the receiver. The analog notch
+function removes the majority of the spike, minimizing the amount of spike
+energy seen by the Receiver but missing the front edge of the spike due to
+the delay in the detection path. Digital removal will then be applied to the
+signal once it reaches the RF-DIF in order to eliminate the front edge of
+the spike, which is not caught by analog notching. </P><P CLASS="sect1">The UTNS has the capability of testing the spike detection path on the
+assembly itself. This is accomplished through a DAC and Trigger signal, which
+pulse a fast-recovery diode. The noise diode is pulsed once every 45uS while
+enabled. This diode is part of an LC tank circuit and couples spike noise
+directly into the spike detection path and bypassing the magnetic loop antenna
+located externally to the UTNS 3. The amplitude of the spike introduced into
+the detection path is controlled by the DAC.</P><DIV CLASS="ILLUSTRATION" id="ov-1291397677835"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Universal Transient Noise Suppressor RF Functional Diagram </SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/536084-536093.jpg" BORDER="0" usemap="#SL536088-536084"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397677995">4&nbsp;&nbsp;TNF versus the UTNS<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Understanding the differences between the Transient Noise Filter and
+the UTNS will help understand how to troubleshoot the Spike Noise detection
+path.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="ov-1291397677996"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">TNF versus the UTNS</SPAN> </P><table summary="TNF versus the UTNS" border="1"><colgroup><col width="33%"><col width="33%"><col width="34%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>TNF</B></td><td align="center" valign="middle"><B>UTNS 3</B></td><td align="center" valign="middle"><B>Consequence</B></td></tr><tr valign="middle"><td valign="middle">Alters the receive path taken be MR signal.  Adds delay and changes
+frequency response</td><td valign="middle">Detection of spike noise is not dependent on the receive path.  Does
+not alter receive signal.</td><td valign="middle">There are no field strength components on the UTNS board, and the UTNS
+is not affecting any component along the frequency path.  As such, magnitude
+drift SPT problems should not be caused by the UTNS.</td></tr><tr valign="middle"><td valign="middle">Noise suppression built into the receive path.  Bad parts in the TNF
+could corrupt the receive signal</td><td valign="middle">MR Path and notching path are separated.  The gain is in the UTNS board.</td><td valign="middle">When troubleshooting the TNF, the TNF could be physically bypassed
+and scanning still allowed.  The UTNS has gain internal to the board; therefore
+it cannot be physically bypassed.   See the <SPAN CLASS="MODULEREF"><A HREF="536045.htm#SL536048-536045"><I>UTNS 3 Troubleshooting</I></A></SPAN> document
+for UTNS troubleshooting methods</td></tr><tr valign="middle"><td valign="middle">Only available for 1.5T systems</td><td valign="middle">Works for all MR system frequencies</td><td valign="middle">This theory document applies to all field strengths of EXCITE platform </td></tr><tr valign="middle"><td valign="middle">Is enabled by a physical switch located on the TNF assembly</td><td valign="middle">Enabled through software configuration files</td><td valign="middle">The TNF can be completely bypassed by flipping a switch.  Only the
+notching capability of the UTNS can be bypassed (through software) without
+affecting the signal strength</td></tr><tr valign="middle"><td valign="middle">Has counter located on the TNF assembly </td><td valign="middle">Counter is viewed from the operator console using software commands</td><td valign="middle">Counter is real-time for the TNF, but it is taken at one particular
+moment in time &#8211; the time at which the software command is executed - for
+the UTNS.  See <SPAN CLASS="MODULEREF"><A HREF="536045.htm#SL536048-536045"><I>UTNS 3 Troubleshooting</I></A></SPAN> for information on how
+to view spike noise counts.</td></tr></tbody></table></div></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

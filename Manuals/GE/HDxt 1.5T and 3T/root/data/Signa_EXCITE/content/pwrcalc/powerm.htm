@@ -1,0 +1,401 @@
+<html>
+
+<!-- Created by Robert R. Hawhtorne, GE Medical Systems MR Service Engineering. September 18, 2001-->
+<!-- Rev 0, September 18, 2001: Initial Release-->
+<!-- Rev 1, November 8, 2001: added Vp to dBm and dBm to Vp Conversions-->
+
+
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>New Page 1</title>
+</head>
+
+<body bgcolor="#FFFFFF" vlink="#0000FF">
+
+
+
+<form method="POST" name="pwrcalc" >
+  <table border="3" cellpadding="2" width="587" bordercolor="#000000">
+  <tr>
+    <td width="100%" align="center" bgcolor="#FF0000" colspan="4"><b><font size="4"><a name="POWER CALCULATOR">POWER CALCULATOR</a></font></b></td>
+  </tr>
+  <tr>
+    <td width="100%" align="left" bgcolor="#FFFFFF" colspan="4" valign="top"><a name="top">The</a> following tool can be used to determine Power in watts
+      from oscilloscope measured Vpeak, or to determine a Vpeak measurement when
+      the desired power output is known. These formulae are to be used when:
+      <ul>
+        <li>&nbsp;<b>Not</b> using the RF Power Measurement Kit&nbsp;</li>
+        <li>&nbsp;The Dummy Load &amp; Cable Attenuation Factor has accurately
+          been determined</li>
+        <li>&nbsp;The Scope Correction Factor for the oscilloscope being used is known</li>
+      </ul>
+      <p>Fill in the required data in the gray shaded area, push the <b>[Calculate]</b>
+      button to view the answer.&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="18%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Vpeak</font></b></td>
+    <td width="24%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Scope Correction Factor</font></b></td>
+    <td width="29%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Dummy Load &amp; Cable Factor</font></b></td>
+    <td width="29%" bgcolor="#00FFFF">
+      <p align="center"><b><font face="Arial">You Want To Know Power (Watts)</font></b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="18%" align="center" bgcolor="#C0C0C0" valign="middle">
+            <p align="center">&nbsp;<input type="text" name="vpeak" size="4" value="38" tabindex="1" maxlength="5"></td>
+    <td width="24%" valign="middle" align="center" bgcolor="#C0C0C0"><input type="text" name="s_corr_factor" size="4" value="0.88" tabindex="2" maxlength="5"></td>
+    <td width="29%" align="center" bgcolor="#C0C0C0" valign="middle">
+      <p align="center"><input type="text" name="vdummy" size="4" value="1025" tabindex="3" maxlength="5"></td>
+    <td width="29%" align="center" valign="middle">
+      
+      <p><input type="text" name="power_watts" size="6" maxlength="5"><input type="button" value="Calculate" name="Button_1" onClick="power_w_calc()" tabindex="4">
+      
+    </td>
+  </tr>
+</table>
+
+<table border="3" cellpadding="2" width="587" bordercolor="#000000">
+  <tr>
+    <td width="19%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Required
+      Power (watts)</font></b></td>
+    <td width="23%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Scope Correction Factor</font></b></td>
+    <td width="29%" align="center" bgcolor="#00FFFF"><b><font face="Arial">Dummy Load &amp; Cable Factor</font></b></td>
+    <td width="29%" bgcolor="#00FFFF">
+      <p align="center"><b><font face="Arial">You Want To Know Scope Vpeak</font></b></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="19%" align="center" bgcolor="#C0C0C0" valign="middle">
+            <p align="center">&nbsp;<input type="text" name="rpower" size="4" value="2000" tabindex="5" maxlength="5"></td>
+    <td width="23%" valign="middle" align="center" bgcolor="#C0C0C0"><input type="text" name="s_corr_factor2" size="4" value="0.88" tabindex="6" maxlength="5"></td>
+    <td width="29%" align="center" bgcolor="#C0C0C0" valign="middle">
+      <p align="center"><input type="text" name="vdummy2" size="4" value="1025" tabindex="7" maxlength="5"></td>
+    <td width="29%" align="center" valign="middle">
+      
+      <p><input type="text" name="vpeak2" size="6" maxlength="5"><input type="button" value="Calculate" name="Button_2" onClick="vpeak_calc()" tabindex="8">
+      
+    </td>
+  </tr>
+</table>
+
+  <p>&nbsp;</p>
+</form>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<form method="POST" name="uconvert" >
+  
+<table border="2" cellpadding="2" width="587" bordercolor="#000000" height="272">
+  <tr>
+    <td width="100%" bgcolor="#FF0000" colspan="3" height="22">
+      <p align="center"><b><font size="4"><a name="Unit Conversions">UNIT
+      CONVERSIONS</a></font></b></td>
+  </tr>
+  <tr>
+    <td width="100%" colspan="3" height="38">The following tools can be used to
+      convert Vpp scope readings to dBm, Vp to dBm, dBm to watts, dBm to Vpp or
+      dBm to Vp. Enter Value
+      to be converted in the shaded areas </td>
+  </tr>
+  <tr>
+    <td width="100%" colspan="3" height="19"></td>
+  </tr>
+  <tr>
+    <td width="33%" height="54" rowspan="2"><b><font size="3">Convert Vpp to dBm</font></b></td>
+    <td width="33%" height="24" align="center" bgcolor="#00FFFF" valign="middle"><b>Vpp</b></td>
+    <td width="34%" height="20" align="center" bgcolor="#00FFFF" valign="middle"><b>dBm</b></td>
+  </tr>
+  <tr>
+    <td width="33%" height="16" bgcolor="#C0C0C0" valign="middle" align="center">
+      <p align="center"><input type="text" name="vpp_v_to_dbm" size="5" maxlength="5"></td>
+    <td width="34%" height="20" align="center" valign="middle">
+      <p align="center"><input type="text" name="dbm_of_vpp" size="6" maxlength="5"><input type="button" value="Calculate" name="Button_3" onClick="vpptodbm()">
+      
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" height="62" rowspan="2"><b><font size="3">Convert Vp to dBm</font></b></td>
+    <td width="33%" height="1" bgcolor="#00FFFF" valign="middle" align="center">
+      <b>Vp</b></td>
+    <td width="34%" height="1" align="center" valign="middle" bgcolor="#00FFFF">
+      <b>dBm</b>
+      
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" height="1" bgcolor="#C0C0C0" valign="middle" align="center">
+      <input type="text" name="vp_v_to_dbm" size="5" maxlength="5"></td>
+    <td width="34%" height="1" align="center" valign="middle">
+      <input type="text" name="dbm_of_vp" size="6" maxlength="5"><input type="button" value="Calculate" name="Button_vp" onClick="vptodbm()">
+      
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" height="54" rowspan="2"><b><font size="3">Convert dBm to Watts</font></b> </td>
+    <td width="32%" height="22" bgcolor="#00FFFF" align="center" valign="middle">
+      <p align="center"><b>dBm</b></td>
+    <td width="35%" height="19" bgcolor="#00FFFF" align="center" valign="middle">
+      <p align="center"><b>Watts</b></td>
+  </tr>
+  <tr>
+    <td width="32%" height="16" bgcolor="#C0C0C0" align="center" valign="middle">
+      <p align="center"><input type="text" name="dbm_to_watts" size="5" maxlength="5"></td>
+    <td width="35%" height="19" align="center" valign="middle">
+      <p align="center"><input type="text" name="watts_of_dbm" size="6" maxlength="5">
+      <input type="button" value="Calculate" name="Button_4" onClick="dbmtowatts()">
+      
+    </td>
+  </tr>
+  <tr>
+    <td width="32%" height="54" rowspan="2"><b><font size="3">Convert dBm to Vpp
+      / Vp</font></b></td>
+    <td width="33%" height="21" bgcolor="#00FFFF" align="center" valign="middle"><b>dBm</b></td>
+    <td width="35%" height="19" bgcolor="#00FFFF" align="center" valign="middle"><b>Vpp&nbsp;&nbsp; /&nbsp;&nbsp; Vp&nbsp;</b></td>
+  </tr>
+  <tr>
+    <td width="33%" height="17" align="center" bgcolor="#C0C0C0" valign="middle"><input type="text" name="dbm_to_vpp" size="5" maxlength="5"></td>
+    <td width="35%" height="19" align="center" valign="middle"><input type="text" name="vpp_of_dbm" size="6" maxlength="5">
+      <font size="5"><b>/ </b></font><input type="text" name="vp_of_dbm1" size="6" maxlength="5"><input type="button" value="Calculate" name="Button_5" onClick="dbmtovpp()">
+      
+    </td>
+  </tr>
+</table>
+
+  <p>&nbsp;</p>
+</form>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<form method="POST" name="msaf" >
+  
+<table border="2" cellpadding="2" width="587" bordercolor="#000000" height="232">
+  <tr>
+    <td width="100%" colspan="3" height="12" bgcolor="#FF0000">
+      <p align="center"><b><font size="4"><a name="RF Kit Calibration Verification">RF Kit Calibration Verification</a>&nbsp;</font></b></td>
+  </tr>
+  <tr>
+    <td width="100%" colspan="3" height="32" valign="top" align="left"><b>RF Kit
+      Calibration Verification</b> can be done by determining the attenuation
+      between the RF source and the scope by using the Dummy Load and Cable
+      Calibration procedure. After you have determined the &quot;Magnitude of
+      Squared Attenuation Factor&quot; of the elements under test, enter the
+      &quot;Magnitude Squared Attenuation Factor&quot; value into the shaded
+      cell below and push the [Calculate] button to the right to read the dB
+      attenuation. The dB should be very close to the value stated on the Reference
+      Card. </td>
+  </tr>
+  <tr>
+    <td width="32%" height="33" rowspan="3"></td>
+    <td width="33%" height="20" bgcolor="#00FFFF" valign="middle" align="center">
+      <p align="center"><b>Mag. Sqd. Atten. Factor</b></td>
+    <td width="35%" height="25" bgcolor="#00FFFF" valign="middle" align="center">
+      <p align="center"><b>dB</b></td>
+  </tr>
+  <tr>
+    <td width="33%" height="20" bgcolor="#00FFFF" valign="middle" align="center">
+      <p align="center"><input type="text" name="msaf_to_db" size="13" maxlength="15"></td>
+    <td width="35%" height="28" bgcolor="#00FFFF" valign="middle" align="center">
+      <p align="center"><input type="text" name="db_of_msaf" size="6" maxlength="5">
+      <input type="button" value="Calculate" name="Button_5" onClick="msaftodb()">
+      
+    </td>
+  </tr>
+</table>
+
+  <p>&nbsp;</p>
+</form>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+<p>GEMS Signa RF Power Calculator Rev 1</p>
+
+</body>
+
+<script language="JavaScript">
+
+function test(){alert("help");}
+
+function power_w_calc(){ // This function is to calculate Power in Watts
+
+//&& s_corr_factor.value > 0 && vdummy > 0
+
+if (document.pwrcalc.vpeak.value > 0 && document.pwrcalc.s_corr_factor.value > 0 && document.pwrcalc.vdummy.value > 0) {
+	
+				s_peak = document.pwrcalc.vpeak.value;
+
+
+			s_correct = document.pwrcalc.s_corr_factor.value; 
+			s_dummy = document.pwrcalc.vdummy.value;
+
+			vpower = Math.round((((s_peak/s_correct)*(s_peak/s_correct))/100)*s_dummy);	
+
+			document.pwrcalc.power_watts.value=vpower;
+		
+	}
+	else { alert("Input Fields Must Contain Greater than Zero Numbers and Can Not Be Blank") };
+
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+function vpeak_calc(){ // This function is to calculate scope peak voltage
+
+
+if (document.pwrcalc.rpower.value > 0 && document.pwrcalc.s_corr_factor2.value > 0 && document.pwrcalc.vdummy2.value > 0) {
+	
+				
+
+			s_rpower = document.pwrcalc.rpower.value;
+			s_correct = document.pwrcalc.s_corr_factor2.value; 
+			s_dummy = document.pwrcalc.vdummy2.value;
+
+			vpower = Math.sqrt(((s_rpower*100)/s_dummy)*s_correct);	
+
+			document.pwrcalc.vpeak2.value=vpower;
+			
+			
+			//test1=vpower.toString();
+			//test2=test1.substr(0,4);
+			//alert(test2);
+			
+		
+	}
+	else { alert("Input Fields Must Contain Greater than Zero Numbers and Can Not Be Blank") };
+
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function vpptodbm(){ // convert vpp to dbm
+
+
+if (document.uconvert.vpp_v_to_dbm.value > 0 ) {
+	
+				
+
+			s_vpp = document.uconvert.vpp_v_to_dbm.value;
+			
+						
+			s_dbm = (20 * (Math.LOG10E * Math.log(s_vpp/0.632456)) );			
+			
+
+			document.uconvert.dbm_of_vpp.value= s_dbm;
+			
+			
+			
+			
+		
+	}
+	else { alert("Vpp field can not be blank or a non numeric character") };
+
+
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
+function dbmtowatts(){ // This function is to calculate dbm to Watts
+
+	
+			s_dbm = document.uconvert.dbm_to_watts.value;
+
+
+			vwatts = Math.round((Math.pow(10, (s_dbm/10))/1000));	
+
+			document.uconvert.watts_of_dbm.value=vwatts;
+		
+	
+
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+function dbmtovpp(){ // This function is to calculate dbm to Vpp
+
+
+	
+			s_dbm = document.uconvert.dbm_to_vpp.value;
+
+
+			vvpp = (Math.pow(10, (s_dbm/20))*0.632456);	
+			vvp = (Math.pow(10, (s_dbm/20))*0.316228);
+
+			document.uconvert.vpp_of_dbm.value=vvpp;
+			document.uconvert.vp_of_dbm1.value=vvp;
+
+		
+	
+
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+function msaftodb(){ // This function is to calculate Mag. Sqd. Atten. Factor
+
+
+	
+			s_msaf = document.msaf.msaf_to_db.value;
+
+
+			vdbm = (10 * (Math.LOG10E * Math.log(s_msaf)) );	
+
+			document.msaf.db_of_msaf.value=vdbm;
+		
+	
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+function vptodbm(){ // convert vp to dbm
+
+
+if (document.uconvert.vp_v_to_dbm.value > 0 ) {
+	
+				
+
+			s_vpp = document.uconvert.vp_v_to_dbm.value;
+			
+						
+			s_dbm = (20 * (Math.LOG10E * Math.log(s_vpp/0.316228)) );			
+			
+
+			document.uconvert.dbm_of_vp.value= s_dbm;
+			
+			
+			
+			
+		
+	}
+	else { alert("Vpp field can not be blank or a non numeric character") };
+
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+</script>
+
+
+
+</html>

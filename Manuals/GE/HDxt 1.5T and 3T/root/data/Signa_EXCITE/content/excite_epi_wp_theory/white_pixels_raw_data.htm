@@ -1,0 +1,195 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>White Pixels in Raw Data and Images</title>
+</head>
+
+<body>
+
+<p align="center"><b><font face="Arial" size="3"><span style="background-color: #FFFF00">1.5T
+</span></font></b><span style="background-color: #FFFF00"><b><font face="Arial" size="3">Excite
+White
+Pixel - Theory</font></b></span></p>
+<p><b><font face="Arial" size="3">White Pixels in Raw Data and Images</font></b></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000" face="Arial" size="3">For
+purposes of this discussion, let's assume that the engineers of our MRI system
+have made no accommodations to eliminate or filter the spike noise from the
+receive data, such as the TNF.<span style="mso-spacerun: yes">&nbsp; </span>(Click
+here for <a href="transient_noise_filter.htm">TNF Theory</a>)<span style="mso-spacerun: yes">&nbsp;
+</span><o:p>
+</o:p>
+</font></span></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000" face="Arial" size="3">&nbsp;<o:p>
+</o:p>
+</font></span></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000" face="Arial" size="3">Once
+spike noise occurs and is received by the MRI system, how the white pixel(s)
+effects the end image depends a lot on the amplitude, number of events and when
+in the acquisition (k-space) the noise was received.<o:p>
+</o:p>
+</font></span></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000" face="Arial" size="3">&nbsp;<o:p>
+</o:p>
+</font></span></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000">First,
+let's get an idea of what a white pixel would look like in time domain.<span style="mso-spacerun: yes">&nbsp;
+</span>That is, if we were viewing the receiver output on an oscilloscope, what
+would the waveform look like?<span style="mso-spacerun: yes">&nbsp; </span>It
+might look something like this plot:</font><o:p>
+</o:p>
+</span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_1.jpg" width="515" height="283"></font></p>
+<p><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">When
+we reconstruct the view (by doing a Fourier Transform it) the single spike looks
+like this plot in the frequency domain:<o:p>
+</o:p>
+</span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_2.jpg" width="517" height="287"></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">We
+see that the single spike has all of its energy spread out in all frequencies
+across the spectrum of that view.<span style="mso-spacerun: yes">&nbsp; </span>The
+baseline of the entire view has been increased slightly.<span style="mso-spacerun: yes">&nbsp;
+</span>Remember?<span style="mso-spacerun: yes">&nbsp; </span>That's why we call
+it &quot;broadband&quot; noise.<span style="mso-spacerun: yes">&nbsp; </span><o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">When
+the 2nd FFT is applied (column FFT) the elevated view's data will appear as a
+smaller spike (single row) in each projection, so it's energy will be further
+spread into all of the frequencies of each column.<span style="mso-spacerun: yes">&nbsp;
+</span>Based on this, we can predict that if there were no other signals
+collected (ie. no echo or other spikes) then the single spike would only have
+the effect of raising the intensity of the image background slightly and nothing
+more.<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">Let's
+take a look at a normal echo in both time domain and frequency domain.<span style="mso-spacerun: yes">&nbsp;&nbsp;</span>&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_3.jpg" width="519" height="285"></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_4.jpg" width="515" height="283"></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">The
+plot in frequency domain is similar to what you would see in manual prescan of a
+phantom<span style="mso-spacerun: yes">&nbsp; </span>That's because the AP does
+an FFT of the projection before it is displayed<span class="862424019-04022004">.</span></span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font face="Arial" size="3">&nbsp;</font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">...and
+now let's see what happens to it after we apply our spike noise event.<span style="mso-spacerun: yes">&nbsp;
+</span>This spike is relative<span class="862424019-04022004">ly</span> small in
+amplitude and is at approximately sample # 98<span class="862424019-04022004">
+in the below plot.</span></span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_5.jpg" width="516" height="322"></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">If
+we were to view the entire raw data file, it might look something like this.<span style="mso-spacerun: yes">&nbsp;
+</span><o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_6.jpg" width="520" height="352"></font></p>
+<p align="left"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">And
+then, here's what the FFT of the above view would look like:<o:p>
+</o:p>
+</span></font></p>
+<p align="center"><font face="Arial" size="3"><img border="0" src="white_7.jpg" width="516" height="284"></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">Notice
+that there is now a sine wave (actually it's cosine, but who's counting)
+superimposed on the normal frequency projection of the phantom.<span style="mso-spacerun: yes">&nbsp;
+</span>Since frequency is the inverse of time, (F=1/T) the frequency of that
+sine wave in the frequency domain is inversely proportional to the distance in
+time domain between the echo and the spike.<span style="mso-spacerun: yes">&nbsp;
+</span>The magnitude of the sine wave component is directly proportional to the
+spike's amplitude.<span style="mso-spacerun: yes">&nbsp; </span><o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">&nbsp;<o:p>
+</o:p>
+</span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000" face="Arial" size="3"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial">This
+sine wave is what ends up as the artifact commonly called &quot;corduroy&quot;.<span style="mso-spacerun: yes">&nbsp;
+</span>In an image with a single spike, the image will be superimposed with a
+singular pattern of waves, which resemble the wale of corduroy material.<span style="mso-spacerun: yes">&nbsp;
+</span>The direction of the corduroy lines is perpendicular to the vector that
+the spike forms in relationship to the echo center in k-space.<span style="mso-spacerun: yes">&nbsp;</span></span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font face="Arial" size="3">&nbsp;</font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font color="#000000" face="Arial" size="3">Here's
+an example of what corduroy artifact looks like<span class="862424019-04022004">
+on a patient scan</span>:<o:p>
+</o:p>
+</font></span></p>
+<p align="center"><img border="0" src="white_1.gif" width="252" height="279"></p>
+
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000"><span style="FONT-FAMILY: 'Palatino Linotype'; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><o:p>
+</span><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font face="Arial" size="3"><span class="862424019-04022004">Note
+the faint lines running diagonally throughout the image.&nbsp; Since there are
+only lines going in one direction throughout the image, we can assume there is
+only one (significant) spike event in this acquisition.</span></o:p>
+</font></span></font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font face="Arial" size="3"><font color="#000000"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><o:p>
+</o:p>
+</span></font>&nbsp;</font></p>
+<p class="MsoNormal" style="MARGIN: 0in 0in 0pt; mso-layout-grid-align: none"><font color="#000000"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font face="Arial" size="3">If
+there&nbsp;<span class="862424019-04022004">we</span>re two spikes, there&nbsp;<span class="862424019-04022004">would
+</span>be two corduroy patterns superimposed on each other over the desired
+image.<span style="mso-spacerun: yes">&nbsp; </span>Often this will appear as a
+&quot;herringbone&quot; tweed pattern.<span style="mso-spacerun: yes">&nbsp; </span>I
+don't know why we get so hung up on fabrics when it comes to these artifact
+names.<span style="mso-spacerun: yes">&nbsp;&nbsp;</span></font></span><span style="FONT-FAMILY: 'Palatino Linotype'; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><span style="mso-spacerun: yes">
+</span><o:p>
+</o:p>
+</span></font></p>
+<p align="center"><img border="0" src="white_2.gif" width="256" height="283"></p>
+
+<p align="left"><font color="#000000"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font face="Arial" size="3" color="#000000">More
+spikes, more corduroy<span class="862424019-04022004"> pattern</span>s<span class="862424019-04022004">
+will be</span>&nbsp;superimposed.<span style="mso-spacerun: yes">&nbsp; </span>Sometimes
+they form some complex and interesting interference patterns.</font></span><span style="FONT-FAMILY: 'Palatino Linotype'; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><o:p>
+</o:p>
+</span></font></p>
+
+<p align="center"><img border="0" src="white_3.gif" width="257" height="285"></p>
+
+<p align="left"><font color="#000000"><span style="mso-fareast-font-family: Times New Roman; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><font face="Arial" size="3" color="#000000">If
+enough spikes occur, the patterns become indistinguishable and the image just
+looks like it has a lot of noise, which is sort of funny because that's exactly
+what it has!</font></span></font></p>
+
+<p align="left"><font face="Arial" size="3">------------------</font><font color="#000000"><span style="FONT-FAMILY: 'Palatino Linotype'; mso-fareast-font-family: 'Times New Roman'; mso-bidi-font-size: 10.0pt; mso-fareast-language: EN-US; mso-bidi-font-family: Arial"><o:p>
+</o:p>
+</span></font></p>
+
+<p>
+  <span class="863515614-30012004"><font face="Arial" size="3">Jump to:</font></span>
+</p>
+<blockquote>
+  <p align="left"><b><font face="Arial" size="3"><a href="white_pixel_theory.htm">White
+  Pixel Theory Home</a></font></b></p>
+<p><font face="Arial" size="3"><a href="what_is_white_pixel.htm"><b>What is White Pixel?</b></a></font></p>
+<p><font face="Arial" size="3"><b><a href="transient_noise_filter.htm">Transient
+Noise Filter Theory</a></b></font></p>
+  <p><font face="Arial" size="3"><b><a href="scan_induced_noise.htm">Ambient
+  Noise/Scan Induced Noise</a></b></font></p>
+  <p><font face="Arial" size="3"><b><a href="one_more_trick.htm">Sniffing Out
+  White Pixels</a></b></font></p>
+</blockquote>
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Gather Load Data Diagnostic</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/26/07</P></td></tr></table><H1 ID="top">Gather Load Data Diagnostic </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924787">1&nbsp;&nbsp;Diagnostic Link<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Diagnostics &gt;&gt; Peripherals &gt;&gt; Driver Module Diagnostics</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924788">2&nbsp;&nbsp;Purpose<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This test checks the current draw on the multi-coil TR bias lines. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924788-dup.1">3&nbsp;&nbsp;Components Tested<SPAN CLASS="SECT1EFF"> </SPAN></H2><UL><LI CLASS="bulletlist"><P>Driver Module</P></LI><LI CLASS="bulletlist"><P>16 Channel Switch or 8 Channel Switch</P></LI><LI CLASS="bulletlist"><P>LPCA</P></LI><LI CLASS="bulletlist"><P>Cables</P></LI><LI CLASS="bulletlist"><P>Connectors</P></LI><LI CLASS="bulletlist"><P>Coil if connected</P></LI></UL></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924789-dup.3">4&nbsp;&nbsp;Requirements<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">None</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924789-dup.4">5&nbsp;&nbsp;Block Diagram<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">None</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924790">6&nbsp;&nbsp;Test Sequence<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The data is sampled five (5) times each for each line and then written
+to three (3) separate text files in <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log</FONT></SPAN>.
+One can then use the &#8220;more&#8221; or &#8220;cat&#8221; commands to view
+the contents of these files. The data in each file is reported in Open (forward
+bias) and Short-circuit (reverse bias) modes. These modes refer to the fault
+conditions for which the Driver Module is always monitoring. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924790-dup.1">7&nbsp;&nbsp;Expected Results<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">The data in each file is reported in Open (forward bias) and Short-circuit
+(reverse bias) modes. These modes refer to the fault conditions for which
+the Driver Module is always monitoring. </P><P CLASS="sect1">In the multi-coil data file the Open mode displays the current measured
+when reverse bias (always -5 VDC regardless of selected voltage) is applied
+to the LPCA circuitry and the circuitry of any coil attached to the LPCA. </P><P CLASS="sect1">Short mode displays the current measured when forward bias (in this
+case the selected voltage of +3, +5, or +7 VDC) is applied to the LPCA circuitry
+and the circuitry of any coil attached to the LPCA.</P><P CLASS="sect1">The measured currents will vary based on the coil type and selected
+voltage. If no coils are connected to the LPCA and this test is run there
+are, however, typical measured currents that one can expect to see. In this
+state, as long as +5 VDC is the selected voltage, one should expect to see
+from -130 ma to -150 ma in the Short mode and between +155 ma to +175 ma in
+the Open mode. </P><P CLASS="sect1">Values much greater than the typical values may indicate circuit damage
+or a short-circuit condition somewhere in the bias path while values much
+less than the typical values may indicate circuit damage or an open-circuit
+(maybe a disconnected cable?) condition somewhere in the bias path. </P><P CLASS="sect1">Refer to the System Block Diagrams to help isolate the fault if troubleshooting
+one of these two scenarios. Run this test to troubleshoot intermittent problems
+and collect baseline data on any new surface coil. </P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924791">8&nbsp;&nbsp;Etcetera<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Stored surface coil data can be retrieved in the future and compared
+to current values for troubleshooting purposes. Connect any surface or phased-array
+coil to the LPCA adapter. Select the TR voltage normally used with the coil
+(5 Volts is typical but picking the wrong voltage won't cause damage), specify
+a unique file name (if desired) in the Output File Name box that matches the
+name of the coil, and then run the test. The files are saved to <SPAN CLASS="filename"><FONT FACE="COURIER">/usr/g/service/log</FONT></SPAN>.
+The path and filenames are reported in the status window after the test is
+completed. An Internal or External Un-blank signal can be specified for use.
+The Internal Un-blank is generated inside the DM but cannot be used outside
+the DM. The External Un-blank (RS-422 differential signal) can be supplied
+by the FE between pins 1 and 6 at the J19, 9-pin, sub-D port.</P><P CLASS="sect1">Please be aware that the test can only check as many multi-coil lines
+as the site is equipped to support (typically 8; 0 - 7). The files report
+values for up to 32 channels but only the values that correspond to an actual
+line are valid. The remaining lines are for future use and the values listed
+for these are invalid. </P><P CLASS="sect1">Also, be aware that, even with no coil connected, the multi-coil switching
+hardware draws between -130 ma to -150 ma of current in Short mode and between
++155 ma to +175 ma of current in Open mode when 5 volts is selected. The Short
+mode currents will not match the typical stated values if +3 or +7 VDC is
+selected instead. Current flows are much greater than zero
+during the Short mode (reverse bias) portion of the test due to the diode
+switching scheme used in the LPCA hardware. Remember that
+the measured current values will tend to vary from coil to coil. Baselining
+a new coil for future reference is a good practice. Individual coils in an
+array generally have current draws that are somewhat similar and usually,
+but not always, can be compared one to another.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291397924792">9&nbsp;&nbsp;Links<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">&lt;&lt;&lt; Driver Module Help Page &gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; <SPAN CLASS="MODULEREF"><A HREF="637806.htm#SL637817-637806"><I>Case Study Help Page</I></A></SPAN>&gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; Troubleshooting Legacy Connector Help Page &gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; Troubleshooting Connector A Help Page &gt;&gt;&gt; </P><P CLASS="sect1"> &lt;&lt;&lt; Troubleshooting Connector B Help Page &gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; <SPAN CLASS="MODULEREF"><A HREF="629850.htm#SL758318-629850"><I>Explanation of Default_dd.txt</I></A></SPAN>&gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; <SPAN CLASS="MODULEREF"><A HREF="629896.htm#SL758326-629896"><I>Explanation of Default_tr.txt </I></A></SPAN>&gt;&gt;&gt;</P><P CLASS="sect1">&lt;&lt;&lt; <SPAN CLASS="MODULEREF"><A HREF="629863.htm#SL758322-629863"><I>Explanation of Default_mc.txt</I></A></SPAN>&gt;&gt;&gt;</P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

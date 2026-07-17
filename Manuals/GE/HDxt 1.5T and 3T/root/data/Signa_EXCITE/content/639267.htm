@@ -1,0 +1,169 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Analyzing HSS Results</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;2.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;9/23/08</P></td></tr></table><H1 ID="top">Analyzing HSS Results </H1><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272888-639267">1&nbsp;&nbsp;Peak To Peak (P-P) Analysis<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e30"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For this example, HSS data was reviewed using Report Manager.
+The HSS Viewer could also be used to view HSS results.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The time history plots display the real time frequency drift
+collected during the scan. Each scan is comprised of 5 passes, each
+pass is plotted on its own page along with its corresponding frequency
+domain plot (post FFT) below it.</P><DIV CLASS="ILLUSTRATION" id="SL639276-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Failing P-P Spec</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424631.jpg" BORDER="0" usemap="#SL639277-639267"></P></DIV><P CLASS="sect1">Review the time history plots. Review each of the 5 individual
+passes for P-P Frequency Deviation. The maximum allowed frequency
+instability specification is 0.7 P-P within a 40cm Diameter Spherical Volume 	 
+(DSV)
+.</P><P CLASS="sect1">The Time History plots should show a signal with a frequency
+component that is fairly centered and horizontal on the graph. There
+should be no upward or downward slope. Abnormalies are displayed as
+transient bursts, frequency patterns, sloping curves, or low frequency
+curves (See <A HREF="javascript:winopen('639267illd0e35.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>).</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e52"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When instructed to change CVs, use Manual setup for the
+HSS scan.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">In Mobile environments, windy days can cause van movement which
+will affect frequency drift. An indication in the plot of van motion
+due to wind typically results in a very low frequency &#8220;wave&#8221;
+in the time history plot and a large slope decay from 0 to 1-2 Hz
+range in the FFT plot. If wind is suspect, rerun HSS after changing <B>CV rhuser5</B> from 0 to 1. This selects a Hanning filter
+that removes very low frequencies. HSS would now produce twice as
+many plots (with and without the filter).</P><P CLASS="sect1">See <A HREF="639267.htm#SL424661-88975">
+Step&nbsp;</A> in this document. See examples of Van motion caused
+by wind in <A HREF="javascript:winopen('639267illd0e546.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A>.</P><P CLASS="sect1">Also, movement of the van, such as a person walking can cause
+P-P failures as well as Area and FFT amplitude failures.</P><P CLASS="sect1">Movement in a van or movement around the magnet during HSS will
+typically cause failures and the test will need to be rerun!</P><P CLASS="sect1">Unstable magnet pressure will also cause Frequency drift. If
+the magnet was just refilled with Helium, the Chiller was off, or
+there is a significant Scan room temperature change, frequency drift
+can occur. Recheck Center Frequency during Manual Prescan. If it is
+changing, let the system stabilize or troubleshoot the center frequency
+drift problem.</P><P CLASS="sect1">The Magnet Monitor would also indicate changing Helium pressure.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272889-639267">2&nbsp;&nbsp;FFT Amplitude<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e77"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For this example, HSS data was reviewed using Report Manager.
+The HSS Viewer could also be used to view HSS results.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">When analyzing HSS for high spikes in the FFT plots, view each
+of the Frequency Domain (FFT) plots to see if the spike is consistent
+across all 5 passes or is intermittent.</P><DIV CLASS="ILLUSTRATION" id="SL639285-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE"> FFT Amplitude Spikes</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424621.jpg" BORDER="0" usemap="#SL639286-639267"></P></DIV><P CLASS="sect1">The FFT amplitude is an indication of the magnitude/strength
+of the vibration, or noise at a particular frequency.<A HREF="javascript:winopen('639267illd0e82.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> shows the plot of an HVAC fan that is slightly out of balance causing
+a spike on the FFT graph at a frequency of 18.984 Hz, and with an
+amplitude of .063 (e.g. <A HREF="javascript:winopen('639267illd0e82.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>. A fan that is extremely out
+of balance could have the same frequency component of 18.984Hz, but
+the FFT amplitude (spike height) could be 0.1 counts or higher. The
+higher the spike or FFT amplitude, the greater the amount of area
+under the spike, causing higher Area, which also may fail spec. <B>Fix the cause of the spike first, before attempting to fix high Area.</B></P><OL><LI CLASS="numlist"><P>Perform an HSS scan and analysis in
+the normal mode. Record output file number. ________________</P></LI><LI CLASS="numlist"><P>Using Report Manager, review the Time
+History plots, <B>not the averaged plot</B>. The example
+plot (<A HREF="javascript:winopen('639267illd0e291.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>) indicates a high &#8220;spike&#8221; at 31.025Hz
+with a FFT amplitude of 0.059. Even though the amplitude is within
+spec (less than 0.1), it is still unusual. The question to be answered,
+is 31.025Hz the real frequency, or could this spike be caused from
+a frequency higher than 45Hz that has aliased back into the plot?</P></LI><LI CLASS="numlist"><P>Verify the frequency of the &#8220;spike&#8221;.
+It is important to know the correct frequency which will help in troubleshooting
+(i.e. knowing the actual frequency to compare with accelerometer results,
+or by determining the RPMs to find corresponding rotational frequencies
+of fans, blowers, motors, etc.).</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e110"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When instructed to change CVs, use Manual setup for the
+HSS scan.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>With the System still set-up from the
+previous HSS scan, change 2 CVs (hss_tr &amp; rhuser0). This will
+expand the bandwidth of the HSS scan to 50Hz. (Continue using the
+standard 0.25M NiCl2 (green color) sample vial.)</P><P>From <B>Research Operations</B>:</P><UL><LI CLASS="bulletlist"><P>Select <B>Display CV's</B></P></LI><LI CLASS="bulletlist"><P>For CV Name, type or select: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>hss_tr</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>Change the Current Value to: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>10000</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>(Default is 11111)</P></LI><LI CLASS="bulletlist"><P>Next CV, type or select: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rhuser0</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>Change the Current Value to: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>50</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Default is 45)</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e153"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON"> Do <B>NOT</B> change the User CVs from
+the &#8220;Additional Parameters&#8221; screen on the Scan Desktop.
+Leave it at BW=0 (45Hz).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL></LI><LI CLASS="numlist"><P>Perform a <B>Download</B> and then scan.</P><P>From <B>Research Operations</B>: Select <B>Download</B>.</P></LI><LI CLASS="numlist"><P>Record HSS output file number.  ______________</P></LI><LI CLASS="numlist"><P>Display the Time History Plots using
+Report Manager. See <A HREF="javascript:winopen('639267illd0e296.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>.</P></LI><LI CLASS="numlist"><P>Determine if the spike moved.</P><OL TYPE="a"><LI CLASS="numlist"><P>If the spike appears to have moved
+slightly to the left, and is reporting a similar FFT Frequency, then
+the correct natural frequency value has been reported.</P></LI><LI CLASS="numlist"><P>If the spike has moved to the right,
+and the reported frequency is higher, then the spike is caused by
+a higher frequency that has aliased back into the 45Hz bandwidth.
+To determine the actual higher frequency value:</P><OL TYPE="i"><LI CLASS="numlist"><P>Find the difference between the reported
+frequency of the 50Hz and the 45Hz bandwidth scans.</P></LI><LI CLASS="numlist"><P>Add the difference with 45Hz. (See
+following example.)</P></LI></OL><P><B>Using the Example from</B><A HREF="javascript:winopen('639267illd0e291.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>:</P><UL><LI CLASS="bulletlist"><P>Spike is at 31.025 Hz in the 45Hz BW
+scan.</P></LI><LI CLASS="bulletlist"><P>Expanding the Bandwidth to 50Hz, the
+spike moves to the right and is now reported as 41.211Hz (see <A HREF="javascript:winopen('639267illd0e296.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>). This indicates that the natural frequency is above the 45Hz window.</P></LI></UL><P><B>Find the Frequency:</B></P><UL><LI CLASS="bulletlist"><P>45Hz -31Hz = 14Hz Difference between
+Reported Freq. and Bandwidth.</P></LI><LI CLASS="bulletlist"><P>45Hz + 14Hz = <B>59Hz</B> Actual Frequency of the disturbance.</P></LI></UL><P><B>It also works using the 50Hz Bandwidth
+plot:</B></P><UL><LI CLASS="bulletlist"><P>50Hz -41Hz = 9Hz Difference between
+Reported Freq. and Bandwidth.</P></LI><LI CLASS="bulletlist"><P>50Hz + 9Hz = <B>59Hz </B>Actual Frequency of the disturbance.</P></LI></UL></LI></OL></LI><LI CLASS="numlist"><P>Troubleshoot and find root cause of
+component that is vibrating at 59Hz.</P></LI></OL><P CLASS="sect1"><B>Additional Troubleshooting Tips:</B></P><P CLASS="sect1">Spikes that are very narrow (e.g. 1 pixel in width) are usually
+caused by electrical sources. Mechanical vibrations typically cause
+spikes that have some bandwidth (like the previous examples) or spikes
+that vary in frequency, even slightly.</P><P CLASS="sect1">Check frequency with <A HREF="javascript:winopen('639267tbld0e320.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A> to see if it is a known system
+or mobile component that may be suspect. (This table is a guideline
+and <B>should NOT</B> be used to identify a source
+as a definitive problem.)</P><P CLASS="sect1">Turn off a component and see if the peak at the offending frequency
+is removed or greatly reduced.</P><P CLASS="sect1">If <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">YES</FONT></SPAN>, troubleshoot the component to find
+root cause.</P><P CLASS="sect1">If <SPAN CLASS="SCRNFIX"><FONT FACE="COURIER">NO</FONT></SPAN>, continue turning off components one
+at a time and take an HSS scan to determine if frequency spike is
+gone.</P><P CLASS="sect1">Turn OFF components in the following order:</P><OL><LI CLASS="numlist"><P>Heating, Ventilation,
+and Air Conditioning 	 
+(HVAC)
+, including
+blowers in Mobile environments</P></LI><LI CLASS="numlist"><P>Gradient Patient Blower</P></LI><LI CLASS="numlist"><P>Heat Exchanger</P></LI><LI CLASS="numlist"><P>Chiller</P></LI><LI CLASS="numlist"><P>Other</P></LI></OL><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e288"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For this example, HSS data was reviewed using Report Manager.
+The HSS Viewer could also be used to view HSS results.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><DIV CLASS="ILLUSTRATION" id="SL639292-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">FFT BW = 45HZ </SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424619.jpg" BORDER="0" usemap="#SL639304-639267"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL639295-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">FFT BW = 50HZ</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424620.jpg" BORDER="0" usemap="#SL639305-639267"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272919-639267">3&nbsp;&nbsp;Other Observations<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2272920-639267">3.1&nbsp;&nbsp;Narrow Spikes<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If the spike is very narrow (e.g.1 pixel in width) from the
+base to the top, and the frequency is consistent with every HSS scan,
+then the spike may be caused from a electrical source. For example,
+the 29.833Hz spike seen on systems with a UCERD, is caused by a 60Hz
+harmonic feedback from the UCERD. This is a known pattern for a UCERD
+and the amplitude is usually small in normal situations. (See <A HREF="javascript:winopen('639267illd0e291.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>, Pk No 5 (peak number 5).)</P></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2272921-639267">3.2&nbsp;&nbsp;Wide Spikes<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">If there is some bandwidth to the spike and/or the frequency
+drifts slightly from one scan to another, then the spike is usually
+mechanical in nature. (See <A HREF="javascript:winopen('639267illd0e296.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A>, Pk No 2.) Check for mechanical
+vibrations from various components. See <A HREF="javascript:winopen('639267tbld0e320.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A>.</P><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL639302-639267"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">Frequency Vs. Suspect Causes</SPAN> </P><table summary="Frequency Vs. Suspect Causes" border="1"><colgroup><col width="50%"><col width="50%"></colgroup><tbody valign=""><tr valign="top"><td style="Font:bold" align="center" valign="">Frequency</td><td style="Font:bold" align="center" valign="">Suspect Component</td></tr><tr valign="top"><td align="right" valign="">&lt;1 Hz</td><td valign="">Could indicate siting or magnet problems.</td></tr><tr valign="top"><td align="right" valign="">1.2 Hz</td><td valign="">Cold Head</td></tr><tr valign="top"><td align="right" valign="">3-10Hz</td><td valign="">Natural frequency of van, may be enhanced by van motion caused
+by wind, etc.</td></tr><tr valign="top"><td align="right" valign="">11Hz</td><td valign="">Resonance Freq. of Ellis &amp; Watts mobile</td></tr><tr valign="top"><td align="right" valign="">~11.25Hz</td><td valign="">Compressor belt on Ellis &amp; Watts mobile</td></tr><tr valign="top"><td align="right" valign="">~18 -19Hz</td><td valign="">HVAC system</td></tr><tr valign="top"><td align="right" valign="">23 Hz</td><td valign="">Chiller Blower</td></tr><tr valign="top"><td align="right" valign="">29.883Hz</td><td valign="">60Hz noise/harmonic on UCERD, OK if not excessively high.</td></tr><tr valign="top"><td align="right" valign="">~30-34Hz</td><td valign="">Magnet mounting not shimmed or loose.</td></tr><tr valign="top"><td align="right" valign="">~20- 40Hz</td><td valign="">60Hz Electrical noise</td></tr><tr valign="top"><td align="right" valign="">~59 - 60HZ</td><td valign="">HVAC compressor vibration</td></tr></tbody></table></div></DIV></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272922-639267">4&nbsp;&nbsp;Converting Frequency to RPMs<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">To identify the rotational frequency or Revolutions Per Minute
+(RPM) of equipment such as fans or blowers, multiply the reported
+FFT Frequency by 60. For example, a peak located at 19Hz multiplied
+by 60 is equal to 1140 RPM. This happens to be the number of revolutions
+per minute of the fan blades in the HVAC (Heating Ventilation and
+Air Conditioning) on Mobiles. An HVAC service person would be required
+to balance the fan or to replace/repair the fan vibration isolation,
+if it demonstrated that it causes image quality problems.</P><P CLASS="sect1">The Spec for the Amplitude of a peak value is dependent upon
+frequency using the following Chart:</P><DIV CLASS="ILLUSTRATION" id="SL2272923-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSS Frequency Domain Specs.</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424625.jpg" BORDER="0" usemap="#SL639312-639267"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272924-639267">5&nbsp;&nbsp;FFT Area Analysis<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e404"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For this example, HSS data was reviewed using Report Manager.
+The HSS Viewer could also be used to view HSS results.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The first Plot shows the average of all 5 HSS scans.</P><DIV CLASS="ILLUSTRATION" id="SL639313-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Average of 5 Passes</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424630.jpg" BORDER="0" usemap="#SL639314-639267"></P></DIV><P CLASS="sect1">The Area is a measurement of the amount of &#8220;space&#8221;
+under the FFT Plot line. Since HSS analyzes frequency components between
+0 to 45 Hz, higher area across the entire graph indicates presence
+of broadband noise. This is only true IF there are no significant
+&#8220;Spikes&#8221; or larger bandwidth &#8220;mounds&#8221; present
+in the plot.</P><P CLASS="sect1">Example of a relatively good HSS plot with elevated Area is
+shown in <A HREF="javascript:winopen('639267illd0e409.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;6</A>. This graph shows a relatively flat plot with
+few, low spikes, however the Area is calculated to be 1.784 which
+is above Area spec (1.2). Note the elevated baseline (e.g. the baseline
+is not at zero).</P><P CLASS="sect1">The example in <A HREF="javascript:winopen('639267illd0e409.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;6</A> clearly shows the effect of
+broadband noise. To reduce the broadband noise, the following must
+be used when executing HSS tests to meet the HSS Area specification:</P><UL><LI CLASS="bulletlist"><P>Revision 8.3 M5 (or later) System Software
+(Has revised PSD to compensate for UCERD Phase noise) and,</P></LI><LI CLASS="bulletlist"><P>Alternative method using the signal
+from the Head Port through an attenuator (to compensate for noise
+coming from the RFI). See <A HREF="javascript:winopen('639267illd0e448.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;7</A>.</P></LI></UL><P CLASS="sect1">If the broadband noise is still present (&gt;1.2 cts.), then further
+troubleshooting is required to determine the source of the noise.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272927-639267">6&nbsp;&nbsp;Troubleshooting Tips<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">Evaluate each of the 5 individual passes from the HSS scan.
+Before troubleshooting failing Area, verify Peak to Peak and FFT Amplitude
+are within specifications on all scans. Elevated Area caused by broadband
+noise will be present in all 5 scans and should be relatively flat
+(e.g. No humps or spikes). If high Area, spikes, or humps are intermittent,
+look for components which cycle power (turn off and on) as a possible
+suspect, for example, HVAC.</P><P CLASS="sect1">Turn off components one at a time and take a HSS scan to isolate
+the root cause by process of elimination. It may be necessary to look
+outside of the scan room as elevators, hospital generators, HVAC,
+nearby construction, or traffic could also induce vibrations. If this
+is the case, you may have to contact the OnLine Center or Local Support
+Engineer (e.g. ZSE or RSE) to assist in troubleshooting and/or contacting
+a vibration expert or consultant.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL2272928-639267">7&nbsp;&nbsp;HSS Test Using the Head Output Port Procedure<SPAN CLASS="SECT1EFF"> </SPAN></H2><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2272929-639267">7.1&nbsp;&nbsp;Hardware Configuration<SPAN CLASS="SECT2EFF"> </SPAN></H3><DIV CLASS="ILLUSTRATION" id="SL639320-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">HSS Using Head Output Configuration</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424626.jpg" BORDER="0" usemap="#SL639322-639267"></P></DIV></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL2272930-639267">7.2&nbsp;&nbsp;Software/Scan Configuration Setup<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">Set up for the HSS scan per the normal directions. The exception
+is the RF Amp setup.</P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e458"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The following procedure describes the Manual setup for
+the HSS scan. The Normal setup uses the Automated procedure.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect2" CELLSPACING="0%" CELLPADDING="0%" ID="d0e461"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When instructed to change CVs, use Manual setup for the
+HSS scan.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL><LI CLASS="numlist"><P>Enter the HSS prescription per the
+normal directions</P></LI><LI CLASS="numlist"><P>After the prescription has been saved
+and downloaded, modify CV <B>rfamp_type = 2.</B><SPAN CLASS="GUIicon"><IMG SRC="../media/639267-424628.jpg" BORDER="0"></SPAN></P></LI><LI CLASS="numlist"><P>Download and go into Manual Prescan.</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e478"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If you get DD or TR Driver errors, check the attenuator
+setups.<p>If you do not get any signal, exit Manual Prescan and go back
+into modify CV's.</p></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Follow standard procedure to peak signal
+and to analyze results.<SPAN CLASS="GUIicon"><IMG SRC="../media/639267-424627.jpg" BORDER="0"></SPAN></P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL424661-639267">8&nbsp;&nbsp; Hanning Window Filter<SPAN CLASS="SECT1EFF"> </SPAN></H2><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e491"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For this example, HSS data was reviewed using Report Manager.
+The HSS Viewer could also be used to view HSS results.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e494"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">When instructed to change CVs, use Manual setup for the
+HSS scan.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e497"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The following procedure describes the Manual setup for
+the HSS scan. The Normal setup uses the Automated procedure.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The use of this filter basically removes low frequencies, in
+the range of approximately 0 -2 Hz and the corresponding Area calculations
+reflect this change. This option is primarily used in alternate environments
+(e.g. Mobiles) where wind can cause low frequency &#8220;rocking/movement&#8221;
+of the van AND other System related components have been ruled out
+as the cause of the low frequency oscillations (e.g. the coldhead).
+The use of this filter option may remove &#8220;Real&#8221; low frequency
+disturbances and cause further confusion during troubleshooting.</P><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e502"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Always evaluate both Unfiltered and Filtered plots to
+determine wind-related motion or possible &#8220;Real&#8221; System
+related problems (See <A HREF="javascript:winopen('639267illd0e546.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> &amp; <A HREF="javascript:winopen('639267illd0e555.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;10</A>).</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1">The Filter must be enabled prior to the HSS Scan. The filter
+cannot be applied to an existing HSS file.</P><P CLASS="sect1">With the System set-up for an HSS scan, change CV <B>rhuser5</B> value from &#8220;0&#8221; to &#8220;1&#8221;.</P><UL><LI CLASS="bulletlist"><P>From <B>Research Operations</B>,</P></LI><LI CLASS="bulletlist"><P>Select <B>Display CV's</B></P></LI><LI CLASS="bulletlist"><P>For CV Name, type or select: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>rhuser5</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>Change the Current Value to: 1 <SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Default value is 0)</P></LI></UL><DIV CLASS="ILLUSTRATION" id="SL2272939-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Hanning Window CV</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424623.jpg" BORDER="0" usemap="#SL639451-639267"></P></DIV><P CLASS="sect1">The HSS plots will show BOTH the Normal (without the Hanning
+Filter) and the Filtered Plots.</P><DIV CLASS="ILLUSTRATION" id="SL639283-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Standard, Un-Filtered Plots</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424629.jpg" BORDER="0" usemap="#SL639330-639267"></P></DIV><P CLASS="sect1">If strong winds are present and the HSS plot indicates a intermittent
+high P-P signal in the Time History plots AND the Amplitude plots
+indicates a slope from 0 -2 Hertz with a &#8220;Hump&#8221; near 3-
+4 Hz and 10-11 Hz (which indicates van rocking, as seen in <A HREF="javascript:winopen('639267illd0e546.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A>), then it may be appropriate to use the Hanning Filter. Otherwise,
+use of the Hanning Filter may mask other System or Van related problems.</P><DIV CLASS="ILLUSTRATION" id="SL639328-639267"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Hanning Filter Plot</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/639267-424622.jpg" BORDER="0" usemap="#SL639333-639267"></P></DIV><TABLE CLASS="ADMONsect1" CELLSPACING="0%" CELLPADDING="0%" ID="d0e560"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/generalnotice.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="important"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#1f4482"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD></TD><TD CLASS="hazardWhiteText">NOTICE</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><b>Be aware that use of the Hanning Filter will put a glitch and
+a spike at the beginning and the end of the time history plot, that
+will drive the P-P Frequency Deviation number out of spec. Determine
+the actual P-P Deviation by interpreting the plot. In the example
+above, <A HREF="javascript:winopen('639267illd0e555.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;10</A> the Time History Plot (Frequency
+Drift), the X scaling is +/- 0.4. Ignoring the artifact at the very
+beginning and very end of the plot caused by the Hanning Filter, the
+P-P Frequency Deviation is about 0.28.</b></TD></TR><TR><TD>&nbsp;</TD></TR><TR><TD>&nbsp;</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="sect1"><B>Acknowledgements</B>: The authors would like
+to thank Dwayne Purgill, Mike Radziun, Bruce Collick and Phil Steen
+from Systems Engineering, for their inputs.</P><P CLASS="sect1">John A. Johnson <B>MR Service Engineering</B></P><P CLASS="sect1">Rudy Kopp <B>MR Mobile Systems</B></P></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -894,6 +894,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="alert alert-info mt-12" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
   <span>💡 <strong>Mike Jackson</strong> · 📞 754-263-6089 · mike.jackson@amtimagingsolutions.com · 🌐 www.amtimagingsolutions.net · 🏅 Veteran-Owned</span>
   <button class="btn btn-sm" onclick="openStripeSettings()" style="background:#635bff;color:#fff;font-size:.75rem;padding:5px 12px;white-space:nowrap">💳 Stripe Settings</button>
+  <button class="btn btn-sm" onclick="exportJobsCSV()" title="Export jobs CSV for Google Sheets" style="background:#16a34a;color:#fff;font-size:.75rem;padding:5px 12px;white-space:nowrap">📥 Jobs CSV</button>
+  <button class="btn btn-sm" onclick="exportExpensesCSV()" title="Export expenses CSV for Google Sheets" style="background:#2563eb;color:#fff;font-size:.75rem;padding:5px 12px;white-space:nowrap">📥 Expenses CSV</button>
 </div>
 
   <!-- EMAIL SIGNATURE GENERATOR -->
@@ -14840,7 +14842,7 @@ Going to the Hybrid first wastes time. Go straight to the DD1 box.
 ### Resolution
 Inspect and reseat the bias cable at the DD1 box. If cable or connector is damaged, replace it. Errors 2252310, 2252357, and 2224667 should all clear once the bias path is restored.
 
-*Field notes: AMT Imaging Solutions, 2026-06-29. SIGNA Premier 3.0T.*"
+*Field notes: AMT Imaging Solutions, 2026-06-29. SIGNA Premier 3.0T.*`
   },
 
   {
@@ -15577,7 +15579,6 @@ function renderDiagGuides() {
   };
   const sysCls = {
     'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
-    'Sieme'GE MRI':'dg-ge-mri','GE CT':'dg-ge-ct',
     'Siemens MRI':'dg-siemens-mri','Siemens CT':'dg-siemens-ct',
     'Philips':'dg-philips','Injector':'dg-injector',
     'Hitachi MRI':'dg-hitachi-mri','Toshiba MRI':'dg-toshiba-mri'
@@ -15714,6 +15715,55 @@ function deleteDiagGuide(id) {
   saveDiagGuides();
   renderDiagGuides();
 }
+
+// ═══ CSV EXPORT ═══
+function _downloadCSV(filename, content) {
+  const blob = new Blob([content], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function exportJobsCSV() {
+  const RATE = 295, MRATE = 0.85;
+  const invMap = {};
+  invoices.forEach(inv => { if(inv.jobId) invMap[inv.jobId] = inv; });
+  const headers = ['Date','Site/Customer','Contact','Phone','Location','Modality','Model','Job Type','Job Status','PO Number','Hours','Miles','Labor($)','Mileage($)','Total Revenue($)','Invoice#','Invoice Status','Notes'];
+  const rows = jobs.map(j => {
+    const inv = invMap[j.id] || {};
+    const labor = (parseFloat(j.hours)||0) * RATE;
+    const mileage = (parseFloat(j.miles)||0) * MRATE;
+    return [
+      j.date||'', j.site||'', j.contact||'', j.phone||'', j.location||'',
+      j.modality||'', j.model||'', j.type||'', j.status||'', j.po||'',
+      j.hours||0, j.miles||0,
+      labor.toFixed(2), mileage.toFixed(2), (labor+mileage).toFixed(2),
+      inv.num||'', inv.status||'No Invoice', (j.notes||'').replace(/\n/g,' ')
+    ];
+  });
+  const csv = [headers, ...rows].map(r =>
+    r.map(v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"').join(',')
+  ).join('\n');
+  _downloadCSV('AMT-Jobs-' + new Date().toISOString().slice(0,10) + '.csv', csv);
+  showToast('📥 Jobs CSV downloaded — paste into Google Sheets "Jobs Import" tab');
+}
+
+function exportExpensesCSV() {
+  const headers = ['Date','Category','Description','Vendor','Amount($)','Linked Job ID'];
+  const rows = expenses.map(e => [
+    e.date||'', e.cat||'', e.desc||'', e.vendor||'',
+    (parseFloat(e.amount)||0).toFixed(2), e.jobId||''
+  ]);
+  const csv = [headers, ...rows].map(r =>
+    r.map(v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"').join(',')
+  ).join('\n');
+  _downloadCSV('AMT-Expenses-' + new Date().toISOString().slice(0,10) + '.csv', csv);
+  showToast('📥 Expenses CSV downloaded — paste into Google Sheets "Expenses Import" tab');
+}
+// ═══ END CSV EXPORT ═══
+
 </script>
 
 <!-- Diag Guide Detail Modal -->

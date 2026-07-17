@@ -1,0 +1,41 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>RRF Chassis Theory</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Proprietary to General Electric Company<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/25/07</P></td></tr></table><H1 ID="top">RRF Chassis Theory </H1><UL><LI CLASS="bulletlist"><P>The RF-DIF board receives synchronous digital commands for
+control of two Exciter Boards (the 2nd Exciter board is for MNS), one eight
+channel Receiver Board, one eight channel UTNS Board, and the MUX Board. </P></LI><LI CLASS="bulletlist"><P>The RF-DIF Board translates register commands and data (Rho,
+Theta, and Omega sequences, plus B0 compensation commands) to drive digital
+waveforms (two 14 bit data busses at a 20MHz rate) across the backplane to
+the Exciter Board(s).</P></LI><LI CLASS="bulletlist"><P>The Exciter Board clocks the digital waveform through Digital
+to Analog Converters. It then up-converts the analog results by 144MHz followed
+by a programmable down convert to provide the local oscillator output and
+RF output.</P></LI><LI CLASS="bulletlist"><P>When the Exciter Board is unblanked, the RF output is sent
+to the RF Amplifier where it is gained up and sent into the transmit coil.
+The exciter output attenuation (TG) is determined during prescan to provide
+the optimal return in MR signal. </P></LI><LI CLASS="bulletlist"><P>When the MR signal is returned, the signal goes through the
+TNS Module(s) to the MUX Board where it is routed to the appropriate receive
+channel.</P></LI><LI CLASS="bulletlist"><P>Each receive channel passes through the UTNS Board.  The present
+UTNS-II Board provides only signal gain.  Spike noise suppression is done
+on the old style standalone TNS modules in the bottom of the cabinet. In system
+that have a UTNS-II, this situation is different than on system that have
+a UTNS3. The UTNS3 provides both receive gain and spike noise suppression.</P></LI><LI CLASS="bulletlist"><P>From the UTNS Board, the receive signal passes into the Receiver
+Board where it is filtered and a programmable attenuation is applied (R1).
+UTNS3 boards also provide spike noise suppression.</P></LI><LI CLASS="bulletlist"><P>The signal is then mixed down to an IF sample frequency using
+the local oscillator from the Exciter Board, and then an anti-alias filter
+is applied for the +250KHz bandwidth.</P></LI><LI CLASS="bulletlist"><P>From here, the Receiver Board converts each channel&#8217;s
+analog data to 16 bit digital data at a conversion rate of 1MHz.</P></LI><LI CLASS="bulletlist"><P>The RF-DIF Board reads converted data from all eight receive
+channels every 1MHz period.</P></LI><LI CLASS="bulletlist"><P>The digital receive data is then passed through the fiber
+interface (&#8220;Gigalink&#8221;) to the MGD Chassis for processing. Along
+with the receive data, the RF-DIF Board constantly loops through status of
+the RRF Chassis and passes this to the MGD Chassis for monitoring.</P></LI><LI CLASS="bulletlist"><P>The &#8220;Gigalink&#8221; fiber interface to the MGD Chassis
+also transfers the 20MHz system reference clock and a continuous checksum
+to monitor transfer integrity.</P></LI><LI CLASS="bulletlist"><P>The RF-DIF Board also provides a CAN interface link that can
+be used to diagnose the state of the RRF Chassis in the event that the &#8220;Gigalink&#8221;
+fiber interface fails.</P></LI></UL><P CLASS="descriptive"></P><P CLASS="descriptive">Differences Between RRF Chassis Hardware and LX-TPS/ISE Chassis Hardware</P><P CLASS="descriptive">This section briefly describes some of the major hardware differences
+between the new RRF Chassis and the previous generation TPS/ISE Chassis: 	</P><UL><LI CLASS="bulletlist"><P>Exciter, Receiver and RF Multiplexer functions have been packaged
+separately in the new RRF (Remote RF) Chassis to reduce susceptibility to
+noise.</P></LI><LI CLASS="bulletlist"><P>Two independently programmable Exciters can be populated in
+the RRF Chassis. </P></LI><LI CLASS="bulletlist"><P>The RRF Receiver Board uses Super-Nyquist sampling; the Imaging
+Frequency is centered at 2.25 MHz rather than baseband.</P></LI><LI CLASS="bulletlist"><P>The RRF Chassis provides ups to 16 channels at +/-250KHz compared
+to the CERD with four channels at +/-125KHz. 	</P></LI></UL><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

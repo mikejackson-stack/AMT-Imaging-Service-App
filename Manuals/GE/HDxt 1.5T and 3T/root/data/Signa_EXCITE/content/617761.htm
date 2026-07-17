@@ -1,0 +1,986 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>TR DD MC System Path Troubleshooting</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">Operating Documentation<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;4/26/07</P></td></tr></table><H1 ID="top">TR DD MC System Path Troubleshooting </H1><CENTER><P>(<A HREF="617761summ.htm"><FONT>Click Here for Summary Version</FONT></A>)</P></CENTER><DIV CLASS="PROCTIMTING"><H2>1&nbsp;&nbsp;Personnel Requirements</H2><TABLE CLASS="TIMINGTABLE" CELLSPACING="5%" CELLPADDING="5%"><THEAD CLASS="TIMINGTABLE" VALIGN="BOTTOM"><TR CLASS="TIMINGTABLE"><TH CLASS="TIMINGTABLE">Required Persons</TH><TH CLASS="TIMINGTABLE">Preliminary Reqs</TH><TH CLASS="TIMINGTABLE">Procedure</TH><TH CLASS="TIMINGTABLE">Finalization</TH></TR></THEAD><TBODY><TR><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">Not Applicable</TD><TD ALIGN="CENTER">60&nbsp;mins</TD><TD ALIGN="CENTER">20&nbsp;mins</TD></TR></TBODY></TABLE></DIV><H2>2&nbsp;&nbsp;Overview</H2><P CLASS="procover">System configurations can be different depending on whether the system
+is a forward production HDx system, or an upgrade. </P><UL><LI CLASS="bulletlist"><P>For all references to <B>&#8220;Upgrade Systems&#8221;</B>,
+this refers to systems with the old LPCA, including the green Bendix Legacy
+Connector and a Head T/R Switch.  These systems have two Head T/R Lines, one
+connecting to the Head T/R Switch, and the other for Connector <B>A</B>.</P><P>.</P></LI><LI CLASS="bulletlist"><P><B>Forward Production systems</B> have the
+new LPCA, which no longer includes the Head T/R switch, as this circuitry
+has been moved into the coils themselves.  The new LPCA also has a Hypertronics
+A connector in place of the Bendix Legacy connector, and this interfaces with
+the Multi-coil Interface Box.</P></LI><LI CLASS="bulletlist"><P>For a picture of the different LPCAs, please refer to the <SPAN CLASS="MODULEREF"><A HREF="549374.htm#SL580688-549374"><I>Multi-coil Receive
+Chain (MCR) Tools</I></A></SPAN></P></LI></UL><P CLASS="EFF"><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Troubleshooting Process) 
+</B></FONT></SPAN></P><UL><LI CLASS="bulletlist"><P>Once an error is found, Refer to <A HREF="javascript:winopen('617761tbld0e73.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;1</A>, for the fault in question.  For those problems with links
+in the T/S Action column, select the link, to be taken to the troubleshooting
+section in this document corresponding to that fault. </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e70"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If the complete troubleshooting process is followed, but the problem
+is not found because it is no longer occurring, the problem is most likely
+an intermittent cable connection issue.  The next time the fault occurs, it
+may be warranted to run the diagnostic after every step with the system in
+the normal condition, to determine what cable connection may have the intermittent
+issue.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL642721-617761"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">TR DD MC Problem Description and Troubleshooting Action</SPAN> </P><table summary="TR DD MC Problem Description and Troubleshooting Action" border="1"><colgroup><col width="33%"><col width="33%"><col width="34%"></colgroup><thead valign=""><tr valign="top"><th valign="top"><B>Fault</B></th><th valign="top"><B>Problem Description</B></th><th valign="top"><B>Field Action</B></th></tr></thead><tbody valign=""><tr valign="top"><td valign=""><B>T/R Open</B> Circuit on:<UL><LI CLASS="bulletlist">Body Path</LI><LI CLASS="bulletlist">Head Path</LI><LI CLASS="bulletlist">Conn A Head Path</LI><LI CLASS="bulletlist">MNS Path</LI></UL></td><td valign="">TR Open Circuit Fault  &#8211; system error log will give additional information
+on Source of fault, measured Value, and Limit in mA.</td><td valign=""><UL><LI CLASS="bulletlist"><A HREF="617761.htm#SL644271-617761">TR Open Circuit Fault &#8211; Body</A></LI><LI CLASS="bulletlist"><A HREF="617761.htm#SL644274-617761">TR Open Circuit Fault &#8211; Head</A></LI><LI CLASS="bulletlist"><A HREF="617761.htm#SL644277-617761">TR Open Circuit Fault &#8211; MNS </A></LI></UL></td></tr><tr valign="top"><td valign=""><B>T/R Short</B> Circuit on:<UL><LI CLASS="bulletlist">Body Path</LI><LI CLASS="bulletlist">Head Path</LI><LI CLASS="bulletlist">Conn A Head Path</LI><LI CLASS="bulletlist">MNS Path</LI></UL></td><td valign="">TR Short Circuit Fault  &#8211; system error log will give additional information
+on Source of fault, measured Value, and Limit in mA.</td><td valign=""><A HREF="617761.htm#SL644280-617761">TR Short Circuit Fault &#8211; Body </A><P CLASS="entry"><A HREF="617761.htm#SL644283-617761">TR Short Circuit Fault &#8211; Head</A></P><P CLASS="entry"><A HREF="617761.htm#SL644286-617761">TR Short Circuit Fault &#8211; MNS</A></P></td></tr><tr valign="top"><td valign=""><B>DD High Voltage (HV):</B><UL><LI CLASS="bulletlist">BD1 HV not w/in bounds</LI><LI CLASS="bulletlist">BD2 HV not w/in bounds</LI><LI CLASS="bulletlist">BD3 HV not w/in bounds</LI><LI CLASS="bulletlist">BD4 HV not w/in bounds</LI><LI CLASS="bulletlist">DD HV not w/in bounds</LI></UL></td><td valign="">DD High Voltage Fault- system error log will give the Source of the
+Fault as well as the measured Value and Limit in Volts.</td><td valign=""><A HREF="617761.htm#SL644289-617761">Dynamic Disable and Direct Drive High Voltage Fault</A></td></tr><tr valign="top"><td valign=""><B>DD Open:</B><UL><LI CLASS="bulletlist">Limit on BD1 exceeded</LI><LI CLASS="bulletlist">Limit on BD2 exceeded </LI><LI CLASS="bulletlist">Limit on BD3 exceeded </LI><LI CLASS="bulletlist">Limit on BD4 exceeded </LI><LI CLASS="bulletlist">Limit on DD exceeded</LI></UL></td><td valign="">DD Open Circuit Fault&#8211; system error log will give additional information
+on Source of fault, measured Value, and Limit in mV.</td><td valign=""><A HREF="617761.htm#SL644301-617761">DD Open Circuit Fault</A></td></tr><tr valign="top"><td valign=""><B>DD Short:</B><UL><LI CLASS="bulletlist">Limit on BD1 exceeded</LI><LI CLASS="bulletlist">Limit on BD2 exceeded </LI><LI CLASS="bulletlist">Limit on BD3 exceeded </LI><LI CLASS="bulletlist">Limit on BD4 exceeded </LI><LI CLASS="bulletlist">Limit on DD exceeded</LI></UL></td><td valign="">DD Short Circuit Fault &#8211; system error log will give additional information
+on Source of fault, measured Value, and Limit in mA.</td><td valign=""><A HREF="617761.htm#SL644309-617761">DD Short Circuit Fault</A></td></tr><tr valign="top"><td valign=""><B>MC Open: </B> Connector &lt;X&gt;<P CLASS="entry">- - MC Check
+fail.  Short circuit on channels: &lt;channels that failed&gt;</P></td><td valign="">MC Open Circuit Fault- Tool will give connector that failed (A,B,C,
+or L (legacy), as well as the channels that faulted on the connector.</td><td valign=""><A HREF="617761.htm#SL644317-617761">MC Open Circuit Fault</A></td></tr><tr valign="top"><td valign=""><B>MC Short: </B> Connector &lt;X&gt;<P CLASS="entry">- MC Check
+fail.  Short circuit on channels: &lt;channels that failed&gt;</P></td><td valign="">MC Short Circuit Fault- Tool will give connector that failed (A,B,C
+or L (legacy), as well as the channels that faulted on the connector.</td><td valign=""><A HREF="617761.htm#SL644320-617761">MC Short Circuit Fault</A></td></tr><tr valign="top"><td valign=""><B>MC Receive: </B> Connector &lt;X&gt;<P CLASS="entry">- MC Check
+fail.  Short circuit on channels: &lt;channels that failed&gt;</P></td><td valign="">MC Receive Fault- considered a short circuit.  Tool will give connector
+
+  that failed (A,B,C or L (legacy), as well as the channels that faulted on
+the connector.  </td><td valign=""><A HREF="617761.htm#SL644324-617761">MC Receive Fault</A></td></tr><tr valign="top"><td valign=""><B>MC Transmit:</B> Connector &lt;X&gt;<P CLASS="entry">- MC Check
+fail.  Open circuit on channels: &lt;channels that failed&gt;</P></td><td valign="">MC Transmit Fault- considered an open circuit.  Tool will give connector
+that failed (A,B,C or L (legacy), as well as the channels that faulted on
+the connector.</td><td valign=""><A HREF="617761.htm#SL644327-617761">MC Transmit Fault</A></td></tr><tr valign="top"><td valign=""><B>Head and Body Cables Possibly Swapped</B></td><td valign="">System is detecting current on the Head and Body T/R cables that is
+consistent with them being swapped.</td><td valign=""><A HREF="617761.htm#SL644330-617761">Head and Body TR Cable Swap</A>: Swap head
+TR and body TR cables at Driver Module or input to the RF Amp.</td></tr><tr valign="top"><td valign=""><B>Head and Connector A T/R Cables Possibly Swapped</B></td><td valign="">System is detecting current on the Head and Connector A cables that
+is consistent with them being swapped.  This error would only occur in an
+upgrade system, which still has the old LPCA with a Legacy connector</td><td valign=""><A HREF="617761.htm#SL644333-617761">Head and Connector A Cable Swap</A>: Swap head
+and Conn A TR cables at the TR switch on the pen wall, or Cable I/F at Rear
+Ped.  </td></tr><tr valign="top"><td valign=""><B>MC Cables Swapped</B></td><td valign="">System is detecting that the MC Cables are potentially swapped.  </td><td valign=""><A HREF="617761.htm#SL644336-617761">MC Cable Swap</A>: Swap the MC
+Cables at the Driver Module, Pen-panel, or 16-channel switch.</td></tr><tr valign="top"><td valign=""><B>MC Cables Disconnected </B></td><td valign="">The Driver Module has detected that Multicoil Driver Cable &lt;1,2&gt;
+is disconnected.</td><td valign=""><A HREF="617761.htm#SL644339-617761">MC Cable Disconnected</A>: Check for
+Disconnected cables at the Driver Module, Pen-panel, or 16-channel switch.</td></tr></tbody></table></div></DIV><H2>3&nbsp;&nbsp;Preliminary Requirements</H2><DIV CLASS="TOOLSTEST"><H3>3.1&nbsp;&nbsp;Tools and Test Equipment</H3><TABLE CLASS="ITEMTABLE" CELLSPACING="5%" CELLPADDING="3%"><THEAD CLASS="ITEMTABLE" ALIGN="CENTER"><TR CLASS="ITEMABLE"><TH CLASS="ITEMTABLE" COLSPAN="2">Item</TH><TH CLASS="ITEMTABLE">Qty</TH><TH CLASS="ITEMTABLE">Effectivity</TH><TH CLASS="ITEMTABLE">Part#</TH><TH CLASS="ITEMTABLE">Manufacturer</TH></TR></THEAD><TBODY CLASS="ITEMTABLE" VALIGN="TOP"><TR><TD COLSPAN="2">50 Ohm Dummy Load</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD>2372868</TD><TD ALIGN="CENTER">-</TD></TR><TR><TD COLSPAN="2">Small Philips head screwdriver (size #0 or
+#00) with at least 2 inch length</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD></TR><TR><TD COLSPAN="2">Digital Multi Meter</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD></TR><TR><TD COLSPAN="2">RF Test Cables Kit</TD><TD ALIGN="CENTER">1</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD></TR><TR><TD COLSPAN="2">MCR Tool (Type and Part # dependent on system
+type)</TD><TD ALIGN="CENTER">As Directed in Troubleshooting Sections</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD><TD ALIGN="CENTER">-</TD></TR></TBODY></TABLE></DIV><DIV CLASS="SAFETY"><H3>3.2&nbsp;&nbsp;Safety</H3><TABLE CLASS="ADMONsafety" CELLSPACING="0%" CELLPADDING="0%" ID="d0e337"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRIC SHOCK HAZARD!!</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRICAL VOLTAGES THROUGH OUT THE RF AND MNS CABINETS.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">TO PREVENT FATAL ELECTRIC SHOCK, MAKE SURE THE RF AMPLIFIERS ARE
+DISABLED WHEN CONFIGURING THE TROUBLESHOOTING TOOLS.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsafety" CELLSPACING="0%" CELLPADDING="0%" ID="d0e344"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRIC SHOCK HAZARD!!</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL VOLTAGES FROM THE RF AND MNS AMPLIFIERS WHEN ENTERGIZED.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">TO PREVENT FATAL ELECTRIC SHOCK, WHEN DIRECTED, TURN OF THE RFI/AMP
+AND MNS BREAKERS ON THE FRONT OF THE PDU BEFORE YOU PERFORM THE PROCEDURES.
+LOCK AND TAG OUT THE PLEXI-GLASS COVER ON THE FRONT OF THE PDU.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><TABLE CLASS="ADMONsafety" CELLSPACING="0%" CELLPADDING="0%" ID="d0e351"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/magnetic.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="caution"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#fcf019"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="blackTriangle blackTriangleie"><IMG ALIGN="TOP" SRC="../icons/black_triangle.png"></SPAN></TD><TD CLASS="hazardText">CAUTION</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B>Strong Magnetic Field!</B></TD></TR><TR><TD><B>Ferrous materials can become dangerous projectiles in the presence
+of the magnetic field Produced by the Signa Magnet. </B></TD></TR><TR><TD><B>The Digital Multi Meter (DMM) has ferrous components.  Use extreme
+caution if this tool must be brought into the magnet room, keeping it as far
+from the magnet as possible.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></DIV><DIV CLASS="REQCONDS"><H3>3.3&nbsp;&nbsp;Required Conditions</H3><TABLE CLASS="REQCONDTABLE" CELLSPACING="5%" CELLPADDING="3%"><THEAD CLASS="REQCONDTABLE" ALIGN="CENTER"><TR CLASS="REQCONDTABLE"><TH CLASS="REQCONDTABLE">Condition</TH><TH CLASS="REQCONDTABLE">Reference</TH><TH CLASS="REQCONDTABLE">Effectivity</TH></TR></THEAD><TBODY CLASS="ITEMTABLE" VALIGN="TOP"><TR CLASS="REQCONDTABLE"><TD CLASS="CONDDESC"><P CLASS="CONDDESC">Ensure no scan is running and the system is in the idle condition.</P></TD><TD CLASS="CONDREF" ALIGN="CENTER"><P CLASS="CONDREF">-</P></TD><TD CLASS="CONDEFF" ALIGN="CENTER"><P CLASS="CONDEFF">-</P></TD></TR><TR CLASS="REQCONDTABLE"><TD CLASS="CONDDESC"><P CLASS="CONDDESC">If the system is configured for multi-nuclear spectroscopy, please
+plug in a MNS TR (transmit-receive) switch if the fault is MNS related.  </P></TD><TD CLASS="CONDREF" ALIGN="CENTER"><P CLASS="CONDREF">-</P></TD><TD CLASS="CONDEFF" ALIGN="CENTER"><P CLASS="CONDEFF">-</P></TD></TR></TBODY></TABLE></DIV><DIV CLASS="PROCBODY"><H2>4&nbsp;&nbsp;Procedure</H2><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644271-617761">4.1&nbsp;&nbsp;TR Open Circuit Fault &#8211; Body<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a T/R Open Circuit Fault along the Body line,
+troubleshooting must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e400.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A> shows a path for the TR signals.</P><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398279873"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">In the unlikely situation both a Body and Head TR Open occur at
+the same time, verify the T/R cables have been connected throughout the chain.
+ If Failure still occurs, check the power supplies in the Driver Module.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" CLASS="STEP1" ID="xd0e374"><LI CLASS="STEP1"><P>Swap the Head (J6) and Body (J7) T/R output cables at the Driver Module,
+and rerun the Diagnostic to determine if the failure changes.  </P><TABLE CLASS="ADMONstep2" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398279874"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You will continue to have a Body T/R open fault in this scenario
+due to the difference in Head to Body output signals.  The important factor
+is what happens with the Head T/R line.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" TYPE="a" CLASS="STEP2" ID="xd0e380"><LI CLASS="STEP2"><P>If the Body still reports a T/R Open, and the head does not report any
+failure, the problem is within the Driver Module.  Replace the driver module,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN>procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398280016"><LI CLASS="STEP2"><P>If the Head now reports a T/R Open, the problem is somewhere further
+along the Body T/R path.  Do <B>NOT</B> replace the Driver
+Module &#8211; continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398280017"><LI CLASS="STEP2"><P>Return the Driver Module Head and Body T/R output cables to their proper
+connection points.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643660-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System Body T/R signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-642745.gif" BORDER="0" usemap="#SL643657-617761"></P></DIV></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398280167"><LI CLASS="STEP1"><P>Swap the Head (J9) and Body (J10) T/R Input cables at the RF Amplifier,
+and rerun the Diagnostic to determine if the failure changes.</P><TABLE CLASS="ADMONstep2" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398280167-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You will continue to have a Body T/R open in this scenario due
+to the difference in Head to Body output signals.  The important factor is
+what happens with the Head T/R line.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" TYPE="a" CLASS="STEP2" ID="xd0e408"><LI CLASS="STEP2"><P>If the Body still reports a T/R Open, and the head does not report any
+failure, the problem is within the cable or connection between the Driver
+Module and RF Amplifier.  Verify the connection integrity, and if all connections
+are good, but still getting an error, replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398280168"><LI CLASS="STEP2"><P>If the Head now reports a T/R Open, the problem is somewhere further
+along the Body T/R path.  Continue to troubleshoot the other components.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398280168-dup.1"><LI CLASS="STEP2"><P>Return the Head and Body T/R RF Amplifier Input cables to their proper
+connection points.</P></LI></OL></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="SL643663-617761"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/magnetic.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="caution"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#fcf019"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="blackTriangle blackTriangleie"><IMG ALIGN="TOP" SRC="../icons/black_triangle.png"></SPAN></TD><TD CLASS="hazardText">CAUTION</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B>Strong Magnetic Field!</B></TD></TR><TR><TD><B>Ferrous materials can become dangerous projectiles in the presence
+of the magnetic field Produced by the Signa Magnet. </B></TD></TR><TR><TD><B>The Digital Multi Meter (DMM) has ferrous components.  Use extreme
+caution if this tool must be brought into the magnet room, keeping it as far
+from the magnet as possible.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="3" CLASS="STEP1" ID="xd0e420"><LI CLASS="STEP1"><P>Obtain a 50ohm terminator and use a DMM to measure and record its resistance
+from center pin to shell.</P></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398280169"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRIC SHOCK HAZARD!!</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL VOLTAGES FROM THE RF AND MNS AMPLIFIERS WHEN ENTERGIZED.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">TO PREVENT FATAL ELECTRIC SHOCK, WHEN DIRECTED, TURN OF THE RFI/AMP
+AND MNS BREAKERS ON THE FRONT OF THE PDU BEFORE YOU PERFORM THE PROCEDURES.
+LOCK AND TAG OUT THE PLEXI-GLASS COVER ON THE FRONT OF THE PDU.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="4" CLASS="STEP1" ID="xd0e430"><LI CLASS="STEP1"><P>On the front of the PDU, Lock out and Tag out the RFI/AMP Breaker, to
+remove power from the RF Amplifier.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398280170"><LI CLASS="STEP1"><P>Disconnect the Body T/R cable at the Driver Module (J7), and connect
+the 50-ohm terminator to the cable.</P></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398280170-dup.1"><LI CLASS="STEP1"><P>Disconnect the Body Transmit cable at the Body TR Switch/Hybrid (J1),
+and use a DMM to measure the resistance between the center pin and the shell
+of the cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398280171"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A>, the problem is with the Body Hybrid.
+ Replace the Body Hybrid according to the following replacement procedures.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398280758"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A> then the problem is between
+the Body Hybrid Splitter and RF Amp. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398280899"><LI CLASS="STEP2"><P>Reconnect the cable to the Body Hybrid.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398280899-dup.1"><LI CLASS="STEP1"><P>In the Equipment Room, locate the connection between the smaller Body
+Flexible RF Extension cable and the larger Body RF Transmit cable.  This connection
+is often located under the Equipment Room floor.  </P></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398280900"><LI CLASS="STEP1"><P>Disconnect the small Body Flexible RF Extension cable from the larger
+Body RF Transmit cable, and using a DMM, measure the resistance between the
+center pin and the connector shell of the smaller Body Flex cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398280900-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A>, the problem is somewhere on the larger
+Body RF Transmit Circuit.  Continue troubleshooting this circuit at <A HREF="617761.htm#SL643676-617761">
+Step&nbsp;10</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398281194"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A> then the problem is between
+the smaller Body Flexible Extension cable and RF Amp. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398281339"><LI CLASS="STEP2"><P>Reconnect the Body Flexible RF Extension cable to the larger Body RF
+Transmit cable.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398281339-dup.1"><LI CLASS="STEP1"><P>Disconnect the Body Flexible RF Extension cable from J4 on the RF Amp,
+and use a DMM to measure the resistance between the center pin and outer shell
+of the J4 connector on the RF Amplifier.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398281339-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A>, check the connectors on in the Body Flexible
+RF Extension cable.  Repair or replace this cable.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398281481"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A> then the problem appears
+to be the RF Amp. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398281622"><LI CLASS="STEP2"><P>Transfer the 50-ohm terminator from the J7 cable to J10 on the RF Amp,
+and reconnect the TR cable to J7 on the Driver Module. </P></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398281622-dup.1"><LI CLASS="STEP2"><P>Use a DMM and measure the resistance between the center pin and shell
+of J4 on the RF Amp.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398281623"><LI CLASS="STEP3"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A> then recheck the condition of the connector
+on the J10 cable.   Repair connector or replace cable. </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398281761"><LI CLASS="STEP3"><P>If the DMM measures more than 10 ohms over the value recorded in <A HREF="617761.htm#SL643663-617761">
+Step&nbsp;3</A> then troubleshoot the RF
+Amp, and replace if necessary.  </P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL></LI></OL></LI></OL><OL START="10" CLASS="STEP1" ID="SL643676-617761"><LI CLASS="STEP1"><P>Inspect the larger Body Transmit circuit.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398282192"><LI CLASS="STEP2"><P>Inspect RF connectors on each end of the cable.  Make sure connectors
+are firmly attached to cable and center pins are not loose.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398282193"><LI CLASS="STEP2"><P>Remove cables from connectors at Penetration Panel.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398282193-dup.1"><LI CLASS="STEP2"><P>Measure for low resistance between shields on each end of cables.</P></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398282193-dup.2"><LI CLASS="STEP2"><P>Measure for low resistance between center pins on each end of cables.</P></LI></OL><OL START="5" TYPE="a" CLASS="STEP2" ID="ov-1291398282193-dup.3"><LI CLASS="STEP2"><P>Inspect Pen Panel connection.  Pay special attention to center pin connection.</P></LI></OL><OL START="6" TYPE="a" CLASS="STEP2" ID="ov-1291398282193-dup.4"><LI CLASS="STEP2"><P>If necessary re-terminate or repair cable.  </P></LI></OL></LI></OL><OL START="11" CLASS="STEP1" ID="ov-1291398282193-dup.5"><LI CLASS="STEP1"><P>Return all cables to their proper positions.</P></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644274-617761">4.2&nbsp;&nbsp;TR Open Circuit Fault &#8211; Head<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a T/R Open Circuit Fault along the Head path,
+troubleshooting must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e575.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> shows a path for the TR signals.  There
+are differences between an upgraded system, which still has the Legacy connector,
+and a forward production system with the new LPCA.  An upgraded system utilizes
+a RF TX switch on the inside of the Pen-Panel to split the head signal into
+two.  One supplies the Head Port, while the other supplies Connector <B>A</B>,
+as shown in <A HREF="javascript:winopen('617761illd0e575.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A>.  In a
+forward production system, the splitter is bypassed, and not used, so there
+is only one head signal in the Magnet room.  See <A HREF="javascript:winopen('617761illd0e580.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;3</A>.  Also the Head TR Switching circuitry is built into the
+Split Head coil cable connector.  </P><OL START="1" CLASS="STEP1" ID="ov-1291398282614"><LI CLASS="STEP1"><P>Swap the Head (J6) and Body (J7) T/R output cables at the Driver Module,
+and rerun the Diagnostic to determine if the failure changes.  </P><TABLE CLASS="ADMONstep2" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398282614-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You will also receive a Head and Body TR Cable Swap error when
+swapping the cables, if the true open is further down the Head T/R line.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" TYPE="a" CLASS="STEP2" ID="xd0e555"><LI CLASS="STEP2"><P>If the Head still reports a T/R Open, the problem is within the Driver
+Module.  Replace the driver module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398282760"><LI CLASS="STEP2"><P>If the Body now reports a T/R Open, and the Head does not report any
+failure, the problem is somewhere further along the Head T/R path.  Do <B>NOT</B> replace
+the Driver Module &#8211; continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398282760-dup.1"><LI CLASS="STEP2"><P>Return the Driver Module Head and Body T/R output cables to their proper
+connection points.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643760-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Upgrade System Head T/R signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-642861.gif" BORDER="0" usemap="#SL643756-617761"></P></DIV><DIV CLASS="ILLUSTRATION" id="SL643765-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;3:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Forward Production Head T/R signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-642862.gif" BORDER="0" usemap="#SL643757-617761"></P></DIV></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398283048"><LI CLASS="STEP1"><P>Swap the Head (J9) and Body (J10) T/R Input cables at the RF Amplifier,
+and rerun the Diagnostic to determine if the failure changes.</P><TABLE CLASS="ADMONstep2" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398283048-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You will also receive a Head and Body TR Cable Swap error when
+swapping the cables, if the true open is further down the Head T/R line.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" TYPE="a" CLASS="STEP2" ID="xd0e588"><LI CLASS="STEP2"><P>If the Head still reports a T/R Open, the problem is within the cable
+or connection between the Driver Module and RF Amplifier.  Verify the connection
+integrity. Trace connection back to Driver Module and confirm that this really
+is Head TR cable and not Body TR cable.  If all connections are good, but
+still getting an error, replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398283049"><LI CLASS="STEP2"><P>If the Body now reports a T/R Open, the problem is somewhere further
+along the Head T/R path.  Continue to troubleshoot the other components.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398283049-dup.1"><LI CLASS="STEP2"><P>Return the Head and Body T/R RF Amplifier input cables to their proper
+connection points.</P></LI></OL></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="SL643699-617761"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/magnetic.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="caution"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#fcf019"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="blackTriangle blackTriangleie"><IMG ALIGN="TOP" SRC="../icons/black_triangle.png"></SPAN></TD><TD CLASS="hazardText">CAUTION</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B>Strong Magnetic Field!</B></TD></TR><TR><TD><B>Ferrous materials can become dangerous projectiles in the presence
+of the magnetic field Produced by the Signa Magnet. </B></TD></TR><TR><TD><B>The Digital Multi Meter (DMM) has ferrous components.  Use extreme
+caution if this tool must be brought into the magnet room, keeping it as far
+from the magnet as possible.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="3" CLASS="STEP1" ID="xd0e600"><LI CLASS="STEP1"><P>Obtain a 50ohm terminator and use a DMM to measure and record its resistance
+from center pin to shell.</P></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398283050"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRIC SHOCK HAZARD!!</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL VOLTAGES FROM THE RF AND MNS AMPLIFIERS WHEN ENTERGIZED.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">TO PREVENT FATAL ELECTRIC SHOCK, WHEN DIRECTED, TURN OF THE RFI/AMP
+AND MNS BREAKERS ON THE FRONT OF THE PDU BEFORE YOU PERFORM THE PROCEDURES.
+LOCK AND TAG OUT THE PLEXI-GLASS COVER ON THE FRONT OF THE PDU.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="4" CLASS="STEP1" ID="xd0e610"><LI CLASS="STEP1"><P>On the front of the PDU, Lock out and Tag out the RFI/AMP Breaker, to
+remove power from the RF Amplifier.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398283050-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head T/R cable at the Driver Module (J6) and connect
+the 50-ohm terminator to the cable.</P></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398283050-dup.2"><LI CLASS="STEP1"><P>Disconnect the Head T/R output cable at the RF Amplifier (J3) and use
+a DMM to measure the resistance between the center conductor and shell of
+the J3 connector on the RF Amp.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398283051"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A>, the problem is with one of the components
+in the RF transmit chain after the RF Amplifier. Continue with <A HREF="617761.htm#SL643702-617761">
+Step&nbsp;7</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398283345"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A>, the problem appears to
+be with the RF Amplifier.  Re-inspect the cable connecting to J9 on the RF
+Amp and, if OK, repair or replace RF Amp.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398283784"><LI CLASS="STEP2"><P>Reconnect the cable to the RF Amplifier J3.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="SL643702-617761"><LI CLASS="STEP1"><P>In the Equipment Room, locate the connection between the Head Flexible
+RF Extension cable and the Head RF Transmit cable.  This connection is often
+located under the Equipment Room floor.  </P></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398283785"><LI CLASS="STEP1"><P>Disconnect the Head Flexible RF Extension cable from the Head RF Transmit
+cable, and using a DMM, measure the resistance between the center pin and
+the connector shell of the smaller Head Flexible RF Extension cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398283785-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A>, the problem is somewhere further down
+the Transmit Chain.   </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398283932"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem appears
+to be in the Head Flexible RF Extension cable.  Repair or replace the cable. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398284081"><LI CLASS="STEP2"><P>Reconnect the Head Flexible RF Extension cable to the Head RF Transmit
+cable.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398284081-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head Transmit cable at J4 on the Equipment Room side
+of the Penetration Panel.</P></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398284081-dup.2"><LI CLASS="STEP1"><P>Use a DMM to measure the resistance between the center pin and shield
+of the cable removed from J4.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398284081-dup.3"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the center conductor in the Penetration
+Panel J4 feed-through connector.  The problem appears to be with one of the
+components further down the transmit chain. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398284229"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is with
+the Head RF Transmit cable.  Inspect the connectors on each end of the cable
+and re-terminate cable ends if necessary.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398284377"><LI CLASS="STEP2"><P>Reconnect cable to J4. </P></LI></OL></LI></OL><OL START="11" CLASS="STEP1" ID="ov-1291398284377-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head Transmit cable at J4 on the Magnet Room side of
+the Penetration Panel.</P></LI></OL><OL START="12" CLASS="STEP1" ID="ov-1291398284378"><LI CLASS="STEP1"><P>Use a DMM to measure the resistance between the center pin and shield
+of the Penetration Panel J4 feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398284378-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> the problem is with one of the components
+further down the transmit chain. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398284521"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then replace Penetration
+Panel J4 feed-through connector. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398284660"><LI CLASS="STEP2"><P>Reconnect cable to J4.  </P></LI></OL><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">If this is a <B>forward production system</B> then skip
+to <A HREF="617761.htm#SL643719-617761">
+Step&nbsp;16</A>.</P></DIV></LI></OL><OL START="13" CLASS="STEP1" ID="ov-1291398284802"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Upgrade system:) 
+</B></FONT></SPAN>Disconnect the Head Transmit cable
+at J152 on RF Transmit Switch and use a DMM to measure the resistance between
+the center pin and shield of the cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398284802-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the center conductor in J152 on RF
+Transmit Switch.  The problem may be with one of the components further down
+the transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398284941"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is with
+the cable.  Make certain this cable comes directly from J4 on the Penetration
+Panel.  If cable identity is OK then replace cable. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398285082"><LI CLASS="STEP2"><P>Reconnect cable to J152.</P></LI></OL><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">If this problem is occurring when a transmit/receive coil is attached
+to the green Head Bendix connector then skip to <A HREF="617761.htm#SL643729-617761">
+Step&nbsp;22</A>.  If coil attached to Connector <B>A</B> then
+proceed to <A HREF="617761.htm#SL643726-617761">
+Step&nbsp;14</A>.</P></DIV></LI></OL><OL START="14" CLASS="STEP1" ID="SL643726-617761"><LI CLASS="STEP1"><P>Connect failing transmit/receive coil to Connector A.  This must be
+done or RF Transmit Switch will not toggle to correct port.</P></LI></OL><OL START="15" CLASS="STEP1" ID="ov-1291398285366"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Upgrade system:) 
+</B></FONT></SPAN>Disconnect the Conn A Head Transmit
+cable at J153 on RF Transmit Switch and use a DMM to measure the resistance
+between the center conductor and shield of J153 on the RF Transmit Switch.
+ </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398285367"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the cable connector.
+ Make sure it is long enough to contact the center conductor in J153 on RF
+Transmit Switch.  The problem may be with one of the components further down
+the transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398285510"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem appears
+to be that the RF Transmit Switch is not switching.  Check that the correct
+control cable is attached to J150 on the RF Transmit Switch and check its
+route back to J25 on the 16 Channel Switch.  Only replace the RF Transmit
+Switch if everything is connected properly.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398285657"><LI CLASS="STEP2"><P>Reconnect the cable to J153</P></LI></OL></LI></OL><OL START="16" CLASS="STEP1" ID="SL643719-617761"><LI CLASS="STEP1"><P>Disconnect the Connector A T/R cable at the incoming side of the Cable
+Interface panel (J2) in the Rear Pedestal, and use a DMM to measure the resistance
+between the center pin and shell of the cable connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398285658"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the center conductor in the Cable
+Interface J2 feed-through connector.  The problem may be further down the
+transmit chain.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398285799"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is within
+the cable.  Make certain that this cable is really from J153 on RF Transmit
+Switch. If cable identity OK then inspect the connectors on each end of the
+cable and re-terminate the cable ends if necessary.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398285939"><LI CLASS="STEP2"><P>Reconnect cable to J2.</P></LI></OL></LI></OL><OL START="17" CLASS="STEP1" ID="ov-1291398285939-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head Cable Track cable from the opposite side of Cable
+Interface J2 in the Rear Pedestal and use a DMM to measure the resistance
+between the center conductor and shell of the J2 feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398285940"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the removed cable
+connector.  Make sure it is long enough to contact the center conductor at
+J2.  The problem may be further down the chain.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398286083"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> the problem is with the
+J2 feed-through connector.  Replace the feed-through connector. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398286224"><LI CLASS="STEP2"><P>Reconnect cable to J2.</P></LI></OL></LI></OL><OL START="18" CLASS="STEP1" ID="ov-1291398286224-dup.1"><LI CLASS="STEP1"><P>Remove the LPCA cover.  <B>Upgrade systems</B> continue
+with <A HREF="617761.htm#SL643744-617761">
+Step&nbsp;19</A>, while <B>Forward
+production systems</B> skip to <A HREF="617761.htm#SL643747-617761">
+Step&nbsp;27</A>.</P></LI></OL><OL START="19" CLASS="STEP1" ID="SL643744-617761"><LI CLASS="STEP1"><P>Locate Connector A and the transmit cable from pin E1 on Connector A
+to the bulkhead interface on the LPCA.</P></LI></OL><OL START="20" CLASS="STEP1" ID="ov-1291398286506"><LI CLASS="STEP1"><P>Disconnect the Connector A T/R cable from the bulkhead interface and
+use a DMM to measure the resistance between the center pin and shield of the
+cable connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398286506-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the cable connector.
+ Make sure it is long enough to contact the center conductor in the bulkhead
+interface.  The problem may be with one of the components further down the
+transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398286648"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem appears
+to be with the cable.  Make certain that this cable is really from J2 in the
+Rear Pedestal and was not swapped with the Head Transmit cable.  If cable
+identity OK then repair the cable or replace the Cable Track. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398286787"><LI CLASS="STEP2"><P>Reconnect the cable to bulkhead interface.</P></LI></OL></LI></OL><OL START="21" CLASS="STEP1" ID="ov-1291398286787-dup.1"><LI CLASS="STEP1"><P>Disconnect the Connector A transmit cable from the opposite side of
+the bulkhead interface and use a DMM to measure the resistance between the
+center conductor and shell of the bulkhead interface feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398286787-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check that the cable really does attach
+to Connector A.  If cable identity is OK then repair or replace the Connector
+A assembly. Refer to the <SPAN CLASS="MODULEREF"><A HREF="571379.htm#SL571380-571379"><I>Replacement of Hypertronics Connector on LPCA</I></A></SPAN>procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398287065"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> the problem is with the
+bulkhead interface feed-through connector.  Replace the feed-through connector. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398287206"><LI CLASS="STEP2"><P>Return all cables to their proper positions and proceed to the <A HREF="617761.htm#SL643770-617761">
+Finalization, Step&nbsp;1</A>.</P></LI></OL></LI></OL><OL START="22" CLASS="STEP1" ID="SL643729-617761"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Upgrade system with failure along Head Bendix connector path:) 
+</B></FONT></SPAN>Disconnect
+the Head Transmit cable at J151 on RF Transmit Switch and use a DMM to measure
+the resistance between the center conductor and shield of J151 on the RF Transmit
+Switch.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398287354"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the cable connector.
+ Make sure it is long enough to contact the center conductor in J151 on RF
+Transmit Switch.  The problem may be with one of the components further down
+the transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398287494"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measure in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem appears
+to be that the RF Transmit Switch is not switching.  Replace the RF Transmit
+Switch. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398287633"><LI CLASS="STEP2"><P>Reconnect the cable to J151.</P></LI></OL></LI></OL><OL START="23" CLASS="STEP1" ID="ov-1291398287633-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head Transmit cable at the incoming side of the Cable
+Interface panel J1 in the Rear Pedestal, and use a DMM to measure the resistance
+between the center pin and shell of the cable connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398287633-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the center conductor in the Cable
+Interface J1 feed-through connector.  The problem may be further down the
+transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398287772"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is within
+the cable.  Make certain that this cable has not been confused with the Connector
+A T/R cable or the optional MNS transmit cable, if present.  If cable identity
+is OK then repair or replace the cable.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398287918"><LI CLASS="STEP2"><P>Reconnect the cable to J1. </P></LI></OL></LI></OL><OL START="24" CLASS="STEP1" ID="ov-1291398287918-dup.1"><LI CLASS="STEP1"><P>Disconnect the Head Cable Track cable from the opposite side of Cable
+Interface J1 in the Rear Pedestal and use a DMM to measure the resistance
+between the center conductor and shell of the J1 feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398287919"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the removed cable
+connector.  Make sure it is long enough to contact the center conductor at
+J2.  The problem may be further down the chain. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398288054"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> the problem is with the
+J1 feed-through connector.  Replace the feed-through connector. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398288197"><LI CLASS="STEP2"><P>Reconnect cable to J1.</P></LI></OL></LI></OL><OL START="25" CLASS="STEP1" ID="ov-1291398288197-dup.1"><LI CLASS="STEP1"><P>Remove the LPCA cover.</P><DIV CLASS="STEPDETAILS"><P CLASS="stepdetails">If this is a<B> forward production system</B> then skip
+to <A HREF="617761.htm#SL643747-617761">
+Step&nbsp;27</A>.</P></DIV></LI></OL><OL START="26" CLASS="STEP1" ID="ov-1291398288342"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Upgrade system:) 
+</B></FONT></SPAN>Disconnect the Head transmit cable
+from J6 on the Head TR Network and use a DMM to measure the resistance between
+the center pin and shell of the cable connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398288343"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the J6 center conductor.  If connector
+is OK then replace the Head TR Network, refer to the <SPAN CLASS="MODULEREF"><A HREF="571419.htm#SL642980-571419"><I>LPCA Replacements</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398288626"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is within
+the cable.  Make certain that this cable has not been confused with the Connector
+A T/R cable.  If cable identity is OK then repair cable or replace the Cable
+Track, refer to the <SPAN CLASS="MODULEREF"><A HREF="548029.htm#SL548040-548029"><I>Cable Take-up Replacement and Access</I></A></SPAN> procedure.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398288921"><LI CLASS="STEP2"><P>Return all cables to their proper locations and continue with the <A HREF="617761.htm#SL643770-617761">
+Finalization, Step&nbsp;1</A>.</P></LI></OL></LI></OL><OL START="27" CLASS="STEP1" ID="SL643747-617761"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;24.	Forward Production:) 
+</B></FONT></SPAN>Disconnect the Conn A
+Head transmit cable from J18 on the Multicoil Assembly and use a DMM to measure
+the resistance between the center pin and shell of the cable connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398289065"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the connector.
+ Make sure it is long enough to contact the J18 center conductor.  If the
+connector looks OK then the problem is further down the transmit chain.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398289207"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then the problem is within
+the cable.  Replace the Cable Track, refer to the <SPAN CLASS="MODULEREF"><A HREF="548029.htm#SL548040-548029"><I>Cable Take-up Replacement and Access</I></A></SPAN>procedure.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398289493"><LI CLASS="STEP2"><P>Reconnect cable to J18.</P></LI></OL></LI></OL><OL START="28" CLASS="STEP1" ID="ov-1291398289494"><LI CLASS="STEP1"><P>Disconnect the Conn A Head transmit cable from J17 on the Multicoil
+Assembly and use a DMM to measure the resistance between the center conductor
+and shell of J17 connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398289494-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> check the center pin on the cable connector.
+ Make sure it is long enough to contact the J17 center conductor.  If the
+connector looks OK then replace the connector &#8220;A&#8221; assembly in
+the front of the LPCA, refer to the <SPAN CLASS="MODULEREF"><A HREF="571379.htm#SL571380-571379"><I>Replacement of Hypertronics Connector on LPCA</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398289769"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643699-617761">
+Step&nbsp;3</A> then replace the Multicoil
+Assembly, refer to the <SPAN CLASS="MODULEREF"><A HREF="571419.htm#SL642980-571419"><I>LPCA Replacements</I></A></SPAN> procedure.</P></LI></OL></LI></OL><OL START="29" CLASS="STEP1" ID="ov-1291398290055"><LI CLASS="STEP1"><P>Reconnect all cables and proceed to the <A HREF="617761.htm#SL643770-617761">
+Finalization, Step&nbsp;1</A>. </P></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644277-617761">4.3&nbsp;&nbsp;TR Open Circuit Fault &#8211; MNS <SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover"><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;1.5T upgrade systems with optional MNS: If the MNS TR switch
+is not plugged in, an MNS TR Open fault will be detected.  Please verify an
+MNS TR switch is plugged in before troubleshooting further.) 
+</B></FONT></SPAN>If
+the system is reporting a T/R Open Circuit Fault along the MNS line, troubleshooting
+must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e1010.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A> shows a path for the MNS TR signals.</P><OL START="1" CLASS="STEP1" ID="ov-1291398290338"><LI CLASS="STEP1"><P>Swap the MNS (J8) and Body (J7) T/R output cables at the Driver Module,
+and rerun the Diagnostic to determine if the failure changes.  </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398290338-dup.1"><LI CLASS="STEP2"><P>If the MNS line still reports a T/R Open, and the body does not report
+any failure, the problem is within the Driver Module.  Replace the driver
+module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398290476"><LI CLASS="STEP2"><P>If the Body path now reports a T/R Open, the problem is somewhere further
+along the MNS T/R path.  Do <B>NOT</B> replace the Driver
+Module &#8211; continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398290477"><LI CLASS="STEP2"><P>Return the Driver Module MNS and Body T/R output cables to their proper
+connection points.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643818-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;4:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System MNS T/R Signal</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643026.gif" BORDER="0" usemap="#SL643815-617761"></P></DIV></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398290624"><LI CLASS="STEP1"><P>Swap the MNS Amp (see table in <A HREF="javascript:winopen('617761illd0e1010.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A> for J#) and Body (J10) T/R Input cables at the RF Amplifiers,
+and rerun the Diagnostic to determine if the failure changes.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398290771"><LI CLASS="STEP2"><P>If the MNS line still reports a T/R Open, and the body does not report
+any failure, the problem is within the cable or connection between the Driver
+Module and MNS RF Amplifier.  Verify the connection integrity, and if all
+connections are good, but still getting an error, replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398290771-dup.1"><LI CLASS="STEP2"><P>If the Body path now reports a T/R Open, the problem is somewhere further
+along the MNS T/R path.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398290772"><LI CLASS="STEP2"><P>Return the MNS and Body T/R RF Amplifier input cables to their proper
+connection points.</P></LI></OL></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="SL643827-617761"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/magnetic.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="caution"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#fcf019"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="blackTriangle blackTriangleie"><IMG ALIGN="TOP" SRC="../icons/black_triangle.png"></SPAN></TD><TD CLASS="hazardText">CAUTION</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B>Strong Magnetic Field!</B></TD></TR><TR><TD><B>Ferrous materials can become dangerous projectiles in the presence
+of the magnetic field Produced by the Signa Magnet. </B></TD></TR><TR><TD><B>The Digital Multi Meter (DMM) has ferrous components.  Use extreme
+caution if this tool must be brought into the magnet room, keeping it as far
+from the magnet as possible.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="3" CLASS="STEP1" ID="xd0e1029"><LI CLASS="STEP1"><P>Obtain a 50ohm terminator and use a DMM to measure and record its resistance
+from center pin to shell.</P></LI></OL><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398290772-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON" ROWSPAN="4"><IMG ALIGN="TOP" SRC="../icons/electrical.gif"></TD><TD CLASS="ADMON"><SPAN CLASS="danger"><TABLE CLASS="hazardStOuter" WIDTH="123.75px" BGCOLOR="#f71518"><TBODY><TR><TD><TABLE CLASS="hazardStInner"><TBODY><TR><TD><SPAN CLASS="whiteTriangle whiteTriangleie"><IMG ALIGN="TOP" SRC="../icons/white_triangle.png"></SPAN></TD><TD CLASS="hazardWhiteText">DANGER</TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE></SPAN></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL ELECTRIC SHOCK HAZARD!!</SPAN></B></TD></TR><TR><TD><B><SPAN style="text-transform : uppercase;">FATAL VOLTAGES FROM THE RF AND MNS AMPLIFIERS WHEN ENTERGIZED.</SPAN></B></TD></TR><TR><TD><B style="text-transform : uppercase;">TO PREVENT FATAL ELECTRIC SHOCK, WHEN DIRECTED, TURN OF THE RFI/AMP
+AND MNS BREAKERS ON THE FRONT OF THE PDU BEFORE YOU PERFORM THE PROCEDURES.
+LOCK AND TAG OUT THE PLEXI-GLASS COVER ON THE FRONT OF THE PDU.</B></TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="4" CLASS="STEP1" ID="xd0e1039"><LI CLASS="STEP1"><P>On the front of the PDU, Lock out and Tag out the MNS Breaker, to remove
+power from the RF Amplifier.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398290773"><LI CLASS="STEP1"><P>Disconnect the MNS T/R cable at the Driver Module (J8), and connect
+a 50-ohm terminator to the cable.</P></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398290773-dup.1"><LI CLASS="STEP1"><P>Disconnect the MNS T/R Switch transmit cable from the SHV connector
+on the front of the LPCA.  See <A HREF="javascript:winopen('617761illd0e1058.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;5</A>.</P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643824-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;5:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">MNS T/R Switch Connection</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643033.jpg" BORDER="0" usemap="#SL643821-617761"></P></DIV></DIV></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398291070"><LI CLASS="STEP1"><P>Use a DMM to measure the resistance between the center pin and shield
+of the SHV connector on the front of the LPCA.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398291070-dup.1"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A> then replace the MNS T/R Switch. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398291216"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over the value measured in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A> then the problem is further
+up the chain.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398291360"><LI CLASS="STEP2"><P>Reattach the MNS T/R Switch transmit cable.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398291360-dup.1"><LI CLASS="STEP1"><P>Disconnect the MNS T/R cable at the Cable Interface Panel on the Rear
+Ped(J3), and use a DMM to measure resistance between the center conductor
+ and shell of the feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398291361"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is with the cables in the
+LPCA.  Remove the LPCA cover and inspect these cables.  Replace and repair
+as necessary.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398291502"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over what was measured in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is further
+up the cable path.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398291648"><LI CLASS="STEP2"><P>Reconnect the cable to the Cable Interface at J3.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398291648-dup.1"><LI CLASS="STEP1"><P>Disconnect the MNS T/R cable at the Cable Interface Panel on the opposite
+side of the Rear Ped(J3), and use a DMM to measure resistance between the
+center pin and shell of the cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398291648-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, then make sure the center pin is long
+enough to contact the center conductor in the J3 feed-through connector. 
+If center pin OK then replace feed-through connector.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398291792"><LI CLASS="STEP2"><P>If the DMM measures more than 10 ohms over what was measured in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is further
+up the cable path.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398291937"><LI CLASS="STEP2"><P>Reconnect the cable to the Cable Interface at J3.</P></LI></OL></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398291937-dup.1"><LI CLASS="STEP1"><P>Disconnect the MNS T/R output cable at the Magnet Room side of the Penetration
+Panel (J83), and use a DMM to measure the resistance between the center conductor
+and outer shell of the feed-through connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398291937-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is with the cable between
+the Penetration Panel (J83) and Rear Ped (J3). Check the center pin on the
+removed cable and make sure it is long enough to contact the center conductor
+in the feed-through connector.  If OK then inspect the connectors on either
+end of the cable.  Repair or replace cable. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398292085"><LI CLASS="STEP2"><P>If the DMM measures something more than 10 ohms over what was measured
+in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is
+further down the chain. </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398292406"><LI CLASS="STEP2"><P>Reconnect the cable to J83 on the Penetration Panel.</P></LI></OL></LI></OL><OL START="11" CLASS="STEP1" ID="ov-1291398292406-dup.1"><LI CLASS="STEP1"><P>Disconnect the MNS T/R output cable at the Equipment Room side of the
+Penetration Panel (J83), and use a DMM to measure the resistance between the
+center pin and outer shell of the connector.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398292406-dup.2"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, check the center pin in the cable and
+make sure it is long enough to contact the center conductor in the J83 feed-through
+connector.  If OK the replace the feed-through connector. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398292641"><LI CLASS="STEP2"><P>If the DMM measures something more than 10 ohms over what was measured
+in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is
+further down the chain.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398292782"><LI CLASS="STEP2"><P>Reconnect the cable to J83 on the Equipment room side of the Pen Panel.</P></LI></OL></LI></OL><OL START="12" CLASS="STEP1" ID="ov-1291398292783"><LI CLASS="STEP1"><P>Disconnect the MNS T/R output cable at the RF Amp MNS RF Out (see table
+in <A HREF="javascript:winopen('617761illd0e1010.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A> for correct J#),
+and use a DMM to measure the resistance between the center conductor and outer
+shell of the J2 connector on the Amp.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398292921"><LI CLASS="STEP2"><P>If the DMM measures within 10 ohms of the value recorded in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is with the cable between
+the RF Amp MNS RF Out and the Penetration Panel J83.  Check the center pin
+on the removed cable and make sure it is long enough to contact the center
+conductor on RF Amp MNS RF Out port.  If OK then check connectors on each
+end of cable.  Repair or replace cable. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398293065"><LI CLASS="STEP2"><P>If the DMM measures something more than 10 ohms over what was measured
+in <A HREF="617761.htm#SL643827-617761">
+Step&nbsp;3</A>, the problem is
+with the MNS RF Amplifier.  Recheck the connector and center pin at the RF
+In port (see table in <A HREF="javascript:winopen('617761illd0e1010.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;4</A> for
+correct J#) on the MNS Amp, and if still getting the fault, repair or replace
+the MNS Amplifier. Refer to the <SPAN CLASS="MODULEREF"><A HREF="626568.htm#SL626574-626568"><I>3.0T CPC MNS Amplifier Replacement</I></A></SPAN>procedure.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398293491"><LI CLASS="STEP2"><P>Remove the 50-ohm terminator, and reconnect the cable to the Driver
+Module and at the Amplifier.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644280-617761">4.4&nbsp;&nbsp;TR Short Circuit Fault &#8211; Body <SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a T/R Short Circuit Fault along the Body
+path, troubleshooting must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e1195.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;6</A> shows a path for the Body
+TR signals.</P><OL START="1" CLASS="STEP1" ID="ov-1291398293630"><LI CLASS="STEP1"><P>Disconnect at Driver Module (J7) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398293630-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the Driver Module.   Replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398293787"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+the short is further along the path past the induced open, and is <B>NOT</B> the
+Driver Module.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398293788"><LI CLASS="STEP2"><P>Reconnect the cable at J7 on the Driver Module.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643861-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;6:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System Body T/R Signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643091.gif" BORDER="0" usemap="#SL643858-617761"></P></DIV></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398293941"><LI CLASS="STEP1"><P>Disconnect at the RF Amp (J10) input cable and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398293941-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between the Driver
+Module and the RF Amplifier.   Inspect the cable and connectors, and repair
+or replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398293942"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398293942-dup.1"><LI CLASS="STEP2"><P>Reconnect the cable at J10 on the Amplifier.</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398293942-dup.2"><LI CLASS="STEP1"><P>Disconnect at the RF Amp (J4) output and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398293942-dup.3"><LI CLASS="STEP2"><P>If still get a short, reinspect cable at J10 for an internal short condition
+only seen when connected.  Otherwise then issue is in the RF Amplifier.  
+Continue to troubleshoot the Amplifier, and if necessary, replace the Amplifier
+according to replacement instructions.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398294238"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398294238-dup.1"><LI CLASS="STEP2"><P>Reconnect the cable at J4 of the Amplifier.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398294238-dup.2"><LI CLASS="STEP1"><P>Disconnect at the Body Hybrid (J1) in the Rear Pedestal and repeat the
+Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398294238-dup.3"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable chain between Amp and
+Hybrid.  Inspect the cable connectors and the Pen Panel connectors.  Repair
+or replace any damaged cables.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398294246"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is most likely the Body Hybrid/ TR Switch.  Replace the Body Hybrid, refer
+to the following procedure.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398294690"><LI CLASS="STEP2"><P>Reconnect the cable at J1 on the Body Hybrid.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644283-617761">4.5&nbsp;&nbsp;TR Short Circuit Fault &#8211; Head<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a T/R Short Circuit Fault along the Head
+path, troubleshooting must occur to isolate it to the failed component.  Illustration
+7 and 8 show a path for the Head TR signals.  There are differences between
+an upgraded system, which still has the Legacy connector, and a forward production
+system with the new LPCA.  An upgraded system utilizes a RF TX switch on the
+inside of the Pen-Panel to split the head signal into two.  One supplies the
+Head Port, while the other supplies Connector A.  In a forward production
+system, the splitter is bypassed, so there is only one head signal in the
+Magnet room.</P><OL START="1" CLASS="STEP1" ID="ov-1291398294691"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Upgrade systems:) 
+</B></FONT></SPAN>if getting a short on the Head
+path, Un-plug the coil in the Legacy port and repeat the Diagnostic, to verify
+it is not a short in the coil.</P><TABLE CLASS="ADMONstep2" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398294691-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">For a Conn A Head Path Short Circuit Fault, unplugging the coil
+will not work, as the test will only check for a short if a T/R coil is plugged
+in.  Continue with <A HREF="617761.htm#SL643874-617761">
+Step&nbsp;2</A> in
+this situation, continuing to keep the coil plugged in.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" TYPE="a" CLASS="STEP2" ID="xd0e1251"><LI CLASS="STEP2"><P>If still get the error, then short is in the system path, and is <B>NOT</B> the
+coil.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398294838"><LI CLASS="STEP2"><P>If no longer getting the short circuit fault, the issue is within the
+coil.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="ov-1291398294838-dup.1"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;7:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Upgrade System Head T/R Signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643184.gif" BORDER="0" usemap="#SL643876-617761"></P></DIV><DIV CLASS="ILLUSTRATION" id="ov-1291398294990"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;8:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">Forward Production Head T/R Signal Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643183.gif" BORDER="0" usemap="#SL643877-617761"></P></DIV><P CLASS="stepdetails">Start disconnecting cables along the path to determine where the short
+is located.</P></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="SL643874-617761"><LI CLASS="STEP1"><P>Disconnect at Driver Module (J6) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295143"><LI CLASS="STEP2"><P>If still get a short, then issue is in the Driver Module.   Replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295292"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path, past the open, and is <B>NOT</B> the
+Driver Module.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295292-dup.1"><LI CLASS="STEP2"><P>Reconnect the cable at J6.</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398295292-dup.2"><LI CLASS="STEP1"><P>Disconnect at the RF Amp (J9) input and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295293"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between the Driver
+Module and the RF Amplifier. Replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295293-dup.1"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295293-dup.2"><LI CLASS="STEP2"><P>Reconnect the cable at J9.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398295293-dup.3"><LI CLASS="STEP1"><P>Disconnect at the RF Amp (J3) output and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295293-dup.4"><LI CLASS="STEP2"><P>If still get a short, reinspect cable at J9 for internal short condition
+only seen when connected. Otherwise replace the Amplifier according to replacement
+instructions.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295591"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295592"><LI CLASS="STEP2"><P>Reconnect the cable at J3 of the RF Amp.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398295592-dup.1"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Connector A Head Path short:) 
+</B></FONT></SPAN>Disconnect at the
+Cable Interface Panel (J2) on the Rear-Pedestal and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295592-dup.2"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable chain between Amp and
+Cable I/F Panel.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295592-dup.3"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is inside the LPCA.  Continue troubleshooting these components.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295592-dup.4"><LI CLASS="STEP2"><P>Reconnect the cable at J2.</P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398295593"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Head Path short, Upgrade systems only:) 
+</B></FONT></SPAN>Disconnect
+at the Cable Interface Panel (J1) at the Rear-Pedestal and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295593-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable chain between Amp and
+Cable I/F Panel.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295593-dup.2"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is within the LPCA cables or port.  Continue troubleshooting these components,
+and replace any failed parts.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295593-dup.3"><LI CLASS="STEP2"><P>Reconnect the cable at J1.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398295593-dup.4"><LI CLASS="STEP1"><P>On the Equipment side of the Pen-panel disconnect J4 and repeat the
+Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295593-dup.5"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between Amp and Pen-panel.
+Inspect the cable and connectors, and repair or replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295594"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is either the cable in the magnet room, between the pen-panel and the Cable
+I/F Panel, or the RF TX Switch &amp; cables.  If this is a <B>forward
+production system</B>, replace the cable.  For an <B>upgrade
+system</B>, continue with <A HREF="617761.htm#SL643886-617761">
+Step&nbsp;8</A>.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295743"><LI CLASS="STEP2"><P>Reconnect the cable at J4.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="SL643886-617761"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Head Path short, Upgrade systems only:) 
+</B></FONT></SPAN>disconnect
+at inside of the Pen-panel, at the output of the RF TX Switch (J151) and repeat
+the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295744"><LI CLASS="STEP2"><P>If still get a short, then issue is in the RF TX Switch or Pen-Panel
+cabling. Verify cable connections and replace the RF TX Switch if necessary.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295744-dup.1"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is the cable in the magnet room, between the pen-panel and the Cable I/F Panel.
+ Replace the cable.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398295744-dup.2"><LI CLASS="STEP2"><P>Reconnect the cable at J151.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644286-617761">4.6&nbsp;&nbsp;TR Short Circuit Fault &#8211; MNS<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a T/R Short Circuit Fault along the MNS line,
+troubleshooting must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e1406.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> shows a path for the TR signals.</P><OL START="1" CLASS="STEP1" ID="ov-1291398295893"><LI CLASS="STEP1"><P>Un-plug the MNS Coil and repeat the Diagnostic, to verify it is not
+a short in the coil.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398295893-dup.1"><LI CLASS="STEP2"><P>If still get the error, then short is in the system path, and is <B>NOT</B> the
+coil.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398295893-dup.2"><LI CLASS="STEP2"><P>If no longer getting the short circuit fault, the issue is within the
+MNS coil.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643890-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;9:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System MNS T/R Signal</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643202.gif" BORDER="0" usemap="#SL643887-617761"></P></DIV><P CLASS="stepdetails">Start disconnecting cables along the path to determine where the short
+is located.</P></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398296070"><LI CLASS="STEP1"><P>Disconnect at Driver Module (J8) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398296070-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the Driver Module.   Replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398296218"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the open, and is <B>NOT</B> the
+Driver Module.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398296219"><LI CLASS="STEP2"><P>Reconnect the cable at J8 of the Driver Module.</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398296219-dup.1"><LI CLASS="STEP1"><P>Disconnect at the MNS RF Amp (See table in <A HREF="javascript:winopen('617761illd0e1406.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> for J#) input and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398296380"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between the Driver
+Module and the MNS RF Amplifier.   Replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398296380-dup.1"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398296380-dup.2"><LI CLASS="STEP2"><P>Reconnect the cable at the MNS Amp input.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398296380-dup.3"><LI CLASS="STEP1"><P>Disconnect at the MNS RF Amp (See table in <A HREF="javascript:winopen('617761illd0e1406.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;9</A> for J#) output and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398296532"><LI CLASS="STEP2"><P>If still get a short, reinspect MNS Amp input cable for internal short
+condition only seen when connected.   If no issues are found with the cable,
+replace the Amplifier according to replacement instructions.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398296830"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398296831"><LI CLASS="STEP2"><P>Reconnect the cable at RF output of the MNS Amplifier.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398296831-dup.1"><LI CLASS="STEP1"><P>Disconnect at the Cable I/F Panel (J3) on the Rear Ped. and repeat the
+Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398296831-dup.2"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable chain between the MNS
+Amp and the I/F Panel.  Continue with <A HREF="617761.htm#SL643905-617761">
+Step&nbsp;6</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398296981"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is either the MNS TR Switch, or cabling in the LPCA. Continue troubleshooting
+these components, and replace the failed parts as needed.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398296981-dup.1"><LI CLASS="STEP2"><P>Reconnect the cable at J3.</P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="SL643905-617761"><LI CLASS="STEP1"><P>Disconnect from the Equipment Room side of the Pen-panel (J83) and repeat
+the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398296982"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between MNS Amp and
+Pen-panel. Replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398296982-dup.1"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is most likely the cable in the magnet room, between the pen-panel and the
+Cable Interface of the Rear Pedestal. Replace the cable.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398296982-dup.2"><LI CLASS="STEP2"><P>Reconnect the cable at J83.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644289-617761">4.7&nbsp;&nbsp;Dynamic Disable and Direct Drive High Voltage Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a DD High Voltage Fault, troubleshooting
+must occur to isolate it to the failed component.  The error should give information
+specific to which path has the issue.  If all lines do not have voltage within
+bounds, then the system should give an error, and suggest checking that the
+HV Switch on the Driver Module interface panel is not in the <B>Disable</B> position.
+  <A HREF="javascript:winopen('617761illd0e1515.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;10</A> shows the DD signal
+paths.</P><OL START="1" CLASS="STEP1" ID="ov-1291398297132"><LI CLASS="STEP1"><P>Disconnect all DD cables from the Driver Module J21-J25, and rerun the
+diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398297132-dup.1"><LI CLASS="STEP2"><P>If still get a High Voltage fault, then the issue is a component within
+the Driver Module.  Replace the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398297282"><LI CLASS="STEP2"><P>If the High Voltage fault goes away, continue with <A HREF="617761.htm#SL643910-617761">
+Step&nbsp;2</A> for troubleshooting.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643914-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;10:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">DD System Paths</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643223.gif" BORDER="0" usemap="#SL643911-617761"></P></DIV></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="SL643910-617761"><LI CLASS="STEP1"><P>Reattach cables one at a time, and run the diagnostic at each point
+to verify which DD path is pulling the supply down.  Based on the DD path
+that is reporting the fault, continue with <A HREF="617761.htm#SL643917-617761">
+Step&nbsp;3</A>.</P></LI></OL><OL START="3" CLASS="STEP1" ID="SL643917-617761"><LI CLASS="STEP1"><P>Swap the problem path on the Magnet room side of Pen-Panel at DD Filter
+with the cables as follows, and rerun the diagnostic. If BD1-BD4 (J72, J73,
+J75, J76) reports error, swap with DD (J74). If DD  (J74) reports an error,
+swap with BD4 (J76).</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398297762"><LI CLASS="STEP2"><P>If continue to see the HV Fault on the original BDx (x=1-4) or DD line,
+then the issue is the DD Filter Board or cable between the Driver Module and
+Pen Panel.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398297762-dup.1"><LI CLASS="STEP3"><P>Return the swapped cables to their appropriate connection points.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398297762-dup.2"><LI CLASS="STEP3"><P>Swap the corresponding cables on the Equipment Side the Pen-Panel and
+run the test.  If the HV Fault does not move, the issue is the cable connecting
+the Pen-panel to the Driver module.  Inspect cable and connectors, and repair
+or replace the cable.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398297763"><LI CLASS="STEP3"><P>If the HV Fault moves to the other path, the issue is the Filter box
+on the Pen-Panel.  Replace the Filter box.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398297763-dup.1"><LI CLASS="STEP2"><P>If HV Fault moves to the swapped line, the fault is further down the
+path. Continue following the troubleshooting steps.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398297763-dup.2"><LI CLASS="STEP2"><P>Return the swapped cables to their appropriate connection points on
+the Filter Board. </P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398297763-dup.3"><LI CLASS="STEP1"><P>Swap the cable end of the Problem Path (Run 778,779,781,782) with the
+DD line (Run 780) at the rear pedestal.  If the DD line (Run780) is the fault
+path, swap it with BD4 (Run782). Rerun the diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398297763-dup.4"><LI CLASS="STEP2"><P>If system continues to report a High Voltage fault on the original DD
+line, then problem is the cable between the Pen-panel and the cable I/F at
+the back of the magnet.  Inspect the cable and connectors, and repair or replace
+the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398297764"><LI CLASS="STEP2"><P>If the High Voltage fault moves to the swapped path, problem is something
+with the Body coil or Body DD Boards.  Continue with the troubleshooting steps.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398297764-dup.1"><LI CLASS="STEP2"><P>Return the swapped cables to their appropriate connections at the back
+of the magnet.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398297764-dup.2"><LI CLASS="STEP1"><P>Follow the <SPAN CLASS="MODULEREF"><A HREF="579031.htm#SL643286-579031"><I>Dynamic Disable Switch Board Replacement</I></A></SPAN> procedure
+and check the DD board diodes with a DMM for the DD Board in question.  Voltage
+should be 0.35-0.6V in one direction, open in the other.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398297913"><LI CLASS="STEP2"><P>If the Voltage is not within range, replace the DD Board.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398297913-dup.1"><LI CLASS="STEP2"><P>If the Voltage is within the specified range, contact Support for more
+assistance in troubleshooting the Body Coil.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644301-617761">4.8&nbsp;&nbsp;DD Open Circuit Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a DD Open Circuit Fault, troubleshooting
+must occur to isolate it to the failed component.  The system will specify
+which DD path is experiencing the open. Illustration 10 shows a path for the
+DD circuit.</P><OL START="1" CLASS="STEP1" ID="ov-1291398297914"><LI CLASS="STEP1"><P>Swap the problem path at the Driver Module with cable suggested below,
+and rerun the diagnostic. 	If BD1-BD4 (J72, J73, J75, J76) reports error,
+swap with DD (J74). 	If DD  (J74) reports an error, swap with BD4 (J76).</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398297914-dup.1"><LI CLASS="STEP2"><P>If still continue to see the open on the original BDx (x=1-4) or DD
+line, then the issue is with the driver module.   Replace the driver Module,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN>procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298064"><LI CLASS="STEP2"><P>If open moves to the swapped line, the open is further down the path.
+Continue following the troubleshooting steps.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298064-dup.1"><LI CLASS="STEP2"><P>Return the swapped cables to their appropriate connection points on
+the Driver Module.</P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398298064-dup.2"><LI CLASS="STEP1"><P>Swap the problem cable on the Magnet Side of Pen-Panel at Filter board
+with the cables suggested below, and rerun the diagnostic. 	If BD1-BD4 (J72,
+J73, J75, J76) reports error, swap with DD (J74). 	If DD  (J74) reports an
+error, swap with BD4 (J76).</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298065"><LI CLASS="STEP2"><P>If still continue to see the open on the original BDx (x=1-4) or DD
+line, then the issue is the DD Filter Board or cable.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398298065-dup.1"><LI CLASS="STEP3"><P>Return the swapped cables to their appropriate connection points.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398298065-dup.2"><LI CLASS="STEP3"><P>Swap the corresponding cables on the Equipment Room side of the Pen-Panel
+and run the test.  If the open does not move, the issue is the cable connecting
+the Pen-panel to the Driver module.  Inspect the cable and connectors, and
+repair or replace the cable.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398298065-dup.3"><LI CLASS="STEP3"><P>If the Open moves to the other path, the issue is the Filter box on
+the Pen-Panel.  Replace the Filter box, refer to the <SPAN CLASS="MODULEREF"><A HREF="496689.htm#SL643920-496689"><I>Gradient Filter Replacement Procedure</I></A></SPAN>procedure.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298217"><LI CLASS="STEP2"><P>If open moves to the swapped line, the open is further down the path.
+Continue following the troubleshooting steps.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298217-dup.1"><LI CLASS="STEP2"><P>Return the swapped cables to their appropriate connection points on
+the Filter Box. </P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398298218"><LI CLASS="STEP1"><P>Select the problem cable from the bullets below, and swap the end of
+the cable at the Rear Pedestal with the cable end suggested and rerun the
+diagnostic.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"><LI CLASS="bulletlist"><P>BD1 (Run 778, J3) with DD (Run 780)</P></LI><LI CLASS="bulletlist"><P>BD2 (Run 779, J4) with DD (Run 780)</P></LI><LI CLASS="bulletlist"><P>BD3 (Run 781, J5) with DD (Run 780)</P></LI><LI CLASS="bulletlist"><P>BD4 (Run 782, J6) with DD (Run 780)</P></LI><LI CLASS="bulletlist"><P>DD  (Run 780) with BD4 (Run 782, J6)</P></LI></UL></DIV></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398298219-dup.2"><LI CLASS="STEP1"><P>If continue to see the open on the original BD path, then issue is the
+cable between the Pen Panel, and the cable interfaces.  Inspect the cable
+and connectors, and repair or replace the suspect cable.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298219-dup.3"><LI CLASS="STEP2"><P>If For BD1-BD4 issues, follow the <SPAN CLASS="MODULEREF"><A HREF="579031.htm#SL643286-579031"><I>Dynamic Disable Switch Board Replacement</I></A></SPAN> procedure
+and check the DD board diodes with a DMM for the DD Board in question.  Voltage
+should be 0.35-0.6V in one direction, open in the other.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298369"><LI CLASS="STEP2"><P>If the Voltage is not within range, replace the DD Board.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298370"><LI CLASS="STEP2"><P>If the Voltage is within the specified range, contact Support for more
+assistance in troubleshooting the Body Coil.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398298370-dup.1"><LI CLASS="STEP1"><P>Return the cables to their original locations.</P></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644309-617761">4.9&nbsp;&nbsp;DD Short Circuit Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a DD Short Circuit Fault, troubleshooting
+must occur to isolate it to the failed component.  The system will specify
+which DD path is experiencing the short. <A HREF="javascript:winopen('617761illd0e1515.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;10</A> shows paths for the DD circuits.</P><OL START="1" CLASS="STEP1" ID="ov-1291398298618"><LI CLASS="STEP1"><P>Start disconnecting cables along the path to determine where the short
+is located.</P></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398298618-dup.1"><LI CLASS="STEP1"><P>Disconnect the faulty line at the Driver Module (J21-J25)) and repeat
+the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298618-dup.2"><LI CLASS="STEP2"><P>If still get a short, then issue is in the Driver Module.   Replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN>procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298768"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the open, and is <B>NOT</B> the
+Driver Module.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298769"><LI CLASS="STEP2"><P>Reconnect the cable at the Driver Module.</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398298769-dup.1"><LI CLASS="STEP1"><P>Disconnect at the DD Filter on the Equipment Room side of the Pen-panel
+(J92-J96), and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298769-dup.2"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between the Driver
+Module and the Pen-panel.   Inspect the cable and connectors, and repair or
+replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298769-dup.3"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298769-dup.4"><LI CLASS="STEP2"><P>Reconnect the cable at the Pen-panel.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398298770"><LI CLASS="STEP1"><P>Disconnect at the DD Filter output on the Magnet Room side of the Pen-panel
+(J72-J76) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298770-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the DD Filter.   Replace the
+Filter.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298770-dup.2"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398298770-dup.3"><LI CLASS="STEP2"><P>Reconnect the cable at the Pen-panel.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398298770-dup.4"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Direct Drive Fault:) 
+</B></FONT></SPAN>Disconnect at the Body Hybrid
+(J6) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398298771"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between the Pen-panel
+and Hybrid. Inspect the cable and connectors, and repair or replace the cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398298771-dup.1"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is most likely the Body Hybrid/ TR Switch.  Replace the Body Hybrid according
+to the Replacement instructions.</P><DIV CLASS="STEPDETAILS"><UL CLASS="STEPDETAILS1"></UL></DIV></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398299199"><LI CLASS="STEP2"><P>Reconnect the cable at the Body Hybrid.</P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398299199-dup.1"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;BD (Dynamic Disable) Faults:) 
+</B></FONT></SPAN>Disconnect the cable
+at the cable interface before it goes into the bore. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398299199-dup.2"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between Pen-panel and
+the interface. Inspect the cable and connectors, and repair or replace the
+cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398299200"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is most likely with the Body DD Boards on Body coil. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398299200-dup.1"><LI CLASS="STEP3"><P>Follow the <SPAN CLASS="MODULEREF"><A HREF="579031.htm#SL643286-579031"><I>Dynamic Disable Switch Board Replacement</I></A></SPAN> procedure
+and check the DD board diodes with a DMM (in diode drop mode) for the DD Board
+in question.  Voltage drop should be 0.35-0.6V in one direction, open in the
+other.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398299348"><LI CLASS="STEP3"><P>If the voltage drop is not within range, replace the DD Board.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398299348-dup.1"><LI CLASS="STEP3"><P>If the voltage drop is within the specified range, contact Support for
+more assistance in troubleshooting the Body Coil. </P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398299349"><LI CLASS="STEP2"><P>Reconnect the cable at the cable Interface.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644317-617761">4.10&nbsp;&nbsp;MC Open Circuit Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a MC Open Circuit Fault, troubleshooting
+must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e1779.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;11</A> shows a path for the MC signals from the Driver Module
+through the 16-channel switch.  <A HREF="javascript:winopen('617761tbld0e1784.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A> is
+also helpful to understand how the signals flow.  Use <A HREF="javascript:winopen('617761tbld0e1784.htm','Table','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Table&nbsp;2</A> to find your system type, and the Coil
+Port you are experiencing the problem with.   Select the link in the Coil
+port field to be taken to troubleshooting steps specific to that issue.</P><UL><LI CLASS="bulletlist"><P></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e1769"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">A coil must be connected in the &#8220;A&#8221;, &#8220;B&#8221;,
+or &#8220;C&#8221; connectors before the system will check for an MC Open
+Circuit Fault on these connectors.  This is not true for the legacy Bendix
+connector as it is checked even with no coil attached.   Please verify an
+MC coil is available before troubleshooting the &#8220;A&#8221;, &#8220;B&#8221;,
+or &#8220;C&#8221; connectors. Use the one that was in use when the error
+originally occurred.  Review the <SPAN CLASS="MODULEREF"><A HREF="533239.htm#SL643943-533239"><I>HDx Surface Coils</I></A></SPAN> document for
+information on applicable coils.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL><OL START="1" CLASS="STEP1" ID="ov-1291398299923-dup.1"><LI CLASS="STEP1"><P></P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643953-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;11:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System MC Circuit Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643949.gif" BORDER="0" usemap="#SL643950-617761"></P></DIV><DIV CLASS="TABLE"><div align="center"><P CLASS="TABLEINTRO" ID="SL643946-617761"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">System MC Circuit Path  </SPAN> </P><table summary="System MC Circuit Path  " border="1"><colgroup><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"><col width="61"></colgroup><thead valign=""><tr valign="top"><th align="center" valign="top">System Type</th><th align="center" valign="top">Channel #</th><th align="center" valign="top">Coil Ports</th><th align="center" valign="top">Driver Module</th><th align="center" valign="top">Pen Panel/MC Filter</th><th align="center" valign="top">16-ch Switch</th><th align="center" valign="top">I/R Filter Box</th><th align="center" valign="top">Coil Connector</th></tr></thead><tbody valign=""><tr valign="top"><td rowspan="3" valign="">Upgrade </td><td rowspan="3" valign="">8ch &amp; 16ch</td><td rowspan="3" valign="">Bendix  Ch 1-8, MCBias 17-24, refer to <A HREF="617761.htm#SL644211-617761">Upgrade System, Fault on MC Bendix Connector</A></td><td rowspan="3" valign="">J10 DM to J78 Pen Panel </td><td rowspan="3" valign="">J78 Pen Panel to J10 on 16ch Switch </td><td rowspan="3" valign="">J19 16ch Switch to J9 Multicoil Assy</td><td rowspan="3" align="center" valign="">N/A</td><td rowspan="3" valign="">Multicoil Assy to Connector</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">Connector A Ch 1-8, MCBias 1-8, refer to <A HREF="617761.htm#SL644214-617761">Upgrade System, Fault on Connector A &amp; B only</A></td><td rowspan="3" valign="">J5 DM to J203 Pen Panel </td><td rowspan="3" valign="">J203 Pen Panel to J11 on 16ch Switch</td><td rowspan="3" valign="">J18 16ch Switch to J12 LPCA Bulkhead</td><td rowspan="3" align="center" valign="">N/A</td><td rowspan="3" valign="">J12 Bulkhead to Connector Port</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">Connector B Ch 1-8, MCBias 9-16, refer to <A HREF="617761.htm#SL644214-617761">Upgrade System, Fault on Connector A &amp; B only</A></td><td rowspan="3" valign="">J5 DM to J203 Pen Panel </td><td rowspan="3" valign="">J203 Pen Panel to J11 on 16ch Switch</td><td rowspan="3" valign="">J17 16ch switch J22 LPCA Bulkhead</td><td rowspan="3" align="center" valign="">N/A</td><td rowspan="3" valign="">J22 Bulkhead to Connector Port</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="3" valign="">Forward Prod</td><td rowspan="3" valign="">8ch &amp; 16ch</td><td rowspan="3" valign="">Connector A Ch 1-8 MCBias 1-8, refer to <A HREF="617761.htm#SL644219-617761">Forward Production, Fault on Connector A </A></td><td rowspan="3" valign="">J5 DM to J203 Pen Panel </td><td rowspan="3" valign="">J203 Pen Panel to J11 of 16ch Switch</td><td rowspan="3" valign="">J18 16-ch switch to J21 MC I/F Box</td><td rowspan="3" valign="">MC Interface box to Connector</td><td rowspan="3" valign="">MC Interface box to Connector</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">&nbsp;</td><td rowspan="3" valign="">Connector B Ch 1-8 MCBias 9-16, refer to <A HREF="617761.htm#SL644222-617761">Forward Production, Fault on Connector B, Coil Ch 1-8 (Bias Ch 9-16)
+ONLY</A></td><td rowspan="3" valign="">J5 DM to J203 Pen Panel </td><td rowspan="3" valign="">J203 Pen Panel to J11 of 16ch Switch</td><td rowspan="3" valign="">J17 16ch switch to J6 Image Reject Filter box</td><td rowspan="3" valign="">Image Reject Filter box J1 to LPCA Bulkhead</td><td rowspan="3" valign="">LPCA Bulkhead to Connector Port</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr><tr valign="top"><td rowspan="2" valign="">&nbsp;</td><td rowspan="2" valign="">16ch</td><td rowspan="2" valign="">Connector B Ch 9-16 MCBias 17-24, refer to <A HREF="617761.htm#SL644225-617761">Forward Production, Fault on Connector B, Coil Ch 9-16 (Bias Ch 17-24)
+ONLY</A></td><td rowspan="2" valign="">J10 DM to J78 Pen Panel </td><td rowspan="2" valign="">J78 Pen Panel to J10 of 16ch Switch</td><td rowspan="2" valign="">J19 16ch switch to J8 Image Reject Filter box</td><td rowspan="2" valign="">Image Reject Filter box J3 to LPCA Bulkhead</td><td rowspan="2" valign="">LPCA Bulkhead to Connector Port</td><td class="auto-generated">&nbsp;</td></tr><tr valign="top"><td valign="">&nbsp;</td></tr></tbody></table></div></DIV></DIV></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="SL644211-617761">4.10.1&nbsp;&nbsp;Upgrade System, Fault on MC Bendix Connector<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><OL START="1" CLASS="STEP1" ID="ov-1291398300968"><LI CLASS="STEP1"><P>Disconnect coil from the Bendix connector and run the MC TR DD diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398300968-dup.1"><LI CLASS="STEP2"><P>If the fault is gone then the coil has failed.  Check the coil cable
+connector.  Repair or replace the coil.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398300969"><LI CLASS="STEP2"><P>If the fault remains then the problem is further down the chain and
+the coil is OK.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398300969-dup.1"><LI CLASS="STEP2"><P>Leave the coil disconnected from the Bendix connector for the remainder
+of the troubleshooting process.</P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398300969-dup.2"><LI CLASS="STEP1"><P>Run the diagnostic and note the failing channel.  </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398300969-dup.3"><LI CLASS="STEP2"><P>Open a c-shell window, size it the width of the screen, and in the window
+type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/System_Path*</B></FONT></SPAN>.  Scroll down
+to the bottom of the file and find the data with the diagnostic execution
+time corresponding to the last run of the diagnostic.  See <A HREF="javascript:winopen('617761illd0e1965.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;12</A>.</P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643958-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;12:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System_Path_Diag_Log.txt Output</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643954.gif" BORDER="0" usemap="#SL643955-617761"></P></DIV></DIV></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301327"><LI CLASS="STEP2"><P>Find the fault in Open or Short status column on the right and then
+match that with a channel on the left.  In the Open Ckt Current or Short Ckt
+Current column note the failing current value.</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398301328"><LI CLASS="STEP1"><P>Swap the connectors at J5 and J10 on the rear of the Driver Module and
+run the diagnostic again.</P></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398301328-dup.1"><LI CLASS="STEP1"><P>Scroll down the c-shell window to find the most recent data.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398301328-dup.2"><LI CLASS="STEP1"><P>Swappng the cables means that the MC bias lines have shifted down 16
+places to channels 1-8.  Channels 17-24 are now connected to an open coil
+connector.  If the failure was on channel 17 before it could now be on channel
+1 and if it was on channel 24 before it could now be on channel 18.  Ignore
+all the new failures now reported in the Open Status and Short Status columns,
+and any failures shown on the Diagnostic GUI.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301328-dup.3"><LI CLASS="STEP2"><P>If the failing current value is now present on one of the channels between
+1 and 8 then the problem is further down the chain and the Driver Module is
+OK.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301329"><LI CLASS="STEP2"><P>If the failing current value is still present on one of the channels
+between 17 and 24 then the problem is inside the Driver Module.  Repair or
+replace the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN>procedure.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398301476"><LI CLASS="STEP2"><P>Return the connectors at J5 and J10 on the rear of the Driver Module
+to the normal positions.  Close the c-shell window. </P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398301476-dup.1"><LI CLASS="STEP1"><P>Swap the TR Bias cable running between J5 of the Driver Module and J78
+of the Pen Panel with the cable running between J10 of the Driver Module and
+J203 of the Pen Panel.  Then run the diagnostic again, with the coil connected
+to the original port that reported the fault.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301476-dup.2"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty cable
+or connection between the Driver Module and Pen Panel.  Inspect the cable
+and connectors of the cable now connected to J5 of the Driver Module and repair
+or replace as necessary.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301477"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, this cable is not
+the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398301477-dup.1"><LI CLASS="STEP2"><P>Return the cables to their proper connection points at the Driver Module
+and Pen Panel.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398301477-dup.2"><LI CLASS="STEP1"><P>Swap the connection J78 with J203 on the Equipment side of the Pen Panel.
+ Then also swap the connection J78 and J203 on the Magnet room side of the
+Pen Panel.  This will allow the signal to go through the other MC Filter at
+the Pen Panel to determine if that is the trouble area.  Run the diagnostic
+again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301477-dup.3"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty MC
+Filter box at the Pen Panel (J78 one), or the cable connections at this box.
+ Inspect the connectors on the MC Filter, and repair or replace the MC Filter
+box.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301477-dup.4"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, the MC filter box
+is not the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398301478"><LI CLASS="STEP2"><P>Return the cables to their proper connection points on both the Equipment
+room and Magnet room sides of the Pen Panel.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398301478-dup.1"><LI CLASS="STEP1"><P>Swap the TR Bias cable running between J203 of the Magnet room side
+of the Pen Panel, with J11 of the 16-channel switch, with the cable running
+between J78 of the Pen Panel, and J10 of the 16-channel switch.  Run the diagnostic
+again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301478-dup.2"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty cable
+or connection between the Pen Panel and the 16-channel switch.  Inspect the
+cable and connections of the cable now connected to J203 of the Pen Panel
+and repair or replace as necessary.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301478-dup.3"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, this cable is not
+the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398301478-dup.4"><LI CLASS="STEP2"><P>Return the cables to their proper connection points at the Pen Panel
+and 16-channel switch. </P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398301479"><LI CLASS="STEP1"><P>Swap the preamp inside the Multicoil Integrated Assembly on the failing
+channel with one next to it.  Run the diagnostic. </P></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398301479-dup.1"><LI CLASS="STEP1"><P>If the failure moves to the other channel the replace the failing preamp,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585326.htm#SL643963-585326"><I>Multicoil Preamp Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="11" CLASS="STEP1" ID="ov-1291398301629"><LI CLASS="STEP1"><P>If the failure does not move then order the empty Multicoil Integrated
+Assembly box and the cable-track cable.  Temporarily route the cable between
+the 16 Channel Switch and Multicoil Integrated Assembly box first to test
+before replacing the Multicoil Assembly box.  The cable is identical in construction
+to a standard 25-pin serial cable and pin connections are one-to-one from
+one end of the cable to the other. </P></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="SL644214-617761">4.10.2&nbsp;&nbsp;Upgrade System, Fault on Connector A &amp; B only<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398301629-dup.1"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The troubleshooting steps in this section require the MCR2 tool.
+ <B>Upgraded systems</B> should only use the MCR2 Tool.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" CLASS="STEP1" ID="xd0e2047"><LI CLASS="STEP1"><P>Remove the coil and connect the MCR2 Tool to the failing connector.
+ Run the TR DD MC diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301630"><LI CLASS="STEP2"><P>If fault still on the original MC line, then the failure is not in the
+coil but further down the signal path. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301630-dup.1"><LI CLASS="STEP2"><P>If the fault is gone then the coil appears faulty.  Check coil connector,
+and replace or repair coil.</P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398301630-dup.2"><LI CLASS="STEP1"><P>Open a c-shell window, size it the width of the screen, and in the window
+type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/System_Path*</B></FONT></SPAN>.  Scroll down
+to the bottom of the file and find the data with the diagnostic execution
+time corresponding to the last run of the diagnostic.  See <A HREF="javascript:winopen('617761illd0e2071.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;13</A>.</P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643966-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;13:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System_Path_Diag_Log.txt Output</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643967.gif" BORDER="0" usemap="#SL643968-617761"></P></DIV></DIV></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398301909"><LI CLASS="STEP1"><P>Find the fault in Open or Short status column on the right and then
+match that with a channel on the left.  In the Open Ckt Current or Short Ckt
+Current column note the failing current value.</P></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398301910"><LI CLASS="STEP1"><P>Swap the connectors at J5 and J10 on the rear of the Driver Module and
+run the diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398301910-dup.1"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398301910-dup.2"><LI CLASS="STEP2"><P>Swappng the cables means that the MC bias lines for the coil have shifted
+up 16 places.  This means that if the failure was on channel 5 before it could
+now be on channel 21 and if it was on channel 14 before it could now be on
+channel 30.  Ignore all the new failures now reported in the Open Status and
+Short Status columns.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398301910-dup.3"><LI CLASS="STEP2"><P>If the failing current value is now present on one of the channels between
+17 and 32 then the problem is further down the chain and the Driver Module
+is OK.</P></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398301910-dup.4"><LI CLASS="STEP2"><P>If the failing current value is not seen on one of the channels between
+17 and 32 then the problem is inside the Driver Module.  Repair or replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="5" TYPE="a" CLASS="STEP2" ID="ov-1291398302051"><LI CLASS="STEP2"><P>Return the connectors at J5 and J10 on the rear of the Driver Module
+to the normal positions.  Close the c-shell window. </P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398302052"><LI CLASS="STEP1"><P>Swap the TR Bias cable running between J5 of the Driver Module and J78
+of the Pen Panel with the cable running between J10 of the Driver Module and
+J203 of the Pen Panel.  Then run the diagnostic again, with the coil connected
+to the original port that reported the fault.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302052-dup.1"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty cable
+or connection between the Driver Module and Pen Panel.  Inspect the cable
+and connections of the cable now connected to J10 of the Driver Module and
+repair or replace as necessary.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302052-dup.2"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, this cable is not
+the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302052-dup.3"><LI CLASS="STEP2"><P>Return the cables to their proper connection points at the Driver Module
+and Pen Panel.</P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398302053"><LI CLASS="STEP1"><P>Swap the connection J78 with J203 on the Equipment side of the Pen Panel.
+ Then also swap the connection J78 and J203 on the Magnet room side of the
+Pen Panel.  This will allow the signal to go through the other MC Filter at
+the Pen Panel to determine if that is the trouble area.  Run the diagnostic
+again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302053-dup.1"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty MC
+Filter box at the Pen Panel (J203 one), or the cable connections at this box.
+ Inspect the connectors on the MC Filter, and repair or replace the MC Filter
+box.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302053-dup.2"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, the MC filter box
+is not the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302053-dup.3"><LI CLASS="STEP2"><P>Return the cables to their proper connection points on both the Equipment
+room and Magnet room sides of the Pen Panel.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398302053-dup.4"><LI CLASS="STEP1"><P>Swap the TR Bias cable running between J203 of the Magnet room side
+of the Pen Panel, with J11 of the 16-channel switch, with the cable running
+between J78 of the Pen Panel, and J10 of the 16-channel switch.  Run the diagnostic
+again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302054"><LI CLASS="STEP2"><P>If there is no longer a fault, the open could be due to a faulty cable
+or connection between the Pen Panel and the 16-channel switch.  Inspect the
+cable and connections of the cable now connected to J78 of the Pen Panel and
+repair or replace as necessary.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302054-dup.1"><LI CLASS="STEP2"><P>If the fault continues to show up on the same path, this cable is not
+the problem.  Continue troubleshooting.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302054-dup.2"><LI CLASS="STEP2"><P>Return the cables to their proper connection points at the Pen Panel
+and 16-channel switch.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398302054-dup.3"><LI CLASS="STEP1"><P>Disconnect the MCR2 tool, and remove the LPCA cover.</P></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398302054-dup.4"><LI CLASS="STEP1"><P>In the LPCA, disconnect the 37-pin MC bias Cable Track cable interfacing
+to the bulkhead of the failing connector.</P></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398302054-dup.5"><LI CLASS="STEP1"><P>Remove the cable and connector assembly from the MCR2 Tool.  Connect
+the disconnected 37-pin MC bias cable to the 37-pin connector on the MCR2
+Tool. Run the TR DD MC diagnostic. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302055"><LI CLASS="STEP2"><P>If the fault is gone then the Connector inside the LPCA appears faulty.
+ Repair or replace the Connector.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302055-dup.1"><LI CLASS="STEP2"><P>If fault is still present then the fault is further down the chain.
+ </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302055-dup.2"><LI CLASS="STEP2"><P>Reconnect the 37-pin MC bias Cable Track cable to bulkhead in LPCA.</P></LI></OL></LI></OL><OL START="11" CLASS="STEP1" ID="ov-1291398302055-dup.3"><LI CLASS="STEP1"><P>Swap the two MC bias cables (J18 and J17) at the 16-channel Switch and
+rerun the diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302055-dup.4"><LI CLASS="STEP2"><P>If fault remains then problem is with Cable Track cable.  Check connectors
+on each end.  Either repair issue in connector or replace Cable Track.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302056"><LI CLASS="STEP2"><P>If fault is gone then problem is most likely the 16-channel switch.
+ Inspect the switch, and repair or replace as necessary, refer to the <SPAN CLASS="MODULEREF"><A HREF="571479.htm#SL643973-571479"><I>16 Channel Switch Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302194"><LI CLASS="STEP2"><P>Return J18 and J17 connections to normal positions.</P></LI></OL></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="SL644219-617761">4.10.3&nbsp;&nbsp;Forward Production, Fault on Connector A <SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398302195"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The troubleshooting steps in this section require the MCR3 tool.
+ <B>Forward Production systems</B> should only use the MCR3
+Tool.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" CLASS="STEP1" ID="xd0e2174"><LI CLASS="STEP1"><P><SPAN CLASS="EFFSTRING"><FONT COLOR="#008000"><B>
+(For&nbsp;Coil connected to A:) 
+</B></FONT></SPAN>Run MC TR DD Diagnostic with
+coil connected.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302195-dup.1"><LI CLASS="STEP2"><P>If failure is seen then, if possible, try running diagnostic with coil
+connected to Connector <B>B</B> and then Connector <B>C</B>.
+ If unable to connect coil to <B>B</B> or <B>C</B> then
+skip to <A HREF="617761.htm#SL643976-617761">
+Step&nbsp;2</A>.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398302342"><LI CLASS="STEP3"><P>If failure still seen when connected to <B>B</B> and <B>C</B> then
+check coil connector for damage.  Repair or replace the coil.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398302342-dup.1"><LI CLASS="STEP3"><P>If failures not seen when connected to <B>B</B> and
+C then problem is further down MC bias chain on Connector <B>A</B> path.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302342-dup.2"><LI CLASS="STEP2"><P>If failures not seen then recheck error log and confirm problem is really
+due to MC bias fault on channels between 1 and 8.  </P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="SL643976-617761"><LI CLASS="STEP1"><P>Remove the coil from Connector <B>A</B> and attach the
+MCR3 Tool.  Go to the Multi-Coil Receive 3 Diagnostic menu and under <SPAN CLASS="GUILABEL"><I>Port
+A</I></SPAN> select <SPAN CLASS="GUILABEL"><I>With Preamps Off</I></SPAN>.  Select <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302343"><LI CLASS="STEP2"><P>If no failures are seen then this indicates that the receive lines in
+the connector are in good working order.  Skip to <A HREF="617761.htm#SL643979-617761">
+Step&nbsp;3</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302485"><LI CLASS="STEP2"><P>If failures are seen then locate the upper row of BNC connectors on
+the rear of the Multicoil Interface Box and swap the BNC cable on the failing
+line with one next to it.   Run the diagnostic again. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398302485-dup.1"><LI CLASS="STEP3"><P>If the failure moves to another channel then Connector <B>A</B> appears
+faulty.  Please repair or replace. </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398302486"><LI CLASS="STEP3"><P>If the failure remains on the same channel then the problem may be the
+preamp.  Swap the preamp on the failing channel with one next to it.  Keep
+the cabling in the some location.  Run the diagnostic.</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>If the failure moves to another channel then the preamp is
+faulty. Refer to the <SPAN CLASS="MODULEREF"><A HREF="585326.htm#SL643963-585326"><I>Multicoil Preamp Replacement</I></A></SPAN> procedure.</P></LI><LI CLASS="numlist"><P>If the failure remains on the same channel then the problem
+is further down the chain.  </P></LI><LI CLASS="numlist"><P>Return the preamp to its original location.  </P></LI></OL></DIV></LI></OL></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="SL643979-617761"><LI CLASS="STEP1"><P>Disconnect the cable at J19 on the Multicoil Interface Box and disconnect
+the 37-pin cable-track cable at the Connector <B>B</B> bulkhead
+interface.  Join these two cables together. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302632-dup.2"><LI CLASS="STEP2"><P>Disconnect all the cables from the upper row of BNC connectors on the
+rear of the Multicoil Interface Box in the LPCA.  Run the MC TR DD Diagnostic.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398302633"><LI CLASS="STEP3"><P>If a failure seen then Connector <B>A</B> is faulty.
+ Repair or replace.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398302633-dup.1"><LI CLASS="STEP3"><P>If a failure not seen then the problem is the coil or further down the
+chain.  More tests will determine which.</P></LI></OL></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398302633-dup.3"><LI CLASS="STEP1"><P>Disconnect J19 from the 37-pin cable-track cable and reconnect 37-pin
+cable back to normal location.  Remove cable at J21 on Multicoil Interface
+Box and connect this to free J19 cable to bypass Multicoil Interface Box out
+of the circuit.  Run MC TR DD Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302633-dup.4"><LI CLASS="STEP2"><P>If the fault is gone then the Multicoil Interface Box appears to have
+failed.  Repair or replace the unit.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302634"><LI CLASS="STEP2"><P>If the fault remains then the coil is OK but the problem is further
+down the chain.  </P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302634-dup.1"><LI CLASS="STEP2"><P>Reconnect J19 cable to Multicoil Interface Box but leave BNC cables
+disconnected. </P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398302634-dup.2"><LI CLASS="STEP1"><P>Swap cables at J17 and J18 on 1st 16 Channel Switch.  Run the MC TR
+DD Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302634-dup.3"><LI CLASS="STEP2"><P>If fault seen then replace 37-pin cable-track cable that interconnects
+J21 on Multicoil Interface Box to J18 on 1st  16 Channel Switch.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302634-dup.4"><LI CLASS="STEP2"><P>If fault not seen then the problem is further down the chain.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398302634-dup.5"><LI CLASS="STEP2"><P>Reconnect J17 and J18 cables to correct locations.  Reconnect BNC cables
+to correct locations on rear of Multicoil Interface Box.  </P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398302635"><LI CLASS="STEP1"><P><B>If system is a 32channel system:</B> Disconnect connector
+at J10 on 2nd 16 Channel Switch that services Connector <B>C</B>.
+ This 16 Channel Switch is marked with part number 5109645-3 (1.5T) or 5109645-4
+(3.0T) and has nothing connected to J21 or J18. Run the MC TR DD Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302635-dup.1"><LI CLASS="STEP2"><P>If the fault is gone then the problem is between Connector <B>C</B> and
+the 2nd 16 Channel Switch and the coil is OK.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302635-dup.2"><LI CLASS="STEP2"><P>If the fault remains then the problem is further down the circuit servicing
+Connector <B>A</B>.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398302636"><LI CLASS="STEP1"><P>Open a c-shell window, size it the width of the screen, and in the window
+type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/System_Path*</B></FONT></SPAN>.  Scroll down
+to the bottom of the file and find the data with the diagnostic execution
+time corresponding to the last run of the diagnostic.  See <A HREF="javascript:winopen('617761illd0e2344.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;14</A>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302782"><LI CLASS="STEP2"><P>Find the fault in Open or Short status column on the right and then
+match that with a channel on the left.  In the Open Ckt Current or Short Ckt
+Current column note the failing current value.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL643987-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;14:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System_Path_Diag_Log.txt Output</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-643984.gif" BORDER="0" usemap="#SL643985-617761"></P></DIV></DIV></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398302932"><LI CLASS="STEP1"><P>Swap the connectors at J5 and J10 on the rear of the Driver Module and
+run the diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398302932-dup.1"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398302932-dup.2"><LI CLASS="STEP2"><P>Swappng the cables means that the MC bias lines for the coil have shifted
+up 16 places.  This means that if the failure was on channel 5 before it could
+now be on channel 21.  Ignore all the new failures now reported in the Open
+Status and Short Status columns, as well as any failures seen on the Diagnostic
+GUI.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398302932-dup.3"><LI CLASS="STEP3"><P>If the failing current value is now present on one of the channels between
+17 and 24 then the problem is between the 1st 16 Channel Switch and the cabling
+to the Driver Module.  Driver Module is OK.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398302932-dup.4"><LI CLASS="STEP3"><P>If the failing current value is not seen between 17 and 24 then the
+problem is inside the Driver Module.  Repair or replace the Driver Module,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303078"><LI CLASS="STEP2"><P>Swap connectors at J5 and J10 on rear of Driver Module back to normal
+positions.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398303079"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel and run the diagnostic again. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303079-dup.1"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303079-dup.2"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303079-dup.3"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 17 and 24 then
+problem is between Pen Panel filters and 16 Channel Switch.  </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303079-dup.4"><LI CLASS="STEP3"><P>If the same channel between 17 and 24 that was failing before is passing
+now then replace or repair cable between J5 on Driver Module and Penetration
+Panel.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398303080"><LI CLASS="STEP3"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel back to normal positions.</P></LI></OL></LI></OL></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398303080-dup.1"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+and run the diagnostic again. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303080-dup.2"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303080-dup.3"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303080-dup.4"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 17 and 24 then
+problem is between the Magnet Room MC bias cabling and 16 Channel Switch.
+ </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303080-dup.5"><LI CLASS="STEP3"><P>If the same channel between 17 and 24 that was failing before is passing
+now then replace the failed Penetration Panel filter at J203.  </P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398303081"><LI CLASS="STEP3"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+back to normal positions.</P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303081-dup.1"><LI CLASS="STEP2"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch and run the
+diagnostic again.</P></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398303081-dup.2"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="5" TYPE="a" CLASS="STEP2" ID="ov-1291398303081-dup.3"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303081-dup.4"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 17 and 24 then
+problem is the 16 Channel Switch.  Replace or repair 16 Channel Switch, refer
+to the <SPAN CLASS="MODULEREF"><A HREF="571479.htm#SL643973-571479"><I>16
+Channel Switch Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303227"><LI CLASS="STEP3"><P>If the same channel between 17 and 24 that was failing before is passing
+now then repair or replace the MC bias cable connected to J203 on the Magnet
+Room-side of the Penetration Panel.  </P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398303227-dup.1"><LI CLASS="STEP3"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch back to normal
+positions.</P></LI></OL></LI></OL></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="SL644222-617761">4.10.4&nbsp;&nbsp;Forward Production, Fault on Connector B, Coil Ch 1-8 (Bias Ch 9-16)
+ONLY<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398303227-dup.2"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The troubleshooting steps in this section require the MCR3 tool.
+ <B>Forward Production</B> systems should only use the MCR3
+Tool.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" CLASS="STEP1" ID="xd0e2432"><LI CLASS="STEP1"><P><B>Coil connected to B:</B>Run MC TR DD Diagnostic with
+coil connected.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303228"><LI CLASS="STEP2"><P>If failure is seen then, if possible, try running diagnostic with coil
+connected to Connector <B>A</B> and then Connector <B>C</B>.
+ If unable to connect coil to <B>A</B> or <B>C</B> then
+skip to <A HREF="617761.htm#SL644138-617761">
+Step&nbsp;2</A>.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303374"><LI CLASS="STEP3"><P>If failure still seen when connected to <B>A</B> and <B>C</B> then
+check coil connector for damage.  Repair or replace the coil.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303374-dup.1"><LI CLASS="STEP3"><P>If failures not seen when connected to <B>A</B> and <B>C</B> then
+problem is further down MC bias chain on Connector <B>B</B> path.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303375"><LI CLASS="STEP2"><P>If failures not seen then recheck error log and confirm problem is really
+due to MC bias fault on channels between 9 and 16.  </P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="SL644138-617761"><LI CLASS="STEP1"><P>Remove the coil from Connector <B>B</B> and attach the
+MCR3 Tool.  Go to the Multi-Coil Receive 3 Diagnostic menu and under <SPAN CLASS="GUILABEL"><I>Port
+B</I></SPAN> select <SPAN CLASS="GUILABEL"><I>Hypertronics</I></SPAN> and <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303375-dup.1"><LI CLASS="STEP2"><P>If no failures are seen then this indicates that the receive lines in
+the connector are in good working order.  Skip to <A HREF="617761.htm#SL644141-617761">
+Step&nbsp;3</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303520"><LI CLASS="STEP2"><P>If failures are seen then remove the LPCA cover.  Disconnect the 37-pin
+connector and upper 8W8 RF connector in the Connector <B>B</B> bulkhead
+interface.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303521"><LI CLASS="STEP2"><P>Remove the cable assembly from the MCR3 Tool and connect the 37-pin
+connector and 8W8 RF connector directly to the MCR3 Tool.  Run the diagnostic
+again. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303521-dup.1"><LI CLASS="STEP3"><P>If failure not seen then Connector <B>B</B> faulty.
+ Please repair or replace. </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303521-dup.2"><LI CLASS="STEP3"><P>If failure remains then disconnect cables at J1 and J5 on Image Reject
+Filter 1.  Bypass Filter by connecting cables together.  Run the Multi-coil
+Receive 3 diagnostic.</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>If failure not seen then Image Reject Filter 1 is faulty.
+ Please repair or replace.  </P></LI><LI CLASS="numlist"><P>If failure remains then repair or replace 8W8 RF cable-track
+cable.</P></LI></OL></DIV></LI></OL></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398303522-dup.2"><LI CLASS="STEP2"><P>Disconnect the 8W8 RF cable from the MCR3 Tool but leave the 37-pin
+cable connected.  A connection to 8W8 RF connector on MCR3 Tool not needed.
+  Run the MC TR DD Diagnostic. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303522-dup.3"><LI CLASS="STEP3"><P>If failure not seen then Connector <B>B</B> is faulty.
+ Repair or replace.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303523"><LI CLASS="STEP3"><P>If failure seen then the problem is further down the chain.</P></LI></OL></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="SL644141-617761"><LI CLASS="STEP1"><P>Disconnect J2 and J6 from the Image Reject Filter and bypass it from
+the circuit by connected these two cables together.  Run MC TR DD Diagnostic.
+ </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303523-dup.1"><LI CLASS="STEP2"><P>If fault is gone then the Image Reject Filter is faulty. Repair or replace.
+ </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303523-dup.2"><LI CLASS="STEP2"><P>If fault remains then the problem is further down the chain.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398303523-dup.3"><LI CLASS="STEP1"><P>Disconnect J6 from J2 and attach MCR3 Tool to J6 37-pin connector. 
+A connection to 8W8 RF connector on MCR3 Tool not needed.   Run <SPAN CLASS="GUILABEL"><I>MC
+TR DD Diagnostic</I></SPAN>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303524"><LI CLASS="STEP2"><P>If fault gone the 37-pin cable in cable track is faulty.  Repair or
+replace cable-track.  </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303524-dup.1"><LI CLASS="STEP2"><P>If fault remains then problem is further down the chain.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303524-dup.2"><LI CLASS="STEP2"><P>Return J6 and J2 to their proper positions on the Image Reject Filter
+Box.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398303524-dup.3"><LI CLASS="STEP1"><P>Swap connectors at J17 and J18 on 1st 16 Channel Switch. Run the diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303524-dup.4"><LI CLASS="STEP2"><P>If fault gone then problem is between 1st 16 Channel Switch 1 and Driver
+Module.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303524-dup.5"><LI CLASS="STEP2"><P>If fault remains then repair or replace cable that interconnects J6
+on Image Reject Filter 1 to J17 on 1st 16 Channel Switch.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303525"><LI CLASS="STEP2"><P>Reconnect J17 and J18 cables to correct locations.  Run diagnostic. </P></LI></OL></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398303525-dup.1"><LI CLASS="STEP1"><P>Open a c-shell window, size it the width of the screen, and in the window
+type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/System_Path*</B></FONT></SPAN>.  Scroll down
+to the bottom of the file and find the data with the diagnostic execution
+time corresponding to the last run of the diagnostic.  See <A HREF="javascript:winopen('617761illd0e2587.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;15</A>.</P><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL644146-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;15:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System_Path_Diag_Log.txt Output</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-644142.gif" BORDER="0" usemap="#SL644143-617761"></P></DIV></DIV></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398303819"><LI CLASS="STEP1"><P>Find the fault in Open or Short status column on the right and then
+match that with a channel on the left.  In the Open Ckt Current or Short Ckt
+Current column note the failing current value.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303819-dup.1"><LI CLASS="STEP2"><P>Swap the connectors at J5 and J10 on the rear of the Driver Module and
+run the diagnostic again.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303819-dup.2"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303819-dup.3"><LI CLASS="STEP2"><P>Swappng the cables means that the MC bias lines for the coil have shifted
+up 16 places.  This means that if the failure was on channel 10 before it
+could now be on channel 26 and if it was on channel 14 before it could now
+be on channel 30.  Ignore all the new failures now reported in the Open Status
+and Short Status columns.  </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303822"><LI CLASS="STEP3"><P>If the failing current value is now present on one of the channels between
+25 and 32 then the problem is between the 1st 16 Channel Switch and the cabling
+to the Driver Module.  Driver Module is OK.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303822-dup.1"><LI CLASS="STEP3"><P>If failing current value is not seen in channels between 25 and 32 then
+the problem is inside the Driver Module.  Repair or replace the Driver Module,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL></LI></OL><OL START="4" TYPE="a" CLASS="STEP2" ID="ov-1291398303966"><LI CLASS="STEP2"><P>Swap connectors at J5 and J10 on rear of Driver Module back to normal
+positions.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398303967"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel and run the diagnostic again. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303967-dup.1"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303967-dup.2"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303967-dup.3"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 25 and 32 then
+problem is between Pen Panel filters and 16 Channel Switch.  </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303967-dup.4"><LI CLASS="STEP3"><P>If the same channel between 25 and 32 that was failing before is passing
+now then replace or repair cable between J5 on Driver Module and Penetration
+Panel. </P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303968"><LI CLASS="STEP2"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel back to normal positions.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398303968-dup.1"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+and run the diagnostic again. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303968-dup.2"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303968-dup.3"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303968-dup.4"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 25 and 32 then
+problem is between the Magnet Room MC bias cabling and 16 Channel Switch.
+ </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303969"><LI CLASS="STEP3"><P>If the same channel between 25 and 32 that was failing before is passing
+now then replace the failed Penetration Panel filter at J203. </P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398303969-dup.1"><LI CLASS="STEP3"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+back to normal positions.</P></LI></OL></LI></OL></LI></OL><OL START="10" CLASS="STEP1" ID="ov-1291398303969-dup.2"><LI CLASS="STEP1"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch and run the
+diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303969-dup.3"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398303969-dup.4"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398303970"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 25 and 32 then
+problem is the16 Channel Switch.  Replace or repair 16 Channel Switch.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398303970-dup.1"><LI CLASS="STEP3"><P>If the same channel between 25 and 32 that was failing before is passing
+now then repair or replace the MC bias cable connected to J203 on the Magnet
+Room-side of the Penetration Panel.  </P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398303970-dup.2"><LI CLASS="STEP2"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch back to normal
+positions.</P></LI></OL></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="SL644225-617761">4.10.5&nbsp;&nbsp;Forward Production, Fault on Connector B, Coil Ch 9-16 (Bias Ch 17-24)
+ONLY<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><TABLE CLASS="ADMONstep1" CELLSPACING="0%" CELLPADDING="0%" ID="ov-1291398303970-dup.3"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">The troubleshooting steps in this section require the MCR3 tool. <B> Forward
+Production systems</B> should only use the MCR3 Tool.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><OL START="1" CLASS="STEP1" ID="xd0e2674"><LI CLASS="STEP1"><P>Run MC TR DD Diagnostic with coil connected. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398303971"><LI CLASS="STEP2"><P>If failures seen then, if possible, try running diagnostic with coil
+connected to Connector <B>C</B>.  If no Connector <B>C</B> then
+skip to <A HREF="617761.htm#SL644151-617761">
+Step&nbsp;2</A>.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304298"><LI CLASS="STEP3"><P>If failures still seen when connected to <B>C</B> then
+check coil connector for damage.  Repair or replace coil.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398304299"><LI CLASS="STEP3"><P>If failures not seen when connected to <B>C</B> then
+problem is further down MC bias chain on Connector <B>B</B> path.</P></LI></OL></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304299-dup.1"><LI CLASS="STEP2"><P>If failures not seen then recheck error log and confirm problem is really
+due to MC bias fault on channels between 17 and 24.  </P></LI></OL></LI></OL><OL START="2" CLASS="STEP1" ID="SL644151-617761"><LI CLASS="STEP1"><P>Remove the coil from Connector <B>B</B> and remove the
+LPCA cover.  Swap upper and lower 8W8 RF cables connected to Connector <B>B</B> bulkhead
+interface.  Attach the MCR3 Tool to Connector <B>B</B>.  </P></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398304300"><LI CLASS="STEP1"><P>Go to the Multi-Coil Receive 3 Diagnostic menu and under <SPAN CLASS="GUILABEL"><I>Port
+B</I></SPAN> select <SPAN CLASS="GUILABEL"><I>Upper 8W8</I></SPAN> and <SPAN CLASS="GUIBUTTON">[Run]</SPAN>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304300-dup.1"><LI CLASS="STEP2"><P>If no failures are seen then this indicates that the connector and receive
+lines are in good working order.  Skip to <A HREF="617761.htm#SL644154-617761">
+Step&nbsp;4</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304445"><LI CLASS="STEP2"><P>If failures seen then remove 37-pin cable and bottom-most 8W8 RF connector
+from Connector <B>B</B> bulkhead interface.  Also remove 37-pin
+connector from same bulkhead.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398304445-dup.1"><LI CLASS="STEP2"><P>Remove the cable assembly from the MCR3 Tool and connect the 37-pin
+connector and 8W8 RF connector directly to the MCR3 Tool.  Run the Multi-Coil
+Receive 3 diagnostic again.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304445-dup.2"><LI CLASS="STEP3"><P>If failure not seen then Connector <B>B</B> is faulty.
+ Please repair or replace. </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398304446"><LI CLASS="STEP3"><P>If failure remains then disconnect cables at J3 and J7 on Image Reject
+Filter 1.  Bypass Filter by connecting cables together.  Run the MCR diagnostic.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398304446-dup.1"><LI CLASS="STEP3"><P>If failure not seen then Image Reject Filter 1 is faulty.  Please repair
+or replace.  </P></LI></OL><OL START="4" TYPE="i" CLASS="STEP3" ID="ov-1291398304446-dup.2"><LI CLASS="STEP3"><P>	If failure remains then repair or replace 8W8 RF cable-track cable.</P></LI></OL></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="SL644154-617761"><LI CLASS="STEP1"><P>Disconnect the 37-pin cable but leave the 8W8 RF cable connected.  A
+connection to 37-pin cable on MCR3 Tool not needed.  </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304446-dup.3"><LI CLASS="STEP2"><P>Run the MC TR DD Diagnostic.  It will report that no coil is connected.
+ This is normal.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398304447-dup.1"><LI CLASS="STEP1"><P>Open a c-shell window, size it the width of the screen, and in the window
+type <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/System_Path*</B></FONT></SPAN>.  Scroll down
+to the bottom of the file and find the data with the diagnostic execution
+time corresponding to the last run of the diagnostic.  See <A HREF="javascript:winopen('617761illd0e2783.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;16</A>.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304591"><LI CLASS="STEP2"><P>Find the fault in Open or Short status column on the right and then
+match that with a channel on the left.  In the Open Ckt Current or Short Ckt
+Current column note the failing current value.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL644159-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;16:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System_Path_Diag_Log.txt output</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-644155.gif" BORDER="0" usemap="#SL644156-617761"></P></DIV></DIV></LI></OL><OL START="6" CLASS="STEP1" ID="ov-1291398304735"><LI CLASS="STEP1"><P>Swap the connectors at J5 and J10 on the rear of the Driver Module and
+run the diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304736"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304736-dup.1"><LI CLASS="STEP2"><P>Swappng the cables means that the MC bias lines for the coil have shifted
+down 16 places.  This means that if the failure was on channel 17 before it
+could now be on channel 1 and if it was on channel 23 before it could now
+be on channel 7.  Ignore all the new failures now reported in the Open Status
+and Short Status columns.  </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304736-dup.2"><LI CLASS="STEP3"><P>If the failing current value is now present on one of the channels between
+1 and 8 then the problem is between the 1st 16 Channel Switch and the cabling
+to the Driver Module.  Driver Module is OK.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398304736-dup.3"><LI CLASS="STEP3"><P>If  failing current value is not seen in channels between 1 and 8 then
+the problem is inside the Driver Module.  Repair or replace the Driver Module,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN>procedure.</P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398304881"><LI CLASS="STEP2"><P>Swap connectors at J5 and J10 on rear of Driver Module back to normal
+positions.</P></LI></OL></LI></OL><OL START="7" CLASS="STEP1" ID="ov-1291398304881-dup.1"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel and run the diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304881-dup.2"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304881-dup.3"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304881-dup.4"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 1 and 8 then
+problem is between Pen Panel filters and 16 Channel Switch.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398304882"><LI CLASS="STEP3"><P>If the same channel between 1 and 8 that was failing before is passing
+now then replace or repair cable between J10 on Driver Module and Penetration
+Panel. </P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398304882-dup.1"><LI CLASS="STEP2"><P>Swap connectors at J78 and J203 on Equipment Room-side of Penetration
+Panel back to normal positions.</P></LI></OL></LI></OL><OL START="8" CLASS="STEP1" ID="ov-1291398304882-dup.2"><LI CLASS="STEP1"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+and run the diagnostic again. </P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304882-dup.3"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304882-dup.4"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304882-dup.5"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 1 and 8 then
+problem is between the Magnet Room MC bias cabling and 16 Channel Switch. </P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398304883"><LI CLASS="STEP3"><P>If the same channel between 1 and 8 that was failing before is passing
+now then replace the failed Penetration Panel filter at J78.</P></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398304883-dup.1"><LI CLASS="STEP2"><P>Swap connectors at J78 and J203 on Magnet Room-side of Penetration Panel
+back to normal positions.</P></LI></OL></LI></OL><OL START="9" CLASS="STEP1" ID="ov-1291398304883-dup.2"><LI CLASS="STEP1"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch and run the
+diagnostic again.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398304883-dup.3"><LI CLASS="STEP2"><P>Scroll down the c-shell window to find the most recent data. Again,
+ignore failure messages in far right column. </P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398304883-dup.4"><LI CLASS="STEP2"><P>Verify that the same channel seen in the previous steps is still reporting
+an abnormal current value. </P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398304884"><LI CLASS="STEP3"><P>If the failure is still present on same channel between 1 and 8 then
+problem is either the 1st 16 Channel Switch or cable connecting to J19 on
+the 1st 16 Channel Switch.  The cable is identical in construction to a standard
+25-pin serial cable and pin connections are one-to-one from one end of the
+cable to the other.  Replace or repair the cable or 16 Channel Switch, refer
+to the <SPAN CLASS="MODULEREF"><A HREF="571479.htm#SL643973-571479"><I>16
+Channel Switch Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398305026"><LI CLASS="STEP3"><P>If the same channel between 1 and 8 that was failing before is passing
+now then repair or replace the MC bias cable connected to J78 on the Magnet
+Room-side of the Penetration Panel.</P></LI></OL><OL START="3" TYPE="i" CLASS="STEP3" ID="ov-1291398305026-dup.1"><LI CLASS="STEP3"><P>Swap connectors at J10 and J11 on 1st 16 Channel Switch back to normal
+positions.</P></LI></OL></LI></OL></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="ov-1291398305027">4.10.6&nbsp;&nbsp;Forward Production, Fault on Connector C, Ch.25-32 ONLY<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><OL START="1" CLASS="STEP1" ID="ov-1291398305027-dup.1"><LI CLASS="STEP1"><P>Content in development.</P></LI></OL><H4 CLASS="SUBSTEPGROUP" ID="ov-1291398305027-dup.3">4.10.7&nbsp;&nbsp;Forward Production, Fault on Connector C, Ch.1-8 ONLY<SPAN CLASS="SUBSTEPGROUPEFF"> 
+</SPAN></H4><OL START="1" CLASS="STEP1" ID="ov-1291398305027-dup.4"><LI CLASS="STEP1"><P>Content in development.</P></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644320-617761">4.11&nbsp;&nbsp;MC Short Circuit Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the system is reporting a MC Short Circuit Fault, troubleshooting
+must occur to isolate it to the failed component.  <A HREF="javascript:winopen('617761illd0e2901.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;17</A> shows a path for the MC signals.</P><OL START="1" CLASS="STEP1" ID="ov-1291398305168"><LI CLASS="STEP1"><P>Un-plug the coil and repeat the Diagnostic, to verify it is not a short
+in the coil.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398305168-dup.1"><LI CLASS="STEP2"><P>If still get the error, then short is in the system path, and is <B>NOT</B> the
+coil</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398305168-dup.2"><LI CLASS="STEP2"><P>If no longer getting the short circuit fault, the issue is within the
+coil.</P></LI></OL><DIV CLASS="STEPDETAILS"><DIV CLASS="ILLUSTRATION" id="SL644230-617761"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;17:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">System MC Circuit Path</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/617761-644226.gif" BORDER="0" usemap="#SL644227-617761"></P></DIV><P CLASS="stepdetails">Start disconnecting cables along the path to determine where the short
+is located.</P></DIV></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398305316"><LI CLASS="STEP1"><P>Disconnect the MC cable containing the channel in question at Driver
+Module (J5 or J10) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398305316-dup.1"><LI CLASS="STEP2"><P>If still get a short, then issue is in the Driver Module.   Replace
+the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398305463"><LI CLASS="STEP2"><P>If only get an open circuit fault (due to the disconnected cable), then
+short is further along the path past the induced open, and is <B>NOT</B> the
+Driver Module.  Continue to troubleshoot.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398305463-dup.1"><LI CLASS="STEP2"><P>Reconnect the cable at the driver module</P></LI></OL></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398305463-dup.2"><LI CLASS="STEP1"><P>Disconnect the MC cable at the 16-channel Switch (J10 or J11) and repeat
+the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398305463-dup.3"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable chain between Driver
+Module and 16-channel switch. Continue troubleshooting at <A HREF="617761.htm#SL644240-617761">
+Step&nbsp;4</A>.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398305608"><LI CLASS="STEP2"><P>If the short goes away, and only an Open circuit fault is detected,
+then problem is most likely within the 16-channel switch, LPCA circuitry,
+or Coil.</P><OL START="1" TYPE="i" CLASS="STEP3" ID="ov-1291398305608-dup.1"><LI CLASS="STEP3"><P>Remove the connector from J19 on the 16- Channel Switch and run the
+diagnostic.</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>If the failure is gone then the problem is further down the
+chain.</P></LI><LI CLASS="numlist"><P>If the failure remains then replace the 16 Channel Switch,
+refer to the <SPAN CLASS="MODULEREF"><A HREF="571479.htm#SL643973-571479"><I>16 Channel Switch Replacement</I></A></SPAN> procedure.</P></LI></OL></DIV></LI></OL><OL START="2" TYPE="i" CLASS="STEP3" ID="ov-1291398305753"><LI CLASS="STEP3"><P>Remove the connector from J9 on the Multicoil Integrated Assembly box
+in the LPCA. Run the diagnostic.</P><DIV CLASS="STEPDETAILS"><OL><LI CLASS="numlist"><P>If the failure is gone then it is possible that the preamp
+on that receive line is faulty.  </P><OL TYPE="a"><LI CLASS="numlist"><P>Inside the Multicoil Preamp Assembly swap the preamp on the
+failing channel with one next to it.  Run the diagnostic.</P></LI><LI CLASS="numlist"><P>If the fault remains on the same channel then replace the
+Multicoil Integrated Assembly box, refer to the <SPAN CLASS="MODULEREF"><A HREF="585326.htm#SL643963-585326"><I>Multicoil Preamp Replacement</I></A></SPAN> procedure. </P></LI><LI CLASS="numlist"><P>If the fault moves to another channel then replace the failed
+preamp.</P></LI></OL></LI><LI CLASS="numlist"><P>If the failure remains then replace or repair the cable-track
+cable.   </P></LI></OL></DIV></LI></OL></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398305899-dup.2"><LI CLASS="STEP2"><P>Reconnect the cable at the 16-channel Switch.</P></LI></OL></LI></OL><OL START="4" CLASS="STEP1" ID="SL644240-617761"><LI CLASS="STEP1"><P>Disconnect MC cable at Equipment room side of the Pen-panel (J78 or
+J203) and repeat the Diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398305900"><LI CLASS="STEP2"><P>If still get a short, then issue is in the cable between Driver Module
+and Pen-panel. Inspect the cable and connectors, and repair or replace the
+cable.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398305900-dup.1"><LI CLASS="STEP2"><P>If the short goes away, and only get an Open circuit fault, then problem
+is most likely the MC Filter or cable in the Magnet room Reconnect the cable.
+Continue with <A HREF="617761.htm#SL644253-617761">
+Step&nbsp;5</A>.</P></LI></OL></LI></OL><OL START="5" CLASS="STEP1" ID="SL644253-617761"><LI CLASS="STEP1"><P>Disconnect the MC cable (J203 or J78) on the Magnet room side of the
+Pen Panel, and rerun the diagnostic.</P><OL START="1" TYPE="a" CLASS="STEP2" ID="ov-1291398306045"><LI CLASS="STEP2"><P>If still continue to see a short on the original MC line, then the issue
+is the MC filter on the Pen Panel.  Replace the filter.</P></LI></OL><OL START="2" TYPE="a" CLASS="STEP2" ID="ov-1291398306045-dup.1"><LI CLASS="STEP2"><P>If the short goes away, and only get an open circuit fault, repair or
+replace the cable between the Pen Panel and the 16-channel switch.</P></LI></OL><OL START="3" TYPE="a" CLASS="STEP2" ID="ov-1291398306045-dup.2"><LI CLASS="STEP2"><P>Return the disconnected cable to the appropriate position.</P></LI></OL></LI></OL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644324-617761">4.12&nbsp;&nbsp;MC Receive Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the diagnostic is detecting a MC Receive Fault, it is detecting current
+of greater than +100 mA during receive mode.  The most likely cause of this
+failure is a MC Driver in the Driver Module.  Replace the Driver Module, refer
+to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver
+Module Replacement</I></A></SPAN> procedure.</P><UL><LI CLASS="bulletlist"><P></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e3017"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">In rare instances this error has been received due to instability
+in the MC bias path caused by a capacitor in the circuit.  If this error only
+occurs on one coil, there is a small chance it could be the coil circuitry
+causing the fault.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644327-617761">4.13&nbsp;&nbsp;MC Transmit Fault<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">If the diagnostic is detecting a MC Transmit Fault, it is detecting
+negative current of less than -50 mA during transmit mode.  The most likely
+cause of this failure is a Drivers or Monitoring Circuit within the Driver
+Module.  Replace the Driver Module, refer to the <SPAN CLASS="MODULEREF"><A HREF="585105.htm#SL585115-585105"><I>Driver Module Replacement</I></A></SPAN> procedure.</P><UL><LI CLASS="bulletlist"><P></P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e3033"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">In rare instances this error has been received due to instability
+in the MC bias path caused by a capacitor in the circuit.  If this error only
+occurs on one coil, there is a small chance it could be the coil circuitry
+causing the fault.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI></UL></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644330-617761">4.14&nbsp;&nbsp;Head and Body TR Cable Swap<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">The system should be able to detect if the Body and Head T/R cables
+have been swapped, based on the difference in voltages.  If this error is
+received, check the cabling at both the output of the Driver Module (J6 and
+J7), as well as at the input of the RF Amplifier (J9 and J10).  At the output
+of the Amplifier, the cables are no longer the same cable connector, so they
+will not be swapped anywhere else along the chain.</P></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644333-617761">4.15&nbsp;&nbsp;Head and Connector A Cable Swap<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover"><B>Upgrade systems:</B> the Head T/R signal is split
+into two paths at the RF TX Switch on the Pen-panel.  If this error is received,
+check the cabling at both the Output of the RF TX Switch (J151 and J153),
+as well as at the Cable I/F Panel at the Rear Pedestal (J1 and J2).</P></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644336-617761">4.16&nbsp;&nbsp;MC Cable Swap<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover"><B>Upgrade systems:</B> the Diagnostic can detect potential
+MC Cable swaps along the MC Paths.  If this error is received, check the cabling
+at the back of the Driver Module (J5 and J10), cables at the Pen Panel (J203
+and J78), and cables at the 16-Channel Switch (J11 and J10).</P></DIV><DIV CLASS="STEPGROUP"><H3 CLASS="STEPGROUP" ID="SL644339-617761">4.17&nbsp;&nbsp;MC Cable Disconnected<SPAN CLASS="STEPGROUPEFF"> 
+</SPAN></H3><P CLASS="groupover">The Diagnostic can detect when an MC Cable is disconnected along the
+MC Paths.  If this error is received, check the cabling at the back of the
+Driver Module (J5 and J10), cables at the Pen Panel (J203 and J78), and cables
+at the 16-Channel Switch (J11 and J10).</P></DIV></DIV><H2>5&nbsp;&nbsp;Finalization</H2><OL START="1" CLASS="STEP1" ID="SL643770-617761"><LI CLASS="STEP1"><P>Return all equipment to the original configuration.  Be sure to connect
+all cables, and verify swapped cables were returned to correct locations according
+to the cable maps.</P></LI></OL><OL START="2" CLASS="STEP1" ID="ov-1291398306331"><LI CLASS="STEP1"><P>Remove all LOTO components and turn on the RF Amp breakers, if turned
+off.</P></LI></OL><OL START="3" CLASS="STEP1" ID="ov-1291398306331-dup.1"><LI CLASS="STEP1"><P>Run the TR DD MC System Path Diag a final time to verify all cables
+are returned properly, and no new faults have appeared.</P></LI></OL><OL START="4" CLASS="STEP1" ID="ov-1291398306331-dup.2"><LI CLASS="STEP1"><P>Perform a TPS Reset.</P></LI></OL><OL START="5" CLASS="STEP1" ID="ov-1291398306332"><LI CLASS="STEP1"><P>Complete one Head, Body, and MNS (if applicable) scan to verify system
+functionality.</P></LI></OL><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

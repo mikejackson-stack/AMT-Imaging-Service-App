@@ -1,0 +1,124 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>Release 11.X Coil Configuration Updates</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><table width="100%" border="0" cellspacing="0" cellpadding="0" class="background"><tr valign="top"><td width="5%"><img src="../images/transparent.gif" width="10" height="10"><script language="JavaScript" src="../scripts/bookmark2.js"></script></td><td><P CLASS="BREADCRUMB"></P></td><td align="right"><P CLASS="BREADCRUMB">GE Exclusive Use Only<BR><B>Direction&nbsp;&nbsp;</B>5440000,&nbsp;&nbsp;<B>Rev#</B>&nbsp;&nbsp;5<BR>Signa HDxt Service Methods<BR><B>Module Version</B>&nbsp;&nbsp;1.0,&nbsp;&nbsp;<B>Version Date</B>&nbsp;&nbsp;5/3/07</P></td></tr></table><H1 ID="top">Release 11.X Coil Configuration Updates </H1><P CLASS="descriptive">This section should only be completed on systems upgrading from Signa
+8.x or 9.x to 10.x or higher, and the system has reported unknown coils during
+restore manager update of <SPAN CLASS="filename"><FONT FACE="COURIER">CoilConfig.cfg</FONT></SPAN>. Beginning with
+Signa 10.0, the number of parameters used in coil configuration has grown
+significantly. It is no longer a simple matter to configure new surface coils
+to Signa. As a result, a new process has been developed which auto configures
+known coils.  The configuration is based off a known coil definition file
+that is keyed on known coil names. </P><TABLE CLASS="ADMONdescriptive" CELLSPACING="0%" CELLPADDING="0%" ID="d0e32"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">You should do a Save Protocols before beginning the coils configuration
+process. This will allow for recovery in the event that something goes wrong
+in the coil update process.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P><P CLASS="descriptive">There are two main reasons why a coil may not be part of the coil definition
+file:</P><OL><LI CLASS="numlist"><P>Coils sold by GE that the customer has renamed from the GE
+standard name.  </P></LI><LI CLASS="numlist"><P>Coils not sold by GE and or coils created by researchers. </P></LI></OL><P CLASS="descriptive">Once coils have been flagged by the system as being unknown, the unknown
+coil(s) will have to be added to the system by one of three methods before
+it can be used.  </P><OL><LI CLASS="numlist"><P>GE coils not using standard GE names that the customer does
+not agree to rename. These coils must be manually added/renamed using the
+Config File Manager tool.  Non-GE or research coils are manually added using
+Config File Manager tool. All parameters will have to be updated manually.</P></LI><LI CLASS="numlist"><P>GE coils that have been renamed are renamed back to their
+standard GE name. These coils must be manually added using the Config File
+Manager tool. A script is provided to update customer protocols if this step
+is used.</P></LI><LI CLASS="numlist"><P>An update to the coil definition file is requested from GEMS
+HQ Coil Team.  Once created the new file is downloaded and the coils are configured
+to the system using a script provided with 11.x software. </P></LI></OL><P CLASS="descriptive">The first step to resolve unknown coil problem is to obtain the GE Coil
+Identification Document. This document may be found on the <SPAN CLASS="MODULEREF"><A HREF="79505.htm#SL82027-79505"><I>Excite Coil Identification Guide</I></A></SPAN> off the main system index. The latest copy can always be obtained
+by GE Employees by going to MR OLC Support Central on the GEMS Intranet and
+down load the document from under Manuals -&gt; Coil Identification Document.
+This document can be used to help determine if unknown coils are renamed coils
+or non-GE (Not sold by GE) coils. Once the unknown coils are identified, refer
+to <A HREF="javascript:winopen('77200illd0e64.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A> for the coil update
+process and determine what action should be taken.   </P><DIV CLASS="ILLUSTRATION" id="SL77275-77200"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;1:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">RELEASE 11.X COIL CONFIG UPGRADE PROCESS (LX UPGRADES)</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/77200-77018.jpg" BORDER="0" usemap="#SL77276-77200"></P></DIV><P CLASS="descriptive"><A HREF="77200.htm#SL77279-77200">Section&nbsp;1</A> through <A HREF="77200.htm#SL77282-77200">Section&nbsp;3</A> explain in detail the paths shown in <A HREF="javascript:winopen('77200illd0e64.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.</P><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL77279-77200">1&nbsp;&nbsp;Coils Are Manually Added To the Signa System<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section covers path (1) on <A HREF="javascript:winopen('77200illd0e64.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.
+To view all the coils that have been flagged as unknown, go to the Service
+Desktop and Open a Cshell. Then type at the command prompt:</P><P CLASS="sect1">&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/UnknownCoilList.txt</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P CLASS="sect1">Coils are manually added to the Signa system using Configuration File
+Manager. To start the Configuration File Manager go to the Service Desktop.
+If not already started, start the Service Browser, Choose the <SPAN CLASS="GUIBUTTON">[Configuration]</SPAN> Tab
+and push the <SPAN CLASS="GUIBUTTON">[Configuration File Manager]</SPAN> link on the
+left.</P></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291403695232">2&nbsp;&nbsp;GE Coils or Other Known Coils are Renamed Back to GE Standard Names<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">This section covers path (2) on <A HREF="javascript:winopen('77200illd0e64.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;1</A>.
+This section also assumes that known GE coils have been renamed to non-GE
+standard names and the customer have agreed to use the standard GE names again.
+The coils that couldn&#8217;t be found on the original update will have to
+be added manually using the correct names. After the coils are added, existing
+customer protocols that use the non standard name can be updated via script
+to the new coil name. Continue as follows.</P><OL><LI CLASS="numlist"><P>To view all the coils that have been flagged as unknown, go
+to the Service Desktop and Open a Cshell. Then type at the command prompt:</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more /usr/g/service/log/UnknownCoilList.txt</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Coils are manually added to the Signa system using Configuration
+File Manager. To start the Configuration File Manager go to the Service Desktop.
+If not already started, start the Service Browser, choose the <SPAN CLASS="GUIBUTTON">[Configuration]</SPAN> Tab
+and push the <SPAN CLASS="GUIBUTTON">[Config File Manager]</SPAN> link on the left.</P></LI><LI CLASS="numlist"><P>Add the additional coils as needed. From the &#8220;Available
+Coils&#8221; list, select the added coil(s) from the &#8220;Site Coils&#8221;
+list (added to bottom of list), then click <SPAN CLASS="GUIBUTTON">[Edit Coil]</SPAN>.
+Change coil name back to the GE coil name. </P><P>As an example, if the customer had a coil named &#8220;CHEST&#8221;
+that was using the GE TORSO coil, in Config File Manager add the CHEST coil
+back to the site list and then edit the coil and change the name to TORSO. </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e131"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Once finished it may take a few minutes for the Coil Config to
+update to complete (refer to status line at the bottom of Config File Manager
+window). </TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Once a coil name has been changed, update the customer existing
+protocols by doing the following.</P><P>Open a Cshell and type the following at the command prompt: </P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd /usr/local/bin</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>CoilCorrect.sh</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (If
+only one coil needs updating) or use</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>AllCoilCorrect.sh</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (This
+will allow walk through multible coils)</P><P>In the command window will appear a list of the coils that are currently
+used in the customer protocols. Enter the coil name you want to change. The
+next question will be what should the name be changed to. Give it the new
+name used in step 3 above, then a final verification is made and the scrip
+changes the coil names in the protocol. </P><P>Using the example given above, changing the customer coil name &#8220;CHEST&#8221;
+back to the GE name &#8220;TORSO&#8221;. <A HREF="javascript:winopen('77200illd0e170.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> shows the screens as seen on Signa. <A HREF="javascript:winopen('77200illd0e170.htm','Illustration','width=720,height=500,menubar=no,toolbar=no,status=yes,resizable=yes,scrollbars=yes')">Illustration&nbsp;2</A> is an example screen. The number of coils shown for your
+system may vary.</P></LI><LI CLASS="numlist"><P>Repeat step 4 for all coils that may have renamed.</P></LI></OL><DIV CLASS="ILLUSTRATION" id="SL77292-77200"><P CLASS="ILLUSTITLE"><SPAN CLASS="ILLUSINTRO"><B>Illustration&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="ILLUSTITLE">UPDATING CUSTOMER PROTOCOLS WITH NEW COIL NAMES</SPAN> </P><P CLASS="ILLUSTGRAPHIC"><IMG SRC="../media/77200-77030.jpg" BORDER="0" usemap="#SL77295-77200"></P></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="SL77282-77200">3&nbsp;&nbsp;Having Coil Definition File Updated<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1"></P><P CLASS="sect1"><SPAN CLASS="filename"><FONT FACE="COURIER">CoilConfig.cfg.1.5T.txt</FONT></SPAN> (viewable version of coil
+template file; not a Unix file)</P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL136461-77200">3.1&nbsp;&nbsp;Getting the Latest Coil Config Template from Quickplace<SPAN CLASS="SECT2EFF"> </SPAN></H3><OL><LI CLASS="numlist"><P>You can access the &#8220;Coils - Excite&#8221; Quickplace
+by going to <SPAN CLASS="URLLINK"><A HREF="http://supportcentral.ge.com/products/sup_products.asp?prod_id=15325" TARGET="_blank">MR
+Support Central</A></SPAN>: The latest copy is available from as follows: Manuals
+&#8594; Signa Documentation &#8594; Coils - 10.X and above. Signa Infinity &amp;
+Excite Technology &#8594;  Q.P. 11.x Coil Listing. </P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e193"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">Be sure to not use anything except for the 11.x listing.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Scroll to the bottom of the Quickplace screen and select the <SPAN CLASS="GUIBUTTON">[CoilConfig.cfg.1.5T.txt]</SPAN> document. </P></LI><LI CLASS="numlist"><P>Copy the file to your PC, or open the file and view/record
+the values for the coil(s) you need.  (This is a viewable only file. It is
+not a Unix file and cannot be transferred to Signa.)</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1291403696208">3.2&nbsp;&nbsp;Using Config File Manager to Update Selected Coils (Manual Method)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">This method is used to change only those coils that need updating.  </P><OL><LI CLASS="numlist"><P>From the service desktop Utilities menu, select the <SPAN CLASS="GUIBUTTON">[Configuration
+File Manager]</SPAN> tool. </P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Coil Config File]</SPAN>.  From the &#8220;Site
+Coils&#8221; list, select the coil names that need to be updated then click <SPAN CLASS="GUIBUTTON">[&gt;&gt;REMOVE&gt;&gt;]</SPAN>.
+(Example: If NVHEAD and NVARRAY coils need be updated due to coil faults,
+select NVHEAD and NVARRAY then click <SPAN CLASS="GUIBUTTON">[&gt;&gt;REMOVE&gt;&gt;]</SPAN>.</P></LI><LI CLASS="numlist"><P>From the &#8220;Available Coils&#8221; list, select the same
+coil names as the last step (example: NVHEAD, NVARRAY), and then click <SPAN CLASS="GUIBUTTON">[&gt;&gt;ADD&gt;&gt;]</SPAN></P></LI><LI CLASS="numlist"><P>When all coils to be updated have been removed and re-added,
+exit and save changes by clicking <SPAN CLASS="GUIBUTTON">[Quit]</SPAN>, <SPAN CLASS="GUIBUTTON">[Yes]</SPAN>,
+and then <SPAN CLASS="GUIBUTTON">[Save]</SPAN> to save changes.  </P></LI><LI CLASS="numlist"><P>Reboot Signa for coil changes to take effect.</P></LI><LI CLASS="numlist"><P>Perform a test scan with the changed coil(s).</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="SL136464-77200">3.3&nbsp;&nbsp;Adding &#8220;Unknown&#8221; coils back in the site&#8217;s coil config
+file<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">The section explains how to manually added &#8220;unknown&#8221; coils
+found by Restore Manager back into the site&#8217;s Coil Config file so they
+are available for customers to use.</P><OL><LI CLASS="numlist"><P>Type the following in the command window:</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd  /usr/g/service/log</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more  UnknownCoilList.txt</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Displays
+a list of &#8220;unknown&#8221; coils.)</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>more  UnknownCoilDefs.log</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN> (Displays
+the original coil parameters for each &#8220;unknown&#8221; coil.)</P></LI><LI CLASS="numlist"><P>From the service desktop Utilities menu, select the Configuration
+File Manager tool. </P></LI><LI CLASS="numlist"><P>Click <SPAN CLASS="GUIBUTTON">[Coil Config File]</SPAN>, then click <SPAN CLASS="GUIBUTTON">[Add
+new Coil]</SPAN>.    </P></LI><LI CLASS="numlist"><P>The Add a New Coil screen displays coil value fields for a
+new coil.  Either click in the fields or tab through the fields to enter values
+from the &#8220;UnknownCoilDefs.log&#8221;. (Use the <SPAN CLASS="KEYBOARD">&lt;Delete&gt;</SPAN> key
+to edit text; the <SPAN CLASS="KEYBOARD">&lt;Backspace&gt;</SPAN> key works from the end of
+the field instead of where the cursor is located).  Click <SPAN CLASS="GUIBUTTON">[OK]</SPAN> to
+close the screen.</P></LI><LI CLASS="numlist"><P>Repeat step 4 for additional &#8220;unknown&#8221; coils.
+ When all &#8220;unknown&#8221; coils have been added, exit and save changes
+by clicking <SPAN CLASS="GUIBUTTON">[Quit]</SPAN>, <SPAN CLASS="GUIBUTTON">[Yes]</SPAN>, and then <SPAN CLASS="GUIBUTTON">[Save]</SPAN> to
+save changes.  </P></LI><LI CLASS="numlist"><P>Reboot Signa for coil changes to take effect.</P></LI></OL></DIV></DIV><DIV CLASS="SECT1"><H2 CLASS="SECT1" ID="ov-1291403696215-dup.1">4&nbsp;&nbsp;Downloading Latest Coil Config Definition File from AutoSC<SPAN CLASS="SECT1EFF"> </SPAN></H2><P CLASS="sect1">	This method is for sites with an InSite connection.  The AutoSC request
+will download the following files to the /usr/local/bin directory for the
+site you requested:</P><UL><LI CLASS="bulletlist"><P>CoilConfig.cfg.1.5T (coil template file used by Restore Manager)</P></LI><LI CLASS="bulletlist"><P>CoilConfig.df.1.5T (coil template file used by Config File
+Manager tool)</P></LI><LI CLASS="bulletlist"><P>coildefs.sh (install script for template files)</P></LI></UL><P CLASS="sect1">Type the following to determine the version (date) AutoSC coil template
+files at the site (example shown):</P><PRE>	{sdc@t15}[1] cd  /w/config  [Enter]
+	{sdc@t15}[2] ls  -l  *autosc*  [Enter]
+	-rw-r--r--    1 sdc      informix  133181 Sep 30 15:33 CoilConfig.cfg.1.5T.autosc
+	-rw-r--r--    1 sdc      informix  133268 Sep 30 15:33 CoilConfig.df.1.5T.autosc 
+</PRE><P CLASS="sect1"></P><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1291403696217">4.1&nbsp;&nbsp;Requesting Updated Coil Files from AutoSC<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">	This process downloads new coil template files to the site, but does
+not change any site coil values (that&#8217;s done in a later section).</P><OL><LI CLASS="numlist"><P>Send an email request to the Auto Support Center (ASC) with
+the following information:</P><UL><LI CLASS="bulletlist"><P>Address the email to <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>AutoSC (med)</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>In the email &#8220;Subject:&#8221; heading, type: <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>sweep</B></FONT></SPAN></P></LI><LI CLASS="bulletlist"><P>In the message body, enter the following lines:</P><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>type  =  coildefsll</B></FONT></SPAN></P><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>system id  =</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>[your systemid]</I></B></FONT></SPAN></P><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>return mail  =</B></FONT></SPAN><SPAN CLASS="INPUTVAR"><FONT FACE="COURIER"><B><I>email_address</I></B></FONT></SPAN> 
+ (optional &#8211; Only if you want the return mail sent to a 		different address
+than sending).</P></LI><LI CLASS="bulletlist"><P>Send the email. (Typical AutoSC response time is ~0.2-3 hours.)</P></LI></UL></LI><LI CLASS="numlist"><P>Download not successful: If you receive an email that the
+download to the site not was successful, either troubleshoot the connectivity
+problem and try the request again, or proceed to <A HREF="77200.htm#SL136461-77200">Section&nbsp;3.1</A>, Quickplace Coil Update (Manual Method). Download successful:
+You will receive an email that the download to the site was successful (see
+example).  Continue with the next step.</P></LI><LI CLASS="numlist"><P>At the site, on the service desktop, click <SPAN CLASS="GUIBUTTON">[C-Shell]</SPAN>.</P></LI><LI CLASS="numlist"><P>Type the following in the command window  (do not login as
+&#8220;root&#8221;):</P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>cd  /usr/local/bin</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter &gt;</SPAN></P><P>&gt; <SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>coildefs.sh</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN>  (This
+script backs up the original CoilConfig.cfg.1.5T and .df.1.5T files, then
+installs the new ones in the /w/config directory.  The existing site CoilConfig.cfg
+file (contains sites coil names and values) is not modified with this script!).
+ When the script completes, the following is displayed:</P></LI></OL></DIV><DIV CLASS="SECT2"><H3 CLASS="SECT2" ID="ov-1291403696402">4.2&nbsp;&nbsp;Using Restore Manager to Update All Coil Values (Automated Method)<SPAN CLASS="SECT2EFF"> </SPAN></H3><P CLASS="sect2">	This method first makes a backup copy of the site&#8217;s CoilConfig.cfg
+file.  It then reads each coil name from the CoilConfig.cfg (site&#8217;s
+coil list) file and copies the coil parameters from the new downloaded CoilConfig.cfg.1.5T
+template file for each coil.  If any coil name is not found in the template
+file, it is displayed in a popup message as an &#8220;unknown&#8221; coil.</P><OL><LI CLASS="numlist"><P>Type the following in the command window (do not login as
+&#8220;root&#8221;):</P><P><SPAN CLASS="INPUTFIX"><FONT FACE="COURIER"><B>runrestore</B></FONT></SPAN><SPAN CLASS="KEYBOARD">&lt;Enter&gt;</SPAN></P></LI><LI CLASS="numlist"><P>Select "<SPAN CLASS="GUIBUTTON">[CoilConfig.cfg]</SPAN>" and then click
+[Update].  This copies the latest parameters for all site coils from the new
+CoilConfig.cfg.1.5T file to the CoilConfig.cfg (site&#8217;s coil file)</P><TABLE CLASS="ADMONlistitem" CELLSPACING="0%" CELLPADDING="0%" ID="d0e428"><TBODY VALIGN="TOP" CLASS="ADMON"><TR CLASS="ADMON"><TD CLASS="ADMON"><B>NOTE:</B></TD><TD CLASS="ADMON">If any &#8220;unknown&#8221; coils are found, complete step 4
+and then perform the steps in<A HREF="77200.htm#SL136464-77200">Section&nbsp;3.3</A> -
+Adding &#8220;Unknown&#8221; Coils Back In the Site&#8217;s Coil Config File.</TD></TR></TBODY></TABLE><P CLASS="TABLESPACER"></P></LI><LI CLASS="numlist"><P>Click [Quit] when the update is finished.</P></LI><LI CLASS="numlist"><P>Reboot Signa for coil changes to take effect.</P></LI><LI CLASS="numlist"><P>Reboot Signa for coil changes to take effect.</P></LI></OL></DIV></DIV><P CLASS="backtotop" ALIGN="right"><A HREF="#top"><IMG BORDER="0" SRC="../icons/top.gif" ALT="../icons/top.gif" WIDTH="57" HEIGHT="23"></A></P></BODY></HTML>

@@ -1,0 +1,71 @@
+<HTML><HEAD>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <TITLE>MGD_STAGE Emulation Commands</TITLE><LINK REL="StyleSheet" HREF="../css/style.css" type="text/css"><LINK REL="StyleSheet" HREF="../css/hazardstatements.css" type="text/css"><!--[if lt IE 7]>
+			<LINK REL="StyleSheet" HREF="../css/ie6alphaloader.css" type="text/css" />
+			<![endif]--><script language="JavaScript" src="../scripts/winopen.js"></script><script language="JavaScript" src="../scripts/webmonk.gos"></script><script language="JavaScript" src="../scripts/modules_init.js"></script><script language="JavaScript" src="../scripts/bookmark.js"></script><script language="JavaScript" src="../scripts/efunctions.js"></script></HEAD><BODY><DIV CLASS="TABLE"><CENTER><P CLASS="TABLEINTRO" ID="SL684239-684104"><SPAN CLASS="TABLEINTRO"><B>Table&nbsp;2:&nbsp;&nbsp;</B></SPAN><SPAN CLASS="TABLETITLE">MGD_STAGE Emulation Commands</SPAN> </P><table summary="MGD_STAGE Emulation Commands" border="1"><colgroup><col width="18%"><col width="82%"></colgroup><tbody valign=""><tr valign="middle"><td align="center" valign="middle"><B>Command</B></td><td align="center" valign="middle"><B>Action</B></td></tr><tr valign="top"><td colspan="2" valign="">a &#8656; Insert commands after the &#8220;a&#8221;!
+(e.g. aT emulates all Table controls)</td></tr><tr valign="top"><td colspan="2" valign=""># everything from here down is comment <P CLASS="entry">When
+the letter listed below is present in the first line (following the &#8217;a&#8217;,
+then the corresponding device is emulated, as described below (Note these
+ARE case sensitive):</P></td></tr><tr valign="top"><td align="center" valign="middle">A</td><td valign="">emulate PAC. This command causes the SPU to generate canned cardiac
+and respiratory waveforms and to generate cardiac triggers. This should be
+used when no PAC is present, or if no cardiac simulator is available.</td></tr><tr valign="top"><td align="center" valign="middle">B</td><td valign="">emulate TYME II. This command disables monitoring of TYME II switches.
+Commands are still sent to the TYME II, so the alignment lights, fan, and
+bore lights will still work if the TYME II is connected. However, the state
+of the PDU (PDU in overtemperature, stop, etc.), RF door, and cryogen monitor
+will not be checked.</td></tr><tr valign="top"><td align="center" valign="middle">C</td><td valign="">emulate IWS-PC. This disables the SPI to IWS-PC interface. If this
+is done the start scan, stop scan, pause scan, adv to scan, stop table buttons
+on the IWS keyboard will not work. Also, the scan time will not be displayed
+on the IWS-PC LCD, and the waveform displays will not work. This should be
+used to allow scanning to continue if the SPI to IWS-PC link is not functioning
+correctly.</td></tr><tr valign="top"><td align="center" valign="middle">D</td><td valign="">emulate T/R driver. When this is emulated, the SPI will not send commands
+to the T/R driver and dynamic disable board, and will not monitor its state.
+Therefore, scanning will be allowed no matter what the state of the board.
+This should never be done if pulsing with RF unless hardware jumpers have
+been used to set the board to the desired mode.</td></tr><tr valign="top"><td align="center" valign="middle">E</td><td valign="">emulate WHOLE-BODY gradient of TRM. The system will be restricted to
+direct connection to ZOOM gradient without the gradient switch. Note: After
+removing this flag, Restore Info in Guided Install must be performed.</td></tr><tr valign="top"><td align="center" valign="middle">F</td><td valign="">emulate ZOOM gradient of TRM. The system will be restricted to direct
+connection to WHOLE gradient without the gradient switch. Note: After removing
+this flag, Restore Info in Guided Install must be performed.</td></tr><tr valign="top"><td align="center" valign="middle">G</td><td valign="">emulate gradient amps. When this is emulated, the SPI will not send
+commands to the gradient amplifier, and will not monitor its state. Therefore,
+the gradient amps will stay in standby, and no gradient waveforms will be
+put out. The gradient configuration will still be downloaded. Real time monitoring
+will not be performed if enabled in the MRconfig.cfg file. If the system has
+GRAM&#8217;s, then digital tuning values will still be downloaded if digital
+tuning boards are selected in the MRconfig.cfg file.</td></tr><tr valign="top"><td align="center" valign="middle">H</td><td valign="">emulate RF amp(s). When this is emulated, the SPI will not send commands
+to the RF amplifiers (ERBTEC narrow band and spectroscopy&#8217;s ENI broad
+band), and SPI will not monitor their state. Therefore, the ERBTEC RF amp
+will stay in standby, and no RF will be put out. The ENI amp has no standby
+state, and therefore will put out RF, but the correct filter will not be set.</td></tr><tr valign="top"><td align="center" valign="middle">I</td><td valign="">emulate power monitor. This is meant to be used only on test systems
+where no power monitor is present. It disables SPI from sending out the proper
+power monitor settings selected by the PSD. If this is emulated when a power
+monitor is present, it will cause the power monitor to trip as soon as the
+scan/prescan begins. This will not fix RF amp 85 faults, but will instead
+cause them.</td></tr><tr valign="top"><td align="center" valign="middle">M</td><td valign="">emulate entire MDS. This disables communication to all devices on the
+MDS link. It is equivalent to emulating all of the following: gradient amps,
+RF amp, T/R driver, power monitor, and TYME II, except that in this case the
+alignment lights, fan, and bore light will not work.</td></tr><tr valign="top"><td align="center" valign="middle">O</td><td valign="">disable reporting of gradient overloads. Normally, overloads of the
+Gradient Driver Subsystem are reported to the error log. If this flag is set
+then overloads will not be reported. This has no effect on scan operation.</td></tr><tr valign="top"><td align="center" valign="middle">Q</td><td valign="">emulate the peripheral pulse signal from the PAC. This command causes
+the SPU to generate a canned plethysmograph waveform and to generate PP triggers.
+This should be used when no PAC is present, and only with the VX option.</td></tr><tr valign="top"><td align="center" valign="middle">R</td><td valign="">emulate SRI. This disables SPI communication to the SRI. It disables
+magnet shroud annunciators, the scan time display, and landmarking. The alignment
+lights, fan, and bore light will not work. However, if the SRI has had code
+downloaded at least once, then table positioning will still work.</td></tr><tr valign="top"><td align="center" valign="middle">S</td><td valign="">emulate bore wall temperature sensor. This is meant only for test systems
+which do not have a temperature sensor.</td></tr><tr valign="top"><td align="center" valign="middle">T</td><td valign="">emulate table. This emulates SRI cradle control. Therefore, the table
+positioning will not work. This eliminates the need to establish a landmark.</td></tr><tr valign="top"><td align="center" valign="middle">V</td><td valign="">emulate vacuum monitor. Note: System must be rebooted in order for
+the emulation to be effective.</td></tr><tr valign="top"><td align="center" valign="middle">W</td><td valign="">disable watchdogging. During normal operation, both the HPC and SPI
+are watchdogged, so that if they hang, or go crazy, that any scan in progress
+will be stopped, and the IPG will be reset.</td></tr><tr valign="top"><td align="center" valign="middle">X</td><td valign="">disable SRI errors. This allows SPI to send commands to the SRI, but
+any errors experienced by the SRI will be ignored, and scanning will be allowed
+to continue.</td></tr><tr valign="top"><td align="center" valign="middle">Y</td><td valign="">disable gradient errors. This allows SPI to send commands to the gradient
+amplifier (standby, ready, etc.). However, the state of the gradient amps
+is not monitored. Any gradient error that occurs will not be reported or recovered.
+This feature is only valid with 8607 gradient amplifiers.</td></tr><tr valign="top"><td align="center" valign="middle">Z</td><td valign="">enable watchdog debug mode. When watchdogging is enabled, this will
+cause IPG and SPI not to be reset if a watchdog occurs. This is meant to be
+used by software engineering to track down the source of the watchdog.</td></tr><tr valign="top"><td align="center" valign="middle">a</td><td valign="">dummy place holder</td></tr><tr valign="top"><td colspan="2" valign="">EXAMPLE:<P CLASS="entry">If the first line of this
+file read:</P><P CLASS="entry">aTYZ</P><P CLASS="entry">then Table control would be emulated,
+gradient errors would be disabled, and watchdog debug mode would be enabled.</P><P CLASS="entry">I
+f the first line of this file read:</P><P CLASS="entry">a</P><P CLASS="entry">Then nothing
+would be emulated or disabled at all. This is normal product configuration.</P><P CLASS="entry">/
+* software note: these letter options should mirror CFG_STRING in hpc_cfg.h
+*/</P></td></tr></tbody></table></CENTER></DIV></BODY></HTML>
