@@ -303,7 +303,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .modal-header{padding:14px 18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--white);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:2;border-radius:20px 20px 0 0}
 .modal-header h3{font-size:.98rem;font-weight:700}
 .modal-close{background:rgba(255,255,255,.12);border:none;color:var(--white);width:30px;height:30px;border-radius:50%;font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
-.modal-body{padding:16px}
+.modal-body{padding:16px;overflow-wrap:break-word;word-break:break-word}
 .modal-footer{padding:12px 18px;border-top:1px solid var(--gray2);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;position:sticky;bottom:0;background:var(--white)}
 .confirm-box{background:#fff3cd;border:2px solid var(--gold);border-radius:var(--r2);padding:13px;margin-bottom:13px;font-size:.88rem}
 
@@ -18791,6 +18791,191 @@ Value = **12856 mV** vs Limit = **3422 mV** — nearly 4x over limit = hard **op
 - **System:** GE SIGNA Premier 3T (CF3T)
 - **Scan at fault time:** Spin Echo / FSE-XL, Coil: BODY
 - **Processes affected:** NSP (DD bias) and psc (prescan)`
+  },
+
+  {
+    id: 'dg_ge_exciter_rrf_output_check',
+    title: 'GE (U)CERD Exciter / RRF Master Exciter — RF Output Function Check',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['exciter','UCERD','CERD','RRF','Master Exciter','RF output','J14','J109','J8','J1','SRFD2','RFI','Multiplexer Board','scope','oscilloscope','100 MHz','300 MHz','RF Power Measurement Kit','16kW','2kW','body RF','head RF'],
+    created: '2026-07-17T00:00:00.000Z',
+    content: `# GE (U)CERD Exciter / RRF Master Exciter — RF Output Function Check
+
+Source: GE SIGNA Creator/Explorer/Star/Aviator Service Manual — (U)CERD Exciter or RRF Master Exciter (Functional Checks). AMT Imaging Solutions Field Notes.
+
+---
+
+## Why This Check Matters
+
+A minimum RF signal level from the (U)CERD Exciter or RRF (Remote RF) Master Exciter is required, or it will be impossible to meet the specified **16 kW body** and **2 kW head** RF power output levels. This procedure verifies the (U)CERD Exciter or RRF Master Exciter is outputting at least the minimum required power to the SRF or SRFD2.
+
+---
+
+## Tools Needed
+
+| Item | Description | Part Number |
+|------|-------------|-------------|
+| 1 | RF Test Cable Kit | 46-255816G1 |
+| 2 | Cannon to BNC-male Test Cable (in item 4) | 46-301549P6 |
+| 3 | SMB-female to BNC-male Test Cable (in item 4) | 46-301549P5 |
+| 4 | TPS RF Connector/Adapter and Cable Test Kit (optional) | 46-301927G1 |
+| 5 | RF Power Measurement Kit (recommended) | 46-317724G1 or G2 |
+| 6 | 100 MHz Scope (equivalent or greater) | 46-183029P61 |
+
+**Note:** If you don't have the RF Power Measurement Kit and are measuring directly with a 100 MHz scope, be aware a reading taken directly from a 50-ohm terminated 100 MHz scope channel can read as much as **16% lower** than the actual exciter RF output voltage. This error is automatically compensated for when using the RF Power Measurement Kit. See the companion guide "Oscilloscope Bandwidth Setup for RF Measurements" for how to determine your scope's correction factor.
+
+---
+
+## Method 1 — Direct Scope Measurement (300 MHz+ scope, or 100 MHz scope with known correction factor)
+
+1. Connect the oscilloscope to the system per the standard RF signal measurement setup. Confirm channel 1 vertical Volts/div variable control is fully CCW, and the bandwidth limit button is NOT selected.
+2. Terminate channel 1 with a 50-ohm feed-through terminator. Disconnect the cable at **J14** on the rear of the SRFD2 (or front of the RFI) and connect it to the 50-ohm terminator on channel 1. A short (<5 ft) coax + BNC bullet adapter can extend the cable to reach the scope.
+3. Prepare the system to scan.
+4. **Manual Prescan → Scan TR.** Increase TG to 200.
+5. If using a **300 MHz+ scope**: read peak-to-peak voltage directly, confirm it is **> 0.632 Vpp (0 dBm)**.
+6. If using a **<300 MHz scope**: read Vpp, then apply your scope's correction factor to calculate true RF voltage. Confirm the corrected value is **> 0.632 Vpp (0 dBm)**.
+7. Decrease TG to 0. Done.
+8. Reconnect the cable removed from J14.
+9. If the measured voltage meets spec, the Exciter is working properly — check the SRFD2 (or RFI) functionality next. **No need to continue.** If it does NOT meet spec, continue to step 10. If there's a consolidated RFS cabinet, skip to step 18 equivalent (test at the Exciter directly).
+
+### If J14 Reading Fails Spec — Check Further Upstream
+
+10. Disconnect the cable at **J1** on the rear of the System Cabinet, connect a known-good 5 ft coax test cable, route to the 50-ohm terminator on scope channel 1.
+11. **Manual Prescan → Scan TR.** Increase TG to 200.
+12. 300 MHz+ scope: confirm **0.893–1.12 Vpp (3.0–5.0 dBm)**. Slightly exceeding 1.12 Vpp is not a concern.
+13. 100 MHz scope: apply correction factor, confirm **> 0.893 Vpp (3.0 dBm)**.
+14. Decrease TG to 0. Reconnect J1 cable.
+15. If J14 was low but J1 meets spec → check cabling/connectors between System Cabinet and RF Cabinet.
+
+### Testing at the Exciter Directly
+
+16. **If system has a (U)CERD:** Remove connector from **J109** (bottom front of (U)CERD). Insert the cannon-to-BNC test cable into the top-most female plug inside J109, marked **EXC RF OUT**. Connect the BNC end to the 50-ohm terminator on channel 1.
+17. **If system has an RRF:** Locate **J8** (Master Exciter Output SMB port) on the Multiplexer Board, rear of RRF. Remove the cable at J8, insert the SMB-to-BNC test cable, connect the BNC end to channel 1.
+18. **Manual Prescan → Scan TR.** Increase TG to 200.
+19. 300 MHz+ scope: confirm **0.893–1.12 Vpp (3.0–5.0 dBm)**.
+20. 100 MHz scope: apply correction factor, confirm **> 0.893 Vpp (3.0 dBm)**. If below spec, continue; if it meets spec, replace the cable(s) between the exciter and where the earlier low reading was taken.
+21. Decrease TG to 0. Reconnect test cables to their original ports (J109 or J8).
+22. **If system has an RRF and still failing:** trace the cable from "Master Exciter Input" J10 on the Multiplexer Board to **J6 RF Out** on the Master Exciter Board itself. Move the test cable to J6 and repeat steps 18–20 there.
+23. Only consider replacing the **(U)CERD Exciter** or **RRF Master Exciter Board** if output is below spec AND body RF power cannot be adjusted to meet 16 kW. Otherwise, check RF cabling/connectors first.
+
+---
+
+## Method 2 — RF Power Measurement Kit (more accurate, uses 100 MHz scope)
+
+The RF Power Measurement Kit compensates for the bandwidth-limitation amplitude error of a 100 MHz scope automatically. The 1.5T Scope Calibrator provides a 63.86 MHz sine wave at 1.00 Vpp (4 dBm).
+
+1. Verify Bandwidth Limit button is OFF on the scope.
+2. Verify Channel 1 is set to **1 MΩ input termination**. Use the 50-ohm terminator supplied with the kit, with the scope channel itself set to 1 MΩ (not 50Ω).
+3. Connect the 1.5T Scope Calibrator via the 50-ohm feed-through terminator to the scope input (see kit's laminated "CAL" card).
+4. Adjust channel 1 Volts/div until the waveform amplitude is slightly greater than 8 divisions, then fine-tune the variable control to **exactly 8 divisions**.
+5. Remove the Scope Calibrator — leave the 50-ohm terminator connected.
+6. Disconnect the cable at **J14** (rear of SRFD2, or front of RFI), connect to the 50-ohm terminator on channel 1.
+7. Prepare system to scan. **Manual Prescan → Scan TR.** Increase TG to 200.
+8. Confirm the J14 output is **> 25.28 minor divisions**. (Each of the 8 major divisions = 5 minor divisions, so 40 minor divisions total — minor divisions give finer resolution for this small signal.)
+9. Decrease TG to 0. Reconnect J14 cable.
+10. If spec is met, Exciter is good — check SRFD2/RFI next, no need to continue. If not, continue to J1 test (same pattern as Method 1, but threshold is **> 35.7 minor divisions** at J1 and at the exciter output directly (J109 for (U)CERD, J8 for RRF, or J6 RF Out on the Master Exciter Board if tracing further upstream on RRF systems).
+
+---
+
+## Quick Reference — Pass Thresholds
+
+| Test Point | 300 MHz+ Scope | 100 MHz Scope (w/ correction factor) | RF Power Kit + 100 MHz Scope |
+|---|---|---|---|
+| J14 (SRFD2/RFI input) | > 0.632 Vpp (0 dBm) | > 0.632 Vpp corrected | > 25.28 minor div |
+| J1 (System Cabinet) | 0.893–1.12 Vpp (3–5 dBm) | > 0.893 Vpp corrected | > 35.7 minor div |
+| Exciter output (J109/J8/J6) | 0.893–1.12 Vpp (3–5 dBm) | > 0.893 Vpp corrected | > 35.7 minor div |
+
+*Field notes: AMT Imaging Solutions, 2026-07-17.*`
+  },
+
+  {
+    id: 'dg_ge_scope_bandwidth_setup',
+    title: 'Oscilloscope Bandwidth Setup for RF Measurements (100/200/300 MHz Scopes)',
+    system: 'GE MRI',
+    category: 'RF System',
+    tags: ['oscilloscope','scope','100 MHz','200 MHz','300 MHz','bandwidth','correction factor','RF Power Measurement Kit','scope calibrator','63.86 MHz','42 MHz','1.5T','1.0T','channel characterization'],
+    created: '2026-07-17T00:00:00.000Z',
+    content: `# Oscilloscope Bandwidth Setup for RF Measurements (100/200/300 MHz Scopes)
+
+Source: GE SIGNA Creator/Explorer/Star/Aviator Service Manual — Scopes with Less Than 300 MHz Bandwidth. AMT Imaging Solutions Field Notes.
+
+---
+
+## ⚠️ Notice
+
+This procedure requires a scope with a bandwidth of **at least 100 MHz**. Do not attempt RF power measurements with a scope under 100 MHz — significant measurement errors will result.
+
+---
+
+## Why This Matters
+
+For any scope with bandwidth **< 300 MHz** (this includes both 100 MHz and 200 MHz scopes), the correction factor for the specific channel in use must be known before trusting a direct Vpp reading. Assume a correction factor of **1 (unity)** only for scopes **≥ 300 MHz**.
+
+Do not assume a correction factor — and don't assume all channels on the same scope share one. **Each channel must be characterized separately.**
+
+There are three ways to determine a channel's correction factor:
+
+---
+
+## Method 1 — Characterization at Calibration
+
+Tag the scope with a request before sending it out for calibration: ask the metrology lab to measure percent signal loss at **63.86 MHz (1.5T)** and **42 MHz (1.0T)**, at both the **5 volt/div** and **2 volt/div** settings (for body and head measurements respectively), for both channels. Most labs will do this on request at no extra charge during routine calibration.
+
+---
+
+## Method 2 — Characterization by Comparison
+
+A 400 MHz scope shows negligible measurement error at 63.86 MHz or 42 MHz. If one is available on-site, compare it side-by-side with the <300 MHz scope being characterized:
+
+1. Ensure both scope inputs are set to **1 MΩ impedance**, then terminate with a 50-ohm feed-through adapter before measuring.
+2. Characterize every input channel that will be used.
+3. Calculate signal loss at 63.86 MHz (1.5T) and 42 MHz (1.0T) at both 5 V/div and 2 V/div, as the ratio of the reading on the 100/200 MHz scope to the reading on the 400 MHz scope.
+4. If the same cables are used consistently, the cable loss can also be characterized this way.
+
+---
+
+## Method 3 — Characterization Using the RF Power Measurement Kit (Most Practical for Field Use)
+
+The RF Power Measurement Kit includes a 63.86 MHz, 4 dBm (1 Vpp) calibrated signal reference. **Note: these calibrated values are accurate for 1.5T systems only.**
+
+1. Connect the calibrated reference to the scope.
+2. Set the channel being checked to **0.2 volts/div**.
+3. Set the sweep rate to **5 nsec**.
+4. Confirm the channel input impedance is **1 MΩ**, not 50 ohms.
+5. Confirm the scope's bandwidth limit switch is **not** enabled.
+6. Confirm the "Uncal" knob is not rotated — channel must be calibrated.
+7. Carefully measure the peak-to-peak voltage from the calibrated source. It should read **1 Vpp or less**.
+8. Calculate the correction factor (should be less than 1):
+   \`\`\`
+   correction factor = measured Vpp / 1.00 Vpp
+   \`\`\`
+9. Repeat for each additional scope input channel.
+10. **Write the correction factor for each channel on a piece of tape on the scope** for future reference — don't rely on memory between jobs.
+
+---
+
+## Using the Correction Factor in the Field
+
+Once you know a channel's correction factor, convert any raw reading to true RF voltage:
+
+\`\`\`
+true RF voltage = Vpp read on scope / correction factor
+\`\`\`
+
+Apply this any time you're using a **100 MHz or 200 MHz** scope for exciter RF output checks or similar RF power verification — see the companion guide "GE (U)CERD Exciter / RRF Master Exciter — RF Output Function Check" for the actual pass/fail thresholds this feeds into.
+
+---
+
+## Quick Reference
+
+| Scope Bandwidth | Correction Factor Needed? | Notes |
+|---|---|---|
+| ≥ 300 MHz | No — assume unity (1) | Direct Vpp reading is accurate |
+| 100–200 MHz | **Yes** | Must characterize each channel individually |
+| < 100 MHz | Do not use | Not supported for RF power measurements |
+
+*Field notes: AMT Imaging Solutions, 2026-07-17.*`
   }
 ];
 
@@ -18920,17 +19105,17 @@ function renderDiagGuides() {
 }
 
 function buildMdTable(rows) {
-  return '<table style="border-collapse:collapse;margin:10px 0;width:100%;font-size:.82rem">'
+  return '<div style="overflow-x:auto;margin:10px 0;-webkit-overflow-scrolling:touch"><table style="border-collapse:collapse;width:100%;min-width:340px;font-size:.82rem">'
     + rows.map((row, i) => {
         const cells = row.split('|').filter((_,j,a) => j > 0 && j < a.length - 1);
         const isHeader = i === 0;
         const tag = isHeader ? 'th' : 'td';
         const st = isHeader
-          ? 'padding:5px 10px;border:1px solid var(--gray2);background:var(--gray);font-weight:600;text-align:left'
+          ? 'padding:5px 10px;border:1px solid var(--gray2);background:var(--gray);font-weight:600;text-align:left;white-space:nowrap'
           : 'padding:5px 10px;border:1px solid var(--gray2);vertical-align:top';
         return '<tr>' + cells.map(c => '<' + tag + ' style="' + st + '">' + c.trim() + '</' + tag + '>').join('') + '</tr>';
       }).join('')
-    + '</table>';
+    + '</table></div>';
 }
 
 function mdToHtml(md) {
