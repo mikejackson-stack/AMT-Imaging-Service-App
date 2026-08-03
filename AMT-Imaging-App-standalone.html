@@ -936,13 +936,13 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div style="text-align:center;margin-bottom:1.2rem">
         <img src="https://raw.githubusercontent.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/amt_logo.png" style="max-width:180px;margin-bottom:.5rem" onerror="this.style.display='none'">
         <h2 style="color:var(--navy);margin:0;font-size:1.3rem">AMT Imaging Solutions LLC</h2>
-        <p style="margin:.25rem 0;color:var(--text2);font-size:.9rem">Veteran-Owned Small Business | MRI &bull; CT &bull; Contrast Injector Service</p>
+        <p style="margin:.25rem 0;color:var(--text2);font-size:.9rem">Certified SDVOSB &amp; VOSB | MRI &bull; CT &bull; Contrast Injector Service</p>
         <p style="margin:.1rem 0;color:var(--text2);font-size:.8rem">Precision. Performance. Trust.</p>
       </div>
 
       <div style="margin-bottom:1rem;padding:.75rem;background:#f0f4f8;border-radius:8px">
         <strong style="color:var(--navy)">Company Overview</strong>
-        <p style="margin:.4rem 0 0;font-size:.85rem;line-height:1.6">AMT Imaging Solutions LLC is a Veteran-Owned Small Business specializing in third-party maintenance and service for MRI, CT, and contrast injector systems. We provide high-quality, cost-effective Labor-Only and Preventive Maintenance (PM) services with fast response times and competitive pricing.</p>
+        <p style="margin:.4rem 0 0;font-size:.85rem;line-height:1.6">AMT Imaging Solutions LLC is an SBA-certified Service-Disabled Veteran-Owned Small Business (SDVOSB) and Veteran-Owned Small Business (VOSB) specializing in third-party maintenance and service for MRI, CT, and contrast injector systems. We provide high-quality, cost-effective Labor-Only and Preventive Maintenance (PM) services with fast response times and competitive pricing.</p>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
@@ -959,7 +959,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <div>
           <strong style="color:var(--navy)">Key Differentiators:</strong>
           <ul style="margin:.4rem 0;padding-left:1.4rem;font-size:.83rem;line-height:1.8">
-            <li>Veteran-Owned Small Business (USMC)</li>
+            <li>SDVOSB &amp; VOSB Certified (SBA) &ndash; Veteran-Owned (USMC)</li>
             <li>25+ years field service experience</li>
             <li>Significantly lower rates than OEM service</li>
             <li>Flexible Labor-Only &amp; PM-Only contract options</li>
@@ -986,8 +986,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div style="background:#f0f4f8;border-radius:8px;padding:.75rem;font-size:.83rem">
         <strong style="color:var(--navy)">Certifications &amp; Registrations:</strong>
         <ul style="margin:.4rem 0;padding-left:1.4rem;line-height:1.8">
-          <li>Veteran-Owned Small Business &ndash; SDVOSB Application Submitted</li>
-          <li>SAM.gov Registered &mdash; UEI: G8R8SNJJ66Z8 &nbsp;|&nbsp; CAGE: 20G67</li>
+          <li>SDVOSB &amp; VOSB Certified &ndash; U.S. Small Business Administration (eff. 7/29/2026)</li>
+          <li>SAM.gov Registered &amp; Active &mdash; UEI: G8R8SNJJ66Z8 &nbsp;|&nbsp; CAGE: 20G67</li>
           <li>Former USMC &ndash; 25+ Years Field Service Experience</li>
         </ul>
       </div>
@@ -15696,6 +15696,164 @@ Apply this any time you're using a **100 MHz or 200 MHz** scope for exciter RF o
 | < 100 MHz | Do not use | Not supported for RF power measurements |
 
 *Field notes: AMT Imaging Solutions, 2026-07-17.*`
+  },
+  {
+    id: 'dg_seed_chiller_001',
+    title: 'Sumitomo SRDK Cryocooler (Coldhead) — Full OEM PM Schedule & Troubleshooting Flow Chart',
+    system: 'GE MRI',
+    category: 'Magnet / Cryogen',
+    tags: ['Sumitomo','SRDK','coldhead','cold head','cryocooler','RDK-408','RDK-415','PM checklist','preventive maintenance','helium','adsorber','troubleshooting'],
+    content: `## Sumitomo SRDK Series Cryocooler — Full OEM PM Schedule & Troubleshooting Flow Chart
+
+### Overview
+The Sumitomo (SHI) SRDK-series cryocooler — cold head + compressor unit — is the coldhead system installed across the large majority of GE, Siemens, and Philips 1.5T/3T MRI magnets, regardless of scanner brand. This guide consolidates the manufacturer's official SRDK Series Cryocooler Operation Manual (PM schedule + troubleshooting flow charts) into field-ready reference. Use alongside the existing "Sumitomo Compressor Test Reference" and "GE LCC High Pressure / Helium Loss Troubleshooting" guides.
+
+### Cold Head Static Pressure Reference (at 20°C / 68°F)
+| Cold Head Model | Static Pressure |
+|---|---|
+| RDK-408D2, RDK-408D, RDK-415D (4K, two-stage) | 1.60–1.70 MPa (16.3–17.3 kgf/cm²G, 232–246 psig) |
+| RDK-408S2, RDK-408S, RDK-400B (10K, single-stage) | 1.45–1.55 MPa (14.8–15.8 kgf/cm²G, 210–225 psig) |
+
+### Official PM Schedule (OEM Table 5.1)
+| Task | Frequency | Notes |
+|---|---|---|
+| Replace cold head internal (sliding) parts | Every 10,000 hrs | **Not user-serviceable** — full cold head must be pulled and returned to SHI for refurbishment |
+| Replace compressor oil-mist adsorber | Every 20,000 hrs | ~11 kg — use two hands, mind your back |
+| Charge helium gas | As required | Only when static pressure reads below spec at room temp |
+| Compressor fuse replacement | As required | |
+| Clean air-cooled heat exchanger | At least 1x/year | More often in dusty mechanical rooms |
+| Clean water line (water-cooled units) | As required | Depends on site water quality |
+
+### Operating Checks (Every Service Visit)
+- Compressor supply pressure during normal run: 2.1–2.3 MPa (304–333 psig)
+- Flex line temperature: must stay below 40°C (104°F) — if higher, check airflow/fins (air-cooled) or water flow (water-cooled)
+- Cold head intake/exhaust sound: 60 rpm at 50Hz, 72 rpm at 60Hz — silence here means no gas circulation
+- Compressor ON/OFF cycling: max 6x/hour, minimum 3 minutes between cycles — frequent short-cycling damages the compressor capsule
+- Room temperature: 5–28°C (41–82°F) nominal; 28–35°C tolerated with ~5% capacity loss
+
+### Troubleshooting Flow Chart (condensed from OEM Flows A–D)
+**System stopped, main power ON, drive switch ON:**
+1. Check filling pressure against the model table above — adjust if off-spec
+2. Check input power cable connection
+3. Check compressor fuses
+4. Air-cooled: check airflow clearance and heat exchanger cleanliness
+5. Water-cooled: check cooling water temperature/flow rate
+6. Check ambient room temperature
+7. Check flex line connections for helium leaks, then re-adjust filling pressure
+8. Still faulted → cold head requires OEM repair/return
+
+**Cryocooler will not start at all:**
+1. Check input power cable (missing connection, reverse phase)
+2. Water-cooled units: check input voltage/frequency setting
+3. Check user's power source — fuses, breakers, wiring capacity
+4. Check compressor fuses
+5. Check Remote Drive Switch position — should be **INT** unless remote operation is intentionally wired
+6. Still faulted → compressor requires OEM repair
+
+**Cold head cooling power is low:**
+1. Check flex line connections for leaks, then re-adjust filling pressure
+2. Check ambient temperature
+3. Check cold head power cable connection and look for cable snapping/damage
+4. Check compressor fuses
+5. Re-verify filling pressure
+6. Water-cooled: check cooling water condition
+7. Air-cooled: check airflow space and heat exchanger dust
+8. Check thermal interface at cold head 1st/2nd stage
+9. Check vacuum chamber for leaks
+10. Check total heat load on the cold head
+11. Still faulted → cold head requires OEM repair
+
+**Abnormal noise from cold head/compressor, or pressure relief valve trips:**
+1. Check cold head power cable connection and for snapping
+2. Check compressor fuses
+3. Check flex line connections
+4. Re-adjust filling pressure and restart — if it recurs, system requires OEM repair
+
+### Helium Recharge Procedure (Summary)
+1. Purge the charging line ~30 seconds before connecting to vent contamination
+2. Purge the gas charging tool itself ~5 seconds
+3. Set the pressure regulator to 1.65–1.70 MPa (239–246 psig)
+4. Charge slowly to the specific cold head model's static pressure spec (table above)
+5. Use only 99.999%+ purity helium — contamination causes cold head noise or reduced cooling capacity
+6. Compressor and cold head must be near room temperature before reading/adjusting fill pressure — a cold system reads artificially low
+
+### Safety Notes
+- System is pressurized to roughly 1.62 MPa (235 psig) helium at all times — never strike, drop, or puncture any component
+- Fully purge helium from pressurized parts before disposal; open purge valves gradually
+- **Never break vacuum on a cold cold head.** Keep flex lines connected and wait until 2nd stage rises to 100K before removing
+- Keep a running operating log (date, pressure, cold head temp) at each PM visit — trend data is the fastest way to catch a slow helium leak before it becomes a quench
+
+### Full Manual / OEM Contact
+Sumitomo (SHI) Cryogenics of America, Inc. — Elk Grove Village, IL, +1-847-290-5801. Request the full SRDK Series Cryocooler Operation Manual and the compressor-unit-specific Technical Instruction (CSA-71A air-cooled or CSW-71C/71D water-cooled) for wiring diagrams and complete flow charts.`,
+    created: '2026-08-03T00:00:00.000Z'
+  },
+  {
+    id: 'dg_seed_chiller_002',
+    title: 'MRI Room Chiller (Airsys Medicool & Common Third-Party Units) — PM Checklist & Troubleshooting',
+    system: 'GE MRI',
+    category: 'Cooling',
+    tags: ['chiller','Airsys','Medicool','room chiller','facility chiller','PM checklist','preventive maintenance','troubleshooting','glycol','condenser','compressor'],
+    content: `## MRI Room Chiller (Airsys Medicool & Common Third-Party Units) — PM Checklist & Troubleshooting
+
+### Overview
+Separate from the internal cold head (which keeps the magnet cryostat at ~4K), most installs have a facility-level chiller supplying chilled water/glycol to cool the gradient coils, RF amplifier cabinets, and in some builds the scan room air handler. **Airsys** is the dominant OEM-supplied chiller across GE, Siemens, and Philips installs — their MEDICOOL air-cooled chiller design is used in more installed MRI systems worldwide than any competing brand. Other units you'll run into in the field: Multiaqua/Multistack, MTA, Marchi Thermal Systems, and building-supplied central chilled water loops. (Note: this is distinct from the mobile-unit gradient coil chiller covered in the existing "GE MRI Gradient Coil Chiller — Ellis & Watts LTL-4" guide — that one is specific to trailer-mounted mobile systems.)
+
+### Airsys Medicool Design Basics
+- Dual, fully independent refrigeration circuits — if one circuit fails, the other still delivers roughly 50% cooling capacity, which is often enough to keep scanning
+- OEM-rated MTBF greater than 25,000 hours
+- OEM recommends **twice-annual** PM service
+- Fully automatic control system with continuous internal self-monitoring
+- Refrigeration and water circuit components are physically separated from airflow, so many PM tasks can be performed with the unit running
+
+### PM Checklist (Recommended Twice-Annual Cadence)
+1. Record entering/leaving chilled water temperatures and compare against setpoint
+2. Check refrigerant sight glass / subcooling on **both** circuits independently
+3. Inspect and clean condenser coils/fins — use compressed air or approved coil cleaner; never point a pressure washer directly at fins
+4. Verify condenser fan operation on both circuits
+5. Check compressor amp draw against nameplate on both circuits
+6. Inspect chilled water strainer/filter — clean or replace as needed
+7. Verify water/glycol flow rate and test the flow switch
+8. Check water quality and glycol concentration (freeze protection level + corrosion inhibitor)
+9. Inspect the pump for unusual noise, vibration, or shaft-seal leaks
+10. Test high-pressure and low-pressure safety switches and the freeze-stat
+11. Pull the control board alarm/event history log
+12. If tied into the facility BMS, confirm alarm dry contacts are reporting correctly
+
+### General Troubleshooting Decision Tree
+**High head pressure trip**
+- Dirty or blocked condenser coil → clean
+- Condenser fan failure → check motor and run/start capacitor
+- Refrigerant overcharge → verify against nameplate charge weight
+- Ambient temperature too high, or insufficient clearance around the outdoor section
+
+**Low suction pressure / iced evaporator coil**
+- Low refrigerant charge → leak-check, recover, and recharge to spec
+- Restricted metering device (TXV or orifice) → inspect, clean, or replace
+- Low water/glycol flow through the evaporator → check pump and strainer
+
+**Low-flow or no-flow alarm**
+- Clogged strainer → clean
+- Air trapped in the loop → bleed the system at high points
+- Pump failure or incorrect rotation direction → check
+- Closed or failed isolation valve → verify valve positions
+
+**Compressor short-cycling**
+- Refrigerant charge issue, over or under → verify charge
+- Failing high/low pressure switch → test and replace if out of tolerance
+- Electrical fault — contactor or capacitor → inspect
+
+**No cooling / unit won't run at all**
+- Check control power fuse/breaker
+- Check the BMS or remote enable signal if the unit is interlocked to building controls
+- Check the compressor contactor and overload relay
+
+### Field Notes
+- Fault/alarm codes are specific to each chiller's control board model and firmware revision — confirm the exact model before quoting a code from memory. Contact Airsys or their authorized service partner Advanced Cooling Technologies, or pull the site's chiller-specific documentation, for the definitive code list.
+- Confirm which loop(s) a chiller feeds before working on it. Some installs isolate gradient-coil cooling from scan-room air handling on separate loops off the same or different chillers — don't assume single-loop just because there's one unit outside.
+
+### Full Manual / OEM Contact
+Airsys Medicool documentation: airsysmedical.com, or their North American service partner Advanced Cooling Technologies (advancedcoolingtech.us). For building-supplied or other third-party chillers (Multiaqua, MTA, Marchi Thermal Systems), request the model-specific O&M manual from site facilities/engineering before servicing — chiller control boards vary enough between vendors that there's no universal fault-code table worth memorizing.`,
+    created: '2026-08-03T00:00:00.000Z'
   }
 ];
 
