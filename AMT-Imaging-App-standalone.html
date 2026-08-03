@@ -1937,11 +1937,81 @@ let expenses=JSON.parse(localStorage.getItem('amt_expenses_v29')||'[]');
 let distributions=JSON.parse(localStorage.getItem('amt_dists_v29')||'[]');
 let pmChecklists=JSON.parse(localStorage.getItem('amt_pm_v29')||'[]');
 
-function saveJobs(){localStorage.setItem('amt_jobs_v29',JSON.stringify(jobs));}
-function saveInvoices(){localStorage.setItem('amt_invoices_v29',JSON.stringify(invoices));}
-function saveExpenses(){localStorage.setItem('amt_expenses_v29',JSON.stringify(expenses));}
-function saveDists(){localStorage.setItem('amt_dists_v29',JSON.stringify(distributions));}
-function savePMs(){localStorage.setItem('amt_pm_v29',JSON.stringify(pmChecklists));}
+// _local* = localStorage only, never touches the cloud. Used (a) by the wrapped save
+// functions below, and (b) to mirror incoming cloud data into localStorage without
+// bouncing it right back up to Firestore (which would loop forever).
+function _localSaveJobs(){localStorage.setItem('amt_jobs_v29',JSON.stringify(jobs));}
+function _localSaveInvoices(){localStorage.setItem('amt_invoices_v29',JSON.stringify(invoices));}
+function _localSaveExpenses(){localStorage.setItem('amt_expenses_v29',JSON.stringify(expenses));}
+function _localSaveDists(){localStorage.setItem('amt_dists_v29',JSON.stringify(distributions));}
+function _localSavePMs(){localStorage.setItem('amt_pm_v29',JSON.stringify(pmChecklists));}
+
+// Public save*() functions keep their exact original names/behavior (so none of the
+// ~135 call sites elsewhere in the app need to change) but now also push to Firestore
+// when signed in via Google. PIN-login users have no Firebase session, so cloudPush()
+// silently no-ops for them and the app keeps working exactly as it always has, local-only.
+function saveJobs(){_localSaveJobs(); cloudPush('jobs');}
+function saveInvoices(){_localSaveInvoices(); cloudPush('invoices');}
+function saveExpenses(){_localSaveExpenses(); cloudPush('expenses');}
+function saveDists(){_localSaveDists(); cloudPush('distributions');}
+function savePMs(){_localSavePMs(); cloudPush('pmChecklists');}
+
+// ═══ CLOUD SYNC (Firebase Firestore) ═══
+// Each collection is stored as ONE Firestore document holding the whole array in an
+// `items` field -- this mirrors exactly how the app already thinks about this data (one
+// array, saved whole), so no rendering/business logic anywhere else has to change.
+// Firestore's own offline persistence (enabled at init) queues writes made with no
+// signal and replays them once back online, which is what makes this safe to use in
+// the field. Data only leaves the device for signed-in Google users; Firestore
+// Security Rules (see console) additionally restrict reads/writes to the 3 AMT emails.
+const CLOUD_COLLECTIONS = {
+  jobs:          {get:()=>jobs,          set:v=>{jobs=v;},          localSave:_localSaveJobs,     render:()=>{ if(typeof renderJobs==='function') renderJobs(); }},
+  invoices:      {get:()=>invoices,      set:v=>{invoices=v;},      localSave:_localSaveInvoices, render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
+  expenses:      {get:()=>expenses,      set:v=>{expenses=v;},      localSave:_localSaveExpenses, render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
+  distributions: {get:()=>distributions, set:v=>{distributions=v;}, localSave:_localSaveDists,    render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
+  pmChecklists:  {get:()=>pmChecklists,  set:v=>{pmChecklists=v;},  localSave:_localSavePMs,      render:()=>{}},
+  kbEntries:     {get:()=>kbEntries,     set:v=>{kbEntries=v;},     localSave:()=>{try{localStorage.setItem('amt_kb_v29',JSON.stringify(kbEntries));}catch(e){}}, render:()=>{ if(typeof renderKBEntries==='function') renderKBEntries(); }},
+  partsDB:       {get:()=>partsDB,       set:v=>{partsDB=v;},       localSave:()=>{try{localStorage.setItem(PARTS_STORE_KEY,JSON.stringify(partsDB));}catch(e){}}, render:()=>{ if(typeof searchParts==='function'){ const el=document.getElementById('partsSearch'); searchParts(el?el.value:''); } }},
+};
+
+function cloudPush(key){
+  if(!fbReady || !fbDb || !fbAuth || !fbAuth.currentUser) return; // not cloud-synced (offline, not ready, or PIN login) -- local save above already happened
+  const col=CLOUD_COLLECTIONS[key];
+  if(!col) return;
+  fbDb.collection('companies').doc('amt').collection('data').doc(key).set({
+    items: col.get(),
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    updatedBy: fbAuth.currentUser.email
+  }).catch(e=>console.warn('[AMT Cloud] push failed for',key,e.code||e));
+}
+
+let _cloudUnsubscribers=[];
+function initCloudSync(){
+  if(!fbReady || !fbDb) return;
+  _cloudUnsubscribers.forEach(u=>{ try{u();}catch(e){} });
+  _cloudUnsubscribers=[];
+  Object.keys(CLOUD_COLLECTIONS).forEach(key=>{
+    const col=CLOUD_COLLECTIONS[key];
+    const ref=fbDb.collection('companies').doc('amt').collection('data').doc(key);
+    const unsub=ref.onSnapshot(snap=>{
+      if(!snap.exists){
+        // Nothing in the cloud yet for this collection -- seed it from whatever this
+        // device has locally, so the first person to sign in populates it for everyone.
+        cloudPush(key);
+        return;
+      }
+      const data=snap.data();
+      const items=Array.isArray(data&&data.items) ? data.items : [];
+      col.set(items);
+      col.localSave();
+      col.render();
+    }, err=>console.warn('[AMT Cloud] listen failed for',key,err.code||err));
+    _cloudUnsubscribers.push(unsub);
+  });
+}
+if(fbReady && fbAuth){
+  fbAuth.onAuthStateChanged(user=>{ if(user) initCloudSync(); });
+}
 
 // ═══ MONEY CALCULATIONS ═══
 function calcMoney(){
@@ -3449,7 +3519,7 @@ if(!kbEntries){
 let kbCatFilter = '';
 let kbSuggestPending = null;
 let editingKBId = null;
-function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); }
+function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); cloudPush('kbEntries'); }
 
 function setKBTab(t){
   ['files','parts','errcodes','diagguides'].forEach(s=>{
@@ -6712,7 +6782,7 @@ if(!partsDB){
   if(changed) localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
 })();
 
-function saveParts(){ localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB)); }
+function saveParts(){ localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB)); cloudPush('partsDB'); }
 
 function searchParts(q){
   if(!writeGuard && false) return; // search always allowed
