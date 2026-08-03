@@ -281,7 +281,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .cl-table tbody td:first-child{padding-left:12px;padding-right:8px;line-height:1.4}
 .cl-table tbody td:not(:first-child){text-align:center;width:58px}
 .cl-table tbody tr:nth-child(even){background:#f8fafc}
-.chk-r{display:flex;align-items:center;justify-content:center}
+.chk-r{display:flex;align-items:center;justify-content:center;width:100%}
 .chk-r input[type=radio]{width:22px;height:22px;cursor:pointer}
 .cg input[type=radio]{accent-color:var(--green)}
 .cb input[type=radio]{accent-color:var(--red)}
@@ -2508,7 +2508,7 @@ function switchChecklist(type){
 function resetPM(){if(!confirm('Reset all checklist marks?'))return;pmState={};switchChecklist(activeCLType);}
 function tHead(){return`<thead><tr><th style="text-align:left;min-width:180px">Procedure / Task</th><th style="min-width:54px">✅<br>PASS</th><th style="min-width:54px">❌<br>FAIL</th><th style="min-width:50px">--<br>N/A</th></tr></thead>`;}
 function grpHd(l){return`<tr class="cl-group-hd"><td colspan="4">${l}</td></tr>`;}
-function rRow(key,label,t,indent){const k=`${t}_${key}`;const v=(pmState[t]||{})[k]||'';return`<tr><td style="${indent?'padding-left:20px;color:var(--text2)':''}">${label}</td><td class="chk-r cg"><input type="radio" name="chk_${k}" value="pass" ${v==='pass'?'checked':''} onchange="pmSet('${t}','${k}','pass')"></td><td class="chk-r cb"><input type="radio" name="chk_${k}" value="fail" ${v==='fail'?'checked':''} onchange="pmSet('${t}','${k}','fail')"></td><td class="chk-r cn"><input type="radio" name="chk_${k}" value="na" ${v==='na'?'checked':''} onchange="pmSet('${t}','${k}','na')"></td></tr>`;}
+function rRow(key,label,t,indent){const k=`${t}_${key}`;const v=(pmState[t]||{})[k]||'';return`<tr><td style="${indent?'padding-left:20px;color:var(--text2)':''}">${label}</td><td><span class="chk-r cg"><input type="radio" name="chk_${k}" value="pass" ${v==='pass'?'checked':''} onchange="pmSet('${t}','${k}','pass')"></span></td><td><span class="chk-r cb"><input type="radio" name="chk_${k}" value="fail" ${v==='fail'?'checked':''} onchange="pmSet('${t}','${k}','fail')"></span></td><td><span class="chk-r cn"><input type="radio" name="chk_${k}" value="na" ${v==='na'?'checked':''} onchange="pmSet('${t}','${k}','na')"></span></td></tr>`;}
 function pmSet(t,k,v){if(!pmState[t])pmState[t]={};pmState[t][k]=v;}
 function measureRow(t,key,label,unit,spec){const k=`${t}_meas_${key}`;const v=(pmState[t]||{})[k]||'';return`<tr class="cl-data-row"><td>${label}${spec?` <span style="font-size:.7rem;color:var(--text2)">(${spec})</span>`:''}</td><td colspan="3"><div class="cl-measure"><input type="text" value="${esc(v)}" placeholder="--" oninput="pmSet('${t}','${k}',this.value)"><span class="cl-unit">${unit}</span></div></td></tr>`;}
 
