@@ -762,7 +762,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div id="pm_checklist_area"><div class="alert alert-info">☝️ Select a checklist type above to begin.</div></div>
   <div class="form-group mt-12"><label class="form-label">PM Notes / Findings</label><textarea class="form-control" id="pm_notes" style="min-height:88px" placeholder="Additional findings, exceptions, recommendations…"></textarea></div>
   <div class="form-group"><label class="form-label">Follow-up Work Order # (if any FAIL items)</label><input class="form-control" id="pm_followup" placeholder="WO-00000"></div>
-  <div class="btn-row"><button class="btn btn-success" onclick="savePMChecklist()">💾 Save Checklist</button><button class="btn btn-primary" onclick="window.print()">🖨 Print</button><button class="btn btn-outline" onclick="resetPM()">🔄 Reset</button></div>
+  <div class="btn-row"><button class="btn btn-success" onclick="savePMChecklist()">💾 Save Checklist</button><button class="btn btn-primary" onclick="printPMChecklist()">🖨 Print / Send to Customer</button><button class="btn btn-outline" onclick="resetPM()">🔄 Reset</button></div>
 </div>
 
 <!-- ══ MONEY TRACKER ══ -->
@@ -2409,12 +2409,27 @@ function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace
 function viewJob(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;
   const dr=(l,v)=>`<div class="detail-row"><span class="detail-lbl">${l}</span><span>${v||'--'}</span></div>`;
+  const linkedPMs=pmChecklists.filter(p=>p.jobId===id);
+  const pmSection=linkedPMs.length
+    ? `<div style="margin-top:10px"><strong>✅ PM Checklist(s) Attached:</strong>`+linkedPMs.map(p=>{
+        const counts=Object.values((p.state&&p.state[p.type])||{});
+        const fail=counts.filter(v=>v==='fail').length,pass=counts.filter(v=>v==='pass').length;
+        return `<div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <span>${PM_TYPE_LABELS[p.type]||p.type} — ${p.date||'no date'} — <strong style="color:${fail>0?'var(--red)':'var(--green)'}">${pass} pass / ${fail} fail</strong></span>
+          <span style="display:flex;gap:6px">
+            <button class="btn btn-sm btn-outline" onclick="closeModal('viewModal');openSavedPMChecklist('${p.id}')">👁 View</button>
+            <button class="btn btn-sm btn-primary" onclick="closeModal('viewModal');openSavedPMChecklist('${p.id}');setTimeout(printPMChecklist,300)">🖨 Print</button>
+          </span>
+        </div>`;
+      }).join('')+`</div>`
+    : `<div style="margin-top:10px;font-size:.82rem;color:var(--text2)">No PM checklist attached to this job yet.${j.type==='PM'?` <a href="#" onclick="closeModal('viewModal');loadPMForJob('${id}');return false" style="color:var(--blue2)">Fill one out →</a>`:''}</div>`;
   document.getElementById('viewModalBody').innerHTML=
     dr('🏥 Site',j.site)+dr('👤 Contact',[j.contact,j.phone].filter(Boolean).join(' · '))+
     dr('📍 Location',j.location)+dr('🔧 Modality',j.modality)+dr('📟 Model',j.model)+dr('🔢 Serial',j.serial)+
     dr('⚡ Field',j.field)+dr('📋 Type',j.type)+dr('🔄 Status',j.status)+dr('📅 Date',j.date)+
     dr('📄 PO/WO',j.po)+dr('⏱ Hours',j.hours?j.hours+' hrs':'--')+dr('🚗 Miles',j.miles ? j.miles+' mi'+(getMileageCharge(j.miles)>0?' → <strong style="color:var(--green)">$'+getMileageCharge(j.miles).toFixed(2)+' billable</strong>':'') : '--')+
     dr('👤 Logged by',j.createdBy)+
+    pmSection+
     (j.notes?`<div style="margin-top:10px"><strong>📝 Notes:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem;line-height:1.5">${j.notes}</div></div>`:'')+
     (j.parts?`<div style="margin-top:8px"><strong>🔩 Parts:</strong><div style="margin-top:5px;padding:10px;background:var(--gray);border-radius:8px;font-size:.86rem">${j.parts}</div></div>`:'');
   openModal('viewModal');
@@ -2529,6 +2544,120 @@ function savePMChecklist(){
   pmChecklists=pmChecklists.filter(p=>!(p.jobId&&p.jobId===jobId&&p.type===activeCLType));
   pmChecklists.unshift(rec);savePMs();
   alert(`✅ PM Checklist Saved!\nPass: ${pass} | Fail: ${fail}`+(fail>0?`\n⚠️ ${fail} item(s) require follow-up.`:'\n✅ No failures.'));
+}
+
+const PM_TYPE_LABELS={ge_mri:'GE MRI System PM',siemens_mri:'Siemens MRI System PM',ge_ct:'GE CT Quarterly PM',siemens_ct:'Siemens CT System PM',stellant:'Stellant CT Injector PM',solaris:'Spectris Solaris EP MRI Injector PM',optivantage:'OptiVantage DH CT Injector PM',empowercta:'Bracco EmpowerCTA+ CT Injector PM'};
+
+// Reopen a previously saved PM checklist (restores marks, not just header fields) -- used from the
+// job detail view so a completed checklist can be reviewed or reprinted exactly as it was submitted.
+function openSavedPMChecklist(pmId){
+  const rec=pmChecklists.find(p=>p.id===pmId);if(!rec)return;
+  showTab('pm');
+  setTimeout(()=>{
+    populatePMDropdown();
+    document.getElementById('pm_jobLink').value=rec.jobId||'';
+    document.getElementById('pm_site').value=rec.site||'';
+    document.getElementById('pm_date').value=rec.date||'';
+    document.getElementById('pm_model').value=rec.model||'';
+    document.getElementById('pm_wo').value=rec.wo||'';
+    document.getElementById('pm_tech').value=rec.tech||'';
+    document.getElementById('pm_notes').value=rec.notes||'';
+    document.getElementById('pm_followup').value=rec.followup||'';
+    pmState=JSON.parse(JSON.stringify(rec.state||{}));
+    activeCLType=rec.type;
+    document.getElementById('pm_type_sel').value=rec.type;
+    switchChecklist(rec.type);
+  },80);
+}
+
+// Builds a clean, letterheaded, customer-ready copy of the current checklist in a new print window.
+// Deliberately does NOT rely on window.print() on the live app page -- the global @media print rule
+// forces every .panel to display:block, so a raw print from the PM tab would print the whole app.
+function printPMChecklist(){
+  if(!activeCLType || !(pmState[activeCLType])){ alert('Please select and fill out a checklist first.'); return; }
+  const area=document.getElementById('pm_checklist_area');
+  const liveTable=area&&area.querySelector('table');
+  if(!liveTable){ alert('Please select a checklist type first.'); return; }
+  const clone=area.cloneNode(true);
+
+  // Convert each 3-radio pass/fail/na group into one static mark for print
+  clone.querySelectorAll('tr').forEach(tr=>{
+    const radios=tr.querySelectorAll('input[type=radio]');
+    if(radios.length===3){
+      const checkedEl=Array.from(radios).find(r=>r.checked);
+      let mark='<span style="color:#bbb">&#9744; --</span>';
+      if(checkedEl){
+        if(checkedEl.value==='pass') mark='<span style="color:#16a34a;font-weight:800">&#10003; PASS</span>';
+        else if(checkedEl.value==='fail') mark='<span style="color:#dc2626;font-weight:800">&#10007; FAIL</span>';
+        else mark='<span style="color:#888;font-weight:700">N/A</span>';
+      }
+      const cells=tr.querySelectorAll('td');
+      for(let i=cells.length-1;i>=1;i--) cells[i].remove();
+      const td=document.createElement('td');
+      td.style.textAlign='center';td.style.fontSize='.82rem';
+      td.innerHTML=mark;
+      tr.appendChild(td);
+    }
+  });
+  // Convert measurement text inputs into static values
+  clone.querySelectorAll('.cl-measure input').forEach(inp=>{
+    const span=document.createElement('span');
+    span.textContent=inp.value||'--';
+    span.style.fontWeight='700';
+    inp.replaceWith(span);
+  });
+  // Drop the legend and quarter-tab controls from the printed copy
+  clone.querySelectorAll('.cl-legend,.quarter-tabs').forEach(el=>el.remove());
+
+  const site=document.getElementById('pm_site').value||'--';
+  const date=document.getElementById('pm_date').value||'--';
+  const model=document.getElementById('pm_model').value||'--';
+  const wo=document.getElementById('pm_wo').value||'--';
+  const tech=document.getElementById('pm_tech').value||'--';
+  const notes=document.getElementById('pm_notes').value||'';
+  const followup=document.getElementById('pm_followup').value||'';
+  const counts=Object.values(pmState[activeCLType]||{});
+  const passCt=counts.filter(v=>v==='pass').length, failCt=counts.filter(v=>v==='fail').length, naCt=counts.filter(v=>v==='na').length;
+
+  const w=window.open('','_blank','width=900,height=1100');
+  w.document.write(
+    '<html><head><title>AMT Imaging Solutions -- PM Checklist -- '+esc(site)+'</title>'+
+    '<style>'+
+    'body{font-family:Arial,sans-serif;margin:0;padding:26px;color:#111;font-size:12.5px;line-height:1.5;max-width:820px;margin:0 auto}'+
+    '.hdr{text-align:center;margin-bottom:14px;border-bottom:3px solid #0a1628;padding-bottom:10px}'+
+    '.hdr strong{font-size:1.2rem;color:#0a1628}'+
+    '.meta{display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;background:#f4f6f9;border-radius:8px;padding:10px 16px;margin-bottom:14px;font-size:.85rem}'+
+    '.summary{display:flex;gap:16px;margin-bottom:14px;font-size:.85rem;font-weight:700}'+
+    'table{width:100%;border-collapse:collapse;margin-bottom:6px}'+
+    'th{background:#0a1628;color:#fff;text-align:left;padding:6px 8px;font-size:.75rem}'+
+    'td{padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:.8rem;vertical-align:middle}'+
+    'tr:nth-child(even){background:#f8fafc}'+
+    '.cl-group-hd td{background:#e2e8f0 !important;font-weight:700;text-transform:uppercase;font-size:.7rem;letter-spacing:.4px}'+
+    '.notes-box{margin-top:14px;padding:10px 14px;background:#f4f6f9;border-radius:8px;font-size:.85rem}'+
+    '.sig-row{display:flex;justify-content:space-between;margin-top:34px;font-size:.82rem}'+
+    '.sig-line{border-top:1px solid #333;width:220px;padding-top:4px;text-align:center}'+
+    '@media print{body{padding:18px}@page{margin:.6in}}'+
+    '</style></head><body>'+
+    '<div class="hdr"><strong>AMT Imaging Solutions LLC</strong><br>'+
+    '<span style="font-size:.8rem;color:#555">Veteran-Owned SDVOSB/VOSB | MRI &bull; CT &bull; Contrast Injector Service | 754-263-6089 | mike.jackson@amtimagingsolutions.com</span><br>'+
+    '<span style="font-size:.95rem;font-weight:700;margin-top:4px;display:inline-block">'+esc(PM_TYPE_LABELS[activeCLType]||'PM Checklist')+'</span></div>'+
+    '<div class="meta">'+
+      '<div><strong>Site / Facility:</strong> '+esc(site)+'</div>'+
+      '<div><strong>PM Date:</strong> '+esc(date)+'</div>'+
+      '<div><strong>Scanner Model / Serial:</strong> '+esc(model)+'</div>'+
+      '<div><strong>Work Order / PO #:</strong> '+esc(wo)+'</div>'+
+      '<div><strong>Service Engineer:</strong> '+esc(tech)+'</div>'+
+      '<div><strong>Report Generated:</strong> '+new Date().toLocaleString()+'</div>'+
+    '</div>'+
+    '<div class="summary"><span style="color:#16a34a">&#10003; Pass: '+passCt+'</span><span style="color:#dc2626">&#10007; Fail: '+failCt+'</span><span style="color:#888">N/A: '+naCt+'</span></div>'+
+    clone.innerHTML+
+    (notes?'<div class="notes-box"><strong>PM Notes / Findings:</strong><br>'+esc(notes).replace(/\n/g,'<br>')+'</div>':'')+
+    (followup?'<div class="notes-box" style="border-left:4px solid #dc2626"><strong>&#9888; Follow-up Work Order:</strong> '+esc(followup)+'</div>':'')+
+    '<div class="sig-row"><div class="sig-line">Technician Signature</div><div class="sig-line">Customer Signature</div></div>'+
+    '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+
+    '</body></html>'
+  );
+  w.document.close();
 }
 
 // ═══ MANUALS ═══
