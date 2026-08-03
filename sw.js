@@ -1,4 +1,6 @@
-const CACHE = 'amt-v30';
+// Bumped from amt-v30 -> amt-v31: forces every existing installed client to drop its old
+// stale-while-revalidate cache once, on top of the strategy change below.
+const CACHE = 'amt-v31';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
@@ -21,17 +23,21 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if(url.origin !== self.location.origin) return;
 
+  // Network-first: this app deploys often (bug fixes, new features), so on every load we
+  // want the freshest deployed copy if the network is available at all. The cache is now
+  // purely an offline fallback (e.g. a tech stuck in a shielded MRI room with no signal),
+  // not a way to speed up normal loads at the cost of showing stale content. The previous
+  // stale-while-revalidate strategy always served the OLD cached page immediately and only
+  // updated the cache in the background for the *next* visit -- meaning a fix could require
+  // two reloads before it actually appeared, and "clear cache" on mobile browsers doesn't
+  // always clear Service Worker Cache Storage, so it looked like changes weren't landing.
   e.respondWith(
-    caches.match(e.request).then(cached => {
-      const networkFetch = fetch(e.request).then(res => {
-        if(res && res.status === 200 && res.type !== 'opaque') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
-        return res;
-      });
-      // Serve cache immediately, update in background (stale-while-revalidate)
-      return cached || networkFetch;
-    }).catch(() => caches.match('./index.html'))
+    fetch(e.request).then(res => {
+      if(res && res.status === 200 && res.type !== 'opaque') {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+      }
+      return res;
+    }).catch(() => caches.match(e.request).then(cached => cached || caches.match('./index.html')))
   );
 });
