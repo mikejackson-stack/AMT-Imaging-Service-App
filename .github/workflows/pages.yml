@@ -30,6 +30,9 @@ jobs:
           curl -fsSL \
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/rates.json" \
             -o _site/rates.json
+          curl -fsSL \
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/sw.js" \
+            -o _site/sw.js
           touch _site/.nojekyll
 
       - name: Setup Pages
