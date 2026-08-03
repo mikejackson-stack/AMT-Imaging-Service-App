@@ -16400,6 +16400,11 @@ try{
   firebase.initializeApp(firebaseConfig);
   fbAuth=firebase.auth();
   fbDb=firebase.firestore();
+  // Firestore's default real-time transport (WebChannel streaming) gets a 400 Bad Request
+  // on some networks -- antivirus SSL inspection, corporate proxies/firewalls, or certain
+  // browser extensions can mangle that request format. This tells Firestore to detect that
+  // and fall back to a more compatible long-polling transport instead.
+  fbDb.settings({experimentalAutoDetectLongPolling:true});
   fbDb.enablePersistence({synchronizeTabs:true}).catch(e=>console.warn('[AMT Firestore] offline persistence not enabled:',e.code||e));
   fbReady=true;
   fbAuth.onAuthStateChanged(user=>{ if(user && typeof initCloudSync==='function') initCloudSync(); });
