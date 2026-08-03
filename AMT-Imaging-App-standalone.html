@@ -17,6 +17,28 @@ window.addEventListener('online', ()=>{ const b=document.getElementById('offline
 window.addEventListener('offline',()=>{ const b=document.getElementById('offlineBadge'); if(b)b.style.display='flex'; });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Firebase (cross-device sync): compat build so it works with plain <script> tags, no build step -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAkI_Gk4hmaia5DbkV2RP8MFf3up2srTFU",
+  authDomain: "amt-imaging-service-app.firebaseapp.com",
+  projectId: "amt-imaging-service-app",
+  storageBucket: "amt-imaging-service-app.firebasestorage.app",
+  messagingSenderId: "607726040008",
+  appId: "1:607726040008:web:5921e1d941347c800006fd"
+};
+let fbDb=null, fbAuth=null, fbReady=false;
+try{
+  firebase.initializeApp(firebaseConfig);
+  fbAuth=firebase.auth();
+  fbDb=firebase.firestore();
+  fbDb.enablePersistence({synchronizeTabs:true}).catch(e=>console.warn('[AMT Firestore] offline persistence not enabled:',e.code||e));
+  fbReady=true;
+}catch(e){ console.warn('[AMT Firebase] init failed, app will run local-only:',e); }
+</script>
 <style>
 :root{
   --navy:#0a1628;--navy2:#112240;--navy3:#1a3358;
@@ -1839,6 +1861,16 @@ function checkOAuthCallback(){
       return;
     }
     document.getElementById('loginError').textContent='';
+    // Bridge into Firebase Auth using the same Google id_token, so Firestore's security
+    // rules (which check request.auth.token.email) can verify who's writing. This is
+    // fire-and-forget: if it fails (e.g. Firebase not fully configured yet), the existing
+    // login flow above has already succeeded and must not be blocked by it.
+    if(fbReady && fbAuth){
+      try{
+        const cred=firebase.auth.GoogleAuthProvider.credential(idToken);
+        fbAuth.signInWithCredential(cred).catch(e=>console.warn('[AMT Firebase Auth] sign-in failed:',e.code||e));
+      }catch(e){ console.warn('[AMT Firebase Auth] bridge error:',e); }
+    }
     doLogin(allowedName, 'Google', false); // Google = full access
   }catch(e){
     alert('⚠️ Google login token could not be verified.\n\nTry again or use PIN login instead.');
