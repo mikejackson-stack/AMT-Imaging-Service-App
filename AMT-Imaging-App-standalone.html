@@ -15,30 +15,12 @@ if('serviceWorker' in navigator){
 }
 window.addEventListener('online', ()=>{ const b=document.getElementById('offlineBadge'); if(b)b.style.display='none'; });
 window.addEventListener('offline',()=>{ const b=document.getElementById('offlineBadge'); if(b)b.style.display='flex'; });
+// Declared here (cheap, no network) so any code anywhere in the page can safely check
+// fbReady/fbDb/fbAuth without a ReferenceError. Actual Firebase SDK loading + init happens
+// at the very end of the document -- see the comment there for why.
+let fbDb=null, fbAuth=null, fbReady=false;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<!-- Firebase (cross-device sync): compat build so it works with plain <script> tags, no build step -->
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyAkI_Gk4hmaia5DbkV2RP8MFf3up2srTFU",
-  authDomain: "amt-imaging-service-app.firebaseapp.com",
-  projectId: "amt-imaging-service-app",
-  storageBucket: "amt-imaging-service-app.firebasestorage.app",
-  messagingSenderId: "607726040008",
-  appId: "1:607726040008:web:5921e1d941347c800006fd"
-};
-let fbDb=null, fbAuth=null, fbReady=false;
-try{
-  firebase.initializeApp(firebaseConfig);
-  fbAuth=firebase.auth();
-  fbDb=firebase.firestore();
-  fbDb.enablePersistence({synchronizeTabs:true}).catch(e=>console.warn('[AMT Firestore] offline persistence not enabled:',e.code||e));
-  fbReady=true;
-}catch(e){ console.warn('[AMT Firebase] init failed, app will run local-only:',e); }
-</script>
 <style>
 :root{
   --navy:#0a1628;--navy2:#112240;--navy3:#1a3358;
@@ -2009,9 +1991,10 @@ function initCloudSync(){
     _cloudUnsubscribers.push(unsub);
   });
 }
-if(fbReady && fbAuth){
-  fbAuth.onAuthStateChanged(user=>{ if(user) initCloudSync(); });
-}
+// Note: the actual onAuthStateChanged registration that calls initCloudSync() lives at the
+// very end of the document, right after Firebase is initialized (fbAuth doesn't exist yet
+// at this point in the page -- Firebase now loads last, after initGIS, to fix a script-order
+// race that was breaking Google Sign-In's own init).
 
 // ═══ MONEY CALCULATIONS ═══
 function calcMoney(){
@@ -16395,3 +16378,30 @@ function exportExpensesCSV() {
     </div>
   </div>
 </div>
+
+<!-- Firebase (cross-device sync): compat build, loaded last so it never delays the parser
+     from reaching the app's own <script> blocks above (that delay previously caused the
+     Google Sign-In script's async onload to sometimes fire before initGIS() was defined). -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAkI_Gk4hmaia5DbkV2RP8MFf3up2srTFU",
+  authDomain: "amt-imaging-service-app.firebaseapp.com",
+  projectId: "amt-imaging-service-app",
+  storageBucket: "amt-imaging-service-app.firebasestorage.app",
+  messagingSenderId: "607726040008",
+  appId: "1:607726040008:web:5921e1d941347c800006fd"
+};
+// fbDb/fbAuth/fbReady are already declared (as null/false) in the small script near the top
+// of <head> -- this just assigns into those same variables once the SDK has actually loaded.
+try{
+  firebase.initializeApp(firebaseConfig);
+  fbAuth=firebase.auth();
+  fbDb=firebase.firestore();
+  fbDb.enablePersistence({synchronizeTabs:true}).catch(e=>console.warn('[AMT Firestore] offline persistence not enabled:',e.code||e));
+  fbReady=true;
+  fbAuth.onAuthStateChanged(user=>{ if(user && typeof initCloudSync==='function') initCloudSync(); });
+}catch(e){ console.warn('[AMT Firebase] init failed, app will run local-only:',e); }
+</script>
