@@ -633,7 +633,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="stat-grid-4" id="statsGrid"></div>
 
   <!-- Profit sharing summary -->
-  <div class="dash-hd">📊 Profit Sharing</div>
+  <div class="dash-hd" id="dashOwnerHd">📊 Profit Sharing</div>
   <div class="owner-cards" id="dashOwnerCards"></div>
 
   <!-- Quick actions -->
@@ -800,7 +800,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
   <!-- Owner profit sharing -->
   <div class="card">
-    <div class="card-header">📊 Profit Sharing Breakdown</div>
+    <div class="card-header" id="moneyOwnerHd">📊 Profit Sharing Breakdown</div>
     <div class="card-body" style="padding:0">
       <div id="moneyOwnerCards"></div>
     </div>
@@ -850,7 +850,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <!-- DISTRIBUTIONS -->
   <div class="money-subpanel" id="msp-distributions">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0 8px;flex-wrap:wrap;gap:8px">
-      <strong style="font-size:.88rem">Distribution Payments</strong>
+      <strong style="font-size:.88rem" id="distListHd">Distribution Payments</strong>
       <button class="btn btn-purple btn-sm" onclick="openDistModal()">+ Record Payment</button>
     </div>
     <div id="distList"></div>
@@ -1675,6 +1675,26 @@ function doLogin(name, method, viewOnly){
   bootApp();
 }
 
+// ── PER-OWNER MONEY PRIVACY ──
+// Maps the logged-in person's display name to their OWNERS[] key so the Dashboard and
+// Money Tracker can show each partner only their own profit-share/distribution history.
+// Michael is the admin (51% owner, veteran-owned VA requirement) and always sees everyone's.
+const OWNER_NAME_TO_KEY={
+  'Michael Jackson':'michael',
+  'Antonio Jackson':'antonio',
+  'Candelario Juarez':'candelario'
+};
+function myOwnerKey(){ return (currentUser && OWNER_NAME_TO_KEY[currentUser.name]) || null; }
+function isAdminOwner(){ return myOwnerKey()==='michael'; }
+// Filters an ownerData/OWNERS array down to "what this logged-in person is allowed to see":
+// the admin sees everyone, everyone else sees only their own entry (or none, if they're
+// logged in but aren't a profit-sharing owner at all -- e.g. staff-only access).
+function visibleOwnerData(arr){
+  if(isAdminOwner()) return arr;
+  const key=myOwnerKey();
+  return key ? arr.filter(o=>o.key===key) : [];
+}
+
 function bootApp(){
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('mainApp').style.display='block';
@@ -2066,8 +2086,12 @@ function renderDashboard(){
     {icon:'🧾',val:invoices.filter(i=>i.status==='Paid').length,lbl:'Paid Invoices',cls:'si-green'},
     {icon:'⏳',val:invoices.filter(i=>i.status==='Sent'||i.status==='Overdue').length,lbl:'Open Invoices',cls:'si-red'},
   ].map(s=>`<div class="stat-card" onclick="showTab('jobs')"><div class="stat-icon ${s.cls}">${s.icon}</div><div><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div></div>`).join('');
-  // Owner cards
-  document.getElementById('dashOwnerCards').innerHTML=m.ownerData.map(o=>ownerCardHTML(o)).join('');
+  // Owner cards -- each partner only sees their own profit share; Michael (admin) sees all
+  const visOwners=visibleOwnerData(m.ownerData);
+  document.getElementById('dashOwnerHd').textContent=isAdminOwner()?'📊 Profit Sharing':'📊 My Profit Share';
+  document.getElementById('dashOwnerCards').innerHTML=visOwners.length
+    ? visOwners.map(o=>ownerCardHTML(o)).join('')
+    : '<div class="empty-state"><div class="ei">📊</div><p>No profit-sharing data for your account.</p></div>';
   // Recent jobs
   const rec=[...jobs].sort((a,b)=>new Date(b.created||0)-new Date(a.created||0)).slice(0,4);
   const rjl=document.getElementById('recentJobsList');
@@ -2115,8 +2139,10 @@ function renderMoney(){
   document.getElementById('tx_net').textContent=fmtSign(m.net);
   document.getElementById('tx_distpaid').textContent=fmt(m.distPaid);
   document.getElementById('tx_remaining').textContent=fmt(m.remaining);
-  // Owner cards
-  document.getElementById('moneyOwnerCards').innerHTML=m.ownerData.map(o=>`
+  // Owner cards -- each partner only sees their own profit share; Michael (admin) sees all
+  const visOwners=visibleOwnerData(m.ownerData);
+  document.getElementById('moneyOwnerHd').textContent=isAdminOwner()?'📊 Profit Sharing Breakdown':'📊 My Profit Share';
+  document.getElementById('moneyOwnerCards').innerHTML=(visOwners.length?visOwners:[]).map(o=>`
     <div style="border-bottom:1px solid var(--gray2)">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px">
         <div style="display:flex;align-items:center;gap:10px">
@@ -2130,7 +2156,7 @@ function renderMoney(){
         <div class="owner-amt"><div class="owner-amt-lbl">Paid Out</div><div class="owner-amt-val green">${fmt(o.paid)}</div></div>
         <div class="owner-amt"><div class="owner-amt-lbl">Balance Due</div><div class="owner-amt-val ${o.balance>0.01?'gold':o.balance<-0.01?'red':'green'}">${fmtSign(o.balance)}</div></div>
       </div>
-    </div>`).join('');
+    </div>`).join('')||'<div class="empty-state" style="padding:20px"><div class="ei">📊</div><p>No profit-sharing data for your account.</p></div>';
 }
 
 // ── MONEY SUB-TABS ──
@@ -2210,8 +2236,12 @@ function renderExpenseList(){
 // ── DISTRIBUTIONS ──
 function renderDistList(){
   const list=document.getElementById('distList');
-  if(!distributions.length){list.innerHTML='<div class="empty-state"><div class="ei">🏦</div><p>No distributions recorded yet.</p></div>';return;}
-  const sorted=[...distributions].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+  // Each partner only sees their own distribution/payout history; Michael (admin) sees all.
+  const visible=isAdminOwner()?distributions:distributions.filter(d=>d.owner===myOwnerKey());
+  const hd=document.getElementById('distListHd');
+  if(hd) hd.textContent=isAdminOwner()?'Distribution Payments':'My Distribution Payments';
+  if(!visible.length){list.innerHTML='<div class="empty-state"><div class="ei">🏦</div><p>No distributions recorded yet.</p></div>';return;}
+  const sorted=[...visible].sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
   list.innerHTML=sorted.map(d=>{
     const o=OWNERS.find(x=>x.key===d.owner)||{name:d.owner,color:'var(--gray4)',initials:'?'};
     return`<div class="dist-item">
