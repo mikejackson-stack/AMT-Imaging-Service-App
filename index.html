@@ -1646,11 +1646,14 @@ const PIN_HASHES_DEFAULT={
   emily:      '1c68139c6b851176bfb03d8b6a41982c7e14654d196b244f6bd42dbbe745d2d9'
 };
 async function initPinHashes(){
-  let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null');
-  if(!stored){
-    stored=Object.assign({},PIN_HASHES_DEFAULT);
-    localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
+  let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null')||{};
+  // Merge in any users added to PIN_HASHES_DEFAULT since this browser last cached PIN hashes
+  // (otherwise a returning user's stale localStorage copy would never see newly added staff).
+  let changed=false;
+  for(const k in PIN_HASHES_DEFAULT){
+    if(!(k in stored)){ stored[k]=PIN_HASHES_DEFAULT[k]; changed=true; }
   }
+  if(changed) localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   return stored;
 }
 let pinHashes=null;

@@ -1636,16 +1636,23 @@ async function sha256(str){
 
 // Init: store real hashes on first run
 async function initPinHashes(){
-  let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null');
-  if(!stored){
-    stored={
-      michael:    await sha256('7591_amt_salt_mikejackson'),
-      antonio:    await sha256('0325_amt_salt_antoniojackson'),
-      candelario: await sha256('0216_amt_salt_candelariojuarez'),
-      emily:      await sha256('1216_amt_salt_emilyoliveros')
-    };
-    localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
+  let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null')||{};
+  // Merge in any users added since this browser last cached PIN hashes (otherwise a
+  // returning user's stale localStorage copy would never see newly added staff).
+  const defaults={
+    michael:    ['7591','mikejackson'],
+    antonio:    ['0325','antoniojackson'],
+    candelario: ['0216','candelariojuarez'],
+    emily:      ['1216','emilyoliveros']
+  };
+  let changed=false;
+  for(const k in defaults){
+    if(!(k in stored)){
+      stored[k]=await sha256(defaults[k][0]+'_amt_salt_'+defaults[k][1]);
+      changed=true;
+    }
   }
+  if(changed) localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   return stored;
 }
 let pinHashes=null;
