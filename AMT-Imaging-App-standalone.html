@@ -558,6 +558,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <option value="michael">Michael Jackson</option>
         <option value="antonio">Antonio Jackson</option>
         <option value="candelario">Candelario Juarez</option>
+        <option value="emily">Emily Oliveros</option>
       </select>
       <div class="pin-dots" id="pinDots">
         <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
@@ -1640,7 +1641,8 @@ async function initPinHashes(){
     stored={
       michael:    await sha256('7591_amt_salt_mikejackson'),
       antonio:    await sha256('0325_amt_salt_antoniojackson'),
-      candelario: await sha256('0216_amt_salt_candelariojuarez')
+      candelario: await sha256('0216_amt_salt_candelariojuarez'),
+      emily:      await sha256('1216_amt_salt_emilyoliveros')
     };
     localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   }
@@ -1720,13 +1722,13 @@ async function submitPin(){
   if(entry.length!==4){err.textContent='Enter your 4-digit PIN.';return;}
   if(!pinHashes){err.textContent='⏳ Initializing -- please try again.';return;}
   // Hash entered PIN with salt
-  const saltMap={michael:'mikejackson',antonio:'antoniojackson',candelario:'candelariojuarez'};
+  const saltMap={michael:'mikejackson',antonio:'antoniojackson',candelario:'candelariojuarez',emily:'emilyoliveros'};
   const salt=saltMap[key];
   const enteredHash=await sha256(entry+'_amt_salt_'+salt);
   const storedHash=pinHashes[key];
   if(enteredHash===storedHash){
     err.textContent='';
-    const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez'};
+    const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez',emily:'Emily Oliveros'};
     doLogin(nameMap[key],'PIN', false); // PIN = full access
   } else {
     err.textContent='❌ Incorrect PIN -- please try again.';

@@ -558,6 +558,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <option value="michael">Michael Jackson</option>
         <option value="antonio">Antonio Jackson</option>
         <option value="candelario">Candelario Juarez</option>
+        <option value="emily">Emily Oliveros</option>
       </select>
       <div class="pin-dots" id="pinDots">
         <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
@@ -1641,7 +1642,8 @@ async function sha256(str){
 const PIN_HASHES_DEFAULT={
   michael:    'c6e8eeae3dbdc424838f855a3d6b34e292b9590bfc5ea70cb3038d8f460f87bd',
   antonio:    'cb21080b07c817c24cc5091d10c7ff29e197e1441ce97dd3496e37e6acd2f9cc',
-  candelario: '507e6a42583ef241f4e8417ddc19315701b83ef46cbf4dbfb631cf5026c0aa52'
+  candelario: '507e6a42583ef241f4e8417ddc19315701b83ef46cbf4dbfb631cf5026c0aa52',
+  emily:      '1c68139c6b851176bfb03d8b6a41982c7e14654d196b244f6bd42dbbe745d2d9'
 };
 async function initPinHashes(){
   let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null');
@@ -1725,13 +1727,13 @@ async function submitPin(){
   if(entry.length!==4){err.textContent='Enter your 4-digit PIN.';return;}
   if(!pinHashes){err.textContent='⏳ Initializing -- please try again.';return;}
   // Hash entered PIN with salt
-  const saltMap={michael:'mikejackson',antonio:'antoniojackson',candelario:'candelariojuarez'};
+  const saltMap={michael:'mikejackson',antonio:'antoniojackson',candelario:'candelariojuarez',emily:'emilyoliveros'};
   const salt=saltMap[key];
   const enteredHash=await sha256(entry+'_amt_salt_'+salt);
   const storedHash=pinHashes[key];
   if(enteredHash===storedHash){
     err.textContent='';
-    const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez'};
+    const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez',emily:'Emily Oliveros'};
     doLogin(nameMap[key],'PIN', false); // PIN = full access
   } else {
     err.textContent='❌ Incorrect PIN -- please try again.';
