@@ -19600,7 +19600,7 @@ function openDiagGuideDetail(id) {
 }
 
 function openDiagGuideModal(prefill) {
-  if (writeGuard('Add Diagnostic Guide')) return;
+  if (!writeGuard('Add Diagnostic Guide')) return;
   document.getElementById('dg_title').value    = (prefill&&prefill.title)    || '';
   document.getElementById('dg_system').value   = (prefill&&prefill.system)   || 'GE MRI';
   document.getElementById('dg_category').value = (prefill&&prefill.category) || '';
@@ -19611,7 +19611,7 @@ function openDiagGuideModal(prefill) {
 }
 
 function saveDiagGuide() {
-  if (writeGuard('Save Guide')) return;
+  if (!writeGuard('Save Guide')) return;
   const title   = document.getElementById('dg_title').value.trim();
   const content = document.getElementById('dg_content').value.trim();
   if (!title || !content) { alert('Title and Content are required.'); return; }
