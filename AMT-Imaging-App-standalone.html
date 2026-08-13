@@ -16108,6 +16108,33 @@ Separate from the internal cold head (which keeps the magnet cryostat at ~4K), m
 ### Full Manual / OEM Contact
 Airsys Medicool documentation: airsysmedical.com, or their North American service partner Advanced Cooling Technologies (advancedcoolingtech.us). For building-supplied or other third-party chillers (Multiaqua, MTA, Marchi Thermal Systems), request the model-specific O&M manual from site facilities/engineering before servicing — chiller control boards vary enough between vendors that there's no universal fault-code table worth memorizing.`,
     created: '2026-08-03T00:00:00.000Z'
+  },
+  {
+    id: 'dg_gradient_rfdif_troubleshooting',
+    title: 'Gradient & RF-DIF Troubleshooting (Scanning-on-its-own symptom)',
+    system: 'GE MRI',
+    category: 'Gradient / RF',
+    tags: ['gradient','RF-DIF','RF-DIF1','GP3','CAN network','Z gradient','ACGD','ready check','scanning on its own'],
+    content: `**8/12/26 MAJ: Gradient & RF-DIF Troubleshooting**
+
+System reported scanning issues. Root cause identified as an internal wiring error on the Z gradient. Additionally, the GP3 was performing constant static ready checks, making it appear as if the system was scanning on its own.
+
+### Findings
+- Connected to the GP3 and confirmed the Z gradient was faulting during the static ready check.
+- During testing, the GP3 intermittently reported losing and reconnecting on the CAN network.
+- Swapped the master and slave RF-DIF1 boards. The "scanning on its own" symptom followed the board, indicating a CAN network issue on the RF-DIF1. The CAN network was causing the GP3 to constantly do a ready check like someone was constantly resetting the connection or like it was constantly getting ready for a scan.
+- Ordered a replacement gradient amplifier and a new RF-DIF1 board.
+
+**8/13/26 MAJ: Parts Replacement & Verification**
+
+- Replaced the Z gradient amplifier. Retested the ACGD cabinet via the GP3; all tests passed through multiple iterations.
+- Confirmed that with the RF-DIF1 boards swapped, the false scanning symptom was eliminated.
+- Replaced the faulty RF-DIF1 board.
+- Completed system calibrations.
+
+### Result
+System is operational.`,
+    created: '2026-08-13T00:00:00.000Z'
   }
 ];
 
