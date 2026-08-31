@@ -578,7 +578,8 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   .dash-tech{order:4}
   .dash-finance-qa{order:5}
   .dash-recent{order:6}
-  .dash-pnl-box > summary{display:none}
+  .dash-pnl-box > summary{display:none !important}
+  .dash-pnl-box > *:not(summary){display:block !important}
 }
 
 /* Radio cells: flex stays on the inner span, never the td */
@@ -2912,7 +2913,7 @@ function ghOpenUrl(filePath, downloadUrl){
   // Build a correctly encoded raw URL from the filePath (safer than trusting downloadUrl)
   const encodedPath = (GH.manualsRoot+'/'+(filePath||'')).split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
-  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
+  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
   // Office files → Microsoft Office Online viewer
   if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
     return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
@@ -2932,7 +2933,7 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
   // Office files → Microsoft Office Online viewer
   if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
     return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
@@ -3632,7 +3633,7 @@ if(!kbEntries){
   localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
 } else {
   // App updated -- merge any new seed entries not yet in storage
-  const newSeeds = KB_SEED.filter(s=>!kbEntries.find(e=>e.id===s.id));
+  const newSeeds = KB_SEED.filter(s=>s && !kbEntries.find(e=>e && e.id===s.id));
   if(newSeeds.length){
     kbEntries = [...newSeeds, ...kbEntries];
     localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
@@ -3655,7 +3656,7 @@ function setKBTab(t){
   if(t==='files'){
     const g=document.getElementById('explorerGrid');
     const stale=!g || !g.innerHTML.trim() || /Connecting to (GitHub|library)/.test(g.innerHTML);
-    if(stale) loadExplorer(explorerStack.length?explorerStack[explorerStack.length-1].path:'');
+    if(stale && typeof loadExplorer==='function') loadExplorer('');
   }
   if(t==='parts') setTimeout(()=>{
     const box=document.getElementById('partsResults');
@@ -3873,10 +3874,13 @@ function kbSearch(q){
   if(ql.length<2 && !exactCode){ res.innerHTML=''; return; }
   let errMatches=[];
   try { errMatches = amtErrorHits(ql); } catch(ex){ console.warn('kbSearch errors', ex); }
-  const kbMatches = (kbEntries||[]).filter(e=>
-    (e.title||'').toLowerCase().includes(ql)||(e.problem||'').toLowerCase().includes(ql)||
-    (e.solution||'').toLowerCase().includes(ql)||(e.error||'').toLowerCase().includes(ql)||
-    (e.model||'').toLowerCase().includes(ql)||(e.tags||[]).some(t=>String(t||'').toLowerCase().includes(ql)));
+  let kbMatches=[];
+  try {
+    kbMatches = (kbEntries||[]).filter(e=>e && (
+      String(e.title||'').toLowerCase().includes(ql)||String(e.problem||'').toLowerCase().includes(ql)||
+      String(e.solution||'').toLowerCase().includes(ql)||String(e.error||'').toLowerCase().includes(ql)||
+      String(e.model||'').toLowerCase().includes(ql)||(e.tags||[]).some(t=>String(t||'').toLowerCase().includes(ql))));
+  } catch(ex){ console.warn('kbSearch kb', ex); }
   let diagMatches=[];
   try { diagMatches = amtSafeDiagHits(ql); } catch(ex){ console.warn('kbSearch diag', ex); }
   if(!errMatches.length && !kbMatches.length && !diagMatches.length){
@@ -3939,7 +3943,7 @@ function renderErrCodeList(){
 // ════════════════════════════════════════════════════
 // FILE EXPLORER (GitHub dynamic loading)
 // ════════════════════════════════════════════════════
-let explorerStack = []; // breadcrumb stack [{name, path}]
+var explorerStack = []; // breadcrumb stack [{name, path}]
 // ── Persistent explorer cache (localStorage, 24hr TTL) ──
 const EXPLORER_CACHE_KEY = 'amt_explorer_cache_v30';
 const EXPLORER_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
@@ -3958,7 +3962,7 @@ function loadExplorerCache(){
 function saveExplorerCache(cache){
   try { localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache)); } catch(e){}
 }
-let explorerCache = loadExplorerCache();
+var explorerCache = loadExplorerCache();
 
 
 
@@ -3975,6 +3979,8 @@ function setGHStatusDot(state){ // 'ok','error','loading','idle'
 }
 
 async function loadExplorer(path){
+  if(typeof explorerCache!=='object' || !explorerCache) explorerCache = {};
+  if(typeof explorerStack==='undefined' || !Array.isArray(explorerStack)) explorerStack = [];
   const title = document.getElementById('explorerTitle');
   const loading = document.getElementById('explorerLoading');
   const grid = document.getElementById('explorerGrid');
@@ -6933,7 +6939,7 @@ const PARTS_SEED = [
   {num:'5137474',desc:'Backplane Power Cable',brand:'GE ProSpeed',model:'ProSpeed AI/FI',category:'Power Supply',section:'Rev 39',notes:''}
 ];
 
-let partsDB = JSON.parse(localStorage.getItem(PARTS_STORE_KEY)||'null');
+var partsDB = JSON.parse(localStorage.getItem(PARTS_STORE_KEY)||'null');
 if(!partsDB){
   partsDB = [...PARTS_SEED];
   localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
@@ -6973,7 +6979,7 @@ function searchParts(q){
   const qLow = (q||'').toLowerCase().trim();
   let hits = [];
   try {
-    hits = (partsDB||[]).filter(p=>{
+    hits = (typeof partsDB!=='undefined' && Array.isArray(partsDB) ? partsDB : []).filter(p=>{
       if(!p) return false;
       const brandStr = String(p.brand||'');
       const typeStr  = String(p.type||'');
