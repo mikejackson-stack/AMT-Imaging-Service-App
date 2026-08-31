@@ -84,43 +84,21 @@ print(f"Net depth: {net}  (must be exactly 1)")
 
 ## Authentication System
 
-### Google OAuth (Full Access)
-- **Client ID:** `272717311807-n0kh9tko12a3b8q03mll0tdbjhgh0t9i.apps.googleusercontent.com`
-- **Flow:** Implicit (id_token in URL hash `#state=amt_login&id_token=...`)
-<<<<<<< HEAD
-- **Whitelist:** Only these 3 emails get full access:
-=======
-- **Only works from the hosted GitHub Pages URL** — not from local files (file://)
-- **Whitelist:** Only these 3 emails get access:
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
-  ```js
-  const ALLOWED_EMAILS = {
-    'mike.jackson@amtimagingsolutions.com': 'Michael Jackson',
-    'antonio@amtimagingsolutions.com': 'Antonio Jackson',
-    'tito@amtimagingsolutions.com': 'Candelario Juarez',
-  };
-  ```
-- **Entry point:** `triggerGoogleLogin()` → redirects to Google → returns to app with token
-- **Callback handler:** `checkOAuthCallback()` — called on DOMContentLoaded
-- **Session:** Stored in `sessionStorage` as `amt_auth_v29` (JSON)
-<<<<<<< HEAD
+Do not record client IDs, allowlists, PINs, or other login material in this document.
 
-### PIN Login (View-Only)
-- Michael: `7591`, Antonio: `0325`, Candelario: `0216`
-- PINs stored as SHA-256 hashes with salt in `localStorage.amt_pin_hashes_v29`
-- View-only mode shows orange banner, all write operations blocked by `writeGuard()`
+### Google OAuth
+- Client identifier and authorized-email list live in app source only; do not copy them here.
+- Flow: Implicit (id_token in URL hash)
+- Hosted GitHub Pages URL only — not from local files (`file://`)
+- Entry point: `triggerGoogleLogin()` → redirects to Google → returns to app with token
+- Callback handler: `checkOAuthCallback()` — called on DOMContentLoaded
+- Session: Stored in `sessionStorage` as `amt_auth_v29` (JSON)
+- Access-denied uses `alert()` so the rejection is visible
 
-### Auth State
-```js
-currentUser = { name, method:'Google'|'PIN', viewOnly:false|true, ts }
-```
-=======
-- **Error handling:** Uses `alert()` for access-denied so the rejection is visible
-
-### PIN Login (Full Access)
-- Michael: `7591`, Antonio: `0325`, Candelario: `0216`
-- PINs stored as SHA-256 hashes with salt in `localStorage.amt_pin_hashes_v29`
-- PIN login grants **full read/write access** — same as Google login
+### PIN Login
+- Staff PINs are not stored in this repository. Do not record them here.
+- Runtime hashes (when present) use `localStorage.amt_pin_hashes_v29`
+- PIN login grants full read/write access — same as Google login
 - `writeGuard()` is not triggered for PIN users
 
 ### Auth State
@@ -128,7 +106,6 @@ currentUser = { name, method:'Google'|'PIN', viewOnly:false|true, ts }
 currentUser = { name, method:'Google'|'PIN', viewOnly:false, ts }
 ```
 `viewOnly` is always `false` — both login methods have full access.
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 ---
 
