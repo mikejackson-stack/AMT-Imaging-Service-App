@@ -18,7 +18,7 @@ window.addEventListener('offline',()=>{ const b=document.getElementById('offline
 // Declared here (cheap, no network) so any code anywhere in the page can safely check
 // fbReady/fbDb/fbAuth without a ReferenceError. Actual Firebase SDK loading + init happens
 // at the very end of the document -- see the comment there for why.
-let fbDb=null, fbAuth=null, fbReady=false;
+let fbDb=null, fbAuth=null, fbFunctions=null, fbReady=false;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -622,7 +622,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <!-- LOGIN -->
 <div id="loginScreen">
   <img class="login-logo" id="loginLogo" src="" alt="AMT Imaging Solutions">
-  <div class="login-tagline">Field Service Management · v33</div>
+  <div class="login-tagline">Field Service Management · v34</div>
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC -- Staff Portal</p>
@@ -661,7 +661,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <div id="topBar">
   <div class="topbar-left">
     <img class="topbar-logo" id="topbarLogo" src="" alt="AMT">
-    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v33</span></div>
+    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v34</span></div>
   </div>
   <div class="topbar-right">
     <div class="user-avatar" id="userAvatar">?</div>
@@ -1592,7 +1592,7 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 // FULL ERROR CODE DATABASE
 // ════════════════════════════════════════════════════
-const APP_VERSION='v33';
+const APP_VERSION='v34';
 const FULL_ERROR_DB=[
   // GE MRI
   {code:'E305',brand:'GE',desc:'RF Amplifier fault -- check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
@@ -1939,6 +1939,12 @@ function amtGoogleCallback(r){
       const err=document.getElementById('loginError');
       if(err) err.textContent='🚫 '+email+' is not authorized. Use PIN login.';
       return;
+    }
+    if(fbReady && fbAuth){
+      try{
+        const cred=firebase.auth.GoogleAuthProvider.credential(r.credential);
+        fbAuth.signInWithCredential(cred).catch(e=>console.warn('[AMT Firebase Auth] sign-in failed:',e.code||e));
+      }catch(e){ console.warn('[AMT Firebase Auth] bridge error:',e); }
     }
     doLogin(allowedName,'Google',false);
   }catch(e){
@@ -4111,6 +4117,18 @@ function amtAttr(s){
   return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
 }
 
+let lastKbQuery='';
+function amtEscHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function grokMissCta(q){
+  return '<div class="alert alert-info" id="grokAskBox">'
+    +'<div>No in-app hit for "'+amtEscHtml(q)+'". Tried error codes, guides, parts, and the manuals tree.</div>'
+    +'<div style="font-size:.78rem;margin:8px 0 10px;color:var(--text2)">Grok is a backup only. Answers are <strong>unverified</strong> and are <strong>not a substitute for the OEM service manual</strong>.</div>'
+    +'<button type="button" class="btn btn-accent btn-sm" id="askGrokBtn" onclick="askGrokBackup()">Ask Grok</button>'
+    +'</div>';
+}
+
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
   const raw=(q||'').trim();
@@ -4156,6 +4174,7 @@ function kbSearch(q){
   try { partMatches = amtPartHits(ql); } catch(ex){ console.warn('kbSearch parts', ex); }
   let manualMatches=[];
   try { manualMatches = amtManualHits(ql); } catch(ex){ console.warn('kbSearch manuals', ex); }
+  lastKbQuery = raw;
   const tableHit = errMatches.some(e=>{
     const c=String(e.code||'').toLowerCase();
     return c===ql || amtNormCode(c)===qn || c.startsWith(ql) || (qn.length>=3 && amtNormCode(c).includes(qn));
@@ -4169,7 +4188,7 @@ function kbSearch(q){
     });
   }
   if(!errMatches.length && !kbMatches.length && !diagMatches.length && !guideMatches.length && !partMatches.length && !manualMatches.length){
-    res.innerHTML=`<div class="alert alert-info">No results for "${q}". Try: zipper, ghosting, noise, gradient, helium, quench, RF, artifact, DAS, table, shim.</div>`; return;
+    res.innerHTML = grokMissCta(raw); return;
   }
   const sysBg = {'GE MRI':'#1565c0','GE CT':'#0288d1','Siemens MRI':'#e65100','Siemens CT':'#bf360c','Injector':'#00695c','Hitachi MRI':'#7b1fa2','Toshiba MRI':'#c62828'};
   let html = '';
@@ -4295,6 +4314,49 @@ function kbSearch(q){
     '</div>';
   }
   res.innerHTML = html;
+}
+
+async function askGrokBackup(){
+  const q=(lastKbQuery||'').trim();
+  const box=document.getElementById('grokAskBox')||document.getElementById('errResults');
+  if(!q){
+    if(box) box.innerHTML='<div class="alert alert-info">Enter a search first.</div>';
+    return;
+  }
+  if(!fbReady || typeof firebase==='undefined' || !fbAuth){
+    if(box) box.innerHTML='<div class="alert alert-warning">Grok backup needs the hosted app with Firebase. Sign in with Google, then try again.</div>';
+    return;
+  }
+  if(!fbAuth.currentUser){
+    if(box) box.innerHTML='<div class="alert alert-warning">Ask Grok requires Google sign-in. PIN login cannot call the backup search.</div>';
+    return;
+  }
+  if(box) box.innerHTML='<div class="alert alert-info" id="grokAskBox">Asking Grok…</div>';
+  try{
+    const fn=(fbFunctions||firebase.functions()).httpsCallable('askGrok',{timeout:60000});
+    const result=await fn({query:q});
+    const answer=(result && result.data && result.data.answer)||'No answer returned.';
+    const host=document.getElementById('errResults');
+    if(!host) return;
+    host.innerHTML =
+      '<div class="card" style="margin-bottom:10px;border-left:4px solid #f59e0b" id="grokAnswerCard">'
+      +'<div class="card-header">Grok backup · unverified</div>'
+      +'<div style="padding:12px 14px">'
+      +'<div style="background:#fff7ed;border:1px solid #fdba74;border-radius:8px;padding:8px 10px;font-size:.78rem;color:#9a3412;margin-bottom:10px">'
+      +'⚠️ Unverified AI answer. Not a substitute for the OEM service manual. Confirm in the official manual before you work the system.</div>'
+      +'<div style="font-size:.85rem;white-space:pre-wrap;word-break:break-word">'+amtEscHtml(answer)+'</div>'
+      +'</div></div>';
+  }catch(e){
+    const code=String((e && e.code)||'');
+    const msg=String((e && e.message)||e);
+    let friendly='Grok backup is not available yet.';
+    if(/unauthenticated/i.test(code+' '+msg)) friendly='Sign in with Google to use Ask Grok.';
+    else if(/permission-denied/i.test(code+' '+msg)) friendly='This Google account is not allowed to use Ask Grok.';
+    else if(/failed-precondition/i.test(code+' '+msg)) friendly='Grok is not configured (XAI_API_KEY secret not set).';
+    else if(/not-found|404|unavailable|internal|CORS|Failed to fetch|NOT_FOUND/i.test(code+' '+msg))
+      friendly='Grok functions are not deployed yet. After XAI_API_KEY is set, run firebase deploy --only functions.';
+    if(box) box.innerHTML='<div class="alert alert-warning" id="grokAskBox">'+amtEscHtml(friendly)+'</div>';
+  }
 }
 
 // Alias for backwards compat
@@ -17031,6 +17093,7 @@ function exportExpensesCSV() {
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-functions-compat.js"></script>
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyAkI_Gk4hmaia5DbkV2RP8MFf3up2srTFU",
@@ -17046,6 +17109,7 @@ try{
   firebase.initializeApp(firebaseConfig);
   fbAuth=firebase.auth();
   fbDb=firebase.firestore();
+  fbFunctions=firebase.functions();
   // Firestore's default real-time transport (WebChannel streaming) gets a 400 Bad Request
   // on some networks -- antivirus SSL inspection, corporate proxies/firewalls, or certain
   // browser extensions can mangle that request format. This tells Firestore to detect that

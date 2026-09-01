@@ -1,6 +1,5 @@
-// Bumped from amt-v32 -> amt-v33: knowledge search now hits parts + manuals tree;
-// Guides search surfaces FULL_ERROR_DB codes (E501) instead of a unique 0-guides miss.
-const CACHE = 'amt-v33';
+// Bumped from amt-v33 -> amt-v34: Grok backup search UI; keep v33 knowledge-search cache bust.
+const CACHE = 'amt-v34';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
