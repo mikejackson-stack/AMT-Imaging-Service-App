@@ -1,6 +1,6 @@
-// Bumped from amt-v31 -> amt-v32: forces every existing installed client to drop its old
-// stale-while-revalidate cache once, on top of the strategy change below.
-const CACHE = 'amt-v32';
+// Bumped from amt-v32 -> amt-v33: knowledge search now hits parts + manuals tree;
+// Guides search surfaces FULL_ERROR_DB codes (E501) instead of a unique 0-guides miss.
+const CACHE = 'amt-v33';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {

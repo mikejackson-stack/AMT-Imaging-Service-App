@@ -622,7 +622,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <!-- LOGIN -->
 <div id="loginScreen">
   <img class="login-logo" id="loginLogo" src="" alt="AMT Imaging Solutions">
-  <div class="login-tagline">Field Service Management · v32</div>
+  <div class="login-tagline">Field Service Management · v33</div>
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC -- Staff Portal</p>
@@ -661,7 +661,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <div id="topBar">
   <div class="topbar-left">
     <img class="topbar-logo" id="topbarLogo" src="" alt="AMT">
-    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v32</span></div>
+    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v33</span></div>
   </div>
   <div class="topbar-right">
     <div class="user-avatar" id="userAvatar">?</div>
@@ -1596,7 +1596,7 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 // FULL ERROR CODE DATABASE
 // ════════════════════════════════════════════════════
-const APP_VERSION='v32';
+const APP_VERSION='v33';
 const FULL_ERROR_DB=[
   // GE MRI
   {code:'E305',brand:'GE',desc:'RF Amplifier fault -- check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
@@ -3989,6 +3989,129 @@ function amtSafeDiagHits(ql){
   });
 }
 
+function amtPartCorpus(){
+  if(typeof partsDB!=='undefined' && Array.isArray(partsDB) && partsDB.length) return partsDB;
+  if(typeof PARTS_SEED!=='undefined' && Array.isArray(PARTS_SEED)) return PARTS_SEED;
+  return [];
+}
+function amtPartHits(ql, db){
+  const q = String(ql||'').toLowerCase().trim();
+  if(!q) return [];
+  const src = Array.isArray(db) ? db : amtPartCorpus();
+  return src.filter(p=>{
+    if(!p) return false;
+    return String(p.num||'').toLowerCase().includes(q)
+      || String(p.desc||'').toLowerCase().includes(q)
+      || String(p.models||p.model||'').toLowerCase().includes(q)
+      || String(p.notes||'').toLowerCase().includes(q)
+      || String(p.cat||p.category||'').toLowerCase().includes(q)
+      || String(p.section||'').toLowerCase().includes(q)
+      || String(p.brand||'').toLowerCase().includes(q)
+      || String(p.type||'').toLowerCase().includes(q);
+  });
+}
+function amtManualRelPath(item){
+  let p = String((item&& (item.path||item.html_url))||'');
+  const name = String((item&&item.name)||'');
+  if(!p) p = name;
+  p = p.replace(/^https?:\/\/[^/]+\/.*?\/Manuals\//i,'');
+  if(p.indexOf('Manuals/')===0) p = p.slice(8);
+  return p || name;
+}
+function amtManualTreeCatalog(cache){
+  const seen = Object.create(null);
+  const out = [];
+  function add(item, typeHint){
+    if(!item) return;
+    const name = String(item.name||'');
+    const path = amtManualRelPath(item);
+    const type = (item.type==='file'||item.type==='blob'||typeHint==='file') ? 'file' : 'dir';
+    const key = (path||name).toLowerCase();
+    if(!key || seen[key]) return;
+    seen[key] = 1;
+    out.push({name: name||path, path: path||name, type: type, icon: item.icon||''});
+  }
+  const lists = [];
+  if(typeof FALLBACK_FOLDERS!=='undefined' && Array.isArray(FALLBACK_FOLDERS)) lists.push(FALLBACK_FOLDERS);
+  if(typeof GE_SUBFOLDERS!=='undefined' && Array.isArray(GE_SUBFOLDERS)) lists.push(GE_SUBFOLDERS);
+  if(typeof GE_CT_SUBFOLDERS!=='undefined' && Array.isArray(GE_CT_SUBFOLDERS)) lists.push(GE_CT_SUBFOLDERS);
+  if(typeof SIEMENS_SUBFOLDERS!=='undefined' && Array.isArray(SIEMENS_SUBFOLDERS)) lists.push(SIEMENS_SUBFOLDERS);
+  if(typeof SIEMENS_CT_SUBFOLDERS!=='undefined' && Array.isArray(SIEMENS_CT_SUBFOLDERS)) lists.push(SIEMENS_CT_SUBFOLDERS);
+  if(typeof HITACHI_SUBFOLDERS!=='undefined' && Array.isArray(HITACHI_SUBFOLDERS)) lists.push(HITACHI_SUBFOLDERS);
+  lists.forEach(list=>list.forEach(it=>add(it,'dir')));
+  const c = cache && typeof cache==='object' ? cache
+    : (typeof explorerCache==='object' && explorerCache ? explorerCache : {});
+  Object.keys(c).forEach(folderPath=>{
+    const entry = c[folderPath];
+    const data = entry && entry.data;
+    if(!Array.isArray(data)) return;
+    if(folderPath) add({name: folderPath.split('/').pop(), path: folderPath, type:'dir'}, 'dir');
+    data.forEach(it=>add(it));
+  });
+  return out;
+}
+function amtManualHits(ql, cache){
+  const q = String(ql||'').toLowerCase().trim();
+  if(!q) return [];
+  return amtManualTreeCatalog(cache).filter(m=>{
+    return String(m.name||'').toLowerCase().includes(q) || String(m.path||'').toLowerCase().includes(q);
+  });
+}
+function amtCodeTableHits(ql){
+  const raw = String(ql||'').trim().toLowerCase();
+  if(!raw) return [];
+  const qn = amtNormCode(raw);
+  return amtErrorHits(raw).filter(e=>{
+    const c = String(e.code||'').toLowerCase();
+    const cn = amtNormCode(c);
+    return c===raw || cn===qn || c.startsWith(raw) || (qn.length>=3 && (cn.includes(qn) || qn.includes(cn)));
+  });
+}
+function amtGuideHits(ql, db){
+  const q = String(ql||'').toLowerCase().trim();
+  const src = Array.isArray(db) ? db
+    : ((typeof diagGuidesDB!=='undefined' && Array.isArray(diagGuidesDB) && diagGuidesDB.length)
+      ? diagGuidesDB
+      : ((typeof DIAG_GUIDES_SEED!=='undefined' && Array.isArray(DIAG_GUIDES_SEED)) ? DIAG_GUIDES_SEED : []));
+  if(!q) return src.filter(Boolean);
+  return src.filter(g=>{
+    if(!g) return false;
+    return String(g.title||'').toLowerCase().includes(q)
+      || String(g.category||'').toLowerCase().includes(q)
+      || (g.tags||[]).join(' ').toLowerCase().includes(q)
+      || String(g.content||'').toLowerCase().includes(q);
+  });
+}
+function amtDiagSearchHonesty(ql, guideDb){
+  const q = String(ql||'').trim().toLowerCase();
+  const guides = amtGuideHits(q, guideDb);
+  const errs = amtCodeTableHits(q);
+  return {query:q, guideCount:guides.length, errorCount:errs.length, uniquelyZero:!guides.length && !errs.length, errors:errs};
+}
+function amtOpenPartFromSearch(num){
+  setKBTab('parts');
+  const box = document.getElementById('partsSearchInput');
+  if(box) box.value = num||'';
+  if(typeof searchParts==='function') searchParts(num||'');
+}
+function amtOpenManualFromSearch(path, type, name){
+  setKBTab('files');
+  let rel = String(path||name||'');
+  if(rel.indexOf('Manuals/')===0) rel = rel.slice(8);
+  if(type==='file'){
+    try { window.open(ghOpenUrl(rel), '_blank', 'noopener'); } catch(ex){}
+    return;
+  }
+  const segs = rel.split('/').filter(Boolean);
+  explorerStack = segs.map((seg,i)=>({name:seg, path:segs.slice(0,i+1).join('/')}));
+  const bc = document.getElementById('explorerBreadcrumb');
+  if(bc) bc.style.display = segs.length ? 'block' : 'none';
+  if(typeof loadExplorer==='function') loadExplorer(rel);
+}
+function amtAttr(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
   const raw=(q||'').trim();
@@ -4030,6 +4153,10 @@ function kbSearch(q){
         String(g.content||'').toLowerCase().includes(ql);
     });
   } catch(ex){ console.warn('kbSearch guides', ex); }
+  let partMatches=[];
+  try { partMatches = amtPartHits(ql); } catch(ex){ console.warn('kbSearch parts', ex); }
+  let manualMatches=[];
+  try { manualMatches = amtManualHits(ql); } catch(ex){ console.warn('kbSearch manuals', ex); }
   const tableHit = errMatches.some(e=>{
     const c=String(e.code||'').toLowerCase();
     return c===ql || amtNormCode(c)===qn || c.startsWith(ql) || (qn.length>=3 && amtNormCode(c).includes(qn));
@@ -4042,7 +4169,7 @@ function kbSearch(q){
       return t.includes(ql)||cat.includes(ql)||tags.includes(ql);
     });
   }
-  if(!errMatches.length && !kbMatches.length && !diagMatches.length && !guideMatches.length){
+  if(!errMatches.length && !kbMatches.length && !diagMatches.length && !guideMatches.length && !partMatches.length && !manualMatches.length){
     res.innerHTML=`<div class="alert alert-info">No results for "${q}". Try: zipper, ghosting, noise, gradient, helium, quench, RF, artifact, DAS, table, shim.</div>`; return;
   }
   const sysBg = {'GE MRI':'#1565c0','GE CT':'#0288d1','Siemens MRI':'#e65100','Siemens CT':'#bf360c','Injector':'#00695c','Hitachi MRI':'#7b1fa2','Toshiba MRI':'#c62828'};
@@ -4055,6 +4182,40 @@ function kbSearch(q){
         <div style="font-size:.82rem;color:var(--text);margin-top:3px">${e.desc}</div>
         ${e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':''}
       </div>`).join('')+'</div>';
+  }
+  if(partMatches.length){
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">🔩 Parts ('+partMatches.length+')</div>'+
+      partMatches.slice(0,8).map(p=>{
+        const num = String(p.num||'');
+        return `<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">
+            <div style="flex:1;min-width:0">
+              <strong style="font-family:monospace;color:var(--navy)">${num||'--'}</strong>
+              ${p.brand?'<span class="badge bc" style="font-size:.64rem;margin-left:6px">'+p.brand+'</span>':''}
+              <div style="font-size:.82rem;color:var(--text);margin-top:3px">${p.desc||''}</div>
+              ${(p.models||p.model)?'<div style="font-size:.75rem;color:var(--text2);margin-top:2px">📟 '+(p.models||p.model)+'</div>':''}
+            </div>
+            <button class="btn btn-outline btn-sm" data-num="${amtAttr(num)}" onclick="amtOpenPartFromSearch(this.dataset.num)" style="font-size:.72rem;white-space:nowrap;flex-shrink:0">Open in Parts</button>
+          </div>
+        </div>`;
+      }).join('')+
+      (partMatches.length>8?`<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">${partMatches.length-8} more — open the <a href="#" onclick="amtOpenPartFromSearch(${JSON.stringify(raw).replace(/</g,'\\u003c')});return false" style="color:var(--blue2)">Parts tab</a>.</div>`:'')+
+    '</div>';
+  }
+  if(manualMatches.length){
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">📁 Manuals ('+manualMatches.length+')</div>'+
+      manualMatches.slice(0,8).map(m=>{
+        const icon = m.type==='file' ? '📄' : (m.icon||'📁');
+        return `<div style="padding:10px 14px;border-bottom:1px solid var(--gray2);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <div style="flex:1;min-width:0">
+            <strong style="color:var(--navy)">${icon} ${m.name||m.path}</strong>
+            ${m.path && m.path!==m.name?'<div style="font-size:.75rem;color:var(--text2);margin-top:2px">'+m.path+'</div>':''}
+          </div>
+          <button class="btn btn-outline btn-sm" data-path="${amtAttr(m.path)}" data-type="${amtAttr(m.type)}" data-name="${amtAttr(m.name)}" onclick="amtOpenManualFromSearch(this.dataset.path,this.dataset.type,this.dataset.name)" style="font-size:.72rem;white-space:nowrap;flex-shrink:0">${m.type==='file'?'Open file':'Open folder'}</button>
+        </div>`;
+      }).join('')+
+      (manualMatches.length>8?`<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">${manualMatches.length-8} more — go to the <a href="#" onclick="setKBTab('files');return false" style="color:var(--blue2)">Manuals tab</a>.</div>`:'')+
+    '</div>';
   }
   if(guideMatches.length){
     html += '<div class="card" style="margin-bottom:10px"><div class="card-header">📖 Reference Guides ('+guideMatches.length+')</div>'+
@@ -4625,6 +4786,7 @@ const PARTS_SEED = [
   {id:'ps002',num:'2294300-18',desc:'MCP820 CPU Board APS/AGP HDx 15.x CAM',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x CAM chassis',cost:0,notes:'Used in CAM chassis. Board Identifier: SCPGEDAQ2X-016. 128MB mini-board: 07A.',manual:'',date:'2025-05-08'},
   {id:'ps003',num:'2294300-23',desc:'MCP820 CPU Board AGP only',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 15.x, HDxT 16.x MGD/CAM',cost:0,notes:'Can only be used as AGP, not APS. 128MB mini-board: 27A.',manual:'',date:'2025-05-08'},
   {id:'ps004',num:'2294300-14',desc:'MCP820 CPU Board APS/AGP HDx 14.x legacy',brand:'GE',type:'Board',cat:'Board',models:'Signa HDx 14.x (legacy)',cost:0,notes:'Works as APS only. Not recommended for AGP. 128MB mini-board: 06A.',manual:'',date:'2025-05-08'},
+  {id:'ps005',num:'2107246',desc:'Gradient driver board (GDB) — confirm dash revision on the installed board (2107246-x)',brand:'GE',type:'Board',cat:'Gradient',models:'Signa LX, Excite, HDxt',cost:0,notes:'Spare cited in the E410 gradient driver fault guide. Check system BOM for the dash number.',manual:'',date:'2026-09-01'},
   // ── GE FRU Parts (Direction 2345481r13 Excite + 5166012r14 HDx) ──
   {id:'fp_2345481',num:'2345481',desc:'Direction Revision 13',brand:'GE',cat:'General',type:'Other',models:'Signa Excite, Excite Plus',cost:0,notes:'Section: General · Page 1',manual:'Parts/PartsManual_Excite_2345481r13.pdf',date:'2025-05-08'},
   {id:'fp_2219400',num:'2219400',desc:'MAIN ACCESSORY MAGNET DISCONNECT CABINET',brand:'GE',cat:'Magnet/Enclosure',type:'Mechanical',models:'Signa Excite, Excite Plus',cost:0,notes:'Section: Twinspeed With Linux · Page 5',manual:'Parts/PartsManual_Excite_2345481r13.pdf',date:'2025-05-08'},
@@ -19830,9 +19992,17 @@ function renderDiagGuides() {
     g.content.toLowerCase().includes(q)
   );
 
-  // Update count
+  let errHits = [];
+  try { errHits = q ? amtCodeTableHits(q) : []; } catch(ex){ errHits = []; }
+
+  // Update count — never uniquely claim "0 guides found" when the error table has the code
   const countEl = document.getElementById('dgCount');
-  if (countEl) countEl.textContent = guides.length + ' guide' + (guides.length!==1?'s':'') + (q||_dgSys||_dgCat?' found':'');
+  if (countEl) {
+    let label = guides.length + ' guide' + (guides.length!==1?'s':'');
+    if (q && errHits.length) label += ' · ' + errHits.length + ' error code' + (errHits.length!==1?'s':'') + ' in table';
+    if (q || _dgSys || _dgCat) label += ' found';
+    countEl.textContent = label;
+  }
 
   // Build category chips from current sys filter (not q)
   const catBase = _dgSys ? diagGuidesDB.filter(g=>g.system===_dgSys) : diagGuidesDB;
@@ -19846,7 +20016,7 @@ function renderDiagGuides() {
     }).join('');
   }
 
-  if (!guides.length) {
+  if (!guides.length && !errHits.length) {
     list.innerHTML = '<div class="alert alert-info" style="margin-top:1rem">No guides found' + (q?' for "'+q+'"':'') + '.</div>';
     return;
   }
@@ -19864,7 +20034,27 @@ function renderDiagGuides() {
     'Hitachi MRI':'dg-hitachi-mri','Toshiba MRI':'dg-toshiba-mri'
   };
 
-  list.innerHTML = guides.map(g => {
+  let html = '';
+  if (errHits.length) {
+    html += '<div class="card" style="margin-bottom:10px"><div class="card-header">⚠️ Error Code Reference ('+errHits.length+')</div>';
+    if (!guides.length) {
+      html += '<div style="padding:8px 14px;font-size:.8rem;color:var(--text2);background:var(--gray)">No diagnostic guide titled for "'+q+'". Showing the error-code table entry — not a full guide.</div>';
+    }
+    html += errHits.map(e=>'<div style="padding:10px 14px;border-bottom:1px solid var(--gray2)">'
+      + '<strong style="color:var(--red)">'+e.code+'</strong>'
+      + '<span class="badge bc" style="font-size:.64rem;margin-left:6px">'+(e.brand||'')+'</span>'
+      + '<div style="font-size:.82rem;color:var(--text);margin-top:3px">'+(e.desc||'')+'</div>'
+      + (e.manual?'<a href="'+ghManualUrl(e.manual)+'" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>':'')
+      + ' <a href="#" onclick="setKBTab(\'errcodes\');return false" style="font-size:.78rem;color:var(--blue2)">See Error Codes tab</a>'
+      + '</div>').join('') + '</div>';
+  }
+
+  if (!guides.length) {
+    list.innerHTML = html;
+    return;
+  }
+
+  html += guides.map(g => {
     const bg  = sysBg[g.system] || '#555';
     const cls = sysCls[g.system] || 'dg-general';
     const tags = (g.tags||[]).slice(0,5).map(t=>'<span class="dg-tag">#'+t+'</span>').join('');
@@ -19885,6 +20075,7 @@ function renderDiagGuides() {
       + '</div>'
     + '</div>';
   }).join('');
+  list.innerHTML = html;
 }
 
 function buildMdTable(rows) {
