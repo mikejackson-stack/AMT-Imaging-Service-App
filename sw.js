@@ -1,6 +1,5 @@
-// Bumped from amt-v31 -> amt-v32: forces every existing installed client to drop its old
-// stale-while-revalidate cache once, on top of the strategy change below.
-const CACHE = 'amt-v32';
+// Bumped from amt-v32 -> amt-v34: Grok backup search UI + network-first cache bust.
+const CACHE = 'amt-v34';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
