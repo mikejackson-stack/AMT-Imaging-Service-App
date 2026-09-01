@@ -17,8 +17,9 @@ firebase functions:secrets:set XAI_API_KEY
 firebase deploy --only functions
 ```
 
-3. Confirm the function `askGrok` is in `us-central1`.
-4. In the hosted app, Google-sign-in as staff, search something the in-app KB misses, then tap **Ask Grok**.
+3. Confirm the function `askGrok` is in `us-central1` and allows unauthenticated Cloud Run invoke (`invoker: 'public'` in `functions/index.js`). Staff auth is still checked inside the function.
+4. The hosted app must call `firebase.app().functions('us-central1').httpsCallable('askGrok')` (compat SDK default region is easy to get wrong for 2nd-gen).
+5. In the hosted app, Google-sign-in as staff, search something the in-app KB misses, then tap **Ask Grok**.
 
 Do **not** add `functions/` to the GitHub Pages workflow curl list. Pages only serves `index.html`, `rates.json`, and `sw.js`.
 
