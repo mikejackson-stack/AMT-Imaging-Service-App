@@ -79,10 +79,11 @@ function loadSearchRuntime(htmlPath) {
     'const HITACHI_SUBFOLDERS = ' + extractConst(src, 'HITACHI_SUBFOLDERS') + ';',
     'var partsDB = PARTS_SEED.slice();',
     'var explorerCache = {};',
+    'const DIAG_GUIDES_SEED = ' + extractConst(src, 'DIAG_GUIDES_SEED') + ';',
     'var diagGuidesDB = [];',
     fns
   ].join('\n');
-  const box = { FULL_ERROR_DB: null, PARTS_SEED: null, amtErrorHits: null, amtPartHits: null,
+  const box = { FULL_ERROR_DB: null, PARTS_SEED: null, DIAG_GUIDES_SEED: null, amtErrorHits: null, amtPartHits: null,
     amtManualHits: null, amtCodeTableHits: null, amtDiagSearchHonesty: null, amtGuideHits: null };
   const keys = Object.keys(box);
   const fn = new Function(prelude + '\nreturn {' + keys.map(k => k + ':' + k).join(',') + '};');
@@ -169,6 +170,23 @@ files.forEach(file => {
   const top = /Field Service · v33/.test(html);
   const appVer = /const APP_VERSION='v33'/.test(src);
   assert(login && top && appVer, 'version strings are v33 (login, top bar, APP_VERSION)');
+
+  const leakGuide = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_explorer_sv25_leak_detector');
+  assert(!!leakGuide, 'DIAG_GUIDES_SEED includes GE Explorer SV25 leak detector guide');
+  assert(leakGuide && /pin 8 to pin 9/i.test(leakGuide.content) && /pins 1 and 2/i.test(leakGuide.content),
+    'leak detector guide has cabinet-monitor pin measurements');
+  assert(leakGuide && /8\.2 MOhms/i.test(leakGuide.content) && /5 MOhms to 13 MOhms/i.test(leakGuide.content),
+    'leak detector guide has OEM resistance ranges');
+  assert(leakGuide && /Wet sensor strip/i.test(leakGuide.content) && /Disconnected sensor strip/i.test(leakGuide.content),
+    'leak detector guide has visible Table 1 rows');
+  assert(leakGuide && !/Bent connector pin/i.test(leakGuide.content),
+    'leak detector guide does not invent cut-off Table 1 rows');
+
+  ['leak detector', 'leak sensor', 'Explorer SV25', 'coolant leak'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_explorer_sv25_leak_detector'),
+      'amtGuideHits("' + q + '") hits Explorer SV25 leak detector guide');
+  });
 });
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
