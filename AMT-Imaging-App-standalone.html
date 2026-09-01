@@ -16747,6 +16747,42 @@ System reported scanning issues. Root cause identified as an internal wiring err
 ### Result
 System is operational.`,
     created: '2026-08-13T00:00:00.000Z'
+  },
+  {
+    id: 'dg_explorer_sv25_leak_detector',
+    title: 'GE Explorer SV25 — Troubleshooting A Leak Detector',
+    system: 'GE MRI',
+    category: 'Cooling',
+    tags: ['leak detector','leak sensor','Explorer SV25','GE Explorer','coolant leak','cabinet monitor','wet sensor','sensor strip'],
+    content: `## Troubleshooting A Leak Detector
+Source: GE Explorer SV25 service manual (SM)
+OEM page: Manuals/GE/GE_Explorer_SV25_SM/root/t_TroubleshootingALeakDetectionSensor.html
+
+### Procedure
+Measure the resistance at each connector of the leak sensor system starting from the cabinet monitor end.
+
+- Cabinet monitor connector: measure from pin 8 to pin 9 for leak sensor 2, and pins 1 and 2 for leak sensor 1.
+- Leak sensor connectors: measure from pin 1 to pin 3 or pin 1 to pin 2 based on the appropriate connectors.
+
+### Measured Resistance
+| Measured Resistance | Condition |
+|---------------------|-----------|
+| < 5 MOhms | Possible wet sensor or coolant leak |
+| 5 MOhms to 13 MOhms | Operational range |
+| 8.2 MOhms ± 0.82 MOhms | Ideal range |
+| > 13 MOhms | Possible severed cable or an open in sensor path |
+
+### Result
+If the measured resistance is in the ideal range or the operational range, proceed to measuring the resistance at the next connector.
+
+If the measured resistance is out of the operational range, identify and resolve the problem with the previous line.
+
+### Table 1. Common problems
+| Problem | Resolution |
+|---------|------------|
+| Wet sensor strip | Dry the sensor strip. If this does not resolve the problem, replace the sensor strip. |
+| Disconnected sensor strip | Reconnect the sensor. |`,
+    created: '2026-09-01T00:00:00.000Z'
   }
 ];
 
