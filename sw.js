@@ -1,6 +1,6 @@
-// Bumped from amt-v30 -> amt-v31: forces every existing installed client to drop its old
+// Bumped from amt-v31 -> amt-v32: forces every existing installed client to drop its old
 // stale-while-revalidate cache once, on top of the strategy change below.
-const CACHE = 'amt-v31';
+const CACHE = 'amt-v32';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
