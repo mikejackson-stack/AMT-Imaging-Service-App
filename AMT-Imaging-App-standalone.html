@@ -622,7 +622,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <!-- LOGIN -->
 <div id="loginScreen">
   <img class="login-logo" id="loginLogo" src="" alt="AMT Imaging Solutions">
-  <div class="login-tagline">Field Service Management · v34</div>
+  <div class="login-tagline">Field Service Management · v35</div>
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC -- Staff Portal</p>
@@ -661,7 +661,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <div id="topBar">
   <div class="topbar-left">
     <img class="topbar-logo" id="topbarLogo" src="" alt="AMT">
-    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v34</span></div>
+    <div class="topbar-name">AMT Imaging Solutions <span>Field Service · v35</span></div>
   </div>
   <div class="topbar-right">
     <div class="user-avatar" id="userAvatar">?</div>
@@ -1592,7 +1592,7 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 // FULL ERROR CODE DATABASE
 // ════════════════════════════════════════════════════
-const APP_VERSION='v34';
+const APP_VERSION='v35';
 const FULL_ERROR_DB=[
   // GE MRI
   {code:'E305',brand:'GE',desc:'RF Amplifier fault -- check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
@@ -4333,7 +4333,7 @@ async function askGrokBackup(){
   }
   if(box) box.innerHTML='<div class="alert alert-info" id="grokAskBox">Asking Grok…</div>';
   try{
-    const fn=(fbFunctions||firebase.functions()).httpsCallable('askGrok',{timeout:60000});
+    const fn=(fbFunctions||firebase.app().functions('us-central1')).httpsCallable('askGrok',{timeout:60000});
     const result=await fn({query:q});
     const answer=(result && result.data && result.data.answer)||'No answer returned.';
     const host=document.getElementById('errResults');
@@ -17145,7 +17145,7 @@ try{
   firebase.initializeApp(firebaseConfig);
   fbAuth=firebase.auth();
   fbDb=firebase.firestore();
-  fbFunctions=firebase.functions();
+  fbFunctions=firebase.app().functions('us-central1');
   // Firestore's default real-time transport (WebChannel streaming) gets a 400 Bad Request
   // on some networks -- antivirus SSL inspection, corporate proxies/firewalls, or certain
   // browser extensions can mangle that request format. This tells Firestore to detect that

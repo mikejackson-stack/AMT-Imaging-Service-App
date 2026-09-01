@@ -1,5 +1,5 @@
-// Bumped from amt-v33 -> amt-v34: Grok backup search UI; keep v33 knowledge-search cache bust.
-const CACHE = 'amt-v34';
+// Bumped from amt-v34 -> amt-v35: Ask Grok callable hits us-central1.
+const CACHE = 'amt-v35';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {

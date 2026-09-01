@@ -17,6 +17,9 @@ exports.askGrok = onCall(
   {
     secrets: [xaiApiKey],
     cors: true,
+    // Cloud Run IAM must allow unauthenticated invoke so the Firebase JS SDK
+    // can reach the callable; staff auth is still enforced via request.auth.
+    invoker: 'public',
     timeoutSeconds: 60,
     memory: '256MiB',
   },
