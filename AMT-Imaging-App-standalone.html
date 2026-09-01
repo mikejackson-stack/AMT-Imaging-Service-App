@@ -285,7 +285,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .cl-table tbody td:first-child{padding-left:12px;padding-right:8px;line-height:1.4}
 .cl-table tbody td:not(:first-child){text-align:center;width:58px}
 .cl-table tbody tr:nth-child(even){background:#f8fafc}
-.chk-r{display:flex;align-items:center;justify-content:center;width:100%}
+.chk-r{display:inline-flex;align-items:center;justify-content:center}
 .chk-r input[type=radio]{width:22px;height:22px;cursor:pointer}
 .cg input[type=radio]{accent-color:var(--green)}
 .cb input[type=radio]{accent-color:var(--red)}
@@ -534,9 +534,73 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .kb-field strong{color:var(--text2);font-weight:700}
 .kb-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
 .kb-tag{font-size:.63rem;padding:1px 7px;border-radius:10px;background:var(--gray);color:var(--text2);font-weight:600}
+
+/* ── Phone-first field UI (keep desktop P&L-first) ── */
+.ico{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;display:block}
+.mnav-item .ico{width:20px;height:20px}
+.snav-item .ico{width:20px;height:20px}
+.qa-card .ico{width:26px;height:26px}
+.qa-icon{display:flex;align-items:center;justify-content:center}
+.snav-icon{display:flex;align-items:center;justify-content:center;width:22px}
+.mnav-item .mni{display:flex;align-items:center;justify-content:center}
+
+#mobileNav{padding-left:1px;padding-right:1px}
+.mnav-item{font-size:.5rem;gap:2px;padding:4px 1px 0;min-width:0}
+.mnav-item .mnav-lbl{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.dash-stack{display:flex;flex-direction:column}
+.dash-tech{order:1}
+.dash-recent{order:2}
+.dash-pnl{order:3}
+.dash-stats{order:4}
+.dash-owners{order:5}
+.dash-finance-qa{order:6}
+
+.dash-pnl-box{margin-bottom:14px}
+.dash-pnl-box > summary{list-style:none;cursor:pointer;padding:12px 14px;font-weight:800;font-size:.82rem;color:var(--navy);display:flex;align-items:center;justify-content:space-between;gap:8px;background:linear-gradient(135deg,#f4f7fb,#eef3f8);border:1px solid var(--gray2);border-radius:var(--r);margin-bottom:8px}
+.dash-pnl-box > summary::-webkit-details-marker{display:none}
+.dash-pnl-box > summary::after{content:'Show';font-size:.68rem;font-weight:700;color:var(--text2);letter-spacing:.3px;text-transform:uppercase}
+.dash-pnl-box[open] > summary::after{content:'Hide'}
+
+.qa-pm{border-top-color:#00695c}.qa-pm:hover{background:#e8f5f3}.qa-pm .qa-label{color:#00695c}
+.qa-man{border-top-color:#1565c0}.qa-man:hover{background:#eef5ff}.qa-man .qa-label{color:#1565c0}
+.qa-err{border-top-color:#c62828}.qa-err:hover{background:#fff5f5}.qa-err .qa-label{color:#b71c1c}
+.qa-jobs{border-top-color:#374151}.qa-jobs:hover{background:#f3f4f6}.qa-jobs .qa-label{color:#374151}
+
+@media(max-width:767px){
+  .form-row{grid-template-columns:1fr !important}
+}
+
+@media(min-width:768px){
+  .dash-pnl{order:1}
+  .dash-stats{order:2}
+  .dash-owners{order:3}
+  .dash-tech{order:4}
+  .dash-finance-qa{order:5}
+  .dash-recent{order:6}
+  .dash-pnl-box > summary{display:none !important}
+  .dash-pnl-box > *:not(summary){display:block !important}
+}
+
+/* Radio cells: flex stays on the inner span, never the td */
+.chk-r{display:inline-flex;align-items:center;justify-content:center;width:auto}
+
 </style>
 </head>
 <body>
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <symbol id="ico-home" viewBox="0 0 24 24"><path d="M4 11.2 12 4.5l8 6.7V20a1 1 0 0 1-1 1h-5.2v-6.2H9.2V21H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="ico-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8.2v7.6M8.2 12h7.6"/></symbol>
+  <symbol id="ico-jobs" viewBox="0 0 24 24"><rect x="6.5" y="5" width="11" height="15" rx="1.4"/><path d="M9 4.4h6v2.2H9zM9.2 11h5.6M9.2 14.4h4"/></symbol>
+  <symbol id="ico-pm" viewBox="0 0 24 24"><rect x="5.2" y="4" width="13.6" height="16.2" rx="1.4"/><path d="M8 10.2h3.2M8 13.6h8M8 17h5.5M14.2 8.1l1.3 1.3 2.5-2.6"/></symbol>
+  <symbol id="ico-book" viewBox="0 0 24 24"><path d="M5 6.2A2.2 2.2 0 0 1 7.2 4H20v14.4H7.2A2.2 2.2 0 0 0 5 20.6z"/><path d="M5 6.2A2.2 2.2 0 0 1 7.2 8.4H20"/></symbol>
+  <symbol id="ico-parts" viewBox="0 0 24 24"><path d="M12 3.6 18.6 7.4v9.2L12 20.4 5.4 16.6V7.4z"/><circle cx="12" cy="12" r="2.4"/></symbol>
+  <symbol id="ico-money" viewBox="0 0 24 24"><rect x="3.2" y="6.6" width="17.6" height="10.8" rx="1.6"/><circle cx="12" cy="12" r="2.1"/><path d="M6.2 9.4v5.2M17.8 9.4v5.2"/></symbol>
+  <symbol id="ico-rates" viewBox="0 0 24 24"><path d="M12 3.4 14.4 9h6.1l-4.9 3.6 1.9 5.8L12 15.2 6.5 18.4l1.9-5.8L3.5 9h6.1z"/></symbol>
+  <symbol id="ico-alert" viewBox="0 0 24 24"><path d="M12 4.4 21 19.2H3z"/><path d="M12 10.2v4.2M12 16.6v.7"/></symbol>
+</svg>
 
 <!-- LOGIN -->
 <div id="loginScreen">
@@ -597,56 +661,80 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 <nav id="desktopNav">
   <div class="snav-section">Main</div>
-  <div class="snav-item active" onclick="showTab('dash')" data-tab="dash"><span class="snav-icon">🏠</span><span>Dashboard</span></div>
-  <div class="snav-item" onclick="showTab('newjob')" data-tab="newjob"><span class="snav-icon">➕</span><span>Quick Job Entry</span></div>
-  <div class="snav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="snav-icon">📋</span><span>Jobs Log</span></div>
-  <div class="snav-item" onclick="showTab('pm')" data-tab="pm"><span class="snav-icon">✅</span><span>PM Checklists</span></div>
+  <div class="snav-item active" onclick="showTab('dash')" data-tab="dash"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-home"></use></svg></span><span>Dashboard</span></div>
+  <div class="snav-item" onclick="showTab('newjob')" data-tab="newjob"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-plus"></use></svg></span><span>Quick Job Entry</span></div>
+  <div class="snav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-jobs"></use></svg></span><span>Jobs Log</span></div>
+  <div class="snav-item" onclick="showTab('pm')" data-tab="pm"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-pm"></use></svg></span><span>PM Checklists</span></div>
   <div class="snav-divider"></div>
   <div class="snav-section">Finance</div>
-  <div class="snav-item" onclick="showTab('money')" data-tab="money"><span class="snav-icon">💵</span><span>Money Tracker</span></div>
-  <div class="snav-item" onclick="showTab('rates')" data-tab="rates"><span class="snav-icon">💰</span><span>Rates &amp; Contracts</span></div>
+  <div class="snav-item" onclick="showTab('money')" data-tab="money"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-money"></use></svg></span><span>Money Tracker</span></div>
+  <div class="snav-item" onclick="showTab('rates')" data-tab="rates"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-rates"></use></svg></span><span>Rates &amp; Contracts</span></div>
   <div class="snav-divider"></div>
   <div class="snav-section">Resources</div>
-  <div class="snav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="snav-icon">📚</span><span>Manuals &amp; Codes</span></div>
+  <div class="snav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="snav-icon"><svg class="ico" aria-hidden="true"><use href="#ico-book"></use></svg></span><span>Manuals &amp; Codes</span></div>
 </nav>
 
 <nav id="mobileNav">
-  <button class="mnav-item active" onclick="showTab('dash')" data-tab="dash"><span class="mni">🏠</span><span>Home</span></button>
-  <button class="mnav-item" onclick="showTab('newjob')" data-tab="newjob"><span class="mni">➕</span><span>New Job</span></button>
-  <button class="mnav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="mni">📋</span><span>Jobs</span></button>
-  <button class="mnav-item" onclick="showTab('money')" data-tab="money"><span class="mni">💵</span><span>Money</span></button>
-  <button class="mnav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="mni">📚</span><span>Manuals</span></button>
-  <button class="mnav-item" onclick="showTab('rates')" data-tab="rates"><span class="mni">💰</span><span>Rates</span></button>
+  <button class="mnav-item active" onclick="showTab('dash')" data-tab="dash"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-home"></use></svg></span><span class="mnav-lbl">Home</span></button>
+  <button class="mnav-item" onclick="showTab('newjob')" data-tab="newjob"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-plus"></use></svg></span><span class="mnav-lbl">Job</span></button>
+  <button class="mnav-item" onclick="showTab('jobs')" data-tab="jobs"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-jobs"></use></svg></span><span class="mnav-lbl">Jobs</span></button>
+  <button class="mnav-item" onclick="showTab('pm')" data-tab="pm"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-pm"></use></svg></span><span class="mnav-lbl">PM</span></button>
+  <button class="mnav-item" onclick="showTab('manuals')" data-tab="manuals"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-book"></use></svg></span><span class="mnav-lbl">Manuals</span></button>
+  <button class="mnav-item" onclick="showTab('money')" data-tab="money"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-money"></use></svg></span><span class="mnav-lbl">Money</span></button>
+  <button class="mnav-item" onclick="showTab('rates')" data-tab="rates"><span class="mni"><svg class="ico" aria-hidden="true"><use href="#ico-rates"></use></svg></span><span class="mnav-lbl">Rates</span></button>
 </nav>
 
 <div id="contentArea">
 
 <!-- ══ DASHBOARD ══ -->
 <div id="panel-dash" class="panel active">
-  <div class="money-hero" id="dashMoneyHero">
-    <div class="money-hero-title">💵 Net Profit (After Tax)</div>
-    <div class="money-hero-amount" id="dNetProfit">$0.00</div>
-    <div class="money-row" id="dMoneyRow"></div>
+  <div class="dash-stack">
+    <div class="dash-tech">
+      <div class="dash-hd">Field actions</div>
+      <div class="qa-grid qa-grid-tech">
+        <div class="qa-card qa-job" onclick="showTab('newjob')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-plus"></use></svg></span><span class="qa-label">New Job</span></div>
+        <div class="qa-card qa-pm" onclick="showTab('pm')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-pm"></use></svg></span><span class="qa-label">PM Checklist</span></div>
+        <div class="qa-card qa-man" onclick="showTab('manuals');setKBTab('files')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-book"></use></svg></span><span class="qa-label">Manuals</span></div>
+        <div class="qa-card qa-err" onclick="showTab('manuals');setKBTab('errcodes')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-alert"></use></svg></span><span class="qa-label">Error Codes</span></div>
+        <div class="qa-card qa-jobs" onclick="showTab('jobs')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-jobs"></use></svg></span><span class="qa-label">Jobs Log</span></div>
+        <div class="qa-card qa-man" onclick="showTab('manuals');setKBTab('parts')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-parts"></use></svg></span><span class="qa-label">Parts</span></div>
+      </div>
+    </div>
+
+    <div class="dash-pnl">
+      <details class="dash-pnl-box" id="dashPnlBox">
+        <summary>Net profit &amp; tax set-aside</summary>
+        <div class="money-hero" id="dashMoneyHero">
+          <div class="money-hero-title">Net Profit (After Tax)</div>
+          <div class="money-hero-amount" id="dNetProfit">$0.00</div>
+          <div class="money-row" id="dMoneyRow"></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="dash-stats">
+      <div class="stat-grid-4" id="statsGrid"></div>
+    </div>
+
+    <div class="dash-owners">
+      <div class="dash-hd" id="dashOwnerHd">Profit Sharing</div>
+      <div class="owner-cards" id="dashOwnerCards"></div>
+    </div>
+
+    <div class="dash-finance-qa">
+      <div class="dash-hd">Office</div>
+      <div class="qa-grid">
+        <div class="qa-card qa-inv" onclick="showTab('money');setMoneyTab('invoices')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-jobs"></use></svg></span><span class="qa-label">New Invoice</span></div>
+        <div class="qa-card qa-exp" onclick="showTab('money');setMoneyTab('expenses')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-rates"></use></svg></span><span class="qa-label">Add Expense</span></div>
+        <div class="qa-card qa-dist" onclick="showTab('money');setMoneyTab('distributions')"><span class="qa-icon"><svg class="ico" aria-hidden="true"><use href="#ico-money"></use></svg></span><span class="qa-label">Pay Distribution</span></div>
+      </div>
+    </div>
+
+    <div class="dash-recent">
+      <div class="dash-hd">Recent Jobs</div>
+      <div id="recentJobsList"></div>
+    </div>
   </div>
-
-  <!-- Job stats -->
-  <div class="stat-grid-4" id="statsGrid"></div>
-
-  <!-- Profit sharing summary -->
-  <div class="dash-hd" id="dashOwnerHd">📊 Profit Sharing</div>
-  <div class="owner-cards" id="dashOwnerCards"></div>
-
-  <!-- Quick actions -->
-  <div class="dash-hd">⚡ Quick Actions</div>
-  <div class="qa-grid">
-    <div class="qa-card qa-job" onclick="showTab('newjob')"><span class="qa-icon">🔧</span><span class="qa-label">New Job</span></div>
-    <div class="qa-card qa-inv" onclick="showTab('money');setMoneyTab('invoices')"><span class="qa-icon">🧾</span><span class="qa-label">New Invoice</span></div>
-    <div class="qa-card qa-exp" onclick="showTab('money');setMoneyTab('expenses')"><span class="qa-icon">💸</span><span class="qa-label">Add Expense</span></div>
-    <div class="qa-card qa-dist" onclick="showTab('money');setMoneyTab('distributions')"><span class="qa-icon">💰</span><span class="qa-label">Pay Distribution</span></div>
-  </div>
-
-  <div class="dash-hd">🕐 Recent Jobs</div>
-  <div id="recentJobsList"></div>
 </div>
 
 <!-- ══ NEW JOB ══ -->
@@ -1258,7 +1346,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
           <button class="btn btn-outline btn-sm" onclick="document.getElementById('partsSearchInput').value='';document.getElementById('partsBrandFilter').value='';document.getElementById('partsTypeFilter').value='';searchParts('')" style="font-size:.72rem;padding:5px 10px">✕ Clear</button>
           <button class="btn btn-primary btn-sm" onclick="setKBTab('files');loadExplorer('Parts')" style="font-size:.72rem;padding:5px 10px">📁 Parts Manuals</button>
         </div>
-        <div id="partsResults"></div>
+        <div id="partsResults"><div class="empty-state" style="padding:20px"><div class="ei">⚙</div><p>Search the parts library or browse all parts.</p></div></div>
         <div id="partsStats" style="font-size:.73rem;color:var(--text2);margin-top:8px;text-align:center"></div>
       </div>
     </div>
@@ -1711,6 +1799,7 @@ function bootApp(){
   const h=now.getHours();
   const d=document.getElementById('nj_date');if(d&&!d.value)d.value=now.toISOString().slice(0,10);
   renderDashboard();
+  syncDashPnlOpen();
   // Load diagnostic guides seed
   if(typeof loadDiagGuides === 'function') loadDiagGuides();
   // Set today on date fields
@@ -2067,8 +2156,19 @@ function showTab(t){
 }
 
 // ═══ DASHBOARD ═══
+function syncDashPnlOpen(){
+  const el=document.getElementById('dashPnlBox');
+  if(!el) return;
+  el.open = window.matchMedia('(min-width:768px)').matches;
+}
+if(!window._amtDashPnlResize){
+  window._amtDashPnlResize=true;
+  window.addEventListener('resize', function(){ syncDashPnlOpen(); });
+}
+
 function renderDashboard(){
   const m=calcMoney();
+  syncDashPnlOpen();
   // Hero
   const hero=document.getElementById('dNetProfit');
   hero.textContent=fmtSign(m.net);
@@ -2813,7 +2913,7 @@ function ghOpenUrl(filePath, downloadUrl){
   // Build a correctly encoded raw URL from the filePath (safer than trusting downloadUrl)
   const encodedPath = (GH.manualsRoot+'/'+(filePath||'')).split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
-  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
+  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
   // Office files → Microsoft Office Online viewer
   if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
     return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
@@ -2833,7 +2933,7 @@ function ghManualUrl(manualPath){
   const fullPath = GH.manualsRoot+'/'+manualPath;
   const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
   const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  const githackUrl = 'https://raw.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
+  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
   // Office files → Microsoft Office Online viewer
   if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
     return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
@@ -2945,7 +3045,7 @@ function initManuals(){
   if(grid && !grid.innerHTML.trim()) loadExplorer('');
 }
 
-function searchErrors(q){const res=document.getElementById('errResults');if(!q||q.length<2){res.innerHTML='';return;}const m=ERROR_DB.filter(e=>e.code.toLowerCase().includes(q.toLowerCase())||e.desc.toLowerCase().includes(q.toLowerCase())||e.brand.toLowerCase().includes(q.toLowerCase()));if(!m.length){res.innerHTML=`<div class="alert alert-info">No error codes found for "${q}".</div>`;return;}res.innerHTML='<div class="card"><div class="card-header">🔍 Error Code Results ('+m.length+')</div>'+m.map(e=>`<div style="padding:11px 14px;border-bottom:1px solid var(--gray2)"><strong style="color:var(--red)">${e.code}</strong> <span class="badge bc" style="font-size:.64rem">${e.brand}</span><div style="font-size:.83rem;color:var(--text2);margin-top:3px">${e.desc}</div>${e.manual?`<a href="${ghManualUrl(e.manual)}" target="_blank" style="font-size:.78rem;color:var(--blue2)">📖 Open Manual ↗</a>`:''}</div>`).join('')+'</div>';}
+function searchErrors(q){ kbSearch(q); }
 
 // ═══ INIT ═══
 // ════════════════════════════════════════════════════
@@ -3533,7 +3633,7 @@ if(!kbEntries){
   localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
 } else {
   // App updated -- merge any new seed entries not yet in storage
-  const newSeeds = KB_SEED.filter(s=>!kbEntries.find(e=>e.id===s.id));
+  const newSeeds = KB_SEED.filter(s=>s && !kbEntries.find(e=>e && e.id===s.id));
   if(newSeeds.length){
     kbEntries = [...newSeeds, ...kbEntries];
     localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
@@ -3553,8 +3653,17 @@ function setKBTab(t){
   });
   if(t==='errcodes') renderErrCodeList();
   if(t==='diagguides') renderDiagGuides();
-  if(t==='files' && !document.getElementById('explorerGrid').innerHTML) loadExplorer('');
-  if(t==='parts') setTimeout(()=>searchParts(document.getElementById('partsSearchInput')?.value||''),50);
+  if(t==='files'){
+    const g=document.getElementById('explorerGrid');
+    const stale=!g || !g.innerHTML.trim() || /Connecting to (GitHub|library)/.test(g.innerHTML);
+    if(stale && typeof loadExplorer==='function') loadExplorer('');
+  }
+  if(t==='parts') setTimeout(()=>{
+    const box=document.getElementById('partsResults');
+    try { searchParts(document.getElementById('partsSearchInput')?.value||''); }
+    catch(ex){ if(box) box.innerHTML='<div class="empty-state" style="padding:20px"><p>Could not load parts.</p></div>'; }
+    if(box && !box.innerHTML.trim()) box.innerHTML='<div class="empty-state" style="padding:20px"><p>No parts to show.</p></div>';
+  },50);
 }
 
 function setKBCatFilter(cat){
@@ -3728,19 +3837,52 @@ function confirmKBSuggest(){
 }
 
 // ── UNIFIED SEARCH ──
+
+function amtNormCode(s){ return String(s||'').toLowerCase().replace(/[\s_\-./]+/g,''); }
+function amtErrorHits(ql){
+  const qn = amtNormCode(ql);
+  const db = (typeof FULL_ERROR_DB!=='undefined' && Array.isArray(FULL_ERROR_DB)) ? FULL_ERROR_DB : [];
+  return db.filter(e=>{
+    if(!e) return false;
+    const code=String(e.code||''), desc=String(e.desc||''), brand=String(e.brand||'');
+    const extra=String(e.notes||e.fix||e.manual||'');
+    if(code.toLowerCase().includes(ql)||desc.toLowerCase().includes(ql)||brand.toLowerCase().includes(ql)||extra.toLowerCase().includes(ql)) return true;
+    const cn=amtNormCode(code);
+    return !!(qn && cn && (cn.includes(qn) || (qn.length>=3 && qn.includes(cn))));
+  });
+}
+function amtSafeDiagHits(ql){
+  const db = (typeof DIAGNOSTIC_DB!=='undefined' && Array.isArray(DIAGNOSTIC_DB)) ? DIAGNOSTIC_DB : [];
+  return db.filter(d=>{
+    if(!d) return false;
+    const issue=String(d.issue||'').toLowerCase();
+    const desc=String(d.desc||'').toLowerCase();
+    const keys=Array.isArray(d.keywords)?d.keywords:[];
+    return issue.includes(ql)||desc.includes(ql)||keys.some(k=>{
+      const ks=String(k||'').toLowerCase();
+      return ks && (ks.includes(ql)||ql.includes(ks));
+    });
+  });
+}
+
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
-  if(!q||q.length<2){ res.innerHTML=''; return; }
-  const ql = q.toLowerCase();
-  const errMatches = FULL_ERROR_DB.filter(e=>
-    e.code.toLowerCase().includes(ql)||e.desc.toLowerCase().includes(ql)||e.brand.toLowerCase().includes(ql));
-  const kbMatches = kbEntries.filter(e=>
-    (e.title||'').toLowerCase().includes(ql)||(e.problem||'').toLowerCase().includes(ql)||
-    (e.solution||'').toLowerCase().includes(ql)||(e.error||'').toLowerCase().includes(ql)||
-    (e.model||'').toLowerCase().includes(ql)||(e.tags||[]).some(t=>t.toLowerCase().includes(ql)));
-  const diagMatches = DIAGNOSTIC_DB.filter(d=>
-    d.issue.toLowerCase().includes(ql)||d.desc.toLowerCase().includes(ql)||
-    d.keywords.some(k=>k.includes(ql)||ql.includes(k)));
+  const raw=(q||'').trim();
+  const ql=raw.toLowerCase();
+  if(!ql){ res.innerHTML=''; return; }
+  const exactCode=(typeof FULL_ERROR_DB!=='undefined' && FULL_ERROR_DB.some(e=>String(e.code||'').toLowerCase()===ql));
+  if(ql.length<2 && !exactCode){ res.innerHTML=''; return; }
+  let errMatches=[];
+  try { errMatches = amtErrorHits(ql); } catch(ex){ console.warn('kbSearch errors', ex); }
+  let kbMatches=[];
+  try {
+    kbMatches = (kbEntries||[]).filter(e=>e && (
+      String(e.title||'').toLowerCase().includes(ql)||String(e.problem||'').toLowerCase().includes(ql)||
+      String(e.solution||'').toLowerCase().includes(ql)||String(e.error||'').toLowerCase().includes(ql)||
+      String(e.model||'').toLowerCase().includes(ql)||(e.tags||[]).some(t=>String(t||'').toLowerCase().includes(ql))));
+  } catch(ex){ console.warn('kbSearch kb', ex); }
+  let diagMatches=[];
+  try { diagMatches = amtSafeDiagHits(ql); } catch(ex){ console.warn('kbSearch diag', ex); }
   if(!errMatches.length && !kbMatches.length && !diagMatches.length){
     res.innerHTML=`<div class="alert alert-info">No results for "${q}". Try: zipper, ghosting, noise, gradient, helium, quench, RF, artifact, DAS, table, shim.</div>`; return;
   }
@@ -3801,7 +3943,7 @@ function renderErrCodeList(){
 // ════════════════════════════════════════════════════
 // FILE EXPLORER (GitHub dynamic loading)
 // ════════════════════════════════════════════════════
-let explorerStack = []; // breadcrumb stack [{name, path}]
+var explorerStack = []; // breadcrumb stack [{name, path}]
 // ── Persistent explorer cache (localStorage, 24hr TTL) ──
 const EXPLORER_CACHE_KEY = 'amt_explorer_cache_v30';
 const EXPLORER_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
@@ -3820,7 +3962,7 @@ function loadExplorerCache(){
 function saveExplorerCache(cache){
   try { localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache)); } catch(e){}
 }
-let explorerCache = loadExplorerCache();
+var explorerCache = loadExplorerCache();
 
 
 
@@ -3837,6 +3979,8 @@ function setGHStatusDot(state){ // 'ok','error','loading','idle'
 }
 
 async function loadExplorer(path){
+  if(typeof explorerCache!=='object' || !explorerCache) explorerCache = {};
+  if(typeof explorerStack==='undefined' || !Array.isArray(explorerStack)) explorerStack = [];
   const title = document.getElementById('explorerTitle');
   const loading = document.getElementById('explorerLoading');
   const grid = document.getElementById('explorerGrid');
@@ -3846,7 +3990,7 @@ async function loadExplorer(path){
   title.textContent = path ? '📁 '+path.split('/').pop() : '📁 AMT Manuals Library';
   if(loading) loading.style.display='inline';
   setGHStatusDot('loading');
-  grid.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:1.5rem;margin-bottom:8px">⏳</div><div style="font-size:.85rem;color:var(--text2)">Connecting to GitHub…</div></div>';
+  grid.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:.85rem;color:var(--text2);margin-bottom:8px">Connecting to library…</div><div style="font-size:.75rem;color:var(--gray4)">This stops automatically if GitHub does not answer.</div></div>';
 
   // Update breadcrumb
   const bc = document.getElementById('explorerBreadcrumb');
@@ -3875,7 +4019,14 @@ async function loadExplorer(path){
     const url = ghApiUrl(path);
     const headers = { 'Accept':'application/vnd.github.v3+json' };
     if(GH.token) headers['Authorization'] = 'Bearer '+GH.token;
-    const resp = await fetch(url, { headers, cache:'no-cache' });
+    const ctrl = new AbortController();
+    const timer = setTimeout(function(){ ctrl.abort(); }, 10000);
+    let resp;
+    try {
+      resp = await fetch(url, { headers, cache:'no-cache', signal: ctrl.signal });
+    } finally {
+      clearTimeout(timer);
+    }
 
     if(resp.status===403){
       // Rate limited -- show fallback
@@ -3902,15 +4053,25 @@ async function loadExplorer(path){
   } catch(err) {
     console.warn('loadExplorer error:', err);
     setGHStatusDot('error');
+    const timedOut = !!(err && (err.name==='AbortError' || /abort/i.test(String(err.message||''))));
+    const msg = timedOut
+      ? 'GitHub did not respond in time. You can retry, open the folder on GitHub, or use the known-folder list.'
+      : ((err && err.message) || 'Could not reach the manuals library.');
     if(!path){
-      // Root failed -- show clickable fallback folders
       renderFallbackFolders(path||'');
+      const gridNow = document.getElementById('explorerGrid');
+      if(gridNow){
+        gridNow.insertAdjacentHTML('afterbegin',
+          '<div class="alert alert-warning" style="margin-bottom:10px">'+msg+
+          ' <button type="button" class="btn btn-outline btn-sm" onclick="refreshExplorer()">Retry</button></div>');
+      }
     } else {
       grid.innerHTML =
         '<div class="alert alert-warning">'+
-          '⚠️ '+err.message+'<br>'+
+          msg+'<br>'+
+          '<button type="button" class="btn btn-outline btn-sm" style="margin:8px 8px 0 0" onclick="refreshExplorer()">Retry from root</button>'+
           '<a href="https://github.com/'+GH.org+'/'+GH.repo+'/tree/'+GH.branch+'/'+GH.manualsRoot+(path?'/'+path:'')+'" '+
-             'target="_blank" style="color:var(--blue2)">Open this folder on GitHub ↗</a>'+
+             'target="_blank" rel="noopener" style="color:var(--blue2)">Open this folder on GitHub ↗</a>'+
         '</div>';
     }
   }
@@ -6778,7 +6939,7 @@ const PARTS_SEED = [
   {num:'5137474',desc:'Backplane Power Cable',brand:'GE ProSpeed',model:'ProSpeed AI/FI',category:'Power Supply',section:'Rev 39',notes:''}
 ];
 
-let partsDB = JSON.parse(localStorage.getItem(PARTS_STORE_KEY)||'null');
+var partsDB = JSON.parse(localStorage.getItem(PARTS_STORE_KEY)||'null');
 if(!partsDB){
   partsDB = [...PARTS_SEED];
   localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
@@ -6816,24 +6977,36 @@ function searchParts(q){
   if(!res) return;
 
   const qLow = (q||'').toLowerCase().trim();
-  let hits = partsDB.filter(p=>{
-    const matchBrand = !brand || p.brand===brand
-        || p.brand.startsWith(brand+' ')
-        || (brand==='CT' && (p.cat||'').toLowerCase().includes('ct'));
-    const matchType  = !type  || p.type===type || p.cat===type;
-    if(!matchBrand||!matchType) return false;
-    if(!qLow) return true;
-    return (p.num||'').toLowerCase().includes(qLow)
-        || (p.desc||'').toLowerCase().includes(qLow)
-        || (p.models||p.model||'').toLowerCase().includes(qLow)
-        || (p.notes||'').toLowerCase().includes(qLow)
-        || (p.cat||'').toLowerCase().includes(qLow)
-        || (p.section||'').toLowerCase().includes(qLow)
-        || (p.brand||'').toLowerCase().includes(qLow);
-  });
+  let hits = [];
+  try {
+    hits = (typeof partsDB!=='undefined' && Array.isArray(partsDB) ? partsDB : []).filter(p=>{
+      if(!p) return false;
+      const brandStr = String(p.brand||'');
+      const typeStr  = String(p.type||'');
+      const catStr   = String(p.cat||'');
+      const matchBrand = !brand || brandStr===brand
+          || (brandStr && brandStr.startsWith(brand+' '))
+          || (brand==='CT' && catStr.toLowerCase().includes('ct'));
+      const matchType  = !type  || typeStr===type || catStr===type;
+      if(!matchBrand||!matchType) return false;
+      if(!qLow) return true;
+      return String(p.num||'').toLowerCase().includes(qLow)
+          || String(p.desc||'').toLowerCase().includes(qLow)
+          || String(p.models||p.model||'').toLowerCase().includes(qLow)
+          || String(p.notes||'').toLowerCase().includes(qLow)
+          || catStr.toLowerCase().includes(qLow)
+          || String(p.section||'').toLowerCase().includes(qLow)
+          || brandStr.toLowerCase().includes(qLow);
+    });
+  } catch(ex){
+    console.warn('searchParts:', ex);
+    res.innerHTML = '<div class="empty-state" style="padding:20px"><div class="ei">⚙</div><p>Could not search parts. Tap Clear and try again.</p></div>';
+    if(stats) stats.textContent='';
+    return;
+  }
 
   if(!hits.length){
-    res.innerHTML = '<div class="empty-state" style="padding:20px"><div class="ei">🔩</div>'
+    res.innerHTML = '<div class="empty-state" style="padding:20px"><div class="ei">⚙</div>'
       +'<p>'+(qLow?'No parts found for "'+q+'"':'No parts in database yet')+'</p>'
       +(isViewOnly()?'':'<button class="btn btn-primary btn-sm" onclick="openAddPartModal()" style="margin-top:8px">➕ Add First Part</button>')
       +'</div>';
