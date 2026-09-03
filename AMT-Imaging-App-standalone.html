@@ -16858,9 +16858,11 @@ GE MRI family, GE MRI familiy, GE CT family, SIGNA Creator, SIGNA Explorer, SIGN
     title: 'Siemens MRI / CT family guide',
     system: 'Siemens MRI',
     category: 'Identification',
-    tags: ['Siemens family','Seimens family','Siemens MRI family','Seimens MRI family','MAGNETOM','SOMATOM','syngo MR','NUMARIS','VB19','XA30'],
+    tags: ['Siemens family','Seimens family','Siemens MRI family','Seimens MRI family','MAGNETOM','SOMATOM','syngo MR','NUMARIS','VB19','XA30','BioMatrix','Free.Max','Sola Fit','SOMARIS/7','SOMARIS/10','NAEOTOM','Pro.Pulse'],
     content: `## Siemens MRI / CT family
-**STATUS:** CoS last-look SHIP. Shared family is **NOT FRU interchange**.
+**STATUS:** CoS last-look SHIP rev 2. Shared family is **NOT FRU interchange**.
+
+LIBRARY = AMT SM / manual body. OEM-PUBLIC = OEM public / DICOM. FDA = 510(k) / FDA listing.
 
 ### Identify first
 Record these before you treat two systems as the same. If any is missing, stop.
@@ -16875,32 +16877,41 @@ Record these before you treat two systems as the same. If any is missing, stop.
 ### VERIFIED MRI
 | Cluster | Verified |
 |---------|----------|
-| VA30A | One syngo MR A30 / NUMARIS/4 VA30A release for Symphony / Harmony / Sonata / Trio / Concerto / Allegra (and named variants in MR-000.816.27). Shared SW ≠ shared FRU. |
-| Avanto + Espree | Joint M6-020 manuals. Both B19 / B19B. Avanto also D13 / E11 / XA50; Espree is not on that DICOM table for D13 / XA. Wide-bore sibling — do not assume Avanto FRUs fit Espree. |
-| Aera 1.5T + Skyra 3T | Joint M7 manuals. D13 → E11 → XA path. 2012 Tim 4G: Avanto→Avanto fit, Verio→Skyra fit, Trio→Prisma fit; gradients XJ / XQ / SQ / VQ / XR differ — do not mix gradient FRUs. |
+| VA30A | LIBRARY. One syngo MR A30 / NUMARIS/4 VA30A release for Symphony / Harmony / Sonata / Trio / Concerto / Allegra (and named variants in MR-000.816.27). Shared SW ≠ shared FRU. |
+| Avanto + Espree | LIBRARY. Joint M6-020 manuals. Both B19 / B19B. Avanto also D13 / E11 / XA50; Espree is not on that DICOM table for D13 / XA. Wide-bore sibling — do not assume Avanto FRUs fit Espree. |
+| Aera 1.5T + Skyra 3T | LIBRARY. Joint M7 manuals. D13 → E11 → XA path. |
+| Tim 4G Fit (2012) | LIBRARY+OEM. Avanto→Avanto fit, Verio→Skyra fit, Trio→Prisma fit; gradients XJ / XQ / SQ / VQ / XR differ — do not mix gradient FRUs. |
+| Later Fit path | OEM-PUBLIC. Aera→Sola Fit; Skyra→Vida Fit; Prisma→Cima.X Fit. Fit FRU lists / eligibility UNKNOWN. |
+| BioMatrix | OEM-PUBLIC. Vida / Sola / Altea / Lumina. XA listings from OEM DICOM; AMT has almost no SM bodies. Shared XA ≠ FRU interchange. |
+| Free.Max / Free.Star | OEM-PUBLIC. Free.Max 0.55T 80cm DryCool; Free.Star 60cm. |
 | syngo MR D13 | NUMARIS/4 VD13A (Avanto Dot / Verio Dot). |
 | ESSENZA / Spectra / Prisma | Software-era neighbors, not one FRU family. |
-| Vida / Sola / Altea / Lumina | XA listings from OEM DICOM; AMT has almost no SM bodies. Shared XA ≠ FRU interchange. |
 
 ### VERIFIED CT
 | Cluster | Verified |
 |---------|----------|
-| SOMARIS/5 VB42B | Valid for Emotion Duo / 6 / 16 + Sensation 16 / 40 / 64 / Open. Service key + serial required. |
-| Scope + Scope Power | Share C2-015. |
-| Definition | Has its own C2-028. |
-| go. platform | OEM go. platform = go.Now / Up / All / Top. Do not treat AMT README "GO All = Mobile" as OEM fact. |
+| SOMARIS/5 VB42B | LIBRARY. Emotion Duo / 6 / 16 + Sensation 16 / 40 / 64 / Open. Service key + serial required. |
+| Spirit | FDA only. Not on the VB42B list. |
+| Perspective / Scope | VC50 FDA. Scope + Scope Power share C2-015 LIBRARY. |
+| Definition SOMARIS/7 | Split: first DSCT C2-028 LIBRARY vs AS / Edge single vs Flash / Drive / Force dual FDA/OEM. Shared FRU first Definition vs Flash / Drive / Force UNKNOWN. |
+| go. SOMARIS/10 | Chronon (go.Now / Up) vs Athlon (go.All / Top / Sim / Open Pro). Do not treat AMT README "GO All = Mobile" as OEM fact. |
+| X.cite / X.ceed | Vectron + StellarInfinity, 82cm. |
+| Pro.Pulse | 2×Athlon DS. |
+| NAEOTOM | QuantaMax photon-counting ≠ SOMATOM EID. |
+| syngo CT VD / VE | Not found. |
 
 ### UNKNOWN
 Not verified. Do not assume.
 
-- FRU interchange inside those pairs
+- Fit FRU lists / eligibility
 - Espree beyond B19B
-- NUMARIS string for XA / XB
-- Definition AS / Flash / Edge / Force / Drive software / gantry (README stubs)
-- EOSL years
+- Shared FRU first Definition vs Flash / Drive / Force
+- Edge Plus Stellar vs StellarInfinity wording
+- NAEOTOM OS string
+- EOSL
 
 ### Search aliases
-Siemens family, Seimens family, Siemens MRI family, Seimens MRI family, MAGNETOM, SOMATOM, syngo MR, NUMARIS, VB19, XA30`,
+Siemens family, Seimens family, Siemens MRI family, Seimens MRI family, MAGNETOM, SOMATOM, syngo MR, NUMARIS, VB19, XA30, BioMatrix, Free.Max, Sola Fit, SOMARIS/7, SOMARIS/10, NAEOTOM, Pro.Pulse`,
     created: '2026-09-03T00:00:00.000Z'
   }
 ];
@@ -16930,7 +16941,9 @@ function loadDiagGuides() {
   } else {
     diagGuidesDB = stored.slice();
     DIAG_GUIDES_SEED.forEach(s => {
-      if (!diagGuidesDB.find(g => g.id === s.id)) diagGuidesDB.push(s);
+      const i = diagGuidesDB.findIndex(g => g.id === s.id);
+      if (i < 0) diagGuidesDB.push(s);
+      else diagGuidesDB[i] = s; // seed wins so LIVE SHIP revisions replace cached copies
     });
   }
   saveDiagGuides();
