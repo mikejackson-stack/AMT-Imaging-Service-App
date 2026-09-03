@@ -34,8 +34,18 @@ Do **not** add `functions/` to the GitHub Pages workflow curl list. Pages only s
 
 ## Local check (no key needed)
 
+From the **repo root** (see also the root `README.md`):
+
+```bash
+./scripts/check.sh
+```
+
+Or just this package:
+
 ```bash
 cd functions
-npm install
+npm ci
 npm run check
 ```
+
+Default app serving (`python3 scripts/serve.py`) talks to the **hosted** `askGrok` callable. To exercise this source without deploying, use the functions emulator and open the app with `?functionsEmulator=1` on localhost — details in the root README. Put `XAI_API_KEY` in gitignored `functions/.secret.local` for the emulator; never commit it.

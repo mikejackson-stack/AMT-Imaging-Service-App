@@ -1,9 +1,24 @@
+# secrets / local env — never commit keys or service-account JSON
+.env
+.env.*
+!.env.example
+functions/.env
+functions/.env.*
+!functions/.env.example
+functions/*.local
+functions/.secret.local
+
+# deps and firebase logs
+functions/node_modules/
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+.firebase/
+
+# local serve staging if someone uses a persistent dir
+_devsite/
+
+# large binaries already in history — keep untracked copies out of new commits
 Manuals/GE CT/5193891/root/data/media/243513.pdf
 Manuals/GE CT/5224328/root/data/media/370298.pdf
 Manuals/GE/voyager/root/ReplaceHydraulicFluid.mp4
-functions/node_modules/
-functions/*.local
-functions/.env
-functions/.env.*
-firebase-debug.log
-firebase-debug.*.log

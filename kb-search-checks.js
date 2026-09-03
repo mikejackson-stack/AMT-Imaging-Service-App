@@ -166,10 +166,17 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v33/.test(html);
-  const top = /Field Service · v33/.test(html);
-  const appVer = /const APP_VERSION='v33'/.test(src);
-  assert(login && top && appVer, 'version strings are v33 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v35/.test(html);
+  const top = /Field Service · v35/.test(html);
+  const appVer = /const APP_VERSION='v35'/.test(src);
+  assert(login && top && appVer, 'version strings are v35 (login, top bar, APP_VERSION)');
+
+  assert(/PIN login cannot call the backup search/.test(src),
+    'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
+  assert(/httpsCallable\('askGrok'/.test(src),
+    'Ask Grok uses the staff-only Firebase callable');
+  assert(!/defineSecret\s*\(\s*['"]XAI_API_KEY['"]\s*\)/.test(src),
+    'app HTML does not embed the functions secret binding');
 
   const leakGuide = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_explorer_sv25_leak_detector');
   assert(!!leakGuide, 'DIAG_GUIDES_SEED includes GE Explorer SV25 leak detector guide');
@@ -190,7 +197,7 @@ files.forEach(file => {
 });
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v33'/.test(sw), 'sw.js cache name is amt-v33');
+assert(/const CACHE = 'amt-v35'/.test(sw), 'sw.js cache name is amt-v35');
 
 if (process.exitCode) {
   console.log('\nSome checks failed.');

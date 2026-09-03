@@ -17146,6 +17146,17 @@ try{
   fbAuth=firebase.auth();
   fbDb=firebase.firestore();
   fbFunctions=firebase.app().functions('us-central1');
+  // Local/dev only: ?functionsEmulator=1 on localhost|127.0.0.1 points Ask Grok at
+  // firebase emulators:start --only functions (127.0.0.1:5001). Ignored on Pages.
+  try{
+    const host=String(location.hostname||'');
+    const local=host==='localhost'||host==='127.0.0.1';
+    const want=local && new URLSearchParams(location.search).get('functionsEmulator')==='1';
+    if(want && fbFunctions && typeof fbFunctions.useEmulator==='function'){
+      fbFunctions.useEmulator('127.0.0.1', 5001);
+      console.info('[AMT Firebase] functions emulator 127.0.0.1:5001');
+    }
+  }catch(e){ console.warn('[AMT Firebase] emulator hook skipped:',e); }
   // Firestore's default real-time transport (WebChannel streaming) gets a 400 Bad Request
   // on some networks -- antivirus SSL inspection, corporate proxies/firewalls, or certain
   // browser extensions can mangle that request format. This tells Firestore to detect that
