@@ -21,24 +21,20 @@ based in Fort Lauderdale, FL.
 | Item | Location |
 |------|----------|
 | **Main app file** | `index.html` (single file — entire app) |
-<<<<<<< HEAD
-=======
 | **Standalone download** | `AMT-Imaging-App-standalone.html` (must be kept in sync with `index.html`) |
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 | **Live URL** | https://mikejackson-stack.github.io/AMT-Imaging-Service-App/ |
 | **GitHub repo** | https://github.com/mikejackson-stack/AMT-Imaging-Service-App |
 | **Branch** | `main` |
 | **Deployment** | GitHub Pages (auto-deploys on push to main) |
 
-The entire app is **one HTML file** (`index.html`). No build step, no npm, no framework.
-Deploy = upload `index.html` to GitHub repo root.
+The entire app is **one HTML file** (`index.html`). No build step, no framework.
+Pages deploy = `index.html`, `rates.json`, `sw.js` (see `.github/workflows/pages.yml`). Firebase functions live in `functions/` and are deployed separately.
 
-<<<<<<< HEAD
-=======
 **Important:** `AMT-Imaging-App-standalone.html` is a downloadable copy of the app.
 Any logic change to `index.html` must also be applied to the standalone file.
 
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
+**Local / Cloud Agent run:** see root `README.md` (`python3 scripts/serve.py`, hosted Firebase by default). Do not serve the multi-GB `Manuals/` tree as the app.
+
 ---
 
 ## Architecture
@@ -209,11 +205,7 @@ All modals use CSS class `.modal-overlay` + `.open`:
 .modal-overlay.open { display: flex; position: fixed; inset: 0; ... z-index: 900; }
 ```
 
-<<<<<<< HEAD
-**The correct `openModal` pattern** (inline `style="display:none"` beats CSS classes — must remove it first):
-=======
-**The correct `openModal` / `closeModal` pattern:**
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
+**The correct `openModal` / `closeModal` pattern** (inline `style="display:none"` beats CSS classes — must remove it first):
 ```js
 function openModal(id) {
   const el = document.getElementById(id);
@@ -223,17 +215,9 @@ function openModal(id) {
   document.body.style.overflow = 'hidden';
 }
 function closeModal(id) {
-<<<<<<< HEAD
   const el = document.getElementById(id);
   if(!el) return;
   el.classList.remove('open');
-  el.style.display = 'none';
-  document.body.style.overflow = '';
-}
-```
-
-=======
-  document.getElementById(id).classList.remove('open');
   // Restore scroll only when no modal remains open
   if(!document.querySelector('.modal-overlay.open'))
     document.body.style.overflow = '';
@@ -243,7 +227,6 @@ function closeModal(id) {
 A `visibilitychange` listener also clears any stale `overflow:hidden` when the user
 returns to the tab (guards against scroll lock if the user left while a modal was open).
 
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 **Never** use `el.style.display = 'flex'` directly — always use the class system.
 
 ### Modal IDs
@@ -359,15 +342,12 @@ These bugs have been fixed. **Do not reintroduce them.**
 | Duplicate JS functions | Previous patches added functions without removing originals | All functions deduplicated (openGHSettings, saveGHToken, testGHToken, scanGitHubForManuals) |
 | Explorer cache not persisting | `explorerCache = {}` was in-memory only | Now uses `loadExplorerCache()` / `saveExplorerCache()` with localStorage + 24hr TTL |
 | Version label showing v29 | Hardcoded string not updated | Both instances updated to v30 |
-<<<<<<< HEAD
 | App showed v29 label despite v30 code | Cosmetic string only — all v30 functions confirmed loaded | Fixed |
-=======
 | PIN login was view-only | `doLogin(..., true)` passed viewOnly=true for PINs | Changed to `false` — PIN now grants full read/write |
 | Scroll locks after modal / app resume | `closeModal()` never restored `body.style.overflow` | `closeModal()` now restores overflow; `visibilitychange` listener added as safety net |
 | Google login error silent | Access-denied used tiny `loginError` div only | Now uses `alert()` so rejection is impossible to miss |
 | Local file Google login confusing | `showHostingGuide()` used plain `alert()` | Now shows inline styled message with link to hosted app |
 | Standalone file out of sync | Logic fixes applied to `index.html` only | All fixes now applied to both files |
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 ---
 
@@ -378,26 +358,15 @@ These bugs have been fixed. **Do not reintroduce them.**
 triggerGoogleLogin()           // redirect to Google OAuth
 checkOAuthCallback()           // parse token from URL hash on return
 tryAutoLogin()                 // check sessionStorage on load
-<<<<<<< HEAD
-doLogin(email, name, method)   // set currentUser + boot app
-bootApp()                      // show mainApp, init all modules
-logout()                       // clear session, show login screen
-writeGuard()                   // returns true if view-only (blocks writes)
-=======
 doLogin(name, method, viewOnly)// set currentUser + boot app (viewOnly always false now)
 bootApp()                      // show mainApp, init all modules
 logout()                       // clear session, show login screen
 writeGuard(label)              // blocks writes if viewOnly (currently never triggered)
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 // Navigation
 showTab(name)                  // switch panel: 'dash'|'newjob'|'jobs'|'pm'|'money'|'rates'|'manuals'
 setKBTab(name)                 // switch KB sub-tab: 'files'|'parts'|'kb'|'errcodes'
-<<<<<<< HEAD
-openModal(id) / closeModal(id) // show/hide any modal (removes inline style first)
-=======
 openModal(id) / closeModal(id) // show/hide any modal (removes inline style first, restores scroll on close)
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
 
 // GitHub / Manuals
 openGHSettings()               // open GitHub Settings modal
@@ -448,16 +417,15 @@ Source file: `AMT_logo.png`
 
 ## GitHub Actions / Deployment
 
-No CI/CD configured. Manual deployment:
-1. Edit `index.html` locally
-2. `git add index.html && git commit -m "..." && git push origin main`
-3. GitHub Pages auto-deploys in ~30–60 seconds
+Pages auto-deploys from `.github/workflows/pages.yml` on push to `main` (app files only — no `Manuals/`, no `functions/`).
 
-To set up auto-deploy from Claude Code:
+Firebase functions are **not** deployed by Pages. From a machine with Firebase CLI access:
+
 ```bash
-git config user.email "mike.jackson@amtimagingsolutions.com"
-git config user.name "Michael Jackson"
+firebase deploy --only functions
 ```
+
+Local/dev: `python3 scripts/serve.py` (see `README.md`). Do not `git push` from a random laptop checkout if you are not `mikejackson-stack`.
 
 ---
 
@@ -469,21 +437,12 @@ git config user.name "Michael Jackson"
 4. **FULL_ERROR_DB must be declared at top of `<script>`** before any function that references it (temporal dead zone issue)
 5. **LOGO_B64 is large** (~114KB) — don't accidentally delete it
 6. **One `<script>` tag** for app code — don't split into multiple files without refactoring the build
-<<<<<<< HEAD
-7. **Node.js syntax check** before committing:
-=======
 7. **Always sync both files** — any change to `index.html` must also be applied to `AMT-Imaging-App-standalone.html`
 8. **Node.js syntax check** before committing:
->>>>>>> b82bc1452c3506249b62c25861c11d5e884b6a8b
    ```bash
-   node --check index.html  # won't work directly
-   # Extract script block first:
-   python3 -c "
-   c=open('index.html').read()
-   open('/tmp/app.js','w').write(c[c.find('<script>\n')+9:c.rfind('</script>')])
-   "
-   node --check /tmp/app.js
+   ./scripts/check.sh
    ```
+   Or extract the largest inline script and `node --check` it (see `scripts/syntax_check.py`). Do not `node --check index.html` directly.
 
 ---
 
