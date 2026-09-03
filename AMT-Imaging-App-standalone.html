@@ -16783,6 +16783,75 @@ If the measured resistance is out of the operational range, identify and resolve
 | Wet sensor strip | Dry the sensor strip. If this does not resolve the problem, replace the sensor strip. |
 | Disconnected sensor strip | Reconnect the sensor. |`,
     created: '2026-09-01T00:00:00.000Z'
+  },
+  {
+    id: 'dg_ge_mri_ct_family',
+    title: 'GE MRI family / GE CT family — Shared software is NOT FRU interchange',
+    system: 'GE MRI',
+    category: 'Identification',
+    tags: ['GE MRI family','GE MRI familiy','GE CT family','SIGNA Creator','SIGNA Explorer','SIGNA Star','SIGNA Aviator','SV25','SV29.2','MR30.1','LightSpeed family','GOC','DARC'],
+    content: `## GE MRI family / GE CT family
+**STATUS:** CoS last-look SHIP. Shared family is **NOT FRU interchange**.
+
+### Identify first
+Record these before you treat two systems as the same. If any is missing, stop.
+
+1. About-screen product name
+2. Full software label
+3. Guided Install short name
+4. Upgrade-kit / FMI PN
+5. For CT: GOC + DAS
+
+### VERIFIED MRI
+One 2023 OEM SM title covers SIGNA Creator, Explorer, Creator DL, Explorer DL, Star, Aviator.
+
+| What | Verified |
+|------|----------|
+| Getting Started | SIGNA Creator / Explorer 1.5T |
+| Creator and Explorer | Share SV25.x (Mulan Skylake, example SV25.3_R05_2127.a) |
+| Guided Install short name | Can share SignaCreatorExplorer |
+| Upgrade-kit PN | 5877347 on that SV25.3 row |
+| Creator DL / Explorer DL / Star / Aviator | Share SV29.2 |
+| Star Air / Aviator Air | MR30.1 (Tang A) — different SW line, not the same as base Star / Aviator |
+
+### NOT VERIFIED
+Do not treat these as proven. Shared family is not FRU interchange.
+
+- magnet / gradient / RF / table / coil FRU overlap inside that SM
+- Star / Aviator SV29.2 same FRUs as base Creator / Explorer SV25
+- Pioneer / Voyager files packed in that SM tree meaning same scanner family
+
+### Other MRI clusters (sourced)
+Keep short. These are other sourced clusters — not the Creator/Explorer SM family above.
+
+| Cluster | Sourced note |
+|---------|--------------|
+| DV line | Discovery MR450 / 750 / 750w + Optima MR450w (DV22–DV29) |
+| Architect / Artist | later DV / MR30 |
+| Pioneer / Voyager / Premier / Hero | Pioneer PX, Voyager PX/VX, Premier RX, Hero PX |
+| HD line | HD / HDx / HDi / HDxt |
+| Legacy | Excite / LX / Horizon / open |
+| PET/MR | MP24 / MP26 |
+| Filename only | Discovery MR750w to SIGNA Architect upgrade PDF |
+
+### VERIFIED CT — LightSpeed / GOC
+| What | Verified |
+|------|----------|
+| LightSpeed family | Direction 2360027-300 Rev 15 covers LS 1.X–5.X and 7.x, BrightSpeed, HiSpeed QX/i, Discovery CT750 |
+| GOC | GOC1–6 / BrightSpeed AIO from GE GOC CT CONFIGUIRATIONS.pdf |
+| DARC | PNs split by DAS |
+| VCT Westville / Jarrell mix | only if software 06MW29.4 / 07MW18.4 or later |
+
+### CT UNKNOWN
+Not verified. Do not assume.
+
+- Revolution / Optima CT / Brivo CT vs LightSpeed
+- EOSL years
+- Sales name Lightspeed 8 vs document LS3X 8-slice
+
+### Search aliases
+GE MRI family, GE MRI familiy, GE CT family, SIGNA Creator, SIGNA Explorer, SIGNA Star, SIGNA Aviator, SV25, SV29.2, MR30.1, LightSpeed family, GOC, DARC`,
+    created: '2026-09-03T00:00:00.000Z'
   }
 ];
 

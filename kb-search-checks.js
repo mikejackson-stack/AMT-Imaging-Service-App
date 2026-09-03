@@ -194,6 +194,62 @@ files.forEach(file => {
     assert(hits.some(g => g.id === 'dg_explorer_sv25_leak_detector'),
       'amtGuideHits("' + q + '") hits Explorer SV25 leak detector guide');
   });
+
+  const familyGuide = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_mri_ct_family');
+  assert(!!familyGuide, 'DIAG_GUIDES_SEED includes GE MRI / CT family guide');
+  assert(familyGuide && /GE MRI family/.test(familyGuide.title) && /GE CT family/.test(familyGuide.title),
+    'family guide title includes GE MRI family and GE CT family');
+  assert(familyGuide && /NOT FRU interchange/i.test(familyGuide.title) && /NOT FRU interchange/i.test(familyGuide.content),
+    'family guide states shared family is NOT FRU interchange');
+  assert(familyGuide && /About-screen product name/.test(familyGuide.content)
+    && /full software label/i.test(familyGuide.content)
+    && /Guided Install short name/.test(familyGuide.content)
+    && /upgrade-kit \/ FMI PN/i.test(familyGuide.content)
+    && /GOC \+ DAS/.test(familyGuide.content)
+    && /If any is missing, stop/.test(familyGuide.content),
+    'family guide has identify-first checklist');
+  assert(familyGuide && /VERIFIED MRI/.test(familyGuide.content)
+    && /2023 OEM SM title/.test(familyGuide.content)
+    && /SV25\.3_R05_2127\.a/.test(familyGuide.content)
+    && /SignaCreatorExplorer/.test(familyGuide.content)
+    && /5877347/.test(familyGuide.content)
+    && /SV29\.2/.test(familyGuide.content)
+    && /MR30\.1/.test(familyGuide.content)
+    && /Tang A/.test(familyGuide.content),
+    'family guide keeps verified MRI software facts');
+  assert(familyGuide && /NOT VERIFIED/.test(familyGuide.content)
+    && /FRU overlap/.test(familyGuide.content)
+    && /Pioneer \/ Voyager files packed/.test(familyGuide.content),
+    'family guide keeps not-verified FRU / Pioneer-Voyager caveats');
+  assert(familyGuide && /Other MRI clusters/.test(familyGuide.content)
+    && /DV22/.test(familyGuide.content)
+    && /MP24/.test(familyGuide.content)
+    && /Architect upgrade PDF/.test(familyGuide.content),
+    'family guide keeps other sourced MRI clusters short');
+  assert(familyGuide && /VERIFIED CT/.test(familyGuide.content)
+    && /2360027-300 Rev 15/.test(familyGuide.content)
+    && /CONFIGUIRATIONS\.pdf/.test(familyGuide.content)
+    && /06MW29\.4/.test(familyGuide.content)
+    && /07MW18\.4/.test(familyGuide.content),
+    'family guide keeps LightSpeed / GOC / DARC / VCT verified CT facts');
+  assert(familyGuide && /CT UNKNOWN/.test(familyGuide.content)
+    && /Brivo CT/.test(familyGuide.content)
+    && /EOSL years/.test(familyGuide.content)
+    && /LS3X 8-slice/.test(familyGuide.content),
+    'family guide keeps CT unknowns');
+  assert(familyGuide && /GE MRI familiy/.test((familyGuide.tags || []).join(' '))
+    && /GE MRI familiy/.test(familyGuide.content),
+    'family guide indexes the familiy misspelling');
+  assert(familyGuide && !/FRUs? (are|is) interchangeable/i.test(familyGuide.content)
+    && !/same FRU/i.test(familyGuide.content.replace(/NOT VERIFIED[\s\S]*?(?=### Other MRI clusters)/, '')),
+    'family guide does not claim FRU interchange as a verified fact');
+
+  ['GE MRI family', 'GE MRI familiy', 'GE CT family', 'SIGNA Creator', 'SIGNA Explorer',
+   'SIGNA Star', 'SIGNA Aviator', 'SV25', 'SV29.2', 'MR30.1', 'LightSpeed family', 'GOC', 'DARC'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_ge_mri_ct_family'),
+      'amtGuideHits("' + q + '") hits GE MRI / CT family guide');
+  });
 });
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
