@@ -258,6 +258,8 @@ files.forEach(file => {
     'GE MRI / CT family guide remains intact beside the Siemens guide');
   assert(siemensGuide && siemensGuide.title === 'Siemens MRI / CT family guide',
     'Siemens family guide uses the sourced title');
+  assert(/seed wins so LIVE SHIP revisions replace cached copies/.test(src),
+    'loadDiagGuides replaces cached seed guides so LIVE revisions ship');
   assert(siemensGuide && /NOT FRU interchange/i.test(siemensGuide.content)
     && /Shared SW ≠ shared FRU/.test(siemensGuide.content)
     && /Shared XA ≠ FRU interchange/.test(siemensGuide.content),
@@ -294,25 +296,70 @@ files.forEach(file => {
     && /go\.Now/.test(siemensGuide.content)
     && /GO All = Mobile/.test(siemensGuide.content),
     'Siemens family guide keeps verified CT facts');
+  assert(siemensGuide && /CoS last-look SHIP rev 2/.test(siemensGuide.content)
+    && /LIBRARY = AMT SM/.test(siemensGuide.content)
+    && /OEM-PUBLIC = OEM public/.test(siemensGuide.content)
+    && /FDA = 510/.test(siemensGuide.content)
+    && /Aera→Sola Fit/.test(siemensGuide.content)
+    && /Skyra→Vida Fit/.test(siemensGuide.content)
+    && /Prisma→Cima\.X Fit/.test(siemensGuide.content)
+    && /LIBRARY\+OEM/.test(siemensGuide.content)
+    && /BioMatrix/.test(siemensGuide.content)
+    && /Free\.Max 0\.55T 80cm DryCool/.test(siemensGuide.content)
+    && /Free\.Star 60cm/.test(siemensGuide.content)
+    && /Spirit/.test(siemensGuide.content)
+    && /Not on the VB42B list/.test(siemensGuide.content)
+    && /VC50 FDA/.test(siemensGuide.content)
+    && /SOMARIS\/7/.test(siemensGuide.content)
+    && /first DSCT C2-028/.test(siemensGuide.content)
+    && /AS \/ Edge single/.test(siemensGuide.content)
+    && /Flash \/ Drive \/ Force dual/.test(siemensGuide.content)
+    && /SOMARIS\/10/.test(siemensGuide.content)
+    && /Chronon/.test(siemensGuide.content)
+    && /Athlon/.test(siemensGuide.content)
+    && /X\.cite/.test(siemensGuide.content)
+    && /X\.ceed/.test(siemensGuide.content)
+    && /Vectron \+ StellarInfinity/.test(siemensGuide.content)
+    && /82cm/.test(siemensGuide.content)
+    && /Pro\.Pulse/.test(siemensGuide.content)
+    && /2×Athlon DS/.test(siemensGuide.content)
+    && /QuantaMax photon-counting ≠ SOMATOM EID/.test(siemensGuide.content)
+    && /syngo CT VD \/ VE/.test(siemensGuide.content)
+    && /Not found/.test(siemensGuide.content),
+    'Siemens family guide ships CoS last-look rev 2 MRI/CT facts with source tags');
   assert(siemensGuide && /UNKNOWN/.test(siemensGuide.content)
-    && /FRU interchange inside those pairs/.test(siemensGuide.content)
+    && /Fit FRU lists \/ eligibility/.test(siemensGuide.content)
     && /Espree beyond B19B/.test(siemensGuide.content)
-    && /NUMARIS string for XA/.test(siemensGuide.content)
-    && /Definition AS/.test(siemensGuide.content)
-    && /README stubs/.test(siemensGuide.content)
-    && /EOSL years/.test(siemensGuide.content),
-    'Siemens family guide keeps unknowns');
+    && /Shared FRU first Definition vs Flash/.test(siemensGuide.content)
+    && /Edge Plus Stellar vs StellarInfinity wording/.test(siemensGuide.content)
+    && /NAEOTOM OS string/.test(siemensGuide.content)
+    && /\bEOSL\b/.test(siemensGuide.content)
+    && !/FRU interchange inside those pairs/.test(siemensGuide.content)
+    && !/NUMARIS string for XA/.test(siemensGuide.content)
+    && !/README stubs/.test(siemensGuide.content),
+    'Siemens family guide keeps rev 2 unknowns');
+  assert(geStill && /CoS last-look SHIP/.test(geStill.content) && !/SHIP rev 2/.test(geStill.content)
+    && /SIGNA Creator \/ Explorer 1\.5T/.test(geStill.content)
+    && /2360027-300 Rev 15/.test(geStill.content),
+    'GE MRI / CT family guide body stays on rev 1 (unchanged)');
   const sTags = (siemensGuide.tags || []).join(' ');
   assert(/Seimens family/.test(sTags) && /Seimens MRI family/.test(sTags)
     && /Seimens family/.test(siemensGuide.content)
     && /Seimens MRI family/.test(siemensGuide.content),
     'Siemens family guide indexes Seimens misspellings');
+  assert(/BioMatrix/.test(sTags) && /Free\.Max/.test(sTags) && /Sola Fit/.test(sTags)
+    && /SOMARIS\/7/.test(sTags) && /SOMARIS\/10/.test(sTags)
+    && /NAEOTOM/.test(sTags) && /Pro\.Pulse/.test(sTags),
+    'Siemens family guide indexes rev 2 search aliases');
   assert(siemensGuide && !/Avanto FRUs fit Espree/i.test(siemensGuide.content.replace(/do not assume Avanto FRUs fit Espree/i, ''))
-    && !/one FRU family/.test(siemensGuide.content.replace(/not one FRU family/, '')),
+    && !/one FRU family/.test(siemensGuide.content.replace(/not one FRU family/, ''))
+    && !/FRUs? (are|is) interchangeable/i.test(siemensGuide.content)
+    && !/photon-counting = SOMATOM EID/.test(siemensGuide.content),
     'Siemens family guide does not claim FRU interchange as a verified fact');
 
   ['Siemens family', 'Seimens family', 'Siemens MRI family', 'Seimens MRI family',
-   'MAGNETOM', 'SOMATOM', 'syngo MR', 'NUMARIS', 'VB19', 'XA30'].forEach(q => {
+   'MAGNETOM', 'SOMATOM', 'syngo MR', 'NUMARIS', 'VB19', 'XA30',
+   'BioMatrix', 'Free.Max', 'Sola Fit', 'SOMARIS/7', 'SOMARIS/10', 'NAEOTOM', 'Pro.Pulse'].forEach(q => {
     const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
     assert(hits.some(g => g.id === 'dg_siemens_mri_ct_family'),
       'amtGuideHits("' + q + '") hits Siemens MRI / CT family guide');
