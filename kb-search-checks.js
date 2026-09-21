@@ -364,6 +364,29 @@ files.forEach(file => {
     assert(hits.some(g => g.id === 'dg_siemens_mri_ct_family'),
       'amtGuideHits("' + q + '") hits Siemens MRI / CT family guide');
   });
+
+  const msupGuide = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_siemens_msup_firmware_mode_quench');
+  assert(!!msupGuide, 'DIAG_GUIDES_SEED includes Siemens MSUP firmware-mode post-quench field guide');
+  assert(msupGuide && msupGuide.system === 'Siemens MRI', 'MSUP quench guide is tagged Siemens MRI');
+  assert(msupGuide && /field note/i.test(msupGuide.content) && /Little/.test(msupGuide.content) && /Rich/.test(msupGuide.content),
+    'MSUP quench guide attributes source as field note (Mike / Little / Rich)');
+  assert(msupGuide && /Power off MSUP/.test(msupGuide.content)
+    && /restart the MARS/.test(msupGuide.content)
+    && /Pressure heater control/.test(msupGuide.content)
+    && /15\.4 psia/.test(msupGuide.content)
+    && /Automatic/.test(msupGuide.content)
+    && /PHAP/.test(msupGuide.content)
+    && /≥30 minutes|>=30 minutes|30 minutes/.test(msupGuide.content),
+    'MSUP quench guide keeps numbered reset + monitoring facts from the field note');
+  assert(msupGuide && !/NFPA|Joint Commission|FDA|ISO 9001/.test(msupGuide.content),
+    'MSUP quench guide does not cite NFPA-99 / Joint Commission / FDA / ISO 9001');
+  assert(msupGuide && !/FRU interchange/i.test(msupGuide.content.replace(/no part numbers or FRU interchange claimed/i,'')),
+    'MSUP quench guide does not invent FRU interchange');
+  ['MSUP', 'firmware mode', 'quench', 'pressure heater', 'MARS', 'PHAP', '15.4 psia'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_siemens_msup_firmware_mode_quench'),
+      'amtGuideHits("' + q + '") hits MSUP firmware-mode post-quench guide');
+  });
 });
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
