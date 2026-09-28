@@ -1,5 +1,6 @@
-// Bumped from amt-v35 -> amt-v36: GE loose service-library search in index.html.
-const CACHE = 'amt-v36';
+// Bumped from amt-v36 -> amt-v37: Pages now publishes kb/ (same-origin GE loose library).
+// The ~2.7 MB kb JSON stays out of SHELL; IndexedDB caches it after the first fetch.
+const CACHE = 'amt-v37';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {

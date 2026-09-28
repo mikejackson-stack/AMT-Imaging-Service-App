@@ -4359,9 +4359,9 @@ function grokMissCta(q){
 
 // GE loose service library (coils, magnet, cabinet, ultrasound).
 // The ~2.8 MB entry list is NOT inlined. It is fetched on first search from
-// kb/ge-loose-kb.json (same-origin if a server hosts it, otherwise githack),
-// then kept in IndexedDB for a later offline search. GitHub Pages only publishes
-// index.html, rates.json, and sw.js, so phones load the JSON from githack.
+// kb/ge-loose-kb.json (same-origin first — GitHub Pages publishes kb/),
+// then kept in IndexedDB for a later offline search. githack stays the fallback
+// when the same-origin file is missing.
 // raw.githack.com is tried before rawcdn so a corrected JSON is not pinned forever.
 const GE_LOOSE_KB_REV = '6bf8717c4adcb71c8de420c0db6e493ebbfedb86ff3def035635260d93abc9ee';
 var geLooseEntries = null;

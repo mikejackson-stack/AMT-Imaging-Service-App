@@ -28,7 +28,7 @@ based in Fort Lauderdale, FL.
 | **Deployment** | GitHub Pages (auto-deploys on push to main) |
 
 The entire app is **one HTML file** (`index.html`). No build step, no framework.
-Pages deploy = `index.html`, `rates.json`, `sw.js` (see `.github/workflows/pages.yml`). Firebase functions live in `functions/` and are deployed separately.
+Pages deploy = `index.html`, `rates.json`, `sw.js`, and every `.json` under `kb/` (see `.github/workflows/pages.yml`). Firebase functions live in `functions/` and are deployed separately. `Manuals/` is not published.
 
 **Important:** `AMT-Imaging-App-standalone.html` is a downloadable copy of the app.
 Any logic change to `index.html` must also be applied to the standalone file.

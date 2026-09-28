@@ -4,7 +4,7 @@ Field service web app for **AMT Imaging Solutions LLC** (Fort Lauderdale, FL).
 
 **Live:** https://mikejackson-stack.github.io/AMT-Imaging-Service-App/
 
-This is not a greenfield project. Production is GitHub Pages (`index.html` + `rates.json` + `sw.js`) plus Firebase project **`amt-imaging-service-app`** (staff Google login, Firestore sync, staff-only Ask Grok callable). The `Manuals/` tree is large (multi-GB) and is **not** what Pages deploys.
+This is not a greenfield project. Production is GitHub Pages (`index.html` + `rates.json` + `sw.js` + `kb/*.json`) plus Firebase project **`amt-imaging-service-app`** (staff Google login, Firestore sync, staff-only Ask Grok callable). The `Manuals/` tree is large (multi-GB) and is **not** what Pages deploys.
 
 ## What matters
 
@@ -12,7 +12,7 @@ This is not a greenfield project. Production is GitHub Pages (`index.html` + `ra
 |------|------|
 | `index.html` | The app (HTML/CSS/JS). Edit this. |
 | `AMT-Imaging-App-standalone.html` | Downloadable copy — keep in sync with `index.html` for logic changes. |
-| `rates.json`, `sw.js` | Deployed with Pages. |
+| `rates.json`, `sw.js`, `kb/` | Deployed with Pages. `kb/*.json` is same-origin; `Manuals/` is not. |
 | `functions/` | Firebase Cloud Functions (`askGrok`). Holds **no** xAI key. |
 | `kb-search-checks.js` | Honesty checks for knowledge search (no Manuals clone). |
 | `firebase.json`, `.firebaserc` | Firebase project `amt-imaging-service-app`. |
@@ -91,7 +91,7 @@ firebase functions:secrets:set XAI_API_KEY
 firebase deploy --only functions
 ```
 
-GitHub Pages workflow (`.github/workflows/pages.yml`) curls **only** `index.html`, `rates.json`, and `sw.js`. It must never publish `functions/` or secrets.
+GitHub Pages workflow (`.github/workflows/pages.yml`) curls `index.html`, `rates.json`, `sw.js`, and every `.json` under `kb/`. It must never publish `Manuals/`, `functions/`, or secrets.
 
 ## Checks before a PR
 
