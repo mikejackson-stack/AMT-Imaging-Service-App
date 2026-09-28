@@ -1,7 +1,6 @@
-// Bumped from amt-v37 -> amt-v38: HTML/Office manuals open via raw.githack.
-// rawcdn caches /main/<path> forever, so phones kept the pre-fix Premier page.
-// The ~2.7 MB kb JSON stays out of SHELL; IndexedDB caches it after the first fetch.
-const CACHE = 'amt-v38';
+// Bumped from amt-v38 -> amt-v39: GE Signa HTML service library joins search.
+// The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
+const CACHE = 'amt-v39';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
