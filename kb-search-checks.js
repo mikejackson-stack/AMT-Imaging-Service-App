@@ -572,6 +572,7 @@ const cardRt = new Function(
   + extractFunction(looseSrc, 'amtGeLooseCite') + '\n'
   + extractFunction(looseSrc, 'amtGeLooseCardHtml') + '\n'
   + extractFunction(looseSrc, 'amtGeLooseListHasSigna') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseShown') + '\n'
   + extractFunction(looseSrc, 'amtGeLooseCardsHtml') + '\n'
   + 'return {amtGeLooseCardHtml: amtGeLooseCardHtml, amtGeLooseCardsHtml: amtGeLooseCardsHtml, amtGeLooseCite: amtGeLooseCite};'
 )();
@@ -587,6 +588,10 @@ assert(anchorCard.includes('data-open-url="' + anchored.open_url + '"') && !anch
 const petCards = cardRt.amtGeLooseCardsHtml(petHits);
 assert(petCards.includes('Narrow the search.') && !petCards.includes('Manuals, GE, Loose'),
   'overflow hint stays generic when Signa entries are in the list');
+const coldCards = cardRt.amtGeLooseCardsHtml(coldHits);
+assert(coldCards.includes('>Open page<') && coldCards.includes('https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/')
+  && coldCards.includes('Open PDF'),
+  "search 'cold head' shows a Signa Open page card and a loose PDF card");
 const tealCards = cardRt.amtGeLooseCardsHtml(looseRt.amtGeLooseHits('TEAL PDU', looseEntries, 'GE Other'));
 assert(tealCards.includes('open the PDF from Manuals, GE, Loose.') && tealCards.includes('Open PDF'),
   'loose-only overflow still points at Manuals, GE, Loose');

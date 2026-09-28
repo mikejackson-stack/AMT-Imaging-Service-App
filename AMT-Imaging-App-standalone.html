@@ -4475,9 +4475,25 @@ function amtGeLooseListHasSigna(matches){
   }
   return false;
 }
+function amtGeLooseShown(matches, limit){
+  var shown = matches.slice(0, limit);
+  var hasSigna = false;
+  for(var i=0;i<shown.length;i++){
+    if(shown[i] && shown[i].open_url){ hasSigna = true; break; }
+  }
+  if(hasSigna || shown.length < limit) return shown;
+  for(var j=limit;j<matches.length;j++){
+    if(matches[j] && matches[j].open_url){
+      shown = shown.slice(0, limit-1);
+      shown.push(matches[j]);
+      break;
+    }
+  }
+  return shown;
+}
 function amtGeLooseCardsHtml(matches){
   var n = matches.length;
-  var shown = matches.slice(0, 8);
+  var shown = amtGeLooseShown(matches, 8);
   var html = '<div class="card" style="margin-bottom:10px"><div class="card-header">GE Service Library ('+n+')</div>';
   for(var i=0;i<shown.length;i++) html += amtGeLooseCardHtml(shown[i]);
   if(n>8){
