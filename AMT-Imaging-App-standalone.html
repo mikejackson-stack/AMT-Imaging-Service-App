@@ -3040,44 +3040,37 @@ function ghWebUrl(filePath){
   return 'https://github.com/'+GH.org+'/'+GH.repo+'/blob/'+GH.branch+'/'+GH.manualsRoot+'/'+seg;
 }
 
-// Smart URL for any file from the GitHub file explorer
-// filePath is relative to Manuals/ -- downloadUrl from GitHub API has the full correct path
-function ghOpenUrl(filePath, downloadUrl){
+// rawcdn.githack.com caches each URL forever the first time it is fetched.
+// That is the right host for PDFs and other binaries (immutable, production CDN).
+// HTML help sets and Office docs are corrected in place on main, so they use
+// raw.githack.com, which sends a short cache (about a minute). Relative links
+// inside an HTML set (Premier index.htm → root/*.html, css, images) then stay
+// on that short-cache host too. downloadUrl from the GitHub API is ignored:
+// segment encoding here is safer, and that URL must not pick the host.
+function ghIsHtmlManual(filePath){
   const lower = (filePath||'').toLowerCase();
-  // Build a correctly encoded raw URL from the filePath (safer than trusting downloadUrl)
+  return lower.endsWith('.htm')||lower.endsWith('.html');
+}
+function ghIsOfficeManual(filePath){
+  const lower = (filePath||'').toLowerCase();
+  return lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx');
+}
+function ghOpenUrl(filePath, downloadUrl){
   const encodedPath = (GH.manualsRoot+'/'+(filePath||'')).split('/').map(s=>encodeURIComponent(s)).join('/');
-  const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
-  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
-  // Office files → Microsoft Office Online viewer
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
-    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
+  const host = (ghIsHtmlManual(filePath)||ghIsOfficeManual(filePath))
+    ? 'https://raw.githack.com/'
+    : 'https://rawcdn.githack.com/';
+  const viewUrl = host+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedPath;
+  if(ghIsOfficeManual(filePath)){
+    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(viewUrl);
   }
-  // .htm/.html → raw.githack.com (serves as text/html, relative links resolve correctly)
-  if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    return githackUrl;
-  }
-  // .pdf → raw.githack.com (correct Content-Type)
-  return githackUrl;
+  return viewUrl;
 }
 
-// Build viewable URL for manual paths relative to Manuals/
+// Build viewable URL for manual paths relative to Manuals/ (guides, error codes, parts).
 function ghManualUrl(manualPath){
   if(!manualPath) return '#';
-  const lower = manualPath.toLowerCase();
-  const fullPath = GH.manualsRoot+'/'+manualPath;
-  const encodedFull = fullPath.split('/').map(s=>encodeURIComponent(s)).join('/');
-  const rawUrl = 'https://raw.githubusercontent.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  const githackUrl = 'https://rawcdn.githack.com/'+GH.org+'/'+GH.repo+'/'+GH.branch+'/'+encodedFull;
-  // Office files → Microsoft Office Online viewer
-  if(lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx')){
-    return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(rawUrl);
-  }
-  // .htm/.html → raw.githack.com (correct MIME type, relative links work)
-  if(lower.endsWith('.htm')||lower.endsWith('.html')){
-    return githackUrl;
-  }
-  // .pdf and everything else → raw.githack.com (correct Content-Type; raw.githubusercontent.com serves as octet-stream)
-  return githackUrl;
+  return ghOpenUrl(manualPath);
 }
 
 // Build manual link HTML -- shows path tip if file may not exist yet

@@ -433,6 +433,37 @@ files.forEach(file => {
     'guides pills include GE Ultrasound and GE Other');
   assert(/function openGeLoosePdf/.test(src) && /#page=/.test(src) && /kb\/ge-loose-kb\.json/.test(src),
     'loose library opens PDFs through ghOpenUrl with a page fragment');
+  const ghOpenUrl = new Function(
+    'const GH = ' + extractConst(src, 'GH') + ';\n'
+    + extractFunction(src, 'ghIsHtmlManual') + '\n'
+    + extractFunction(src, 'ghIsOfficeManual') + '\n'
+    + extractFunction(src, 'ghOpenUrl') + '\n'
+    + extractFunction(src, 'ghManualUrl') + '\n'
+    + 'return {ghOpenUrl: ghOpenUrl, ghManualUrl: ghManualUrl};'
+  )();
+  const premierHtm = ghOpenUrl.ghOpenUrl('GE/Premier/index.htm');
+  const premierHtml = ghOpenUrl.ghOpenUrl('GE/Premier/root/t_CalibratingHighOrderShim.HTML');
+  const loosePdf = ghOpenUrl.ghOpenUrl('GE/Loose/Operator Guide.pdf');
+  assert(premierHtm === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Premier/index.htm',
+    'ghOpenUrl returns raw.githack for .htm');
+  assert(premierHtml === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Premier/root/t_CalibratingHighOrderShim.HTML',
+    'ghOpenUrl returns raw.githack for .html');
+  assert(loosePdf === 'https://rawcdn.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Loose/Operator%20Guide.pdf'
+    && !/https:\/\/raw\.githack\.com\//.test(loosePdf),
+    'ghOpenUrl returns rawcdn for .pdf');
+  const office = ghOpenUrl.ghOpenUrl('Training Info/note.docx');
+  const officeSrc = decodeURIComponent((office.split('src=')[1] || ''));
+  assert(office.startsWith('https://view.officeapps.live.com/op/view.aspx?src=')
+    && officeSrc === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/Training%20Info/note.docx',
+    'Office viewer src uses raw.githack');
+  assert(ghOpenUrl.ghManualUrl('GE/Premier/index.htm') === premierHtm,
+    'ghManualUrl uses the same host rule as ghOpenUrl');
+  assert(ghOpenUrl.ghManualUrl('') === '#', 'empty ghManualUrl stays a placeholder');
+  assert(/var urls = \[rel, 'https:\/\/raw\.githack\.com\/'\+remoteBase, 'https:\/\/rawcdn\.githack\.com\/'\+remoteBase\]/.test(src),
+    'kb loader still tries same-origin, then raw.githack, then rawcdn');
+  assert(artGuide && /https:\/\/rawcdn\.githack\.com\/mikejackson-stack\/AMT-Imaging-Service-App\/main\/Manuals\/GE\/Loose\//.test(artGuide.content)
+    && /#page=21/.test(artGuide.content),
+    'existing PDF open_page links stay on rawcdn');
   assert(!/ge_2422232-1en_001/.test(src),
     'the 2.8 MB loose-entry corpus is not inlined in the app script');
   assert(Array.isArray(rt.GE_LOOSE_FILES) && rt.GE_LOOSE_FILES.length === 30,
@@ -492,7 +523,7 @@ if (loosePy.status !== 0) fail('ge loose file checks failed\n' + looseOut);
 else ok(looseOut.split('\n').slice(-1)[0] || 'ge loose file checks');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v37'/.test(sw), 'sw.js cache name is amt-v37');
+assert(/const CACHE = 'amt-v38'/.test(sw), 'sw.js cache name is amt-v38');
 assert(!/kb\/ge-loose-kb\.json/.test(sw), 'sw.js does not precache the GE loose library JSON');
 
 if (process.exitCode) {
