@@ -1,6 +1,6 @@
-// Bumped from amt-v39 -> amt-v40: Signa Premier web manuals open from AMT-GE-Manuals.
+// Bumped from amt-v40 -> amt-v41: Signa Sprint web manual added to the Signa KB (AMT-GE-Manuals).
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v40';
+const CACHE = 'amt-v41';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
