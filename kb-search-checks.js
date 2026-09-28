@@ -492,7 +492,8 @@ if (loosePy.status !== 0) fail('ge loose file checks failed\n' + looseOut);
 else ok(looseOut.split('\n').slice(-1)[0] || 'ge loose file checks');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v36'/.test(sw), 'sw.js cache name is amt-v36');
+assert(/const CACHE = 'amt-v37'/.test(sw), 'sw.js cache name is amt-v37');
+assert(!/kb\/ge-loose-kb\.json/.test(sw), 'sw.js does not precache the GE loose library JSON');
 
 if (process.exitCode) {
   console.log('\nSome checks failed.');

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Serve the GitHub Pages app files only — not the multi-GB Manuals/ tree.
 
-Matches production Pages content: index.html, rates.json, sw.js.
+Matches production Pages content: index.html, rates.json, sw.js, and kb/*.json.
 Default local/dev talks to hosted Firebase (amt-imaging-service-app).
 """
 from __future__ import annotations
@@ -31,6 +31,13 @@ def stage_pages(dest: Path) -> None:
         sys.exit("Missing required app files: " + ", ".join(missing))
     for name in PAGES_FILES:
         shutil.copy2(ROOT / name, dest / name)
+    kb = ROOT / "kb"
+    if kb.is_dir():
+        for path in kb.rglob("*.json"):
+            rel = path.relative_to(ROOT)
+            target = dest / rel
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(path, target)
     for name in OPTIONAL_FILES:
         src = ROOT / name
         if src.is_file():
@@ -55,7 +62,7 @@ def main() -> None:
 
     print(f"AMT Imaging Service App", flush=True)
     print(f"  http://127.0.0.1:{args.port}/", flush=True)
-    print(f"  serving {staging} (index.html, rates.json, sw.js)", flush=True)
+    print(f"  serving {staging} (index.html, rates.json, sw.js, kb/*.json)", flush=True)
     print("  Hosted Firebase: amt-imaging-service-app (Auth / Firestore / Ask Grok)", flush=True)
     print("  PIN login works here. Ask Grok still requires Google sign-in (PIN cannot call it).", flush=True)
     print("  Optional functions emulator: add ?functionsEmulator=1 on localhost after starting emulators.", flush=True)
