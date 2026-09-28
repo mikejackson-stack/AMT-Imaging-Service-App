@@ -547,8 +547,8 @@ const signaPath = path.join(__dirname, 'kb/ge-signa-kb.json');
 const signaEntries = JSON.parse(fs.readFileSync(signaPath, 'utf8'));
 const signaSha = crypto.createHash('sha256').update(fs.readFileSync(signaPath)).digest('hex');
 const signaRev = (looseSrc.match(/const GE_SIGNA_KB_REV = '([0-9a-f]+)'/) || [])[1];
-assert(Array.isArray(signaEntries) && signaEntries.length === 8874, 'Signa library has 8874 entries');
-assert(signaRev === 'f0b05f6e7bddc3da94ca5d33540aaf9ac2473ac1f601da48f3fbfff6c4d102e4' && signaSha === signaRev,
+assert(Array.isArray(signaEntries) && signaEntries.length === 9731, 'Signa library has 9731 entries');
+assert(signaRev === '0efd8a6db4acef6c15e3040964acea2a1e8d20b72c3f7becd597ce4f87e484f1' && signaSha === signaRev,
   'GE_SIGNA_KB_REV matches kb/ge-signa-kb.json sha256');
 const signaMod = {};
 const signaSys = {};
@@ -559,8 +559,8 @@ signaEntries.forEach(e => {
     fail('Signa entry missing AMT-GE-Manuals open_url: ' + e.id);
   }
 });
-assert(signaMod.MRI === 7100 && signaMod['PET/MR'] === 1774 && Object.keys(signaMod).length === 2,
-  'Signa modalities are MRI 7100 and PET/MR 1774');
+assert(signaMod.MRI === 7957 && signaMod['PET/MR'] === 1774 && Object.keys(signaMod).length === 2,
+  'Signa modalities are MRI 7957 and PET/MR 1774');
 console.log('Signa entries by product_system:');
 Object.keys(signaSys).sort((a, b) => signaSys[b] - signaSys[a]).forEach(k => {
   console.log('  ' + signaSys[k] + '\t' + k);
@@ -580,6 +580,16 @@ assert(coldHits.some(e => String(e.open_url || '').includes('/AMT-GE-Manuals/'))
 const petHits = combinedHits('PETMR', 'GE MRI');
 assert(petHits.some(e => e.modality === 'PET/MR' && String(e.open_url || '').includes('/AMT-GE-Manuals/')),
   "search 'PETMR' under GE MRI includes Signa PET/MR pages");
+const sprintEntries = signaEntries.filter(e => String(e.pdf_path || '').startsWith('Signa Sprint/root/'));
+assert(sprintEntries.length === 857 && sprintEntries.every(e => e.doc === '5982163-8EN' && e.modality === 'MRI'
+  && String(e.open_url).startsWith('https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/Signa%20Sprint/root/')),
+  'Signa Sprint has 857 entries (5982163-8EN) opening from AMT-GE-Manuals/Signa Sprint/root/');
+['Sprint', 'SIGNA Sprint', 'Sprint Select Evo'].forEach(q => {
+  const hits = combinedHits(q, 'GE MRI');
+  assert(hits.filter(e => String(e.pdf_path || '').startsWith('Signa Sprint/')).length === 857,
+    "search '" + q + "' under GE MRI returns all 857 Signa Sprint pages");
+});
+assert(combinedHits('Sprint', 'GE Ultrasound').length === 0, "search 'Sprint' has no GE Ultrasound hits");
 
 const cardRt = new Function(
   'function amtAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }\n'
@@ -640,7 +650,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v40'/.test(sw), 'sw.js cache name is amt-v40');
+assert(/const CACHE = 'amt-v41'/.test(sw), 'sw.js cache name is amt-v41');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
