@@ -77,6 +77,7 @@ function loadSearchRuntime(htmlPath) {
     'const SIEMENS_SUBFOLDERS = ' + extractConst(src, 'SIEMENS_SUBFOLDERS') + ';',
     'const SIEMENS_CT_SUBFOLDERS = ' + extractConst(src, 'SIEMENS_CT_SUBFOLDERS') + ';',
     'const HITACHI_SUBFOLDERS = ' + extractConst(src, 'HITACHI_SUBFOLDERS') + ';',
+    'const ALL_SYSTEMS_SUBFOLDERS = ' + extractConst(src, 'ALL_SYSTEMS_SUBFOLDERS') + ';',
     'var partsDB = PARTS_SEED.slice();',
     'var explorerCache = {};',
     'const DIAG_GUIDES_SEED = ' + extractConst(src, 'DIAG_GUIDES_SEED') + ';',
@@ -386,6 +387,34 @@ files.forEach(file => {
     const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
     assert(hits.some(g => g.id === 'dg_siemens_msup_firmware_mode_quench'),
       'amtGuideHits("' + q + '") hits MSUP firmware-mode post-quench guide');
+  });
+
+  const artGuide = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_mri_magnet_coil_image_artifacts');
+  assert(!!artGuide, 'DIAG_GUIDES_SEED includes GE + Siemens MRI magnet/coil image-artifact guide');
+  assert(artGuide && artGuide.system === 'GE + Siemens MRI', 'image-artifact guide system is GE + Siemens MRI');
+  assert(artGuide && /\bGE\b/.test(artGuide.content) && /Siemens/.test(artGuide.content)
+    && /MR Field Notes/.test(artGuide.content)
+    && /Avanto\/Espree RF Troubleshooting Guide/.test(artGuide.content)
+    && /Field practice \(unsourced\)/.test(artGuide.content)
+    && /CTL/.test(artGuide.content)
+    && /lumbar/.test(artGuide.content)
+    && /small animal/.test(artGuide.content)
+    && /moderate confidence/.test(artGuide.content)
+    && /No Phase Wrap/.test(artGuide.content),
+    'image-artifact guide names GE and Siemens and keeps cited field-guide phrases');
+  assert(artGuide && /### 22\./.test(artGuide.content), 'image-artifact guide includes entry 22');
+  assert(artGuide && !/NFPA|Joint Commission|\bFDA\b|ISO 9001/i.test(artGuide.content),
+    'image-artifact guide does not cite NFPA-99 / Joint Commission / FDA / ISO 9001');
+  assert(artGuide && !/FRU interchange/i.test(artGuide.content.replace(/no part numbers or FRU interchange claimed/i,'')),
+    'image-artifact guide does not invent FRU interchange');
+  assert(artGuide && !/Philips|Canon|Toshiba/i.test(artGuide.content),
+    'image-artifact guide does not name Philips, Canon, or Toshiba');
+  assert(/function amtGuideOnSys/.test(src) && /GE \+ Siemens MRI/.test(src),
+    'GE + Siemens MRI guides are included under both GE MRI and Siemens MRI pills');
+  ['CTL lumbar small animal', 'zipper RF leak', 'fat sat shim', 'spike white pixel', 'No Phase Wrap wrap', 'AutoCoilSelect'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_mri_magnet_coil_image_artifacts'),
+      'amtGuideHits("' + q + '") hits MRI magnet/coil image-artifact guide');
   });
 });
 
