@@ -102,11 +102,14 @@ jobs:
               with open(dest, "wb") as fh:
                   fh.write(data)
               print(f"published {rel} ({len(data)} bytes)")
-          marker = os.path.join(dest_root, "kb", "ge-loose-kb.json")
-          with open(marker, "rb") as fh:
-              head = fh.read(1)
-          if head != b"[":
-              raise SystemExit("kb/ge-loose-kb.json is not a JSON array")
+          for name in ("ge-loose-kb.json", "ge-signa-kb.json"):
+              marker = os.path.join(dest_root, "kb", name)
+              if not os.path.isfile(marker):
+                  raise SystemExit(f"kb/{name} was not published")
+              with open(marker, "rb") as fh:
+                  head = fh.read(1)
+              if head != b"[":
+                  raise SystemExit(f"kb/{name} is not a JSON array")
           PY
           touch _site/.nojekyll
           test ! -e _site/Manuals

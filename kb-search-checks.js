@@ -50,7 +50,7 @@ function extractConst(src, name) {
 }
 
 function extractFunction(src, name) {
-  const re = new RegExp('function\\s+' + name + '\\s*\\(');
+  const re = new RegExp('(?:async\\s+)?function\\s+' + name + '\\s*\\(');
   const m = re.exec(src);
   if (!m) throw new Error('missing function ' + name);
   const brace = src.indexOf('{', m.index);
@@ -499,6 +499,10 @@ assert(looseCount('2415542', 'GE MRI') > 0 && looseCount('2415542', 'GE Ultrasou
   "search '2415542' hits GE MRI and not GE Ultrasound");
 assert(looseCount('HDCTL', 'GE MRI') > 0, "search 'HDCTL' hits GE MRI");
 assert(looseCount('DOC2202091', 'GE MRI') > 0, "search 'DOC2202091' hits GE MRI");
+assert(looseRt.amtGeLooseSystem('PET/MR') === 'GE MRI' && looseRt.amtGeLooseSystem('MRI') === 'GE MRI',
+  'PET/MR and MRI modalities map to GE MRI');
+assert(looseCount('DOC1807517', 'GE MRI') > 0 && looseCount('DOC1807517', 'GE Other') === 0,
+  'existing PET/MR loose entries stay searchable as GE MRI');
 assert(looseCount('Lytron', '') === 0, "search 'Lytron' is not in this batch");
 assert(looseCount('F-50L', 'GE MRI') > 0 && looseCount('F-50L', 'GE Ultrasound') === 0,
   "search 'F-50L' hits GE MRI");
@@ -522,12 +526,213 @@ const looseOut = ((loosePy.stdout || '') + (loosePy.stderr || '')).trim();
 if (loosePy.status !== 0) fail('ge loose file checks failed\n' + looseOut);
 else ok(looseOut.split('\n').slice(-1)[0] || 'ge loose file checks');
 
-const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v38'/.test(sw), 'sw.js cache name is amt-v38');
-assert(!/kb\/ge-loose-kb\.json/.test(sw), 'sw.js does not precache the GE loose library JSON');
+const signaPath = path.join(__dirname, 'kb/ge-signa-kb.json');
+const signaEntries = JSON.parse(fs.readFileSync(signaPath, 'utf8'));
+const signaSha = crypto.createHash('sha256').update(fs.readFileSync(signaPath)).digest('hex');
+const signaRev = (looseSrc.match(/const GE_SIGNA_KB_REV = '([0-9a-f]+)'/) || [])[1];
+assert(Array.isArray(signaEntries) && signaEntries.length === 8874, 'Signa library has 8874 entries');
+assert(signaRev === 'f0b05f6e7bddc3da94ca5d33540aaf9ac2473ac1f601da48f3fbfff6c4d102e4' && signaSha === signaRev,
+  'GE_SIGNA_KB_REV matches kb/ge-signa-kb.json sha256');
+const signaMod = {};
+const signaSys = {};
+signaEntries.forEach(e => {
+  signaMod[e.modality] = (signaMod[e.modality] || 0) + 1;
+  signaSys[e.product_system] = (signaSys[e.product_system] || 0) + 1;
+  if (!e.open_url || !String(e.open_url).startsWith('https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/')) {
+    fail('Signa entry missing AMT-GE-Manuals open_url: ' + e.id);
+  }
+});
+assert(signaMod.MRI === 7100 && signaMod['PET/MR'] === 1774 && Object.keys(signaMod).length === 2,
+  'Signa modalities are MRI 7100 and PET/MR 1774');
+console.log('Signa entries by product_system:');
+Object.keys(signaSys).sort((a, b) => signaSys[b] - signaSys[a]).forEach(k => {
+  console.log('  ' + signaSys[k] + '\t' + k);
+});
 
-if (process.exitCode) {
-  console.log('\nSome checks failed.');
-  process.exit(1);
+const combined = looseEntries.concat(signaEntries);
+function combinedHits(q, sys) {
+  return looseRt.amtGeLooseHits(q, combined, sys);
 }
-console.log('\nAll kb-search honesty checks passed.');
+const rfHits = combinedHits('RF screen room door', '');
+assert(rfHits.length > 0 && rfHits.every(e => String(e.open_url || '').includes('/AMT-GE-Manuals/')),
+  "search 'RF screen room door' is Signa HTML pages");
+const coldHits = combinedHits('cold head', '');
+assert(coldHits.some(e => String(e.open_url || '').includes('/AMT-GE-Manuals/'))
+  && coldHits.some(e => !e.open_url && /Manuals\/GE\/Loose\//.test(e.pdf_path || '')),
+  "search 'cold head' returns Signa pages and loose PDFs");
+const petHits = combinedHits('PETMR', 'GE MRI');
+assert(petHits.some(e => e.modality === 'PET/MR' && String(e.open_url || '').includes('/AMT-GE-Manuals/')),
+  "search 'PETMR' under GE MRI includes Signa PET/MR pages");
+
+const cardRt = new Function(
+  'function amtAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }\n'
+  + 'function amtEscHtml(s){ return String(s==null?"":s).replace(/[&<>"\']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[c]; }); }\n'
+  + extractFunction(looseSrc, 'amtGeLooseSystem') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseCatLabel') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseCite') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseCardHtml') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseListHasSigna') + '\n'
+  + extractFunction(looseSrc, 'amtGeLooseCardsHtml') + '\n'
+  + 'return {amtGeLooseCardHtml: amtGeLooseCardHtml, amtGeLooseCardsHtml: amtGeLooseCardsHtml, amtGeLooseCite: amtGeLooseCite};'
+)();
+const rfCard = cardRt.amtGeLooseCardHtml(rfHits[0]);
+assert(rfCard.includes('>Open page<') && rfCard.includes('data-open-url="' + rfHits[0].open_url + '"')
+  && rfCard.includes(rfHits[0].doc) && rfCard.includes(rfHits[0].pdf_file)
+  && !rfCard.includes('if the viewer does not jump') && !rfCard.includes('#page=') && !rfCard.includes('data-rel='),
+  'Signa card opens the exact HTML URL and skips the PDF page note');
+const anchored = signaEntries.find(e => String(e.open_url).includes('#'));
+const anchorCard = cardRt.amtGeLooseCardHtml(anchored);
+assert(anchorCard.includes('data-open-url="' + anchored.open_url + '"') && !anchorCard.includes('#page='),
+  'Signa anchor stays on open_url and is not rewritten as #page=');
+const petCards = cardRt.amtGeLooseCardsHtml(petHits);
+assert(petCards.includes('Narrow the search.') && !petCards.includes('Manuals, GE, Loose'),
+  'overflow hint stays generic when Signa entries are in the list');
+const tealCards = cardRt.amtGeLooseCardsHtml(looseRt.amtGeLooseHits('TEAL PDU', looseEntries, 'GE Other'));
+assert(tealCards.includes('open the PDF from Manuals, GE, Loose.') && tealCards.includes('Open PDF'),
+  'loose-only overflow still points at Manuals, GE, Loose');
+const loosePdfEntry = looseRt.amtGeLooseHits('2415542', looseEntries, 'GE MRI')
+  .find(e => e.doc === '2422232-1EN');
+const looseCard = cardRt.amtGeLooseCardHtml(loosePdfEntry);
+assert(looseCard.includes('Open PDF') && looseCard.includes('data-rel=') && looseCard.includes('if the viewer does not jump'),
+  'loose PDF card still cites a page and opens through the PDF path');
+
+const opened = [];
+const openPdf = new Function(
+  'window', 'ghOpenUrl',
+  extractFunction(looseSrc, 'openGeLoosePdf') + '\nreturn openGeLoosePdf;'
+)({ open: function(url, target, feat){ opened.push({ url: url, target: target, feat: feat }); } },
+  function(rel){ return 'https://rawcdn.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/' + rel; });
+openPdf({ getAttribute: function(name){ return name === 'data-open-url' ? anchored.open_url : ''; } });
+openPdf({ getAttribute: function(name){
+  if (name === 'data-open-url') return '';
+  if (name === 'data-rel') return 'GE/Loose/Operator Guide.pdf';
+  if (name === 'data-page') return '14';
+  return '';
+} });
+assert(opened[0] && opened[0].url === anchored.open_url && opened[0].target === '_blank' && opened[0].feat === 'noopener'
+  && opened[0].url.indexOf('#page=') === -1,
+  'openGeLoosePdf opens open_url exactly, with noopener, and does not append #page=');
+assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.pdf') === false
+  && opened[1].url.indexOf('GE/Loose/Operator Guide.pdf#page=14') !== -1
+  && opened[1].url.indexOf('AMT-GE-Manuals') === -1,
+  'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
+
+const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
+assert(/const CACHE = 'amt-v39'/.test(sw), 'sw.js cache name is amt-v39');
+assert(!/kb\/ge-loose-kb\.json/.test(sw) && !/kb\/ge-signa-kb\.json/.test(sw),
+  'sw.js does not precache the GE loose or Signa library JSON');
+const pagesYml = fs.readFileSync(path.join(__dirname, '.github/workflows/pages.yml'), 'utf8');
+assert(/list_kb_json\(/.test(pagesYml) && /ge-signa-kb\.json/.test(pagesYml) && /ge-loose-kb\.json/.test(pagesYml),
+  'Pages workflow publishes kb JSON and checks the Signa library');
+const standalone = fs.readFileSync(path.join(__dirname, 'AMT-Imaging-App-standalone.html'), 'utf8');
+assert(standalone.includes("const GE_SIGNA_KB_REV = '" + signaRev + "'") && standalone.includes("geLooseReadIdbKey('signa')"),
+  'standalone app loads and caches the Signa library');
+
+function makeLibraryIdb(store) {
+  function later(fill) {
+    const req = {};
+    queueMicrotask(() => {
+      fill(req);
+      if (req.onsuccess) req.onsuccess();
+    });
+    return req;
+  }
+  return {
+    open() {
+      return later((req) => {
+        req.result = {
+          objectStoreNames: { contains() { return true; } },
+          transaction() {
+            const tx = {
+              objectStore() {
+                return {
+                  get(key) { return later((g) => { g.result = store[key]; }); },
+                  put(val, key) { store[key] = val; return {}; }
+                };
+              }
+            };
+            Object.defineProperty(tx, 'oncomplete', { set(fn) { queueMicrotask(fn); } });
+            Object.defineProperty(tx, 'onerror', { set() {} });
+            return tx;
+          }
+        };
+      });
+    }
+  };
+}
+
+const libraryRunner = new Function(
+  'GH', 'fetch', 'indexedDB', 'console',
+  [
+    'var geLooseEntries = null; var geLooseLoadPromise = null; var geLooseLoadError = "";',
+    'const GE_LOOSE_KB_REV = "loose-rev";',
+    'const GE_SIGNA_KB_REV = "signa-rev";',
+    extractFunction(looseSrc, 'amtGeLoosePrepare'),
+    extractFunction(looseSrc, 'geLooseIdb'),
+    extractFunction(looseSrc, 'geLooseReadIdbKey'),
+    extractFunction(looseSrc, 'geLooseSaveIdbKey'),
+    extractFunction(looseSrc, 'geLooseReadIdb'),
+    extractFunction(looseSrc, 'geLooseSaveIdb'),
+    extractFunction(looseSrc, 'geSignaReadIdb'),
+    extractFunction(looseSrc, 'geSignaSaveIdb'),
+    extractFunction(looseSrc, 'geKbFetchRel'),
+    extractFunction(looseSrc, 'geLooseFetchText'),
+    extractFunction(looseSrc, 'geSignaFetchText'),
+    extractFunction(looseSrc, 'geKbTextOrCache'),
+    extractFunction(looseSrc, 'ensureGeLooseKB'),
+    'return function(){ return {get entries(){ return geLooseEntries; }, get error(){ return geLooseLoadError; }, load: ensureGeLooseKB, reset: function(){ geLooseEntries = null; geLooseLoadPromise = null; geLooseLoadError = ""; }}; };'
+  ].join('\n')
+);
+
+function libraryFetch(looseText, signaText) {
+  return async function(url) {
+    const rel = String(url);
+    const text = rel.includes('ge-signa-kb.json') ? signaText : (rel.includes('ge-loose-kb.json') ? looseText : null);
+    if (text == null) throw new Error('unavailable ' + rel);
+    return { ok: true, status: 200, async text() { return text; } };
+  };
+}
+
+function runLibraryCase(looseText, signaText, store) {
+  const state = libraryRunner(
+    { org: 'mikejackson-stack', repo: 'AMT-Imaging-Service-App', branch: 'main' },
+    libraryFetch(looseText, signaText),
+    makeLibraryIdb(store),
+    { warn() {} }
+  )();
+  state.reset();
+  return new Promise((resolve) => {
+    state.load(() => setTimeout(() => resolve({ entries: state.entries, error: state.error, store: store }), 30));
+  });
+}
+
+runLibraryCase('[{"id":"loose"}]', null, {}).then((signaMiss) => {
+  assert(signaMiss.entries.length === 1 && signaMiss.entries[0].id === 'loose' && !signaMiss.error,
+    'Signa fetch failure still shows the loose library');
+  assert(signaMiss.store.library && signaMiss.store.library.rev === 'loose-rev' && !signaMiss.store.signa,
+    'a successful loose download is cached under library');
+  return runLibraryCase(null, null, {
+    library: { rev: 'loose-rev', text: '[{"id":"cached-loose"}]' },
+    signa: { rev: 'signa-rev', text: '[{"id":"cached-signa"}]' }
+  });
+}).then((offline) => {
+  assert(offline.entries.length === 2 && offline.entries[0].id === 'cached-loose' && offline.entries[1].id === 'cached-signa',
+    'offline fallback concatenates cached loose and Signa libraries');
+  return runLibraryCase('[{"id":"loose"}]', '[{"id":"signa"}]', {});
+}).then((both) => {
+  assert(both.entries.length === 2 && both.entries[1].id === 'signa'
+    && both.store.signa && both.store.signa.rev === 'signa-rev' && both.store.signa.text === '[{"id":"signa"}]',
+    'both libraries load and Signa text is cached under signa with its rev');
+  return runLibraryCase(null, '[{"id":"signa"}]', {});
+}).then((looseMiss) => {
+  assert(Array.isArray(looseMiss.entries) && looseMiss.entries.length === 0 && /Could not download/.test(looseMiss.error),
+    'a loose failure with no cache still reports the library as unavailable');
+  if (process.exitCode) {
+    console.log('\nSome checks failed.');
+    process.exit(1);
+  }
+  console.log('\nAll kb-search honesty checks passed.');
+}).catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

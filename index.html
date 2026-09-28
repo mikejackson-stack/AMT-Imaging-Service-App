@@ -4351,13 +4351,14 @@ function grokMissCta(q){
     +'</div>';
 }
 
-// GE loose service library (coils, magnet, cabinet, ultrasound).
-// The ~2.8 MB entry list is NOT inlined. It is fetched on first search from
-// kb/ge-loose-kb.json (same-origin first — GitHub Pages publishes kb/),
-// then kept in IndexedDB for a later offline search. githack stays the fallback
-// when the same-origin file is missing.
+// GE service library: loose PDFs in this repo, plus Signa HTML pages in AMT-GE-Manuals.
+// Neither list is inlined. Both are fetched on first search from kb/ (same-origin
+// first — GitHub Pages publishes kb/), then kept in IndexedDB for a later offline
+// search. githack stays the fallback when the same-origin file is missing.
 // raw.githack.com is tried before rawcdn so a corrected JSON is not pinned forever.
+// A Signa miss still leaves the loose library searchable.
 const GE_LOOSE_KB_REV = '6bf8717c4adcb71c8de420c0db6e493ebbfedb86ff3def035635260d93abc9ee';
+const GE_SIGNA_KB_REV = 'f0b05f6e7bddc3da94ca5d33540aaf9ac2473ac1f601da48f3fbfff6c4d102e4';
 var geLooseEntries = null;
 var geLooseLoadPromise = null;
 var geLooseLoadError = '';
@@ -4365,6 +4366,7 @@ var geLooseLoadError = '';
 function amtGeLooseSystem(modality){
   var m = String(modality||'');
   if(m.indexOf('Ultrasound') !== -1) return 'GE Ultrasound';
+  if(m.indexOf('PET/MR') !== -1) return 'GE MRI';
   if(m.indexOf('MRI') !== -1) return 'GE MRI';
   return 'GE Other';
 }
@@ -4403,6 +4405,7 @@ function amtGeLooseCatLabel(c){
   return map[c] || c || '';
 }
 function amtGeLooseCite(e){
+  if(e && e.open_url) return {openPage:'', note:''};
   var pages = [];
   if(e && Array.isArray(e.pages)){
     for(var i=0;i<e.pages.length;i++){
@@ -4423,6 +4426,11 @@ function amtGeLooseCite(e){
 }
 function openGeLoosePdf(btn){
   if(!btn) return;
+  var direct = btn.getAttribute('data-open-url')||'';
+  if(direct){
+    window.open(direct, '_blank', 'noopener');
+    return;
+  }
   var rel = btn.getAttribute('data-rel')||'';
   var page = btn.getAttribute('data-page')||'';
   if(rel.indexOf('Manuals/')===0) rel = rel.slice(8);
@@ -4432,12 +4440,17 @@ function openGeLoosePdf(btn){
 }
 function amtGeLooseCardHtml(e){
   var cite = amtGeLooseCite(e);
+  var openUrl = String(e && e.open_url || '');
   var rel = String(e.pdf_path||'');
   if(rel.indexOf('Manuals/')===0) rel = rel.slice(8);
   var isPdf = /\.pdf$/i.test(rel);
-  var btn = (isPdf ? 'Open PDF' : 'Open document')+(cite.openPage ? ' (p. '+cite.openPage+')' : '');
+  var btn = openUrl ? 'Open page' : ((isPdf ? 'Open PDF' : 'Open document')+(cite.openPage ? ' (p. '+cite.openPage+')' : ''));
   var sys = amtGeLooseSystem(e.modality);
   var bg = sys==='GE MRI' ? '#1565c0' : (sys==='GE Ultrasound' ? '#0f766e' : '#57534e');
+  var fileLine = (openUrl && e.pdf_file) ? '<div style="font-size:.68rem;color:var(--text2)">'+amtEscHtml(e.pdf_file)+'</div>' : '';
+  var btnAttrs = openUrl
+    ? 'data-open-url="'+amtAttr(openUrl)+'"'
+    : 'data-rel="'+amtAttr(rel)+'" data-page="'+amtAttr(cite.openPage)+'"';
   return '<div style="padding:12px 14px;border-bottom:1px solid var(--gray2)">'
     + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap">'
     + '<div style="flex:1;min-width:0">'
@@ -4447,21 +4460,34 @@ function amtGeLooseCardHtml(e){
     + '<span style="background:var(--gray);color:var(--text2);font-size:.63rem;padding:2px 7px;border-radius:10px">'+amtEscHtml(amtGeLooseCatLabel(e.category))+'</span>'
     + '</div>'
     + '<div style="font-size:.75rem;color:var(--text2);margin-top:4px">'+amtEscHtml((e.doc||'')+' '+(e.rev||''))+'</div>'
+    + fileLine
     + (e.section ? '<div style="font-size:.75rem;color:var(--text2)">'+amtEscHtml(e.section)+'</div>' : '')
     + (cite.note ? '<div style="font-size:.75rem;color:var(--text2)">'+amtEscHtml(cite.note)+'</div>' : '')
     + (e.product_system ? '<div style="font-size:.75rem;color:var(--text);margin-top:2px">'+amtEscHtml(e.product_system)+'</div>' : '')
     + '</div>'
-    + '<button type="button" class="btn btn-outline btn-sm" data-rel="'+amtAttr(rel)+'" data-page="'+amtAttr(cite.openPage)+'" onclick="openGeLoosePdf(this)" style="font-size:.72rem;white-space:nowrap;flex-shrink:0">'+amtEscHtml(btn)+'</button>'
+    + '<button type="button" class="btn btn-outline btn-sm" '+btnAttrs+' onclick="openGeLoosePdf(this)" style="font-size:.72rem;white-space:nowrap;flex-shrink:0">'+amtEscHtml(btn)+'</button>'
     + '</div>'
     + (e.body ? '<div style="margin-top:6px;font-size:.8rem;color:var(--text);white-space:pre-wrap;word-break:break-word">'+amtEscHtml(e.body)+'</div>' : '')
     + '</div>';
+}
+function amtGeLooseListHasSigna(matches){
+  for(var i=0;i<matches.length;i++){
+    if(matches[i] && matches[i].open_url) return true;
+  }
+  return false;
 }
 function amtGeLooseCardsHtml(matches){
   var n = matches.length;
   var shown = matches.slice(0, 8);
   var html = '<div class="card" style="margin-bottom:10px"><div class="card-header">GE Service Library ('+n+')</div>';
   for(var i=0;i<shown.length;i++) html += amtGeLooseCardHtml(shown[i]);
-  if(n>8) html += '<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">'+(n-8)+' more in the GE service library. Narrow the search, or open the PDF from Manuals, GE, Loose.</div>';
+  if(n>8){
+    var more = (n-8)+' more in the GE service library. ';
+    more += amtGeLooseListHasSigna(matches)
+      ? 'Narrow the search.'
+      : 'Narrow the search, or open the PDF from Manuals, GE, Loose.';
+    html += '<div style="padding:8px 14px;font-size:.78rem;color:var(--text2)">'+more+'</div>';
+  }
   html += '</div>';
   return html;
 }
@@ -4477,10 +4503,17 @@ function amtGeLooseGuideHtml(q, sys){
   }
   if(!query && looseSys){
     var n = 0;
+    var htmlManual = false;
     for(var i=0;i<geLooseEntries.length;i++){
-      if(amtGeLooseSystem(geLooseEntries[i].modality)===sys) n++;
+      var ent = geLooseEntries[i];
+      if(!ent || amtGeLooseSystem(ent.modality)!==sys) continue;
+      n++;
+      if(ent.open_url) htmlManual = true;
     }
-    return '<div class="alert alert-info" style="margin-top:8px">'+n+' '+amtEscHtml(sys)+' service-library entries. Search to open one. Full PDFs are under Manuals, GE, Loose.</div>';
+    var tail = htmlManual
+      ? 'Search to open one.'
+      : 'Search to open one. Full PDFs are under Manuals, GE, Loose.';
+    return '<div class="alert alert-info" style="margin-top:8px">'+n+' '+amtEscHtml(sys)+' service-library entries. '+tail+'</div>';
   }
   var hits = amtGeLooseHits(query, geLooseEntries, sys||'');
   if(!hits.length) return '';
@@ -4498,11 +4531,11 @@ function geLooseIdb(){
     req.onerror = function(){ reject(req.error || new Error('idb')); };
   });
 }
-function geLooseReadIdb(){
+function geLooseReadIdbKey(key){
   return geLooseIdb().then(function(db){
     return new Promise(function(resolve){
       var tx = db.transaction('kv', 'readonly');
-      var g = tx.objectStore('kv').get('library');
+      var g = tx.objectStore('kv').get(key);
       g.onsuccess = function(){
         var row = g.result;
         if(row && typeof row.text==='string' && row.text) resolve(row.text);
@@ -4512,18 +4545,21 @@ function geLooseReadIdb(){
     });
   }).catch(function(){ return ''; });
 }
-function geLooseSaveIdb(text){
+function geLooseSaveIdbKey(key, rev, text){
   return geLooseIdb().then(function(db){
     return new Promise(function(resolve){
       var tx = db.transaction('kv', 'readwrite');
-      tx.objectStore('kv').put({rev: GE_LOOSE_KB_REV, text: text}, 'library');
+      tx.objectStore('kv').put({rev: rev, text: text}, key);
       tx.oncomplete = function(){ resolve(); };
       tx.onerror = function(){ resolve(); };
     });
   }).catch(function(){});
 }
-async function geLooseFetchText(){
-  var rel = 'kb/ge-loose-kb.json';
+function geLooseReadIdb(){ return geLooseReadIdbKey('library'); }
+function geLooseSaveIdb(text){ return geLooseSaveIdbKey('library', GE_LOOSE_KB_REV, text); }
+function geSignaReadIdb(){ return geLooseReadIdbKey('signa'); }
+function geSignaSaveIdb(text){ return geLooseSaveIdbKey('signa', GE_SIGNA_KB_REV, text); }
+async function geKbFetchRel(rel){
   var remoteBase = GH.org+'/'+GH.repo+'/'+GH.branch+'/'+rel;
   var urls = [rel, 'https://raw.githack.com/'+remoteBase, 'https://rawcdn.githack.com/'+remoteBase];
   var lastErr = null;
@@ -4538,38 +4574,56 @@ async function geLooseFetchText(){
   }
   throw lastErr || new Error('GE service library unavailable');
 }
+async function geLooseFetchText(){
+  return geKbFetchRel('kb/ge-loose-kb.json');
+}
+async function geSignaFetchText(){
+  return geKbFetchRel('kb/ge-signa-kb.json');
+}
+function geKbTextOrCache(fetchText, readCache, saveCache){
+  return fetchText().then(function(text){
+    saveCache(text);
+    return text;
+  }).catch(function(err){
+    return readCache().then(function(cached){
+      if(cached) return cached;
+      throw err;
+    });
+  });
+}
 function ensureGeLooseKB(done){
   if(Array.isArray(geLooseEntries)){ if(done) done(); return; }
   if(!geLooseLoadPromise){
-    geLooseLoadPromise = geLooseFetchText().then(function(text){
-      var list = JSON.parse(text);
+    var looseP = geKbTextOrCache(geLooseFetchText, geLooseReadIdb, geLooseSaveIdb);
+    var signaP = geKbTextOrCache(geSignaFetchText, geSignaReadIdb, geSignaSaveIdb).catch(function(err){
+      console.warn('ge signa kb', err);
+      return '';
+    });
+    geLooseLoadPromise = Promise.all([looseP, signaP]).then(function(parts){
+      var list = JSON.parse(parts[0]);
       if(!Array.isArray(list)) throw new Error('bad library');
+      if(parts[1]){
+        try{
+          var extra = JSON.parse(parts[1]);
+          if(Array.isArray(extra)) list = list.concat(extra);
+          else console.warn('ge signa kb', 'not an array');
+        }catch(parseErr){
+          console.warn('ge signa kb', parseErr);
+        }
+      }
       amtGeLoosePrepare(list);
       geLooseEntries = list;
       geLooseLoadError = '';
-      geLooseSaveIdb(text);
       return list;
     }).catch(function(err){
-      return geLooseReadIdb().then(function(cached){
-        if(cached){
-          var list = JSON.parse(cached);
-          if(Array.isArray(list)){
-            amtGeLoosePrepare(list);
-            geLooseEntries = list;
-            geLooseLoadError = '';
-            return list;
-          }
-        }
-        geLooseEntries = [];
-        geLooseLoadError = 'Could not download the GE service library. Check the connection and search again.';
-        console.warn('ge loose kb', err);
-        return geLooseEntries;
-      });
+      geLooseEntries = [];
+      geLooseLoadError = 'Could not download the GE service library. Check the connection and search again.';
+      console.warn('ge loose kb', err);
+      return geLooseEntries;
     });
   }
   geLooseLoadPromise.then(function(){ if(done) done(); }).catch(function(){ if(done) done(); });
 }
-
 
 function kbSearch(q){
   const res = document.getElementById('errResults'); if(!res) return;
