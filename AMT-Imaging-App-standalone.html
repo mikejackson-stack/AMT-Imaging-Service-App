@@ -3044,8 +3044,10 @@ function ghWebUrl(filePath){
 // That is the right host for PDFs and other binaries (immutable, production CDN).
 // HTML help sets and Office docs are corrected in place on main, so they use
 // raw.githack.com, which sends a short cache (about a minute). Relative links
-// inside an HTML set (Premier index.htm → root/*.html, css, images) then stay
-// on that short-cache host too. downloadUrl from the GitHub API is ignored:
+// inside an HTML set (index.htm → root/*.html, css, images) then stay
+// on that short-cache host too. Signa Premier opens from AMT-GE-Manuals so
+// those relative links stay with the copy that has the images and PDFs.
+// downloadUrl from the GitHub API is ignored:
 // segment encoding here is safer, and that URL must not pick the host.
 function ghIsHtmlManual(filePath){
   const lower = (filePath||'').toLowerCase();
@@ -3056,6 +3058,26 @@ function ghIsOfficeManual(filePath){
   return lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.pptx')||lower.endsWith('.ppt')||lower.endsWith('.xls')||lower.endsWith('.xlsx');
 }
 function ghOpenUrl(filePath, downloadUrl){
+  // GE/Premier web manuals moved to AMT-GE-Manuals/Signa PreMier (same relative
+  // path). Four top-level PDFs are not in that repo, so they stay here.
+  const premierPrefix = 'GE/Premier/';
+  const premierKeepPdf = {
+    'ACR_Accreditation_Scan_Measurements.pdf':1,
+    'PAC-leakage-current-measurements.pdf':1,
+    'ReplacementCalibrationRetestMatrix_Premier.pdf':1,
+    'SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf':1
+  };
+  if(filePath && String(filePath).indexOf(premierPrefix)===0){
+    const rel = filePath.slice(premierPrefix.length);
+    if(rel && !premierKeepPdf[rel]){
+      const encoded = ('Signa PreMier/'+rel).split('/').map(s=>encodeURIComponent(s)).join('/');
+      const premierUrl = 'https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/'+encoded;
+      if(ghIsOfficeManual(filePath)){
+        return 'https://view.officeapps.live.com/op/view.aspx?src='+encodeURIComponent(premierUrl);
+      }
+      return premierUrl;
+    }
+  }
   const encodedPath = (GH.manualsRoot+'/'+(filePath||'')).split('/').map(s=>encodeURIComponent(s)).join('/');
   const host = (ghIsHtmlManual(filePath)||ghIsOfficeManual(filePath))
     ? 'https://raw.githack.com/'

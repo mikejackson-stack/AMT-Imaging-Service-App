@@ -441,13 +441,30 @@ files.forEach(file => {
     + extractFunction(src, 'ghManualUrl') + '\n'
     + 'return {ghOpenUrl: ghOpenUrl, ghManualUrl: ghManualUrl};'
   )();
+  const premierBase = 'https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/Signa%20PreMier/';
   const premierHtm = ghOpenUrl.ghOpenUrl('GE/Premier/index.htm');
   const premierHtml = ghOpenUrl.ghOpenUrl('GE/Premier/root/t_CalibratingHighOrderShim.HTML');
+  const premierPdf = ghOpenUrl.ghOpenUrl('GE/Premier/root/figures/coil.pdf');
+  const otherHtm = ghOpenUrl.ghOpenUrl('GE/Artist_EVO/index.htm');
   const loosePdf = ghOpenUrl.ghOpenUrl('GE/Loose/Operator Guide.pdf');
-  assert(premierHtm === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Premier/index.htm',
-    'ghOpenUrl returns raw.githack for .htm');
-  assert(premierHtml === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Premier/root/t_CalibratingHighOrderShim.HTML',
-    'ghOpenUrl returns raw.githack for .html');
+  assert(premierHtm === premierBase + 'index.htm',
+    'Premier index.htm opens from AMT-GE-Manuals');
+  assert(premierHtml === premierBase + 'root/t_CalibratingHighOrderShim.HTML',
+    'Premier root HTML opens from AMT-GE-Manuals');
+  assert(premierPdf === premierBase + 'root/figures/coil.pdf',
+    'Premier PDFs under the set open from AMT-GE-Manuals on raw.githack');
+  [
+    'ACR_Accreditation_Scan_Measurements.pdf',
+    'PAC-leakage-current-measurements.pdf',
+    'ReplacementCalibrationRetestMatrix_Premier.pdf',
+    'SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf'
+  ].forEach(name => {
+    const kept = ghOpenUrl.ghOpenUrl('GE/Premier/' + name);
+    assert(kept === 'https://rawcdn.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Premier/' + name,
+      'Premier loose PDF stays on this repo: ' + name);
+  });
+  assert(otherHtm === 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Artist_EVO/index.htm',
+    'ghOpenUrl returns raw.githack for other .htm manuals');
   assert(loosePdf === 'https://rawcdn.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Loose/Operator%20Guide.pdf'
     && !/https:\/\/raw\.githack\.com\//.test(loosePdf),
     'ghOpenUrl returns rawcdn for .pdf');
@@ -623,7 +640,22 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v39'/.test(sw), 'sw.js cache name is amt-v39');
+assert(/const CACHE = 'amt-v40'/.test(sw), 'sw.js cache name is amt-v40');
+const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
+const heroPremier = [
+  'index.htm',
+  'root/r_ts_ICEICN-Troubleshooting_16403080.html',
+  'root/c_ICE_LEDs.html',
+  'root/c_Host-ICN-Ethernet-Path_15625812.html',
+  'root/r_TroubleshootingThePlatformIntegratedCoolingCabinetPICC.html'
+];
+heroPremier.forEach(rel => {
+  assert(heroIndex.includes('https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/Signa%20PreMier/' + rel),
+    'Signa Hero stub links Premier ' + rel + ' at AMT-GE-Manuals');
+});
+assert(heroIndex.includes('../Premier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf')
+  && !heroIndex.includes('Signa%20PreMier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf'),
+  'Signa Hero stub keeps the Premier XT MDP PDF on this repo');
 assert(!/kb\/ge-loose-kb\.json/.test(sw) && !/kb\/ge-signa-kb\.json/.test(sw),
   'sw.js does not precache the GE loose or Signa library JSON');
 const pagesYml = fs.readFileSync(path.join(__dirname, '.github/workflows/pages.yml'), 'utf8');

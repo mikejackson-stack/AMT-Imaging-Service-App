@@ -1,6 +1,6 @@
-// Bumped from amt-v38 -> amt-v39: GE Signa HTML service library joins search.
+// Bumped from amt-v39 -> amt-v40: Signa Premier web manuals open from AMT-GE-Manuals.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v39';
+const CACHE = 'amt-v40';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
