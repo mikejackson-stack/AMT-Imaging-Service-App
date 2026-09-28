@@ -1,5 +1,5 @@
-// Bumped from amt-v34 -> amt-v35: Ask Grok callable hits us-central1.
-const CACHE = 'amt-v35';
+// Bumped from amt-v35 -> amt-v36: GE loose service-library search in index.html.
+const CACHE = 'amt-v36';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
