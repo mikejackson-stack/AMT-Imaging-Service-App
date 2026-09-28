@@ -6,6 +6,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { spawnSync } = require('child_process');
 
 function fail(msg) {
   console.error('FAIL:', msg);
@@ -65,7 +66,8 @@ function loadSearchRuntime(htmlPath) {
   const names = [
     'amtNormCode', 'amtErrorHits', 'amtPartCorpus', 'amtPartHits',
     'amtManualRelPath', 'amtManualTreeCatalog', 'amtManualHits',
-    'amtCodeTableHits', 'amtGuideHits', 'amtDiagSearchHonesty'
+    'amtCodeTableHits', 'amtGuideHits', 'amtDiagSearchHonesty',
+    'amtGeLooseSystem', 'amtGeLooseHay', 'amtGeLooseHits'
   ];
   const fns = names.map(n => extractFunction(src, n)).join('\n');
   const prelude = [
@@ -78,6 +80,7 @@ function loadSearchRuntime(htmlPath) {
     'const SIEMENS_CT_SUBFOLDERS = ' + extractConst(src, 'SIEMENS_CT_SUBFOLDERS') + ';',
     'const HITACHI_SUBFOLDERS = ' + extractConst(src, 'HITACHI_SUBFOLDERS') + ';',
     'const ALL_SYSTEMS_SUBFOLDERS = ' + extractConst(src, 'ALL_SYSTEMS_SUBFOLDERS') + ';',
+    'const GE_LOOSE_FILES = ' + extractConst(src, 'GE_LOOSE_FILES') + ';',
     'var partsDB = PARTS_SEED.slice();',
     'var explorerCache = {};',
     'const DIAG_GUIDES_SEED = ' + extractConst(src, 'DIAG_GUIDES_SEED') + ';',
@@ -85,7 +88,8 @@ function loadSearchRuntime(htmlPath) {
     fns
   ].join('\n');
   const box = { FULL_ERROR_DB: null, PARTS_SEED: null, DIAG_GUIDES_SEED: null, amtErrorHits: null, amtPartHits: null,
-    amtManualHits: null, amtCodeTableHits: null, amtDiagSearchHonesty: null, amtGuideHits: null };
+    amtManualHits: null, amtCodeTableHits: null, amtDiagSearchHonesty: null, amtGuideHits: null,
+    amtGeLooseSystem: null, amtGeLooseHits: null, GE_LOOSE_FILES: null };
   const keys = Object.keys(box);
   const fn = new Function(prelude + '\nreturn {' + keys.map(k => k + ':' + k).join(',') + '};');
   return { html, src, rt: fn() };
@@ -416,10 +420,79 @@ files.forEach(file => {
     assert(hits.some(g => g.id === 'dg_mri_magnet_coil_image_artifacts'),
       'amtGuideHits("' + q + '") hits MRI magnet/coil image-artifact guide');
   });
+
+  assert(artGuide && /2422232-1EN/.test(artGuide.content) && /2415542/.test(artGuide.content)
+    && /9\.1 kg/.test(artGuide.content) && /2417403/.test(artGuide.content)
+    && /no minimum patient size or weight/i.test(artGuide.content)
+    && /#page=21/.test(artGuide.content) && /#page=32/.test(artGuide.content)
+    && /#page=39/.test(artGuide.content),
+    'image-artifact guide cites 2422232-1EN and keeps 2417403 missing');
+  assert(artGuide && /moderate confidence, about 70%/.test(artGuide.content),
+    'image-artifact guide keeps the CTL usage/positioning verdict');
+  assert(/data-sys="GE Ultrasound"/.test(html) && /data-sys="GE Other"/.test(html),
+    'guides pills include GE Ultrasound and GE Other');
+  assert(/function openGeLoosePdf/.test(src) && /#page=/.test(src) && /kb\/ge-loose-kb\.json/.test(src),
+    'loose library opens PDFs through ghOpenUrl with a page fragment');
+  assert(!/ge_2422232-1en_001/.test(src),
+    'the 2.8 MB loose-entry corpus is not inlined in the app script');
+  assert(Array.isArray(rt.GE_LOOSE_FILES) && rt.GE_LOOSE_FILES.length === 30,
+    'GE loose browse list has 30 manuals');
+  assert(rt.amtManualHits('versana').some(m => /GE\/Loose\//i.test(m.path) && /versana/i.test(m.name)),
+    'manuals catalog lists the Versana loose PDF');
+  assert(rt.amtManualHits('loose service').some(m => m.path === 'GE/Loose'),
+    'GE browse fallback includes the Loose folder');
 });
 
+const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
+const looseManifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-file-manifest.json'), 'utf8'));
+assert(Array.isArray(looseEntries) && looseEntries.length === 2569, 'loose library has 2569 entries');
+assert(Array.isArray(looseManifest) && looseManifest.length === 30, 'loose manifest has 30 files');
+
+const { rt: looseRt, src: looseSrc } = loadSearchRuntime(path.join(__dirname, 'index.html'));
+const rev = (looseSrc.match(/const GE_LOOSE_KB_REV = '([0-9a-f]+)'/) || [])[1];
+const crypto = require('crypto');
+const jsonSha = crypto.createHash('sha256').update(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'))).digest('hex');
+assert(rev && jsonSha === rev, 'GE_LOOSE_KB_REV matches kb/ge-loose-kb.json sha256');
+
+const byDoc = {};
+looseEntries.forEach(e => { (byDoc[e.doc] || (byDoc[e.doc] = [])).push(e); });
+Object.keys(byDoc).forEach(doc => {
+  const hits = looseRt.amtGeLooseHits(doc, looseEntries, '');
+  assert(hits.some(h => h.doc === doc), 'sample entry for doc ' + doc + ' is findable');
+});
+
+function looseCount(q, sys) {
+  return looseRt.amtGeLooseHits(q, looseEntries, sys).length;
+}
+assert(looseCount('2415542', 'GE MRI') > 0 && looseCount('2415542', 'GE Ultrasound') === 0,
+  "search '2415542' hits GE MRI and not GE Ultrasound");
+assert(looseCount('HDCTL', 'GE MRI') > 0, "search 'HDCTL' hits GE MRI");
+assert(looseCount('DOC2202091', 'GE MRI') > 0, "search 'DOC2202091' hits GE MRI");
+assert(looseCount('Lytron', '') === 0, "search 'Lytron' is not in this batch");
+assert(looseCount('F-50L', 'GE MRI') > 0 && looseCount('F-50L', 'GE Ultrasound') === 0,
+  "search 'F-50L' hits GE MRI");
+assert(looseCount('TEAL PDU', 'GE Other') > 0 && looseCount('TEAL PDU', 'GE MRI') === 0,
+  "search 'TEAL PDU' is GE Other, not GE MRI");
+assert(looseCount('Versana', 'GE Ultrasound') > 0 && looseCount('Versana', 'GE MRI') === 0,
+  "search 'Versana' hits GE Ultrasound and not GE MRI");
+
+const preserved = looseRt.amtGeLooseHits('2415542', looseEntries, 'GE MRI')
+  .find(e => e.doc === '2422232-1EN' && String(e.body || '').includes('2415542'));
+assert(!!preserved, '2415542 entry text is unchanged in the library JSON');
+
+const paths = new Set(looseManifest.map(m => m.target_path));
+looseEntries.forEach(e => {
+  if (!paths.has(e.pdf_path)) fail('entry pdf_path not in manifest: ' + e.pdf_path);
+});
+if (!process.exitCode) ok('every loose entry pdf_path is in the file manifest');
+
+const loosePy = spawnSync('python3', [path.join(__dirname, 'scripts/ge_loose_checks.py')], { encoding: 'utf8' });
+const looseOut = ((loosePy.stdout || '') + (loosePy.stderr || '')).trim();
+if (loosePy.status !== 0) fail('ge loose file checks failed\n' + looseOut);
+else ok(looseOut.split('\n').slice(-1)[0] || 'ge loose file checks');
+
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v35'/.test(sw), 'sw.js cache name is amt-v35');
+assert(/const CACHE = 'amt-v36'/.test(sw), 'sw.js cache name is amt-v36');
 
 if (process.exitCode) {
   console.log('\nSome checks failed.');
