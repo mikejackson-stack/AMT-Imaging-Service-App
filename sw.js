@@ -1,6 +1,7 @@
-// Bumped from amt-v36 -> amt-v37: Pages now publishes kb/ (same-origin GE loose library).
+// Bumped from amt-v37 -> amt-v38: HTML/Office manuals open via raw.githack.
+// rawcdn caches /main/<path> forever, so phones kept the pre-fix Premier page.
 // The ~2.7 MB kb JSON stays out of SHELL; IndexedDB caches it after the first fetch.
-const CACHE = 'amt-v37';
+const CACHE = 'amt-v38';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
