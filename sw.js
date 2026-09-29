@@ -1,6 +1,6 @@
-// Bumped from amt-v42 -> amt-v43: writer/reader access list, email-link sign-in, view-only PIN.
+// Bumped from amt-v43 -> amt-v44: local service dates, Excite II print labels, phone checklist fit.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v43';
+const CACHE = 'amt-v44';
 const SHELL = ['./','./index.html','./access-config.js'];
 
 self.addEventListener('install', e => {

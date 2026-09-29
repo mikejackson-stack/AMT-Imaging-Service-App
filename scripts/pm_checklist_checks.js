@@ -206,12 +206,12 @@ files.forEach(file => {
 
   const ge = geMriKeys(extractFunction(src, 'buildGEMRI'));
   assert(JSON.stringify(ge.keys) === JSON.stringify(expectedOrder), base + ' ge_mri items follow the five-step order');
-  assert(mainGe.keys.length === 60, 'main ge_mri has 60 saved items');
+  assert(mainGe.keys.length === 61, 'main ge_mri has 61 saved items');
   mainGe.keys.forEach(k => {
     assert(ge.labels[k] === mainGe.labels[k], base + ' kept ge_mri label for ' + k);
   });
   assert(ge.keys.includes('txt_interview'), base + ' ge_mri has the interview notes box');
-  assert(ge.keys.length === mainGe.keys.length + 1, base + ' ge_mri added only the interview notes key');
+  assert(ge.keys.length === mainGe.keys.length, base + ' ge_mri keeps the saved keys from main');
 
   CHECKLISTS.forEach(([name, scanTitle]) => {
     const fn = extractFunction(src, name);
