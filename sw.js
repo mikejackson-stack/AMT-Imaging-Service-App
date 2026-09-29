@@ -1,6 +1,6 @@
-// Bumped from amt-v40 -> amt-v41: Signa Sprint web manual added to the Signa KB (AMT-GE-Manuals).
+// Bumped from amt-v41 -> amt-v42: GE MR Excite II PM checklist, GE MRI reorder, PM job fixes.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v41';
+const CACHE = 'amt-v42';
 const SHELL = ['./','./index.html'];
 
 self.addEventListener('install', e => {
