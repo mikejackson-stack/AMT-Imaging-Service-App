@@ -43,7 +43,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v46'/.test(sw), 'sw.js cache name is amt-v46');
+  assert(/const CACHE = 'amt-v47'/.test(sw), 'sw.js cache name is amt-v47');
   [index, stand].forEach(html => {
     assert(html.includes("indexedDB.open('amtDrafts'"), 'opens IndexedDB amtDrafts');
     assert(html.includes("createObjectStore('drafts'"), 'creates the drafts store');
@@ -125,8 +125,10 @@ async function launch(playwright, userDataDir) {
     headless: true,
     viewport: { width: 390, height: 844 },
     serviceWorkers: 'block',
-    args: ['--disable-dev-shm-usage', '--disable-gpu']
+    args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
   };
+  const chrome = process.env.CHROME_PATH || '/usr/bin/google-chrome';
+  if (fs.existsSync(chrome)) opts.executablePath = chrome;
   let context;
   try {
     context = await playwright.chromium.launchPersistentContext(userDataDir, opts);
