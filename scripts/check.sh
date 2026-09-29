@@ -10,6 +10,16 @@ node "$ROOT/scripts/pm_checklist_checks.js"
 node "$ROOT/scripts/access_checks.js"
 node "$ROOT/scripts/local_date_checks.js"
 node "$ROOT/scripts/gis_boot_checks.js"
+node "$ROOT/scripts/sync_merge_checks.js"
+
+PW_DIR="${TMPDIR:-/tmp}/amt-playwright-core"
+if [[ ! -d "$PW_DIR/node_modules/playwright-core" ]]; then
+  echo "Installing playwright-core for the sign-in sync test…"
+  mkdir -p "$PW_DIR"
+  npm --prefix "$PW_DIR" init -y >/dev/null
+  npm --prefix "$PW_DIR" install playwright-core --no-fund --no-audit
+fi
+NODE_PATH="$PW_DIR/node_modules${NODE_PATH:+:$NODE_PATH}" node "$ROOT/scripts/sync_signin_playwright.js"
 
 if node -e "require('playwright')" >/dev/null 2>&1; then
   node "$ROOT/scripts/draft_checks.js"
