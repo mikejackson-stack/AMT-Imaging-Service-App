@@ -83,6 +83,8 @@ img{max-width:100%;display:block}
 .pin-dot.filled{background:var(--accent)}
 .btn-pin-go{flex:0 0 auto;min-height:50px;padding:12px 14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--white);border-radius:10px;font-weight:700;font-size:16px;white-space:nowrap}
 .login-error{color:#ff7070;font-size:.8rem;text-align:center;margin-top:10px;min-height:18px}
+#emailLinkStatus{font-size:16px;line-height:1.45}
+#emailLinkStatus .email-spam-note{margin-top:6px}
 .login-footer{margin-top:14px;color:rgba(255,255,255,.2);font-size:.64rem;text-align:center}
 #notAuthScreen{display:none;position:fixed;inset:0;z-index:800;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;background:linear-gradient(160deg,#040c1a 0%,#0a1628 50%,#0c1e3a 100%)}
 #viewOnlyBanner{position:fixed;top:var(--top-h);left:0;right:0;z-index:480;align-items:center;justify-content:center;background:#e65100;color:#fff;padding:8px 14px;font-size:.82rem;font-weight:700;text-align:center}
@@ -2546,7 +2548,7 @@ async function sendEmailLink(){
       handleCodeInApp: true
     });
     try{ localStorage.setItem('amt_email_for_signin', email); }catch(e){}
-    if(status) status.textContent='Check that inbox for the sign-in link, and open it on this device.';
+    if(status) status.innerHTML='Check that inbox for the sign-in link, and open it on this device.<div class="email-spam-note">Check your spam or junk folder too, since the link often lands there.</div>';
   }catch(e){
     console.warn('[AMT Email Link]', e&&(e.code||e));
     const code=(e&&e.code)||'';
