@@ -6932,26 +6932,127 @@ function renderErrCodeList(){
 // FILE EXPLORER (GitHub dynamic loading)
 // ════════════════════════════════════════════════════
 var explorerStack = []; // breadcrumb stack [{name, path}]
-// ── Persistent explorer cache (localStorage, 24hr TTL) ──
+// Folder listings from the unauthenticated GitHub contents API (60/hour per IP).
+// A successful list is kept locally with a timestamp. A path fetched in the last
+// 10 minutes is not requested again. A 403, 429, network error, or offline load
+// shows that saved list, or a short note with the reset time when nothing is saved.
 const EXPLORER_CACHE_KEY = 'amt_explorer_cache_v30';
-const EXPLORER_CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours
+const EXPLORER_FRESH_MS = 10 * 60 * 1000;
 
 function loadExplorerCache(){
   try {
     const raw = localStorage.getItem(EXPLORER_CACHE_KEY);
     if(!raw) return {};
     const obj = JSON.parse(raw);
-    const now = Date.now();
-    // Remove expired entries
-    Object.keys(obj).forEach(k=>{ if(obj[k].ts && now - obj[k].ts > EXPLORER_CACHE_TTL) delete obj[k]; });
+    if(!obj || typeof obj!=='object') return {};
+    Object.keys(obj).forEach(function(k){
+      const row = obj[k];
+      if(!row || !Array.isArray(row.data)) delete obj[k];
+    });
     return obj;
   } catch(e){ return {}; }
 }
 function saveExplorerCache(cache){
-  try { localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache)); } catch(e){}
+  try { localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache)); }
+  catch(e){
+    try {
+      const keys = Object.keys(cache).sort(function(a,b){ return (cache[a].ts||0) - (cache[b].ts||0); });
+      while(keys.length>4) delete cache[keys.shift()];
+      localStorage.setItem(EXPLORER_CACHE_KEY, JSON.stringify(cache));
+    } catch(e2){}
+  }
 }
 var explorerCache = loadExplorerCache();
 
+function explorerCacheItems(items){
+  return (items||[]).map(function(it){
+    if(!it || !it.name) return null;
+    const row = {name:String(it.name), type: it.type==='dir' ? 'dir' : 'file'};
+    if(it.size) row.size = it.size;
+    if(it.label) row.label = String(it.label);
+    return row;
+  }).filter(Boolean);
+}
+function explorerCachedRow(path){
+  const key = path || '';
+  const row = explorerCache && explorerCache[key];
+  if(!row || !Array.isArray(row.data)) return null;
+  return row;
+}
+function explorerCacheIsFresh(row){
+  return !!(row && row.ts && (Date.now() - row.ts) < EXPLORER_FRESH_MS);
+}
+function ghLimitDetails(resp){
+  const out = {remaining:'', reset:'', resetText:''};
+  if(!resp || !resp.headers || typeof resp.headers.get!=='function') return out;
+  out.remaining = resp.headers.get('X-RateLimit-Remaining') || '';
+  out.reset = resp.headers.get('X-RateLimit-Reset') || '';
+  const resetNum = Number(out.reset);
+  if(resetNum > 1000000000){
+    out.resetText = new Date(resetNum * 1000).toLocaleString();
+  } else {
+    const retry = Number(resp.headers.get('Retry-After') || '');
+    if(retry > 0 && retry < 100000000) out.resetText = new Date(Date.now() + retry * 1000).toLocaleString();
+  }
+  return out;
+}
+function explorerCacheNoteText(ts){
+  const when = ts ? new Date(ts).toLocaleString() : '';
+  return 'Cached folder list' + (when ? ', last refreshed ' + when : '') + '.';
+}
+function explorerRateMessage(details){
+  const when = details && details.resetText;
+  let msg = 'GitHub is limiting folder lists from this network. A shared office connection can make about 60 lookups an hour.';
+  if(when) msg += ' Try again after ' + when + '.';
+  else msg += ' Try again after the limit resets.';
+  return msg;
+}
+function showExplorerCached(path, row){
+  setGHStatusDot('ok');
+  renderExplorerItems(row.data, path||'');
+  const grid = document.getElementById('explorerGrid');
+  if(!grid) return;
+  const note = document.createElement('div');
+  note.className = 'alert alert-info';
+  note.id = 'explorerCacheNote';
+  note.setAttribute('data-refreshed', String(row.ts||''));
+  note.style.marginBottom = '10px';
+  note.style.fontSize = '.78rem';
+  note.textContent = explorerCacheNoteText(row.ts);
+  grid.insertBefore(note, grid.firstChild);
+}
+function showExplorerRateNote(details){
+  setGHStatusDot('error');
+  const grid = document.getElementById('explorerGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const note = document.createElement('div');
+  note.className = 'alert alert-warning';
+  note.id = 'explorerRateNote';
+  if(details && details.reset) note.setAttribute('data-reset', details.reset);
+  if(details && details.remaining!=='') note.setAttribute('data-remaining', details.remaining);
+  note.style.fontSize = '.78rem';
+  note.textContent = explorerRateMessage(details) + ' ';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'btn btn-outline btn-sm';
+  btn.textContent = 'Retry';
+  btn.onclick = function(){ refreshExplorer(); };
+  note.appendChild(btn);
+  grid.appendChild(note);
+}
+function showExplorerOfflineNote(){
+  setGHStatusDot('error');
+  const grid = document.getElementById('explorerGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  const note = document.createElement('div');
+  note.className = 'alert alert-warning';
+  note.id = 'explorerOfflineNote';
+  note.style.fontSize = '.78rem';
+  note.textContent = 'You are offline, and this folder has not been opened on this device yet. Open it once while online and it will stay available here.';
+  grid.appendChild(note);
+}
 
 
 // URL helpers defined above
@@ -6966,7 +7067,8 @@ function setGHStatusDot(state){ // 'ok','error','loading','idle'
   dot.title = labels[state]||state;
 }
 
-async function loadExplorer(path){
+async function loadExplorer(path, opts){
+  opts = opts || {};
   if(typeof explorerCache!=='object' || !explorerCache) explorerCache = {};
   if(typeof explorerStack==='undefined' || !Array.isArray(explorerStack)) explorerStack = [];
   const title = document.getElementById('explorerTitle');
@@ -6976,9 +7078,7 @@ async function loadExplorer(path){
 
   // Update header
   title.textContent = path ? '📁 '+path.split('/').pop() : '📁 AMT Manuals Library';
-  if(loading) loading.style.display='inline';
   setGHStatusDot('loading');
-  grid.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:.85rem;color:var(--text2);margin-bottom:8px">Connecting to library…</div><div style="font-size:.75rem;color:var(--gray4)">This stops automatically if GitHub does not answer.</div></div>';
 
   // Update breadcrumb
   const bc = document.getElementById('explorerBreadcrumb');
@@ -6995,13 +7095,25 @@ async function loadExplorer(path){
     }
   }
 
-  // Check persistent cache first
-  if(explorerCache[path||''] && explorerCache[path||''].data){
+  const key = path || '';
+  const cached = explorerCachedRow(key);
+  if(cached && explorerCacheIsFresh(cached) && !opts.force){
     setGHStatusDot('ok');
-    renderExplorerItems(explorerCache[path||''].data, path||'');
+    renderExplorerItems(cached.data, key);
     if(loading) loading.style.display='none';
     return;
   }
+
+  const offline = typeof navigator!=='undefined' && navigator.onLine===false;
+  if(offline){
+    if(cached) showExplorerCached(key, cached);
+    else showExplorerOfflineNote();
+    if(loading) loading.style.display='none';
+    return;
+  }
+
+  if(loading) loading.style.display='inline';
+  grid.innerHTML='<div style="padding:16px;text-align:center"><div style="font-size:.85rem;color:var(--text2);margin-bottom:8px">Connecting to library…</div><div style="font-size:.75rem;color:var(--gray4)">This stops automatically if GitHub does not answer.</div></div>';
 
   try {
     const url = ghApiUrl(path);
@@ -7016,9 +7128,12 @@ async function loadExplorer(path){
       clearTimeout(timer);
     }
 
-    if(resp.status===403){
-      // Rate limited -- show fallback
-      throw new Error('GitHub API rate limit (60/hr exceeded). Click ⚙️ GitHub Settings to add a Personal Access Token for 5,000/hr.');
+    if(resp.status===403 || resp.status===429){
+      const details = ghLimitDetails(resp);
+      if(cached) showExplorerCached(key, cached);
+      else showExplorerRateNote(details);
+      if(loading) loading.style.display='none';
+      return;
     }
     if(resp.status===404){
       throw new Error('Folder not found in GitHub repo. Check that "'+((path||GH.manualsRoot))+'" exists.');
@@ -7033,15 +7148,25 @@ async function loadExplorer(path){
       throw new Error('Unexpected response from GitHub');
     }
 
-    explorerCache[path||''] = {data: items, ts: Date.now()};
+    const slim = explorerCacheItems(items);
+    explorerCache[key] = {data: slim, ts: Date.now()};
     saveExplorerCache(explorerCache);
     setGHStatusDot('ok');
-    renderExplorerItems(items, path||'');
+    renderExplorerItems(slim, key);
 
   } catch(err) {
     console.warn('loadExplorer error:', err);
-    setGHStatusDot('error');
     const timedOut = !!(err && (err.name==='AbortError' || /abort/i.test(String(err.message||''))));
+    const network = timedOut || !!(err && (
+      err.name==='TypeError' ||
+      /failed to fetch|networkerror|network error|offline|load failed/i.test(String(err.message||''))
+    ));
+    if(network && cached){
+      showExplorerCached(key, cached);
+      if(loading) loading.style.display='none';
+      return;
+    }
+    setGHStatusDot('error');
     const msg = timedOut
       ? 'GitHub did not respond in time. You can retry, open the folder on GitHub, or use the known-folder list.'
       : ((err && err.message) || 'Could not reach the manuals library.');
@@ -7232,12 +7357,12 @@ function navToDepth(idx){
 }
 
 function refreshExplorer(){
-  explorerCache = {};
-  saveExplorerCache({});
   explorerStack = [];
   const bc = document.getElementById('explorerBreadcrumb');
   if(bc) bc.style.display='none';
-  loadExplorer('');
+  const trail = document.getElementById('breadcrumbTrail');
+  if(trail) trail.innerHTML='';
+  loadExplorer('', {force:true});
 }
 
 // ════════════════════════════════════════════════════

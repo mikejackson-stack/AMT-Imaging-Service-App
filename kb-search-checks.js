@@ -673,7 +673,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v48'/.test(sw), 'sw.js cache name is amt-v48');
+assert(/const CACHE = 'amt-v49'/.test(sw), 'sw.js cache name is amt-v49');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
@@ -689,8 +689,16 @@ heroPremier.forEach(rel => {
 assert(heroIndex.includes('../Premier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf')
   && !heroIndex.includes('Signa%20PreMier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf'),
   'Signa Hero stub keeps the Premier XT MDP PDF on this repo');
-assert(!/kb\/ge-loose-kb\.json/.test(sw) && !/kb\/ge-signa-kb\.json/.test(sw) && !/kb\/ge-error-tool-kb\.json/.test(sw),
-  'sw.js does not precache the GE loose, Signa or Error Message Tool library JSON');
+assert(/const LIBRARY_KB_FILES = \[/.test(sw)
+  && sw.includes("'/kb/ge-loose-kb.json'")
+  && sw.includes("'/kb/ge-signa-kb.json'")
+  && sw.includes("'/kb/ge-error-tool-kb.json'")
+  && /if\(isLibraryKbUrl\(url\)\) return;/.test(sw)
+  && /purgeLibraryKbCaches\(/.test(sw)
+  && /function purgeLibraryKbFromCache/.test(sw),
+  'sw.js skips Cache Storage for the GE library JSON and drops cached copies on activate');
+assert(!/const SHELL = \[[^\]]*ge-(?:loose|signa|error-tool)-kb/.test(sw),
+  'sw.js does not precache the GE library JSON');
 const pagesYml = fs.readFileSync(path.join(__dirname, '.github/workflows/pages.yml'), 'utf8');
 assert(/list_kb_json\(/.test(pagesYml) && /ge-signa-kb\.json/.test(pagesYml) && /ge-loose-kb\.json/.test(pagesYml)
   && /ge-error-tool-kb\.json/.test(pagesYml),

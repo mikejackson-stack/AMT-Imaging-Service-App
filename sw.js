@@ -1,10 +1,36 @@
-// Bumped from amt-v47 -> amt-v48: GE Error Message Tool (Ermes codes) added to the GE service library.
-// amt-v47 kept seed catalogs in code; cloud lists merge per record.
-// amt-v46 autosaves unsaved form fields in IndexedDB database amtDrafts.
-// Record lists use a separate database, amt-user-records.
-// The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v48';
+// Bumped from amt-v48 -> amt-v49: folder lists survive GitHub's unauthenticated
+// rate limit in the page, and the multi-MB GE library JSON stays in IndexedDB
+// only. Cache Storage keeps the app shell and every other same-origin GET.
+const CACHE = 'amt-v49';
 const SHELL = ['./','./index.html','./access-config.js'];
+const LIBRARY_KB_FILES = [
+  '/kb/ge-loose-kb.json',
+  '/kb/ge-signa-kb.json',
+  '/kb/ge-error-tool-kb.json'
+];
+
+function isLibraryKbUrl(url){
+  let path = '';
+  try { path = new URL(url, self.location.origin).pathname; }
+  catch(e){ return false; }
+  return LIBRARY_KB_FILES.some(function(file){ return path === file || path.endsWith(file); });
+}
+
+function purgeLibraryKbFromCache(cache){
+  return cache.keys().then(function(keys){
+    return Promise.all(keys.filter(function(req){
+      return isLibraryKbUrl(req.url);
+    }).map(function(req){ return cache.delete(req); }));
+  });
+}
+
+function purgeLibraryKbCaches(){
+  return caches.keys().then(function(names){
+    return Promise.all(names.map(function(name){
+      return caches.open(name).then(purgeLibraryKbFromCache);
+    }));
+  });
+}
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));
@@ -13,11 +39,14 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    purgeLibraryKbCaches().then(function(){
+      return caches.keys();
+    }).then(function(keys){
+      return Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)));
+    }).then(function(){
+      return self.clients.claim();
+    })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
@@ -25,6 +54,9 @@ self.addEventListener('fetch', e => {
   if(e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
   if(url.origin !== self.location.origin) return;
+  // The GE service library is about 27 MB. The app keeps its own copy in
+  // IndexedDB for offline search, so it must not also land in Cache Storage.
+  if(isLibraryKbUrl(url)) return;
 
   // Network-first: this app deploys often (bug fixes, new features), so on every load we
   // want the freshest deployed copy if the network is available at all. The cache is now
