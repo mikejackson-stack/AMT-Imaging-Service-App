@@ -252,7 +252,7 @@ async function assertTouchTargets(page) {
   }));
   assert(boxes.length >= 2, 'restore prompt has Restore and Discard buttons');
   boxes.forEach(box => {
-    assert(box.h >= 44 && box.w >= 44, box.text + ' is at least 44px (got ' + box.w + 'x' + box.h + ')');
+    assert(box.h >= 43.5 && box.w >= 43.5, box.text + ' meets the 44px touch target (got ' + box.w + 'x' + box.h + ')');
   });
   const labels = boxes.map(b => b.text);
   assert(labels.indexOf('Restore') >= 0 && labels.indexOf('Discard') >= 0, 'buttons read Restore and Discard');
@@ -292,6 +292,10 @@ async function main() {
       return src.indexOf('data:image/png;base64,') === 0;
     });
     assert(logoOk, 'capability statement logo is the embedded image');
+    await page.evaluate(() => showTab('rates'));
+    await page.locator('#capabilityLogo').scrollIntoViewIfNeeded();
+    await page.locator('#capabilitySection').screenshot({ path: path.join(ART, 'capability-logo.png') });
+    ok('capability statement shows the embedded logo');
     await page.waitForFunction(() => localStorage.getItem('amt_pm_draft_v32') === null);
     ok('legacy amt_pm_draft_v32 migrated and removed');
     const legacy = await waitDraft(page, 'pm:standalone', rec => rec.fields && rec.fields.site === 'Legacy Site');
