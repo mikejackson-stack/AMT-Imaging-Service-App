@@ -1,6 +1,6 @@
-// Bumped from amt-v43 -> amt-v44: local service dates, Excite II print labels, phone checklist fit.
+// Bumped from amt-v44 -> amt-v45: login fields stay at 16px, phone top bar no longer overlaps.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v44';
+const CACHE = 'amt-v45';
 const SHELL = ['./','./index.html','./access-config.js'];
 
 self.addEventListener('install', e => {
