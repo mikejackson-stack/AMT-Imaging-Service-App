@@ -6334,7 +6334,8 @@ function grokMissCta(q){
     +'</div>';
 }
 
-// GE service library: loose PDFs in this repo, plus Signa HTML pages in AMT-GE-Manuals.
+// GE service library: loose PDFs in this repo, plus Signa HTML pages and the GE Error Message
+// Tool (Ermes codes, kb/ge-error-tool-kb.json) in AMT-GE-Manuals.
 // Neither list is inlined. Both are fetched on first search from kb/ (same-origin
 // first — GitHub Pages publishes kb/), then kept in IndexedDB for a later offline
 // search. githack stays the fallback when the same-origin file is missing.
@@ -6342,6 +6343,7 @@ function grokMissCta(q){
 // A Signa miss still leaves the loose library searchable.
 const GE_LOOSE_KB_REV = '6bf8717c4adcb71c8de420c0db6e493ebbfedb86ff3def035635260d93abc9ee';
 const GE_SIGNA_KB_REV = '0efd8a6db4acef6c15e3040964acea2a1e8d20b72c3f7becd597ce4f87e484f1';
+const GE_ERRTOOL_KB_REV = '822bb1293333ab0914901ef6497a6ead6f7ab56b600bc17b8827b46ddca18da6';
 var geLooseEntries = null;
 var geLooseLoadPromise = null;
 var geLooseLoadError = '';
@@ -6374,14 +6376,24 @@ function amtGeLooseHits(ql, entries, sys){
   var q = String(ql||'').toLowerCase().trim();
   var src = Array.isArray(entries) ? entries : (typeof geLooseEntries!=='undefined' && Array.isArray(geLooseEntries) ? geLooseEntries : []);
   if(!q || q.length<2) return [];
+  // GE System Log shows "<prefix>:<Ermes code>" (e.g. 75004:2247373); the Error Message Tool
+  // lists only the bare Ermes code, so a prefixed query also matches the part after the colon.
+  var cm = /^\d+\s*:\s*(\d{4,9})$/.exec(q);
+  var alt = cm ? cm[1] : '';
+  var code = alt || (/^\d{4,9}$/.test(q) ? q : '');
+  var exact = [];
   var out = [];
   for(var i=0;i<src.length;i++){
     var e = src[i];
     if(!e) continue;
     if(sys && amtGeLooseSystem(e.modality) !== sys) continue;
-    if(amtGeLooseHay(e).indexOf(q) !== -1) out.push(e);
+    var hay = amtGeLooseHay(e);
+    if(hay.indexOf(q) !== -1 || (alt && hay.indexOf(alt) !== -1)){
+      if(code && String(e.title||'').indexOf(code+' - ') === 0) exact.push(e);
+      else out.push(e);
+    }
   }
-  return out;
+  return exact.length ? exact.concat(out) : out;
 }
 function amtGeLooseCatLabel(c){
   var map = {fault_code:'Fault code', procedure:'Procedure', spec:'Spec', fru_part:'FRU / part', tolerance:'Tolerance', safety:'Safety'};
@@ -6558,6 +6570,8 @@ function geLooseReadIdb(){ return geLooseReadIdbKey('library'); }
 function geLooseSaveIdb(text){ return geLooseSaveIdbKey('library', GE_LOOSE_KB_REV, text); }
 function geSignaReadIdb(){ return geLooseReadIdbKey('signa'); }
 function geSignaSaveIdb(text){ return geLooseSaveIdbKey('signa', GE_SIGNA_KB_REV, text); }
+function geErrToolReadIdb(){ return geLooseReadIdbKey('errtool'); }
+function geErrToolSaveIdb(text){ return geLooseSaveIdbKey('errtool', GE_ERRTOOL_KB_REV, text); }
 async function geKbFetchRel(rel){
   var remoteBase = GH.org+'/'+GH.repo+'/'+GH.branch+'/'+rel;
   var urls = [rel, 'https://raw.githack.com/'+remoteBase, 'https://rawcdn.githack.com/'+remoteBase];
@@ -6579,6 +6593,9 @@ async function geLooseFetchText(){
 async function geSignaFetchText(){
   return geKbFetchRel('kb/ge-signa-kb.json');
 }
+async function geErrToolFetchText(){
+  return geKbFetchRel('kb/ge-error-tool-kb.json');
+}
 function geKbTextOrCache(fetchText, readCache, saveCache){
   return fetchText().then(function(text){
     saveCache(text);
@@ -6598,16 +6615,22 @@ function ensureGeLooseKB(done){
       console.warn('ge signa kb', err);
       return '';
     });
-    geLooseLoadPromise = Promise.all([looseP, signaP]).then(function(parts){
+    var errToolP = geKbTextOrCache(geErrToolFetchText, geErrToolReadIdb, geErrToolSaveIdb).catch(function(err){
+      console.warn('ge error tool kb', err);
+      return '';
+    });
+    geLooseLoadPromise = Promise.all([looseP, signaP, errToolP]).then(function(parts){
       var list = JSON.parse(parts[0]);
       if(!Array.isArray(list)) throw new Error('bad library');
-      if(parts[1]){
+      var labels = ['', 'ge signa kb', 'ge error tool kb'];
+      for(var p=1;p<parts.length;p++){
+        if(!parts[p]) continue;
         try{
-          var extra = JSON.parse(parts[1]);
+          var extra = JSON.parse(parts[p]);
           if(Array.isArray(extra)) list = list.concat(extra);
-          else console.warn('ge signa kb', 'not an array');
+          else console.warn(labels[p], 'not an array');
         }catch(parseErr){
-          console.warn('ge signa kb', parseErr);
+          console.warn(labels[p], parseErr);
         }
       }
       amtGeLoosePrepare(list);

@@ -591,6 +591,29 @@ assert(sprintEntries.length === 857 && sprintEntries.every(e => e.doc === '59821
 });
 assert(combinedHits('Sprint', 'GE Ultrasound').length === 0, "search 'Sprint' has no GE Ultrasound hits");
 
+const errToolPath = path.join(__dirname, 'kb/ge-error-tool-kb.json');
+const errToolEntries = JSON.parse(fs.readFileSync(errToolPath, 'utf8'));
+const errToolSha = crypto.createHash('sha256').update(fs.readFileSync(errToolPath)).digest('hex');
+const errToolRev = (looseSrc.match(/const GE_ERRTOOL_KB_REV = '([0-9a-f]+)'/) || [])[1];
+assert(Array.isArray(errToolEntries) && errToolEntries.length === 14313, 'Error Message Tool library has 14313 entries');
+assert(errToolRev === '822bb1293333ab0914901ef6497a6ead6f7ab56b600bc17b8827b46ddca18da6' && errToolSha === errToolRev,
+  'GE_ERRTOOL_KB_REV matches kb/ge-error-tool-kb.json sha256');
+assert(new Set(errToolEntries.map(e => e.id)).size === errToolEntries.length
+  && errToolEntries.every(e => e.modality === 'MRI' && e.category === 'fault_code' && e.doc === 'Error Message Tool'
+    && String(e.open_url).startsWith('https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/GE%20Error%20Message%20Tool/root/ermes_')
+    && String(e.open_url).endsWith('#' + e.anchor)),
+  'Error Message Tool entries are unique MRI fault codes opening their #BM anchor in AMT-GE-Manuals');
+const combinedErr = combined.concat(errToolEntries);
+function errHits(q, sys) { return looseRt.amtGeLooseHits(q, combinedErr, sys); }
+['2247373', '75004:2247373', '75004 : 2247373'].forEach(q => {
+  const hits = errHits(q, 'GE MRI');
+  assert(hits.length > 0 && hits[0].id === 'ge_errtool_2247373' && /UTNS\/Receiver Gain diagnostic failed/.test(hits[0].body),
+    "search '" + q + "' under GE MRI puts Error Message Tool code 2247373 first");
+});
+assert(errHits('EM_ERROR_UTNS_GAIN_LEVEL', '')[0].id === 'ge_errtool_2247373', 'search by Ermes symbol finds 2247373');
+assert(errHits('4000', 'GE MRI')[0].id === 'ge_errtool_4000', "search '4000' puts the exact Ermes code first");
+assert(errHits('2247373', 'GE Ultrasound').length === 0, "search '2247373' has no GE Ultrasound hits");
+
 const cardRt = new Function(
   'function amtAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }\n'
   + 'function amtEscHtml(s){ return String(s==null?"":s).replace(/[&<>"\']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\\"":"&quot;","\'":"&#39;"}[c]; }); }\n'
@@ -650,7 +673,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v47'/.test(sw), 'sw.js cache name is amt-v47');
+assert(/const CACHE = 'amt-v48'/.test(sw), 'sw.js cache name is amt-v48');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
@@ -666,14 +689,17 @@ heroPremier.forEach(rel => {
 assert(heroIndex.includes('../Premier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf')
   && !heroIndex.includes('Signa%20PreMier/SIGNA_Premier_XT_MDP_Install_Operation_Service.pdf'),
   'Signa Hero stub keeps the Premier XT MDP PDF on this repo');
-assert(!/kb\/ge-loose-kb\.json/.test(sw) && !/kb\/ge-signa-kb\.json/.test(sw),
-  'sw.js does not precache the GE loose or Signa library JSON');
+assert(!/kb\/ge-loose-kb\.json/.test(sw) && !/kb\/ge-signa-kb\.json/.test(sw) && !/kb\/ge-error-tool-kb\.json/.test(sw),
+  'sw.js does not precache the GE loose, Signa or Error Message Tool library JSON');
 const pagesYml = fs.readFileSync(path.join(__dirname, '.github/workflows/pages.yml'), 'utf8');
-assert(/list_kb_json\(/.test(pagesYml) && /ge-signa-kb\.json/.test(pagesYml) && /ge-loose-kb\.json/.test(pagesYml),
-  'Pages workflow publishes kb JSON and checks the Signa library');
+assert(/list_kb_json\(/.test(pagesYml) && /ge-signa-kb\.json/.test(pagesYml) && /ge-loose-kb\.json/.test(pagesYml)
+  && /ge-error-tool-kb\.json/.test(pagesYml),
+  'Pages workflow publishes kb JSON and checks the Signa and Error Message Tool libraries');
 const standalone = fs.readFileSync(path.join(__dirname, 'AMT-Imaging-App-standalone.html'), 'utf8');
 assert(standalone.includes("const GE_SIGNA_KB_REV = '" + signaRev + "'") && standalone.includes("geLooseReadIdbKey('signa')"),
   'standalone app loads and caches the Signa library');
+assert(standalone.includes("const GE_ERRTOOL_KB_REV = '" + errToolRev + "'") && standalone.includes("geLooseReadIdbKey('errtool')"),
+  'standalone app loads and caches the Error Message Tool library');
 
 function makeLibraryIdb(store) {
   function later(fill) {
@@ -714,6 +740,7 @@ const libraryRunner = new Function(
     'var geLooseEntries = null; var geLooseLoadPromise = null; var geLooseLoadError = "";',
     'const GE_LOOSE_KB_REV = "loose-rev";',
     'const GE_SIGNA_KB_REV = "signa-rev";',
+    'const GE_ERRTOOL_KB_REV = "errtool-rev";',
     extractFunction(looseSrc, 'amtGeLoosePrepare'),
     extractFunction(looseSrc, 'geLooseIdb'),
     extractFunction(looseSrc, 'geLooseReadIdbKey'),
@@ -722,28 +749,33 @@ const libraryRunner = new Function(
     extractFunction(looseSrc, 'geLooseSaveIdb'),
     extractFunction(looseSrc, 'geSignaReadIdb'),
     extractFunction(looseSrc, 'geSignaSaveIdb'),
+    extractFunction(looseSrc, 'geErrToolReadIdb'),
+    extractFunction(looseSrc, 'geErrToolSaveIdb'),
     extractFunction(looseSrc, 'geKbFetchRel'),
     extractFunction(looseSrc, 'geLooseFetchText'),
     extractFunction(looseSrc, 'geSignaFetchText'),
+    extractFunction(looseSrc, 'geErrToolFetchText'),
     extractFunction(looseSrc, 'geKbTextOrCache'),
     extractFunction(looseSrc, 'ensureGeLooseKB'),
     'return function(){ return {get entries(){ return geLooseEntries; }, get error(){ return geLooseLoadError; }, load: ensureGeLooseKB, reset: function(){ geLooseEntries = null; geLooseLoadPromise = null; geLooseLoadError = ""; }}; };'
   ].join('\n')
 );
 
-function libraryFetch(looseText, signaText) {
+function libraryFetch(looseText, signaText, errToolText) {
   return async function(url) {
     const rel = String(url);
-    const text = rel.includes('ge-signa-kb.json') ? signaText : (rel.includes('ge-loose-kb.json') ? looseText : null);
+    const text = rel.includes('ge-signa-kb.json') ? signaText
+      : (rel.includes('ge-loose-kb.json') ? looseText
+      : (rel.includes('ge-error-tool-kb.json') ? (errToolText === undefined ? null : errToolText) : null));
     if (text == null) throw new Error('unavailable ' + rel);
     return { ok: true, status: 200, async text() { return text; } };
   };
 }
 
-function runLibraryCase(looseText, signaText, store) {
+function runLibraryCase(looseText, signaText, store, errToolText) {
   const state = libraryRunner(
     { org: 'mikejackson-stack', repo: 'AMT-Imaging-Service-App', branch: 'main' },
-    libraryFetch(looseText, signaText),
+    libraryFetch(looseText, signaText, errToolText),
     makeLibraryIdb(store),
     { warn() {} }
   )();
@@ -770,6 +802,11 @@ runLibraryCase('[{"id":"loose"}]', null, {}).then((signaMiss) => {
   assert(both.entries.length === 2 && both.entries[1].id === 'signa'
     && both.store.signa && both.store.signa.rev === 'signa-rev' && both.store.signa.text === '[{"id":"signa"}]',
     'both libraries load and Signa text is cached under signa with its rev');
+  return runLibraryCase('[{"id":"loose"}]', '[{"id":"signa"}]', {}, '[{"id":"errtool"}]');
+}).then((three) => {
+  assert(three.entries.length === 3 && three.entries[2].id === 'errtool'
+    && three.store.errtool && three.store.errtool.rev === 'errtool-rev',
+    'Error Message Tool library loads after Signa and is cached under errtool with its rev');
   return runLibraryCase(null, '[{"id":"signa"}]', {});
 }).then((looseMiss) => {
   assert(Array.isArray(looseMiss.entries) && looseMiss.entries.length === 0 && /Could not download/.test(looseMiss.error),
