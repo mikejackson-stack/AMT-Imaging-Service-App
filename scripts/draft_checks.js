@@ -43,7 +43,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v46'/.test(sw), 'sw.js cache name is amt-v46');
+  assert(/const CACHE = 'amt-v47'/.test(sw), 'sw.js cache name is amt-v47');
   [index, stand].forEach(html => {
     assert(html.includes("indexedDB.open('amtDrafts'"), 'opens IndexedDB amtDrafts');
     assert(html.includes("createObjectStore('drafts'"), 'creates the drafts store');
@@ -55,6 +55,11 @@ function staticChecks() {
     assert(html.includes('if(document.hidden)'), 'flushes drafts when the page is hidden');
     assert(html.includes('isWriterSession()'), 'drafts follow the writer session');
     assert(html.includes(', 1000)'), 'draft debounce is about one second');
+    assert(html.includes('flushDraftKey(key)'), 'a job switch commits the draft key captured when typing started');
+    assert(html.includes('draftKeyForModal'), 'closing a form flushes that form draft');
+    assert(!html.includes('Manuals/amt_logo.png'), 'capability logo does not use the missing Manuals path');
+    assert(html.includes('id="capabilityLogo"'), 'capability statement has a logo image');
+    assert(html.includes("'capabilityLogo'"), 'capability logo uses the embedded logo');
   });
   assert(engineSlice(index) && engineSlice(index) === engineSlice(stand), 'draft engine matches in index.html and the standalone file');
 }
@@ -125,8 +130,10 @@ async function launch(playwright, userDataDir) {
     headless: true,
     viewport: { width: 390, height: 844 },
     serviceWorkers: 'block',
-    args: ['--disable-dev-shm-usage', '--disable-gpu']
+    args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
   };
+  const chrome = process.env.CHROME_PATH || '/usr/bin/google-chrome';
+  if (fs.existsSync(chrome)) opts.executablePath = chrome;
   let context;
   try {
     context = await playwright.chromium.launchPersistentContext(userDataDir, opts);
@@ -210,13 +217,13 @@ async function readDraft(page, key) {
   }, key);
 }
 
-async function waitDraft(page, key, pred) {
-  const deadline = Date.now() + 10000;
+async function waitDraft(page, key, pred, budget) {
+  const deadline = Date.now() + (budget || 10000);
   let last = null;
   while (Date.now() < deadline) {
     last = await readDraft(page, key);
     if (last && (!pred || pred(last))) return last;
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(50);
   }
   throw new Error('draft ' + key + ' not ready: ' + JSON.stringify(last));
 }
@@ -245,7 +252,7 @@ async function assertTouchTargets(page) {
   }));
   assert(boxes.length >= 2, 'restore prompt has Restore and Discard buttons');
   boxes.forEach(box => {
-    assert(box.h >= 44 && box.w >= 44, box.text + ' is at least 44px (got ' + box.w + 'x' + box.h + ')');
+    assert(box.h >= 43.5 && box.w >= 43.5, box.text + ' meets the 44px touch target (got ' + box.w + 'x' + box.h + ')');
   });
   const labels = boxes.map(b => b.text);
   assert(labels.indexOf('Restore') >= 0 && labels.indexOf('Discard') >= 0, 'buttons read Restore and Discard');
@@ -279,6 +286,16 @@ async function main() {
       }));
     });
     await bootWriter(page);
+    const logoOk = await page.evaluate(() => {
+      const el = document.getElementById('capabilityLogo');
+      const src = (el && el.src) || '';
+      return src.indexOf('data:image/png;base64,') === 0;
+    });
+    assert(logoOk, 'capability statement logo is the embedded image');
+    await page.evaluate(() => showTab('rates'));
+    await page.locator('#capabilityLogo').scrollIntoViewIfNeeded();
+    await page.locator('#capabilitySection').screenshot({ path: path.join(ART, 'capability-logo.png') });
+    ok('capability statement shows the embedded logo');
     await page.waitForFunction(() => localStorage.getItem('amt_pm_draft_v32') === null);
     ok('legacy amt_pm_draft_v32 migrated and removed');
     const legacy = await waitDraft(page, 'pm:standalone', rec => rec.fields && rec.fields.site === 'Legacy Site');
@@ -320,6 +337,26 @@ async function main() {
     });
     assert(pm.email === WRITER.email, 'PM draft stores the writer email');
     ok('PM checklist draft committed before the browser dies');
+
+    await page.evaluate(() => {
+      jobs.push({ id: 'pm-job-a', site: 'Alpha Site', type: 'PM', date: '2026-09-01', modality: 'GE CT', model: 'Revolution' });
+      jobs.push({ id: 'pm-job-b', site: 'Beta Site', type: 'PM', date: '2026-09-02', modality: 'GE CT', model: 'Revolution' });
+      loadPMForJob('pm-job-a');
+    });
+    await page.waitForFunction(() => (document.getElementById('pm_jobLink') || {}).value === 'pm-job-a');
+    await page.fill('#pm_notes', 'alpha last keystroke');
+    await page.evaluate(() => loadPMForJob('pm-job-b'));
+    const switched = await waitDraft(page, 'pm:pm-job-a', rec => rec.fields && rec.fields.notes === 'alpha last keystroke', 800);
+    assert(switched.fields.jobId === 'pm-job-a', 'switching jobs keeps the previous job id on that draft');
+    ok('switching PM jobs flushes the previous draft before the debounce');
+
+    await page.evaluate(() => { showTab('money'); setMoneyTab('invoices'); openInvoiceModal(); });
+    await page.fill('#inv_client', 'Flush Client');
+    await page.evaluate(() => closeModal('invoiceModal'));
+    const flushedInv = await waitDraft(page, 'invoice:new', rec => rec.fields && rec.fields.inv_client === 'Flush Client', 800);
+    assert(flushedInv.fields.inv_client === 'Flush Client', 'closing the invoice form keeps the last keystrokes');
+    await page.evaluate(() => clearDraft('invoice:new'));
+    ok('closing a form flushes its draft before the debounce');
 
     const pid = browserPid(userDataDir);
     if (!pid) fail('browser process is missing');

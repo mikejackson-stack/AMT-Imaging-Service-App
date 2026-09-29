@@ -650,7 +650,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v46'/.test(sw), 'sw.js cache name is amt-v46');
+assert(/const CACHE = 'amt-v47'/.test(sw), 'sw.js cache name is amt-v47');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
