@@ -602,6 +602,41 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .pm-reset-wrap summary{cursor:pointer;color:#6b7280;font-size:.8rem;font-weight:700}
 .pm-reset-wrap .btn{margin-top:8px}
 
+
+.cl-exii h3{font-size:.95rem;margin:16px 0 8px;color:var(--navy)}
+.cl-exii h4{font-size:.8rem;margin:12px 0 6px;color:var(--text)}
+.cl-banner{background:var(--gray);border-left:4px solid var(--gold);padding:8px 10px;border-radius:8px;margin-bottom:10px;font-size:.78rem;line-height:1.45}
+.cl-info-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.cl-equip-row{display:grid;grid-template-columns:1fr;gap:6px;margin-bottom:8px}
+.cl-read,.cl-task,.cl-iv{border:1px solid var(--gray2);border-radius:8px;padding:8px 10px;margin-bottom:8px;background:var(--white)}
+.cl-read-name{font-weight:700;margin-bottom:4px}
+.cl-spec{font-size:.75rem;color:var(--text2);margin:4px 0;line-height:1.4}
+.cl-read-vals{display:flex;flex-wrap:wrap;gap:8px}
+.cl-read-vals label{display:flex;flex-direction:column;gap:2px;font-size:.68rem;font-weight:700;color:var(--text2)}
+.cl-num{width:112px;font-size:16px;min-height:44px;padding:8px;border:1.5px solid var(--gray2);border-radius:6px;text-align:center;background:var(--white);color:var(--text)}
+.cl-num.cl-oor{border-color:#d97706;background:#fff7ed}
+.cl-oor-note{font-size:.72rem;color:#9a6700;margin:4px 0 8px}
+.cl-task-top{display:flex;gap:8px;align-items:flex-start}
+.cl-task-no{font-weight:800;color:var(--navy);min-width:2.2rem}
+.cl-task-meta{font-size:.72rem;color:var(--text2);margin:4px 0}
+.cl-task-pf{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cl-pf-inline{display:flex;gap:2px;align-items:center}
+.cl-mini{display:flex;flex-direction:column;align-items:center;font-size:.62rem;font-weight:700;color:var(--text2);min-width:44px}
+.cl-act,.cl-task-cmt{font-size:16px}
+.cl-act{min-height:44px;max-width:140px}
+.cl-task-cmt{width:100%;min-height:44px;margin-top:6px;padding:8px;border:1.5px solid var(--gray2);border-radius:6px}
+.cl-interval{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:10px 0}
+.cl-res{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:.78rem}
+.cl-res input,.cl-cond input,.cl-interval input{width:22px;height:22px}
+.cl-cond{display:flex;gap:8px;align-items:flex-start;margin:8px 0;font-size:.82rem;line-height:1.35}
+.cl-fold{margin:8px 0;border:1px solid var(--gray2);border-radius:8px;padding:8px 10px;background:var(--gray)}
+.cl-fold summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+@media(min-width:768px){
+  .cl-info-grid{grid-template-columns:1fr 1fr}
+  .cl-equip-row{grid-template-columns:1.4fr .8fr}
+  .cl-iv{display:grid;grid-template-columns:36px 1fr 1fr auto;gap:8px;align-items:center}
+}
+
 /* Radio cells: flex stays on the inner span, never the td */
 .chk-r{display:inline-flex;align-items:center;justify-content:center;width:auto}
 
@@ -789,7 +824,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <div class="card"><div class="card-header">🔧 Job Details</div><div class="card-body">
     <div class="form-row">
       <div class="form-group"><label class="form-label">Job Type *</label>
-        <select class="form-control" id="nj_type" onchange="checkInjectorPMTrigger()" onchange="onTypeChange()">
+        <select class="form-control" id="nj_type" onchange="onTypeChange()">
           <option value="">Select…</option>
           <option>PM</option><option>Repair</option><option>Ramp/Shim</option>
           <option>Install</option><option>Consultation</option><option>Emergency</option>
@@ -859,9 +894,10 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
       <div class="form-group"><label class="form-label">Work Order / PO #</label><input class="form-control" id="pm_wo" placeholder="WO-00000"></div>
     </div>
     <div class="form-group"><label class="form-label">Select Checklist Type</label>
-      <select class="form-control" id="pm_type_sel" onchange="switchChecklist(this.value)">
+      <select class="form-control" id="pm_type_sel" onchange="onPMTypePicked(this.value)">
         <option value="">-- Choose checklist --</option>
         <option value="ge_mri">GE MRI System PM</option>
+        <option value="ge_mr_exii">GE MR Excite II and Later</option>
         <option value="siemens_mri">Siemens MRI System PM</option>
         <option value="ge_ct">GE CT Quarterly PM</option>
         <option value="siemens_ct">Siemens CT System PM</option>
@@ -870,6 +906,13 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
         <option value="optivantage">OptiVantage DH CT Injector PM</option>
         <option value="empowercta">Bracco EmpowerCTA+ CT Injector PM</option>
       </select>
+      <div id="pmExiiConfirm" class="alert alert-pm" style="display:none;margin-top:8px">
+        <strong>This model says Excite.</strong> It may be an older Excite or Excite II and later. Choose the checklist. You can change it from the list above any time.
+        <div class="btn-row" style="margin-top:8px">
+          <button type="button" class="btn btn-primary btn-sm" onclick="confirmExiiChoice('ge_mr_exii')">GE MR Excite II and Later</button>
+          <button type="button" class="btn btn-outline btn-sm" onclick="confirmExiiChoice('ge_mri')">Generic GE MRI</button>
+        </div>
+      </div>
     </div>
   </div></div>
   <div id="pmProgress" class="pm-progress" hidden></div>
@@ -1747,23 +1790,20 @@ async function sha256(str){
   return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-// Init: store real hashes on first run
+// Init: store pre-computed hashes on first run (PINs are NOT stored in source — hashes only)
+const PIN_HASHES_DEFAULT={
+  michael:    'c6e8eeae3dbdc424838f855a3d6b34e292b9590bfc5ea70cb3038d8f460f87bd',
+  antonio:    'cb21080b07c817c24cc5091d10c7ff29e197e1441ce97dd3496e37e6acd2f9cc',
+  candelario: '507e6a42583ef241f4e8417ddc19315701b83ef46cbf4dbfb631cf5026c0aa52',
+  emily:      '1c68139c6b851176bfb03d8b6a41982c7e14654d196b244f6bd42dbbe745d2d9'
+};
 async function initPinHashes(){
   let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null')||{};
-  // Merge in any users added since this browser last cached PIN hashes (otherwise a
-  // returning user's stale localStorage copy would never see newly added staff).
-  const defaults={
-    michael:    ['7591','mikejackson'],
-    antonio:    ['0325','antoniojackson'],
-    candelario: ['0216','candelariojuarez'],
-    emily:      ['1216','emilyoliveros']
-  };
+  // Merge in any users added to PIN_HASHES_DEFAULT since this browser last cached PIN hashes
+  // (otherwise a returning user's stale localStorage copy would never see newly added staff).
   let changed=false;
-  for(const k in defaults){
-    if(!(k in stored)){
-      stored[k]=await sha256(defaults[k][0]+'_amt_salt_'+defaults[k][1]);
-      changed=true;
-    }
+  for(const k in PIN_HASHES_DEFAULT){
+    if(!(k in stored)){ stored[k]=PIN_HASHES_DEFAULT[k]; changed=true; }
   }
   if(changed) localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   return stored;
@@ -1834,15 +1874,30 @@ function bootApp(){
 
 function logout(){
   if(!confirm('Sign out?'))return;
-  sessionStorage.removeItem('amt_auth_v29');currentUser=null;
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('mainApp').style.display='none';
-  document.getElementById('pinInput').value='';
-  document.getElementById('pinUser').value='';
-  document.getElementById('pinPanel').style.display='none';
-  document.getElementById('loginError').textContent='';
-  document.getElementById('userInfoDsk').style.display='none';
-  updatePinDots('');
+  // Leave the signed-in app up until Firebase Auth has dropped the Google user.
+  // Otherwise a PIN login on this browser can still cloudPush() as that user.
+  const finish=()=>{
+    sessionStorage.removeItem('amt_auth_v29');currentUser=null;
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('mainApp').style.display='none';
+    document.getElementById('pinInput').value='';
+    document.getElementById('pinUser').value='';
+    document.getElementById('pinPanel').style.display='none';
+    document.getElementById('loginError').textContent='';
+    document.getElementById('userInfoDsk').style.display='none';
+    updatePinDots('');
+  };
+  Promise.resolve(signOutFirebaseAuth()).then(finish, finish);
+}
+function signOutFirebaseAuth(){
+  try{
+    if(typeof _cloudUnsubscribers!=='undefined' && _cloudUnsubscribers && _cloudUnsubscribers.length){
+      _cloudUnsubscribers.forEach(u=>{ try{u();}catch(e){} });
+      _cloudUnsubscribers=[];
+    }
+  }catch(e){}
+  if(!fbAuth || typeof fbAuth.signOut!=='function') return Promise.resolve();
+  return fbAuth.signOut().catch(e=>console.warn('[AMT Firebase Auth] sign-out failed:',e&&(e.code||e)));
 }
 
 function togglePin(){
@@ -2644,7 +2699,7 @@ function createInvoiceFromJob(id){
   },200);
 }
 
-function onTypeChange(){document.getElementById('pmAlert').style.display=document.getElementById('nj_type').value==='PM'?'block':'none';}
+function onTypeChange(){const el=document.getElementById('pmAlert');const t=(document.getElementById('nj_type')||{}).value||'';if(el) el.style.display=t==='PM'?'block':'none';checkInjectorPMTrigger();}
 
 function saveJob(){
   if(!writeGuard('Save Job')) return;
@@ -2706,6 +2761,7 @@ function viewJob(id){
   openModal('viewModal');
 }
 
+const JOB_MODALITIES=['GE MRI','Siemens MRI','Philips MRI','GE CT','Siemens CT','Hitachi MRI','Toshiba MRI','Stellant Injector','Solaris/Spectris Injector','MRXperion MR Injector','Mark 7 Arterion Injector','Intego PET Injector','Avanta Fluid Management','Other'];
 function editJob(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;editTarget=id;
   const sel=(fid,opts,cur)=>`<select class="form-control" id="${fid}">${opts.map(o=>`<option${cur===o?' selected':''}>${o}</option>`).join('')}</select>`;
@@ -2714,7 +2770,7 @@ function editJob(id){
     <div class="form-group"><label class="form-label">Contact</label><input class="form-control" id="ej_contact" value="${esc(j.contact)}"></div></div>
     <div class="form-row"><div class="form-group"><label class="form-label">Phone</label><input class="form-control" id="ej_phone" value="${esc(j.phone)}"></div>
     <div class="form-group"><label class="form-label">Location</label><input class="form-control" id="ej_location" value="${esc(j.location)}"></div></div>
-    <div class="form-row"><div class="form-group"><label class="form-label">Modality</label>${sel('ej_modality',['','GE MRI','Siemens MRI','Philips MRI','GE CT','Siemens CT','Stellant Injector','Solaris/Spectris Injector','Other'],j.modality)}</div>
+    <div class="form-row"><div class="form-group"><label class="form-label">Modality</label>${sel('ej_modality',[''].concat(JOB_MODALITIES),j.modality)}</div>
     <div class="form-group"><label class="form-label">Model</label><input class="form-control" id="ej_model" value="${esc(j.model)}"></div></div>
     <div class="form-row"><div class="form-group"><label class="form-label">Serial #</label><input class="form-control" id="ej_serial" value="${esc(j.serial)}"></div>
     <div class="form-group"><label class="form-label">Field</label>${sel('ej_field',['','1.5T','3T','Open','N/A'],j.field)}</div></div>
@@ -2755,30 +2811,399 @@ document.querySelectorAll('.modal-overlay').forEach(ov=>ov.addEventListener('cli
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&!document.querySelector('.modal-overlay.open'))document.body.style.overflow='';});
 
 // ═══ PM CHECKLIST SYSTEM ═══
+const PM_EXII = {"docNo":"AMT-PM-GE-MR-EXII","rev":"Rev 0 (DRAFT 2)","docDate":"2026-09-28","title":"AMT Imaging Solutions - GE MR Excite II and Later - Preventive Maintenance Checklist","co":"AMT Imaging Solutions LLC","coSub":"MRI & CT Field Service  |  Palm Bay, FL  |  Houston, TX","instructions":["Use this form as the record of a planned maintenance (PM) visit. Perform PM at the interval shown for each task and record the results here.","Follow the GE service manual and the GE MR planned-maintenance data sheets for Excite II and later systems for every procedure on this form.","Some items are also listed in the GE Operator's Manual as daily or weekly user tasks. Confirm the site has done them; if not, cover them during the PM visit.","Watch for sharps, blood, contrast, high voltage, moving parts, radiation exposure, and cover safety latches. Take the right precautions to avoid injury or equipment damage.","Work through the sections in order: 1 data collection, 2 technologist interview, 3 cleaning and visual/physical checks, 4 scanning and measurement, 5 sign-off.","Fill in every field; enter N/A where a field does not apply. Enter the system S/N and date in the header of each page. Sign Section 5 when done."],"sysinfo":[{"key":"customer","label":"Customer / site"},{"key":"address","label":"Site address"},{"key":"room","label":"Room / suite"},{"key":"model","label":"System model"},{"key":"sw","label":"Software version"},{"key":"sys_sn","label":"System S/N"},{"key":"sys_id","label":"System ID"},{"key":"oem_id","label":"OEM system ID"},{"key":"mag_sn","label":"Magnet serial #"},{"key":"pm_date","label":"PM date"},{"key":"tech","label":"AMT field engineer"}],"nEquip":4,"cal":[{"id":"inhom","label":"Inhomogeneity (shim)","unit":"Hz","spec":"Std dev, 45 cm DSV: 1.5T \u003c80 Hz whole, \u003c64 Hz zoom; 3T \u003c127 Hz whole, 45 Hz zoom. 22 cm gradient shim: \u003c6 Hz (CX/LCC magnets), \u003c12 Hz (other).","note":"1"},{"id":"xgc","label":"X Gradcal","unit":"mm","spec":"Final measurement 99 to 101 mm. CV value: no spec.","note":"2"},{"id":"ygc","label":"Y Gradcal","unit":"mm","spec":"Final measurement 99 to 101 mm. CV value: no spec.","note":"2"},{"id":"zgc","label":"Z Gradcal","unit":"mm","spec":"Final measurement 99 to 101 mm. CV value: no spec.","note":"2"},{"id":"hsnr","label":"Head SNR","unit":"none (ratio)","spec":"1.5T: 76 to 102. 1.0T: 57 to 65. 3T: per OEM spec.","note":"3"},{"id":"bsnr","label":"Body SNR","unit":"none (ratio)","spec":"1.5T: 74 to 79. 1.0T: 39 to 53. 3T: per OEM spec.","note":"3"},{"id":"shimtg","label":"Shim phantom TG","unit":"","spec":"130 to 160 (LVShim phantom, 1.5T and 3T).","note":"4"},{"id":"dqatg","label":"DQA isocenter TG","unit":"","spec":"per OEM spec","note":""}],"mag":[{"id":"magp","label":"Magnet pressure","unit":"psi","spec":"Recondensing (zero boil-off) magnets with Magnet Monitor pressure control: 4.0 +/- 0.1 psi (cycles 3.9 to 4.1). Other magnets: per OEM spec.","note":"5"},{"id":"lhe","label":"LHe (helium) level","unit":"%","spec":"Emergency fill at 60%. Do not operate the magnet below 40%.","note":"6"},{"id":"compp","label":"Compressor pressure","unit":"MPa (static: psig)","spec":"Dynamic 2.1 to 2.3 MPa (HC-10, CSW-71). Static at 70 F: 217 +/- 3 psig (HC-10), 236 +/- 3 psig (CSW-71).","note":"7"},{"id":"comphrs","label":"Compressor run hours","unit":"hours","spec":"No limit. Adsorber due at: HC-10 13,000 h; Leybold 18,000 h; CSW-71 / CSA-71A 20,000 h; Balzers 26,000 h; F-50 30,000 h.","note":"8"},{"id":"hrstime","label":"Time run hours logged","unit":"clock time","spec":"n/a","note":""},{"id":"losthrs","label":"Lost hours","unit":"hours","spec":"per OEM spec","note":""}],"other":[{"id":"rfpwr","label":"RF power output","unit":"W","spec":"1.5T: body 16 kW (72 dBm), head 2 kW (63 dBm). 3T 35 kW amp: body 34,500 to 35,300 W, head 4,000 to 4,100 W. 3T 25 kW amp: body 24,500 to 25,300 W.","note":"9"}],"footnotes":[{"n":"1","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'LVShim Specs' (BRM/TRM whole-body and CRM/TRM zoom tables, 11.x and later) and the gradient-shim table; same values in the 3.0T and HDxt manuals. Limits shown are customer acceptance (shim-to goals are tighter): 1.5T whole-body 45 cm DSV, 200 Hz BW, \u003c80 Hz (1.25 ppm), Oxford magnets 80 Hz; 1.5T zoom \u003c64 Hz (1.00 ppm); 3T LCC 45 cm DSV, 400 Hz BW, \u003c127 Hz (1.00 ppm); 3T zoom 40 cm DSV, 45 Hz (0.35 ppm). If acceptance is exceeded, a main LVShim is required."},{"n":"2","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'Gradient Calibration Image Analysis', Gradcal data sheet (also in the 3.0T and HDxt manuals). Record the final measurement (mm) and the final CV value; spec applies to the measurement only. TwinSpeed: complete for both Whole and Zoom modes."},{"n":"3","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'SNR Data Sheets' (same text in the 3.0T and HDxt manuals). Range covers axial, sagittal and coronal. Applies to the GE SNR check: body SNR sphere in the body loader; head SNR sphere in the head loader with the quad head coil; phantom at 22 +/- 2 C; same gradient mode throughout (TwinSpeed: one set per mode). The manual gives no 3T values."},{"n":"4","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14) and GE Signa EXCITE HD 3.0T Service Methods (Direction 5133330-3 Rev 14), LVShim procedures ('Main LVShim', 'Gradient LVShim', 'Rough LVShim', 'LVShim Analysis'): TG should be between 130 and 160. No unit stated."},{"n":"5","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'Main LVShim Procedure' (helium vessel pressure 4.0 +/- 0.1 psi) and 'Inspecting Cryocooler Systems' (vessel pressure cycling 3.9 to 4.1 psi on Magnet Monitor, zero boil-off systems); GE Signa HDxt Service Methods (Direction 5440001-3 Rev 6), 'Shimming' (3.9 to 4.1 psig)."},{"n":"6","text":"GE Signa HDxt Service Methods (Direction 5440001-3 Rev 6), 'Liquid Helium Fill', Minimum Cryogen Levels table (percent on the cryogen monitor). Magnets with out-of-spec boil-off may need a fill at higher levels."},{"n":"7","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'Inspecting Cryocooler Systems': Sumitomo HC-10 shield cooler and CSW-71 4K (zero boil-off) compressors. F-50 tolerance is given only as a gauge illustration; other compressors: per OEM spec."},{"n":"8","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'Inspecting Cryocooler Systems' (adsorber replacement interval by compressor type). Compare run hours with the date of the last adsorber change."},{"n":"9","text":"GE Signa EXCITE HD 1.5T Service Methods (Direction 5133315-3 Rev 14), 'Body and Head Maximum Power RF Output Check' (meets and does not exceed); GE Signa EXCITE HD 3.0T Service Methods (Direction 5133330-3 Rev 14), 35 kW and 25kW/35kW Eclipse 2 amplifier maximum power setup. The 3T Eclipse 2 head setup gives both 4,000-4,100 W and 3,300-3,400 W, so use per OEM spec for that head value."}],"sections":[{"title":"SECTION 3 - CLEANING AND VISUAL / PHYSICAL CHECKS","groups":[{"title":"3A  Safety and emergency functions","tasks":[{"no":"3.1","id":"S1","text":"Oxygen (O2) monitor: confirm correct operation, where installed.","interval":"Bi-monthly","offline":""},{"no":"3.2","id":"S3","text":"Patient pneumatic alert system: confirm it works.","interval":"Bi-monthly","offline":""},{"no":"3.3","id":"S5","text":"Cradle emergency release: confirm it works.","interval":"Bi-monthly","offline":""},{"no":"3.4","id":"S6","text":"Patient transport emergency release: confirm it works.","interval":"Bi-monthly","offline":""},{"no":"3.5","id":"S12","text":"Emergency off circuits: check.","interval":"Bi-monthly","offline":""},{"no":"3.6","id":"S13","text":"Power monitor: perform functional test.","interval":"6 months","offline":""},{"no":"3.7","id":"S14","text":"Magnet run-down unit (ERU, MRU): check.","interval":"Bi-monthly","offline":""}]},{"title":"3B  Patient table and transport","tasks":[{"no":"3.8","id":"ON4","text":"Patient table: clean.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.9","id":"S7","text":"Patient transport casters: inspect.","interval":"Bi-monthly","offline":""},{"no":"3.10","id":"S8","text":"Patient armboard setscrews: check.","interval":"Bi-monthly","offline":""},{"no":"3.11","id":"S9","text":"Confirm the table cannot be lowered unless the cradle is at home.","interval":"Bi-monthly","offline":""},{"no":"3.12","id":"S10","text":"Cradle longitudinal drive clutch: check.","interval":"Bi-monthly","offline":""},{"no":"3.13","id":"S11","text":"Cradle and carriage wheels: check all.","interval":"Bi-monthly","offline":""},{"no":"3.14","id":"ON5","text":"Dock pedal springs: check.","interval":"6 months","offline":"Yes"},{"no":"3.15","id":"ON13","text":"Patient transport hydraulic fluid: check level.","interval":"6 months","offline":"Yes"},{"no":"3.16","id":"ON15","text":"Patient alignment lights: check.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.17","id":"ON16","text":"ISO Z table movement: check.","interval":"Bi-monthly","offline":"Yes"}]},{"title":"3C  Magnet room, RF shielding and cables","tasks":[{"no":"3.18","id":"ON1","text":"RF shielding and door seals: check.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.19","id":"ON2","text":"Patient fans/blowers: check; clean the filter.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.20","id":"S2","text":"Peripheral pulse gating cable: inspect.","interval":"Bi-monthly","offline":""},{"no":"3.21","id":"ON11","text":"Gradient cable connections and supports: check.","interval":"6 months","offline":"Yes"},{"no":"3.22","id":"ON12","text":"Magnet room RF cables and connections: check.","interval":"6 months","offline":"Yes"}]},{"title":"3D  Equipment room: cabinets, filters, fans, power and cooling","tasks":[{"no":"3.23","id":"OA1","text":"RF cabinet filters: check and clean, if equipped.","interval":"Bi-monthly","offline":"No"},{"no":"3.24","id":"OA2","text":"ACGD/HFD cabinet filters: check and clean.","interval":"Bi-monthly","offline":"No"},{"no":"3.25","id":"OA4","text":"TAC cabinet filters: check and clean, if equipped.","interval":"Bi-monthly","offline":"No"},{"no":"3.26","id":"OA5","text":"Excite/system cabinet fans: check.","interval":"Bi-monthly","offline":"No"},{"no":"3.27","id":"OA6","text":"Excite/system cabinet filters: check and clean.","interval":"Bi-monthly","offline":"No"},{"no":"3.28","id":"ON3","text":"Gradient coil cooling unit: check.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.29","id":"ON14","text":"PDU power connection: inspect.","interval":"6 months","offline":"Yes"},{"no":"3.30","id":"OA8","text":"Computer room air temperature: check.","interval":"Bi-monthly","offline":"No"}]},{"title":"3E  Operator console and host computer","tasks":[{"no":"3.31","id":"OA3","text":"Host fans and vents: check and clean.","interval":"Bi-monthly","offline":"No"},{"no":"3.32","id":"ON7","text":"GOC and HP computer fans and air intake: clean.","interval":"Bi-monthly","offline":"Yes"},{"no":"3.33","id":"ON8","text":"GOC mouse: check and clean.","interval":"Bi-monthly","offline":"Yes"}]}]},{"title":"SECTION 4 - SCANNING AND MEASUREMENT","groups":[{"title":"4A  Calibration and image quality","tasks":[{"no":"4.1","id":"IQ1","text":"X gradient calibration: check; record X Gradcal in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.2","id":"IQ2","text":"Y gradient calibration: check; record Y Gradcal in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.3","id":"IQ3","text":"Z gradient calibration: check; record Z Gradcal in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.4","id":"IQ4","text":"Shim: check; record inhomogeneity in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.5","id":"IQ5","text":"Head SNR: check; record in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.6","id":"IQ6","text":"Body SNR: check; record in 1C.","interval":"Bi-monthly","offline":""},{"no":"4.7","id":"IQ7","text":"Receive path: confirm all receive paths function.","interval":"Bi-monthly","offline":""}]},{"title":"4B  RF power","tasks":[{"no":"4.8","id":"S4","text":"RF power output: check and record in Section 1E.","interval":"Bi-monthly","offline":""}]},{"title":"4C  Magnet and cryogen data","tasks":[{"no":"4.9","id":"ON17","text":"Magnet pressure: record in 1D.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.10","id":"ON18","text":"Shield cooler hours: record in 1D.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.11","id":"ON19","text":"Shield cooler lost hours: calculate; record in 1D.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.12","id":"ON20","text":"Helium level: record in 1D.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.13","id":"ON21","text":"Static shield cooler compressor pressure: record in 1D.","interval":"Bi-monthly","offline":"Yes"}]},{"title":"4D  Diagnostics, system software and backups","tasks":[{"no":"4.14","id":"ON6","text":"Run AGP, APS and SCP diagnostics.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.15","id":"OA7","text":"GOC/system clock: confirm it is accurate.","interval":"Bi-monthly","offline":"No"},{"no":"4.16","id":"ON9","text":"Error log: check, then delete.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.17","id":"ON10","text":"Excess \"core\" files: remove.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.18","id":"ON22","text":"System-level information: back up.","interval":"Bi-monthly","offline":"Yes"},{"no":"4.19","id":"ON23","text":"Customer protocols: back up.","interval":"Bi-monthly","offline":"Yes"}]}]}],"interviewN":5,"actionCodes":"Action codes (use in the Action column): CL = cleaned, AD = adjusted, RP = repaired, RL = replaced, NAD = needs adjustment, NRP = needs repair, NRL = needs replacement.","condition":[{"key":"none","title":"No deficiencies.","text":"Image quality testing showed no deviation from the required reference values."},{"key":"slight","title":"Minor deficiencies.","text":"Operation is not affected, but they should be corrected as preventive work. Image quality testing showed no deviation from the required reference values."},{"key":"serious","title":"Serious deficiencies.","text":"These must be corrected before the system is released for use."}],"appendix":{"intro":"This checklist combines two earlier revisions of the same procedure. Where the revisions disagree, Rev B was used. DRAFT 2 changes the order to match how a PM visit runs: data collection first, then the technologist interview, then cleaning and visual/physical checks, then scanning and measurement, then sign-off. Task wording and intervals are unchanged; only the order and numbers changed. SOURCES_MAP.md lists each task's DRAFT 1 ID and Rev A/Rev B origin.","conflicts":["Filter tasks (RF cabinet, ACGD gradient cabinet, TAC cabinet): Rev A lists separate 'check' and 'clean' rows for each; Rev B combines each pair into one 'check and clean' row. Used Rev B (one row each: 3.23, 3.24, 3.25).","Gradient cabinet name: the source revision (Rev B) said 'ACGD/HGD'. GE service manuals use 'HFD' (for example 'HFD/ACGD Installation Input Voltage Selection'). Item 3.24 reads ACGD/HFD.","Excite/system cabinet: Rev A has 'check fans' plus 'clean filters'; Rev B has 'check and clean filters' only. Used Rev B for the filters (3.27) and kept Rev A's fan check as a separate Rev A-only row (3.26).","Head/Body SNR: Rev A marks both as 'record value'; Rev B drops the record marker, but both data tables still have Head SNR and Body SNR fields. Kept Rev B task wording and kept the data fields (1C).","Data table order: Rev A lists Magnet Data, then Calibration Data; Rev B places Calibration Data (left) beside Magnet Data (right). Used Rev B order (1C Calibration, then 1D Magnet).","Measuring equipment table: Rev A has 13 rows; Rev B has 4. Used Rev B (4 rows).","Result columns: Rev A has Passed, Cleaned, Adjusted, Replaced, Repaired, Needs Adjustment, Needs Replacement, Needs Repair, Failed, N/A. Rev B has the same without N/A, in a different order. AMT uses Pass / Fail / N/A check boxes plus an Action code column that covers the other statuses, which is AMT's layout.","Interval notation: Rev A writes the interval on each row; Rev B uses codes (A = bi-monthly, B = 6 months). The intervals match on every shared task, so there is no interval conflict. AMT writes the interval out in full.","System Condition: Rev A uses check boxes; Rev B uses radio buttons. AMT uses a radio group (only one choice can be selected)."],"aOnly":["3.2 Patient pneumatic alert system (Rev A p5).","3.26 Excite/system cabinet fans check (Rev A p6).","4.13 Record static shield cooler compressor pressure (Rev A p7). Rev B keeps the Compressor Pressure data field but has no task row for it.","Safety caution in the instructions (sharps, blood, contrast, high voltage, moving parts, radiation exposure, cover safety latches) (Rev A p3).","Customer name/date sign-off block (Rev A p9). Rev B p6 has two unlabeled boxes at the bottom instead."],"bOnly":["3.31 Host fans and vents check and clean (Rev B p4).","OEM system ID field (Rev B p2).","Customer/operator-reported problems and FSE-reported problems boxes (Rev B p2). Now in Section 2 (Technologist Interview) and Section 5 (Sign-off).","Instruction note that some items are daily/weekly operator tasks in the GE Operator's Manual (Rev B p1)."],"added":["DRAFT 2 flow: data collection first, then the technologist interview, then all cleaning and visual/physical checks, then scanning and measurement, then sign-off. Task wording and intervals are unchanged; tasks were renumbered 3.x and 4.x. Section 1 references in task text were renumbered to match (old 1D/1E/1F are now 1C/1D/1E).","Section 2 Technologist Interview table (issue reported, follow-up, resolved yes/no, 5 rows) plus technologist name and a box for other customer/operator-reported problems.","Off-line column: 'Yes' = source listed the task under 'Not Available During Patient Scanning'; 'No' = 'Available During Patient Scanning'; blank = the source did not say.","Spec / acceptance values, units and footnotes for the Section 1 readings, taken from the GE Signa Excite / HDxt service manuals (see footnotes).","Site address, room/suite, software version, magnet serial #, PM interval selector, and AMT field engineer fields in 1A (AMT additions; not in either source).","Comment column on every task and signature lines for engineer and customer.","Section 1E RF power output value row (task 4.8 is marked 'record' in both revisions, but neither source data table has a field for it)."]}}
+;
 const MODALITY_CL_MAP={'GE MRI':'ge_mri','Siemens MRI':'siemens_mri','Philips MRI':'ge_mri','GE CT':'ge_ct','Siemens CT':'siemens_ct','Stellant Injector':'stellant','Stellant CT Injector':'stellant','Solaris/Spectris Injector':'solaris','Spectris Solaris Injector':'solaris','OptiVantage Injector':'optivantage','EmpowerCTA Injector':'empowercta'};
-let pmState={},activeCLType='',activeGECTQuarter='q1';
+let pmState={},activeCLType='',activeGECTQuarter='q1',pmBoundJobId='';
 
 function setPMDate(){const el=document.getElementById('pm_date');if(el&&!el.value)el.value=new Date().toISOString().slice(0,10);}
 function populatePMDropdown(){
   const sel=document.getElementById('pm_jobLink');
   sel.innerHTML='<option value="">-- Standalone --</option>'+jobs.filter(j=>j.type==='PM').map(j=>`<option value="${j.id}">${j.site} -- ${j.date||'No date'} -- ${j.model||j.modality||''}</option>`).join('');
 }
-function onPMJobChange(){
-  const id=document.getElementById('pm_jobLink').value;if(!id)return;
-  const j=jobs.find(x=>x.id===id);if(!j)return;
-  if(j.site)document.getElementById('pm_site').value=j.site;
-  if(j.model)document.getElementById('pm_model').value=j.model;
-  if(j.po)document.getElementById('pm_wo').value=j.po;
-  if(j.date)document.getElementById('pm_date').value=j.date;
-  const sug=MODALITY_CL_MAP[j.modality];
-  if(sug){document.getElementById('pm_type_sel').value=sug;switchChecklist(sug);}
+function suggestChecklistForJob(job){
+  const modality=(job&&job.modality)||'';
+  const model=String((job&&job.model)||'');
+  if(modality!=='GE MRI'){
+    return {type:MODALITY_CL_MAP[modality]||'', confirm:false};
+  }
+  const s=model.toLowerCase();
+  const strong=/excite\s*(?:ii|2)\b/.test(s)||/excite\s*hd\b/.test(s)||/\bhdxt\b/.test(s)||/\bhdx\b/.test(s)||/\bhde\b/.test(s);
+  if(strong) return {type:'ge_mr_exii', confirm:false};
+  const exclude=/\blx\b/.test(s)||/\b9(?:\.\d+)?\s*x\b/.test(s)||/\b10(?:\.\d+)?\s*x\b/.test(s)||/\bhorizon\b/.test(s)||/\bdiscovery\b/.test(s)||/\boptima\b/.test(s)||/\bdv\d/.test(s)||/\bmr\s?450\b/.test(s)||/\bmr\s?750\b/.test(s)||/\bartist\b/.test(s)||/\barchitect\b/.test(s)||/\bcreator\b/.test(s)||/\bexplorer\b/.test(s)||/\bvoyager\b/.test(s)||/\bpioneer\b/.test(s)||/\bpremier\b/.test(s)||/\bhero\b/.test(s)||/\bsprint\b/.test(s)||/\bstar\b/.test(s)||/\baviator\b/.test(s);
+  if(exclude) return {type:'ge_mri', confirm:false};
+  const sw=/(?:^|[^0-9])(?:1[1-9]|2[0-4])(?:\.\d+)?\s*\.?\s*x\b/.test(s)||/(?:^|[^0-9])(?:1[1-9]|2[0-4])\.\d+\b/.test(s);
+  if(sw) return {type:'ge_mr_exii', confirm:false};
+  if(/\bexcite\b/.test(s)) return {type:'ge_mri', confirm:true};
+  return {type:'ge_mri', confirm:false};
 }
-function loadPMForJob(id){const j=jobs.find(x=>x.id===id);if(!j)return;showTab('pm');setTimeout(()=>{populatePMDropdown();document.getElementById('pm_jobLink').value=id;onPMJobChange();},80);}
+function inferGECTQuarter(state){
+  const st=(state&&state.ge_ct)||{};
+  const counts={q1:0,q2:0,q3:0,q4:0};
+  Object.keys(st).forEach(k=>{
+    if(st[k]===''||st[k]==null) return;
+    const m=String(k).match(/_(q[1-4])(?:_|$)/);
+    if(m) counts[m[1]]++;
+  });
+  let best=null, n=0;
+  ['q1','q2','q3','q4'].forEach(q=>{ if(counts[q]>n){ n=counts[q]; best=q; } });
+  return best;
+}
+function textAreaRow(t,key,label){
+  const k=t+'_'+key;
+  const v=(pmState[t]||{})[k]||'';
+  return `<tr class="cl-note-row"><td colspan="4"><label class="form-label">${esc(label)}</label><textarea class="form-control cl-note" style="min-height:88px;font-size:16px" oninput="pmSet('${t}','${k}',this.value)">${esc(v)}</textarea></td></tr>`;
+}
+function hideExiiConfirm(){ const box=document.getElementById('pmExiiConfirm'); if(box) box.style.display='none'; }
+function showExiiConfirm(){ const box=document.getElementById('pmExiiConfirm'); if(box) box.style.display='block'; }
+function prefillExii(j){
+  j=j||{};
+  const t='ge_mr_exii';
+  if(!pmState[t]) pmState[t]={};
+  const st=pmState[t];
+  const put=(suffix,val)=>{ const k=t+'_'+suffix; if(val && !st[k]) st[k]=val; };
+  const siteEl=document.getElementById('pm_site');
+  const modelEl=document.getElementById('pm_model');
+  const dateEl=document.getElementById('pm_date');
+  const techEl=document.getElementById('pm_tech');
+  put('customer', (siteEl&&siteEl.value)||j.site||'');
+  put('address', j.location||'');
+  put('model', (modelEl&&modelEl.value)||j.model||'');
+  put('sys_sn', j.serial||'');
+  put('pm_date', (dateEl&&dateEl.value)||j.date||'');
+  put('tech', (techEl&&techEl.value)||(typeof currentUser!=='undefined'&&currentUser&&currentUser.name)||'');
+  if(j.field==='1.5T'||j.field==='3T') put('cfg_field', j.field);
+}
+function applySavedPMRecord(rec){
+  pmBoundJobId=rec.jobId||'';
+  const set=(id,val)=>{ const el=document.getElementById(id); if(el) el.value=val||''; };
+  set('pm_jobLink', rec.jobId||'');
+  set('pm_site', rec.site);
+  set('pm_date', rec.date);
+  set('pm_model', rec.model);
+  set('pm_wo', rec.wo);
+  set('pm_tech', rec.tech);
+  set('pm_notes', rec.notes);
+  set('pm_followup', rec.followup);
+  pmState=JSON.parse(JSON.stringify(rec.state||{}));
+  activeGECTQuarter=rec.gectQuarter||inferGECTQuarter(rec.state)||'q1';
+  activeCLType=rec.type||'';
+  const sel=document.getElementById('pm_type_sel'); if(sel) sel.value=rec.type||'';
+  hideExiiConfirm();
+  switchChecklist(rec.type||'');
+  schedulePMAutosave();
+}
+function bindPMJob(id){
+  if(id && id===pmBoundJobId) return;
+  pmBoundJobId=id||'';
+  hideExiiConfirm();
+  if(!id){
+    pmState={};
+    const notes=document.getElementById('pm_notes'); if(notes) notes.value='';
+    const fu=document.getElementById('pm_followup'); if(fu) fu.value='';
+    const sel=document.getElementById('pm_type_sel'); if(sel) sel.value='';
+    switchChecklist('');
+    schedulePMAutosave();
+    return;
+  }
+  const j=jobs.find(x=>x.id===id); if(!j) return;
+  const saved=pmChecklists.find(p=>p.jobId===id);
+  if(saved){ applySavedPMRecord(saved); return; }
+  pmState={};
+  activeGECTQuarter='q1';
+  const notes=document.getElementById('pm_notes'); if(notes) notes.value='';
+  const fu=document.getElementById('pm_followup'); if(fu) fu.value='';
+  const siteEl=document.getElementById('pm_site'); if(siteEl) siteEl.value=j.site||'';
+  const modelEl=document.getElementById('pm_model'); if(modelEl) modelEl.value=j.model||'';
+  const woEl=document.getElementById('pm_wo'); if(woEl) woEl.value=j.po||'';
+  const dateEl=document.getElementById('pm_date'); if(dateEl) dateEl.value=j.date||dateEl.value||'';
+  const sug=suggestChecklistForJob(j);
+  const sel=document.getElementById('pm_type_sel');
+  if(sug.confirm){
+    showExiiConfirm();
+    if(sel) sel.value='ge_mri';
+    switchChecklist('ge_mri');
+  } else if(sug.type){
+    if(sug.type==='ge_mr_exii') prefillExii(j);
+    if(sel) sel.value=sug.type;
+    switchChecklist(sug.type);
+  } else {
+    if(sel) sel.value='';
+    switchChecklist('');
+  }
+  schedulePMAutosave();
+}
+function onPMTypePicked(type){
+  const box=document.getElementById('pmExiiConfirm'); if(box) box.style.display='none';
+  if(type==='ge_mr_exii'){
+    const id=(document.getElementById('pm_jobLink')||{}).value||'';
+    const j=(id&&jobs.find(x=>x.id===id))||{};
+    prefillExii(j);
+  }
+  switchChecklist(type);
+}
+function confirmExiiChoice(type){ onPMTypePicked(type); const sel=document.getElementById('pm_type_sel'); if(sel) sel.value=type; }
+function exiiNumVal(raw){
+  const s=String(raw==null?'':raw).trim().replace(/,/g,'');
+  if(!s||!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(s)) return null;
+  const n=Number(s);
+  return Number.isFinite(n)?n:null;
+}
+function exiiCfg(key){ return (pmState.ge_mr_exii||{})['ge_mr_exii_'+key]||''; }
+function exiiOor(id, which, raw){
+  const n=exiiNumVal(raw);
+  if(n==null) return false;
+  const field=exiiCfg('cfg_field');
+  const magnet=exiiCfg('cfg_magnet');
+  const comp=exiiCfg('cfg_comp');
+  if(which==='cv'||which==='zcv') return false;
+  if(id==='xgc'||id==='ygc'||id==='zgc') return n<99||n>101;
+  if(id==='hsnr'){
+    if(field==='1.5T') return n<76||n>102;
+    if(field==='1.0T') return n<57||n>65;
+    return false;
+  }
+  if(id==='bsnr'){
+    if(field==='1.5T') return n<74||n>79;
+    if(field==='1.0T') return n<39||n>53;
+    return false;
+  }
+  if(id==='shimtg') return n<130||n>160;
+  if(id==='inhom'){
+    if(field==='1.5T') return which==='z'?n>=64:n>=80;
+    if(field==='3T') return which==='z'?n>=45:n>=127;
+    return false;
+  }
+  if(id==='magp') return magnet==='recond'?(n<3.9||n>4.1):false;
+  if(id==='compp'){
+    if(comp!=='HC-10'&&comp!=='CSW-71') return false;
+    if(n<10) return n<2.1||n>2.3;
+    if(comp==='HC-10') return n<214||n>220;
+    return n<233||n>239;
+  }
+  if(id==='comphrs'){
+    const due={'HC-10':13000,'Leybold':18000,'CSW-71':20000,'CSA-71A':20000,'Balzers':26000,'F-50':30000};
+    return due[comp]?n>=due[comp]:false;
+  }
+  if(id==='lhe') return n<40;
+  return false;
+}
+function exiiOnNum(id, which, el){
+  const suffix=which==='v'?'':'_'+which;
+  pmSet('ge_mr_exii','ge_mr_exii_'+id+suffix, el.value);
+  el.classList.toggle('cl-oor', exiiOor(id, which, el.value));
+}
+function exiiOnCfg(key, el){
+  pmSet('ge_mr_exii','ge_mr_exii_'+key, el.value);
+  exiiRefreshOor();
+}
+function exiiRefreshOor(){
+  document.querySelectorAll('#pm_checklist_area .cl-num[data-exii]').forEach(el=>{
+    el.classList.toggle('cl-oor', exiiOor(el.getAttribute('data-exii'), el.getAttribute('data-which'), el.value));
+  });
+}
+function exiiVal(suffix){ return (pmState.ge_mr_exii||{})['ge_mr_exii_'+suffix]||''; }
+function exiiNum(id, which, placeholder){
+  const suffix=which==='v'?'':'_'+which;
+  const val=exiiVal(id+suffix);
+  const oor=exiiOor(id, which, val)?' cl-oor':'';
+  return `<input class="cl-num${oor}" data-exii="${id}" data-which="${which}" inputmode="decimal" autocomplete="off" placeholder="${placeholder||''}" value="${esc(val)}" oninput="exiiOnNum('${id}','${which}',this)">`;
+}
+function exiiSelect(key, label, options){
+  const cur=exiiVal(key);
+  const opts=options.map(pair=>`<option value="${esc(pair[0])}"${cur===pair[0]?' selected':''}>${esc(pair[1])}</option>`).join('');
+  return `<div><label class="form-label">${esc(label)}</label><select class="form-control" onchange="exiiOnCfg('${key}',this)">${opts}</select></div>`;
+}
+function exiiTask(task){
+  const id=task.id;
+  const k='ge_mr_exii_'+id;
+  const cur=exiiVal(id);
+  const mini=(label,val,cls)=>`<span class="cl-mini">${label}<span class="chk-r ${cls}"><input type="radio" name="chk_${k}" value="${val}" ${cur===val?'checked':''} onchange="pmSet('ge_mr_exii','${k}','${val}')"></span></span>`;
+  const act=exiiVal(id+'_act');
+  const acts=[['', 'Action'],['CL','CL'],['AD','AD'],['RP','RP'],['RL','RL'],['NAD','NAD'],['NRP','NRP'],['NRL','NRL']];
+  const actOpts=acts.map(pair=>`<option value="${pair[0]}"${act===pair[0]?' selected':''}>${esc(pair[1])}</option>`).join('');
+  const off=task.offline||'—';
+  const nameNote=task.id==='OA2'?'<p class="cl-spec">Note: the source revision said HGD. GE service manuals use HFD.</p>':'';
+  return `<div class="cl-task"><div class="cl-task-top"><span class="cl-task-no">${esc(task.no)}</span><span>${esc(task.text)}</span></div>${nameNote}<div class="cl-task-meta">${esc(task.interval)} · Off-line: ${esc(off)}</div><div class="cl-task-pf"><span class="cl-pf-inline">${mini('Pass','pass','cg')}${mini('Fail','fail','cb')}${mini('N/A','na','cn')}</span><select class="cl-act" aria-label="Action code" onchange="pmSet('ge_mr_exii','${k}_act',this.value)">${actOpts}</select></div><input class="cl-task-cmt" placeholder="Comment" value="${esc(exiiVal(id+'_cmt'))}" oninput="pmSet('ge_mr_exii','${k}_cmt',this.value)"></div>`;
+}
+function buildGEMRExII(){
+  const d=PM_EXII;
+  const parts=[];
+  parts.push('<div class="cl-exii">');
+  parts.push(`<div class="cl-banner"><strong>${esc(d.co)}</strong><br>${esc(d.title)}<br>${esc(d.coSub)}<br>${esc(d.docNo)} · ${esc(d.rev)} · ${esc(d.docDate)}</div>`);
+  parts.push('<details class="cl-fold" open><summary>How to use this form</summary><ul>');
+  d.instructions.forEach(line=>{ parts.push('<li>'+esc(line)+'</li>'); });
+  parts.push('</ul></details>');
+  parts.push('<h3>SECTION 1 - DATA COLLECTION</h3>');
+  parts.push('<h4>1A  Site and System Information</h4><div class="cl-info-grid">');
+  d.sysinfo.forEach(f=>{
+    const typ=f.key==='pm_date'?'date':'text';
+    parts.push(`<div><label class="form-label">${esc(f.label)}</label><input class="form-control" type="${typ}" autocomplete="off" value="${esc(exiiVal(f.key))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_${f.key}',this.value)"></div>`);
+  });
+  parts.push('</div>');
+  const iv=exiiVal('interval');
+  parts.push(`<div class="cl-interval"><span class="form-label">PM interval</span><label class="cl-mini">Bi-monthly<input type="radio" name="exii_interval" value="bimonthly" data-label="Bi-monthly" ${iv==='bimonthly'?'checked':''} onchange="pmSet('ge_mr_exii','ge_mr_exii_interval','bimonthly')"></label><label class="cl-mini">6-month<input type="radio" name="exii_interval" value="sixmonth" data-label="6-month" ${iv==='sixmonth'?'checked':''} onchange="pmSet('ge_mr_exii','ge_mr_exii_interval','sixmonth')"></label></div>`);
+  parts.push('<h4>1B  Test Equipment Used (meters, scopes, phantoms, etc.)</h4>');
+  for(let i=1;i<=d.nEquip;i++){
+    parts.push(`<div class="cl-equip-row"><input class="form-control" placeholder="Equipment" autocomplete="off" value="${esc(exiiVal('eq'+i+'_name'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_eq${i}_name',this.value)"><input class="form-control" placeholder="Serial #" autocomplete="off" value="${esc(exiiVal('eq'+i+'_sn'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_eq${i}_sn',this.value)"></div>`);
+  }
+  parts.push('<p class="cl-spec">Record each value below and compare it with the Spec column. Limits come from the GE service manuals cited in the footnotes and depend on field strength, magnet, compressor and gradient mode. \'per OEM spec\' = no reliable limit was found: compare against the GE service documentation and the site baseline.</p>');
+  parts.push('<p class="cl-spec">TwinSpeed systems: record both whole-mode and zoom-mode values.</p>');
+  parts.push('<div class="cl-info-grid">');
+  parts.push(exiiSelect('cfg_field','Field strength (for spec highlight)',[['', 'Select…'],['1.5T','1.5T'],['3T','3T'],['1.0T','1.0T']]));
+  parts.push(exiiSelect('cfg_magnet','Magnet pressure control',[['', 'Select…'],['recond','Recondensing (zero boil-off)'],['other','Other magnet']]));
+  parts.push(exiiSelect('cfg_comp','Compressor model',[['', 'Select…'],['HC-10','HC-10'],['CSW-71','CSW-71'],['CSA-71A','CSA-71A'],['Leybold','Leybold'],['Balzers','Balzers'],['F-50','F-50'],['other','Other']]));
+  parts.push('</div>');
+  parts.push('<p class="cl-oor-note">An amber box means the number sits outside a simple limit for the configuration selected above. You can still save.</p>');
+  parts.push('<h4>1C  Calibration Data</h4>');
+  d.cal.forEach(row=>{ parts.push(exiiReading(row, true)); });
+  parts.push('<h4>1D  Magnet Data</h4>');
+  d.mag.forEach(row=>{ parts.push(exiiReading(row, false)); });
+  parts.push('<h4>1E  Other Recorded Values</h4>');
+  d.other.forEach(row=>{ parts.push(exiiReading(row, false)); });
+  parts.push('<details class="cl-fold"><summary>Spec sources (footnotes for 1C - 1E)</summary>');
+  d.footnotes.forEach(fn=>{ parts.push(`<p class="cl-spec"><strong>[${esc(fn.n)}]</strong> ${esc(fn.text)}</p>`); });
+  parts.push('</details>');
+  parts.push('<h3>SECTION 2 - TECHNOLOGIST INTERVIEW</h3>');
+  parts.push('<p class="cl-spec">Before starting work, talk with the technologist about any issues with the system. Note each reported issue and its follow-up below.</p>');
+  parts.push(`<label class="form-label">Technologist name</label><input class="form-control" autocomplete="off" value="${esc(exiiVal('iv_name'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_iv_name',this.value)">`);
+  for(let i=1;i<=d.interviewN;i++){
+    const res=exiiVal('iv'+i+'_res');
+    parts.push(`<div class="cl-iv"><div class="cl-task-no">${i}</div><input class="form-control" placeholder="Issue reported" autocomplete="off" value="${esc(exiiVal('iv'+i+'_issue'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_iv${i}_issue',this.value)"><input class="form-control" placeholder="Follow-up" autocomplete="off" value="${esc(exiiVal('iv'+i+'_fu'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_iv${i}_fu',this.value)"><span class="cl-res">Resolved? <label><input type="radio" name="exii_iv${i}" value="yes" data-label="Yes" ${res==='yes'?'checked':''} onchange="pmSet('ge_mr_exii','ge_mr_exii_iv${i}_res','yes')"> Yes</label><label><input type="radio" name="exii_iv${i}" value="no" data-label="No" ${res==='no'?'checked':''} onchange="pmSet('ge_mr_exii','ge_mr_exii_iv${i}_res','no')"> No</label></span></div>`);
+  }
+  parts.push(`<label class="form-label">Other customer / operator-reported problems</label><textarea class="form-control" style="min-height:88px;font-size:16px" oninput="pmSet('ge_mr_exii','ge_mr_exii_iv_problems',this.value)">${esc(exiiVal('iv_problems'))}</textarea>`);
+  parts.push('<h3>SECTION 3 - CLEANING AND VISUAL / PHYSICAL CHECKS</h3>');
+  parts.push(`<p class="cl-spec">${esc(d.actionCodes)}</p>`);
+  parts.push('<p class="cl-spec">Intervals: Bi-monthly (every 2 months) or 6 months, as listed on each row. Off-line: Yes = cannot be done during patient scanning; No = can be done while the site is scanning; blank = not stated.</p>');
+  d.sections.forEach(sec=>{
+    if(sec.title.indexOf('SECTION 4')===0){
+      parts.push('<h3>'+esc(sec.title)+'</h3>');
+      parts.push('<p class="cl-spec">Tasks marked \'record\' need a value in Section 1 (1C - 1E). Same action codes and columns as Section 3.</p>');
+    }
+    sec.groups.forEach(g=>{
+      parts.push('<h4>'+esc(g.title)+'</h4>');
+      g.tasks.forEach(task=>{ parts.push(exiiTask(task)); });
+    });
+  });
+  parts.push('<h3>SECTION 5 - SIGN-OFF</h3>');
+  parts.push(`<label class="form-label">Engineer-reported problems</label><textarea class="form-control" style="min-height:88px;font-size:16px" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_eng',this.value)">${esc(exiiVal('so_eng'))}</textarea>`);
+  parts.push('<p class="cl-spec">Once the scheduled PM is complete, rate the overall system condition (select one):</p>');
+  d.condition.forEach(c=>{
+    const on=exiiVal('so_cond')===c.key?'checked':'';
+    parts.push(`<label class="cl-cond"><input type="radio" name="exii_cond" value="${esc(c.key)}" data-label="${esc(c.title)}" ${on} onchange="pmSet('ge_mr_exii','ge_mr_exii_so_cond','${c.key}')"><span><strong>${esc(c.title)}</strong> ${esc(c.text)}</span></label>`);
+  });
+  parts.push(`<label class="form-label">Notes (additional work needed, partial PM, customer requests)</label><textarea class="form-control" style="min-height:88px;font-size:16px" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_notes',this.value)">${esc(exiiVal('so_notes'))}</textarea>`);
+  parts.push('<div class="cl-info-grid">');
+  parts.push(`<div><label class="form-label">AMT Field Engineer — printed name</label><input class="form-control" autocomplete="off" value="${esc(exiiVal('so_fe_name'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_fe_name',this.value)"></div>`);
+  parts.push(`<div><label class="form-label">AMT Field Engineer — date</label><input class="form-control" type="date" value="${esc(exiiVal('so_fe_date'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_fe_date',this.value)"></div>`);
+  parts.push(`<div><label class="form-label">Customer representative — printed name</label><input class="form-control" autocomplete="off" value="${esc(exiiVal('so_cu_name'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_cu_name',this.value)"></div>`);
+  parts.push(`<div><label class="form-label">Customer representative — date</label><input class="form-control" type="date" value="${esc(exiiVal('so_cu_date'))}" oninput="pmSet('ge_mr_exii','ge_mr_exii_so_cu_date',this.value)"></div>`);
+  parts.push('</div>');
+  parts.push('<p class="cl-spec">Signature lines are on the printed copy.</p>');
+  parts.push('<details class="cl-fold"><summary>Appendix — revision notes</summary>');
+  parts.push('<p class="cl-spec">'+esc(d.appendix.intro)+'</p>');
+  parts.push('<h4>A vs. B differences and what was chosen</h4><ol>');
+  d.appendix.conflicts.forEach(line=>{ parts.push('<li>'+esc(line)+'</li>'); });
+  parts.push('</ol><h4>Items found only in Rev A (kept)</h4><ol>');
+  d.appendix.aOnly.forEach(line=>{ parts.push('<li>'+esc(line)+'</li>'); });
+  parts.push('</ol><h4>Items found only in Rev B (kept)</h4><ol>');
+  d.appendix.bOnly.forEach(line=>{ parts.push('<li>'+esc(line)+'</li>'); });
+  parts.push('</ol><h4>Added by AMT (not in either source)</h4><ol>');
+  d.appendix.added.forEach(line=>{ parts.push('<li>'+esc(line)+'</li>'); });
+  parts.push('</ol></details></div>');
+  return parts.join('');
+}
+function exiiReading(row, zoom){
+  const spec=row.spec+(row.note?(' ['+row.note+']'):'');
+  let vals='<label>Value'+(zoom?' (whole)':'')+' '+exiiNum(row.id,'v')+'</label>';
+  if(zoom) vals+='<label>Zoom (TwinSpeed) '+exiiNum(row.id,'z')+'</label>';
+  if(row.id==='xgc'||row.id==='ygc'||row.id==='zgc'){
+    vals+='<label>CV '+exiiNum(row.id,'cv','CV')+'</label><label>Zoom CV '+exiiNum(row.id,'zcv','CV')+'</label>';
+  }
+  const unit=row.unit?(' <span class="cl-unit">'+esc(row.unit)+'</span>'):'';
+  return '<div class="cl-read"><div class="cl-read-name">'+esc(row.label)+unit+'</div><div class="cl-read-vals">'+vals+'</div><div class="cl-spec">'+esc(spec)+'</div></div>';
+}
+function pmSyncCloneValues(area, clone){
+  const a=[...area.querySelectorAll('input,textarea,select')];
+  const b=[...clone.querySelectorAll('input,textarea,select')];
+  a.forEach((el,i)=>{
+    const c=b[i]; if(!c) return;
+    if(el.type==='radio'||el.type==='checkbox') c.checked=el.checked;
+    else c.value=el.value;
+  });
+}
+function pmFreezePrint(clone){
+  clone.querySelectorAll('textarea').forEach(el=>{
+    const d=document.createElement('div');
+    d.style.whiteSpace='pre-wrap';
+    d.style.fontWeight='700';
+    d.textContent=el.value||'—';
+    el.replaceWith(d);
+  });
+  clone.querySelectorAll('select').forEach(el=>{
+    const d=document.createElement('span');
+    d.style.fontWeight='700';
+    const opt=el.options[el.selectedIndex];
+    d.textContent=(opt&&opt.value)?opt.textContent:'—';
+    el.replaceWith(d);
+  });
+  clone.querySelectorAll('input').forEach(el=>{
+    if(el.type==='radio'||el.type==='checkbox') return;
+    const d=document.createElement('span');
+    d.style.fontWeight='700';
+    const blank=el.classList.contains('cl-task-cmt')?'':'—';
+    d.textContent=el.value||blank;
+    if(el.classList.contains('cl-oor')) d.style.color='#b45309';
+    el.replaceWith(d);
+  });
+  const groups=new Map();
+  clone.querySelectorAll('input[type=radio]').forEach(r=>{
+    if(!groups.has(r.name)) groups.set(r.name, []);
+    groups.get(r.name).push(r);
+  });
+  groups.forEach(radios=>{
+    const checked=radios.find(r=>r.checked);
+    let mark='<span style="color:#bbb">&#9744; --</span>';
+    if(checked){
+      if(checked.value==='pass') mark='<span style="color:#16a34a;font-weight:800">&#10003; PASS</span>';
+      else if(checked.value==='fail') mark='<span style="color:#dc2626;font-weight:800">&#10007; FAIL</span>';
+      else if(checked.value==='na') mark='<span style="color:#888;font-weight:700">N/A</span>';
+      else mark='<span style="font-weight:800">'+esc(checked.getAttribute('data-label')||checked.value)+'</span>';
+    }
+    const tr=radios[0].closest('tr');
+    const tds=tr?[...tr.children].filter(el=>el.tagName==='TD'):[];
+    const radioTds=tds.filter(td=>td.querySelector('input[type=radio]'));
+    const classic=tr && radioTds.length===3 && radios.length===3 && radioTds.every(td=>td.querySelectorAll('input').length===1);
+    if(classic){
+      radioTds.forEach(td=>td.remove());
+      const td=document.createElement('td');
+      td.style.textAlign='center';
+      td.style.fontSize='.82rem';
+      td.innerHTML=mark;
+      tr.appendChild(td);
+    } else {
+      const holder=document.createElement('span');
+      holder.innerHTML=mark;
+      const anchor=radios[0].closest('.cl-mini')||radios[0].closest('.chk-r')||radios[0];
+      anchor.parentNode.insertBefore(holder, anchor);
+      radios.forEach(r=>{
+        const mini=r.closest('.cl-mini');
+        if(mini && mini.querySelectorAll('input').length<=1) mini.remove();
+        else { const w=r.closest('.chk-r'); if(w) w.remove(); else r.remove(); }
+      });
+    }
+  });
+  clone.querySelectorAll('details').forEach(d=>{ d.setAttribute('open',''); });
+  clone.querySelectorAll('.cl-legend,.quarter-tabs,.cl-oor-note').forEach(el=>el.remove());
+}
+
+function onPMJobChange(){bindPMJob(document.getElementById('pm_jobLink').value);}
+function loadPMForJob(id){const j=jobs.find(x=>x.id===id);if(!j)return;_pmSkipDraft=true;const same=pmBoundJobId===id&&!!activeCLType;showTab('pm');setTimeout(()=>{populatePMDropdown();const sel=document.getElementById('pm_jobLink');if(sel)sel.value=id;if(same)return;pmBoundJobId='';onPMJobChange();},80);}
 function switchChecklist(type){
   activeCLType=type;pmState[type]=pmState[type]||{};
   const area=document.getElementById('pm_checklist_area');
   if(!type){area.innerHTML='<div class="alert alert-info">☝️ Select a checklist type above to begin.</div>';updatePMProgress();return;}
-  const b={ge_mri:buildGEMRI,siemens_mri:buildSiemensMRI,ge_ct:buildGECT,siemens_ct:buildSiemensCT,stellant:buildStellant,solaris:buildSolaris,optivantage:buildOptiVantage,empowercta:buildEmpowerCTA};
+  const b={ge_mri:buildGEMRI,ge_mr_exii:buildGEMRExII,siemens_mri:buildSiemensMRI,ge_ct:buildGECT,siemens_ct:buildSiemensCT,stellant:buildStellant,solaris:buildSolaris,optivantage:buildOptiVantage,empowercta:buildEmpowerCTA};
   area.innerHTML=b[type]?b[type]():'<div class="alert alert-info">Checklist coming soon.</div>';
   updatePMProgress();
   attachPMDraftFields();
@@ -2810,6 +3235,7 @@ function savePMDraft(){
       notes:(document.getElementById('pm_notes')||{}).value||'',
       followup:(document.getElementById('pm_followup')||{}).value||'',
       jobId:(document.getElementById('pm_jobLink')||{}).value||'',
+      gectQuarter:activeGECTQuarter,
       ts:Date.now()
     }));
   }catch(e){}
@@ -2827,6 +3253,9 @@ function restorePMDraftIfAny(){
     set('pm_site',d.site); set('pm_date',d.date); set('pm_model',d.model);
     set('pm_wo',d.wo); set('pm_tech',d.tech); set('pm_notes',d.notes);
     set('pm_followup',d.followup); set('pm_jobLink',d.jobId);
+    if(d.gectQuarter) activeGECTQuarter=d.gectQuarter;
+    else if((d.type||'')==='ge_ct'){ const inferred=inferGECTQuarter(d.state); if(inferred) activeGECTQuarter=inferred; }
+    pmBoundJobId=d.jobId||'';
     if(d.type){ document.getElementById('pm_type_sel').value=d.type; switchChecklist(d.type); }
   }catch(e){}
 }
@@ -2870,98 +3299,47 @@ function rRow(key,label,t,indent){const k=`${t}_${key}`;const v=(pmState[t]||{})
 function pmSet(t,k,v){if(!pmState[t])pmState[t]={};pmState[t][k]=v;updatePMProgress();schedulePMAutosave();}
 function measureRow(t,key,label,unit,spec){const k=`${t}_meas_${key}`;const v=(pmState[t]||{})[k]||'';return`<tr class="cl-data-row"><td>${label}${spec?` <span style="font-size:.7rem;color:var(--text2)">(${spec})</span>`:''}</td><td colspan="3"><div class="cl-measure"><input type="text" value="${esc(v)}" placeholder="--" oninput="pmSet('${t}','${k}',this.value)"><span class="cl-unit">${unit}</span></div></td></tr>`;}
 
-function buildGEMRI(){const t='ge_mri';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('📁 Administrative')}${rRow('a1','PM Schedule on file and current',t)}${rRow('a2','PM procedure documentation available',t)}${rRow('a3','Previous PM report reviewed',t)}${rRow('a4','Safety checks completed and posted',t)}${rRow('a5','Checklist signed and dated by engineer',t)}${grpHd('🌡 Environmental & Facility')}${rRow('e1','Magnet room temperature within spec (65-75 degreesF)',t)}${rRow('e2','Humidity within spec (30-60% RH)',t)}${rRow('e3','Chiller / cooling plant operational',t)}${rRow('e4','Chiller water temperature within spec',t)}${rRow('e5','Chiller water flow rate acceptable',t)}${rRow('e6','Cold head noise/operation acceptable',t)}${rRow('e7','Equipment room temperature within spec',t)}${rRow('e8','UPS systems operational and tested',t)}${rRow('e9','Emergency stop buttons tested',t)}${rRow('e10','Magnet room door seal intact',t)}${grpHd('🧊 Cryogen & Magnet')}${measureRow(t,'he','Helium level','%','>= 60%')}${rRow('c1','Helium fill scheduled if below threshold',t)}${rRow('c2','Helium fill port cap secure',t)}${rRow('c3','Quench pipe intact and unobstructed',t)}${rRow('c4','Pressure relief valve functional',t)}${rRow('c5','Quench detection system tested',t)}${rRow('c6','Cold head operation verified',t)}${measureRow(t,'field','Field strength deviation','ppm','+/-0.5 ppm')}${rRow('c7','Homogeneity within OEM spec',t)}${rRow('c8','Shim currents within normal range',t)}${grpHd('📡 RF & Gradient')}${rRow('r1','RF amplifier output power at spec',t)}${rRow('r2','RF body coil calibration performed',t)}${rRow('r3','Gradient amplifier voltages within spec',t)}${rRow('r4','Gradient coil cooling adequate',t)}${rRow('r5','RF shield integrity checked',t)}${rRow('r6','Noise figure measured and acceptable',t)}${rRow('r7','RF shielding on room door intact',t)}${grpHd('🖥 Console & Software')}${rRow('s1','Software version documented',t)}${rRow('s2','All sequences loading correctly',t)}${rRow('s3','Image quality test scans performed',t)}${rRow('s4','SNR within spec (ACR phantom)',t)}${rRow('s5','Geometric distortion within spec',t)}${rRow('s6','Console disk space adequate (>20% free)',t)}${rRow('s7','DICOM connectivity verified',t)}${rRow('s8','Worklist functionality verified',t)}${grpHd('🔌 Electrical & Safety')}${rRow('l1','Ground connections verified',t)}${rRow('l2','Emergency power tested',t)}${rRow('l3','Patient call button functional',t)}${rRow('l4','Intercom system functional',t)}${rRow('l5','Ferrous item / projectile safety check',t)}${rRow('l6','Oxygen level monitor calibrated',t)}${rRow('l7','First-aid kit accessible and stocked',t)}${grpHd('🛋 Patient Table & Bore')}${rRow('t1','Table movement smooth',t)}${rRow('t2','Table weight limit label posted',t)}${rRow('t3','Bore lighting functional',t)}${rRow('t4','Bore ventilation operational',t)}${grpHd('🧰 Coils & Accessories')}${rRow('o1','Head coil inspected and functional',t)}${rRow('o2','Spine coil inspected and functional',t)}${rRow('o3','Extremity coil(s) inspected',t)}${rRow('o4','Coil connectors clean and undamaged',t)}${rRow('o5','ACR phantom available and in good condition',t)}${grpHd('📝 PM Completion')}${rRow('p1','All deficiencies documented',t)}${rRow('p2','Customer sign-off obtained',t)}${rRow('p3','PM report generated and submitted',t)}${rRow('p4','Next PM date scheduled',t)}</tbody></table></div>`;}
+function buildGEMRI(){const t='ge_mri';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('a1','PM Schedule on file and current',t)}${rRow('a2','PM procedure documentation available',t)}${rRow('a3','Previous PM report reviewed',t)}${rRow('s1','Software version documented',t)}${measureRow(t,'he','Helium level','%','>= 60%')}${rRow('c1','Helium fill scheduled if below threshold',t)}${rRow('e1','Magnet room temperature within spec (65-75 degreesF)',t)}${rRow('e2','Humidity within spec (30-60% RH)',t)}${rRow('e4','Chiller water temperature within spec',t)}${rRow('e5','Chiller water flow rate acceptable',t)}${rRow('e7','Equipment room temperature within spec',t)}${rRow('s6','Console disk space adequate (>20% free)',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('a4','Safety checks completed and posted',t)}${rRow('e3','Chiller / cooling plant operational',t)}${rRow('e6','Cold head noise/operation acceptable',t)}${rRow('e8','UPS systems operational and tested',t)}${rRow('e9','Emergency stop buttons tested',t)}${rRow('e10','Magnet room door seal intact',t)}${rRow('c2','Helium fill port cap secure',t)}${rRow('c3','Quench pipe intact and unobstructed',t)}${rRow('c4','Pressure relief valve functional',t)}${rRow('c5','Quench detection system tested',t)}${rRow('c6','Cold head operation verified',t)}${rRow('r4','Gradient coil cooling adequate',t)}${rRow('r5','RF shield integrity checked',t)}${rRow('r7','RF shielding on room door intact',t)}${rRow('l1','Ground connections verified',t)}${rRow('l2','Emergency power tested',t)}${rRow('l3','Patient call button functional',t)}${rRow('l4','Intercom system functional',t)}${rRow('l5','Ferrous item / projectile safety check',t)}${rRow('l6','Oxygen level monitor calibrated',t)}${rRow('l7','First-aid kit accessible and stocked',t)}${rRow('t1','Table movement smooth',t)}${rRow('t2','Table weight limit label posted',t)}${rRow('t3','Bore lighting functional',t)}${rRow('t4','Bore ventilation operational',t)}${rRow('o1','Head coil inspected and functional',t)}${rRow('o2','Spine coil inspected and functional',t)}${rRow('o3','Extremity coil(s) inspected',t)}${rRow('o4','Coil connectors clean and undamaged',t)}${rRow('o5','ACR phantom available and in good condition',t)}${grpHd('4 · Scanning and measurements')}${measureRow(t,'field','Field strength deviation','ppm','+/-0.5 ppm')}${rRow('c7','Homogeneity within OEM spec',t)}${rRow('c8','Shim currents within normal range',t)}${rRow('r1','RF amplifier output power at spec',t)}${rRow('r2','RF body coil calibration performed',t)}${rRow('r3','Gradient amplifier voltages within spec',t)}${rRow('r6','Noise figure measured and acceptable',t)}${rRow('s2','All sequences loading correctly',t)}${rRow('s3','Image quality test scans performed',t)}${rRow('s4','SNR within spec (ACR phantom)',t)}${rRow('s5','Geometric distortion within spec',t)}${rRow('s7','DICOM connectivity verified',t)}${rRow('s8','Worklist functionality verified',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('a5','Checklist signed and dated by engineer',t)}${rRow('p1','All deficiencies documented',t)}${rRow('p2','Customer sign-off obtained',t)}${rRow('p3','PM report generated and submitted',t)}${rRow('p4','Next PM date scheduled',t)}</tbody></table></div>`;}
+function buildSiemensMRI(){const t='siemens_mri';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-59S · Siemens MRI PM Checklist · Rev. D</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${measureRow(t,'he_comp','2. Helium Compressor - Static Pressure','bar','')}${measureRow(t,'magnet_psi','10. Record magnet pressure','psi','')}${measureRow(t,'he_level','11. Record helium level','%','')}${measureRow(t,'comp_hrs','17. Record compressor hours','hrs','')}${measureRow(t,'center_freq','18. Measure center frequency','MHz','')}${rRow('s19','19. Check shield temperatures',t)}${measureRow(t,'erdu_v','20. Record ERDU battery voltage','VDC','')}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('s3','3. Computer(s): vacuum inlets/outlets & graphics card',t)}${rRow('s4','4. Check phantoms for cracks. Refill if needed (distilled water only)',t)}${rRow('s5','5. Annual grease cartridge replacement (Symphony only)',t)}${rRow('s6','6. Clean RF air filters (3T)',t)}${rRow('s8','8. Table collision switch and stop button checks',t)}${rRow('s9','9. Check patient trolley frame, wheels, brake & hydraulic',t)}${rRow('s12','12. Check patient blower',t)}${rRow('s13','13. Check & clean patient blower air filter',t)}${rRow('s14','14. Cooling: check entire water system for leaks',t)}${rRow('s16','16. Cooling: check gradient filter fans',t)}${grpHd('4 · Scanning and measurements')}${rRow('s1','1. Verify emergency power off switches',t)}${rRow('s7','7. Gradient Supervision check & verify temperature indicators NOT activated',t)}${rRow('s15','15. Cooling: check cooling status under Magnet & Cooling in service',t)}${rRow('s21','21. Quality Assurance test complete',t)}${rRow('s22','22. QC run on all coils (annual)',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('s23','23. Clean up directories - c:\\MedCom\\MriDiagnostic',t)}${rRow('s24','24. Backup site specific data, Master backup and customer protocols',t)}${rRow('s25','25. Full system software backup to external drive (Acronis, every 6 months)',t)}</tbody></table></div>`;}
 
-function buildSiemensMRI(){const t='siemens_mri';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-59S · Siemens MRI PM Checklist · Rev. D</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${rRow('s1','1. Verify emergency power off switches',t)}${measureRow(t,'he_comp','2. Helium Compressor - Static Pressure','bar','')}${rRow('s3','3. Computer(s): vacuum inlets/outlets & graphics card',t)}${rRow('s4','4. Check phantoms for cracks. Refill if needed (distilled water only)',t)}${rRow('s5','5. Annual grease cartridge replacement (Symphony only)',t)}${rRow('s6','6. Clean RF air filters (3T)',t)}${rRow('s7','7. Gradient Supervision check & verify temperature indicators NOT activated',t)}${rRow('s8','8. Table collision switch and stop button checks',t)}${rRow('s9','9. Check patient trolley frame, wheels, brake & hydraulic',t)}${measureRow(t,'magnet_psi','10. Record magnet pressure','psi','')}${measureRow(t,'he_level','11. Record helium level','%','')}${rRow('s12','12. Check patient blower',t)}${rRow('s13','13. Check & clean patient blower air filter',t)}${rRow('s14','14. Cooling: check entire water system for leaks',t)}${rRow('s15','15. Cooling: check cooling status under Magnet & Cooling in service',t)}${rRow('s16','16. Cooling: check gradient filter fans',t)}${measureRow(t,'comp_hrs','17. Record compressor hours','hrs','')}${measureRow(t,'center_freq','18. Measure center frequency','MHz','')}${rRow('s19','19. Check shield temperatures',t)}${measureRow(t,'erdu_v','20. Record ERDU battery voltage','VDC','')}${rRow('s21','21. Quality Assurance test complete',t)}${rRow('s22','22. QC run on all coils (annual)',t)}${rRow('s23','23. Clean up directories - c:\\MedCom\\MriDiagnostic',t)}${rRow('s24','24. Backup site specific data, Master backup and customer protocols',t)}${rRow('s25','25. Full system software backup to external drive (Acronis, every 6 months)',t)}</tbody></table></div>`;}
+function buildSiemensCT(){const t='siemens_ct';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-60S · Siemens CT PM Checklist · Rev. F · Effective: 4-16-2026</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('c3','Verify proper date and time',t)}${rRow('c5','Review error logs and tube history',t)}${rRow('c6','Record current system scan and tube scan seconds',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('c1','ICS/IRS check fans & clean/vacuum all inlets/outlets',t)}${rRow('c7','General cleaning of all covers and couch',t)}${rRow('c8','Inspect phantom and phantom holders',t)}${rRow('s2','UHR / detector window inspect/clean',t)}${rRow('s3','Inspect/clean all fans and filters',t)}${rRow('s4','Slip rings inspect/clean (Every 6 Mo)',t)}${rRow('s5','Power/Voltage/Signal brushes inspect/clean (Every 6 Mo)',t)}${rRow('s6','Inspect tube cooling hoses',t)}${rRow('s8','Lube main bearing/table with OEM approved grease (Annually)',t)}${rRow('s9','Inspect mylar window',t)}${rRow('s10','Grease vertical drive (Annually)',t)}${rRow('s11','Inspect belt and check tension (Every 6 Mo)',t)}${rRow('s13','Dehumidifier filter: check clean/replace',t)}${rRow('s15','Inspect PDC protection',t)}${rRow('s16','Inspect PDC cabinet/varistor',t)}${grpHd('4 · Scanning and measurements')}${rRow('c2','Check door switch and x-ray light',t)}${rRow('c4','Verify Emergency Stop',t)}${rRow('s1','Verify tilt operation',t)}${rRow('s7','Listen for tube rotor noise / air in HV tank',t)}${rRow('s12','Check all gantry displays and buttons',t)}${rRow('s14','WCS cabinet inspect/pressure check - refill if needed',t)}${rRow('s17','Perform Quality Constancy',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('c9','Make a site-specific backup',t)}${rRow('c10','Perform Acronis backup (Annually)',t)}</tbody></table></div>`;}
 
-function buildSiemensCT(){const t='siemens_ct';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-60S · Siemens CT PM Checklist · Rev. F · Effective: 4-16-2026</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('💻 Computer / Scan Room')}${rRow('c1','ICS/IRS check fans & clean/vacuum all inlets/outlets',t)}${rRow('c2','Check door switch and x-ray light',t)}${rRow('c3','Verify proper date and time',t)}${rRow('c4','Verify Emergency Stop',t)}${rRow('c5','Review error logs and tube history',t)}${rRow('c6','Record current system scan and tube scan seconds',t)}${rRow('c7','General cleaning of all covers and couch',t)}${rRow('c8','Inspect phantom and phantom holders',t)}${rRow('c9','Make a site-specific backup',t)}${rRow('c10','Perform Acronis backup (Annually)',t)}${grpHd('⚙️ System')}${rRow('s1','Verify tilt operation',t)}${rRow('s2','UHR / detector window inspect/clean',t)}${rRow('s3','Inspect/clean all fans and filters',t)}${rRow('s4','Slip rings inspect/clean (Every 6 Mo)',t)}${rRow('s5','Power/Voltage/Signal brushes inspect/clean (Every 6 Mo)',t)}${rRow('s6','Inspect tube cooling hoses',t)}${rRow('s7','Listen for tube rotor noise / air in HV tank',t)}${rRow('s8','Lube main bearing/table with OEM approved grease (Annually)',t)}${rRow('s9','Inspect mylar window',t)}${rRow('s10','Grease vertical drive (Annually)',t)}${rRow('s11','Inspect belt and check tension (Every 6 Mo)',t)}${rRow('s12','Check all gantry displays and buttons',t)}${rRow('s13','Dehumidifier filter: check clean/replace',t)}${rRow('s14','WCS cabinet inspect/pressure check - refill if needed',t)}${rRow('s15','Inspect PDC protection',t)}${rRow('s16','Inspect PDC cabinet/varistor',t)}${rRow('s17','Perform Quality Constancy',t)}</tbody></table></div>`;}
+function buildGECT(){const t='ge_ct';const q=activeGECTQuarter;const qtabs=`<div class="quarter-tabs"><button class="q-tab ${q==='q1'?'active':''}" onclick="setGECTQ('q1')">Q1 Jan-Mar</button><button class="q-tab ${q==='q2'?'active':''}" onclick="setGECTQ('q2')">Q2 Apr-Jun</button><button class="q-tab ${q==='q3'?'active':''}" onclick="setGECTQ('q3')">Q3 Jul-Sep</button><button class="q-tab ${q==='q4'?'active':''}" onclick="setGECTQ('q4')">Q4 Oct-Dec</button></div>`;const leg=`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-60 · GE CT Quarterly PM · Rev. F · Effective: 4-16-2026 -- Mark FAIL with comment in Notes field.</div>`;const data=grpHd('1 · Site / system info and data collection')+rRow(q+'_co5','Verify Console Network, Archive & Filming Queues Empty',t)+rRow(q+'_co6','Verify Console Date & Time',t)+rRow(q+'_es1','Inspect Error Logs',t)+measureRow(t,q+'_gantry','Gantry Rotation Count','revs','')+measureRow(t,q+'_tube','Tube mAs Count','mAs','')+measureRow(t,q+'_exams','Patient Exams Count','exams','')+measureRow(t,q+'_temp','Scan Room Temperature',' degreesF','');const interview=grpHd('2 · Technologist interview')+textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)');const consoleClean=rRow(q+'_co1','Clean/Inspect Fans, Filters & Grills',t)+(q==='q2'||q==='q4'?rRow(q+'_co2','Vacuum all Exhaust Vents and Console Interior',t):'')+rRow(q+'_co3','Clean/Inspect Keyboard, Mouse & Monitor',t)+(q==='q1'||q==='q3'?rRow(q+'_co7','Clean/Inspect SCSI Tower Fan, Filter & Cables',t):'');const consoleFunc=(q==='q1'||q==='q3'?rRow(q+'_co2','Check Operation of Final Scan Abort Pushbuttons',t):'')+(q==='q2'||q==='q4'?rRow(q+'_co4','Verify Emergency Off Buttons (Console/Table/Gantry/Wall)',t):'')+rRow(q+'_es2','Perform Quality Assurance Scans',t);const signoff=rRow(q+'_es3','Create System State Backup',t);let rows='';if(q==='q1'){rows=data+interview+grpHd('3 · Cleaning and visual / physical checks')+rRow('q1_g1','Slip Ring Cleaning',t)+rRow('q1_g2','Slip Ring Brush Block Inspect/Clean',t)+rRow('q1_g3','Grease Main Bearing (Every 2M Gantry Revolutions)',t)+rRow('q1_g4','Inspect Hydraulic Tilt Cylinder & Fittings for Leaks',t)+rRow('q1_g5','Clean/Inspect Gantry Interior',t)+rRow('q1_g6','Clean/Inspect all Fans and Filters',t)+rRow('q1_g8','Inspect all Control Panel Buttons and Display Lights',t)+rRow('q1_g9','Clean/Inspect Detector Face Plate',t)+rRow('q1_g10','Clean/Inspect Mylar Window',t)+rRow('q1_g12','Inspect Cable/Hose Zip Ties',t)+rRow('q1_g13','Inspect Rotational Path Components',t)+rRow('q1_g14','Clean/Inspect Axial Encoder Wheel',t)+rRow('q1_g15','Seismic Anchor Bolt Check',t)+rRow('q1_g16','PDU Clean/Inspect',t)+rRow('q1_t2','General Cleaning of Covers, Cradle, Table Pan',t)+rRow('q1_t3','Clean/Inspect Tape Switches',t)+rRow('q1_t4','Clean/Inspect Rollers and Rails',t)+rRow('q1_t6','Clean/Inspect QA Phantom',t)+rRow('q1_t7','Tighten Motor Coupling Screws (when applicable)',t)+rRow('q1_x1','Inspect all High Voltage Connections',t)+consoleClean+grpHd('4 · Scanning and measurements')+rRow('q1_g7','Verify Gantry Balance',t)+rRow('q1_g11','Verify X-Ray Indicator Lights',t)+rRow('q1_t1','Clean/Inspect Operation of Cradle Drive Assy.',t)+rRow('q1_t5','Check Limit Mechanisms for Couch Vertical/Horizontal',t)+rRow('q1_x2','Operational Checks for Heat Exchanger Fans and Pump',t)+rRow('q1_x3','High Voltage Checks/Testing (when applicable)',t)+rRow('q1_d1','Verify DAS Tools Auto Test Passes',t)+rRow('q1_d2','Verify Recon Data Path Passes',t)+consoleFunc+grpHd('5 · Sign-off / PM completion')+signoff;}else if(q==='q2'){rows=data+interview+grpHd('3 · Cleaning and visual / physical checks')+rRow('q2_g1','Slip Ring Cleaning',t)+rRow('q2_g2','Slip Ring Brush Block Inspect/Clean',t)+rRow('q2_g4','Clean/Inspect Gantry Interior',t)+rRow('q2_g5','Clean/Inspect all Fans and Filters',t)+rRow('q2_g6','Inspect all Control Panel Buttons',t)+rRow('q2_g9','Inspect Cable/Hose Zip Ties',t)+rRow('q2_g10','Inspect Rotational Path Components',t)+rRow('q2_g11','Clean/Inspect Axial Encoder Wheel',t)+rRow('q2_g12','Clean/Inspect Mylar Window',t)+rRow('q2_g13','Clean/Inspect Detector Face Plate',t)+rRow('q2_t1','Clean/Inspect Cradle Drive Assy.',t)+rRow('q2_t2','Clean/Inspect Tape Switches',t)+rRow('q2_t3','Check Accessories (Phantom Holder, Cradle Extender)',t)+rRow('q2_t6','General Cleaning of Covers, Table Pan',t)+rRow('q2_t7','Inspect Cradle Drive Belts (Cracks/Fraying)',t)+rRow('q2_t8','Seismic Anchor Bolt Check',t)+rRow('q2_x1','X-Ray Tube Well / HV Tank Well Inspections',t)+rRow('q2_x2','HV Cable Candle Stick Inspections',t)+rRow('q2_x3','Inspect all High Voltage Connections',t)+rRow('q2_d3','Clean/Inspect DAS Duct Fans & Filters',t)+consoleClean+grpHd('4 · Scanning and measurements')+rRow('q2_g3','Verify Tilt Operation & Zero Check',t)+rRow('q2_g7','Verify Collimator Functional Tests',t)+rRow('q2_g8','Verify X-Ray Indicator Lights',t)+rRow('q2_t4','Check Limit Mechanisms',t)+rRow('q2_t5','Verify Laser Light Alignments',t)+rRow('q2_x4','Operational Checks Heat Exchanger Fans & Pump',t)+rRow('q2_d1','Verify DAS Tools Auto Test Passes',t)+rRow('q2_d2','Verify Recon Data Path Passes',t)+rRow('q2_d4','Inspect/Adjust DAS Power Supplies (when applicable)',t)+consoleFunc+grpHd('5 · Sign-off / PM completion')+signoff;}else if(q==='q3'){rows=data+interview+grpHd('3 · Cleaning and visual / physical checks')+rRow('q3_g1','Slip Ring Cleaning',t)+rRow('q3_g2','Slip Ring Brush Block Clean/Inspect',t)+rRow('q3_g3','Clean/Inspect Gantry Interior',t)+rRow('q3_g4','Clean/Inspect all Fans & Filters',t)+rRow('q3_g6','Inspect all Control Panel Buttons',t)+rRow('q3_g7','Clean/Inspect Mylar Window',t)+rRow('q3_g8','Clean/Inspect Detector Face Plate',t)+rRow('q3_g10','Inspect Cable/Hose Zip Ties',t)+rRow('q3_g11','Inspect Rotational Path Components',t)+rRow('q3_g12','Clean/Inspect Axial Encoder Wheel',t)+rRow('q3_t1','Clean/Inspect Cradle Drive Assy.',t)+rRow('q3_t2','Clean/Inspect Tape Switches',t)+rRow('q3_t3','Clean/Inspect Rollers and Rails',t)+rRow('q3_t5','Clean/Inspect QA Phantom',t)+rRow('q3_t6','General Cleaning of Covers, Cradle, Table Pan',t)+rRow('q3_x1','Inspect all High Voltage Connections',t)+consoleClean+grpHd('4 · Scanning and measurements')+rRow('q3_g5','Verify Gantry Balance',t)+rRow('q3_g9','Verify X-Ray Indicator Lights',t)+rRow('q3_t4','Check Limit Mechanisms',t)+rRow('q3_x2','Operational Checks Heat Exchanger Fans & Pump',t)+rRow('q3_x3','High Voltage Checks/Testing (when applicable)',t)+rRow('q3_d1','Verify DAS Tools Auto Test Passes',t)+rRow('q3_d2','Verify Recon Data Path Passes',t)+consoleFunc+grpHd('5 · Sign-off / PM completion')+signoff;}else{rows=data+interview+grpHd('3 · Cleaning and visual / physical checks')+rRow('q4_g1','Slip Ring Cleaning',t)+rRow('q4_g2','Slip Ring Brush Block Inspect/Clean',t)+rRow('q4_g3','Clean/Inspect Gantry Interior',t)+rRow('q4_g4','Clean/Inspect all Fans & Filters',t)+rRow('q4_g5','Inspect all Control Panel Buttons',t)+rRow('q4_g8','Inspect Cable/Hose Zip Ties',t)+rRow('q4_g9','Inspect Rotational Path Components',t)+rRow('q4_g10','Inspect Axial Encoder Wheel',t)+rRow('q4_g11','Clean/Inspect Mylar Window',t)+rRow('q4_g12','Clean/Inspect Detector Face Plate',t)+rRow('q4_t1','Clean/Inspect Cradle Drive Assy.',t)+rRow('q4_t2','Clean/Inspect Tape Switches',t)+rRow('q4_t3','Check Accessories',t)+rRow('q4_t6','General Cleaning of Covers, Cradle, Table Pan',t)+rRow('q4_t7','Inspect Cradle Drive Belts',t)+rRow('q4_x1','X-Ray Tube Well / HV Tank Well Inspections',t)+rRow('q4_x2','HV Cable Candle Stick Inspections',t)+rRow('q4_x3','Inspect all High Voltage Connections',t)+consoleClean+grpHd('4 · Scanning and measurements')+rRow('q4_g6','Verify Collimator Functional Tests',t)+rRow('q4_g7','Verify X-Ray Indicator Lights',t)+rRow('q4_t4','Check Limit Mechanisms',t)+rRow('q4_t5','Verify Laser Light Alignments',t)+rRow('q4_x4','Operational Checks Heat Exchanger Fans & Pump',t)+rRow('q4_d1','Verify DAS Tools Auto Test Passes',t)+rRow('q4_d2','Verify Recon Data Path Passes',t)+consoleFunc+grpHd('5 · Sign-off / PM completion')+signoff;}return leg+qtabs+`<div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${rows}</tbody></table></div>`;}
+function setGECTQ(q){activeGECTQuarter=q;if(activeCLType==='ge_ct')switchChecklist('ge_ct');schedulePMAutosave();}
 
-function buildGECT(){const t='ge_ct';const q=activeGECTQuarter;const qtabs=`<div class="quarter-tabs"><button class="q-tab ${q==='q1'?'active':''}" onclick="setGECTQ('q1')">Q1 Jan-Mar</button><button class="q-tab ${q==='q2'?'active':''}" onclick="setGECTQ('q2')">Q2 Apr-Jun</button><button class="q-tab ${q==='q3'?'active':''}" onclick="setGECTQ('q3')">Q3 Jul-Sep</button><button class="q-tab ${q==='q4'?'active':''}" onclick="setGECTQ('q4')">Q4 Oct-Dec</button></div>`;const leg=`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F70-60 · GE CT Quarterly PM · Rev. F · Effective: 4-16-2026 -- Mark FAIL with comment in Notes field.</div>`;const consoleR=`${grpHd('🖥 Console')}${rRow(q+'_co1','Clean/Inspect Fans, Filters & Grills',t)}${q==='q2'||q==='q4'?rRow(q+'_co2','Vacuum all Exhaust Vents and Console Interior',t):rRow(q+'_co2','Check Operation of Final Scan Abort Pushbuttons',t)}${rRow(q+'_co3','Clean/Inspect Keyboard, Mouse & Monitor',t)}${q==='q2'||q==='q4'?rRow(q+'_co4','Verify Emergency Off Buttons (Console/Table/Gantry/Wall)',t):''}${rRow(q+'_co5','Verify Console Network, Archive & Filming Queues Empty',t)}${rRow(q+'_co6','Verify Console Date & Time',t)}${q==='q1'||q==='q3'?rRow(q+'_co7','Clean/Inspect SCSI Tower Fan, Filter & Cables',t):''}`;const sysR=`${grpHd('🔬 Entire System')}${rRow(q+'_es1','Inspect Error Logs',t)}${rRow(q+'_es2','Perform Quality Assurance Scans',t)}${rRow(q+'_es3','Create System State Backup',t)}${grpHd('📊 System Aging')}${measureRow(t,q+'_gantry','Gantry Rotation Count','revs','')}${measureRow(t,q+'_tube','Tube mAs Count','mAs','')}${measureRow(t,q+'_exams','Patient Exams Count','exams','')}${measureRow(t,q+'_temp','Scan Room Temperature',' degreesF','')}`;let rows='';if(q==='q1'){rows=`${grpHd('⚙️ Gantry')}${rRow('q1_g1','Slip Ring Cleaning',t)}${rRow('q1_g2','Slip Ring Brush Block Inspect/Clean',t)}${rRow('q1_g3','Grease Main Bearing (Every 2M Gantry Revolutions)',t)}${rRow('q1_g4','Inspect Hydraulic Tilt Cylinder & Fittings for Leaks',t)}${rRow('q1_g5','Clean/Inspect Gantry Interior',t)}${rRow('q1_g6','Clean/Inspect all Fans and Filters',t)}${rRow('q1_g7','Verify Gantry Balance',t)}${rRow('q1_g8','Inspect all Control Panel Buttons and Display Lights',t)}${rRow('q1_g9','Clean/Inspect Detector Face Plate',t)}${rRow('q1_g10','Clean/Inspect Mylar Window',t)}${rRow('q1_g11','Verify X-Ray Indicator Lights',t)}${rRow('q1_g12','Inspect Cable/Hose Zip Ties',t)}${rRow('q1_g13','Inspect Rotational Path Components',t)}${rRow('q1_g14','Clean/Inspect Axial Encoder Wheel',t)}${rRow('q1_g15','Seismic Anchor Bolt Check',t)}${rRow('q1_g16','PDU Clean/Inspect',t)}${grpHd('🛋 Table / Couch')}${rRow('q1_t1','Clean/Inspect Operation of Cradle Drive Assy.',t)}${rRow('q1_t2','General Cleaning of Covers, Cradle, Table Pan',t)}${rRow('q1_t3','Clean/Inspect Tape Switches',t)}${rRow('q1_t4','Clean/Inspect Rollers and Rails',t)}${rRow('q1_t5','Check Limit Mechanisms for Couch Vertical/Horizontal',t)}${rRow('q1_t6','Clean/Inspect QA Phantom',t)}${rRow('q1_t7','Tighten Motor Coupling Screws (when applicable)',t)}${grpHd('⚡ X-Ray System')}${rRow('q1_x1','Inspect all High Voltage Connections',t)}${rRow('q1_x2','Operational Checks for Heat Exchanger Fans and Pump',t)}${rRow('q1_x3','High Voltage Checks/Testing (when applicable)',t)}${grpHd('📡 Data Acquisition')}${rRow('q1_d1','Verify DAS Tools Auto Test Passes',t)}${rRow('q1_d2','Verify Recon Data Path Passes',t)}${consoleR}${sysR}`;}else if(q==='q2'){rows=`${grpHd('⚙️ Gantry')}${rRow('q2_g1','Slip Ring Cleaning',t)}${rRow('q2_g2','Slip Ring Brush Block Inspect/Clean',t)}${rRow('q2_g3','Verify Tilt Operation & Zero Check',t)}${rRow('q2_g4','Clean/Inspect Gantry Interior',t)}${rRow('q2_g5','Clean/Inspect all Fans and Filters',t)}${rRow('q2_g6','Inspect all Control Panel Buttons',t)}${rRow('q2_g7','Verify Collimator Functional Tests',t)}${rRow('q2_g8','Verify X-Ray Indicator Lights',t)}${rRow('q2_g9','Inspect Cable/Hose Zip Ties',t)}${rRow('q2_g10','Inspect Rotational Path Components',t)}${rRow('q2_g11','Clean/Inspect Axial Encoder Wheel',t)}${rRow('q2_g12','Clean/Inspect Mylar Window',t)}${rRow('q2_g13','Clean/Inspect Detector Face Plate',t)}${grpHd('🛋 Table / Couch')}${rRow('q2_t1','Clean/Inspect Cradle Drive Assy.',t)}${rRow('q2_t2','Clean/Inspect Tape Switches',t)}${rRow('q2_t3','Check Accessories (Phantom Holder, Cradle Extender)',t)}${rRow('q2_t4','Check Limit Mechanisms',t)}${rRow('q2_t5','Verify Laser Light Alignments',t)}${rRow('q2_t6','General Cleaning of Covers, Table Pan',t)}${rRow('q2_t7','Inspect Cradle Drive Belts (Cracks/Fraying)',t)}${rRow('q2_t8','Seismic Anchor Bolt Check',t)}${grpHd('⚡ X-Ray System')}${rRow('q2_x1','X-Ray Tube Well / HV Tank Well Inspections',t)}${rRow('q2_x2','HV Cable Candle Stick Inspections',t)}${rRow('q2_x3','Inspect all High Voltage Connections',t)}${rRow('q2_x4','Operational Checks Heat Exchanger Fans & Pump',t)}${grpHd('📡 Data Acquisition')}${rRow('q2_d1','Verify DAS Tools Auto Test Passes',t)}${rRow('q2_d2','Verify Recon Data Path Passes',t)}${rRow('q2_d3','Clean/Inspect DAS Duct Fans & Filters',t)}${rRow('q2_d4','Inspect/Adjust DAS Power Supplies (when applicable)',t)}${consoleR}${sysR}`;}else if(q==='q3'){rows=`${grpHd('⚙️ Gantry')}${rRow('q3_g1','Slip Ring Cleaning',t)}${rRow('q3_g2','Slip Ring Brush Block Clean/Inspect',t)}${rRow('q3_g3','Clean/Inspect Gantry Interior',t)}${rRow('q3_g4','Clean/Inspect all Fans & Filters',t)}${rRow('q3_g5','Verify Gantry Balance',t)}${rRow('q3_g6','Inspect all Control Panel Buttons',t)}${rRow('q3_g7','Clean/Inspect Mylar Window',t)}${rRow('q3_g8','Clean/Inspect Detector Face Plate',t)}${rRow('q3_g9','Verify X-Ray Indicator Lights',t)}${rRow('q3_g10','Inspect Cable/Hose Zip Ties',t)}${rRow('q3_g11','Inspect Rotational Path Components',t)}${rRow('q3_g12','Clean/Inspect Axial Encoder Wheel',t)}${grpHd('🛋 Table / Couch')}${rRow('q3_t1','Clean/Inspect Cradle Drive Assy.',t)}${rRow('q3_t2','Clean/Inspect Tape Switches',t)}${rRow('q3_t3','Clean/Inspect Rollers and Rails',t)}${rRow('q3_t4','Check Limit Mechanisms',t)}${rRow('q3_t5','Clean/Inspect QA Phantom',t)}${rRow('q3_t6','General Cleaning of Covers, Cradle, Table Pan',t)}${grpHd('⚡ X-Ray System')}${rRow('q3_x1','Inspect all High Voltage Connections',t)}${rRow('q3_x2','Operational Checks Heat Exchanger Fans & Pump',t)}${rRow('q3_x3','High Voltage Checks/Testing (when applicable)',t)}${grpHd('📡 Data Acquisition')}${rRow('q3_d1','Verify DAS Tools Auto Test Passes',t)}${rRow('q3_d2','Verify Recon Data Path Passes',t)}${consoleR}${sysR}`;}else{rows=`${grpHd('⚙️ Gantry')}${rRow('q4_g1','Slip Ring Cleaning',t)}${rRow('q4_g2','Slip Ring Brush Block Inspect/Clean',t)}${rRow('q4_g3','Clean/Inspect Gantry Interior',t)}${rRow('q4_g4','Clean/Inspect all Fans & Filters',t)}${rRow('q4_g5','Inspect all Control Panel Buttons',t)}${rRow('q4_g6','Verify Collimator Functional Tests',t)}${rRow('q4_g7','Verify X-Ray Indicator Lights',t)}${rRow('q4_g8','Inspect Cable/Hose Zip Ties',t)}${rRow('q4_g9','Inspect Rotational Path Components',t)}${rRow('q4_g10','Inspect Axial Encoder Wheel',t)}${rRow('q4_g11','Clean/Inspect Mylar Window',t)}${rRow('q4_g12','Clean/Inspect Detector Face Plate',t)}${grpHd('🛋 Table / Couch')}${rRow('q4_t1','Clean/Inspect Cradle Drive Assy.',t)}${rRow('q4_t2','Clean/Inspect Tape Switches',t)}${rRow('q4_t3','Check Accessories',t)}${rRow('q4_t4','Check Limit Mechanisms',t)}${rRow('q4_t5','Verify Laser Light Alignments',t)}${rRow('q4_t6','General Cleaning of Covers, Cradle, Table Pan',t)}${rRow('q4_t7','Inspect Cradle Drive Belts',t)}${grpHd('⚡ X-Ray System')}${rRow('q4_x1','X-Ray Tube Well / HV Tank Well Inspections',t)}${rRow('q4_x2','HV Cable Candle Stick Inspections',t)}${rRow('q4_x3','Inspect all High Voltage Connections',t)}${rRow('q4_x4','Operational Checks Heat Exchanger Fans & Pump',t)}${grpHd('📡 Data Acquisition')}${rRow('q4_d1','Verify DAS Tools Auto Test Passes',t)}${rRow('q4_d2','Verify Recon Data Path Passes',t)}${consoleR}${sysR}`;}return leg+qtabs+`<div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${rows}</tbody></table></div>`;}
-function setGECTQ(q){activeGECTQuarter=q;if(activeCLType==='ge_ct')switchChecklist('ge_ct');}
+function buildStellant(){const t='stellant';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F71-24 · Stellant Injector PM · Rev. A · 5-21-2024 -- Record original protocol before beginning. Return injector with original protocol when complete.</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('s3a','Turn unit on / Annotate SW version',t)}${rRow('s3f','Set date / time if needed',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('s2a','Do NOT disconnect cables prior to shutting system down',t)}${rRow('s2b','Inspect cables and connections on Power Control Box',t)}${rRow('s3b','Inspect Display Panel',t)}${rRow('s3c','Coiled Hand Switch',t)}${rRow('s3d','Integrity of buttons',t)}${rRow('s3e','Panel properly mounted',t)}${rRow('s5a','Inspect Outside of Injector Head',t)}${rRow('s5b','Inspect Head Cable',t)}${rRow('s5c','Clean Outside head, Dried contrast',t)}${rRow('s5d','Inspect Contrast Warmer',t)}${rRow('s5e','Integrity of Keypad / Buttons',t)}${rRow('s5f','Plunger Movement',t)}${rRow('s5g','Inspect / Clean / Replace Manual Knobs',t)}${rRow('s5h','Inspect / Replace Lens Cap and Gasket',t)}${rRow('s5i','Remove Bottom and Top Cover / Inspect / Clean',t)}${rRow('s5j','Replace Top Cover Gaskets',t)}${rRow('s5k','Inspect Internal Wiring / Routing / Condition',t)}${rRow('s5l','Inspect / Replace LED board and gasket',t)}${rRow('s5m','Inspect / Clean Display Board',t)}${rRow('s5n','Inspect / Replace Dual Overlay Gasket',t)}${rRow('s5o','Inspect / Replace / Lubricate Plunger Tip Boot and Rubber Boot',t)}${rRow('s5p','Inspect / Clean Syringe Wells and Cap Seals',t)}${rRow('s5q','Inspect / Clean / Replace Front End gasket',t)}${rRow('s5r','Inspect Head Cable and Extension cable',t)}${rRow('s5s','Inspect / Clean Optic Sensors and Seals',t)}${rRow('s5t','Inspect / Replace Knuckle and Gasket',t)}${rRow('s6a','Inspect Counterpoise Assembly Mounting Bolts 42 ft/lbs',t)}${rRow('s6b','Head swings freely on mount',t)}${rRow('s6c','Pedestal moves freely, casters operate properly',t)}${rRow('s6d','Head Mounting Device and base',t)}${rRow('s7','Inspect all cables and connectors',t)}${rRow('s8','Re-assemble unit, connect all cables, proceed to Calibration Verification',t)}${grpHd('4 · Functional, performance and electrical-safety checks')}${rRow('s1','Enter Selected Protocol and Verify',t)}${rRow('s4a','Verify Auto Load',t)}${rRow('s4b','Verify Auto Advance',t)}${measureRow(t,'s9a','A Side Volume','ml','0 +/- 1 ml')}${measureRow(t,'s9b','B Side Volume','ml','0 +/- 1 ml')}${measureRow(t,'s10a_fr','Syringe A Flow Rate','secs','10 +/- 1 sec')}${measureRow(t,'s10a_vol','Syringe A Volume','ml','50 +/- 1 ml')}${measureRow(t,'s10b_fr','Syringe B Flow Rate','secs','10 +/- 1 sec')}${measureRow(t,'s10b_vol','Syringe B Volume','ml','50 +/- 1 ml')}${measureRow(t,'s11a_ff','Syringe A - Fast Forward','secs','23 +/- 5s')}${measureRow(t,'s11a_fr','Syringe A - Fast Reverse','secs','23 +/- 5s')}${measureRow(t,'s11a_sf','Syringe A - Slow Forward','secs','115 +/- 10s')}${measureRow(t,'s11a_sr','Syringe A - Slow Reverse','secs','115 +/- 10s')}${measureRow(t,'s11b_ff','Syringe B - Fast Forward','secs','23 +/- 5s')}${measureRow(t,'s11b_fr','Syringe B - Fast Reverse','secs','23 +/- 5s')}${measureRow(t,'s11b_sf','Syringe B - Slow Forward','secs','115 +/- 10s')}${measureRow(t,'s11b_sr','Syringe B - Slow Reverse','secs','115 +/- 10s')}${measureRow(t,'s12a','A Side Pressure Limit','psi','300 +/- 50 psi')}${measureRow(t,'s12b','B Side Pressure Limit','psi','300 +/- 50 psi')}${rRow('s13','Follow Local Guidelines',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('s14','Perform operations check, leave unit with original protocol',t)}</tbody></table></div>`;}
 
-function buildStellant(){const t='stellant';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F71-24 · Stellant Injector PM · Rev. A · 5-21-2024 -- Record original protocol before beginning. Return injector with original protocol when complete.</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1. Operational Checkout')}${rRow('s1','Enter Selected Protocol and Verify',t)}${grpHd('2. Inspect Power Control Module')}${rRow('s2a','Do NOT disconnect cables prior to shutting system down',t)}${rRow('s2b','Inspect cables and connections on Power Control Box',t)}${grpHd('3. Inspect Display Panel')}${rRow('s3a','Turn unit on / Annotate SW version',t)}${rRow('s3b','Inspect Display Panel',t)}${rRow('s3c','Coiled Hand Switch',t)}${rRow('s3d','Integrity of buttons',t)}${rRow('s3e','Panel properly mounted',t)}${rRow('s3f','Set date / time if needed',t)}${grpHd('4. Auto Functions')}${rRow('s4a','Verify Auto Load',t)}${rRow('s4b','Verify Auto Advance',t)}${grpHd('5. Inspect Injector Head')}${rRow('s5a','Inspect Outside of Injector Head',t)}${rRow('s5b','Inspect Head Cable',t)}${rRow('s5c','Clean Outside head, Dried contrast',t)}${rRow('s5d','Inspect Contrast Warmer',t)}${rRow('s5e','Integrity of Keypad / Buttons',t)}${rRow('s5f','Plunger Movement',t)}${rRow('s5g','Inspect / Clean / Replace Manual Knobs',t)}${rRow('s5h','Inspect / Replace Lens Cap and Gasket',t)}${rRow('s5i','Remove Bottom and Top Cover / Inspect / Clean',t)}${rRow('s5j','Replace Top Cover Gaskets',t)}${rRow('s5k','Inspect Internal Wiring / Routing / Condition',t)}${rRow('s5l','Inspect / Replace LED board and gasket',t)}${rRow('s5m','Inspect / Clean Display Board',t)}${rRow('s5n','Inspect / Replace Dual Overlay Gasket',t)}${rRow('s5o','Inspect / Replace / Lubricate Plunger Tip Boot and Rubber Boot',t)}${rRow('s5p','Inspect / Clean Syringe Wells and Cap Seals',t)}${rRow('s5q','Inspect / Clean / Replace Front End gasket',t)}${rRow('s5r','Inspect Head Cable and Extension cable',t)}${rRow('s5s','Inspect / Clean Optic Sensors and Seals',t)}${rRow('s5t','Inspect / Replace Knuckle and Gasket',t)}${grpHd('6. Injector Mounting Device')}${rRow('s6a','Inspect Counterpoise Assembly Mounting Bolts 42 ft/lbs',t)}${rRow('s6b','Head swings freely on mount',t)}${rRow('s6c','Pedestal moves freely, casters operate properly',t)}${rRow('s6d','Head Mounting Device and base',t)}${grpHd('7. ISI 700 Cables')}${rRow('s7','Inspect all cables and connectors',t)}${grpHd('8. Re-assembly')}${rRow('s8','Re-assemble unit, connect all cables, proceed to Calibration Verification',t)}${grpHd('9. Syringe Position Verification (0 ml +/- 1ml)')}${measureRow(t,'s9a','A Side Volume','ml','0 +/- 1 ml')}${measureRow(t,'s9b','B Side Volume','ml','0 +/- 1 ml')}${grpHd('10. Volume and Flow Rates (5ml/sec, 50ml)')}${measureRow(t,'s10a_fr','Syringe A Flow Rate','secs','10 +/- 1 sec')}${measureRow(t,'s10a_vol','Syringe A Volume','ml','50 +/- 1 ml')}${measureRow(t,'s10b_fr','Syringe B Flow Rate','secs','10 +/- 1 sec')}${measureRow(t,'s10b_vol','Syringe B Volume','ml','50 +/- 1 ml')}${grpHd('11. Motor Speed Checks')}${measureRow(t,'s11a_ff','Syringe A - Fast Forward','secs','23 +/- 5s')}${measureRow(t,'s11a_fr','Syringe A - Fast Reverse','secs','23 +/- 5s')}${measureRow(t,'s11a_sf','Syringe A - Slow Forward','secs','115 +/- 10s')}${measureRow(t,'s11a_sr','Syringe A - Slow Reverse','secs','115 +/- 10s')}${measureRow(t,'s11b_ff','Syringe B - Fast Forward','secs','23 +/- 5s')}${measureRow(t,'s11b_fr','Syringe B - Fast Reverse','secs','23 +/- 5s')}${measureRow(t,'s11b_sf','Syringe B - Slow Forward','secs','115 +/- 10s')}${measureRow(t,'s11b_sr','Syringe B - Slow Reverse','secs','115 +/- 10s')}${grpHd('12. Pressure Limit Calibration (8ml/sec, 100ml volume)')}${measureRow(t,'s12a','A Side Pressure Limit','psi','300 +/- 50 psi')}${measureRow(t,'s12b','B Side Pressure Limit','psi','300 +/- 50 psi')}${grpHd('13. Electrical Safety')}${rRow('s13','Follow Local Guidelines',t)}${grpHd('14. Final Inspection')}${rRow('s14','Perform operations check, leave unit with original protocol',t)}</tbody></table></div>`;}
+function buildSolaris(){const t='solaris';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F71-23 · Solaris/Spectris Injector PM · Rev. A · 5-21-2024</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('sl4a','Turn unit on / Record SW version',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('sl3','3. Move Injector Base to Control Room -- Remove covers, disconnect Fiber Optics, connect jumper cables, inspect fiber cables/charger/Power box',t)}${rRow('sl4b','Inspect Display Panel',t)}${rRow('sl4c','Coiled Hand Switch',t)}${rRow('sl4d','Fiber optic cables / Power cable',t)}${rRow('sl4e','Panel properly mounted',t)}${rRow('sl4f','Inspect Charging System / battery, cables',t)}${rRow('sl5a','Integrity of buttons',t)}${rRow('sl5b','Plunger Movement',t)}${rRow('sl5c','Pivot Knuckle',t)}${rRow('sl5d','Remove Top Cover / Inspect',t)}${rRow('sl5e','Replace Top Cover Gaskets',t)}${rRow('sl5f','Inspect Internal Wiring / Routing / Condition',t)}${rRow('sl5g','Integrity of Syringe Wells',t)}${rRow('sl5h','Inspect / Replace syringe well "O" Rings',t)}${rRow('sl5i','Grease Plastic Gears',t)}${rRow('sl5j','Lightly Grease Guide Rails',t)}${rRow('sl5k','Grease plunger ball screws',t)}${rRow('sl6a','Head swings freely on mount',t)}${rRow('sl6b','Pedestal moves freely, casters operate properly',t)}${rRow('sl7a','Head covers',t)}${rRow('sl7b','Manual plunger knobs',t)}${rRow('sl7c','Plungers',t)}${rRow('sl7d','Lens cap',t)}${rRow('sl7e','Injector assembly',t)}${rRow('sl8','Reassemble Head / Verify Guide Runners Aligned / Plungers Aligned',t)}${rRow('sl9a','Inspect all cables and connectors',t)}${rRow('sl9b','Pedestal Base',t)}${rRow('sl9c','Battery',t)}${rRow('sl9d','Base Covers',t)}${rRow('sl9e','Drive Cables',t)}${rRow('sl9f','Data Cable Connector',t)}${rRow('sl9g','Remove Brass Housing and Inspect',t)}${rRow('sl9h','Inspect Front Plate',t)}${rRow('sl9i','Inspect Rear Plate',t)}${rRow('sl9j','Inspect Battery Back Plate',t)}${rRow('sl10','Reassemble base, connect all cables. Leave injector in Control Room for Calibration.',t)}${grpHd('4 · Functional, performance and electrical-safety checks')}${rRow('sl1','1. Operational Checkout Procedure #1 -- Enter Protocol and Verify',t)}${rRow('sl2','2. Operational Checkout Procedure #2 -- Enter Protocol and Verify',t)}${measureRow(t,'sl11a','A Side Volume','ml','40 +/- 1 ml')}${measureRow(t,'sl11b','B Side Volume','ml','40 +/- 1 ml')}${measureRow(t,'sl12a_sp','Syringe A - Start Position','ml','60 +/- 0.5 ml')}${measureRow(t,'sl12a_fr','Syringe A - Flow Rate','secs','10 +/- 0.5 secs')}${measureRow(t,'sl12a_ep','Syringe A - End Position','ml','10 +/- 0.5 ml')}${measureRow(t,'sl12b_sp','Syringe B - Start Position','ml','110 +/- 0.5 ml')}${measureRow(t,'sl12b_fr','Syringe B - Flow Rate','secs','10 +/- 0.5 secs')}${measureRow(t,'sl12b_ep','Syringe B - End Position','ml','60 +/- 0.5 ml')}${measureRow(t,'sl13a_ff','Syringe A - Fast Forward','secs','7 +/- 2s')}${measureRow(t,'sl13a_fr','Syringe A - Fast Reverse','secs','7 +/- 2s')}${measureRow(t,'sl13a_sf','Syringe A - Slow Forward','secs','25 +/- 2s')}${measureRow(t,'sl13a_sr','Syringe A - Slow Reverse','secs','25 +/- 2s')}${measureRow(t,'sl13b_ff','Syringe B - Fast Forward','secs','12 +/- 2s')}${measureRow(t,'sl13b_fr','Syringe B - Fast Reverse','secs','12 +/- 2s')}${measureRow(t,'sl13b_sf','Syringe B - Slow Forward','secs','46 +/- 4s')}${measureRow(t,'sl13b_sr','Syringe B - Slow Reverse','secs','46 +/- 4s')}${rRow('sl14','Follow Local requirements',t)}${measureRow(t,'sl15','A-Side Pressure Limit','PSI','250 +/- 41 psi')}${measureRow(t,'sl16','B-Side Pressure Limit','PSI','300 +/- 50 psi')}${grpHd('5 · Sign-off / PM completion')}${rRow('sl17','Final Operational Check Complete',t)}</tbody></table></div>`;}
 
-function buildSolaris(){const t='solaris';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">F71-23 · Solaris/Spectris Injector PM · Rev. A · 5-21-2024</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${rRow('sl1','1. Operational Checkout Procedure #1 -- Enter Protocol and Verify',t)}${rRow('sl2','2. Operational Checkout Procedure #2 -- Enter Protocol and Verify',t)}${rRow('sl3','3. Move Injector Base to Control Room -- Remove covers, disconnect Fiber Optics, connect jumper cables, inspect fiber cables/charger/Power box',t)}${grpHd('4. Inspect Display Panel')}${rRow('sl4a','Turn unit on / Record SW version',t)}${rRow('sl4b','Inspect Display Panel',t)}${rRow('sl4c','Coiled Hand Switch',t)}${rRow('sl4d','Fiber optic cables / Power cable',t)}${rRow('sl4e','Panel properly mounted',t)}${rRow('sl4f','Inspect Charging System / battery, cables',t)}${grpHd('5. Inspect Injector Head')}${rRow('sl5a','Integrity of buttons',t)}${rRow('sl5b','Plunger Movement',t)}${rRow('sl5c','Pivot Knuckle',t)}${rRow('sl5d','Remove Top Cover / Inspect',t)}${rRow('sl5e','Replace Top Cover Gaskets',t)}${rRow('sl5f','Inspect Internal Wiring / Routing / Condition',t)}${rRow('sl5g','Integrity of Syringe Wells',t)}${rRow('sl5h','Inspect / Replace syringe well "O" Rings',t)}${rRow('sl5i','Grease Plastic Gears',t)}${rRow('sl5j','Lightly Grease Guide Rails',t)}${rRow('sl5k','Grease plunger ball screws',t)}${grpHd('6. Injector Mounting Device')}${rRow('sl6a','Head swings freely on mount',t)}${rRow('sl6b','Pedestal moves freely, casters operate properly',t)}${grpHd('7. Cleaning')}${rRow('sl7a','Head covers',t)}${rRow('sl7b','Manual plunger knobs',t)}${rRow('sl7c','Plungers',t)}${rRow('sl7d','Lens cap',t)}${rRow('sl7e','Injector assembly',t)}${grpHd('8. Reassemble Injector Head')}${rRow('sl8','Reassemble Head / Verify Guide Runners Aligned / Plungers Aligned',t)}${grpHd('9. Base Maintenance')}${rRow('sl9a','Inspect all cables and connectors',t)}${rRow('sl9b','Pedestal Base',t)}${rRow('sl9c','Battery',t)}${rRow('sl9d','Base Covers',t)}${rRow('sl9e','Drive Cables',t)}${rRow('sl9f','Data Cable Connector',t)}${rRow('sl9g','Remove Brass Housing and Inspect',t)}${rRow('sl9h','Inspect Front Plate',t)}${rRow('sl9i','Inspect Rear Plate',t)}${rRow('sl9j','Inspect Battery Back Plate',t)}${grpHd('10. Reassembly')}${rRow('sl10','Reassemble base, connect all cables. Leave injector in Control Room for Calibration.',t)}${grpHd('11. Syringe Position Verification (40ml +/- 1ml)')}${measureRow(t,'sl11a','A Side Volume','ml','40 +/- 1 ml')}${measureRow(t,'sl11b','B Side Volume','ml','40 +/- 1 ml')}${grpHd('12. Volume and Flow Rates (5ml/sec, 50ml, 300psi)')}${measureRow(t,'sl12a_sp','Syringe A - Start Position','ml','60 +/- 0.5 ml')}${measureRow(t,'sl12a_fr','Syringe A - Flow Rate','secs','10 +/- 0.5 secs')}${measureRow(t,'sl12a_ep','Syringe A - End Position','ml','10 +/- 0.5 ml')}${measureRow(t,'sl12b_sp','Syringe B - Start Position','ml','110 +/- 0.5 ml')}${measureRow(t,'sl12b_fr','Syringe B - Flow Rate','secs','10 +/- 0.5 secs')}${measureRow(t,'sl12b_ep','Syringe B - End Position','ml','60 +/- 0.5 ml')}${grpHd('13. Motor Speed Checks')}${measureRow(t,'sl13a_ff','Syringe A - Fast Forward','secs','7 +/- 2s')}${measureRow(t,'sl13a_fr','Syringe A - Fast Reverse','secs','7 +/- 2s')}${measureRow(t,'sl13a_sf','Syringe A - Slow Forward','secs','25 +/- 2s')}${measureRow(t,'sl13a_sr','Syringe A - Slow Reverse','secs','25 +/- 2s')}${measureRow(t,'sl13b_ff','Syringe B - Fast Forward','secs','12 +/- 2s')}${measureRow(t,'sl13b_fr','Syringe B - Fast Reverse','secs','12 +/- 2s')}${measureRow(t,'sl13b_sf','Syringe B - Slow Forward','secs','46 +/- 4s')}${measureRow(t,'sl13b_sr','Syringe B - Slow Reverse','secs','46 +/- 4s')}${grpHd('14. Electrical Safety')}${rRow('sl14','Follow Local requirements',t)}${grpHd('15. A-Side Pressure Limit (6.5ml/sec)')}${measureRow(t,'sl15','A-Side Pressure Limit','PSI','250 +/- 41 psi')}${grpHd('16. B-Side Pressure Limit (8ml/sec)')}${measureRow(t,'sl16','B-Side Pressure Limit','PSI','300 +/- 50 psi')}${grpHd('17. Final Inspection')}${rRow('sl17','Final Operational Check Complete',t)}</tbody></table></div>`;}
+function buildOptiVantage(){const t='optivantage';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">Guerbet OptiVantage DH CT Injector — Semi-Annual PM Checklist · AMT Imaging Solutions</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('ov1a','Record SW version and current protocol settings',t)}${rRow('ov1b','Photo-document any existing damage before starting',t)}${rRow('ov3c','Set date and time if needed',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('ov2a','Inspect head assembly for cracks, damage, contrast contamination',t)}${rRow('ov2b','Inspect pivot arm and mounting hardware — tighten loose bolts',t)}${rRow('ov2c','Inspect all cables and connectors for damage, pinching, corrosion',t)}${rRow('ov2d','Inspect handswitch cable and buttons',t)}${rRow('ov2e','Inspect power module and power cable',t)}${rRow('ov3a','Power on — inspect touch screen for dead zones',t)}${rRow('ov3b','Verify all display buttons responsive',t)}${rRow('ov4a','Inspect syringe cradle and latch mechanism for wear',t)}${rRow('ov4b','Clean syringe sensors — remove all contrast residue',t)}${rRow('ov4c','Inspect syringe well O-rings — replace if cracked or brittle',t)}${rRow('ov5a','Inspect piston drive for wear or contamination',t)}${rRow('ov5b','Lubricate drive mechanism per OEM specification',t)}${rRow('ov6a','Verify warmer set point at 37°C',t)}${rRow('ov10a','Clean all external surfaces',t)}${grpHd('4 · Functional, performance and electrical-safety checks')}${rRow('ov4d','Verify syringe detection with test syringe',t)}${rRow('ov5c','Verify smooth plunger travel full stroke',t)}${measureRow(t,'ov6b','Warmer output temperature','°C','37 ± 2°C')}${measureRow(t,'ov7a','Volume accuracy — A side (50ml @ 5ml/sec)','ml','50 ± 1 ml')}${measureRow(t,'ov7b','Volume accuracy — B side (50ml @ 5ml/sec)','ml','50 ± 1 ml')}${measureRow(t,'ov7c','Flow rate accuracy — A side (time 50ml)','secs','10 ± 1 sec')}${measureRow(t,'ov7d','Flow rate accuracy — B side (time 50ml)','secs','10 ± 1 sec')}${measureRow(t,'ov8a','A side pressure limit (8ml/sec)','psi','300 ± 50 psi')}${measureRow(t,'ov8b','B side pressure limit (8ml/sec)','psi','300 ± 50 psi')}${rRow('ov9','Follow local requirements / IEC 60601',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('ov10b','Perform full operational checkout — protocol intact',t)}${rRow('ov10c','Restore original protocol before leaving',t)}</tbody></table></div>`;}
 
-function buildOptiVantage(){const t='optivantage';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">Guerbet OptiVantage DH CT Injector — Semi-Annual PM Checklist · AMT Imaging Solutions</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1. Pre-PM Documentation')}${rRow('ov1a','Record SW version and current protocol settings',t)}${rRow('ov1b','Photo-document any existing damage before starting',t)}${grpHd('2. Exterior Inspection')}${rRow('ov2a','Inspect head assembly for cracks, damage, contrast contamination',t)}${rRow('ov2b','Inspect pivot arm and mounting hardware — tighten loose bolts',t)}${rRow('ov2c','Inspect all cables and connectors for damage, pinching, corrosion',t)}${rRow('ov2d','Inspect handswitch cable and buttons',t)}${rRow('ov2e','Inspect power module and power cable',t)}${grpHd('3. Console / Display')}${rRow('ov3a','Power on — inspect touch screen for dead zones',t)}${rRow('ov3b','Verify all display buttons responsive',t)}${rRow('ov3c','Set date and time if needed',t)}${grpHd('4. Syringe Interface')}${rRow('ov4a','Inspect syringe cradle and latch mechanism for wear',t)}${rRow('ov4b','Clean syringe sensors — remove all contrast residue',t)}${rRow('ov4c','Inspect syringe well O-rings — replace if cracked or brittle',t)}${rRow('ov4d','Verify syringe detection with test syringe',t)}${grpHd('5. Drive Mechanism')}${rRow('ov5a','Inspect piston drive for wear or contamination',t)}${rRow('ov5b','Lubricate drive mechanism per OEM specification',t)}${rRow('ov5c','Verify smooth plunger travel full stroke',t)}${grpHd('6. Contrast Warmer')}${rRow('ov6a','Verify warmer set point at 37°C',t)}${measureRow(t,'ov6b','Warmer output temperature','°C','37 ± 2°C')}${grpHd('7. Calibration Verification')}${measureRow(t,'ov7a','Volume accuracy — A side (50ml @ 5ml/sec)','ml','50 ± 1 ml')}${measureRow(t,'ov7b','Volume accuracy — B side (50ml @ 5ml/sec)','ml','50 ± 1 ml')}${measureRow(t,'ov7c','Flow rate accuracy — A side (time 50ml)','secs','10 ± 1 sec')}${measureRow(t,'ov7d','Flow rate accuracy — B side (time 50ml)','secs','10 ± 1 sec')}${grpHd('8. Pressure Limit Verification')}${measureRow(t,'ov8a','A side pressure limit (8ml/sec)','psi','300 ± 50 psi')}${measureRow(t,'ov8b','B side pressure limit (8ml/sec)','psi','300 ± 50 psi')}${grpHd('9. Electrical Safety')}${rRow('ov9','Follow local requirements / IEC 60601',t)}${grpHd('10. Final Inspection')}${rRow('ov10a','Clean all external surfaces',t)}${rRow('ov10b','Perform full operational checkout — protocol intact',t)}${rRow('ov10c','Restore original protocol before leaving',t)}</tbody></table></div>`;}
-
-function buildEmpowerCTA(){const t='empowercta';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">Bracco EmpowerCTA+ CT Injector — Semi-Annual PM Checklist · AMT Imaging Solutions · Support: 1-877-272-2269</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1. Pre-PM Documentation')}${rRow('ec1a','Record SW version and firmware revision',t)}${rRow('ec1b','Confirm current single-use fluid path set type in use',t)}${grpHd('2. Exterior and Hardware Inspection')}${rRow('ec2a','Inspect head unit and housing for damage or contamination',t)}${rRow('ec2b','Inspect touchscreen for cracks or dead zones',t)}${rRow('ec2c','Inspect remote control unit and cable/wireless link',t)}${rRow('ec2d','Inspect mounting hardware and pivot arm',t)}${rRow('ec2e','Inspect power cable and connections',t)}${grpHd('3. Piston Drive Inspection')}${rRow('ec3a','Inspect piston drive for wear, corrosion, or fluid contamination',t)}${rRow('ec3b','Verify smooth piston travel full stroke (forward and reverse)',t)}${rRow('ec3c','Verify auto-home / self-calibration routine runs without fault',t)}${grpHd('4. Fluid Path Connectors')}${rRow('ec4a','Clean fluid path connector points with approved cleaning agent',t)}${rRow('ec4b','Inspect connector O-rings — replace if worn or cracked',t)}${rRow('ec4c','Install test single-use set — verify detection and seating',t)}${grpHd('5. Safety System Tests')}${rRow('ec5a','Air detection sensor test — verify alarm activates on simulated air',t)}${rRow('ec5b','Pressure limit test — verify alarm at set limit',t)}${rRow('ec5c','Volume cutoff — verify injection halts at programmed volume',t)}${grpHd('6. Voice Prompts')}${rRow('ec6a','Cycle through injection workflow — verify voice prompts active and correct',t)}${grpHd('7. Calibration Verification')}${measureRow(t,'ec7a','Volume accuracy (50ml test)','ml','50 ± 1 ml')}${measureRow(t,'ec7b','Flow rate accuracy (time 50ml @ 5ml/sec)','secs','10 ± 1 sec')}${grpHd('8. Contrast Warmer (if equipped)')}${measureRow(t,'ec8','Warmer output temperature','°C','37 ± 2°C')}${grpHd('9. Electrical Safety')}${rRow('ec9','Follow local requirements / IEC 60601',t)}${grpHd('10. Final Inspection')}${rRow('ec10a','Remove test fluid path — ensure no single-use set reused',t)}${rRow('ec10b','Clean all external surfaces per facility protocol',t)}${rRow('ec10c','Perform full operational checkout',t)}${rRow('ec10d','Document SW version and any findings',t)}</tbody></table></div>`;}
+function buildEmpowerCTA(){const t='empowercta';return`<div class="cl-legend"><span style="color:var(--green)">🟢 PASS</span><span style="color:var(--red)">🔴 FAIL</span><span style="color:var(--gray3)">⬜ N/A</span></div><div class="alert alert-info" style="margin-bottom:8px">Bracco EmpowerCTA+ CT Injector — Semi-Annual PM Checklist · AMT Imaging Solutions · Support: 1-877-272-2269</div><div style="overflow-x:auto"><table class="cl-table">${tHead()}<tbody>${grpHd('1 · Site / system info and data collection')}${rRow('ec1a','Record SW version and firmware revision',t)}${rRow('ec1b','Confirm current single-use fluid path set type in use',t)}${grpHd('2 · Technologist interview')}${textAreaRow(t,'txt_interview','Issues noted (what the technologist reported, the follow-up, and whether it was resolved)')}${grpHd('3 · Cleaning and visual / physical checks')}${rRow('ec2a','Inspect head unit and housing for damage or contamination',t)}${rRow('ec2b','Inspect touchscreen for cracks or dead zones',t)}${rRow('ec2c','Inspect remote control unit and cable/wireless link',t)}${rRow('ec2d','Inspect mounting hardware and pivot arm',t)}${rRow('ec2e','Inspect power cable and connections',t)}${rRow('ec3a','Inspect piston drive for wear, corrosion, or fluid contamination',t)}${rRow('ec4a','Clean fluid path connector points with approved cleaning agent',t)}${rRow('ec4b','Inspect connector O-rings — replace if worn or cracked',t)}${grpHd('4 · Functional, performance and electrical-safety checks')}${rRow('ec3b','Verify smooth piston travel full stroke (forward and reverse)',t)}${rRow('ec3c','Verify auto-home / self-calibration routine runs without fault',t)}${rRow('ec4c','Install test single-use set — verify detection and seating',t)}${rRow('ec5a','Air detection sensor test — verify alarm activates on simulated air',t)}${rRow('ec5b','Pressure limit test — verify alarm at set limit',t)}${rRow('ec5c','Volume cutoff — verify injection halts at programmed volume',t)}${rRow('ec6a','Cycle through injection workflow — verify voice prompts active and correct',t)}${measureRow(t,'ec7a','Volume accuracy (50ml test)','ml','50 ± 1 ml')}${measureRow(t,'ec7b','Flow rate accuracy (time 50ml @ 5ml/sec)','secs','10 ± 1 sec')}${measureRow(t,'ec8','Warmer output temperature','°C','37 ± 2°C')}${rRow('ec9','Follow local requirements / IEC 60601',t)}${grpHd('5 · Sign-off / PM completion')}${rRow('ec10a','Remove test fluid path — ensure no single-use set reused',t)}${rRow('ec10b','Clean all external surfaces per facility protocol',t)}${rRow('ec10c','Perform full operational checkout',t)}${rRow('ec10d','Document SW version and any findings',t)}</tbody></table></div>`;}
 
 function savePMChecklist(){
   if(!writeGuard('Save PM Checklist')) return;
   const jobId=document.getElementById('pm_jobLink').value;
   if(!activeCLType){alert('Please select a checklist type first.');return;}
-  const counts=Object.values(pmState[activeCLType]||{});
+  const slice={};slice[activeCLType]=Object.assign({}, pmState[activeCLType]||{});
+  const counts=Object.values(slice[activeCLType]||{});
   const fail=counts.filter(v=>v==='fail').length,pass=counts.filter(v=>v==='pass').length;
-  const rec={id:'pm_'+Date.now(),jobId,type:activeCLType,site:document.getElementById('pm_site').value,date:document.getElementById('pm_date').value,model:document.getElementById('pm_model').value,wo:document.getElementById('pm_wo').value,tech:document.getElementById('pm_tech').value,notes:document.getElementById('pm_notes').value,followup:document.getElementById('pm_followup').value,state:{...pmState},savedBy:currentUser?currentUser.name:'',saved:new Date().toISOString()};
+  const rec={id:'pm_'+Date.now(),jobId,type:activeCLType,site:document.getElementById('pm_site').value,date:document.getElementById('pm_date').value,model:document.getElementById('pm_model').value,wo:document.getElementById('pm_wo').value,tech:document.getElementById('pm_tech').value,notes:document.getElementById('pm_notes').value,followup:document.getElementById('pm_followup').value,state:slice,gectQuarter:activeCLType==='ge_ct'?activeGECTQuarter:'',savedBy:currentUser?currentUser.name:'',saved:new Date().toISOString()};
   pmChecklists=pmChecklists.filter(p=>!(p.jobId&&p.jobId===jobId&&p.type===activeCLType));
   pmChecklists.unshift(rec);savePMs();
   alert(`✅ PM Checklist Saved!\nPass: ${pass} | Fail: ${fail}`+(fail>0?`\n⚠️ ${fail} item(s) require follow-up.`:'\n✅ No failures.'));
 }
 
-const PM_TYPE_LABELS={ge_mri:'GE MRI System PM',siemens_mri:'Siemens MRI System PM',ge_ct:'GE CT Quarterly PM',siemens_ct:'Siemens CT System PM',stellant:'Stellant CT Injector PM',solaris:'Spectris Solaris EP MRI Injector PM',optivantage:'OptiVantage DH CT Injector PM',empowercta:'Bracco EmpowerCTA+ CT Injector PM'};
+const PM_TYPE_LABELS={ge_mri:'GE MRI System PM',ge_mr_exii:'GE MR Excite II and Later',siemens_mri:'Siemens MRI System PM',ge_ct:'GE CT Quarterly PM',siemens_ct:'Siemens CT System PM',stellant:'Stellant CT Injector PM',solaris:'Spectris Solaris EP MRI Injector PM',optivantage:'OptiVantage DH CT Injector PM',empowercta:'Bracco EmpowerCTA+ CT Injector PM'};
 
 // Reopen a previously saved PM checklist (restores marks, not just header fields) -- used from the
 // job detail view so a completed checklist can be reviewed or reprinted exactly as it was submitted.
-function openSavedPMChecklist(pmId){
-  const rec=pmChecklists.find(p=>p.id===pmId);if(!rec)return;
-  _pmSkipDraft=true;
-  showTab('pm');
-  setTimeout(()=>{
-    populatePMDropdown();
-    document.getElementById('pm_jobLink').value=rec.jobId||'';
-    document.getElementById('pm_site').value=rec.site||'';
-    document.getElementById('pm_date').value=rec.date||'';
-    document.getElementById('pm_model').value=rec.model||'';
-    document.getElementById('pm_wo').value=rec.wo||'';
-    document.getElementById('pm_tech').value=rec.tech||'';
-    document.getElementById('pm_notes').value=rec.notes||'';
-    document.getElementById('pm_followup').value=rec.followup||'';
-    pmState=JSON.parse(JSON.stringify(rec.state||{}));
-    activeCLType=rec.type;
-    document.getElementById('pm_type_sel').value=rec.type;
-    switchChecklist(rec.type);
-  },80);
-}
-
-// Builds a clean, letterheaded, customer-ready copy of the current checklist in a new print window.
-// Deliberately does NOT rely on window.print() on the live app page -- the global @media print rule
-// forces every .panel to display:block, so a raw print from the PM tab would print the whole app.
+function openSavedPMChecklist(pmId){const rec=pmChecklists.find(p=>p.id===pmId);if(!rec)return;_pmSkipDraft=true;showTab('pm');setTimeout(()=>{populatePMDropdown();applySavedPMRecord(rec);},80);}
 function printPMChecklist(){
   if(!activeCLType || !(pmState[activeCLType])){ alert('Please select and fill out a checklist first.'); return; }
   const area=document.getElementById('pm_checklist_area');
-  const liveTable=area&&area.querySelector('table');
-  if(!liveTable){ alert('Please select a checklist type first.'); return; }
+  if(!area || !area.querySelector('table, .cl-exii')){ alert('Please select a checklist type first.'); return; }
   const clone=area.cloneNode(true);
-
-  // Convert each 3-radio pass/fail/na group into one static mark for print
-  clone.querySelectorAll('tr').forEach(tr=>{
-    const radios=tr.querySelectorAll('input[type=radio]');
-    if(radios.length===3){
-      const checkedEl=Array.from(radios).find(r=>r.checked);
-      let mark='<span style="color:#bbb">&#9744; --</span>';
-      if(checkedEl){
-        if(checkedEl.value==='pass') mark='<span style="color:#16a34a;font-weight:800">&#10003; PASS</span>';
-        else if(checkedEl.value==='fail') mark='<span style="color:#dc2626;font-weight:800">&#10007; FAIL</span>';
-        else mark='<span style="color:#888;font-weight:700">N/A</span>';
-      }
-      const cells=tr.querySelectorAll('td');
-      for(let i=cells.length-1;i>=1;i--) cells[i].remove();
-      const td=document.createElement('td');
-      td.style.textAlign='center';td.style.fontSize='.82rem';
-      td.innerHTML=mark;
-      tr.appendChild(td);
-    }
-  });
-  // Convert measurement text inputs into static values
-  clone.querySelectorAll('.cl-measure input').forEach(inp=>{
-    const span=document.createElement('span');
-    span.textContent=inp.value||'--';
-    span.style.fontWeight='700';
-    inp.replaceWith(span);
-  });
-  // Drop the legend and quarter-tab controls from the printed copy
-  clone.querySelectorAll('.cl-legend,.quarter-tabs').forEach(el=>el.remove());
+  pmSyncCloneValues(area, clone);
+  pmFreezePrint(clone);
 
   const site=document.getElementById('pm_site').value||'--';
   const date=document.getElementById('pm_date').value||'--';
@@ -2986,7 +3364,7 @@ function printPMChecklist(){
     'th{background:#0a1628;color:#fff;text-align:left;padding:6px 8px;font-size:.75rem}'+
     'td{padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:.8rem;vertical-align:middle}'+
     'tr:nth-child(even){background:#f8fafc}'+
-    '.cl-group-hd td{background:#e2e8f0 !important;font-weight:700;text-transform:uppercase;font-size:.7rem;letter-spacing:.4px}'+
+    '.cl-group-hd td{background:#e2e8f0 !important;font-weight:700;text-transform:uppercase;font-size:.7rem;letter-spacing:.4px}'+'.cl-task,.cl-read,.cl-iv{border:1px solid #e5e7eb;border-radius:6px;padding:6px 8px;margin:0 0 6px;break-inside:avoid}'+'.cl-spec{font-size:.75rem;color:#444}'+'.cl-task-no{font-weight:800;margin-right:6px}'+'h3{font-size:.95rem;color:#0a1628;margin:14px 0 6px}'+'h4{font-size:.82rem;margin:10px 0 4px}'+
     '.notes-box{margin-top:14px;padding:10px 14px;background:#f4f6f9;border-radius:8px;font-size:.85rem}'+
     '.sig-row{display:flex;justify-content:space-between;margin-top:34px;font-size:.82rem}'+
     '.sig-line{border-top:1px solid #333;width:220px;padding-top:4px;text-align:center}'+
@@ -2994,7 +3372,7 @@ function printPMChecklist(){
     '</style></head><body>'+
     '<div class="hdr"><strong>AMT Imaging Solutions LLC</strong><br>'+
     '<span style="font-size:.8rem;color:#555">Veteran-Owned SDVOSB/VOSB | MRI &bull; CT &bull; Contrast Injector Service | 754-263-6089 | mike.jackson@amtimagingsolutions.com</span><br>'+
-    '<span style="font-size:.95rem;font-weight:700;margin-top:4px;display:inline-block">'+esc(PM_TYPE_LABELS[activeCLType]||'PM Checklist')+'</span></div>'+
+    '<span style="font-size:.95rem;font-weight:700;margin-top:4px;display:inline-block">'+esc(PM_TYPE_LABELS[activeCLType]||'PM Checklist')+'</span>'+(activeCLType==='ge_mr_exii'?'<div style="font-size:.78rem;color:#333;margin-top:4px">'+esc(PM_EXII.docNo)+' · '+esc(PM_EXII.rev)+'</div>':'')+'</div>'+
     '<div class="meta">'+
       '<div><strong>Site / Facility:</strong> '+esc(site)+'</div>'+
       '<div><strong>PM Date:</strong> '+esc(date)+'</div>'+
