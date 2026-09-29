@@ -11,6 +11,12 @@ node "$ROOT/scripts/access_checks.js"
 node "$ROOT/scripts/local_date_checks.js"
 node "$ROOT/scripts/gis_boot_checks.js"
 
+if node -e "require('playwright')" >/dev/null 2>&1; then
+  node "$ROOT/scripts/draft_checks.js"
+else
+  echo "Playwright not installed; skipping scripts/draft_checks.js"
+fi
+
 if [[ -d "$ROOT/functions" ]]; then
   if [[ ! -d "$ROOT/functions/node_modules" ]]; then
     echo "Installing functions dependencies (npm ci)…"

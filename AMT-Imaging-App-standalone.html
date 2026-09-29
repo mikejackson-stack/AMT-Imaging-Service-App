@@ -624,6 +624,9 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 .pm-reset-wrap{margin-top:18px;padding-top:12px;border-top:1px dashed var(--gray2)}
 .pm-reset-wrap summary{cursor:pointer;color:#6b7280;font-size:.8rem;font-weight:700}
 .pm-reset-wrap .btn{margin-top:8px}
+.draft-restore{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 12px;padding:12px;background:#fff8e6;border:1.5px solid var(--gold);border-radius:var(--r);color:var(--text)}
+.draft-restore p{flex:1 1 180px;margin:0;font-weight:700;font-size:.95rem;line-height:1.35}
+.draft-restore .btn{min-height:44px !important;min-width:44px !important;box-sizing:border-box;padding:10px 16px}
 
 
 .cl-exii h3{font-size:.95rem;margin:16px 0 8px;color:var(--navy)}
@@ -2000,6 +2003,8 @@ function bootApp(){
     }
   }
   syncViewOnlyLayout();
+  expireDrafts();
+  migrateLegacyPMDraft();
   applyViewOnlyUI();
   applyAdminOnlyUI();
   applyAccessUI();
@@ -2734,6 +2739,7 @@ function showTab(t){
   window.scrollTo({top:0,behavior:'smooth'});
   if(t==='dash')renderDashboard();
   if(t==='jobs')renderJobs();
+  if(t==='newjob') offerFormDraft('job:new');
   if(t==='money'){renderMoney();renderInvoiceList();renderExpenseList();renderDistList();}
   if(t==='pm'){populatePMDropdown();setPMDate();restorePMDraftIfAny();}
   if(t==='manuals'){
@@ -2991,6 +2997,7 @@ function openInvoiceModal(id){
   document.getElementById('stripeLinkStatus').innerHTML='';
   document.getElementById('stripeCopyBtn').disabled=true;
   window._currentStripeLink=null;
+  offerFormDraft('invoice:'+(editingInvId||'new'));
 }
 function editInvoice(id){openInvoiceModal(id);}
 
@@ -3014,7 +3021,7 @@ function saveInvoice(){
   };
   if(editingInvId){const idx=invoices.findIndex(x=>x.id===editingInvId);if(idx>=0)invoices[idx]={...invoices[idx],...inv};}
   else invoices.unshift(inv);
-  saveInvoices();closeModal('invoiceModal');renderInvoiceList();renderMoney();renderDashboard();
+  saveInvoices();clearDraft('invoice:'+(editingInvId||'new'));closeModal('invoiceModal');renderInvoiceList();renderMoney();renderDashboard();
   alert('✅ Invoice saved!');
 }
 
@@ -3051,6 +3058,7 @@ function openExpenseModal(id){
     document.getElementById('exp_job').value='';
   }
   openModal('expenseModal');
+  offerFormDraft('expense:'+(editingExpId||'new'));
 }
 
 function saveExpense(){
@@ -3070,7 +3078,7 @@ function saveExpense(){
   };
   if(editingExpId){const idx=expenses.findIndex(x=>x.id===editingExpId);if(idx>=0)expenses[idx]={...expenses[idx],...e};}
   else expenses.unshift(e);
-  saveExpenses();closeModal('expenseModal');renderExpenseList();renderMoney();renderDashboard();
+  saveExpenses();clearDraft('expense:'+(editingExpId||'new'));closeModal('expenseModal');renderExpenseList();renderMoney();renderDashboard();
   alert('✅ Expense saved!');
 }
 
@@ -3082,6 +3090,7 @@ function openDistModal(){
   document.getElementById('dist_notes').value='';
   document.getElementById('distSplitPreview').style.display='none';
   openModal('distModal');
+  offerFormDraft('dist:new');
 }
 
 function updateDistSplit(){
@@ -3112,7 +3121,7 @@ function saveDist(){
   } else {
     distributions.unshift({id:'dist_'+Date.now(),owner,amount,date,method,ref,notes,created:new Date().toISOString()});
   }
-  saveDists();closeModal('distModal');renderDistList();renderMoney();renderDashboard();
+  saveDists();clearDraft('dist:new');closeModal('distModal');renderDistList();renderMoney();renderDashboard();
   alert('✅ Distribution recorded!');
 }
 
@@ -3202,7 +3211,7 @@ function saveJob(){
     po:document.getElementById('nj_po').value,hours:document.getElementById('nj_hours').value,
     miles:document.getElementById('nj_miles').value,notes:document.getElementById('nj_notes').value,
     parts:document.getElementById('nj_parts').value,createdBy:currentUser?currentUser.name:'',created:new Date().toISOString()};
-  jobs.unshift(j);saveJobs();clearJobForm();
+  jobs.unshift(j);saveJobs();clearDraft('job:new');clearJobForm();
   alert('✅ Job saved!');
   if(j.type==='PM'&&confirm('Open PM Checklist for this job now?')){ loadPMForJob(j.id);showTab('pm');return; }
   if(j.status==='Completed'&&j.notes&&j.notes.length>20){
@@ -3273,6 +3282,7 @@ function editJob(id){
     <div class="form-group"><label class="form-label">Notes</label><textarea class="form-control" id="ej_notes">${esc(j.notes)}</textarea></div>
     <div class="form-group"><label class="form-label">Parts</label><textarea class="form-control" id="ej_parts" style="min-height:70px">${esc(j.parts)}</textarea></div>`;
   openModal('editModal');
+  offerFormDraft('job:'+editTarget);
 }
 
 function saveEdit(){
@@ -3281,7 +3291,7 @@ function saveEdit(){
   if(!document.getElementById('ej_site').value.trim()){alert('Site name required.');return;}
   ['site','contact','phone','location','modality','model','serial','field','type','status','date','po','hours','miles','notes','parts'].forEach(f=>{j[f]=document.getElementById('ej_'+f).value;});
   j.updated=new Date().toISOString();j.updatedBy=currentUser?currentUser.name:'';
-  saveJobs();closeModal('editModal');renderJobs();renderDashboard();
+  saveJobs();clearDraft('job:'+editTarget);closeModal('editModal');renderJobs();renderDashboard();
   alert('✅ Job updated!');
   if(j.status==='Completed'&&j.notes&&j.notes.length>20)setTimeout(()=>suggestKBFromJob(j),600);
 }
@@ -3381,10 +3391,12 @@ function applySavedPMRecord(rec){
   const sel=document.getElementById('pm_type_sel'); if(sel) sel.value=rec.type||'';
   hideExiiConfirm();
   switchChecklist(rec.type||'');
-  schedulePMAutosave();
 }
 function bindPMJob(id){
   if(id && id===pmBoundJobId) return;
+  const prevKey='pm:'+(pmBoundJobId||'standalone');
+  _pmBinding=true;
+  try{ flushDraftKey(prevKey); }catch(e){}
   pmBoundJobId=id||'';
   hideExiiConfirm();
   if(!id){
@@ -3393,12 +3405,13 @@ function bindPMJob(id){
     const fu=document.getElementById('pm_followup'); if(fu) fu.value='';
     const sel=document.getElementById('pm_type_sel'); if(sel) sel.value='';
     switchChecklist('');
-    schedulePMAutosave();
+    _pmBinding=false;
+    offerPMDraft();
     return;
   }
-  const j=jobs.find(x=>x.id===id); if(!j) return;
+  const j=jobs.find(x=>x.id===id); if(!j){ _pmBinding=false; return; }
   const saved=pmChecklists.find(p=>p.jobId===id);
-  if(saved){ applySavedPMRecord(saved); return; }
+  if(saved){ applySavedPMRecord(saved); _pmBinding=false; offerPMDraft(); return; }
   pmState={};
   activeGECTQuarter='q1';
   const notes=document.getElementById('pm_notes'); if(notes) notes.value='';
@@ -3421,7 +3434,8 @@ function bindPMJob(id){
     if(sel) sel.value='';
     switchChecklist('');
   }
-  schedulePMAutosave();
+  _pmBinding=false;
+  offerPMDraft();
 }
 function onPMTypePicked(type){
   const box=document.getElementById('pmExiiConfirm'); if(box) box.style.display='none';
@@ -3716,56 +3730,499 @@ function switchChecklist(type){
   updatePMProgress();
   attachPMDraftFields();
 }
-const PM_DRAFT_KEY='amt_pm_draft_v32';
-let _pmSaveTimer=null,_pmSkipDraft=false;
+// AMT form drafts. IndexedDB database amtDrafts, object store drafts.
+// Keys: job:new, job:<id>, invoice:new|id, expense:new|id, dist:new,
+// kb:new|id, part:new|id, guide:new|id, pm:<jobId|standalone>.
+// Each record is {key, fields, updatedAt, email}. Writers only.
+const DRAFT_TTL=14*24*60*60*1000;
+const DRAFT_LS='amt_drafts_v46';
+const LEGACY_PM_DRAFT='amt_pm_draft_v32';
+let _draftDb=null,_draftOpening=null,_draftUseLS=false;
+let _pmSaveTimer=null,_pmSkipDraft=false,_pmBinding=false;
+const _draftMem={};
+const _draftEpoch={};
+function draftEmail(){
+  if(!isWriterSession()) return '';
+  return String((currentUser&&currentUser.email)||'').toLowerCase().trim();
+}
+function draftsAllowed(){ return isWriterSession(); }
+function draftClone(v){ try{ return JSON.parse(JSON.stringify(v)); }catch(e){ return v; } }
+function draftLSAll(){ try{ const o=JSON.parse(localStorage.getItem(DRAFT_LS)||'{}'); return o&&typeof o==='object'?o:{}; }catch(e){ return {}; } }
+function draftLSWrite(all){ try{ localStorage.setItem(DRAFT_LS, JSON.stringify(all)); }catch(e){} }
+function draftLSPut(rec){ const all=draftLSAll(); all[rec.key]=rec; draftLSWrite(all); }
+function draftLSGet(key){ const rec=draftLSAll()[key]; return rec||null; }
+function draftLSDel(key){ const all=draftLSAll(); if(!all[key]) return; delete all[key]; draftLSWrite(all); }
+function draftTx(db, mode){
+  try{ return db.transaction('drafts', mode, {durability:'strict'}); }
+  catch(e){ return db.transaction('drafts', mode); }
+}
+function draftOpen(){
+  if(_draftDb) return Promise.resolve(_draftDb);
+  if(_draftUseLS) return Promise.resolve(null);
+  if(_draftOpening) return _draftOpening;
+  _draftOpening=new Promise(function(resolve){
+    if(typeof indexedDB==='undefined'||!indexedDB){ _draftUseLS=true; resolve(null); return; }
+    let req;
+    try{ req=indexedDB.open('amtDrafts', 1); }
+    catch(e){ _draftUseLS=true; resolve(null); return; }
+    req.onupgradeneeded=function(){
+      const db=req.result;
+      if(!db.objectStoreNames.contains('drafts')) db.createObjectStore('drafts', {keyPath:'key'});
+    };
+    req.onsuccess=function(){
+      _draftDb=req.result;
+      _draftDb.onversionchange=function(){ try{_draftDb.close();}catch(e){} _draftDb=null; };
+      resolve(_draftDb);
+    };
+    req.onerror=function(){ _draftUseLS=true; resolve(null); };
+  });
+  return _draftOpening;
+}
+function idbPut(db, rec){
+  return new Promise(function(resolve, reject){
+    let tx;
+    try{ tx=draftTx(db, 'readwrite'); }
+    catch(e){ reject(e); return; }
+    try{ tx.objectStore('drafts').put(rec); }
+    catch(e){ reject(e); return; }
+    tx.oncomplete=function(){ resolve(); };
+    tx.onerror=function(){ reject(tx.error||new Error('draft put failed')); };
+    tx.onabort=function(){ reject(tx.error||new Error('draft put aborted')); };
+  });
+}
+function idbGet(db, key){
+  return new Promise(function(resolve){
+    let tx;
+    try{ tx=db.transaction('drafts','readonly'); }
+    catch(e){ resolve(null); return; }
+    const g=tx.objectStore('drafts').get(key);
+    g.onsuccess=function(){ resolve(g.result||null); };
+    g.onerror=function(){ resolve(null); };
+  });
+}
+function idbDel(db, key){
+  return new Promise(function(resolve){
+    let tx;
+    try{ tx=draftTx(db, 'readwrite'); }
+    catch(e){ resolve(); return; }
+    try{ tx.objectStore('drafts').delete(key); }
+    catch(e){ resolve(); return; }
+    tx.oncomplete=function(){ resolve(); };
+    tx.onerror=function(){ resolve(); };
+    tx.onabort=function(){ resolve(); };
+  });
+}
+function draftPut(rec){
+  if(_draftDb){
+    return idbPut(_draftDb, rec).then(function(){ draftLSDel(rec.key); });
+  }
+  if(_draftUseLS){ draftLSPut(rec); return Promise.resolve(); }
+  draftLSPut(rec);
+  return draftOpen().then(function(db){
+    if(!db) return;
+    return idbPut(db, rec).then(function(){ draftLSDel(rec.key); });
+  });
+}
+function draftGet(key){
+  const ls=draftLSGet(key);
+  if(_draftUseLS) return Promise.resolve(ls);
+  return draftOpen().then(function(db){
+    if(!db) return ls;
+    return idbGet(db, key).then(function(rec){ return rec||ls; });
+  });
+}
+function draftDelete(key){
+  draftLSDel(key);
+  if(_draftUseLS) return Promise.resolve();
+  if(_draftDb) return idbDel(_draftDb, key);
+  return draftOpen().then(function(db){ if(db) return idbDel(db, key); });
+}
+function expireDrafts(){
+  const cutoff=Date.now()-DRAFT_TTL;
+  const all=draftLSAll();
+  let changed=false;
+  Object.keys(all).forEach(function(k){
+    const rec=all[k];
+    if(!rec||!rec.updatedAt||rec.updatedAt<cutoff){ delete all[k]; changed=true; }
+  });
+  if(changed) draftLSWrite(all);
+  return draftOpen().then(function(db){
+    if(!db) return;
+    return new Promise(function(resolve){
+      let tx;
+      try{ tx=draftTx(db, 'readwrite'); }
+      catch(e){ resolve(); return; }
+      const req=tx.objectStore('drafts').openCursor();
+      req.onsuccess=function(){
+        const cur=req.result;
+        if(!cur) return;
+        const rec=cur.value;
+        if(!rec||!rec.updatedAt||rec.updatedAt<cutoff) cur.delete();
+        cur.continue();
+      };
+      tx.oncomplete=function(){ resolve(); };
+      tx.onerror=function(){ resolve(); };
+      tx.onabort=function(){ resolve(); };
+    });
+  }).catch(function(){});
+}
+function readLegacyPM(){
+  let raw;
+  try{ raw=localStorage.getItem(LEGACY_PM_DRAFT); }catch(e){ return null; }
+  if(!raw) return null;
+  try{
+    const d=JSON.parse(raw);
+    return d&&typeof d==='object'?d:{invalid:true};
+  }catch(e){ return {invalid:true}; }
+}
+function dropLegacyPM(){ try{ localStorage.removeItem(LEGACY_PM_DRAFT); }catch(e){} }
+function migrateLegacyPMDraft(){
+  const d=readLegacyPM();
+  if(!d) return Promise.resolve();
+  const ts=d.ts||0;
+  if(d.invalid||!ts||(Date.now()-ts>DRAFT_TTL)){ dropLegacyPM(); return Promise.resolve(); }
+  if(!draftsAllowed()) return Promise.resolve();
+  const jobId=d.jobId||'';
+  const rec={
+    key:'pm:'+(jobId||'standalone'),
+    fields:{
+      type:d.type||'',
+      state:d.state||{},
+      site:d.site||'',
+      date:d.date||'',
+      model:d.model||'',
+      wo:d.wo||'',
+      tech:d.tech||'',
+      notes:d.notes||'',
+      followup:d.followup||'',
+      jobId:jobId,
+      gectQuarter:d.gectQuarter||''
+    },
+    updatedAt:ts,
+    email:draftEmail()
+  };
+  return draftPut(rec).then(dropLegacyPM, function(){});
+}
+function rememberDraft(key, fields){
+  if(!draftsAllowed()||!key) return;
+  const prev=_draftMem[key]||{timer:null};
+  _draftMem[key]={fields:draftClone(fields), dirty:true, timer:prev.timer, epoch:prev.epoch||0};
+}
+function commitDraft(key){
+  const slot=_draftMem[key];
+  if(!slot||!slot.dirty) return Promise.resolve();
+  if(!draftsAllowed()){ slot.dirty=false; return Promise.resolve(); }
+  const epoch=_draftEpoch[key]||0;
+  slot.dirty=false;
+  slot.epoch=epoch;
+  if(slot.timer){ clearTimeout(slot.timer); slot.timer=null; }
+  const rec={key:key, fields:slot.fields, updatedAt:Date.now(), email:draftEmail()};
+  return draftPut(rec).then(function(){
+    if((_draftEpoch[key]||0)===epoch) return;
+    const cur=_draftMem[key];
+    if(cur&&cur.dirty) return commitDraft(key);
+    if(cur&&cur.epoch===(_draftEpoch[key]||0)) return;
+    return draftDelete(key);
+  }).catch(function(){});
+}
+function armDraftTimer(key){
+  const slot=_draftMem[key];
+  if(!slot) return;
+  clearTimeout(slot.timer);
+  slot.timer=setTimeout(function(){ commitDraft(key); }, 1000);
+}
+function clearDraft(key){
+  _draftEpoch[key]=(_draftEpoch[key]||0)+1;
+  const slot=_draftMem[key];
+  if(slot){ clearTimeout(slot.timer); delete _draftMem[key]; }
+  document.querySelectorAll('.draft-restore').forEach(function(el){ if(el.dataset.key===key) el.remove(); });
+  return draftDelete(key);
+}
+function flushDraftKey(key){
+  const slot=_draftMem[key];
+  if(!slot||!slot.dirty) return Promise.resolve();
+  return commitDraft(key);
+}
+function savePMDraft(){
+  if(_pmBinding||!draftsAllowed()) return Promise.resolve();
+  const key=pmDraftKey();
+  const slot=_draftMem[key];
+  if(!slot||!slot.dirty) return Promise.resolve();
+  const fields=pmSnapshot();
+  if(!pmSnapshotMeaningful(fields)) return Promise.resolve();
+  rememberDraft(key, fields);
+  return commitDraft(key);
+}
+function flushDraftsNow(){
+  if(!draftsAllowed()) return;
+  try{ savePMDraft(); }catch(e){}
+  if(_draftDb){
+    const keys=Object.keys(_draftMem).filter(function(k){ return _draftMem[k]&&_draftMem[k].dirty; });
+    if(!keys.length) return;
+    let tx;
+    try{ tx=draftTx(_draftDb, 'readwrite'); }
+    catch(e){ keys.forEach(commitDraft); return; }
+    const store=tx.objectStore('drafts');
+    const now=Date.now();
+    const email=draftEmail();
+    keys.forEach(function(k){
+      const slot=_draftMem[k];
+      const epoch=_draftEpoch[k]||0;
+      slot.dirty=false;
+      slot.epoch=epoch;
+      if(slot.timer){ clearTimeout(slot.timer); slot.timer=null; }
+      try{ store.put({key:k, fields:slot.fields, updatedAt:now, email:email}); }
+      catch(err){}
+    });
+    return;
+  }
+  Object.keys(_draftMem).forEach(function(k){ if(_draftMem[k]&&_draftMem[k].dirty) commitDraft(k); });
+}
+function draftReadFields(root, ids){
+  const fields={};
+  ids.forEach(function(id){
+    const el=root?root.querySelector('[id="'+id+'"]'):null;
+    const node=el||document.getElementById(id);
+    if(!node) return;
+    fields[id]=node.type==='checkbox'?!!node.checked:node.value;
+  });
+  return fields;
+}
+function draftWriteIds(fields, ids){
+  ids.forEach(function(id){
+    if(!fields||!Object.prototype.hasOwnProperty.call(fields, id)) return;
+    const nodes=document.querySelectorAll('[id="'+id+'"]');
+    nodes.forEach(function(el){
+      const v=fields[id];
+      if(el.type==='checkbox') el.checked=!!v;
+      else el.value=v==null?'':v;
+      try{ if(typeof el.oninput==='function') el.oninput.call(el); }catch(e){}
+      try{ if(typeof el.onchange==='function') el.onchange.call(el); }catch(e){}
+    });
+  });
+}
+function draftWhen(ts){
+  try{
+    return new Date(ts).toLocaleString(undefined, {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+  }catch(e){
+    try{ return new Date(ts).toLocaleString(); }catch(err){ return ''; }
+  }
+}
+function showDraftPrompt(key, rec, root, apply){
+  if(!root||!rec) return;
+  const old=root.querySelector('.draft-restore');
+  if(old) old.remove();
+  const bar=document.createElement('div');
+  bar.className='draft-restore';
+  bar.dataset.key=key;
+  bar.setAttribute('role','status');
+  const p=document.createElement('p');
+  p.textContent='Restore unsaved entry from '+draftWhen(rec.updatedAt)+'?';
+  const restore=document.createElement('button');
+  restore.type='button';
+  restore.className='btn btn-primary';
+  restore.textContent='Restore';
+  restore.setAttribute('data-draft-restore','');
+  restore.style.minHeight='44px';
+  restore.style.minWidth='44px';
+  const discard=document.createElement('button');
+  discard.type='button';
+  discard.className='btn btn-outline';
+  discard.textContent='Discard';
+  discard.setAttribute('data-draft-discard','');
+  discard.style.minHeight='44px';
+  discard.style.minWidth='44px';
+  bar.appendChild(p);
+  bar.appendChild(restore);
+  bar.appendChild(discard);
+  const host=root.querySelector('.modal-body')||root;
+  host.insertBefore(bar, host.firstChild);
+  restore.addEventListener('click', function(){
+    try{ apply(draftClone(rec.fields)||{}); }catch(e){}
+    bar.remove();
+  });
+  discard.addEventListener('click', function(){
+    clearDraft(key);
+    bar.remove();
+  });
+}
+function offerDraft(key, root, apply){
+  if(!draftsAllowed()||!root||!key) return;
+  const seq=String((Number(root.dataset.draftOffer||0)||0)+1);
+  root.dataset.draftOffer=seq;
+  Promise.resolve(commitDraft(key)).then(function(){ return draftGet(key); }).then(function(rec){
+    if(root.dataset.draftOffer!==seq) return;
+    if(!rec||!rec.fields) return;
+    if(!rec.updatedAt||(Date.now()-rec.updatedAt>DRAFT_TTL)){ clearDraft(key); return; }
+    showDraftPrompt(key, rec, root, apply);
+  }).catch(function(){});
+}
+function restoreJobNew(fields){
+  draftWriteIds(fields, DRAFT_IDS.jobNew);
+  if(typeof onTypeChange==='function') onTypeChange();
+  if(typeof calcMileage==='function') calcMileage();
+}
+function restoreJobEdit(fields){ draftWriteIds(fields, DRAFT_IDS.jobEdit); }
+function restoreInvoice(fields){ draftWriteIds(fields, DRAFT_IDS.invoice); }
+function restoreExpense(fields){ draftWriteIds(fields, DRAFT_IDS.expense); }
+function restoreDist(fields){
+  draftWriteIds(fields, DRAFT_IDS.dist);
+  if(typeof updateDistSplit==='function') updateDistSplit();
+}
+function restoreKB(fields){ draftWriteIds(fields, DRAFT_IDS.kb); }
+function restorePart(fields){ draftWriteIds(fields, DRAFT_IDS.part); }
+function restoreGuide(fields){ draftWriteIds(fields, DRAFT_IDS.guide); }
+const DRAFT_IDS={
+  jobNew:['nj_site','nj_contact','nj_phone','nj_location','nj_modality','nj_model','nj_serial','nj_field','nj_type','nj_status','nj_date','nj_po','nj_hours','nj_miles','nj_notes','nj_parts'],
+  jobEdit:['ej_site','ej_contact','ej_phone','ej_location','ej_modality','ej_model','ej_serial','ej_field','ej_type','ej_status','ej_date','ej_po','ej_hours','ej_miles','ej_notes','ej_parts'],
+  invoice:['inv_client','inv_num','inv_date','inv_due','inv_job','inv_status','inv_desc','inv_amount','inv_notes'],
+  expense:['exp_desc','exp_cat','exp_amount','exp_date','exp_job','exp_vendor','exp_notes'],
+  dist:['dist_owner','dist_amount','dist_date','dist_method','dist_ref','dist_notes'],
+  kb:['kb_title','kb_cat','kb_model','kb_error','kb_problem','kb_solution','kb_parts','kb_job','kb_tags'],
+  part:['part_num','part_desc','part_brand','part_type','part_models','part_cost','part_notes','part_manual','part_edit_id'],
+  guide:['dg_title','dg_system','dg_category','dg_tags','dg_content']
+};
+const DRAFT_FORM_SPECS=[
+  {root:'#panel-newjob', key:function(){ return 'job:new'; }, ids:DRAFT_IDS.jobNew, restore:restoreJobNew},
+  {root:'#editModal', key:function(){ return 'job:'+(typeof editTarget!=='undefined'&&editTarget?editTarget:'new'); }, ids:DRAFT_IDS.jobEdit, restore:restoreJobEdit},
+  {root:'#invoiceModal', key:function(){ return 'invoice:'+(editingInvId||'new'); }, ids:DRAFT_IDS.invoice, restore:restoreInvoice},
+  {root:'#expenseModal', key:function(){ return 'expense:'+(editingExpId||'new'); }, ids:DRAFT_IDS.expense, restore:restoreExpense},
+  {root:'#distModal', key:function(){ return 'dist:new'; }, ids:DRAFT_IDS.dist, restore:restoreDist},
+  {root:'#kbEntryModal', key:function(){ return 'kb:'+(editingKBId||'new'); }, ids:DRAFT_IDS.kb, restore:restoreKB},
+  {root:'#addPartModal', key:function(){ return 'part:'+((document.getElementById('part_edit_id')||{}).value||'new'); }, ids:DRAFT_IDS.part, restore:restorePart},
+  {root:'#addDiagGuideModal', key:function(){ return 'guide:'+((document.getElementById('dg_edit_id')||{}).value||'new'); }, ids:DRAFT_IDS.guide, restore:restoreGuide},
+  {root:'#diagGuideModal', key:function(){ return 'guide:'+((document.getElementById('dg_edit_id')||{}).value||'new'); }, ids:DRAFT_IDS.guide, restore:restoreGuide}
+];
+function bindDraftForm(spec){
+  const root=document.querySelector(spec.root);
+  if(!root||root.dataset.draftWatch==='1') return;
+  root.dataset.draftWatch='1';
+  const onEv=function(ev){
+    if(!draftsAllowed()) return;
+    const t=ev.target;
+    if(!t||spec.ids.indexOf(t.id)<0) return;
+    rememberDraft(spec.key(), draftReadFields(root, spec.ids));
+    armDraftTimer(spec.key());
+  };
+  root.addEventListener('input', onEv);
+  root.addEventListener('change', onEv);
+}
+function offerFormDraft(key){
+  for(let i=0;i<DRAFT_FORM_SPECS.length;i++){
+    const spec=DRAFT_FORM_SPECS[i];
+    if(spec.key()!==key) continue;
+    offerDraft(key, document.querySelector(spec.root), spec.restore);
+    return;
+  }
+}
+function pmDraftKey(){
+  const jobId=(document.getElementById('pm_jobLink')||{}).value||'';
+  return 'pm:'+(jobId||'standalone');
+}
+function pmSnapshot(){
+  return {
+    type:activeCLType||'',
+    state:draftClone(pmState||{}),
+    site:(document.getElementById('pm_site')||{}).value||'',
+    date:(document.getElementById('pm_date')||{}).value||'',
+    model:(document.getElementById('pm_model')||{}).value||'',
+    wo:(document.getElementById('pm_wo')||{}).value||'',
+    tech:(document.getElementById('pm_tech')||{}).value||'',
+    notes:(document.getElementById('pm_notes')||{}).value||'',
+    followup:(document.getElementById('pm_followup')||{}).value||'',
+    jobId:(document.getElementById('pm_jobLink')||{}).value||'',
+    gectQuarter:activeGECTQuarter||''
+  };
+}
+function pmSnapshotMeaningful(s){
+  if(!s) return false;
+  const texts=[s.notes,s.followup,s.site,s.model,s.wo,s.tech,s.date];
+  for(let i=0;i<texts.length;i++){ if(String(texts[i]||'').trim()) return true; }
+  const st=s.state||{};
+  const types=Object.keys(st);
+  for(let i=0;i<types.length;i++){
+    const bag=st[types[i]]||{};
+    const ks=Object.keys(bag);
+    for(let j=0;j<ks.length;j++){
+      if(bag[ks[j]]!=null&&String(bag[ks[j]]).trim()!=='') return true;
+    }
+  }
+  return false;
+}
 function schedulePMAutosave(){
+  if(_pmBinding||!draftsAllowed()) return;
   clearTimeout(_pmSaveTimer);
-  _pmSaveTimer=setTimeout(savePMDraft,400);
+  const key=pmDraftKey();
+  const fields=pmSnapshot();
+  if(!pmSnapshotMeaningful(fields)) return;
+  rememberDraft(key, fields);
+  _pmSaveTimer=setTimeout(function(){ savePMDraft(); }, 1000);
+  const slot=_draftMem[key];
+  if(slot) slot.timer=_pmSaveTimer;
 }
 function attachPMDraftFields(){
-  ['pm_site','pm_date','pm_model','pm_wo','pm_tech','pm_notes','pm_followup','pm_jobLink'].forEach(id=>{
+  ['pm_site','pm_date','pm_model','pm_wo','pm_tech','pm_notes','pm_followup'].forEach(function(id){
     const el=document.getElementById(id);
-    if(!el || el.dataset.pmAuto) return;
+    if(!el||el.dataset.pmAuto) return;
     el.dataset.pmAuto='1';
     el.addEventListener('input', schedulePMAutosave);
     el.addEventListener('change', schedulePMAutosave);
   });
 }
-function savePMDraft(){
-  try{
-    localStorage.setItem(PM_DRAFT_KEY, JSON.stringify({
-      type:activeCLType, state:pmState,
-      site:(document.getElementById('pm_site')||{}).value||'',
-      date:(document.getElementById('pm_date')||{}).value||'',
-      model:(document.getElementById('pm_model')||{}).value||'',
-      wo:(document.getElementById('pm_wo')||{}).value||'',
-      tech:(document.getElementById('pm_tech')||{}).value||'',
-      notes:(document.getElementById('pm_notes')||{}).value||'',
-      followup:(document.getElementById('pm_followup')||{}).value||'',
-      jobId:(document.getElementById('pm_jobLink')||{}).value||'',
-      gectQuarter:activeGECTQuarter,
-      ts:Date.now()
-    }));
-  }catch(e){}
+function restorePMDraftFields(fields){
+  fields=fields||{};
+  pmState=draftClone(fields.state||{});
+  activeGECTQuarter=fields.gectQuarter||inferGECTQuarter(pmState)||'q1';
+  const set=function(id, v){ const el=document.getElementById(id); if(el) el.value=v==null?'':v; };
+  set('pm_jobLink', fields.jobId||'');
+  set('pm_site', fields.site||'');
+  set('pm_date', fields.date||'');
+  set('pm_model', fields.model||'');
+  set('pm_wo', fields.wo||'');
+  set('pm_tech', fields.tech||'');
+  set('pm_notes', fields.notes||'');
+  set('pm_followup', fields.followup||'');
+  pmBoundJobId=fields.jobId||'';
+  const sel=document.getElementById('pm_type_sel');
+  if(sel) sel.value=fields.type||'';
+  if(typeof hideExiiConfirm==='function') hideExiiConfirm();
+  if((fields.type||'')==='ge_mr_exii'&&typeof prefillExii==='function'){
+    const id=fields.jobId||'';
+    const j=(id&&jobs.find(function(x){ return x.id===id; }))||{};
+    prefillExii(j);
+  }
+  _pmBinding=true;
+  try{ switchChecklist(fields.type||''); }
+  finally{ _pmBinding=false; }
+  updatePMProgress();
+}
+function offerPMDraft(){
+  if(!draftsAllowed()) return;
+  offerDraft(pmDraftKey(), document.getElementById('panel-pm'), restorePMDraftFields);
 }
 function restorePMDraftIfAny(){
   attachPMDraftFields();
+  if(!draftsAllowed()) return;
   if(_pmSkipDraft){ _pmSkipDraft=false; return; }
   if(activeCLType) return;
-  try{
-    const d=JSON.parse(localStorage.getItem(PM_DRAFT_KEY)||'null');
-    if(!d||!d.state) return;
-    if(d.ts && Date.now()-d.ts > 14*24*3600*1000) return;
-    pmState=d.state||{};
-    const set=(id,v)=>{const el=document.getElementById(id); if(el&&v) el.value=v;};
-    set('pm_site',d.site); set('pm_date',d.date); set('pm_model',d.model);
-    set('pm_wo',d.wo); set('pm_tech',d.tech); set('pm_notes',d.notes);
-    set('pm_followup',d.followup); set('pm_jobLink',d.jobId);
-    if(d.gectQuarter) activeGECTQuarter=d.gectQuarter;
-    else if((d.type||'')==='ge_ct'){ const inferred=inferGECTQuarter(d.state); if(inferred) activeGECTQuarter=inferred; }
-    pmBoundJobId=d.jobId||'';
-    if(d.type){ document.getElementById('pm_type_sel').value=d.type; switchChecklist(d.type); }
-  }catch(e){}
+  offerPMDraft();
+}
+function installDraftAutosave(){
+  if(window._amtDraftInstalled){
+    expireDrafts();
+    migrateLegacyPMDraft();
+    return;
+  }
+  window._amtDraftInstalled=true;
+  DRAFT_FORM_SPECS.forEach(bindDraftForm);
+  attachPMDraftFields();
+  draftOpen();
+  expireDrafts();
+  migrateLegacyPMDraft();
+  window.addEventListener('pagehide', function(){ try{ flushDraftsNow(); }catch(e){} });
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ try{ flushDraftsNow(); }catch(e){} }
+  });
 }
 function updatePMProgress(){
   const el=document.getElementById('pmProgress');
@@ -3800,7 +4257,7 @@ function pmBulkPass(){
   updatePMProgress();
   schedulePMAutosave();
 }
-function resetPM(){if(!confirm('Reset all checklist marks? This cannot be undone.'))return;pmState={};try{localStorage.removeItem(PM_DRAFT_KEY);}catch(e){}switchChecklist(activeCLType);}
+function resetPM(){if(!confirm('Reset all checklist marks? This cannot be undone.'))return;const key=pmDraftKey();pmState={};clearDraft(key);try{localStorage.removeItem('amt_pm_draft_v32');}catch(e){}switchChecklist(activeCLType);}
 function tHead(){return`<thead><tr><th style="text-align:left;min-width:180px">Procedure / Task</th><th style="min-width:72px">✅<br>PASS</th><th style="min-width:72px">❌<br>FAIL</th><th style="min-width:64px">--<br>N/A</th></tr></thead>`;}
 function grpHd(l){return`<tr class="cl-group-hd"><td colspan="4">${l}</td></tr>`;}
 function rRow(key,label,t,indent){const k=`${t}_${key}`;const v=(pmState[t]||{})[k]||'';return`<tr><td style="${indent?'padding-left:20px;color:var(--text2)':''}">${label}</td><td><span class="chk-r cg"><input type="radio" name="chk_${k}" value="pass" ${v==='pass'?'checked':''} onchange="pmSet('${t}','${k}','pass')"></span></td><td><span class="chk-r cb"><input type="radio" name="chk_${k}" value="fail" ${v==='fail'?'checked':''} onchange="pmSet('${t}','${k}','fail')"></span></td><td><span class="chk-r cn"><input type="radio" name="chk_${k}" value="na" ${v==='na'?'checked':''} onchange="pmSet('${t}','${k}','na')"></span></td></tr>`;}
@@ -3832,7 +4289,7 @@ function savePMChecklist(){
   const fail=counts.filter(v=>v==='fail').length,pass=counts.filter(v=>v==='pass').length;
   const rec={id:'pm_'+Date.now(),jobId,type:activeCLType,site:document.getElementById('pm_site').value,date:document.getElementById('pm_date').value,model:document.getElementById('pm_model').value,wo:document.getElementById('pm_wo').value,tech:document.getElementById('pm_tech').value,notes:document.getElementById('pm_notes').value,followup:document.getElementById('pm_followup').value,state:slice,gectQuarter:activeCLType==='ge_ct'?activeGECTQuarter:'',savedBy:currentUser?currentUser.name:'',saved:new Date().toISOString()};
   pmChecklists=pmChecklists.filter(p=>!(p.jobId&&p.jobId===jobId&&p.type===activeCLType));
-  pmChecklists.unshift(rec);savePMs();
+  pmChecklists.unshift(rec);savePMs();clearDraft('pm:'+(jobId||'standalone'));
   alert(`✅ PM Checklist Saved!\nPass: ${pass} | Fail: ${fail}`+(fail>0?`\n⚠️ ${fail} item(s) require follow-up.`:'\n✅ No failures.'));
 }
 
@@ -3840,7 +4297,7 @@ const PM_TYPE_LABELS={ge_mri:'GE MRI System PM',ge_mr_exii:'GE MR Excite II and 
 
 // Reopen a previously saved PM checklist (restores marks, not just header fields) -- used from the
 // job detail view so a completed checklist can be reviewed or reprinted exactly as it was submitted.
-function openSavedPMChecklist(pmId){const rec=pmChecklists.find(p=>p.id===pmId);if(!rec)return;_pmSkipDraft=true;showTab('pm');setTimeout(()=>{populatePMDropdown();applySavedPMRecord(rec);},80);}
+function openSavedPMChecklist(pmId){const rec=pmChecklists.find(p=>p.id===pmId);if(!rec)return;_pmSkipDraft=true;showTab('pm');setTimeout(()=>{populatePMDropdown();applySavedPMRecord(rec);offerPMDraft();},80);}
 function printPMChecklist(){
   if(!activeCLType || !(pmState[activeCLType])){ alert('Please select and fill out a checklist first.'); return; }
   const area=document.getElementById('pm_checklist_area');
@@ -4998,6 +5455,7 @@ function openKBEntryModal(id){
     document.getElementById('kb_job').value = '';
   }
   openModal('kbEntryModal');
+  offerFormDraft('kb:'+(editingKBId||'new'));
 }
 
 function editKBEntry(id){ openKBEntryModal(id); }
@@ -5022,7 +5480,7 @@ function saveKBEntry(){
   };
   if(editingKBId){ const i=kbEntries.findIndex(x=>x.id===editingKBId); if(i>=0) kbEntries[i]={...kbEntries[i],...entry}; }
   else kbEntries.unshift(entry);
-  saveKBData(); closeModal('kbEntryModal'); renderKBEntries();
+  saveKBData(); clearDraft('kb:'+(editingKBId||'new')); closeModal('kbEntryModal'); renderKBEntries();
   alert('✅ Knowledge entry saved!');
 }
 
@@ -8990,6 +9448,7 @@ function openAddPartModal(prefill){
   document.getElementById('part_manual').value= prefill?.manual||'';
   document.getElementById('part_edit_id').value= prefill?.id||'';
   openModal('addPartModal');
+  offerFormDraft('part:'+((document.getElementById('part_edit_id')||{}).value||'new'));
 }
 
 function editPart(id){
@@ -9021,6 +9480,7 @@ function savePart(){
     partsDB.unshift(part);
   }
   saveParts();
+  clearDraft('part:'+(editId||'new'));
   closeModal('addPartModal');
   searchParts(document.getElementById('partsSearchInput')?.value||'');
   showToast('Part saved: '+num);
@@ -9692,6 +10152,7 @@ async function handleManualUpload(files){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
+  if(typeof installDraftAutosave==='function') installDraftAutosave();
   if(typeof dropLegacyPinCache==='function') dropLegacyPinCache();
   if(typeof renderPinStaffOptions==='function') renderPinStaffOptions();
   checkOAuthCallback();
@@ -19190,6 +19651,7 @@ function openDiagGuideModal(prefill) {
   document.getElementById('dg_content').value  = (prefill&&prefill.content)  || '';
   document.getElementById('dg_edit_id').value  = (prefill&&prefill.id)       || '';
   openModal('addDiagGuideModal');
+  offerFormDraft('guide:'+((document.getElementById('dg_edit_id')||{}).value||'new'));
 }
 
 function saveDiagGuide() {
@@ -19214,6 +19676,7 @@ function saveDiagGuide() {
     diagGuidesDB.unshift(guide);
   }
   saveDiagGuides();
+  clearDraft('guide:'+(editId||'new'));
   closeModal('addDiagGuideModal');
   renderDiagGuides();
 }
