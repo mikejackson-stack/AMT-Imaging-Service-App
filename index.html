@@ -2623,21 +2623,523 @@ function writeGuard(label){
   return true;
 }
 
-// ═══ DATA STORE ═══
-let jobs=JSON.parse(localStorage.getItem('amt_jobs_v29')||'[]');
-let invoices=JSON.parse(localStorage.getItem('amt_invoices_v29')||'[]');
-let expenses=JSON.parse(localStorage.getItem('amt_expenses_v29')||'[]');
-let distributions=JSON.parse(localStorage.getItem('amt_dists_v29')||'[]');
-let pmChecklists=JSON.parse(localStorage.getItem('amt_pm_v29')||'[]');
+// ═══ DURABLE RECORDS + SEED OVERLAYS + RECORD MERGE ═══
+// Built-in catalogs (parts, knowledge entries, diagnostic guides) stay in source.
+// localStorage keeps only the user's adds, edits, and deletion tombstones so Chromium
+// is not asked to flush ~2MB of seed JSON on boot. User lists also mirror into
+// IndexedDB database "amt-user-records" (separate from amt-ge-loose and the amtDrafts form-draft database).
+const AMT_TOMBSTONE_MS = 30 * 24 * 60 * 60 * 1000;
+const AMT_PENDING_LS = 'amt_sync_pending_v47';
+const AMT_RECORDS_DB = 'amt-user-records';
+const AMT_KB_LS = 'amt_kb_v29';
+const AMT_PARTS_LS = 'amt_parts_v30';
+const AMT_GUIDE_LS = 'amt_diagguides_v30';
+const AMT_LIST_LS = {
+  jobs: 'amt_jobs_v29',
+  invoices: 'amt_invoices_v29',
+  expenses: 'amt_expenses_v29',
+  distributions: 'amt_dists_v29',
+  pmChecklists: 'amt_pm_v29'
+};
+var amtTombs = {
+  jobs: [], invoices: [], expenses: [], distributions: [],
+  pmChecklists: [], kbEntries: [], partsDB: [], diagGuides: []
+};
+var amtSyncPending = {};
+try { amtSyncPending = JSON.parse(localStorage.getItem(AMT_PENDING_LS) || '{}') || {}; } catch (e) { amtSyncPending = {}; }
+if (!amtSyncPending || typeof amtSyncPending !== 'object') amtSyncPending = {};
+var amtPushing = {};
+var amtLastRemote = {};
+var amtIdbPromise = null;
 
-// _local* = localStorage only, never touches the cloud. Used (a) by the wrapped save
-// functions below, and (b) to mirror incoming cloud data into localStorage without
-// bouncing it right back up to Firestore (which would loop forever).
-function _localSaveJobs(){localStorage.setItem('amt_jobs_v29',JSON.stringify(jobs));}
-function _localSaveInvoices(){localStorage.setItem('amt_invoices_v29',JSON.stringify(invoices));}
-function _localSaveExpenses(){localStorage.setItem('amt_expenses_v29',JSON.stringify(expenses));}
-function _localSaveDists(){localStorage.setItem('amt_dists_v29',JSON.stringify(distributions));}
-function _localSavePMs(){localStorage.setItem('amt_pm_v29',JSON.stringify(pmChecklists));}
+function amtRecordTime(rec) {
+  if (!rec || typeof rec !== 'object') return 0;
+  const raw = rec.updatedAt || rec.updated || rec.created || rec.saved || '';
+  if (raw && typeof raw === 'object') {
+    if (typeof raw.seconds === 'number') return raw.seconds * 1000;
+    if (typeof raw.toDate === 'function') {
+      try { return raw.toDate().getTime() || 0; } catch (e) { return 0; }
+    }
+  }
+  const n = Date.parse(raw);
+  return Number.isFinite(n) ? n : 0;
+}
+
+function amtPendingIds(pending) {
+  const set = new Set();
+  if (!pending) return set;
+  if (typeof pending.forEach === 'function' && typeof pending.has === 'function' && !Array.isArray(pending)) {
+    pending.forEach(function (id) { set.add(String(id)); });
+    return set;
+  }
+  if (Array.isArray(pending)) {
+    pending.forEach(function (id) { set.add(String(id)); });
+    return set;
+  }
+  if (typeof pending === 'object') Object.keys(pending).forEach(function (id) { set.add(String(id)); });
+  return set;
+}
+
+function amtPurgeTombstones(list, nowMs) {
+  const now = typeof nowMs === 'number' ? nowMs : Date.now();
+  const cutoff = now - AMT_TOMBSTONE_MS;
+  return (Array.isArray(list) ? list : []).filter(function (rec) {
+    if (!rec || typeof rec !== 'object') return false;
+    if (!rec.deleted) return true;
+    const t = amtRecordTime(rec);
+    if (!t) return true;
+    return t >= cutoff;
+  });
+}
+
+// Per-record merge. Newer updatedAt wins. A pending local id is kept when the cloud
+// copy is missing or older, so a stale snapshot cannot drop an unsynced record.
+function mergeRecordLists(localList, remoteList, opts) {
+  opts = opts || {};
+  const now = typeof opts.now === 'number' ? opts.now : Date.now();
+  const pending = amtPendingIds(opts.pending);
+  const localById = new Map();
+  const remoteById = new Map();
+  const localNoId = [];
+  const remoteNoId = [];
+  (Array.isArray(localList) ? localList : []).forEach(function (rec) {
+    if (!rec || typeof rec !== 'object') return;
+    if (rec.id == null || rec.id === '') { localNoId.push(rec); return; }
+    localById.set(String(rec.id), rec);
+  });
+  (Array.isArray(remoteList) ? remoteList : []).forEach(function (rec) {
+    if (!rec || typeof rec !== 'object') return;
+    if (rec.id == null || rec.id === '') { remoteNoId.push(rec); return; }
+    remoteById.set(String(rec.id), rec);
+  });
+  const ids = [];
+  const seen = new Set();
+  function addId(id) { if (seen.has(id)) return; seen.add(id); ids.push(id); }
+  localById.forEach(function (_rec, id) { addId(id); });
+  remoteById.forEach(function (_rec, id) { addId(id); });
+  const merged = [];
+  ids.forEach(function (id) {
+    const localRec = localById.get(id);
+    const remoteRec = remoteById.get(id);
+    let winner = null;
+    if (localRec && !remoteRec) winner = localRec;
+    else if (remoteRec && !localRec) winner = remoteRec;
+    else {
+      const lt = amtRecordTime(localRec);
+      const rt = amtRecordTime(remoteRec);
+      if (pending.has(id) && rt <= lt) winner = localRec;
+      else if (rt > lt) winner = remoteRec;
+      else winner = localRec;
+    }
+    if (winner) merged.push(winner);
+  });
+  localNoId.forEach(function (rec) { merged.push(rec); });
+  remoteNoId.forEach(function (rec) { merged.push(rec); });
+  return amtPurgeTombstones(merged, now);
+}
+
+function amtSplitDeleted(list) {
+  const live = [];
+  const tombs = [];
+  (list || []).forEach(function (rec) {
+    if (!rec || typeof rec !== 'object') return;
+    if (rec.deleted) tombs.push(rec);
+    else live.push(rec);
+  });
+  return { live: live, tombs: tombs };
+}
+
+function amtFingerprint(rec) {
+  const skip = { id: 1, updatedAt: 1, updatedBy: 1, deleted: 1 };
+  const keys = Object.keys(rec || {}).filter(function (k) { return !skip[k]; }).sort();
+  return JSON.stringify(keys.map(function (k) { return [k, rec[k]]; }));
+}
+
+function amtAssignMissingIds(list) {
+  const used = new Set();
+  (list || []).forEach(function (p) { if (p && p.id) used.add(String(p.id)); });
+  return (list || []).filter(function (p) { return p && typeof p === 'object'; }).map(function (p) {
+    const copy = Object.assign({}, p);
+    if (copy.id) return copy;
+    let base = 'ct_' + String(copy.num || 'part').replace(/[^a-z0-9]/gi, '_');
+    let uid = base;
+    let n = 2;
+    while (used.has(uid)) uid = base + '_' + (n++);
+    used.add(uid);
+    copy.id = uid;
+    return copy;
+  });
+}
+
+function amtExtractOverlay(storedList, seed) {
+  const seeded = amtAssignMissingIds(seed);
+  const byId = new Map();
+  const byFp = new Map();
+  seeded.forEach(function (s) {
+    if (!s || !s.id) return;
+    byId.set(String(s.id), s);
+    const fp = amtFingerprint(s);
+    if (!byFp.has(fp)) byFp.set(fp, s);
+  });
+  const overlay = [];
+  (storedList || []).forEach(function (rec) {
+    if (!rec || typeof rec !== 'object') return;
+    if (rec.deleted) { overlay.push(Object.assign({}, rec)); return; }
+    if (byFp.has(amtFingerprint(rec))) return;
+    if (rec.id && byId.has(String(rec.id))) {
+      overlay.push(Object.assign({}, rec, { id: byId.get(String(rec.id)).id }));
+      return;
+    }
+    overlay.push(Object.assign({}, rec));
+  });
+  return overlay;
+}
+
+function amtMergeSeedAndOverlay(seed, overlay) {
+  const seeded = amtAssignMissingIds(seed);
+  const map = new Map();
+  seeded.forEach(function (s) { if (s && s.id) map.set(String(s.id), s); });
+  (overlay || []).forEach(function (rec) {
+    if (!rec || rec.id == null || rec.id === '') return;
+    const id = String(rec.id);
+    if (rec.deleted) { map.delete(id); return; }
+    map.set(id, Object.assign({}, rec));
+  });
+  return Array.from(map.values());
+}
+
+function amtWriteSeedOverlay(lsKey, records) {
+  const clean = amtPurgeTombstones((records || []).filter(function (r) { return r && typeof r === 'object'; }));
+  const next = clean.length ? JSON.stringify({ v: 1, records: clean }) : null;
+  let cur = null;
+  try { cur = localStorage.getItem(lsKey); } catch (e) { return; }
+  try {
+    if (next === null) { if (cur !== null) localStorage.removeItem(lsKey); return; }
+    if (cur !== next) localStorage.setItem(lsKey, next);
+  } catch (e) {}
+}
+
+function amtLoadSeedStore(lsKey, seed) {
+  let raw = null;
+  try { raw = JSON.parse(localStorage.getItem(lsKey) || 'null'); } catch (e) { raw = null; }
+  if (!raw) return [];
+  if (raw && raw.v === 1 && Array.isArray(raw.records)) {
+    const purged = amtPurgeTombstones(raw.records);
+    if (purged.length !== raw.records.length) amtWriteSeedOverlay(lsKey, purged);
+    return purged;
+  }
+  if (Array.isArray(raw)) {
+    const records = amtExtractOverlay(raw, seed);
+    amtWriteSeedOverlay(lsKey, records);
+    return records;
+  }
+  return [];
+}
+
+function amtSeedFor(name) {
+  if (name === 'kbEntries' && typeof KB_SEED !== 'undefined') return KB_SEED;
+  if (name === 'partsDB' && typeof PARTS_SEED !== 'undefined') return PARTS_SEED;
+  if (name === 'diagGuides' && typeof DIAG_GUIDES_SEED !== 'undefined') return DIAG_GUIDES_SEED;
+  return [];
+}
+
+function amtLiveList(name) {
+  if (name === 'jobs') return jobs;
+  if (name === 'invoices') return invoices;
+  if (name === 'expenses') return expenses;
+  if (name === 'distributions') return distributions;
+  if (name === 'pmChecklists') return pmChecklists;
+  if (name === 'kbEntries') return kbEntries;
+  if (name === 'partsDB') return partsDB;
+  if (name === 'diagGuides') return diagGuidesDB;
+  return [];
+}
+
+function amtSetLiveList(name, list) {
+  if (name === 'jobs') jobs = list;
+  else if (name === 'invoices') invoices = list;
+  else if (name === 'expenses') expenses = list;
+  else if (name === 'distributions') distributions = list;
+  else if (name === 'pmChecklists') pmChecklists = list;
+  else if (name === 'kbEntries') kbEntries = list;
+  else if (name === 'partsDB') partsDB = list;
+  else if (name === 'diagGuides') diagGuidesDB = list;
+}
+
+function amtActor() {
+  try {
+    if (typeof fbAuth !== 'undefined' && fbAuth && fbAuth.currentUser && fbAuth.currentUser.email) return String(fbAuth.currentUser.email);
+  } catch (e) {}
+  try {
+    if (typeof currentUser !== 'undefined' && currentUser) return currentUser.email || currentUser.name || '';
+  } catch (e) {}
+  return '';
+}
+
+function amtStamp(rec) {
+  if (!rec || typeof rec !== 'object') return rec;
+  if (rec.id == null || rec.id === '') rec.id = 'r_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7);
+  const now = new Date().toISOString();
+  rec.updatedAt = now;
+  rec.updated = now;
+  rec.updatedBy = amtActor();
+  if (rec.created == null) delete rec.created;
+  return rec;
+}
+
+function amtCanonList(list) {
+  const rows = (list || []).filter(function (rec) { return rec && typeof rec === 'object'; }).map(function (rec) {
+    const keys = Object.keys(rec).sort();
+    const out = {};
+    keys.forEach(function (k) { out[k] = rec[k]; });
+    return out;
+  });
+  rows.sort(function (a, b) { return String(a.id || '').localeCompare(String(b.id || '')); });
+  return JSON.stringify(rows);
+}
+
+function amtSavePending() {
+  const packed = JSON.stringify(amtSyncPending || {});
+  try {
+    if (localStorage.getItem(AMT_PENDING_LS) !== packed) localStorage.setItem(AMT_PENDING_LS, packed);
+  } catch (e) {}
+  amtIdbPut('syncPending', amtSyncPending || {});
+}
+
+function amtMarkPending(name, rec) {
+  if (!name || !rec || rec.id == null || rec.id === '') return;
+  if (!amtSyncPending[name] || typeof amtSyncPending[name] !== 'object') amtSyncPending[name] = {};
+  amtSyncPending[name][String(rec.id)] = rec.updatedAt || new Date().toISOString();
+  amtSavePending();
+}
+
+function amtPendingSet(name) {
+  const bucket = amtSyncPending && amtSyncPending[name];
+  if (!bucket || typeof bucket !== 'object') return new Set();
+  return new Set(Object.keys(bucket));
+}
+
+function amtAckPending(name, remoteItems) {
+  const bucket = amtSyncPending[name];
+  if (!bucket) return;
+  const remote = new Map();
+  (remoteItems || []).forEach(function (rec) { if (rec && rec.id != null) remote.set(String(rec.id), rec); });
+  let changed = false;
+  Object.keys(bucket).forEach(function (id) {
+    const rec = remote.get(id);
+    if (!rec) return;
+    const pendingAt = Date.parse(bucket[id]) || 0;
+    if (amtRecordTime(rec) >= pendingAt) { delete bucket[id]; changed = true; }
+  });
+  if (changed) amtSavePending();
+}
+
+function amtHasUnsyncedPending(name, remoteItems) {
+  const bucket = amtSyncPending[name];
+  if (!bucket) return false;
+  const remote = new Map();
+  (remoteItems || []).forEach(function (rec) { if (rec && rec.id != null) remote.set(String(rec.id), rec); });
+  return Object.keys(bucket).some(function (id) {
+    const rec = remote.get(id);
+    if (!rec) return true;
+    return amtRecordTime(rec) < (Date.parse(bucket[id]) || 0);
+  });
+}
+
+function amtIdbOpen() {
+  if (amtIdbPromise) return amtIdbPromise;
+  amtIdbPromise = new Promise(function (resolve, reject) {
+    if (typeof indexedDB === 'undefined') { reject(new Error('no idb')); return; }
+    const req = indexedDB.open(AMT_RECORDS_DB, 1);
+    req.onupgradeneeded = function () {
+      const db = req.result;
+      if (!db.objectStoreNames.contains('lists')) db.createObjectStore('lists');
+    };
+    req.onsuccess = function () { resolve(req.result); };
+    req.onerror = function () { amtIdbPromise = null; reject(req.error || new Error('idb')); };
+  });
+  return amtIdbPromise;
+}
+
+function amtIdbPut(key, value) {
+  amtIdbOpen().then(function (db) {
+    const tx = db.transaction('lists', 'readwrite');
+    tx.objectStore('lists').put(value, key);
+  }).catch(function () {});
+}
+
+function amtLoadUserList(name) {
+  const lsKey = AMT_LIST_LS[name];
+  let raw = [];
+  try { raw = JSON.parse(localStorage.getItem(lsKey) || '[]'); } catch (e) { raw = []; }
+  if (!Array.isArray(raw)) raw = [];
+  let changed = raw.some(function (rec) { return !rec || typeof rec !== 'object'; });
+  raw.forEach(function (rec, i) {
+    if (!rec || typeof rec !== 'object') return;
+    if (rec.id == null || rec.id === '') {
+      rec.id = name.slice(0, 3) + '_' + Date.now().toString(36) + '_' + i + '_' + Math.random().toString(36).slice(2, 6);
+      changed = true;
+    }
+  });
+  const purged = amtPurgeTombstones(raw);
+  if (purged.length !== raw.filter(function (rec) { return rec && typeof rec === 'object'; }).length) changed = true;
+  const split = amtSplitDeleted(purged);
+  amtTombs[name] = split.tombs;
+  if (changed) {
+    const packed = JSON.stringify(split.live.concat(split.tombs));
+    try { if (localStorage.getItem(lsKey) !== packed) localStorage.setItem(lsKey, packed); } catch (e) {}
+  }
+  return split.live;
+}
+
+function amtWriteUserList(name) {
+  const lsKey = AMT_LIST_LS[name];
+  if (!lsKey) return;
+  const packed = JSON.stringify((amtLiveList(name) || []).concat(amtTombs[name] || []));
+  try { if (localStorage.getItem(lsKey) !== packed) localStorage.setItem(lsKey, packed); } catch (e) {}
+  try { amtIdbPut(name, { items: JSON.parse(packed), savedAt: new Date().toISOString() }); } catch (e) {}
+}
+
+function amtTombstone(name, id) {
+  const list = amtLiveList(name) || [];
+  const rec = list.find(function (x) { return x && String(x.id) === String(id); });
+  amtSetLiveList(name, list.filter(function (x) { return !x || String(x.id) !== String(id); }));
+  if (!rec) return null;
+  const tomb = amtStamp(Object.assign({}, rec, { deleted: true }));
+  const tombs = (amtTombs[name] || []).filter(function (t) { return !t || String(t.id) !== String(id); });
+  tombs.push(tomb);
+  amtTombs[name] = tombs;
+  amtMarkPending(name, tomb);
+  return tomb;
+}
+
+function amtOutboundItems(name) {
+  if (name === 'kbEntries' || name === 'partsDB') {
+    return amtExtractOverlay((amtLiveList(name) || []).concat(amtTombs[name] || []), amtSeedFor(name));
+  }
+  return (amtLiveList(name) || []).concat(amtTombs[name] || []);
+}
+
+function amtCoerceRemote(name, items) {
+  const list = Array.isArray(items) ? items : [];
+  if (name === 'kbEntries' || name === 'partsDB') {
+    const seed = amtSeedFor(name);
+    if (!seed || !seed.length) return list;
+    return amtExtractOverlay(list, seed);
+  }
+  return list;
+}
+
+function amtIngestRemote(name, remoteItems) {
+  const rawRemote = Array.isArray(remoteItems) ? remoteItems : [];
+  const remote = amtCoerceRemote(name, rawRemote);
+  amtLastRemote[name] = remote;
+  const local = (name === 'kbEntries' || name === 'partsDB')
+    ? amtOutboundItems(name)
+    : (amtLiveList(name) || []).concat(amtTombs[name] || []);
+  const merged = mergeRecordLists(local, remote, { pending: amtPendingSet(name) });
+  if (name === 'kbEntries' || name === 'partsDB') {
+    const full = amtMergeSeedAndOverlay(amtSeedFor(name), merged);
+    const split = amtSplitDeleted(full);
+    amtSetLiveList(name, split.live);
+    amtTombs[name] = merged.filter(function (r) { return r && r.deleted; });
+    amtWriteSeedOverlay(name === 'kbEntries' ? AMT_KB_LS : AMT_PARTS_LS, merged);
+  } else if (amtCanonList(local) !== amtCanonList(merged)) {
+    const split = amtSplitDeleted(merged);
+    amtTombs[name] = split.tombs;
+    amtSetLiveList(name, split.live);
+    amtWriteUserList(name);
+  }
+  amtAckPending(name, remote);
+  const col = (typeof CLOUD_COLLECTIONS !== 'undefined') ? CLOUD_COLLECTIONS[name] : null;
+  if (col && typeof col.render === 'function') { try { col.render(); } catch (e) {} }
+  // A legacy cloud document still holding the built-in catalog is rewritten as the overlay.
+  const shrink = (name === 'kbEntries' || name === 'partsDB') && rawRemote.length > remote.length + 5;
+  if ((amtHasUnsyncedPending(name, remote) || shrink) && !amtPushing[name]) cloudPush(name);
+}
+
+function amtFinishHydrate(got) {
+  if (got.syncPending && typeof got.syncPending === 'object' && !got.syncPending.items) {
+    let changed = false;
+    Object.keys(got.syncPending).forEach(function (name) {
+      const extra = got.syncPending[name];
+      if (!extra || typeof extra !== 'object' || Array.isArray(extra)) return;
+      if (!amtSyncPending[name]) amtSyncPending[name] = {};
+      Object.keys(extra).forEach(function (id) {
+        if (!amtSyncPending[name][id]) { amtSyncPending[name][id] = extra[id]; changed = true; }
+      });
+    });
+    if (changed) amtSavePending();
+  }
+  Object.keys(AMT_LIST_LS).forEach(function (name) {
+    const memory = (amtLiveList(name) || []).concat(amtTombs[name] || []);
+    const row = got[name];
+    const idbItems = row && Array.isArray(row.items) ? row.items : null;
+    if (!idbItems) {
+      if (memory.length) amtIdbPut(name, { items: memory, savedAt: new Date().toISOString() });
+      return;
+    }
+    if (amtCanonList(memory) === amtCanonList(idbItems)) return;
+    const merged = mergeRecordLists(memory, idbItems, { pending: amtPendingSet(name) });
+    if (amtCanonList(merged) === amtCanonList(memory)) {
+      amtIdbPut(name, { items: memory, savedAt: new Date().toISOString() });
+      return;
+    }
+    const split = amtSplitDeleted(merged);
+    amtTombs[name] = split.tombs;
+    amtSetLiveList(name, split.live);
+    amtWriteUserList(name);
+    const col = (typeof CLOUD_COLLECTIONS !== 'undefined') ? CLOUD_COLLECTIONS[name] : null;
+    if (col && typeof col.render === 'function') { try { col.render(); } catch (e) {} }
+  });
+  try {
+    const app = document.getElementById('mainApp');
+    if (app && app.style.display === 'block' && typeof renderDashboard === 'function') renderDashboard();
+  } catch (e) {}
+}
+
+function amtHydrateUserLists() {
+  const names = Object.keys(AMT_LIST_LS);
+  amtIdbOpen().then(function (db) {
+    const tx = db.transaction('lists', 'readonly');
+    const store = tx.objectStore('lists');
+    const got = {};
+    let left = names.length + 1;
+    function done() { if (--left === 0) amtFinishHydrate(got); }
+    names.forEach(function (name) {
+      const req = store.get(name);
+      req.onsuccess = function () { got[name] = req.result || null; done(); };
+      req.onerror = function () { got[name] = null; done(); };
+    });
+    const preq = store.get('syncPending');
+    preq.onsuccess = function () { got.syncPending = preq.result || null; done(); };
+    preq.onerror = function () { done(); };
+  }).catch(function () {});
+}
+
+try { amtIdbOpen(); } catch (e) {}
+window.addEventListener('online', function () {
+  Object.keys(amtSyncPending || {}).forEach(function (name) {
+    const bucket = amtSyncPending[name];
+    if (bucket && Object.keys(bucket).length) cloudPush(name);
+  });
+});
+
+// ═══ DATA STORE ═══
+let jobs = amtLoadUserList('jobs');
+let invoices = amtLoadUserList('invoices');
+let expenses = amtLoadUserList('expenses');
+let distributions = amtLoadUserList('distributions');
+let pmChecklists = amtLoadUserList('pmChecklists');
+
+// _local* = localStorage + IndexedDB, never touches the cloud. Used (a) by the wrapped
+// save functions below, and (b) to mirror a merged cloud snapshot without pushing it
+// straight back to Firestore.
+function _localSaveJobs(){amtWriteUserList('jobs');}
+function _localSaveInvoices(){amtWriteUserList('invoices');}
+function _localSaveExpenses(){amtWriteUserList('expenses');}
+function _localSaveDists(){amtWriteUserList('distributions');}
+function _localSavePMs(){amtWriteUserList('pmChecklists');}
 
 // Public save*() functions keep their exact original names/behavior (so none of the
 // ~135 call sites elsewhere in the app need to change) but now also push to Firestore
@@ -2650,21 +3152,18 @@ function saveDists(){_localSaveDists(); cloudPush('distributions');}
 function savePMs(){_localSavePMs(); cloudPush('pmChecklists');}
 
 // ═══ CLOUD SYNC (Firebase Firestore) ═══
-// Each collection is stored as ONE Firestore document holding the whole array in an
-// `items` field -- this mirrors exactly how the app already thinks about this data (one
-// array, saved whole), so no rendering/business logic anywhere else has to change.
-// Firestore's own offline persistence (enabled at init) queues writes made with no
-// signal and replays them once back online, which is what makes this safe to use in
-// the field. Data only leaves the device for signed-in Google users; Firestore
-// Security Rules (see console) additionally restrict reads/writes to the 3 AMT emails.
+// Each collection is still ONE Firestore document at companies/amt/data/{key}
+// (items array). cloudPush merges inside a transaction; snapshots merge too.
+// Paths are unchanged so firestore.rules stays as published.
+// Parts and knowledge documents store the user overlay, not the built-in catalog.
 const CLOUD_COLLECTIONS = {
   jobs:          {get:()=>jobs,          set:v=>{jobs=v;},          localSave:_localSaveJobs,     render:()=>{ if(typeof renderJobs==='function') renderJobs(); }},
   invoices:      {get:()=>invoices,      set:v=>{invoices=v;},      localSave:_localSaveInvoices, render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
   expenses:      {get:()=>expenses,      set:v=>{expenses=v;},      localSave:_localSaveExpenses, render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
   distributions: {get:()=>distributions, set:v=>{distributions=v;}, localSave:_localSaveDists,    render:()=>{ if(typeof calcMoney==='function')calcMoney(); if(typeof renderMoney==='function') renderMoney(); }},
   pmChecklists:  {get:()=>pmChecklists,  set:v=>{pmChecklists=v;},  localSave:_localSavePMs,      render:()=>{}},
-  kbEntries:     {get:()=>kbEntries,     set:v=>{kbEntries=v;},     localSave:()=>{try{localStorage.setItem('amt_kb_v29',JSON.stringify(kbEntries));}catch(e){}}, render:()=>{ if(typeof renderKBEntries==='function') renderKBEntries(); }},
-  partsDB:       {get:()=>partsDB,       set:v=>{partsDB=v;},       localSave:()=>{try{localStorage.setItem(PARTS_STORE_KEY,JSON.stringify(partsDB));}catch(e){}}, render:()=>{ if(typeof searchParts==='function'){ const el=document.getElementById('partsSearch'); searchParts(el?el.value:''); } }},
+  kbEntries:     {get:()=>kbEntries,     set:v=>{kbEntries=v;},     localSave:function(){ amtWriteSeedOverlay(AMT_KB_LS, amtExtractOverlay((kbEntries||[]).concat(amtTombs.kbEntries||[]), (typeof KB_SEED!=='undefined'?KB_SEED:[]))); }, render:()=>{ if(typeof renderKBEntries==='function') renderKBEntries(); }},
+  partsDB:       {get:()=>partsDB,       set:v=>{partsDB=v;},       localSave:function(){ amtWriteSeedOverlay(AMT_PARTS_LS, amtExtractOverlay((partsDB||[]).concat(amtTombs.partsDB||[]), (typeof PARTS_SEED!=='undefined'?PARTS_SEED:[]))); }, render:()=>{ if(typeof searchParts==='function'){ const el=document.getElementById('partsSearch'); searchParts(el?el.value:''); } }},
 };
 
 function cloudPush(key){
@@ -2675,11 +3174,43 @@ function cloudPush(key){
   if(accessRole(email)!=='writer' || fbAuth.currentUser.emailVerified!==true) return;
   const col=CLOUD_COLLECTIONS[key];
   if(!col) return;
-  fbDb.collection('companies').doc('amt').collection('data').doc(key).set({
-    items: col.get(),
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    updatedBy: fbAuth.currentUser.email
-  }).catch(e=>console.warn('[AMT Cloud] push failed for',key,e.code||e));
+  const ref=fbDb.collection('companies').doc('amt').collection('data').doc(key);
+  const localItems=(typeof amtOutboundItems==='function') ? amtOutboundItems(key) : col.get();
+  const pending=(typeof amtPendingSet==='function') ? amtPendingSet(key) : null;
+  const merge=(typeof mergeRecordLists==='function') ? mergeRecordLists : function(local){ return local; };
+  function payload(remoteItems){
+    const remote=(typeof amtCoerceRemote==='function') ? amtCoerceRemote(key, remoteItems) : remoteItems;
+    return {
+      items: merge(localItems, Array.isArray(remote) ? remote : [], {pending: pending}),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedBy: fbAuth.currentUser.email
+    };
+  }
+  if(typeof fbDb.runTransaction==='function'){
+    if(typeof amtPushing!=='undefined' && amtPushing[key]) return;
+    if(typeof amtPushing!=='undefined') amtPushing[key]=true;
+    fbDb.runTransaction(function(tx){
+      return tx.get(ref).then(function(snap){
+        const data=snap && snap.exists && typeof snap.data==='function' ? (snap.data()||{}) : {};
+        const body=payload(data.items);
+        tx.set(ref, body);
+        return body.items;
+      });
+    }).then(function(items){
+      if(typeof amtAckPending==='function') amtAckPending(key, items);
+    }).catch(function(e){
+      console.warn('[AMT Cloud] push failed for', key, e && (e.code || e));
+    }).then(function(){
+      if(typeof amtPushing!=='undefined') amtPushing[key]=false;
+    });
+    return;
+  }
+  const body=payload([]);
+  ref.set(body).then(function(){
+    if(typeof amtAckPending==='function') amtAckPending(key, body.items);
+  }).catch(function(e){
+    console.warn('[AMT Cloud] push failed for', key, e && (e.code || e));
+  });
 }
 
 let _cloudUnsubscribers=[];
@@ -2699,15 +3230,22 @@ function initCloudSync(){
         cloudPush(key);
         return;
       }
-      const data=snap.data();
-      const items=Array.isArray(data&&data.items) ? data.items : [];
-      col.set(items);
-      col.localSave();
-      col.render();
-    }, err=>console.warn('[AMT Cloud] listen failed for',key,err.code||err));
+      const data=snap.data()||{};
+      const items=Array.isArray(data.items) ? data.items : [];
+      if(typeof amtIngestRemote==='function') amtIngestRemote(key, items);
+      else {
+        const merged=(typeof mergeRecordLists==='function')
+          ? mergeRecordLists(col.get(), items, {pending: (typeof amtPendingSet==='function') ? amtPendingSet(key) : null})
+          : items;
+        col.set(Array.isArray(merged) ? merged.filter(function(r){ return r && !r.deleted; }) : []);
+        col.localSave();
+        col.render();
+      }
+    }, err=>console.warn('[AMT Cloud] listen failed for', key, err && (err.code || err)));
     _cloudUnsubscribers.push(unsub);
   });
 }
+try { amtHydrateUserLists(); } catch(e) {}
 // Note: the actual onAuthStateChanged registration that calls initCloudSync() lives at the
 // very end of the document, right after Firebase is initialized (fbAuth doesn't exist yet
 // at this point in the page -- Firebase now loads last, after initGIS, to fix a script-order
@@ -2715,17 +3253,17 @@ function initCloudSync(){
 
 // ═══ MONEY CALCULATIONS ═══
 function calcMoney(){
-  const revenue=invoices.filter(i=>i.status==='Paid').reduce((s,i)=>s+(+i.amount||0),0);
-  const totalExp=expenses.reduce((s,e)=>s+(+e.amount||0),0);
+  const revenue=invoices.filter(i=>i&&!i.deleted&&i.status==='Paid').reduce((s,i)=>s+(+i.amount||0),0);
+  const totalExp=expenses.filter(e=>e&&!e.deleted).reduce((s,e)=>s+(+e.amount||0),0);
   const gross=revenue-totalExp;
   const tax=Math.max(0,gross)*TAX_RATE;
   const net=gross-tax;
-  const distPaid=distributions.reduce((s,d)=>s+(+d.amount||0),0);
+  const distPaid=distributions.filter(d=>d&&!d.deleted).reduce((s,d)=>s+(+d.amount||0),0);
   const remaining=Math.max(0,net-distPaid);
   // Per-owner owed vs paid
   const ownerData=OWNERS.map(o=>{
     const owed=Math.max(0,net)*o.pct;
-    const paid=distributions.filter(d=>d.owner===o.key).reduce((s,d)=>s+(+d.amount||0),0);
+    const paid=distributions.filter(d=>d&&!d.deleted&&d.owner===o.key).reduce((s,d)=>s+(+d.amount||0),0);
     return{...o,owed,paid,balance:owed-paid};
   });
   return{revenue,totalExp,gross,tax,net,distPaid,remaining,ownerData};
@@ -2777,12 +3315,13 @@ function renderDashboard(){
     {lbl:'Tax Set-Aside',val:fmt(m.tax),cls:'gold'},{lbl:'Available',val:fmt(m.remaining),cls:'cyan'}
   ].map(x=>`<div class="money-mini"><div class="money-mini-lbl">${x.lbl}</div><div class="money-mini-val ${x.cls}">${x.val}</div></div>`).join('');
   // Job stats
-  const total=jobs.length,pm=jobs.filter(j=>j.type==='PM').length,repair=jobs.filter(j=>j.type==='Repair').length,ramp=jobs.filter(j=>j.type==='Ramp/Shim').length;
+  const liveJobs=jobs.filter(j=>j&&!j.deleted);
+  const total=liveJobs.length,pm=liveJobs.filter(j=>j.type==='PM').length,repair=liveJobs.filter(j=>j.type==='Repair').length,ramp=liveJobs.filter(j=>j.type==='Ramp/Shim').length;
   document.getElementById('statsGrid').innerHTML=[
     {icon:'📋',val:total,lbl:'Total Jobs',cls:'si-blue'},{icon:'✅',val:pm,lbl:'PM Jobs',cls:'si-cyan'},
     {icon:'🔧',val:repair,lbl:'Repairs',cls:'si-orange'},{icon:'🧲',val:ramp,lbl:'Ramp/Shim',cls:'si-gold'},
-    {icon:'🧾',val:invoices.filter(i=>i.status==='Paid').length,lbl:'Paid Invoices',cls:'si-green'},
-    {icon:'⏳',val:invoices.filter(i=>i.status==='Sent'||i.status==='Overdue').length,lbl:'Open Invoices',cls:'si-red'},
+    {icon:'🧾',val:invoices.filter(i=>i&&!i.deleted&&i.status==='Paid').length,lbl:'Paid Invoices',cls:'si-green'},
+    {icon:'⏳',val:invoices.filter(i=>i&&!i.deleted&&(i.status==='Sent'||i.status==='Overdue')).length,lbl:'Open Invoices',cls:'si-red'},
   ].map(s=>`<div class="stat-card" onclick="showTab('jobs')"><div class="stat-icon ${s.cls}">${s.icon}</div><div><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div></div>`).join('');
   // Owner cards -- each partner only sees their own profit share; Michael (admin) sees all
   const visOwners=visibleOwnerData(m.ownerData);
@@ -2791,7 +3330,7 @@ function renderDashboard(){
     ? visOwners.map(o=>ownerCardHTML(o)).join('')
     : '<div class="empty-state"><div class="ei">📊</div><p>No profit-sharing data for your account.</p></div>';
   // Recent jobs
-  const rec=[...jobs].sort((a,b)=>new Date(b.created||0)-new Date(a.created||0)).slice(0,4);
+  const rec=[...liveJobs].sort((a,b)=>new Date(b.created||0)-new Date(a.created||0)).slice(0,4);
   const rjl=document.getElementById('recentJobsList');
   if(!rec.length){rjl.innerHTML='<div class="empty-state"><div class="ei">📋</div><p>No jobs yet.</p></div>';return;}
   rjl.innerHTML=rec.map(j=>`<div class="job-card ${jcClass(j.type)}" style="cursor:pointer" onclick="viewJob('${j.id}')">
@@ -3023,8 +3562,19 @@ function saveInvoice(){
     created:editingInvId?undefined:new Date().toISOString(),
     updated:new Date().toISOString()
   };
-  if(editingInvId){const idx=invoices.findIndex(x=>x.id===editingInvId);if(idx>=0)invoices[idx]={...invoices[idx],...inv};}
-  else invoices.unshift(inv);
+  let storedInv;
+  if(editingInvId){
+    const idx=invoices.findIndex(x=>x.id===editingInvId);
+    if(idx>=0){
+      const prev=invoices[idx];
+      storedInv=amtStamp(Object.assign({}, prev, inv, {created: prev.created||inv.created}));
+      invoices[idx]=storedInv;
+    }
+  } else {
+    storedInv=amtStamp(inv);
+    invoices.unshift(storedInv);
+  }
+  if(storedInv) amtMarkPending('invoices', storedInv);
   saveInvoices();clearDraft('invoice:'+(editingInvId||'new'));closeModal('invoiceModal');renderInvoiceList();renderMoney();renderDashboard();
   alert('✅ Invoice saved!');
 }
@@ -3034,6 +3584,7 @@ function markInvoicePaid(id){
   if(!confirm('Mark this invoice as PAID? This will add the amount to revenue.'))return;
   const inv=invoices.find(x=>x.id===id);if(!inv)return;
   inv.status='Paid';inv.paidDate=localISODate();
+  amtStamp(inv); amtMarkPending('invoices', inv);
   saveInvoices();renderInvoiceList();renderMoney();renderDashboard();
   alert('✅ Invoice marked as Paid! Revenue updated.');
 }
@@ -3080,8 +3631,19 @@ function saveExpense(){
     notes:document.getElementById('exp_notes').value,
     created:editingExpId?undefined:new Date().toISOString()
   };
-  if(editingExpId){const idx=expenses.findIndex(x=>x.id===editingExpId);if(idx>=0)expenses[idx]={...expenses[idx],...e};}
-  else expenses.unshift(e);
+  let storedExp;
+  if(editingExpId){
+    const idx=expenses.findIndex(x=>x.id===editingExpId);
+    if(idx>=0){
+      const prev=expenses[idx];
+      storedExp=amtStamp(Object.assign({}, prev, e, {created: prev.created||e.created}));
+      expenses[idx]=storedExp;
+    }
+  } else {
+    storedExp=amtStamp(e);
+    expenses.unshift(storedExp);
+  }
+  if(storedExp) amtMarkPending('expenses', storedExp);
   saveExpenses();clearDraft('expense:'+(editingExpId||'new'));closeModal('expenseModal');renderExpenseList();renderMoney();renderDashboard();
   alert('✅ Expense saved!');
 }
@@ -3120,10 +3682,14 @@ function saveDist(){
   if(owner==='all'){
     // Create one record per owner, split by percentage
     OWNERS.forEach(o=>{
-      distributions.unshift({id:'dist_'+Date.now()+'_'+o.key,owner:o.key,amount:+(amount*o.pct).toFixed(2),date,method,ref,notes,created:new Date().toISOString()});
+      const rec=amtStamp({id:'dist_'+Date.now()+'_'+o.key,owner:o.key,amount:+(amount*o.pct).toFixed(2),date,method,ref,notes,created:new Date().toISOString()});
+      distributions.unshift(rec);
+      amtMarkPending('distributions', rec);
     });
   } else {
-    distributions.unshift({id:'dist_'+Date.now(),owner,amount,date,method,ref,notes,created:new Date().toISOString()});
+    const rec=amtStamp({id:'dist_'+Date.now(),owner,amount,date,method,ref,notes,created:new Date().toISOString()});
+    distributions.unshift(rec);
+    amtMarkPending('distributions', rec);
   }
   saveDists();clearDraft('dist:new');closeModal('distModal');renderDistList();renderMoney();renderDashboard();
   alert('✅ Distribution recorded!');
@@ -3141,9 +3707,9 @@ function delGenConfirm(){
   if(!writeGuard('Delete Record')) return;
   if(!delGenTarget)return;
   const{type,id}=delGenTarget;
-  if(type==='invoice'){invoices=invoices.filter(x=>x.id!==id);saveInvoices();renderInvoiceList();}
-  else if(type==='expense'){expenses=expenses.filter(x=>x.id!==id);saveExpenses();renderExpenseList();}
-  else if(type==='dist'){distributions=distributions.filter(x=>x.id!==id);saveDists();renderDistList();}
+  if(type==='invoice'){amtTombstone('invoices', id);saveInvoices();renderInvoiceList();}
+  else if(type==='expense'){amtTombstone('expenses', id);saveExpenses();renderExpenseList();}
+  else if(type==='dist'){amtTombstone('distributions', id);saveDists();renderDistList();}
   closeModal('delGenModal');renderMoney();renderDashboard();
 }
 
@@ -3163,6 +3729,7 @@ function setFilter(v){activeFilter=v;document.querySelectorAll('#statusFilters .
 function renderJobs(){
   const q=(document.getElementById('jobSearch').value||'').toLowerCase();
   const filtered=jobs.filter(j=>{
+    if(!j||j.deleted) return false;
     const txt=[j.site,j.model,j.serial,j.notes,j.po,j.contact,j.modality].join(' ').toLowerCase();
     return(!q||txt.includes(q))&&(!activeFilter||j.type===activeFilter||j.status===activeFilter);
   }).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
@@ -3215,6 +3782,7 @@ function saveJob(){
     po:document.getElementById('nj_po').value,hours:document.getElementById('nj_hours').value,
     miles:document.getElementById('nj_miles').value,notes:document.getElementById('nj_notes').value,
     parts:document.getElementById('nj_parts').value,createdBy:currentUser?currentUser.name:'',created:new Date().toISOString()};
+  amtStamp(j); amtMarkPending('jobs', j);
   jobs.unshift(j);saveJobs();clearDraft('job:new');clearJobForm();
   alert('✅ Job saved!');
   if(j.type==='PM'&&confirm('Open PM Checklist for this job now?')){ loadPMForJob(j.id);showTab('pm');return; }
@@ -3294,14 +3862,14 @@ function saveEdit(){
   const j=jobs.find(x=>x.id===editTarget);if(!j)return;
   if(!document.getElementById('ej_site').value.trim()){alert('Site name required.');return;}
   ['site','contact','phone','location','modality','model','serial','field','type','status','date','po','hours','miles','notes','parts'].forEach(f=>{j[f]=document.getElementById('ej_'+f).value;});
-  j.updated=new Date().toISOString();j.updatedBy=currentUser?currentUser.name:'';
+  amtStamp(j); amtMarkPending('jobs', j);
   saveJobs();clearDraft('job:'+editTarget);closeModal('editModal');renderJobs();renderDashboard();
   alert('✅ Job updated!');
   if(j.status==='Completed'&&j.notes&&j.notes.length>20)setTimeout(()=>suggestKBFromJob(j),600);
 }
 
 function promptDelete(id){const j=jobs.find(x=>x.id===id);if(!j)return;deleteTarget=id;document.getElementById('deleteJobInfo').textContent=`${j.site} -- ${j.type} -- ${j.date||'No date'}`;openModal('deleteModal');}
-function confirmDelete(){ if(!writeGuard('Delete Job')) return; jobs=jobs.filter(x=>x.id!==deleteTarget);saveJobs();closeModal('deleteModal');renderJobs();renderDashboard();}
+function confirmDelete(){ if(!writeGuard('Delete Job')) return; amtTombstone('jobs', deleteTarget); saveJobs();closeModal('deleteModal');renderJobs();renderDashboard();}
 
 function openModal(id){
   const el = document.getElementById(id);
@@ -4292,7 +4860,8 @@ function savePMChecklist(){
   const counts=Object.values(slice[activeCLType]||{});
   const fail=counts.filter(v=>v==='fail').length,pass=counts.filter(v=>v==='pass').length;
   const rec={id:'pm_'+Date.now(),jobId,type:activeCLType,site:document.getElementById('pm_site').value,date:document.getElementById('pm_date').value,model:document.getElementById('pm_model').value,wo:document.getElementById('pm_wo').value,tech:document.getElementById('pm_tech').value,notes:document.getElementById('pm_notes').value,followup:document.getElementById('pm_followup').value,state:slice,gectQuarter:activeCLType==='ge_ct'?activeGECTQuarter:'',savedBy:currentUser?currentUser.name:'',saved:new Date().toISOString()};
-  pmChecklists=pmChecklists.filter(p=>!(p.jobId&&p.jobId===jobId&&p.type===activeCLType));
+  pmChecklists.filter(p=>p&&p.jobId&&p.jobId===jobId&&p.type===activeCLType).forEach(p=>{ if(p.id && p.id!==rec.id) amtTombstone('pmChecklists', p.id); });
+  amtStamp(rec); amtMarkPending('pmChecklists', rec);
   pmChecklists.unshift(rec);savePMs();clearDraft('pm:'+(jobId||'standalone'));
   alert(`✅ PM Checklist Saved!\nPass: ${pass} | Fail: ${fail}`+(fail>0?`\n⚠️ ${fail} item(s) require follow-up.`:'\n✅ No failures.'));
 }
@@ -5361,23 +5930,18 @@ const KB_SEED = [
 },
 ];
 
-let kbEntries = JSON.parse(localStorage.getItem('amt_kb_v29')||'null');
-if(!kbEntries){
-  // First run -- seed with default entries
-  kbEntries = [...KB_SEED];
-  localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
-} else {
-  // App updated -- merge any new seed entries not yet in storage
-  const newSeeds = KB_SEED.filter(s=>s && !kbEntries.find(e=>e && e.id===s.id));
-  if(newSeeds.length){
-    kbEntries = [...newSeeds, ...kbEntries];
-    localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries));
-  }
-}
+const amtKbOverlay = amtLoadSeedStore(AMT_KB_LS, KB_SEED);
+let kbEntries = amtMergeSeedAndOverlay(KB_SEED, amtKbOverlay);
+amtTombs.kbEntries = amtKbOverlay.filter(function(r){ return r && r.deleted; });
 let kbCatFilter = '';
 let kbSuggestPending = null;
 let editingKBId = null;
-function saveKBData(){ localStorage.setItem('amt_kb_v29', JSON.stringify(kbEntries)); cloudPush('kbEntries'); }
+function saveKBData(){
+  const overlay = amtExtractOverlay((kbEntries||[]).concat(amtTombs.kbEntries||[]), KB_SEED);
+  amtTombs.kbEntries = overlay.filter(function(r){ return r && r.deleted; });
+  amtWriteSeedOverlay(AMT_KB_LS, overlay);
+  cloudPush('kbEntries');
+}
 
 function setKBTab(t){
   ['files','parts','errcodes','diagguides'].forEach(s=>{
@@ -5482,15 +6046,25 @@ function saveKBEntry(){
     created: editingKBId ? undefined : new Date().toISOString(),
     updated: new Date().toISOString()
   };
-  if(editingKBId){ const i=kbEntries.findIndex(x=>x.id===editingKBId); if(i>=0) kbEntries[i]={...kbEntries[i],...entry}; }
-  else kbEntries.unshift(entry);
-  saveKBData(); clearDraft('kb:'+(editingKBId||'new')); closeModal('kbEntryModal'); renderKBEntries();
+  let storedKb;
+  if(editingKBId){
+    const i=kbEntries.findIndex(x=>x.id===editingKBId);
+    if(i>=0){
+      storedKb=amtStamp(Object.assign({}, kbEntries[i], entry, {created: kbEntries[i].created||entry.created}));
+      kbEntries[i]=storedKb;
+    }
+  } else {
+    storedKb=amtStamp(entry);
+    kbEntries.unshift(storedKb);
+  }
+  if(storedKb) amtMarkPending('kbEntries', storedKb);
+  saveKBData();clearDraft('kb:'+(editingKBId||'new')); closeModal('kbEntryModal'); renderKBEntries();
   alert('✅ Knowledge entry saved!');
 }
 
 function deleteKBEntry(id){
   if(!confirm('Delete this knowledge entry?')) return;
-  kbEntries = kbEntries.filter(x=>x.id!==id); saveKBData(); renderKBEntries();
+  amtTombstone('kbEntries', id); saveKBData(); renderKBEntries();
 }
 
 function populateKBJobDropdown(){
@@ -9318,34 +9892,16 @@ const PARTS_SEED = [
   {num:'5137474',desc:'Backplane Power Cable',brand:'GE ProSpeed',model:'ProSpeed AI/FI',category:'Power Supply',section:'Rev 39',notes:''}
 ];
 
-var partsDB = JSON.parse(localStorage.getItem(PARTS_STORE_KEY)||'null');
-if(!partsDB){
-  partsDB = [...PARTS_SEED];
-  localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
-} else {
-  // Merge new seeds (only seeds with explicit ids — avoids undefined===undefined ambiguity for CT parts)
-  const newSeeds = PARTS_SEED.filter(s=>s.id && !partsDB.find(p=>p.id===s.id));
-  if(newSeeds.length){ partsDB=[...newSeeds,...partsDB]; saveParts(); }
-}
-// Normalize: assign stable ids to any parts missing them (CT FRU seed parts)
-(function(){
-  let changed = false;
-  const usedIds = new Set(partsDB.filter(p=>p.id).map(p=>p.id));
-  partsDB.forEach((p,i)=>{
-    if(!p.id){
-      let base = 'ct_'+(p.num||'part').replace(/[^a-z0-9]/gi,'_');
-      let uid = base;
-      let n = 2;
-      while(usedIds.has(uid)) uid = base+'_'+n++;
-      p.id = uid;
-      usedIds.add(uid);
-      changed = true;
-    }
-  });
-  if(changed) localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB));
-})();
+const amtPartsOverlay = amtLoadSeedStore(PARTS_STORE_KEY, PARTS_SEED);
+var partsDB = amtMergeSeedAndOverlay(PARTS_SEED, amtPartsOverlay);
+amtTombs.partsDB = amtPartsOverlay.filter(function(r){ return r && r.deleted; });
 
-function saveParts(){ localStorage.setItem(PARTS_STORE_KEY, JSON.stringify(partsDB)); cloudPush('partsDB'); }
+function saveParts(){
+  const overlay = amtExtractOverlay((partsDB||[]).concat(amtTombs.partsDB||[]), PARTS_SEED);
+  amtTombs.partsDB = overlay.filter(function(r){ return r && r.deleted; });
+  amtWriteSeedOverlay(PARTS_STORE_KEY, overlay);
+  cloudPush('partsDB');
+}
 
 function searchParts(q){
   if(!writeGuard && false) return; // search always allowed
@@ -9477,12 +10033,14 @@ function savePart(){
     manual: document.getElementById('part_manual').value.trim(),
     date:   localISODate()
   };
+  amtStamp(part);
   if(editId){
     const idx = partsDB.findIndex(x=>x.id===editId);
     if(idx>=0) partsDB[idx]=part; else partsDB.unshift(part);
   } else {
     partsDB.unshift(part);
   }
+  amtMarkPending('partsDB', part);
   saveParts();
   clearDraft('part:'+(editId||'new'));
   closeModal('addPartModal');
@@ -9493,7 +10051,7 @@ function savePart(){
 function deletePart(id){
   if(!writeGuard('Delete Part')) return;
   if(!confirm('Delete this part from your database?')) return;
-  partsDB = partsDB.filter(x=>x.id!==id);
+  amtTombstone('partsDB', id);
   saveParts();
   searchParts(document.getElementById('partsSearchInput')?.value||'');
 }
@@ -22686,21 +23244,17 @@ Manuals path: All_Systems/Field_Guides/MRI-magnet-coil-image-artifacts.md`,
 
 let diagGuidesDB = [];
 function loadDiagGuides() {
-  const stored = JSON.parse(localStorage.getItem('amt_diagguides_v30')||'null');
-  if (!stored) {
-    diagGuidesDB = DIAG_GUIDES_SEED.slice();
-  } else {
-    diagGuidesDB = stored.slice();
-    DIAG_GUIDES_SEED.forEach(s => {
-      const i = diagGuidesDB.findIndex(g => g.id === s.id);
-      if (i < 0) diagGuidesDB.push(s);
-      else diagGuidesDB[i] = s; // seed wins so LIVE SHIP revisions replace cached copies
-    });
-  }
-  saveDiagGuides();
+  const seed = (typeof DIAG_GUIDES_SEED !== 'undefined' && Array.isArray(DIAG_GUIDES_SEED)) ? DIAG_GUIDES_SEED : [];
+  const overlay = amtLoadSeedStore(AMT_GUIDE_LS, seed);
+  // Unedited guides are not cached. seed wins so LIVE SHIP revisions replace cached copies.
+  amtTombs.diagGuides = overlay.filter(function(r){ return r && r.deleted; });
+  diagGuidesDB = amtMergeSeedAndOverlay(seed, overlay);
 }
 function saveDiagGuides() {
-  localStorage.setItem('amt_diagguides_v30', JSON.stringify(diagGuidesDB));
+  const seed = (typeof DIAG_GUIDES_SEED !== 'undefined' && Array.isArray(DIAG_GUIDES_SEED)) ? DIAG_GUIDES_SEED : [];
+  const overlay = amtExtractOverlay((diagGuidesDB||[]).concat(amtTombs.diagGuides||[]), seed);
+  amtTombs.diagGuides = overlay.filter(function(r){ return r && r.deleted; });
+  amtWriteSeedOverlay(AMT_GUIDE_LS, overlay);
 }
 
 function amtGuideOnSys(g, sys){
@@ -22918,12 +23472,14 @@ function saveDiagGuide() {
     content,
     created:  new Date().toISOString()
   };
+  amtStamp(guide);
   if (editId) {
     const idx = diagGuidesDB.findIndex(x => x.id === editId);
     if (idx >= 0) diagGuidesDB[idx] = guide; else diagGuidesDB.unshift(guide);
   } else {
     diagGuidesDB.unshift(guide);
   }
+  amtMarkPending('diagGuides', guide);
   saveDiagGuides();
   clearDraft('guide:'+(editId||'new'));
   closeModal('addDiagGuideModal');
@@ -22932,7 +23488,7 @@ function saveDiagGuide() {
 
 function deleteDiagGuide(id) {
   if (!confirm('Delete this diagnostic guide?')) return;
-  diagGuidesDB = diagGuidesDB.filter(g => g.id !== id);
+  amtTombstone('diagGuides', id);
   saveDiagGuides();
   renderDiagGuides();
 }

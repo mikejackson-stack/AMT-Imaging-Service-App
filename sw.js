@@ -1,6 +1,8 @@
-// Bumped from amt-v45 -> amt-v46: unsaved form fields autosave as IndexedDB drafts.
+// Bumped from amt-v46 -> amt-v47: seed catalogs stay in code; cloud lists merge per record.
+// amt-v46 autosaves unsaved form fields in IndexedDB database amtDrafts.
+// Record lists use a separate database, amt-user-records.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v46';
+const CACHE = 'amt-v47';
 const SHELL = ['./','./index.html','./access-config.js'];
 
 self.addEventListener('install', e => {
