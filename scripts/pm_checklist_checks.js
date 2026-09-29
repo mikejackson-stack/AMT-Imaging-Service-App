@@ -337,7 +337,62 @@ files.forEach(file => {
   assert(/_pmSkipDraft=true/.test(extractFunction(src, 'loadPMForJob')), base + ' opening a job PM skips the previous draft');
   assert(/pmFreezePrint/.test(extractFunction(src, 'printPMChecklist')), base + ' print freezes every field type');
   assert(/querySelector\('table, \.cl-exii'\)/.test(extractFunction(src, 'printPMChecklist')), base + ' print allows the Excite II form, which is not a table');
+
+  const logoutFn = extractFunction(src, 'logout');
+  const signOutFn = extractFunction(src, 'signOutFirebaseAuth');
+  assert(logoutFn.includes('signOutFirebaseAuth()'), base + ' logout signs out of Firebase Auth');
+  assert(/Promise\.resolve\(signOutFirebaseAuth\(\)\)\.then\(finish/.test(logoutFn), base + ' logout waits for Firebase signOut before showing the login screen');
+  assert(signOutFn.includes('fbAuth.signOut()'), base + ' Firebase signOut is called');
+  assert(signOutFn.includes('_cloudUnsubscribers=[]'), base + ' logout drops the previous user\'s Firestore listeners');
 });
+
+function pinAfterGoogleLogout(src) {
+  const logoutFn = extractFunction(src, 'logout');
+  const signOutFn = extractFunction(src, 'signOutFirebaseAuth');
+  const script = `
+    let firebaseUser = { uid: 'google-1', email: 'mike.jackson@amtimagingsolutions.com' };
+    let signOutCalls = 0;
+    let unsubscribed = 0;
+    const pushes = [];
+    const fbAuth = {
+      get currentUser() { return firebaseUser; },
+      signOut() {
+        signOutCalls++;
+        firebaseUser = null;
+        return Promise.resolve();
+      }
+    };
+    let _cloudUnsubscribers = [function () { unsubscribed++; }];
+    let currentUser = { name: 'Michael Jackson', method: 'Google', viewOnly: false };
+    const session = { amt_auth_v29: '{"method":"Google"}' };
+    const els = {};
+    const document = { getElementById(id) { if (!els[id]) els[id] = { style: {}, value: '', textContent: '' }; return els[id]; } };
+    const sessionStorage = { removeItem(key) { delete session[key]; } };
+    function updatePinDots() {}
+    function confirm() { return true; }
+    function cloudPush(key) {
+      if (!fbAuth.currentUser) return;
+      pushes.push(fbAuth.currentUser.email + ':' + key);
+    }
+    ${logoutFn}
+    ${signOutFn}
+    logout();
+    return Promise.resolve().then(function () { return Promise.resolve(); }).then(function () {
+      currentUser = { name: 'Antonio Jackson', method: 'PIN', viewOnly: false };
+      cloudPush('jobs');
+      return {
+        firebaseEmail: firebaseUser && firebaseUser.email || null,
+        method: currentUser.method,
+        signOutCalls: signOutCalls,
+        unsubscribed: unsubscribed,
+        pushes: pushes,
+        sessionGone: !session.amt_auth_v29,
+        loginShown: els.loginScreen && els.loginScreen.style.display
+      };
+    });
+  `;
+  return new Function(script)();
+}
 
 const pinRe = /sha256\(\s*['"]\d{4}_amt_salt_|['"]\d{4}['"]\s*,\s*['"](?:mikejackson|antoniojackson|candelariojuarez|emilyoliveros)['"]/;
 const pinFiles = [];
@@ -352,5 +407,19 @@ pinFiles.forEach(p => {
 });
 assert(pinHits === 0, 'no plaintext staff PIN remains in the working tree');
 
-if (!process.exitCode) console.log('\nPM checklist checks passed.');
-process.exit(process.exitCode || 0);
+Promise.all(files.map(file => pinAfterGoogleLogout(fs.readFileSync(file, 'utf8')))).then(results => {
+  results.forEach((got, i) => {
+    const base = path.basename(files[i]);
+    assert(got.signOutCalls === 1, base + ' logout calls Firebase signOut once');
+    assert(got.unsubscribed === 1, base + ' logout unsubscribes the Google user listeners');
+    assert(got.firebaseEmail === null, base + ' PIN login after Google logout has no Firebase user');
+    assert(got.method === 'PIN', base + ' the next login can be a PIN user');
+    assert(got.pushes.length === 0, base + ' a PIN save does not write Firestore as the previous Google user');
+    assert(got.sessionGone === true && got.loginShown === 'flex', base + ' the app session is cleared after Firebase signOut');
+  });
+  if (!process.exitCode) console.log('\nPM checklist checks passed.');
+  process.exit(process.exitCode || 0);
+}).catch(err => {
+  console.error('FAIL:', err && err.stack || err);
+  process.exit(1);
+});

@@ -1878,15 +1878,30 @@ function bootApp(){
 
 function logout(){
   if(!confirm('Sign out?'))return;
-  sessionStorage.removeItem('amt_auth_v29');currentUser=null;
-  document.getElementById('loginScreen').style.display='flex';
-  document.getElementById('mainApp').style.display='none';
-  document.getElementById('pinInput').value='';
-  document.getElementById('pinUser').value='';
-  document.getElementById('pinPanel').style.display='none';
-  document.getElementById('loginError').textContent='';
-  document.getElementById('userInfoDsk').style.display='none';
-  updatePinDots('');
+  // Leave the signed-in app up until Firebase Auth has dropped the Google user.
+  // Otherwise a PIN login on this browser can still cloudPush() as that user.
+  const finish=()=>{
+    sessionStorage.removeItem('amt_auth_v29');currentUser=null;
+    document.getElementById('loginScreen').style.display='flex';
+    document.getElementById('mainApp').style.display='none';
+    document.getElementById('pinInput').value='';
+    document.getElementById('pinUser').value='';
+    document.getElementById('pinPanel').style.display='none';
+    document.getElementById('loginError').textContent='';
+    document.getElementById('userInfoDsk').style.display='none';
+    updatePinDots('');
+  };
+  Promise.resolve(signOutFirebaseAuth()).then(finish, finish);
+}
+function signOutFirebaseAuth(){
+  try{
+    if(typeof _cloudUnsubscribers!=='undefined' && _cloudUnsubscribers && _cloudUnsubscribers.length){
+      _cloudUnsubscribers.forEach(u=>{ try{u();}catch(e){} });
+      _cloudUnsubscribers=[];
+    }
+  }catch(e){}
+  if(!fbAuth || typeof fbAuth.signOut!=='function') return Promise.resolve();
+  return fbAuth.signOut().catch(e=>console.warn('[AMT Firebase Auth] sign-out failed:',e&&(e.code||e)));
 }
 
 function togglePin(){
