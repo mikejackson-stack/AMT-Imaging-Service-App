@@ -55,6 +55,11 @@ function staticChecks() {
     assert(html.includes('if(document.hidden)'), 'flushes drafts when the page is hidden');
     assert(html.includes('isWriterSession()'), 'drafts follow the writer session');
     assert(html.includes(', 1000)'), 'draft debounce is about one second');
+    assert(html.includes('flushDraftKey(key)'), 'a job switch commits the draft key captured when typing started');
+    assert(html.includes('draftKeyForModal'), 'closing a form flushes that form draft');
+    assert(!html.includes('Manuals/amt_logo.png'), 'capability logo does not use the missing Manuals path');
+    assert(html.includes('id="capabilityLogo"'), 'capability statement has a logo image');
+    assert(html.includes("'capabilityLogo'"), 'capability logo uses the embedded logo');
   });
   assert(engineSlice(index) && engineSlice(index) === engineSlice(stand), 'draft engine matches in index.html and the standalone file');
 }
@@ -212,13 +217,13 @@ async function readDraft(page, key) {
   }, key);
 }
 
-async function waitDraft(page, key, pred) {
-  const deadline = Date.now() + 10000;
+async function waitDraft(page, key, pred, budget) {
+  const deadline = Date.now() + (budget || 10000);
   let last = null;
   while (Date.now() < deadline) {
     last = await readDraft(page, key);
     if (last && (!pred || pred(last))) return last;
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(50);
   }
   throw new Error('draft ' + key + ' not ready: ' + JSON.stringify(last));
 }
@@ -281,6 +286,12 @@ async function main() {
       }));
     });
     await bootWriter(page);
+    const logoOk = await page.evaluate(() => {
+      const el = document.getElementById('capabilityLogo');
+      const src = (el && el.src) || '';
+      return src.indexOf('data:image/png;base64,') === 0;
+    });
+    assert(logoOk, 'capability statement logo is the embedded image');
     await page.waitForFunction(() => localStorage.getItem('amt_pm_draft_v32') === null);
     ok('legacy amt_pm_draft_v32 migrated and removed');
     const legacy = await waitDraft(page, 'pm:standalone', rec => rec.fields && rec.fields.site === 'Legacy Site');
@@ -322,6 +333,26 @@ async function main() {
     });
     assert(pm.email === WRITER.email, 'PM draft stores the writer email');
     ok('PM checklist draft committed before the browser dies');
+
+    await page.evaluate(() => {
+      jobs.push({ id: 'pm-job-a', site: 'Alpha Site', type: 'PM', date: '2026-09-01', modality: 'GE CT', model: 'Revolution' });
+      jobs.push({ id: 'pm-job-b', site: 'Beta Site', type: 'PM', date: '2026-09-02', modality: 'GE CT', model: 'Revolution' });
+      loadPMForJob('pm-job-a');
+    });
+    await page.waitForFunction(() => (document.getElementById('pm_jobLink') || {}).value === 'pm-job-a');
+    await page.fill('#pm_notes', 'alpha last keystroke');
+    await page.evaluate(() => loadPMForJob('pm-job-b'));
+    const switched = await waitDraft(page, 'pm:pm-job-a', rec => rec.fields && rec.fields.notes === 'alpha last keystroke', 800);
+    assert(switched.fields.jobId === 'pm-job-a', 'switching jobs keeps the previous job id on that draft');
+    ok('switching PM jobs flushes the previous draft before the debounce');
+
+    await page.evaluate(() => { showTab('money'); setMoneyTab('invoices'); openInvoiceModal(); });
+    await page.fill('#inv_client', 'Flush Client');
+    await page.evaluate(() => closeModal('invoiceModal'));
+    const flushedInv = await waitDraft(page, 'invoice:new', rec => rec.fields && rec.fields.inv_client === 'Flush Client', 800);
+    assert(flushedInv.fields.inv_client === 'Flush Client', 'closing the invoice form keeps the last keystrokes');
+    await page.evaluate(() => clearDraft('invoice:new'));
+    ok('closing a form flushes its draft before the debounce');
 
     const pid = browserPid(userDataDir);
     if (!pid) fail('browser process is missing');
