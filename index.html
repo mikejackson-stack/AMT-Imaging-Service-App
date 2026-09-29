@@ -6,7 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>AMT Imaging Solutions</title>
-<script src="https://accounts.google.com/gsi/client" async defer onload="initGIS()"></script>
+<script>
+// GIS is async and can finish before the app script defines initGIS.
+// This handler only records that the library loaded, then inits if the app is ready.
+window.__amtGisLoaded=false;
+function amtMarkGisLoaded(){
+  window.__amtGisLoaded=true;
+  if(typeof window.amtTryInitGIS==='function') window.amtTryInitGIS();
+}
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="amtMarkGisLoaded()"></script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -50,7 +59,7 @@ img{max-width:100%;display:block}
 .login-logo{width:clamp(160px,55vw,240px);margin-bottom:4px;filter:drop-shadow(0 0 28px rgba(0,120,255,.42));animation:logoPulse 3.5s ease-in-out infinite alternate}
 @keyframes logoPulse{from{filter:drop-shadow(0 0 18px rgba(0,100,220,.32))}to{filter:drop-shadow(0 0 46px rgba(0,160,255,.62))}}
 .login-tagline{color:rgba(255,255,255,.38);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:26px}
-.login-card{background:rgba(255,255,255,.055);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.55)}
+.login-card{background:rgba(255,255,255,.055);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px 24px;width:100%;max-width:400px;min-width:0;box-shadow:0 24px 64px rgba(0,0,0,.55)}
 .login-card h2{color:var(--white);font-size:1.05rem;font-weight:700;text-align:center;margin-bottom:4px}
 .login-card p{color:rgba(255,255,255,.42);font-size:.78rem;text-align:center;margin-bottom:20px}
 .btn-google{width:100%;min-height:50px;padding:12px 16px;border:1.5px solid rgba(255,255,255,.18);border-radius:12px;background:rgba(255,255,255,.07);color:var(--white);font-size:.88rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;-webkit-tap-highlight-color:transparent}
@@ -61,17 +70,17 @@ img{max-width:100%;display:block}
 .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 .btn-pin-toggle{width:100%;min-height:50px;padding:12px 16px;border:1.5px solid rgba(0,180,216,.35);border-radius:12px;background:rgba(0,180,216,.09);color:var(--accent);font-size:.88rem;font-weight:600;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .btn-pin-toggle:hover{background:rgba(0,180,216,.18);transform:translateY(-1px)}
-#pinPanel{display:none;margin-top:12px}
-.pin-select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:.88rem;margin-bottom:10px;-webkit-appearance:none}
+#pinPanel{display:none;margin-top:12px;min-width:0;max-width:100%}
+.pin-select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:16px;margin-bottom:10px;-webkit-appearance:none}
 .pin-select option{background:#112240;color:var(--white)}
-.pin-row{display:flex;gap:8px}
-.pin-input{flex:1;min-height:50px;padding:12px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:1.4rem;letter-spacing:10px;text-align:center;outline:none}
+.pin-row{display:flex;gap:8px;width:100%;min-width:0;max-width:100%}
+.pin-input{flex:1 1 auto;min-width:0;width:100%;max-width:100%;min-height:50px;padding:12px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:16px;letter-spacing:2px;text-align:center;outline:none}
 .pin-input::placeholder{letter-spacing:2px;font-size:.8rem;color:rgba(255,255,255,.28)}
 .pin-input:focus{border-color:var(--accent)}
 .pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:8px;height:14px}
 .pin-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .15s}
 .pin-dot.filled{background:var(--accent)}
-.btn-pin-go{min-height:50px;padding:12px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--white);border-radius:10px;font-weight:700;font-size:.88rem;white-space:nowrap}
+.btn-pin-go{flex:0 0 auto;min-height:50px;padding:12px 14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--white);border-radius:10px;font-weight:700;font-size:16px;white-space:nowrap}
 .login-error{color:#ff7070;font-size:.8rem;text-align:center;margin-top:10px;min-height:18px}
 .login-footer{margin-top:14px;color:rgba(255,255,255,.2);font-size:.64rem;text-align:center}
 #notAuthScreen{display:none;position:fixed;inset:0;z-index:800;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;background:linear-gradient(160deg,#040c1a 0%,#0a1628 50%,#0c1e3a 100%)}
@@ -643,6 +652,30 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 
 /* Radio cells: flex stays on the inner span, never the td */
 .chk-r{display:inline-flex;align-items:center;justify-content:center;width:auto}
+
+/* Classic PM tables (not Excite II) fit a 390px phone without sideways scroll. */
+@media (max-width:767px){
+  #pm_checklist_area .cl-table{table-layout:fixed;width:100%;max-width:100%}
+  #pm_checklist_area > div[style*="overflow-x"]{overflow-x:visible !important;max-width:100%}
+  #pm_checklist_area .cl-table th,
+  #pm_checklist_area .cl-table td{min-width:0 !important;overflow-wrap:anywhere;word-wrap:break-word}
+  #pm_checklist_area .cl-table thead th{padding:6px 2px;font-size:.62rem;line-height:1.15}
+  #pm_checklist_area .cl-table thead th:first-child{width:auto;text-align:left;padding-left:6px}
+  #pm_checklist_area .cl-table thead th:nth-child(2),
+  #pm_checklist_area .cl-table thead th:nth-child(3),
+  #pm_checklist_area .cl-table thead th:nth-child(4){width:42px}
+  #pm_checklist_area .cl-table tbody td{padding:6px 2px}
+  #pm_checklist_area .cl-table tbody td:first-child{padding-left:6px;padding-right:4px;white-space:normal}
+  #pm_checklist_area .cl-table tbody td:not(:first-child){width:42px;padding-left:0;padding-right:0}
+  #pm_checklist_area .cl-table .chk-r{min-width:0;width:100%;min-height:36px}
+  #pm_checklist_area .cl-table .chk-r input[type=radio]{width:22px;height:22px;min-width:22px;min-height:22px}
+  #pm_checklist_area .cl-table textarea.cl-note,
+  #pm_checklist_area .cl-table textarea.form-control{width:100%;max-width:100%;min-width:0;box-sizing:border-box;font-size:16px}
+  #pm_checklist_area .cl-table .cl-measure{flex-wrap:wrap;justify-content:flex-start;max-width:100%}
+  #pm_checklist_area .cl-table .cl-measure input{width:100%;max-width:100%;min-width:0;box-sizing:border-box;font-size:16px;min-height:40px;padding:6px 4px}
+  #pm_checklist_area .cl-table .cl-unit{white-space:normal}
+  #pm_checklist_area .cl-group-hd td{white-space:normal}
+}
 
 </style>
 </head>
@@ -1932,6 +1965,14 @@ function doLogin(name, method, viewOnly, extra){
   bootApp();
 }
 
+function localISODate(d){
+  const dt=d?new Date(d):new Date();
+  const y=dt.getFullYear();
+  const m=String(dt.getMonth()+1).padStart(2,'0');
+  const day=String(dt.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+
 function bootApp(){
   const na=document.getElementById('notAuthScreen');
   if(na) na.style.display='none';
@@ -1960,11 +2001,11 @@ function bootApp(){
   const now=new Date();
   document.getElementById('userDate').textContent=now.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
   document.getElementById('userInfoDsk').style.display='flex';
-  const d=document.getElementById('nj_date');if(d&&!d.value)d.value=now.toISOString().slice(0,10);
+  const d=document.getElementById('nj_date');if(d&&!d.value)d.value=localISODate(now);
   renderDashboard();
   syncDashPnlOpen();
   if(typeof loadDiagGuides === 'function') loadDiagGuides();
-  ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=now.toISOString().slice(0,10);});
+  ['inv_date','inv_due','exp_date','dist_date'].forEach(id=>{const el=document.getElementById(id);if(el&&!el.value)el.value=localISODate(now);});
 }
 
 function applyAccessUI(){
@@ -2342,7 +2383,9 @@ function showGoogleFallback(){
   if(fb)fb.style.display='flex';
 }
 function initGIS(){
-  if(typeof google==='undefined'||!google.accounts){showGoogleFallback(); return;}
+  if(window.__amtGisButtonReady) return;
+  if(typeof google==='undefined'||!google.accounts||!google.accounts.id) return;
+  window.__amtGisButtonReady=true;
   google.accounts.id.initialize({
     client_id:GOOGLE_CLIENT_ID,
     callback:amtGoogleCallback,
@@ -2367,6 +2410,27 @@ function initGIS(){
     }, 1000);
   }
 }
+function amtTryInitGIS(){
+  if(window.google&&window.google.accounts&&window.google.accounts.id){
+    initGIS();
+    return true;
+  }
+  return false;
+}
+window.amtTryInitGIS=amtTryInitGIS;
+function amtBootGoogleButton(){
+  if(amtTryInitGIS()) return;
+  let tries=0;
+  const timer=setInterval(function(){
+    tries++;
+    if(amtTryInitGIS()){ clearInterval(timer); return; }
+    if(tries>=40){
+      clearInterval(timer);
+      if(!window.__amtGisButtonReady) showGoogleFallback();
+    }
+  }, 100);
+}
+amtBootGoogleButton();
 function amtGoogleCallback(r){
   const loginErr=document.getElementById('loginError');
   if(loginErr) loginErr.textContent='Verifying Google account…';
@@ -2886,8 +2950,9 @@ function renderDistList(){
 let editingInvId=null;
 function openInvoiceModal(id){
   editingInvId=id||null;
-  const today=new Date().toISOString().slice(0,10);
-  const due=new Date(Date.now()+30*86400000).toISOString().slice(0,10);
+  const today=localISODate();
+  const dueDt=new Date();dueDt.setDate(dueDt.getDate()+30);
+  const due=localISODate(dueDt);
   populateMoneyJobDropdowns();
   if(id){
     const inv=invoices.find(x=>x.id===id);if(!inv)return;
@@ -2928,7 +2993,7 @@ function saveInvoice(){
   const client=document.getElementById('inv_client').value.trim();
   const amount=parseFloat(document.getElementById('inv_amount').value)||0;
   if(!client){alert('Client name is required.');return;}
-  const now=new Date().toISOString().slice(0,10);
+  const now=localISODate();
   const inv={
     id:editingInvId||('inv_'+Date.now()),
     client,num:document.getElementById('inv_num').value,
@@ -2951,7 +3016,7 @@ function markInvoicePaid(id){
   if(!writeGuard('Mark Invoice Paid')) return;
   if(!confirm('Mark this invoice as PAID? This will add the amount to revenue.'))return;
   const inv=invoices.find(x=>x.id===id);if(!inv)return;
-  inv.status='Paid';inv.paidDate=new Date().toISOString().slice(0,10);
+  inv.status='Paid';inv.paidDate=localISODate();
   saveInvoices();renderInvoiceList();renderMoney();renderDashboard();
   alert('✅ Invoice marked as Paid! Revenue updated.');
 }
@@ -2960,7 +3025,7 @@ function markInvoicePaid(id){
 let editingExpId=null;
 function openExpenseModal(id){
   editingExpId=id||null;
-  const today=new Date().toISOString().slice(0,10);
+  const today=localISODate();
   populateMoneyJobDropdowns();
   if(id){
     const e=expenses.find(x=>x.id===id);if(!e)return;
@@ -2987,7 +3052,7 @@ function saveExpense(){
   const desc=document.getElementById('exp_desc').value.trim();
   const amount=parseFloat(document.getElementById('exp_amount').value)||0;
   if(!desc||!amount){alert('Description and amount are required.');return;}
-  const today=new Date().toISOString().slice(0,10);
+  const today=localISODate();
   const e={
     id:editingExpId||('exp_'+Date.now()),
     desc,cat:document.getElementById('exp_cat').value,
@@ -3005,7 +3070,7 @@ function saveExpense(){
 
 // ── DISTRIBUTION CRUD ──
 function openDistModal(){
-  document.getElementById('dist_date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('dist_date').value=localISODate();
   document.getElementById('dist_amount').value='';
   document.getElementById('dist_ref').value='';
   document.getElementById('dist_notes').value='';
@@ -3144,7 +3209,7 @@ function saveJob(){
 
 function clearJobForm(){
   ['nj_site','nj_contact','nj_phone','nj_location','nj_modality','nj_model','nj_serial','nj_field','nj_type','nj_status','nj_po','nj_hours','nj_miles','nj_notes','nj_parts'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('nj_date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('nj_date').value=localISODate();
   document.getElementById('pmAlert').style.display='none';
   const md=document.getElementById('mileageDisplay');if(md)md.style.display='none';
 }
@@ -3235,7 +3300,7 @@ const PM_EXII = {"docNo":"AMT-PM-GE-MR-EXII","rev":"Rev 0 (DRAFT 2)","docDate":"
 const MODALITY_CL_MAP={'GE MRI':'ge_mri','Siemens MRI':'siemens_mri','Philips MRI':'ge_mri','GE CT':'ge_ct','Siemens CT':'siemens_ct','Stellant Injector':'stellant','Stellant CT Injector':'stellant','Solaris/Spectris Injector':'solaris','Spectris Solaris Injector':'solaris','OptiVantage Injector':'optivantage','EmpowerCTA Injector':'empowercta'};
 let pmState={},activeCLType='',activeGECTQuarter='q1',pmBoundJobId='';
 
-function setPMDate(){const el=document.getElementById('pm_date');if(el&&!el.value)el.value=new Date().toISOString().slice(0,10);}
+function setPMDate(){const el=document.getElementById('pm_date');if(el&&!el.value)el.value=localISODate();}
 function populatePMDropdown(){
   const sel=document.getElementById('pm_jobLink');
   sel.innerHTML='<option value="">-- Standalone --</option>'+jobs.filter(j=>j.type==='PM').map(j=>`<option value="${j.id}">${j.site} -- ${j.date||'No date'} -- ${j.model||j.modality||''}</option>`).join('');
@@ -3551,29 +3616,47 @@ function pmSyncCloneValues(area, clone){
     else c.value=el.value;
   });
 }
+function pmPrintValue(el, text){
+  const d=document.createElement(el.tagName==='TEXTAREA'?'div':'span');
+  d.className='pm-print-val';
+  d.style.fontWeight='700';
+  if(el.tagName==='TEXTAREA') d.style.whiteSpace='pre-wrap';
+  d.textContent=text;
+  if(el.classList&&el.classList.contains('cl-oor')) d.style.color='#b45309';
+  const ph=(el.getAttribute&&el.getAttribute('placeholder')||'').trim();
+  const aria=(el.getAttribute&&el.getAttribute('aria-label')||'').trim();
+  const caption=ph||aria;
+  const labeled=!!el.closest('label');
+  if(caption && !labeled){
+    if(el.classList.contains('cl-task-cmt') && !el.value){ el.remove(); return; }
+    const wrap=document.createElement('span');
+    wrap.className='pm-print-field';
+    const lab=document.createElement('span');
+    lab.className='pm-print-ph';
+    lab.textContent=caption+': ';
+    wrap.appendChild(lab);
+    wrap.appendChild(d);
+    el.replaceWith(wrap);
+    return;
+  }
+  el.replaceWith(d);
+}
 function pmFreezePrint(clone){
+  clone.querySelectorAll('.form-label').forEach(lab=>{
+    const t=(lab.textContent||'').replace(/\s+$/,'');
+    if(t && !t.endsWith(':')) lab.appendChild(document.createTextNode(':'));
+  });
   clone.querySelectorAll('textarea').forEach(el=>{
-    const d=document.createElement('div');
-    d.style.whiteSpace='pre-wrap';
-    d.style.fontWeight='700';
-    d.textContent=el.value||'—';
-    el.replaceWith(d);
+    pmPrintValue(el, el.value||'—');
   });
   clone.querySelectorAll('select').forEach(el=>{
-    const d=document.createElement('span');
-    d.style.fontWeight='700';
     const opt=el.options[el.selectedIndex];
-    d.textContent=(opt&&opt.value)?opt.textContent:'—';
-    el.replaceWith(d);
+    pmPrintValue(el, (opt&&opt.value)?opt.textContent:'—');
   });
   clone.querySelectorAll('input').forEach(el=>{
     if(el.type==='radio'||el.type==='checkbox') return;
-    const d=document.createElement('span');
-    d.style.fontWeight='700';
     const blank=el.classList.contains('cl-task-cmt')?'':'—';
-    d.textContent=el.value||blank;
-    if(el.classList.contains('cl-oor')) d.style.color='#b45309';
-    el.replaceWith(d);
+    pmPrintValue(el, el.value||blank);
   });
   const groups=new Map();
   clone.querySelectorAll('input[type=radio]').forEach(r=>{
@@ -3784,6 +3867,24 @@ function printPMChecklist(){
     'td{padding:5px 8px;border-bottom:1px solid #e5e7eb;font-size:.8rem;vertical-align:middle}'+
     'tr:nth-child(even){background:#f8fafc}'+
     '.cl-group-hd td{background:#e2e8f0 !important;font-weight:700;text-transform:uppercase;font-size:.7rem;letter-spacing:.4px}'+'.cl-task,.cl-read,.cl-iv{border:1px solid #e5e7eb;border-radius:6px;padding:6px 8px;margin:0 0 6px;break-inside:avoid}'+'.cl-spec{font-size:.75rem;color:#444}'+'.cl-task-no{font-weight:800;margin-right:6px}'+'h3{font-size:.95rem;color:#0a1628;margin:14px 0 6px}'+'h4{font-size:.82rem;margin:10px 0 4px}'+
+    '.form-label{display:block;font-weight:700;margin:8px 0 2px;font-size:.72rem;letter-spacing:.2px;color:#333}'+
+    '.form-label + .pm-print-val,.form-label + .pm-print-field{display:block;margin:0 0 8px}'+
+    '.cl-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 18px;margin-bottom:8px}'+
+    '.cl-info-grid > div{break-inside:avoid}'+
+    '.cl-interval{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin:8px 0}'+
+    '.cl-interval .form-label{display:inline;margin:0}'+
+    '.cl-equip-row{display:grid;grid-template-columns:1.2fr .8fr;gap:8px 16px;margin:0 0 6px}'+
+    '.pm-print-ph{font-weight:700;color:#333}'+
+    '.pm-print-val{font-weight:700}'+
+    '.cl-read-name{font-weight:700;display:block;margin-bottom:3px}'+
+    '.cl-read-vals{display:flex;flex-direction:column;gap:3px}'+
+    '.cl-read-vals label{display:flex;gap:8px;align-items:baseline}'+
+    '.cl-task-top{display:flex;gap:8px;align-items:flex-start}'+
+    '.cl-task-pf{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;margin-top:4px}'+
+    '.cl-iv{display:grid;grid-template-columns:1.6rem 1fr 1fr auto;gap:6px 10px;align-items:center}'+
+    '.cl-res{display:flex;flex-wrap:wrap;gap:6px;align-items:center}'+
+    '.cl-cond{display:flex;gap:8px;align-items:flex-start;margin:5px 0}'+
+    '.cl-unit{margin-left:4px}'+
     '.notes-box{margin-top:14px;padding:10px 14px;background:#f4f6f9;border-radius:8px;font-size:.85rem}'+
     '.sig-row{display:flex;justify-content:space-between;margin-top:34px;font-size:.82rem}'+
     '.sig-line{border-top:1px solid #333;width:220px;padding-top:4px;text-align:center}'+
@@ -4870,7 +4971,7 @@ function renderKBEntries(){
 
 function openKBEntryModal(id){
   editingKBId = id||null;
-  const today = new Date().toISOString().slice(0,10);
+  const today = localISODate();
   populateKBJobDropdown();
   if(id){
     const e = kbEntries.find(x=>x.id===id); if(!e) return;
@@ -4909,7 +5010,7 @@ function saveKBEntry(){
     parts: document.getElementById('kb_parts').value,
     jobId: document.getElementById('kb_job').value,
     tags: document.getElementById('kb_tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    date: new Date().toISOString().slice(0,10),
+    date: localISODate(),
     created: editingKBId ? undefined : new Date().toISOString(),
     updated: new Date().toISOString()
   };
@@ -4964,7 +5065,7 @@ function suggestKBFromJob(job){
     cat, model: job.model||'', error: errorCodes.join(', '),
     problem: 'Auto-detected from job notes. Review and edit:\n\n'+(job.notes||'').substring(0,300),
     solution: '', parts: job.parts||'', jobId: job.id, tags,
-    date: job.date||new Date().toISOString().slice(0,10),
+    date: job.date||localISODate(),
   };
   kbSuggestPending = suggested;
   document.getElementById('kbSuggestContent').innerHTML = `
@@ -8905,7 +9006,7 @@ function savePart(){
     cost:   parseFloat(document.getElementById('part_cost').value)||0,
     notes:  document.getElementById('part_notes').value.trim(),
     manual: document.getElementById('part_manual').value.trim(),
-    date:   new Date().toISOString().slice(0,10)
+    date:   localISODate()
   };
   if(editId){
     const idx = partsDB.findIndex(x=>x.id===editId);
@@ -9014,7 +9115,7 @@ function generateHoldHarmless(){
   document.getElementById('hhBuilder')?.scrollIntoView({behavior:'smooth',block:'start'});
   // Set today as default date if empty
   const d = document.getElementById('hh_date');
-  if(d && !d.value) d.value = new Date().toISOString().slice(0,10);
+  if(d && !d.value) d.value = localISODate();
   updateHHPreview();
 }
 
@@ -9190,7 +9291,7 @@ function openGHSettings(){
 document.addEventListener('DOMContentLoaded',()=>{
   // Set defaults
   const dateEl = document.getElementById('hh_date');
-  if(dateEl) dateEl.value = new Date().toISOString().slice(0,10);
+  if(dateEl) dateEl.value = localISODate();
   
   // Inject logo into letter header
   const img = document.getElementById('hhLogoLetter');
@@ -9525,7 +9626,7 @@ async function handlePDFUpload(file){
         problem: chunk.trim(),
         solution: '', parts: '',
         tags: ['pdf','imported'],
-        date: new Date().toISOString().slice(0,10),
+        date: localISODate(),
         created: new Date().toISOString(),
         updated: new Date().toISOString()
       });
@@ -22397,7 +22498,7 @@ function exportJobsCSV() {
     r.map(v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"').join(',')
   ).join('\n');
 
-  _downloadCSV('AMT-Jobs-' + new Date().toISOString().slice(0,10) + '.csv', csv);
+  _downloadCSV('AMT-Jobs-' + localISODate() + '.csv', csv);
   showToast('📥 Jobs CSV downloaded — paste into Google Sheets "Jobs Import" tab');
 }
 
@@ -22412,7 +22513,7 @@ function exportExpensesCSV() {
     r.map(v => '"' + String(v==null?'':v).replace(/"/g,'""') + '"').join(',')
   ).join('\n');
 
-  _downloadCSV('AMT-Expenses-' + new Date().toISOString().slice(0,10) + '.csv', csv);
+  _downloadCSV('AMT-Expenses-' + localISODate() + '.csv', csv);
   showToast('📥 Expenses CSV downloaded — paste into Google Sheets "Expenses Import" tab');
 }
 // ═══ END CSV EXPORT ═══
