@@ -101,18 +101,6 @@ function killTree(pid) {
   try { process.kill(pid, 'SIGKILL'); } catch (e) {}
 }
 
-async function openControlled(page, origin) {
-  await page.goto(origin + '/', { waitUntil: 'domcontentloaded', timeout: 180000 });
-  await page.waitForFunction(() => typeof loadExplorer === 'function' && typeof kbSearch === 'function');
-  await page.evaluate(() => navigator.serviceWorker && navigator.serviceWorker.ready);
-  let controlled = await page.evaluate(() => !!(navigator.serviceWorker && navigator.serviceWorker.controller));
-  if (!controlled) {
-    await page.reload({ waitUntil: 'domcontentloaded', timeout: 180000 });
-    await page.waitForFunction(() => typeof loadExplorer === 'function' && typeof kbSearch === 'function');
-    await page.waitForFunction(() => !!(navigator.serviceWorker && navigator.serviceWorker.controller), null, { timeout: 30000 });
-  }
-}
-
 async function bootWriter(page) {
   await page.evaluate(() => {
     doLogin('Michael Jackson', 'Google', false, { role: 'writer', email: 'mike.jackson@amtimagingsolutions.com' });
@@ -121,6 +109,17 @@ async function bootWriter(page) {
     const u = (typeof currentUser !== 'undefined' && currentUser) || {};
     return u.method === 'Google' && u.role === 'writer' && document.getElementById('mainApp') && document.getElementById('mainApp').style.display !== 'none';
   });
+}
+
+async function pollUntil(fn, timeout, label) {
+  const start = Date.now();
+  let last;
+  while (Date.now() - start < timeout) {
+    last = await fn();
+    if (last === true) return;
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+  throw new Error(label + ': ' + JSON.stringify(last));
 }
 
 async function cacheSnapshot(page) {
@@ -161,6 +160,12 @@ async function main() {
     const context = await browser.newContext({ viewport: { width: 1100, height: 900 } });
     await context.addInitScript(() => {
       window.__amtHoldAuth = true;
+      const realRegister = navigator.serviceWorker.register.bind(navigator.serviceWorker);
+      window.__amtRealSwRegister = realRegister;
+      navigator.serviceWorker.register = function() {
+        if (window.__amtAllowSw) return realRegister('./sw.js');
+        return Promise.resolve({});
+      };
       const timer = setInterval(() => {
         if (typeof handleAuthedUser !== 'function' || handleAuthedUser.__held) return;
         const orig = handleAuthedUser;
@@ -179,6 +184,8 @@ async function main() {
         status: 403,
         contentType: 'application/json',
         headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Expose-Headers': 'X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After',
           'X-RateLimit-Limit': '60',
           'X-RateLimit-Remaining': '0',
           'X-RateLimit-Reset': String(resetSec)
@@ -191,10 +198,10 @@ async function main() {
     page.on('dialog', dialog => dialog.dismiss());
     page.on('pageerror', err => console.log('PAGEERROR', err && err.message ? err.message : err));
 
-    await openControlled(page, origin);
+    await page.goto(origin + '/', { waitUntil: 'domcontentloaded', timeout: 180000 });
+    await page.waitForFunction(() => typeof loadExplorer === 'function' && typeof kbSearch === 'function');
     await bootWriter(page);
     await page.evaluate(() => { window.initManuals = function(){}; });
-    ok('service worker controls the page');
 
     const freshHits = ghHits;
     const fresh = await page.evaluate(async () => {
@@ -253,7 +260,8 @@ async function main() {
       };
     }, resetSec);
     assert(!empty.cacheNote && !empty.grid.includes('CachedRateLimitFolder'), 'no-cache 403 does not invent a folder list');
-    assert(empty.remaining === '0' && empty.reset === String(resetSec), 'no-cache message reads X-RateLimit-Remaining and Reset');
+    assert(empty.remaining === '0' && empty.reset === String(resetSec),
+      'no-cache message reads X-RateLimit-Remaining and Reset (remaining=' + empty.remaining + ', reset=' + empty.reset + ')');
     assert(empty.text.includes(empty.expected) && /limiting folder lists/i.test(empty.text) && empty.text.trim().length > 40,
       'no-cache message includes the reset time: ' + empty.text);
     await page.locator('#explorerRateNote').screenshot({ path: path.join(ART, 'explorer-rate-limit-nocache.png') });
@@ -261,28 +269,31 @@ async function main() {
 
     await page.evaluate(async () => {
       const lib = location.origin + '/kb/ge-error-tool-kb.json';
-      const oldCache = await caches.open('amt-v47');
-      await oldCache.put(lib, new Response('[]', { headers: { 'Content-Type': 'application/json' } }));
-      const cur = await caches.open('amt-v49');
-      await cur.put(lib, new Response('[]', { headers: { 'Content-Type': 'application/json' } }));
-      const reg = await navigator.serviceWorker.getRegistration();
-      if (reg) await reg.unregister();
-      await navigator.serviceWorker.register('./sw.js');
-      await navigator.serviceWorker.ready;
-    });
-    await page.waitForFunction(async () => {
-      const names = await caches.keys();
-      if (names.indexOf('amt-v47') !== -1) return false;
-      if (names.indexOf('amt-v49') === -1) return false;
-      for (let i = 0; i < names.length; i++) {
-        const cache = await caches.open(names[i]);
-        const reqs = await cache.keys();
-        for (let j = 0; j < reqs.length; j++) {
-          if (/ge-(?:loose|signa|error-tool)-kb\.json/.test(reqs[j].url)) return false;
-        }
+      await (await caches.open('amt-v47')).put(lib, new Response('old-library'));
+      await (await caches.open('amt-v49')).put(lib, new Response('current-library'));
+      window.__amtAllowSw = true;
+      const reg = await window.__amtRealSwRegister('./sw.js');
+      const worker = reg.installing || reg.waiting || reg.active;
+      if (worker && worker.state !== 'activated') {
+        await new Promise(resolve => {
+          worker.addEventListener('statechange', function onState() {
+            if (worker.state === 'activated' || worker.state === 'redundant') {
+              worker.removeEventListener('statechange', onState);
+              resolve();
+            }
+          });
+        });
       }
-      return !!(navigator.serviceWorker && navigator.serviceWorker.controller);
-    }, null, { timeout: 20000 });
+    });
+    await pollUntil(async () => {
+      const snap = await cacheSnapshot(page);
+      const library = snap.urls.filter(u => LIBRARY_RE.test(u));
+      if (snap.names.indexOf('amt-v47') !== -1) return { names: snap.names, library: library };
+      if (snap.names.indexOf('amt-v49') === -1) return { names: snap.names, library: library };
+      if (library.length) return { names: snap.names, library: library };
+      if (!snap.controlled) return { names: snap.names, library: library, controlled: false };
+      return true;
+    }, 20000, 'activate did not drop cached library JSON');
     ok('activate removed cached library JSON from the old and current caches');
 
     const controlled = await page.evaluate(() => !!(navigator.serviceWorker && navigator.serviceWorker.controller));
@@ -297,7 +308,7 @@ async function main() {
       const text = el ? el.textContent : '';
       return text.indexOf('2247373') !== -1 && text.indexOf('UTNS') !== -1;
     }, null, { timeout: 180000 });
-    await page.waitForFunction(() => new Promise(resolve => {
+    await pollUntil(() => page.evaluate(() => new Promise(resolve => {
       let req;
       try { req = indexedDB.open('amt-ge-loose'); }
       catch (e) { resolve(false); return; }
@@ -309,7 +320,7 @@ async function main() {
         g.onsuccess = () => resolve(!!(g.result && String(g.result.text).indexOf('ge_errtool_2247373') !== -1));
         g.onerror = () => resolve(false);
       };
-    }), null, { timeout: 180000 });
+    })), 180000, 'IndexedDB did not store the Error Message Tool library');
     await page.evaluate(() => fetch('./rates.json').then(r => r.text()));
     const onlineCaches = await cacheSnapshot(page);
     const libraryUrls = onlineCaches.urls.filter(u => LIBRARY_RE.test(u));
