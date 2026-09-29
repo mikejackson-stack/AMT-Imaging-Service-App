@@ -23,6 +23,7 @@ fi
 export NODE_PATH="$PW_DIR/node_modules${NODE_PATH:+:$NODE_PATH}"
 node "$ROOT/scripts/sync_signin_playwright.js"
 node "$ROOT/scripts/draft_checks.js"
+node "$ROOT/scripts/library_cache_checks.js"
 
 if [[ -d "$ROOT/functions" ]]; then
   if [[ ! -d "$ROOT/functions/node_modules" ]]; then
