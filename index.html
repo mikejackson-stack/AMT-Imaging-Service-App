@@ -33,7 +33,7 @@ let fbDb=null, fbAuth=null, fbFunctions=null, fbReady=false;
   --shadow:0 2px 12px rgba(10,22,40,.10);--shadow2:0 6px 28px rgba(10,22,40,.16);
   --shadow3:0 12px 48px rgba(10,22,40,.22);
   --r:12px;--r2:8px;
-  --top-h:56px;--bot-h:64px;--safe-b:env(safe-area-inset-bottom,0px);
+  --top-h:56px;--bot-h:64px;--vo-h:72px;--safe-b:env(safe-area-inset-bottom,0px);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{height:100%;-webkit-text-size-adjust:100%}
@@ -75,7 +75,9 @@ img{max-width:100%;display:block}
 .login-error{color:#ff7070;font-size:.8rem;text-align:center;margin-top:10px;min-height:18px}
 .login-footer{margin-top:14px;color:rgba(255,255,255,.2);font-size:.64rem;text-align:center}
 #notAuthScreen{display:none;position:fixed;inset:0;z-index:800;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;background:linear-gradient(160deg,#040c1a 0%,#0a1628 50%,#0c1e3a 100%)}
-#viewOnlyBanner{align-items:center;justify-content:center;background:#e65100;color:#fff;padding:8px 14px;font-size:.82rem;font-weight:700;text-align:center}
+#viewOnlyBanner{position:fixed;top:var(--top-h);left:0;right:0;z-index:480;align-items:center;justify-content:center;background:#e65100;color:#fff;padding:8px 14px;font-size:.82rem;font-weight:700;text-align:center}
+body.view-only-open #desktopNav{top:calc(var(--top-h) + var(--vo-h))}
+body.view-only-open #contentArea{padding-top:calc(var(--top-h) + var(--vo-h) + 14px)}
 
 /* ── TOP BAR ── */
 #mainApp{display:none}
@@ -371,7 +373,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 }
 @media(min-width:1024px){#desktopNav{width:240px}#contentArea{padding-left:calc(240px + 18px)}}
 @media(max-height:500px) and (orientation:landscape){:root{--bot-h:52px}.mnav-item .mni{font-size:1.2rem}.mnav-item{font-size:.52rem}}
-@media print{#topBar,#mobileNav,#desktopNav,.job-actions,.btn-row,.money-subtabs,.quarter-tabs{display:none !important}#contentArea{padding:0 !important}.panel{display:block !important}.modal-overlay{position:relative !important;background:none !important}.modal{box-shadow:none !important;max-height:none !important;border-radius:0}}
+@media print{#topBar,#viewOnlyBanner,#mobileNav,#desktopNav,.job-actions,.btn-row,.money-subtabs,.quarter-tabs{display:none !important}#contentArea{padding:0 !important}.panel{display:block !important}.modal-overlay{position:relative !important;background:none !important}.modal{box-shadow:none !important;max-height:none !important;border-radius:0}}
 .mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
 .color-red{color:var(--red)}.fw-700{font-weight:700}.text-center{text-align:center}
 .divider{height:1px;background:var(--gray2);margin:12px 0}
@@ -1846,6 +1848,22 @@ function isWriterSession(){
 function isViewOnly(){
   return !!(currentUser && (currentUser.method==='PIN' || currentUser.viewOnly===true || currentUser.role==='reader'));
 }
+function syncViewOnlyLayout(){
+  const open=isViewOnly();
+  document.body.classList.toggle('view-only-open', open);
+  if(!open){
+    document.documentElement.style.removeProperty('--vo-h');
+    return;
+  }
+  const vob=document.getElementById('viewOnlyBanner');
+  const apply=()=>{
+    if(!vob) return;
+    const h=Math.ceil(vob.getBoundingClientRect().height);
+    if(h>0) document.documentElement.style.setProperty('--vo-h', h+'px');
+  };
+  apply();
+  requestAnimationFrame(apply);
+}
 
 let currentUser=null;
 
@@ -1916,6 +1934,7 @@ function bootApp(){
       vob.textContent='';
     }
   }
+  syncViewOnlyLayout();
   applyViewOnlyUI();
   applyAdminOnlyUI();
   applyAccessUI();
@@ -1941,6 +1960,8 @@ function logout(){
   if(!confirm('Sign out?'))return;
   const finish=()=>{
     sessionStorage.removeItem('amt_auth_v29');currentUser=null;
+    if(document.body) document.body.classList.remove('view-only-open');
+    if(document.documentElement&&document.documentElement.style) document.documentElement.style.removeProperty('--vo-h');
     const na=document.getElementById('notAuthScreen');
     if(na) na.style.display='none';
     document.getElementById('loginScreen').style.display='flex';
@@ -1971,6 +1992,8 @@ function signOutFirebaseAuth(){
 function showNotAuthorized(email){
   const shown=String(email||'').trim();
   sessionStorage.removeItem('amt_auth_v29');
+  if(document.body) document.body.classList.remove('view-only-open');
+  if(document.documentElement&&document.documentElement.style) document.documentElement.style.removeProperty('--vo-h');
   if(!currentUser || currentUser.method!=='PIN') currentUser=null;
   const login=document.getElementById('loginScreen');
   const app=document.getElementById('mainApp');
@@ -2139,13 +2162,13 @@ async function submitPin(){
     return;
   }
   if(!key){err.textContent='Please select your name.';return;}
-  if(!/^\d{4,8}$/.test(entry)){err.textContent='Enter the PIN set for that name.';return;}
   const cache=readPinCache();
   const rec=cache && cache[key];
   if(!rec || !rec.hash || !rec.salt){
     err.textContent='A writer must sign in once on this device before PIN unlock works.';
     return;
   }
+  if(!/^\d{4,8}$/.test(entry)){err.textContent='Enter the PIN set for that name.';return;}
   let ok=false;
   try{
     const hash=await pbkdf2Pin(entry, bytesFromB64(rec.salt), rec.iterations||ACCESS_CONFIG.PIN_ITERATIONS);
@@ -2187,6 +2210,13 @@ async function saveStaffPin(){
     alert('Only a signed-in writer can set a PIN.');
     return;
   }
+  const staffId=document.getElementById('changePinStaff').value;
+  const staff=(ACCESS_CONFIG.STAFF||[]).filter(s=>s.id===staffId)[0];
+  const pin=document.getElementById('changePinNew').value;
+  const again=document.getElementById('changePinAgain').value;
+  if(!staff){ setChangePinStatus('Select a staff member.'); return; }
+  if(!/^\d{4,8}$/.test(pin)){ setChangePinStatus('Use 4 to 8 digits.'); return; }
+  if(pin!==again){ setChangePinStatus('The two entries do not match.'); return; }
   if(!fbReady || !fbDb || !fbAuth || !fbAuth.currentUser || fbAuth.currentUser.emailVerified!==true){
     setChangePinStatus('Sign in on the hosted app before saving a PIN.');
     return;
@@ -2196,13 +2226,6 @@ async function saveStaffPin(){
     setChangePinStatus('This account cannot store a PIN.');
     return;
   }
-  const staffId=document.getElementById('changePinStaff').value;
-  const staff=(ACCESS_CONFIG.STAFF||[]).filter(s=>s.id===staffId)[0];
-  const pin=document.getElementById('changePinNew').value;
-  const again=document.getElementById('changePinAgain').value;
-  if(!staff){ setChangePinStatus('Select a staff member.'); return; }
-  if(!/^\d{4,8}$/.test(pin)){ setChangePinStatus('Use 4 to 8 digits.'); return; }
-  if(pin!==again){ setChangePinStatus('The two entries do not match.'); return; }
   setChangePinStatus('Saving…');
   try{
     const salt=crypto.getRandomValues(new Uint8Array(16));

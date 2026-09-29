@@ -127,7 +127,7 @@ assert(sw.includes('access-config.js'), 'service worker caches access-config.js'
 
 const appFiles = ['index.html', 'AMT-Imaging-App-standalone.html'].map(name => path.join(ROOT, name));
 const scripts = appFiles.map(file => largestScript(fs.readFileSync(file, 'utf8')));
-['sendEmailLink', 'saveStaffPin', 'isPinSession', 'pbkdf2Pin', 'handleAuthedUser', 'signOutFirebaseAuth'].forEach(name => {
+['sendEmailLink', 'saveStaffPin', 'isPinSession', 'pbkdf2Pin', 'handleAuthedUser', 'signOutFirebaseAuth', 'syncViewOnlyLayout'].forEach(name => {
   const bodies = scripts.map(src => extractFunction(src, name));
   assert(bodies[0] === bodies[1], name + ' matches in index.html and the standalone file');
 });
@@ -137,6 +137,16 @@ scripts.forEach((src, i) => {
   assert(extractFunction(src, 'cloudPush').includes('isPinSession()'), base + ' cloudPush refuses a PIN session');
   assert(extractFunction(src, 'writeGuard').includes("method==='PIN'") || extractFunction(src, 'writeGuard').includes('isPinSession()'), base + ' writeGuard refuses a PIN session');
   assert(extractFunction(src, 'logout').includes('signOutFirebaseAuth()'), base + ' logout still signs out of Firebase');
+  const html = fs.readFileSync(appFiles[i], 'utf8');
+  assert(html.includes('view-only-open'), base + ' keeps the view-only banner below the top bar');
+  const savePin = extractFunction(src, 'saveStaffPin');
+  const mismatchAt = savePin.indexOf('The two entries do not match.');
+  const hostedAt = savePin.indexOf('Sign in on the hosted app before saving a PIN.');
+  assert(mismatchAt > 0 && hostedAt > mismatchAt, base + ' checks the PIN entries before requiring the hosted app');
+  const submit = extractFunction(src, 'submitPin');
+  const cacheAt = submit.indexOf('A writer must sign in once on this device before PIN unlock works.');
+  const formatAt = submit.indexOf('Enter the PIN set for that name.');
+  assert(cacheAt > 0 && formatAt > cacheAt, base + ' explains a missing PIN cache before a format error');
 });
 
 const pinLiteral = /(?:\bpin\b|\bPIN\b)[^\n]{0,80}['"]\d{4,6}['"]|['"]\d{4,6}['"][^\n]{0,80}(?:\bpin\b|\bPIN\b)|sha256\(\s*['"]\d{4,6}_amt_salt_|(michael|antonio|candelario|emily)\s*:\s*['"][a-f0-9]{64}['"]/i;
