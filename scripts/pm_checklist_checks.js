@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * PM checklist checks: Excite II content, model picker, ge_mri key stability.
+ * PM checklist checks: Excite II content, model picker, and saved-key stability for every PM checklist.
  * Run: node scripts/pm_checklist_checks.js
  */
 'use strict';
@@ -83,6 +83,71 @@ function geMriKeys(fnSrc) {
   return { keys, labels };
 }
 
+function extractCalls(fn) {
+  const calls = [];
+  const re = /rRow\(|measureRow\(/g;
+  let m;
+  while ((m = re.exec(fn))) {
+    let i = m.index;
+    let depth = 0, inStr = null, esc = false;
+    for (; i < fn.length; i++) {
+      const ch = fn[i];
+      if (inStr) {
+        if (esc) { esc = false; continue; }
+        if (ch === '\\') { esc = true; continue; }
+        if (ch === inStr) inStr = null;
+        continue;
+      }
+      if (ch === "'" || ch === '"') { inStr = ch; continue; }
+      if (ch === '(') depth++;
+      else if (ch === ')') {
+        depth--;
+        if (depth === 0) { calls.push(fn.slice(m.index, i + 1)); break; }
+      }
+    }
+  }
+  return calls;
+}
+
+function callPair(call) {
+  let m = call.match(/^rRow\('([^']*)','((?:\\'|[^'])*)'/);
+  if (m) return [m[1], m[2]];
+  m = call.match(/^rRow\(q\+'_([^']*)','((?:\\'|[^'])*)'/);
+  if (m) return ['q+_' + m[1], m[2]];
+  m = call.match(/^measureRow\(t,'([^']*)','((?:\\'|[^'])*)'/);
+  if (m) return ['meas_' + m[1], m[2]];
+  m = call.match(/^measureRow\(t,q\+'_([^']*)','((?:\\'|[^'])*)'/);
+  if (m) return ['meas_q+_' + m[1], m[2]];
+  throw new Error('unparsed checklist call ' + call.slice(0, 140));
+}
+
+function checklistPairs(fnSrc) {
+  return extractCalls(fnSrc).map(callPair);
+}
+
+function interviewKeys(fnSrc) {
+  const keys = [];
+  const re = /textAreaRow\(t,'([^']+)'/g;
+  let m;
+  while ((m = re.exec(fnSrc))) keys.push(m[1]);
+  return keys;
+}
+
+const CHECKLISTS = [
+  ['buildGEMRI', '4 · Scanning and measurements'],
+  ['buildSiemensMRI', '4 · Scanning and measurements'],
+  ['buildGECT', '4 · Scanning and measurements'],
+  ['buildSiemensCT', '4 · Scanning and measurements'],
+  ['buildStellant', '4 · Functional, performance and electrical-safety checks'],
+  ['buildSolaris', '4 · Functional, performance and electrical-safety checks'],
+  ['buildOptiVantage', '4 · Functional, performance and electrical-safety checks'],
+  ['buildEmpowerCTA', '4 · Functional, performance and electrical-safety checks']
+];
+
+function sortedPairs(pairs) {
+  return pairs.map(p => p[0] + '\t' + p[1]).sort();
+}
+
 function walkPinFiles(dir, out) {
   const skip = new Set(['Manuals', 'node_modules', '.git']);
   for (const name of fs.readdirSync(dir)) {
@@ -148,9 +213,49 @@ files.forEach(file => {
   assert(ge.keys.includes('txt_interview'), base + ' ge_mri has the interview notes box');
   assert(ge.keys.length === mainGe.keys.length + 1, base + ' ge_mri added only the interview notes key');
 
-  ['buildSiemensMRI','buildGECT','buildSiemensCT','buildStellant','buildSolaris','buildOptiVantage','buildEmpowerCTA'].forEach(name => {
-    assert(extractFunction(src, name) === extractFunction(mainSrc, name), base + ' did not change ' + name);
+  CHECKLISTS.forEach(([name, scanTitle]) => {
+    const fn = extractFunction(src, name);
+    const mainFn = extractFunction(mainSrc, name);
+    const pairs = sortedPairs(checklistPairs(fn));
+    const mainPairs = sortedPairs(checklistPairs(mainFn));
+    assert(JSON.stringify(pairs) === JSON.stringify(mainPairs), base + ' ' + name + ' kept every saved key and label');
+    assert(pairs.length === mainPairs.length, base + ' ' + name + ' item count matches main (' + mainPairs.length + ')');
+    const notes = interviewKeys(fn);
+    assert(JSON.stringify(notes) === JSON.stringify(['txt_interview']), base + ' ' + name + ' adds only the interview notes key');
+    ['1 · Site / system info and data collection', '2 · Technologist interview', '3 · Cleaning and visual / physical checks', scanTitle, '5 · Sign-off / PM completion'].forEach((title, i, arr) => {
+      const at = fn.indexOf(title);
+      assert(at >= 0, base + ' ' + name + ' has section ' + title);
+      if (i) assert(fn.indexOf(arr[i - 1]) < at, base + ' ' + name + ' keeps five-step order through ' + title);
+    });
+    const iv = fn.indexOf("textAreaRow(t,'txt_interview'");
+    assert(fn.indexOf('2 · Technologist interview') < iv && iv < fn.indexOf('3 · Cleaning and visual / physical checks'), base + ' ' + name + ' puts the interview box in section 2');
   });
+  const gect = extractFunction(src, 'buildGECT');
+  assert(!/q\+'_txt_interview'|q\+"_txt_interview"/.test(gect), base + ' GE CT interview key is not quarter-scoped');
+  assert(/quarter-tabs/.test(gect) && /setGECTQ\(/.test(gect), base + ' GE CT keeps the quarter tabs');
+  function renderQuarter(q) {
+    const runner = new Function('rRow', 'measureRow', 'textAreaRow', 'grpHd', 'tHead', 'activeGECTQuarter', gect + '\nreturn buildGECT();');
+    const rows = [];
+    const tag = (kind, key, label) => { rows.push(kind + ':' + key + ':' + (label || '')); return ''; };
+    const html = runner(
+      (key, label) => tag('R', key, label),
+      (t, key, label) => tag('M', key, label),
+      (t, key) => tag('T', key),
+      () => '',
+      () => '',
+      q
+    );
+    return { html, rows };
+  }
+  const renderedQ3 = renderQuarter('q3');
+  assert(renderedQ3.html.includes('class="q-tab active"') && renderedQ3.html.includes("setGECTQ('q3')"), base + ' Q3 tab is the active quarter');
+  assert(renderedQ3.rows.some(r => r.startsWith('R:q3_g1:')) && !renderedQ3.rows.some(r => r.startsWith('R:q1_g1:')) && !renderedQ3.rows.some(r => r.startsWith('R:q2_g1:')), base + ' Q3 renders only Q3 gantry items');
+  assert(renderedQ3.rows.filter(r => r.startsWith('T:txt_interview')).length === 1, base + ' Q3 shows one interview box');
+  assert(renderedQ3.rows.some(r => r.startsWith('R:q3_co2:') && r.indexOf('Scan Abort') >= 0) && !renderedQ3.rows.some(r => r.indexOf('Vacuum') >= 0), base + ' Q3 keeps the scan-abort console row');
+  const renderedQ2 = renderQuarter('q2');
+  assert(renderedQ2.rows.some(r => r.startsWith('R:q2_co4:')) && renderedQ2.rows.some(r => r.startsWith('R:q2_d3:')) && !renderedQ2.rows.some(r => r.startsWith('R:q2_co7:')), base + ' Q2 keeps emergency-off and DAS-fan rows and omits the SCSI row');
+  assert(renderedQ2.rows.some(r => r.startsWith('R:q2_co2:') && r.indexOf('Vacuum') >= 0), base + ' Q2 keeps the console vacuum row');
+  assert(renderedQ2.rows.some(r => r.startsWith('M:q2_tube:')), base + ' Q2 still records tube mAs');
 
   const tpl = (new Function('return ' + extractConst(src, 'PM_EXII')))();
   if (!firstTpl) firstTpl = JSON.stringify(tpl);
@@ -173,6 +278,11 @@ files.forEach(file => {
   assert(/in 1C\./.test(tpl.sections[1].groups[0].tasks[0].text), base + ' gradcal task points at Section 1C');
   assert(/Section 1E/.test(tpl.sections[1].groups[1].tasks[0].text), base + ' RF power task points at Section 1E');
   assert(tpl.cal.some(r => r.spec === 'per OEM spec') || tpl.mag.some(r => r.spec === 'per OEM spec'), base + ' keeps per OEM spec where no limit is given');
+  const oa2 = tpl.sections.reduce((hit, sec) => hit || sec.groups.reduce((h, g) => h || g.tasks.find(t => t.id === 'OA2'), null), null);
+  assert(oa2 && oa2.no === '3.24' && oa2.text === 'ACGD/HFD cabinet filters: check and clean.', base + ' item 3.24 reads ACGD/HFD');
+  assert(oa2 && !/ACGD\/HGD cabinet/.test(oa2.text), base + ' item 3.24 does not keep the HGD task wording');
+  assert(/source revision said HGD\. GE service manuals use HFD/.test(extractFunction(src, 'exiiTask')), base + ' item 3.24 notes that the source revision said HGD');
+  assert(tpl.appendix.conflicts.some(line => /source revision \(Rev B\) said 'ACGD\/HGD'/.test(line) && /Item 3\.24 reads ACGD\/HFD/.test(line)), base + ' appendix records the HGD to HFD note');
 
   const rt = new Function(
     'const MODALITY_CL_MAP = ' + extractConst(src, 'MODALITY_CL_MAP') + ';\n' +

@@ -99,7 +99,7 @@ SECTIONS = [
   ]),
   ("Other (Available During Patient Scanning)", [
     ("OA1", "RF cabinet filters: check and clean, if equipped.", BM, "", "p6 #8+#9", "p4 #1"),
-    ("OA2", "ACGD/HGD cabinet filters: check and clean.", BM, "", "p6 #10+#11 (ACGD/HFD)", "p4 #2"),
+    ("OA2", "ACGD/HFD cabinet filters: check and clean.", BM, "", "p6 #10+#11 (ACGD/HFD)", "p4 #2"),
     ("OA3", "Host fans and vents: check and clean.", BM, "B", "-", "p4 #3"),
     ("OA4", "TAC cabinet filters: check and clean, if equipped.", BM, "", "p6 #12+#13", "p4 #4"),
     ("OA5", "Excite/system cabinet fans: check.", BM, "A", "p6 #14", "-"),
@@ -208,7 +208,7 @@ CONDITION = [
 
 REV_NOTES_CONFLICTS = [
     "Filter tasks (RF cabinet, ACGD gradient cabinet, TAC cabinet): Rev A lists separate 'check' and 'clean' rows for each; Rev B combines each pair into one 'check and clean' row. Used Rev B (one row each: " + ", ".join(NEWNO[k] for k in ("OA1", "OA2", "OA4")) + ").",
-    "Gradient cabinet name: Rev A says 'ACGD/HFD'; Rev B says 'ACGD/HGD'. Used Rev B wording per the merge rule. Note: the GE service manuals use 'HFD' (for example 'HFD/ACGD Installation Input Voltage Selection') and never 'HGD', so Rev A's name matches GE. Wording left as in Rev B; flagged for review.",
+    "Gradient cabinet name: the source revision (Rev B) said 'ACGD/HGD'. GE service manuals use 'HFD' (for example 'HFD/ACGD Installation Input Voltage Selection'). Item 3.24 reads ACGD/HFD.",
     "Excite/system cabinet: Rev A has 'check fans' plus 'clean filters'; Rev B has 'check and clean filters' only. Used Rev B for the filters (" + NEWNO["OA6"] + ") and kept Rev A's fan check as a separate Rev A-only row (" + NEWNO["OA5"] + ").",
     "Head/Body SNR: Rev A marks both as 'record value'; Rev B drops the record marker, but both data tables still have Head SNR and Body SNR fields. Kept Rev B task wording and kept the data fields (1C).",
     "Data table order: Rev A lists Magnet Data, then Calibration Data; Rev B places Calibration Data (left) beside Magnet Data (right). Used Rev B order (1C Calibration, then 1D Magnet).",
