@@ -37,6 +37,9 @@ jobs:
           curl -fsSL \
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/sw.js" \
             -o _site/sw.js
+          curl -fsSL \
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/access-config.js" \
+            -o _site/access-config.js
           python3 - <<'PY'
           import json, os, urllib.error, urllib.parse, urllib.request
 

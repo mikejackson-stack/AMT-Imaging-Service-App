@@ -3,10 +3,11 @@
 // Staff emails already used by the public app for Google sign-in.
 // Kept here so the callable does not trust the client. Not a secret.
 const STAFF_EMAILS = new Set([
-  'mike.jackson@amtimagingsolutions.com',
   'antonio@amtimagingsolutions.com',
   'tito@amtimagingsolutions.com',
+  'mike.jackson@amtimagingsolutions.com',
   'misemilyoliveros@icloud.com',
+  'mjackson212@gmail.com',
 ]);
 
 const MAX_QUERY_CHARS = 800;

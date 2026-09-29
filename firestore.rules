@@ -1,0 +1,37 @@
+rules_version = '2';
+// Generated from access-config.js by scripts/gen-firestore-rules.js.
+// WRITERS may read and write. READERS may read. Everyone else is denied.
+// READERS: (none).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null
+        && request.auth.token.email_verified == true;
+    }
+    function email() {
+      return request.auth.token.email.lower();
+    }
+    function isWriter() {
+      return signedIn() && email() in [
+        'antonio@amtimagingsolutions.com',
+        'tito@amtimagingsolutions.com',
+        'mike.jackson@amtimagingsolutions.com',
+        'misemilyoliveros@icloud.com',
+        'mjackson212@gmail.com'
+      ];
+    }
+    function isReader() {
+      return isWriter();
+    }
+    match /companies/amt/data/{docId} {
+      allow read: if isReader();
+      allow write: if isWriter();
+    }
+    match /pinHashes/{staffId} {
+      allow read, write: if isWriter();
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
