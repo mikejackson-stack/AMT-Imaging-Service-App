@@ -83,6 +83,9 @@ const names = [
 names.forEach(name => {
   assert(extractFunction(srcs[0], name) === extractFunction(srcs[1], name), name + ' matches in both app files');
 });
+['amtIngestRemote', 'amtRefreshJobsSurface'].forEach(name => {
+  assert(extractFunction(srcs[0], name) === extractFunction(srcs[1], name), name + ' matches in both app files');
+});
 
 const prelude = [
   'const AMT_TOMBSTONE_MS = 30 * 24 * 60 * 60 * 1000;',
@@ -257,6 +260,44 @@ function docBytes(items) {
 }
 const partsItems = rt.amtMergeSeedAndOverlay(rt.PARTS_SEED, []);
 const kbItems = rt.amtMergeSeedAndOverlay(rt.KB_SEED, []);
+assert(extractConst(srcs[0], 'KB_SEED') === extractConst(srcs[1], 'KB_SEED'), 'KB_SEED matches in both app files');
+const kbDense = rt.KB_SEED.filter((e, i) => Object.prototype.hasOwnProperty.call(rt.KB_SEED, i) && e && e.id);
+assert(kbDense.length === rt.KB_SEED.length && new Set(kbDense.map(e => String(e.id))).size === kbDense.length,
+  'KB_SEED ids are present and unique');
+assert(kbItems.length === rt.KB_SEED.length, 'live KB count equals KB_SEED.length (' + kbItems.length + ' vs ' + rt.KB_SEED.length + ')');
+[
+  'kb_idx_mr_pm_checksheet',
+  'kb_idx_magnet_types_rev1',
+  'kb_idx_kit_list',
+  'kb_idx_rf_deck_errors',
+  'kb_idx_espree_magnet_troubleshooting_guide_m6_020_840_17_'
+].forEach(id => {
+  assert(rt.KB_SEED.filter(e => e.id === id).length === 1, 'first KB seed id stays ' + id);
+});
+assert(rt.KB_SEED.some(e => e.id === 'kb_idx_mr_pm_checksheet-2') && rt.KB_SEED.some(e => e.id === 'kb_idx_mr_pm_checksheet-3')
+  && rt.KB_SEED.some(e => e.id === 'kb_idx_magnet_types_rev1-2') && rt.KB_SEED.some(e => e.id === 'kb_idx_magnet_types_rev1-3')
+  && rt.KB_SEED.some(e => e.id === 'kb_idx_kit_list-2') && rt.KB_SEED.some(e => e.id === 'kb_idx_rf_deck_errors-2')
+  && rt.KB_SEED.some(e => e.id === 'kb_idx_espree_magnet_troubleshooting_guide_m6_020_840_17_-2'),
+  'later duplicate KB seeds keep a stable -2/-3 suffix');
+
+function paintJobsSurface(activeId) {
+  const calls = [];
+  const document = {
+    querySelector(sel) {
+      if (sel === '.panel.active') return { id: activeId };
+      return null;
+    }
+  };
+  const runner = new Function('document', 'renderDashboard', 'renderJobs',
+    extractFunction(srcs[0], 'amtRefreshJobsSurface') + '\namtRefreshJobsSurface();');
+  runner(document, () => calls.push('dash'), () => calls.push('jobs'));
+  return calls;
+}
+assert(paintJobsSurface('panel-dash').join(',') === 'dash', 'an open dashboard repaints after a jobs merge');
+assert(paintJobsSurface('panel-jobs').join(',') === 'jobs', 'an open jobs list repaints after a jobs merge');
+assert(extractFunction(srcs[0], 'amtIngestRemote').includes("name === 'jobs' && listChanged")
+  && extractFunction(srcs[0], 'amtIngestRemote').includes('amtRefreshJobsSurface()'),
+  'inbound job merge refreshes the open jobs surface only when the list changed');
 const guideItems = rt.amtMergeSeedAndOverlay(rt.DIAG_GUIDES_SEED, []);
 const partsBytes = docBytes(partsItems);
 const kbBytes = docBytes(kbItems);

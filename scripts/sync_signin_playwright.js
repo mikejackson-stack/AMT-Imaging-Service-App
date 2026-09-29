@@ -227,6 +227,8 @@ async function main() {
     await page.goto(server.url, { waitUntil: 'domcontentloaded' });
     await page.locator('#mainApp').waitFor({ state: 'visible', timeout: 20000 });
     await page.locator('#recentJobsList').getByText('Offline Magnet Site').waitFor({ timeout: 20000 });
+    await page.locator('#recentJobsList').getByText('Cloud Only Site').waitFor({ timeout: 20000 });
+    console.log('OK   dashboard Recent Jobs shows the merged cloud job without a tab change');
     await page.locator('#desktopNav [data-tab="jobs"]').click();
     await page.locator('#panel-jobs.active').waitFor({ timeout: 10000 });
     await page.locator('#jobList').getByText('Cloud Only Site').waitFor({ timeout: 20000 });

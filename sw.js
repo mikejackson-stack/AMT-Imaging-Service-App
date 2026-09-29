@@ -1,8 +1,9 @@
-// Bumped from amt-v46 -> amt-v47: seed catalogs stay in code; cloud lists merge per record.
+// Bumped from amt-v47 -> amt-v48: GE Error Message Tool (Ermes codes) added to the GE service library.
+// amt-v47 kept seed catalogs in code; cloud lists merge per record.
 // amt-v46 autosaves unsaved form fields in IndexedDB database amtDrafts.
 // Record lists use a separate database, amt-user-records.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v47';
+const CACHE = 'amt-v48';
 const SHELL = ['./','./index.html','./access-config.js'];
 
 self.addEventListener('install', e => {
