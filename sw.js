@@ -1,7 +1,7 @@
-// Bumped from amt-v41 -> amt-v42: GE MR Excite II PM checklist, GE MRI reorder, PM job fixes.
+// Bumped from amt-v42 -> amt-v43: writer/reader access list, email-link sign-in, view-only PIN.
 // The multi-MB kb JSON files stay out of SHELL; IndexedDB caches them after the first fetch.
-const CACHE = 'amt-v42';
-const SHELL = ['./','./index.html'];
+const CACHE = 'amt-v43';
+const SHELL = ['./','./index.html','./access-config.js'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));

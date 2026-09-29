@@ -7,6 +7,7 @@ cd "$ROOT"
 python3 "$ROOT/scripts/syntax_check.py"
 node "$ROOT/kb-search-checks.js"
 node "$ROOT/scripts/pm_checklist_checks.js"
+node "$ROOT/scripts/access_checks.js"
 
 if [[ -d "$ROOT/functions" ]]; then
   if [[ ! -d "$ROOT/functions/node_modules" ]]; then

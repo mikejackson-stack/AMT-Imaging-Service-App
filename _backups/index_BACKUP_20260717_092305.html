@@ -1626,15 +1626,11 @@ async function sha256(str){
 }
 
 // Init: store pre-computed hashes on first run (PINs are NOT stored in source — hashes only)
-const PIN_HASHES_DEFAULT={
-  michael:    'c6e8eeae3dbdc424838f855a3d6b34e292b9590bfc5ea70cb3038d8f460f87bd',
-  antonio:    'cb21080b07c817c24cc5091d10c7ff29e197e1441ce97dd3496e37e6acd2f9cc',
-  candelario: '507e6a42583ef241f4e8417ddc19315701b83ef46cbf4dbfb631cf5026c0aa52'
-};
+const legacyPinSeedRemoved=true;
 async function initPinHashes(){
   let stored=JSON.parse(localStorage.getItem(PIN_STORE_KEY)||'null');
   if(!stored){
-    stored=Object.assign({},PIN_HASHES_DEFAULT);
+    stored=Object.assign({},legacyPinSeedRemoved);
     localStorage.setItem(PIN_STORE_KEY,JSON.stringify(stored));
   }
   return stored;
@@ -1713,14 +1709,12 @@ async function submitPin(){
   if(entry.length!==4){err.textContent='Enter your 4-digit PIN.';return;}
   if(!pinHashes){err.textContent='⏳ Initializing -- please try again.';return;}
   // Hash entered PIN with salt
-  const saltMap={michael:'mikejackson',antonio:'antoniojackson',candelario:'candelariojuarez'};
-  const salt=saltMap[key];
-  const enteredHash=await sha256(entry+'_amt_salt_'+salt);
+  const enteredHash='';
   const storedHash=pinHashes[key];
   if(enteredHash===storedHash){
     err.textContent='';
     const nameMap={michael:'Michael Jackson',antonio:'Antonio Jackson',candelario:'Candelario Juarez'};
-    doLogin(nameMap[key],'PIN', false); // PIN = full access
+    doLogin(nameMap[key],'PIN', true); // PIN = view-only
   } else {
     err.textContent='❌ Incorrect PIN -- please try again.';
     document.getElementById('pinInput').value='';

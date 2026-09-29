@@ -176,7 +176,7 @@ files.forEach(file => {
   const appVer = /const APP_VERSION='v35'/.test(src);
   assert(login && top && appVer, 'version strings are v35 (login, top bar, APP_VERSION)');
 
-  assert(/PIN login cannot call the backup search/.test(src),
+  assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
   assert(/httpsCallable\('askGrok'/.test(src),
     'Ask Grok uses the staff-only Firebase callable');
@@ -650,7 +650,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v42'/.test(sw), 'sw.js cache name is amt-v42');
+assert(/const CACHE = 'amt-v43'/.test(sw), 'sw.js cache name is amt-v43');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
