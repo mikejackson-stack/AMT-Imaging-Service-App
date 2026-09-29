@@ -94,6 +94,26 @@ function killTree(pid) {
   try { process.kill(pid, 'SIGKILL'); } catch (e) {}
 }
 
+function browserPid(userDataDir) {
+  const ids = fs.readdirSync('/proc').filter(name => /^\d+$/.test(name));
+  const chrome = [];
+  ids.forEach(pid => {
+    let cmd = '';
+    let status = '';
+    try {
+      cmd = fs.readFileSync('/proc/' + pid + '/cmdline', 'utf8');
+      status = fs.readFileSync('/proc/' + pid + '/status', 'utf8');
+    } catch (e) { return; }
+    if (!cmd.includes(userDataDir) || !/chrom/i.test(cmd)) return;
+    const ppid = Number((status.match(/^PPid:\s+(\d+)/m) || [])[1] || 0);
+    chrome.push({ pid: Number(pid), ppid });
+  });
+  const mine = new Set(chrome.map(p => p.pid));
+  const roots = chrome.filter(p => !mine.has(p.ppid));
+  if (!roots.length) return 0;
+  return roots[0].pid;
+}
+
 function clearProfileLocks(dir) {
   ['SingletonLock', 'SingletonCookie', 'SingletonSocket'].forEach(name => {
     try { fs.rmSync(path.join(dir, name), { force: true }); } catch (e) {}
@@ -148,12 +168,26 @@ async function openApp(page, origin) {
 }
 
 async function bootWriter(page) {
+  // Firebase calls handleAuthedUser(null) when this simulated Google session has no
+  // Firebase user, which clears currentUser. Hold that callback in the page only.
   await page.evaluate(writer => {
+    if (!window.__amtDraftAuthHold) {
+      window.__amtDraftAuthHold = true;
+      const orig = handleAuthedUser;
+      handleAuthedUser = function(user) {
+        if (!user && window.__amtDraftAuthHold) return;
+        return orig.apply(this, arguments);
+      };
+    }
     doLogin(writer.name, writer.method, writer.viewOnly, { role: writer.role, email: writer.email });
     const u = currentUser || {};
     if (u.method !== 'Google' || u.role !== 'writer' || u.viewOnly !== false || u.email !== writer.email) {
       throw new Error('writer session mismatch ' + JSON.stringify(u));
     }
+  }, WRITER);
+  await page.waitForFunction(writer => {
+    const u = currentUser || {};
+    return u.method === 'Google' && u.role === 'writer' && u.viewOnly === false && u.email === writer.email && draftsAllowed();
   }, WRITER);
 }
 
@@ -272,6 +306,7 @@ async function main() {
     await page.fill('#exp_amount', '42.5');
     const expense = await waitDraft(page, 'expense:new', rec => rec.fields && rec.fields.exp_desc === 'Helium top-off' && String(rec.fields.exp_amount) === '42.5');
     assert(expense.email === WRITER.email, 'expense draft stores the writer email');
+    await page.evaluate(() => closeModal('expenseModal'));
     ok('expense draft committed before the browser dies');
 
     await page.evaluate(() => showTab('pm'));
@@ -286,10 +321,9 @@ async function main() {
     assert(pm.email === WRITER.email, 'PM draft stores the writer email');
     ok('PM checklist draft committed before the browser dies');
 
-    const browser = session.context.browser();
-    const proc = browser && browser.process();
-    if (!proc || !proc.pid) fail('browser process is missing');
-    killTree(proc.pid);
+    const pid = browserPid(userDataDir);
+    if (!pid) fail('browser process is missing');
+    killTree(pid);
     session = null;
     await new Promise(r => setTimeout(r, 800));
     clearProfileLocks(userDataDir);
@@ -327,9 +361,11 @@ async function main() {
     await page.locator('.draft-restore').screenshot({ path: path.join(ART, 'draft-restore-expense-390.png') });
     await page.click('.draft-restore [data-draft-discard]');
     await waitGone(page, 'expense:new');
+    await page.evaluate(() => closeModal('expenseModal'));
     await page.click('#msp-expenses .btn-warning');
     await page.waitForTimeout(800);
     assert(await page.locator('.draft-restore').count() === 0, 'Discard keeps the expense form from prompting again');
+    await page.evaluate(() => closeModal('expenseModal'));
     ok('Discard clears the expense draft');
 
     await page.evaluate(() => showTab('pm'));
