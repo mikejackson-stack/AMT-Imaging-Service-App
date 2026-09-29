@@ -225,10 +225,14 @@ async function main() {
     }, LOCAL_JOB);
 
     await page.goto(server.url, { waitUntil: 'domcontentloaded' });
-    await page.getByText('Offline Magnet Site', { exact: false }).first().waitFor({ timeout: 20000 });
-    await page.locator('[data-tab="jobs"]').first().click();
-    await page.getByText('Cloud Only Site', { exact: false }).first().waitFor({ timeout: 20000 });
-    await page.getByText('Offline Magnet Site', { exact: false }).first().waitFor({ timeout: 5000 });
+    await page.locator('#mainApp').waitFor({ state: 'visible', timeout: 20000 });
+    await page.locator('#recentJobsList').getByText('Offline Magnet Site').waitFor({ timeout: 20000 });
+    await page.locator('#desktopNav [data-tab="jobs"]').click();
+    await page.locator('#panel-jobs.active').waitFor({ timeout: 10000 });
+    await page.locator('#jobList').getByText('Cloud Only Site').waitFor({ timeout: 20000 });
+    await page.locator('#jobList').getByText('Offline Magnet Site').waitFor({ timeout: 5000 });
+    const shot = path.join(ARTIFACTS, 'signin-keeps-unsynced-job.png');
+    await page.screenshot({ path: shot, fullPage: false });
     await page.waitForFunction(() => {
       return (window.__amtCloudWrites || []).some(function (w) {
         return String(w.path || '').endsWith('/jobs') && w.body && Array.isArray(w.body.items) &&
@@ -254,12 +258,10 @@ async function main() {
       };
     });
 
-    await page.locator('[data-tab="manuals"]').first().click();
+    await page.locator('#desktopNav [data-tab="manuals"]').click();
     await page.getByText('GE LCC Magnet Rampdown Procedure', { exact: false }).first().waitFor({ timeout: 20000 });
     const guidesKeyAfter = await page.evaluate(() => localStorage.getItem('amt_diagguides_v30'));
 
-    const shot = path.join(ARTIFACTS, 'signin-keeps-unsynced-job.png');
-    await page.screenshot({ path: shot, fullPage: false });
     fs.writeFileSync(path.join(ARTIFACTS, 'signin-sync-report.json'), JSON.stringify({
       report: report,
       guidesKeyAfter: guidesKeyAfter,
@@ -273,7 +275,7 @@ async function main() {
     else console.log('OK   sign-in kept the local unsynced job');
     if (!report.cloudOnly) fail('cloud-only job was not merged in');
     else console.log('OK   sign-in merged the cloud-only job');
-    if (report.partsKey !== null || report.kbKey !== null || report.guidesKeyAfter !== null) {
+    if (report.partsKey !== null || report.kbKey !== null || guidesKeyAfter !== null) {
       fail('seed catalogs were written to localStorage: ' + JSON.stringify({
         parts: report.partsKey && report.partsKey.length,
         kb: report.kbKey && report.kbKey.length,
