@@ -3323,8 +3323,7 @@ function openSavedPMChecklist(pmId){const rec=pmChecklists.find(p=>p.id===pmId);
 function printPMChecklist(){
   if(!activeCLType || !(pmState[activeCLType])){ alert('Please select and fill out a checklist first.'); return; }
   const area=document.getElementById('pm_checklist_area');
-  const liveTable=area&&area.querySelector('table');
-  if(!liveTable){ alert('Please select a checklist type first.'); return; }
+  if(!area || !area.querySelector('table, .cl-exii')){ alert('Please select a checklist type first.'); return; }
   const clone=area.cloneNode(true);
   pmSyncCloneValues(area, clone);
   pmFreezePrint(clone);

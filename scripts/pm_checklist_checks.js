@@ -226,6 +226,7 @@ files.forEach(file => {
   assert(/bindPMJob/.test(extractFunction(src, 'onPMJobChange')), base + ' job link uses the job-aware picker');
   assert(/_pmSkipDraft=true/.test(extractFunction(src, 'loadPMForJob')), base + ' opening a job PM skips the previous draft');
   assert(/pmFreezePrint/.test(extractFunction(src, 'printPMChecklist')), base + ' print freezes every field type');
+  assert(/table, \\.cl-exii/.test(extractFunction(src, 'printPMChecklist')), base + ' print allows the Excite II form, which is not a table');
 });
 
 const pinRe = /sha256\(\s*['"]\d{4}_amt_salt_|['"]\d{4}['"]\s*,\s*['"](?:mikejackson|antoniojackson|candelariojuarez|emilyoliveros)['"]/;
