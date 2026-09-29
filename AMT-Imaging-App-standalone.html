@@ -6,7 +6,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>AMT Imaging Solutions</title>
-<script src="https://accounts.google.com/gsi/client" async defer onload="initGIS()"></script>
+<script>
+// GIS is async and can finish before the app script defines initGIS.
+// This handler only records that the library loaded, then inits if the app is ready.
+window.__amtGisLoaded=false;
+function amtMarkGisLoaded(){
+  window.__amtGisLoaded=true;
+  if(typeof window.amtTryInitGIS==='function') window.amtTryInitGIS();
+}
+</script>
+<script src="https://accounts.google.com/gsi/client" async defer onload="amtMarkGisLoaded()"></script>
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -50,7 +59,7 @@ img{max-width:100%;display:block}
 .login-logo{width:clamp(160px,55vw,240px);margin-bottom:4px;filter:drop-shadow(0 0 28px rgba(0,120,255,.42));animation:logoPulse 3.5s ease-in-out infinite alternate}
 @keyframes logoPulse{from{filter:drop-shadow(0 0 18px rgba(0,100,220,.32))}to{filter:drop-shadow(0 0 46px rgba(0,160,255,.62))}}
 .login-tagline{color:rgba(255,255,255,.38);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:26px}
-.login-card{background:rgba(255,255,255,.055);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px 24px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.55)}
+.login-card{background:rgba(255,255,255,.055);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:28px 24px;width:100%;max-width:400px;min-width:0;box-shadow:0 24px 64px rgba(0,0,0,.55)}
 .login-card h2{color:var(--white);font-size:1.05rem;font-weight:700;text-align:center;margin-bottom:4px}
 .login-card p{color:rgba(255,255,255,.42);font-size:.78rem;text-align:center;margin-bottom:20px}
 .btn-google{width:100%;min-height:50px;padding:12px 16px;border:1.5px solid rgba(255,255,255,.18);border-radius:12px;background:rgba(255,255,255,.07);color:var(--white);font-size:.88rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .2s;-webkit-tap-highlight-color:transparent}
@@ -61,17 +70,17 @@ img{max-width:100%;display:block}
 .login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 .btn-pin-toggle{width:100%;min-height:50px;padding:12px 16px;border:1.5px solid rgba(0,180,216,.35);border-radius:12px;background:rgba(0,180,216,.09);color:var(--accent);font-size:.88rem;font-weight:600;transition:all .2s;-webkit-tap-highlight-color:transparent}
 .btn-pin-toggle:hover{background:rgba(0,180,216,.18);transform:translateY(-1px)}
-#pinPanel{display:none;margin-top:12px}
-.pin-select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:.88rem;margin-bottom:10px;-webkit-appearance:none}
+#pinPanel{display:none;margin-top:12px;min-width:0;max-width:100%}
+.pin-select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:16px;margin-bottom:10px;-webkit-appearance:none}
 .pin-select option{background:#112240;color:var(--white)}
-.pin-row{display:flex;gap:8px}
-.pin-input{flex:1;min-height:50px;padding:12px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:1.4rem;letter-spacing:10px;text-align:center;outline:none}
+.pin-row{display:flex;gap:8px;width:100%;min-width:0;max-width:100%}
+.pin-input{flex:1 1 auto;min-width:0;width:100%;max-width:100%;min-height:50px;padding:12px;border:1.5px solid rgba(255,255,255,.13);border-radius:10px;background:rgba(255,255,255,.07);color:var(--white);font-size:16px;letter-spacing:2px;text-align:center;outline:none}
 .pin-input::placeholder{letter-spacing:2px;font-size:.8rem;color:rgba(255,255,255,.28)}
 .pin-input:focus{border-color:var(--accent)}
 .pin-dots{display:flex;justify-content:center;gap:10px;margin-bottom:8px;height:14px}
 .pin-dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .15s}
 .pin-dot.filled{background:var(--accent)}
-.btn-pin-go{min-height:50px;padding:12px 18px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--white);border-radius:10px;font-weight:700;font-size:.88rem;white-space:nowrap}
+.btn-pin-go{flex:0 0 auto;min-height:50px;padding:12px 14px;background:linear-gradient(135deg,var(--accent2),var(--accent));color:var(--white);border-radius:10px;font-weight:700;font-size:16px;white-space:nowrap}
 .login-error{color:#ff7070;font-size:.8rem;text-align:center;margin-top:10px;min-height:18px}
 .login-footer{margin-top:14px;color:rgba(255,255,255,.2);font-size:.64rem;text-align:center}
 #notAuthScreen{display:none;position:fixed;inset:0;z-index:800;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;background:linear-gradient(160deg,#040c1a 0%,#0a1628 50%,#0c1e3a 100%)}
@@ -2370,7 +2379,9 @@ function showGoogleFallback(){
   if(fb)fb.style.display='flex';
 }
 function initGIS(){
-  if(typeof google==='undefined'||!google.accounts){showGoogleFallback(); return;}
+  if(window.__amtGisButtonReady) return;
+  if(typeof google==='undefined'||!google.accounts||!google.accounts.id) return;
+  window.__amtGisButtonReady=true;
   google.accounts.id.initialize({
     client_id:GOOGLE_CLIENT_ID,
     callback:amtGoogleCallback,
@@ -2395,6 +2406,27 @@ function initGIS(){
     }, 1000);
   }
 }
+function amtTryInitGIS(){
+  if(window.google&&window.google.accounts&&window.google.accounts.id){
+    initGIS();
+    return true;
+  }
+  return false;
+}
+window.amtTryInitGIS=amtTryInitGIS;
+function amtBootGoogleButton(){
+  if(amtTryInitGIS()) return;
+  let tries=0;
+  const timer=setInterval(function(){
+    tries++;
+    if(amtTryInitGIS()){ clearInterval(timer); return; }
+    if(tries>=40){
+      clearInterval(timer);
+      if(!window.__amtGisButtonReady) showGoogleFallback();
+    }
+  }, 100);
+}
+amtBootGoogleButton();
 function amtGoogleCallback(r){
   const loginErr=document.getElementById('loginError');
   if(loginErr) loginErr.textContent='Verifying Google account…';
