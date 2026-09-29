@@ -127,7 +127,7 @@ assert(sw.includes('access-config.js'), 'service worker caches access-config.js'
 
 const appFiles = ['index.html', 'AMT-Imaging-App-standalone.html'].map(name => path.join(ROOT, name));
 const scripts = appFiles.map(file => largestScript(fs.readFileSync(file, 'utf8')));
-['sendEmailLink', 'saveStaffPin', 'isPinSession', 'pbkdf2Pin', 'handleAuthedUser', 'signOutFirebaseAuth', 'syncViewOnlyLayout'].forEach(name => {
+['sendEmailLink', 'saveStaffPin', 'isPinSession', 'pbkdf2Pin', 'handleAuthedUser', 'signOutFirebaseAuth', 'syncViewOnlyLayout', 'myOwnerKey', 'isAdminOwner', 'visibleOwnerData'].forEach(name => {
   const bodies = scripts.map(src => extractFunction(src, name));
   assert(bodies[0] === bodies[1], name + ' matches in index.html and the standalone file');
 });

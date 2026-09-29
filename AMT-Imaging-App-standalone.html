@@ -1861,6 +1861,24 @@ function syncViewOnlyLayout(){
   requestAnimationFrame(apply);
 }
 
+// Money Tracker can show each partner only their own profit-share/distribution history.
+// Michael is the admin (51% owner, veteran-owned VA requirement) and always sees everyone's.
+const OWNER_NAME_TO_KEY={
+  'Michael Jackson':'michael',
+  'Antonio Jackson':'antonio',
+  'Candelario Juarez':'candelario'
+};
+function myOwnerKey(){ return (currentUser && OWNER_NAME_TO_KEY[currentUser.name]) || null; }
+function isAdminOwner(){ return myOwnerKey()==='michael'; }
+// Filters an ownerData/OWNERS array down to "what this logged-in person is allowed to see":
+// the admin sees everyone, everyone else sees only their own entry (or none, if they're
+// logged in but aren't a profit-sharing owner at all -- e.g. staff-only access).
+function visibleOwnerData(arr){
+  if(isAdminOwner()) return arr;
+  const key=myOwnerKey();
+  return key ? arr.filter(o=>o.key===key) : [];
+}
+
 let currentUser=null;
 
 function dropLegacyPinCache(){
