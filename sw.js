@@ -1,7 +1,9 @@
-// Bumped from amt-v48 -> amt-v49: folder lists survive GitHub's unauthenticated
-// rate limit in the page, and the multi-MB GE library JSON stays in IndexedDB
-// only. Cache Storage keeps the app shell and every other same-origin GET.
-const CACHE = 'amt-v49';
+// Bumped from amt-v49 -> amt-v50: new built-in guide (Ellis & Watts LTL-4 heat
+// exchanger) and larger Manuals-tab cache/rate-limit notes.
+// v49: folder lists survive GitHub's unauthenticated rate limit in the page, and
+// the multi-MB GE library JSON stays in IndexedDB only. Cache Storage keeps the
+// app shell and every other same-origin GET.
+const CACHE = 'amt-v50';
 const SHELL = ['./','./index.html','./access-config.js'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
