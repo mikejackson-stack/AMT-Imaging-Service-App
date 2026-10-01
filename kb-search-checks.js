@@ -421,6 +421,32 @@ files.forEach(file => {
       'amtGuideHits("' + q + '") hits MRI magnet/coil image-artifact guide');
   });
 
+  const ltl4 = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_mr_ellis_watts_ltl4_heat_exchanger');
+  assert(!!ltl4, 'DIAG_GUIDES_SEED includes the Ellis & Watts LTL-4 heat exchanger guide');
+  assert(ltl4 && ltl4.title === 'Ellis & Watts LTL-4 Heat Exchanger (GE MR mobiles, gradient coil cooling)' && ltl4.system === 'GE MRI',
+    'LTL-4 guide title and system');
+  const ltl4Facts = ['31 C (88 F) triggers the warmer than normal error', '36 C (97 F) will inhibit scanning',
+    'gedit /usr/g/service/log/pcft.log', '(note the space between gedit and the first /)', '/usr/g/service/bin/startBoreViewer',
+    'It works on 16.x and above for sure.', 'It does not work on 11.x and below.', 'Not tested on 12.x-15.x yet.',
+    '110VAC +/- 10% single phase power', 'Current draw is 12.5A running with a max 75A start-up draw', 'at least 12-3 wire', '20A circuit',
+    '50/50 glycol and maximum 52 F (11 C)', 'ambient temp up to 113 F', '3.3 GPM +/- 0.3 GPM', '35% Ethylyne glycol, 65% distilled water',
+    '10-50 restarts of the LTL-4', 'Maximum outlet pressure is 60 PSI', 'Over 60 PSI = air bubbles', 'only operate 30 seconds',
+    'If the pump/motor are not turning:', 'Cover on = short.  Cover off = open.', 'OK level = short.  Low level = open.',
+    'below 100 F (37 C)', 'below 80 F (27 C)', 'water temp is below 100F', 'Flow under 1GPM will cause the pump to shut off',
+    'Cycling power resets the time delay', 'At 100 lbs with 4 coolant lines attached', 'DOC1738330'];
+  ltl4Facts.forEach(f => assert(ltl4 && ltl4.content.includes(f), 'LTL-4 guide keeps Mike\'s text exactly: ' + f));
+  assert(ltl4 && ltl4.content.includes('(https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/Ellis%20Watts%20LTL-4/Ellis_Watts_LTL-4_Gradient_Water_Heat_Exchanger_Manual_ENG-457_Rev9.pdf)')
+    && ltl4.content.includes('(https://www.scribd.com/document/366769606/Gradient-Water-Heat-Exchanger-Technical-Manual)')
+    && ltl4.content.includes('(https://customer-doc.cloud.gehealthcare.com/#/cdp/dashboard)'),
+    'LTL-4 guide links the AMT-GE-Manuals PDF (raw.githack) with Scribd and GE CDL backups');
+  const ltl4Md = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/Ellis-Watts-LTL-4-heat-exchanger.md'), 'utf8').replace(/\n+$/, '');
+  assert(ltl4 && ltl4.content === ltl4Md, 'LTL-4 seed content matches Manuals/All_Systems/Field_Guides/Ellis-Watts-LTL-4-heat-exchanger.md');
+  ['LTL-4', 'LTL4', 'Ellis Watts', 'Ellis & Watts', 'heat exchanger', 'gradient cooling', 'patient comfort warmer than normal', 'pcft', 'coolant loss'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_ge_mr_ellis_watts_ltl4_heat_exchanger'),
+      'amtGuideHits("' + q + '") hits the Ellis & Watts LTL-4 guide');
+  });
+
   assert(artGuide && /2422232-1EN/.test(artGuide.content) && /2415542/.test(artGuide.content)
     && /9\.1 kg/.test(artGuide.content) && /2417403/.test(artGuide.content)
     && /no minimum patient size or weight/i.test(artGuide.content)
@@ -673,7 +699,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v49'/.test(sw), 'sw.js cache name is amt-v49');
+assert(/const CACHE = 'amt-v50'/.test(sw), 'sw.js cache name is amt-v50');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

@@ -49,7 +49,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v49'/.test(sw), 'sw.js cache name is amt-v49');
+  assert(/const CACHE = 'amt-v50'/.test(sw), 'sw.js cache name is amt-v50');
   assert(sw.includes("'/kb/ge-loose-kb.json'") && sw.includes("'/kb/ge-signa-kb.json'") && sw.includes("'/kb/ge-error-tool-kb.json'"),
     'sw.js names the three library JSON files');
   assert(/if\(isLibraryKbUrl\(url\)\) return;/.test(sw) && /purgeLibraryKbCaches\(/.test(sw),
@@ -64,6 +64,13 @@ function staticChecks() {
   assert(index.includes("note.id = 'explorerCacheNote'") && index.includes("note.id = 'explorerRateNote'")
     && stand.includes("note.id = 'explorerCacheNote'") && stand.includes("note.id = 'explorerRateNote'"),
     'cached listings and the rate-limit note are marked in both app files');
+  ['showExplorerCached', 'showExplorerRateNote', 'showExplorerOfflineNote'].forEach(name => {
+    [['index.html', index], ['standalone', stand]].forEach(([label, src]) => {
+      const fn = extractFunction(src, name) || '';
+      const m = fn.match(/note\.style\.fontSize = '(\d+(?:\.\d+)?)px'/);
+      assert(m && Number(m[1]) >= 14, name + ' note is at least 14px in ' + label + ' (got ' + (m ? m[1] + 'px' : 'none') + ')');
+    });
+  });
 }
 
 function freePort() {
@@ -230,6 +237,7 @@ async function main() {
       const grid = document.getElementById('explorerGrid');
       return {
         hitsNote: !!(note && note.textContent),
+        fontPx: note ? parseFloat(getComputedStyle(note).fontSize) : 0,
         note: note ? note.textContent : '',
         expected: new Date(ts).toLocaleString(),
         grid: grid ? grid.textContent : '',
@@ -240,6 +248,7 @@ async function main() {
     assert(stale.grid.includes('CachedRateLimitFolder'), 'mocked 403 shows the cached folder list');
     assert(/cached/i.test(stale.note) && stale.note.includes(stale.expected) && !stale.rate,
       'cached listing notes when it was last refreshed: ' + stale.note);
+    assert(stale.fontPx >= 14, 'cached-list note renders at 14px or larger (got ' + stale.fontPx + 'px)');
     await page.evaluate(() => { showTab('manuals'); setKBTab('files'); });
     await page.locator('#explorerCacheNote').screenshot({ path: path.join(ART, 'explorer-cached-403.png') });
     ok('403 falls back to the cached folder list');
@@ -254,12 +263,14 @@ async function main() {
         text: note ? note.textContent : '',
         reset: note ? note.getAttribute('data-reset') : '',
         remaining: note ? note.getAttribute('data-remaining') : '',
+        fontPx: note ? parseFloat(getComputedStyle(note).fontSize) : 0,
         expected: new Date(Number(reset) * 1000).toLocaleString(),
         grid: grid ? grid.textContent : '',
         cacheNote: !!document.getElementById('explorerCacheNote')
       };
     }, resetSec);
     assert(!empty.cacheNote && !empty.grid.includes('CachedRateLimitFolder'), 'no-cache 403 does not invent a folder list');
+    assert(empty.fontPx >= 14, 'rate-limit note renders at 14px or larger (got ' + empty.fontPx + 'px)');
     assert(empty.remaining === '0' && empty.reset === String(resetSec),
       'no-cache message reads X-RateLimit-Remaining and Reset (remaining=' + empty.remaining + ', reset=' + empty.reset + ')');
     assert(empty.text.includes(empty.expected) && /limiting folder lists/i.test(empty.text) && empty.text.trim().length > 40,
@@ -270,7 +281,7 @@ async function main() {
     await page.evaluate(async () => {
       const lib = location.origin + '/kb/ge-error-tool-kb.json';
       await (await caches.open('amt-v47')).put(lib, new Response('old-library'));
-      await (await caches.open('amt-v49')).put(lib, new Response('current-library'));
+      await (await caches.open('amt-v50')).put(lib, new Response('current-library'));
       window.__amtAllowSw = true;
       const reg = await window.__amtRealSwRegister('./sw.js');
       const worker = reg.installing || reg.waiting || reg.active;
@@ -289,7 +300,7 @@ async function main() {
       const snap = await cacheSnapshot(page);
       const library = snap.urls.filter(u => LIBRARY_RE.test(u));
       if (snap.names.indexOf('amt-v47') !== -1) return { names: snap.names, library: library };
-      if (snap.names.indexOf('amt-v49') === -1) return { names: snap.names, library: library };
+      if (snap.names.indexOf('amt-v50') === -1) return { names: snap.names, library: library };
       if (library.length) return { names: snap.names, library: library };
       if (!snap.controlled) return { names: snap.names, library: library, controlled: false };
       return true;
