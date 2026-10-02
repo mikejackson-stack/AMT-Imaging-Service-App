@@ -5,6 +5,16 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
 python3 "$ROOT/scripts/syntax_check.py"
+
+# The internal note block from the PM agreement draft must never ship (repo is public).
+# Patterns are split so this script does not contain the forbidden phrases.
+MIKE_NOTE="NOTE FOR ""MIKE"
+NOT_PART="NOT PART OF THE ""AGREEMENT"
+if grep -rIn --exclude-dir=.git --exclude-dir=node_modules -e "$MIKE_NOTE" -e "$NOT_PART" . ; then
+  echo "FAIL: internal PM agreement note text found in the repo." >&2
+  exit 1
+fi
+echo "OK: no internal PM agreement note text in the repo"
 node "$ROOT/kb-search-checks.js"
 node "$ROOT/scripts/pm_checklist_checks.js"
 node "$ROOT/scripts/access_checks.js"
