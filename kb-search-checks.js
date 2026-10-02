@@ -453,6 +453,7 @@ files.forEach(file => {
     'PM agreement template title, category Templates, readOnly');
   const pmMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md'), 'utf8').replace(/\n+$/, '');
   assert(pmTpl && pmTpl.content.includes(pmMd), 'PM agreement seed content contains Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md verbatim');
+  assert(pmTpl && !pmTpl.content.includes('Houston'), 'PM agreement seed has no Houston');
   const mikeNote = 'NOTE FOR ' + 'MIKE';
   const notPart = 'NOT PART OF THE ' + 'AGREEMENT';
   const deleteNote = 'Delete this ' + 'note';
@@ -726,7 +727,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v51'/.test(sw), 'sw.js cache name is amt-v51');
+assert(/const CACHE = 'amt-v52'/.test(sw), 'sw.js cache name is amt-v52');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
