@@ -130,7 +130,7 @@ Phone: [BLANK] | Email: [BLANK]
 
 **6.2 Definitions.** Standard hours are [BLANK: e.g., Monday to Friday, 8:00 a.m. to 5:00 p.m. site local time, excluding AMT holidays]. After-hours means [BLANK: e.g., all other times, including weekends and AMT holidays]. Emergency means a call where Customer asks AMT to dispatch at once for a system-down condition.
 
-**6.3 Mileage.** AMT bills $[__] per mile for driving beyond 100 miles from the nearest AMT base. AMT's bases are Palm Bay, FL and Houston, TX.
+**6.3 Mileage.** AMT bills $[__] per mile for driving beyond 100 miles from AMT's base. AMT's base is Palm Bay, FL.
 
 **6.4 Fly-in travel.** When a job needs air travel, AMT bills airfare, hotel, and rental car at cost plus [__]% (enter 0 for at cost).
 

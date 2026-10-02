@@ -1,11 +1,13 @@
-// Bumped from amt-v50 -> amt-v51: new built-in read-only reference template
+// Bumped from amt-v51 -> amt-v52: PM Service Agreement mileage is from
+// AMT's Palm Bay, FL base only.
+// v51: new built-in read-only reference template
 // (AMT PM Service Agreement Template v2) in Guides, category Templates.
 // v50: new built-in guide (Ellis & Watts LTL-4 heat
 // exchanger) and larger Manuals-tab cache/rate-limit notes.
 // v49: folder lists survive GitHub's unauthenticated rate limit in the page, and
 // the multi-MB GE library JSON stays in IndexedDB only. Cache Storage keeps the
 // app shell and every other same-origin GET.
-const CACHE = 'amt-v51';
+const CACHE = 'amt-v52';
 const SHELL = ['./','./index.html','./access-config.js'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
