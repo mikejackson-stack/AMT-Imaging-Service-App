@@ -49,7 +49,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v50'/.test(sw), 'sw.js cache name is amt-v50');
+  assert(/const CACHE = 'amt-v51'/.test(sw), 'sw.js cache name is amt-v51');
   assert(sw.includes("'/kb/ge-loose-kb.json'") && sw.includes("'/kb/ge-signa-kb.json'") && sw.includes("'/kb/ge-error-tool-kb.json'"),
     'sw.js names the three library JSON files');
   assert(/if\(isLibraryKbUrl\(url\)\) return;/.test(sw) && /purgeLibraryKbCaches\(/.test(sw),
@@ -281,7 +281,7 @@ async function main() {
     await page.evaluate(async () => {
       const lib = location.origin + '/kb/ge-error-tool-kb.json';
       await (await caches.open('amt-v47')).put(lib, new Response('old-library'));
-      await (await caches.open('amt-v50')).put(lib, new Response('current-library'));
+      await (await caches.open('amt-v51')).put(lib, new Response('current-library'));
       window.__amtAllowSw = true;
       const reg = await window.__amtRealSwRegister('./sw.js');
       const worker = reg.installing || reg.waiting || reg.active;
@@ -300,7 +300,7 @@ async function main() {
       const snap = await cacheSnapshot(page);
       const library = snap.urls.filter(u => LIBRARY_RE.test(u));
       if (snap.names.indexOf('amt-v47') !== -1) return { names: snap.names, library: library };
-      if (snap.names.indexOf('amt-v50') === -1) return { names: snap.names, library: library };
+      if (snap.names.indexOf('amt-v51') === -1) return { names: snap.names, library: library };
       if (library.length) return { names: snap.names, library: library };
       if (!snap.controlled) return { names: snap.names, library: library, controlled: false };
       return true;

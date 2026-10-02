@@ -447,6 +447,33 @@ files.forEach(file => {
       'amtGuideHits("' + q + '") hits the Ellis & Watts LTL-4 guide');
   });
 
+  const pmTpl = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_amt_pm_service_agreement_template_v2');
+  assert(!!pmTpl, 'DIAG_GUIDES_SEED includes the AMT PM Service Agreement Template (v2)');
+  assert(pmTpl && pmTpl.title === 'AMT PM Service Agreement Template (v2)' && pmTpl.category === 'Templates' && pmTpl.readOnly === true,
+    'PM agreement template title, category Templates, readOnly');
+  const pmMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md'), 'utf8').replace(/\n+$/, '');
+  assert(pmTpl && pmTpl.content.includes(pmMd), 'PM agreement seed content contains Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md verbatim');
+  const mikeNote = 'NOTE FOR ' + 'MIKE';
+  const notPart = 'NOT PART OF THE ' + 'AGREEMENT';
+  const deleteNote = 'Delete this ' + 'note';
+  [pmMd, pmTpl ? pmTpl.content : ''].forEach((t, i) => {
+    const where = i ? 'seed' : 'md';
+    assert(!t.includes(mikeNote) && !t.includes(notPart) && !t.includes(deleteNote),
+      'PM agreement ' + where + ' has no internal note block');
+    assert(!/\$\s?\d/.test(t), 'PM agreement ' + where + ' has no filled-in $ amounts');
+    assert(!/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(t), 'PM agreement ' + where + ' has no email addresses');
+    assert(!/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(t), 'PM agreement ' + where + ' has no phone numbers');
+    assert(!/\d+ [A-Za-z ]+ (St|Street|Ave|Avenue|Rd|Road|Blvd|Dr|Drive|Ln|Lane|Ct|Pkwy|Hwy)\b/.test(t), 'PM agreement ' + where + ' has no street addresses');
+  });
+  ['## 1. Parties, Recitals, and Effective Date', '## 6. Corrective and Repair Work', '## 13. General Terms', '# Exhibit A: Equipment Schedule',
+    '# Exhibit D: Business Associate Agreement', '$[__] per hour', 'Agreement No. [BLANK]'].forEach(f =>
+    assert(pmTpl && pmTpl.content.includes(f), 'PM agreement template keeps: ' + f));
+  ['service agreement', 'PM contract', 'agreement template', 'PM service agreement', 'contract template'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_amt_pm_service_agreement_template_v2'),
+      'amtGuideHits("' + q + '") hits the AMT PM Service Agreement Template');
+  });
+
   assert(artGuide && /2422232-1EN/.test(artGuide.content) && /2415542/.test(artGuide.content)
     && /9\.1 kg/.test(artGuide.content) && /2417403/.test(artGuide.content)
     && /no minimum patient size or weight/i.test(artGuide.content)
@@ -699,7 +726,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v50'/.test(sw), 'sw.js cache name is amt-v50');
+assert(/const CACHE = 'amt-v51'/.test(sw), 'sw.js cache name is amt-v51');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
