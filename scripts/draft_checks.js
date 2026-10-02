@@ -43,7 +43,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v52'/.test(sw), 'sw.js cache name is amt-v52');
+  assert(/const CACHE = 'amt-v53'/.test(sw), 'sw.js cache name is amt-v53');
   [index, stand].forEach(html => {
     assert(html.includes("indexedDB.open('amtDrafts'"), 'opens IndexedDB amtDrafts');
     assert(html.includes("createObjectStore('drafts'"), 'creates the drafts store');

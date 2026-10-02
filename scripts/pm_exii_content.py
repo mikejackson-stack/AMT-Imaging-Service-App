@@ -4,7 +4,7 @@ REV = "Rev 0 (DRAFT 2)"
 DOC_DATE = "2026-09-28"
 TITLE = "AMT Imaging Solutions - GE MR Excite II and Later - Preventive Maintenance Checklist"
 CO = "AMT Imaging Solutions LLC"
-CO_SUB = "MRI & CT Field Service  |  Palm Bay, FL  |  Houston, TX"
+CO_SUB = "MRI & CT Field Service  |  Palm Bay, FL"
 BASE = "AMT-PM-GE-MR-ExciteII-and-later_Rev0-DRAFT"
 
 INSTRUCTIONS = [

@@ -261,6 +261,7 @@ files.forEach(file => {
   if (!firstTpl) firstTpl = JSON.stringify(tpl);
   else assert(JSON.stringify(tpl) === firstTpl, 'standalone PM_EXII matches index.html');
   if (canon) assert(JSON.stringify(tpl) === JSON.stringify(canon), base + ' PM_EXII matches scripts/pm_exii_content.py');
+  assert(typeof tpl.coSub === 'string' && tpl.coSub.indexOf('Houston') === -1, base + ' coSub has no Houston');
 
   const tasks = tpl.sections.reduce((n, sec) => n + sec.groups.reduce((m, g) => m + g.tasks.length, 0), 0);
   assert(tasks === 52, base + ' has 52 Excite II tasks');
@@ -406,6 +407,24 @@ pinFiles.forEach(p => {
   }
 });
 assert(pinHits === 0, 'no plaintext staff PIN remains in the working tree');
+
+function coSubValues(text) {
+  const values = [];
+  const re = /(?:"coSub"|CO_SUB)\s*[:=]\s*"((?:\\.|[^"\\])*)"/g;
+  let m;
+  while ((m = re.exec(text))) values.push(m[1]);
+  return values;
+}
+const coSubSources = [];
+walkPinFiles(ROOT, coSubSources);
+let coSubHits = 0;
+coSubSources.forEach(p => {
+  coSubValues(fs.readFileSync(p, 'utf8')).forEach(value => {
+    coSubHits++;
+    assert(value.indexOf('Houston') === -1, path.relative(ROOT, p) + ' coSub has no Houston');
+  });
+});
+assert(coSubHits >= 3, 'coSub strings are present in the app sources');
 
 Promise.all(files.map(file => pinAfterGoogleLogout(fs.readFileSync(file, 'utf8')))).then(results => {
   results.forEach((got, i) => {
