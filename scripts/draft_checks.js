@@ -57,7 +57,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v53'/.test(sw), 'sw.js cache name is amt-v53');
+  assert(/const CACHE = 'amt-v54'/.test(sw), 'sw.js cache name is amt-v54');
   assert(sw.includes('./AMT-Capability-Statement.pdf'), 'service worker precaches the capability PDF');
   const pages = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
   const serve = fs.readFileSync(path.join(ROOT, 'scripts/serve.py'), 'utf8');
@@ -97,7 +97,10 @@ function staticChecks() {
       'Engineering lead: Mike Jackson',
       'Other locations: case by case',
       'AMT was founded in April 2026',
-      'USMC Sergeant (1993',
+      'Also SBA-certified VOSB &middot; Florida Certified VBE &middot; SAM.gov Active',
+      'Florida Certified Veteran Business Enterprise (VBE). 51%',
+      'valid through 05/20/2028',
+      'Honorably discharged USMC Sergeant (1993–1999); maintained sensor and ground-radio electronics.',
       'vendor-neutral, no equipment sales',
       'href="AMT-Capability-Statement.pdf"'
     ].forEach(phrase => assert(cap.includes(phrase), 'capability statement includes ' + phrase));

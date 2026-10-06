@@ -8,9 +8,10 @@
 // v49: folder lists survive GitHub's unauthenticated rate limit in the page, and
 // the multi-MB GE library JSON stays in IndexedDB only. Cache Storage keeps the
 // app shell and every other same-origin GET.
-// The shell also precaches ./AMT-Capability-Statement.pdf. The cache name stays
-// amt-v53 so an updated worker adds that file into the existing cache.
-const CACHE = 'amt-v53';
+// Bumped from amt-v53 -> amt-v54 so clients drop the previously precached
+// capability statement PDF and install the Florida Certified VBE revision.
+// The shell precaches ./AMT-Capability-Statement.pdf.
+const CACHE = 'amt-v54';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
