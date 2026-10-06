@@ -692,6 +692,35 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   #pm_checklist_area .cl-group-hd td{white-space:normal}
 }
 
+/* Capability statement (Rates). Print layout lives in printCapability(). */
+#capabilityBody{font-size:.84rem;line-height:1.45;color:var(--text)}
+#capabilityBody h2{color:var(--navy);margin:0;font-size:1.25rem;line-height:1.2}
+#capabilityBody h3{color:var(--navy);margin:0 0 .3rem;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase}
+#capabilityBody p{margin:.3rem 0 0}
+#capabilityBody ul{margin:.25rem 0 0;padding-left:1.15rem}
+#capabilityBody li{margin:.18rem 0}
+#capabilityBody a{color:var(--navy)}
+#capabilityLogo{max-width:150px;max-height:68px;object-fit:contain;display:block;margin:0 auto .35rem}
+.cap-hero{text-align:center;margin-bottom:.85rem}
+.cap-kicker{margin:.25rem 0 0;color:var(--text2);font-size:.82rem}
+.cap-badge{display:inline-block;margin-top:.4rem;padding:.28rem .6rem;background:var(--navy);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.02em;border-radius:4px;line-height:1.35}
+.cap-sub{margin:.35rem 0 0;font-size:.75rem;color:var(--text2)}
+.cap-facts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 .85rem}
+.cap-fact{background:#f0f4f8;border-radius:6px;padding:.4rem .4rem;text-align:center}
+.cap-fact b{display:block;font-size:.62rem;letter-spacing:.04em;color:var(--navy);text-transform:uppercase}
+.cap-fact span{display:block;font-size:.74rem;font-weight:700;margin-top:.12rem;line-height:1.25}
+.cap-overview{margin-bottom:.85rem;padding:.65rem .75rem;background:#f0f4f8;border-radius:8px}
+.cap-cols{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:.85rem}
+.cap-people{margin-bottom:.85rem}
+.cap-note{font-size:.8rem;color:var(--text2)}
+.cap-meta{display:grid;grid-template-columns:1.35fr .95fr 1.05fr;gap:.85rem;margin-bottom:.7rem}
+.cap-foot{text-align:center;font-size:.75rem;color:var(--text2);border-top:2px solid var(--navy);padding-top:.55rem}
+@media(max-width:767px){
+  .cap-facts{grid-template-columns:1fr 1fr}
+  .cap-cols,.cap-meta{grid-template-columns:1fr}
+}
+
+
 </style>
 </head>
 <body>
@@ -1156,69 +1185,100 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
   <!-- HOLD HARMLESS AGREEMENT -->
   
   <div id="capabilitySection" class="card mt-12" style="border:2px solid var(--navy)">
-    <div class="card-header" style="background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center">
+    <div class="card-header" style="background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
       <span>📄 Capability Statement</span>
-      <button class="btn btn-sm" onclick="printCapability()" style="background:#fff;color:var(--navy);font-size:.8rem">🖨 Print</button>
+      <span style="display:flex;gap:6px;flex-wrap:wrap">
+        <a class="btn btn-sm" href="AMT-Capability-Statement.pdf" download="AMT-Capability-Statement.pdf" style="background:#fff;color:var(--navy);font-size:.8rem;text-decoration:none">⬇ PDF</a>
+        <button class="btn btn-sm" onclick="printCapability()" style="background:#fff;color:var(--navy);font-size:.8rem">🖨 Print</button>
+      </span>
     </div>
-    <div class="card-body" id="capabilityBody" style="padding:1rem">
-      <div style="text-align:center;margin-bottom:1.2rem">
-        <img id="capabilityLogo" alt="AMT Imaging Solutions" src="" style="max-width:180px;margin-bottom:.5rem">
-        <h2 style="color:var(--navy);margin:0;font-size:1.3rem">AMT Imaging Solutions LLC</h2>
-        <p style="margin:.25rem 0;color:var(--text2);font-size:.9rem">Certified SDVOSB &amp; VOSB | MRI &bull; CT &bull; Contrast Injector Service</p>
-        <p style="margin:.1rem 0;color:var(--text2);font-size:.8rem">Precision. Performance. Trust.</p>
+    <div class="card-body" id="capabilityBody">
+      <div class="cap-hero">
+        <img id="capabilityLogo" alt="AMT Imaging Solutions" src="">
+        <h2>AMT Imaging Solutions LLC</h2>
+        <p class="cap-kicker">Independent MRI &amp; CT Field Service &middot; Preventive Maintenance &middot; Repair &middot; Calibration</p>
+        <div class="cap-badge">SBA-Certified Service-Disabled Veteran-Owned Small Business (SDVOSB)</div>
+        <p class="cap-sub">Also SBA-certified VOSB &middot; Florida Certified VBE &middot; SAM.gov Active &middot; Palm Bay, Florida</p>
       </div>
 
-      <div style="margin-bottom:1rem;padding:.75rem;background:#f0f4f8;border-radius:8px">
-        <strong style="color:var(--navy)">Company Overview</strong>
-        <p style="margin:.4rem 0 0;font-size:.85rem;line-height:1.6">AMT Imaging Solutions LLC is an SBA-certified Service-Disabled Veteran-Owned Small Business (SDVOSB) and Veteran-Owned Small Business (VOSB) specializing in third-party maintenance and service for MRI, CT, and contrast injector systems. We provide high-quality, cost-effective Labor-Only and Preventive Maintenance (PM) services with fast response times and competitive pricing.</p>
+      <div class="cap-facts" aria-label="Company identifiers">
+        <div class="cap-fact"><b>UEI</b><span>G8R8SNJJ66Z8</span></div>
+        <div class="cap-fact"><b>CAGE</b><span>20G67</span></div>
+        <div class="cap-fact"><b>NAICS</b><span>811219 (primary) &middot; 811210</span></div>
+        <div class="cap-fact"><b>SBA VetCert</b><span>SDVOSB &middot; VOSB (eff. 07/29/2026)</span></div>
+        <div class="cap-fact"><b>Entity</b><span>Florida LLC &middot; est. 2026</span></div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div class="cap-overview">
+        <h3>Company Overview</h3>
+        <p>AMT Imaging Solutions LLC provides independent, on-site preventive maintenance, repair and calibration for MRI and CT systems at hospitals, outpatient imaging centers and VA/federal facilities. We offer labor-only and PM-only service options as a flexible alternative to OEM service contracts. Service and repair only: vendor-neutral, no equipment sales.</p>
+      </div>
+
+      <div class="cap-cols">
         <div>
-          <strong style="color:var(--navy)">Core Services:</strong>
-          <ul style="margin:.4rem 0;padding-left:1.4rem;font-size:.83rem;line-height:1.8">
-            <li>Labor-Only Repair &amp; Troubleshooting (MRI, CT, Injectors)</li>
-            <li>Preventive Maintenance (PM) Contracts</li>
-            <li>Magnet Ramping &amp; Shimming (1.5T &amp; 3T)</li>
-            <li>Emergency / On-Site Service Support</li>
-            <li>Injector PM and Repair</li>
+          <h3>Core Competencies</h3>
+          <ul>
+            <li>MRI PM, troubleshooting &amp; repair: GE Signa family (LX, Excite, HDxt), Discovery and Optima; Siemens MAGNETOM (Avanto, Espree, Aera, Skyra)</li>
+            <li>CT PM &amp; repair: GE LightSpeed and Siemens SOMATOM families</li>
+            <li>Magnet services: superconducting magnet shimming and ramp support</li>
+            <li>MRI cooling systems: cold heads, helium compressors, chillers and heat exchangers</li>
+            <li>Subsystem repair: RF coil testing and repair; gradient amplifier and power supply diagnostics; RF shield diagnostics</li>
+            <li>Contrast injectors: PM and repair, Bayer MEDRAD (Stellant, Spectris Solaris EP), Bracco EmpowerCTA, Nemoto</li>
+            <li>System moves: de-installation and installation support</li>
+            <li>Contract types: scheduled PM, PM-only, labor-only and emergency/on-call service</li>
           </ul>
         </div>
         <div>
-          <strong style="color:var(--navy)">Key Differentiators:</strong>
-          <ul style="margin:.4rem 0;padding-left:1.4rem;font-size:.83rem;line-height:1.8">
-            <li>SDVOSB &amp; VOSB Certified (SBA) &ndash; Veteran-Owned (USMC)</li>
-            <li>25+ years field service experience</li>
-            <li>Significantly lower rates than OEM service</li>
-            <li>Flexible Labor-Only &amp; PM-Only contract options</li>
-            <li>Fast response and reliable support</li>
+          <h3>Differentiators</h3>
+          <ul>
+            <li>Certified SDVOSB &amp; VOSB (SBA VetCert, eff. 07/29/2026); Florida Certified Veteran Business Enterprise (VBE). 51% owned and controlled by a service-disabled U.S. Marine Corps veteran</li>
+            <li>25+ years of hands-on field service: founder has worked on MRI and CT systems since 1999</li>
+            <li>Multi-vendor: GE and Siemens primary; principals also have Toshiba/Canon and Hitachi MRI experience</li>
+            <li>Flexible contracting: labor-only and PM-only options, no OEM service contract required</li>
+            <li>Owner-performed work: the principals do the field work themselves in FL, TX and GA</li>
+            <li>Vendor-neutral: service and repair only, with no equipment sales</li>
           </ul>
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-        <div style="font-size:.85rem">
-          <strong style="color:var(--navy)">Geographic Coverage:</strong><br>
-          <span>&#127981; Primary: Palm Bay, FL</span><br>
-          <span>&#9992;&#65039; Willing to travel for service as needed</span>
-        </div>
-        <div style="font-size:.85rem">
-          <strong style="color:var(--navy)">Contact:</strong><br>
-          Michael Jackson<br>
-          &#128222; 754-263-6089<br>
-          &#128231; mike.jackson@amtimagingsolutions.com<br>
-          &#127760; <a href="https://www.amtimagingsolutions.net" style="color:var(--navy)">AMTImagingSolutions.net</a>
-        </div>
-      </div>
-
-      <div style="background:#f0f4f8;border-radius:8px;padding:.75rem;font-size:.83rem">
-        <strong style="color:var(--navy)">Certifications &amp; Registrations:</strong>
-        <ul style="margin:.4rem 0;padding-left:1.4rem;line-height:1.8">
-          <li>SDVOSB &amp; VOSB Certified &ndash; U.S. Small Business Administration (eff. 7/29/2026)</li>
-          <li>SAM.gov Registered &amp; Active &mdash; UEI: G8R8SNJJ66Z8 &nbsp;|&nbsp; CAGE: 20G67</li>
-          <li>Former USMC &ndash; 25+ Years Field Service Experience</li>
+      <div class="cap-people">
+        <h3>Relevant Experience: Key Personnel</h3>
+        <p class="cap-note">AMT was founded in April 2026. The experience below belongs to its principals.</p>
+        <ul>
+          <li><strong>Mike Jackson, Founder &amp; Managing Member:</strong> Honorably discharged USMC Sergeant (1993–1999); maintained sensor and ground-radio electronics. Imaging field service since 1999 at independent service organizations: GE MRI PM and repair, superconductive magnet shimming, MRI installs and de-installs, MRI coil and gradient amplifier repair, MRI/CT test-bay operations, chiller and cold head service. Trained technicians on GE Signa 9x–12x LCC (assistant instructor) and 16x–23x systems.</li>
+          <li><strong>Antonio Jackson, Member / Field Technician (TX, GA):</strong> about 2 years with Advanced Imaging Group repairing chillers, compressors and HVAC at imaging sites and assisting field service engineers on site.</li>
+          <li><strong>Candelario “Tito” Juarez, Member / Field Operations (FL):</strong> warehouse operations background in inventory, receiving, shipping and parts logistics.</li>
         </ul>
       </div>
+
+      <div class="cap-meta">
+        <div>
+          <h3>Company Data</h3>
+          <p>Legal name: AMT Imaging Solutions LLC<br>
+          Formed: April 2026, Florida multi-member LLC<br>
+          SAM.gov: Active &middot; UEI G8R8SNJJ66Z8 &middot; CAGE 20G67<br>
+          NAICS: 811219 (primary), 811210<br>
+          Socioeconomic: SBA-certified SDVOSB &amp; VOSB; Florida Certified Veteran Business Enterprise (VBE), valid through 05/20/2028<br>
+          Headquarters: Palm Bay, FL</p>
+        </div>
+        <div>
+          <h3>Service Area</h3>
+          <p>Florida: Tito Juarez<br>
+          Texas &amp; Georgia: Antonio Jackson<br>
+          Engineering lead: Mike Jackson<br>
+          Other locations: case by case</p>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <p>Mike Jackson<br>
+          Founder &amp; Managing Member<br>
+          <a href="tel:+17542636089">(754) 263-6089</a><br>
+          <a href="mailto:mike.jackson@amtimagingsolutions.com">mike.jackson@amtimagingsolutions.com</a><br>
+          <a href="https://www.amtimagingsolutions.net">www.AMTImagingSolutions.net</a></p>
+        </div>
+      </div>
+
+      <div class="cap-foot">AMT Imaging Solutions LLC &middot; Palm Bay, FL &middot; SBA-Certified SDVOSB &middot; Precision. Performance. Trust.</div>
     </div>
   </div>
   <div id="holdHarmlessSection" class="card mt-12" style="border:2px solid var(--navy)">
@@ -10589,18 +10649,35 @@ function copyEmailSigHTML(){
 function printCapability(){
   const body = document.getElementById('capabilityBody');
   if(!body){ alert('Capability statement not found.'); return; }
-  const logoSrc = document.getElementById('topbarLogo')?.src || '';
   const w = window.open('','_blank','width=860,height=1100');
+  if(!w){ alert('Allow pop-ups to print the capability statement.'); return; }
   w.document.write(
-    '<html><head><title>AMT Imaging Solutions -- Capability Statement</title>'+
+    '<html><head><title>AMT Imaging Solutions - Capability Statement</title>'+
     '<style>'+
-    'body{font-family:Arial,sans-serif;margin:0;padding:30px;color:#111;font-size:13px;line-height:1.6;max-width:780px;margin:0 auto}'+
-    'img{max-height:80px;object-fit:contain}'+
-    'h2{color:#0a1628;margin:0}p{margin:.25rem 0}'+
-    'ul{margin:.3rem 0;padding-left:1.3rem;line-height:1.8}'+
+    '@page{size:letter;margin:0.45in 0.5in}'+
+    'html,body{margin:0;padding:0;background:#fff;color:#111}'+
+    'body{font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.35}'+
+    '#capabilityLogo{max-height:58px;max-width:140px;object-fit:contain;display:block;margin:0 auto 4px}'+
+    'h2{color:#0a1628;margin:0;font-size:16px;text-align:center;line-height:1.15}'+
+    'h3{color:#0a1628;margin:0 0 3px;font-size:10px;letter-spacing:.04em;text-transform:uppercase}'+
+    'p{margin:2px 0 0}'+
+    'ul{margin:2px 0 0;padding-left:15px}'+
+    'li{margin:1px 0}'+
     'strong{color:#0a1628}'+
-    'a{color:#0a1628}'+
-    '@media print{body{padding:20px}@page{margin:.75in}}'+
+    'a{color:#0a1628;text-decoration:none}'+
+    '.cap-hero{text-align:center;margin-bottom:8px}'+
+    '.cap-kicker,.cap-sub{font-size:10px;color:#333;margin:2px 0}'+
+    '.cap-badge{display:inline-block;margin-top:3px;background:#0a1628;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:2px}'+
+    '.cap-facts{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}'+
+    '.cap-fact{background:#f0f4f8;border-radius:3px;padding:3px 4px;text-align:center}'+
+    '.cap-fact b{display:block;font-size:7.5px;letter-spacing:.03em;color:#0a1628;text-transform:uppercase}'+
+    '.cap-fact span{display:block;font-size:9px;font-weight:700;line-height:1.25}'+
+    '.cap-overview{background:#f0f4f8;border-radius:3px;padding:6px 8px;margin-bottom:8px}'+
+    '.cap-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px}'+
+    '.cap-people{margin-bottom:8px}'+
+    '.cap-note{font-size:10px;color:#333}'+
+    '.cap-meta{display:grid;grid-template-columns:1.35fr .9fr 1.05fr;gap:10px;margin-bottom:8px}'+
+    '.cap-foot{text-align:center;font-size:9.5px;border-top:2px solid #0a1628;padding-top:5px;color:#333}'+
     '</style></head><body>'+
     body.innerHTML+
     '<script>window.onload=function(){setTimeout(function(){window.print();},400);}<\/script>'+

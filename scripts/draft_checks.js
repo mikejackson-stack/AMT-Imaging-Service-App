@@ -39,11 +39,34 @@ function engineSlice(html) {
   return html.slice(i, j);
 }
 
+function capabilitySlice(html) {
+  const i = html.indexOf('id="capabilitySection"');
+  const j = html.indexOf('id="holdHarmlessSection"', i);
+  if (i < 0 || j < 0) return '';
+  return html.slice(i, j);
+}
+
+function printCapabilitySlice(html) {
+  const i = html.indexOf('function printCapability()');
+  const j = html.indexOf('function printRates()', i);
+  if (i < 0 || j < 0) return '';
+  return html.slice(i, j);
+}
+
 function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v53'/.test(sw), 'sw.js cache name is amt-v53');
+  assert(/const CACHE = 'amt-v54'/.test(sw), 'sw.js cache name is amt-v54');
+  assert(sw.includes('./AMT-Capability-Statement.pdf'), 'service worker precaches the capability PDF');
+  const pages = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
+  const serve = fs.readFileSync(path.join(ROOT, 'scripts/serve.py'), 'utf8');
+  assert(pages.includes('AMT-Capability-Statement.pdf'), 'Pages deploy publishes the capability PDF');
+  assert(serve.includes('AMT-Capability-Statement.pdf'), 'local server publishes the capability PDF');
+  assert(capabilitySlice(index) && capabilitySlice(index) === capabilitySlice(stand), 'capability statement matches in both app files');
+  const printed = printCapabilitySlice(index);
+  assert(printed && printed === printCapabilitySlice(stand), 'printCapability matches in both app files');
+  assert(printed.includes('window.print()') && printed.includes('size:letter'), 'printCapability still prints a letter-size sheet');
   [index, stand].forEach(html => {
     assert(html.includes("indexedDB.open('amtDrafts'"), 'opens IndexedDB amtDrafts');
     assert(html.includes("createObjectStore('drafts'"), 'creates the drafts store');
@@ -60,6 +83,36 @@ function staticChecks() {
     assert(!html.includes('Manuals/amt_logo.png'), 'capability logo does not use the missing Manuals path');
     assert(html.includes('id="capabilityLogo"'), 'capability statement has a logo image');
     assert(html.includes("'capabilityLogo'"), 'capability logo uses the embedded logo');
+    const cap = capabilitySlice(html);
+    [
+      'G8R8SNJJ66Z8',
+      '20G67',
+      '811219 (primary)',
+      '811210',
+      '07/29/2026',
+      'Florida LLC',
+      '25+ years of hands-on field service: founder has worked on MRI and CT systems since 1999',
+      'Florida: Tito Juarez',
+      'Texas &amp; Georgia: Antonio Jackson',
+      'Engineering lead: Mike Jackson',
+      'Other locations: case by case',
+      'AMT was founded in April 2026',
+      'Also SBA-certified VOSB &middot; Florida Certified VBE &middot; SAM.gov Active',
+      'Florida Certified Veteran Business Enterprise (VBE). 51%',
+      'valid through 05/20/2028',
+      'Honorably discharged USMC Sergeant (1993–1999); maintained sensor and ground-radio electronics.',
+      'vendor-neutral, no equipment sales',
+      'href="AMT-Capability-Statement.pdf"'
+    ].forEach(phrase => assert(cap.includes(phrase), 'capability statement includes ' + phrase));
+    [
+      'Significantly lower rates',
+      'Former USMC',
+      '25+ years field service experience',
+      'Willing to travel',
+      'competitive pricing'
+    ].forEach(phrase => assert(!cap.includes(phrase), 'capability statement omits ' + phrase));
+    assert(!/\bEIN\b/.test(cap), 'capability statement omits an EIN');
+    assert(!/past performance/i.test(cap), 'capability statement omits past performance');
   });
   assert(engineSlice(index) && engineSlice(index) === engineSlice(stand), 'draft engine matches in index.html and the standalone file');
 }
