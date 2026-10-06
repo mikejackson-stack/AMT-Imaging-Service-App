@@ -40,6 +40,10 @@ jobs:
           curl -fsSL \
             "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/access-config.js" \
             -o _site/access-config.js
+          curl -fsSL \
+            "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/AMT-Capability-Statement.pdf" \
+            -o _site/AMT-Capability-Statement.pdf
+          python3 -c "from pathlib import Path; d=Path('_site/AMT-Capability-Statement.pdf').read_bytes(); assert d.startswith(b'%PDF-') and len(d)>1000, 'capability PDF was not published'"
           python3 - <<'PY'
           import json, os, urllib.error, urllib.parse, urllib.request
 
