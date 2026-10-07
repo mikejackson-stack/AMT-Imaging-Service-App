@@ -11,7 +11,9 @@
 // Bumped from amt-v53 -> amt-v54 so clients drop the previously precached
 // capability statement PDF and install the Florida Certified VBE revision.
 // The shell precaches ./AMT-Capability-Statement.pdf.
-const CACHE = 'amt-v54';
+// Bumped from amt-v54 -> amt-v55 so phones drop the previous app shell and
+// pick up the Linux root-password reset field guide (v36).
+const CACHE = 'amt-v55';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
