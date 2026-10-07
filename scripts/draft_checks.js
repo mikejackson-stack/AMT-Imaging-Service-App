@@ -57,7 +57,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v54'/.test(sw), 'sw.js cache name is amt-v54');
+  assert(/const CACHE = 'amt-v55'/.test(sw), 'sw.js cache name is amt-v55');
   assert(sw.includes('./AMT-Capability-Statement.pdf'), 'service worker precaches the capability PDF');
   const pages = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
   const serve = fs.readFileSync(path.join(ROOT, 'scripts/serve.py'), 'utf8');

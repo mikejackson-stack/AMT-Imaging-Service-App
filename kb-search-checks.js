@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v35/.test(html);
-  const top = /Field Service · v35/.test(html);
-  const appVer = /const APP_VERSION='v35'/.test(src);
-  assert(login && top && appVer, 'version strings are v35 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v36/.test(html);
+  const top = /Field Service · v36/.test(html);
+  const appVer = /const APP_VERSION='v36'/.test(src);
+  assert(login && top && appVer, 'version strings are v36 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -445,6 +445,35 @@ files.forEach(file => {
     const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
     assert(hits.some(g => g.id === 'dg_ge_mr_ellis_watts_ltl4_heat_exchanger'),
       'amtGuideHits("' + q + '") hits the Ellis & Watts LTL-4 guide');
+  });
+
+  const linuxRoot = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_linux_root_password_reset');
+  assert(!!linuxRoot, 'DIAG_GUIDES_SEED includes the Linux root password reset guide');
+  assert(linuxRoot && linuxRoot.title === 'Reset a forgotten Linux root password (OS disk, rescue mode, or GRUB)'
+    && linuxRoot.system === 'Other' && linuxRoot.category === 'Linux host',
+    'Linux root password guide title, system, and category');
+  const linuxMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/Linux-root-password-reset.md'), 'utf8').replace(/\n+$/, '');
+  assert(linuxRoot && linuxRoot.content === linuxMd, 'Linux root password seed content matches Manuals/All_Systems/Field_Guides/Linux-root-password-reset.md');
+  const linuxFacts = [
+    'only on equipment the customer has authorized',
+    'Never do this during patient scanning',
+    'support, warranty, or regulatory status',
+    'Never type the new password into this app',
+    'lsblk -f', 'fdisk -l', 'blkid', 'vgchange -ay',
+    'mount --bind /dev', 'mount --bind /proc', 'mount --bind /sys',
+    'passwd root', 'touch /.autorelabel', 'chroot /mnt/sysimage',
+    'rd.break', 'init=/bin/bash', 'mount -o remount,rw /',
+    'exec /sbin/init', 'reboot -f', 'single user',
+    'authentication token manipulation error', 'crypto_LUKS', 'Secure Boot',
+    'password-protected', 'Restore the firmware boot order'
+  ];
+  linuxFacts.forEach(f => assert(linuxRoot && linuxRoot.content.includes(f), 'Linux root password guide keeps: ' + f));
+  assert(linuxRoot && !/default password|service password is|password123|Passw0rd|P@ssw/i.test(linuxRoot.content),
+    'Linux root password guide does not embed a credential');
+  ['root password', 'reset root', 'linux password', 'OS disk', 'rescue mode', 'single user'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_linux_root_password_reset'),
+      'amtGuideHits("' + q + '") hits the Linux root password guide');
   });
 
   const pmTpl = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_amt_pm_service_agreement_template_v2');
@@ -727,7 +756,7 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v54'/.test(sw), 'sw.js cache name is amt-v54');
+assert(/const CACHE = 'amt-v55'/.test(sw), 'sw.js cache name is amt-v55');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
