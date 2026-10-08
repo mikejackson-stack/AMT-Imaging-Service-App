@@ -13,7 +13,9 @@
 // The shell precaches ./AMT-Capability-Statement.pdf.
 // Bumped from amt-v54 -> amt-v55 so phones drop the previous app shell and
 // pick up the Linux root-password reset field guide (v36).
-const CACHE = 'amt-v55';
+// Bumped from amt-v55 -> amt-v56 so phones pick up the uniform price list
+// effective Oct 8, 2026 (app v37).
+const CACHE = 'amt-v56';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',

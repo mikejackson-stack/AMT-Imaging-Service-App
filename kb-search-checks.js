@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v36/.test(html);
-  const top = /Field Service · v36/.test(html);
-  const appVer = /const APP_VERSION='v36'/.test(src);
-  assert(login && top && appVer, 'version strings are v36 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v37/.test(html);
+  const top = /Field Service · v37/.test(html);
+  const appVer = /const APP_VERSION='v37'/.test(src);
+  assert(login && top && appVer, 'version strings are v37 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -482,7 +482,11 @@ files.forEach(file => {
     'PM agreement template title, category Templates, readOnly');
   const pmMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md'), 'utf8').replace(/\n+$/, '');
   assert(pmTpl && pmTpl.content.includes(pmMd), 'PM agreement seed content contains Manuals/All_Systems/Templates/AMT_PM_Service_Agreement_Template_v2.md verbatim');
-  assert(pmTpl && !pmTpl.content.includes('Houston'), 'PM agreement seed has no Houston');
+  const nearestBase = "AMT bills $[__] per mile for driving beyond 30 miles from the nearest AMT base. AMT's bases are Palm Bay, FL and Houston, TX.";
+  assert(pmTpl && pmTpl.content.includes(nearestBase), 'PM agreement mileage is beyond 30 miles of the nearest AMT base (Palm Bay or Houston)');
+  assert(pmTpl && !pmTpl.content.split(nearestBase).join('').includes('Houston'), 'PM agreement seed mentions Houston only in the mileage base sentence');
+  assert(pmTpl && pmTpl.content.includes('(default 30)') && !pmTpl.content.includes('(default 90)'), 'PM agreement workmanship warranty defaults to 30 days');
+  assert(pmTpl && pmTpl.content.includes('calls carry a 2-hour minimum'), 'PM agreement states the 2-hour T&M minimum');
   const mikeNote = 'NOTE FOR ' + 'MIKE';
   const notPart = 'NOT PART OF THE ' + 'AGREEMENT';
   const deleteNote = 'Delete this ' + 'note';
@@ -755,8 +759,28 @@ assert(opened[1] && opened[1].url.endsWith('/Manuals/GE/Loose/Operator%20Guide.p
   && opened[1].url.indexOf('AMT-GE-Manuals') === -1,
   'openGeLoosePdf still opens loose PDFs through ghOpenUrl with #page=');
 
+// Uniform price list effective Oct 8, 2026: rates.json and the Rates panel agree, old ranges retired.
+const ratesJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'rates.json'), 'utf8'));
+const ratesHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+assert(ratesJson.updatedAt === '2026-10-08' && ratesJson.effective === '2026-10-08', 'rates.json updatedAt/effective are 2026-10-08');
+const mriPm = ratesJson.contracts.pmOnly.options.map(o => o.label + '=' + o.rate).join('|');
+assert(mriPm === 'Single PM Visit=$2,400|Annual PM (1/yr)=$2,000/yr|Semi-Annual PM (2/yr)=$3,500/yr|Quarterly PM (4/yr)=$5,800/yr|Bimonthly PM (6/yr)=$8,100/yr',
+  'rates.json MRI PM-only list matches the Oct 2026 price list');
+const ctPm = ratesJson.contracts.ctPmOnly.options.map(o => o.label + '=' + o.rate).join('|');
+assert(ctPm === 'Single PM Visit=$2,800|Annual PM (1/yr)=$2,500/yr|Semi-Annual PM (2/yr)=$4,600/yr|Quarterly PM (4/yr)=$8,400/yr',
+  'rates.json CT PM-only list matches the Oct 2026 price list');
+assert(ratesJson.labor.afterHours.rate === '$442.50 / hr' && ratesJson.labor.travel.label === 'Travel (beyond 30 miles of nearest AMT base: Palm Bay, FL or Houston, TX)'
+  && ratesJson.contracts.laborOnly.options[0].label === 'Pure T&M (2-hr min)' && ratesJson.contracts.warranty.options[0].label === 'Standard Repair/PM Warranty (30 days)',
+  'rates.json: one $442.50 after-hours rate, travel beyond 30 miles of nearest base, 2-hr T&M minimum, 30-day warranty');
+['<span class="rate-val">$2,900-$3,800</span>', '$5,500-$7,200', '$9,800-$12,500', '$6,800-$8,500', '$395-$450', 'Travel (over 100 miles)', 'const MILES_FREE = 100;'].forEach(old =>
+  assert(!ratesHtml.includes(old), 'index.html no longer shows ' + old));
+['$2,900–$3,800', '$5,500–$7,200', '$9,800–$12,500', '$6,800–$8,500', '$395–$450'].forEach(old =>
+  assert(!JSON.stringify(ratesJson.labor) .includes(old) && !JSON.stringify(ratesJson.contracts.pmOnly).includes(old), 'rates.json no longer shows ' + old));
+['$2,400', '$3,500/yr', '$5,800/yr', '$8,100/yr', '$4,600/yr', '$8,400/yr', '$442.50 / hr', 'Travel (beyond 30 miles of nearest AMT base: Palm Bay, FL or Houston, TX)', 'Pure T&amp;M (2-hr min)', 'Standard Repair/PM Warranty (30 days)', 'const MILES_FREE = 30;'].forEach(n =>
+  assert(ratesHtml.includes(n), 'index.html shows ' + n));
+
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v55'/.test(sw), 'sw.js cache name is amt-v55');
+assert(/const CACHE = 'amt-v56'/.test(sw), 'sw.js cache name is amt-v56');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

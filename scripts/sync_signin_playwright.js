@@ -10,7 +10,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
-const ARTIFACTS = '/opt/cursor/artifacts';
+const ARTIFACTS = process.env.AMT_ARTIFACTS_DIR || '/opt/cursor/artifacts';
 const CHROME = process.env.CHROME_PATH || '/usr/bin/google-chrome';
 
 const LOCAL_JOB = {
