@@ -192,7 +192,7 @@ AMT is not responsible for delays or added cost caused by Customer not meeting t
 
 ## 11. Warranty, Liability, Indemnity, and Insurance
 
-**11.1 Workmanship warranty.** AMT warrants its work for [__] days (default 30) from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6).
+**11.1 Workmanship warranty.** AMT warrants its work for [__] days (default 30) from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6). For VA and other Federal Supply Schedule (FSS) orders, the labor warranty is 90 days from the date of service completion, as stated in AMT's Commercial Warranty Policy submitted with its VA FSS offer.
 
 **11.2 Disclaimer.** Except for Section 11.1 and any uptime guarantee checked in Section 7.2, AMT makes no other warranties, express or implied. That includes any implied warranty of merchantability or fitness for a particular purpose. AMT does not warrant that the Equipment will run without interruption or error.
 
