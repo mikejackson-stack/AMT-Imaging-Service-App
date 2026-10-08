@@ -120,7 +120,7 @@ Phone: [BLANK] | Email: [BLANK]
 
 ## 6. Corrective and Repair Work
 
-**6.1 Labor rates.** Corrective work outside a scheduled PM is billed at these rates unless Exhibit A or a written quote says otherwise:
+**6.1 Labor rates.** Corrective work outside a scheduled PM is billed at these rates unless Exhibit A or a written quote says otherwise. Unscheduled (time-and-materials) calls carry a 2-hour minimum:
 
 | Type | Rate |
 |---|---|
@@ -130,7 +130,7 @@ Phone: [BLANK] | Email: [BLANK]
 
 **6.2 Definitions.** Standard hours are [BLANK: e.g., Monday to Friday, 8:00 a.m. to 5:00 p.m. site local time, excluding AMT holidays]. After-hours means [BLANK: e.g., all other times, including weekends and AMT holidays]. Emergency means a call where Customer asks AMT to dispatch at once for a system-down condition.
 
-**6.3 Mileage.** AMT bills $[__] per mile for driving beyond 100 miles from AMT's base. AMT's base is Palm Bay, FL.
+**6.3 Mileage.** AMT bills $[__] per mile for driving beyond 30 miles from the nearest AMT base. AMT's bases are Palm Bay, FL and Houston, TX.
 
 **6.4 Fly-in travel.** When a job needs air travel, AMT bills airfare, hotel, and rental car at cost plus [__]% (enter 0 for at cost).
 
@@ -192,7 +192,7 @@ AMT is not responsible for delays or added cost caused by Customer not meeting t
 
 ## 11. Warranty, Liability, Indemnity, and Insurance
 
-**11.1 Workmanship warranty.** AMT warrants its work for [__] days (default 90) from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6).
+**11.1 Workmanship warranty.** AMT warrants its work for [__] days (default 30) from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6).
 
 **11.2 Disclaimer.** Except for Section 11.1 and any uptime guarantee checked in Section 7.2, AMT makes no other warranties, express or implied. That includes any implied warranty of merchantability or fitness for a particular purpose. AMT does not warrant that the Equipment will run without interruption or error.
 
