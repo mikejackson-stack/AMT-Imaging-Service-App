@@ -15,7 +15,9 @@
 // pick up the Linux root-password reset field guide (v36).
 // Bumped from amt-v55 -> amt-v56 so phones pick up the uniform price list
 // effective Oct 8, 2026 (app v37).
-const CACHE = 'amt-v56';
+// Bumped from amt-v56 -> amt-v57 so phones pick up the Optima MR450w
+// Cronus / XGD gradient field guide (app v38).
+const CACHE = 'amt-v57';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',

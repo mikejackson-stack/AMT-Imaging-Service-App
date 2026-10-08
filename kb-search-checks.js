@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v37/.test(html);
-  const top = /Field Service · v37/.test(html);
-  const appVer = /const APP_VERSION='v37'/.test(src);
-  assert(login && top && appVer, 'version strings are v37 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v38/.test(html);
+  const top = /Field Service · v38/.test(html);
+  const appVer = /const APP_VERSION='v38'/.test(src);
+  assert(login && top && appVer, 'version strings are v38 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -474,6 +474,47 @@ files.forEach(file => {
     const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
     assert(hits.some(g => g.id === 'dg_linux_root_password_reset'),
       'amtGuideHits("' + q + '") hits the Linux root password guide');
+  });
+
+  const cronus = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_optima_mr450w_cronus_xgd');
+  assert(!!cronus, 'DIAG_GUIDES_SEED includes the Optima MR450w Cronus / XGD guide');
+  assert(cronus && cronus.title === 'GE Optima MR450w Cronus / XGD Gradient Chassis (XPS LINK FLT, GMC heartbeat, OCT LEDs)'
+    && cronus.system === 'GE MRI' && cronus.category === 'Gradient System',
+    'Cronus guide title, system, and category');
+  const cronusMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-Optima-MR450w-Cronus-XGD.md'), 'utf8').replace(/\n+$/, '');
+  assert(cronus && cronus.content === cronusMd, 'Cronus seed content matches Manuals/All_Systems/Field_Guides/GE-Optima-MR450w-Cronus-XGD.md');
+  const cronusFacts = [
+    'PGR (Power/Gradient/RF) cabinet',
+    'lockout of the PGR gradient subsystem',
+    '910100.htm',
+    'XGA Control Board 5250122',
+    'XPS Control Board 5250122-2',
+    'no explicit slot-compatibility statement',
+    '5183329-2',
+    '5304386',
+    '5250128',
+    '5159513',
+    '5183573',
+    '2384411',
+    'The LINK FLT LED label itself is not defined in the manuals.',
+    'No document in these notes defines the GMC READY LED',
+    'mgd_term',
+    'Reset/Download TPS in progress... was successful',
+    '2267778',
+    'A successful TPS Reset is required for the DVMR Fiber Optic Links to be up.',
+    'OCT STATUS and OCT POWER LEDs at J7/J8 on an XPS unit are not defined',
+    'XG2 Octavius fuse codes do not apply',
+    'There is no Cronus LED table.',
+    'Clock synchronization data fibers',
+    'Auxiliary board fiber link – XGD only',
+    'https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/GE%20Error%20Message%20Tool/root/ermes_2267000-2267999.html#BM2267778',
+    'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Optima%20450w/root/data/Signa_EXCITE/content/1061853.htm'
+  ];
+  cronusFacts.forEach(f => assert(cronus && cronus.content.includes(f), 'Cronus guide keeps: ' + f));
+  ['LINK FLT', 'Cronus', 'GMC', 'XPS', 'XGA', 'MR450w gradient', 'TPS reset', '5250122', '5250128', '2267778'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_ge_optima_mr450w_cronus_xgd'),
+      'amtGuideHits("' + q + '") hits the Optima MR450w Cronus guide');
   });
 
   const pmTpl = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_amt_pm_service_agreement_template_v2');
@@ -780,7 +821,7 @@ assert(ratesJson.labor.afterHours.rate === '$442.50 / hr' && ratesJson.labor.tra
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v56'/.test(sw), 'sw.js cache name is amt-v56');
+assert(/const CACHE = 'amt-v57'/.test(sw), 'sw.js cache name is amt-v57');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
