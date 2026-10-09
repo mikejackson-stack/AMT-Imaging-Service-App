@@ -89,7 +89,7 @@ Phone: [BLANK] | Email: [BLANK]
 **4.6 Customer-supplied parts.** Customer may source its own part for a repair that this Agreement does not cover. If it does:
 
 - AMT gives no warranty on that part, and Section 11.1 does not apply to it.
-- If the part arrives dead, is the wrong part, or fails, Customer pays AMT's labor and travel at the Section 6 rates, with a minimum of [__] hours (suggested [2]) per trip.
+- If the part arrives dead, is the wrong part, or fails, Customer pays AMT's labor and travel at the Section 6 rates, with a minimum of 2 hours per trip.
 - If the part fails within [__] days after install (suggested [90]), Customer pays the labor and travel to replace it again.
 - Customer must tell AMT before any part is installed that AMT did not source, so AMT can confirm it fits the system.
 
@@ -124,13 +124,13 @@ Phone: [BLANK] | Email: [BLANK]
 
 | Type | Rate |
 |---|---|
-| Standard hours | $[__] per hour |
-| After-hours | $[__] per hour |
-| Emergency | $[__] per hour |
+| Standard hours | $295.00 per hour |
+| After-hours | $442.50 per hour |
+| Emergency | $442.50 per hour |
 
-**6.2 Definitions.** Standard hours are [BLANK: e.g., Monday to Friday, 8:00 a.m. to 5:00 p.m. site local time, excluding AMT holidays]. After-hours means [BLANK: e.g., all other times, including weekends and AMT holidays]. Emergency means a call where Customer asks AMT to dispatch at once for a system-down condition.
+**6.2 Definitions.** Standard hours are Monday to Friday, 7:00 a.m. to 5:00 p.m. site local time, excluding AMT holidays. After-hours means all other times, including weekends and AMT holidays. Emergency means a call where Customer asks AMT to dispatch at once for a system-down condition.
 
-**6.3 Mileage.** AMT bills $[__] per mile for driving beyond 30 miles from the nearest AMT base. AMT's bases are Palm Bay, FL and Houston, TX.
+**6.3 Mileage.** AMT bills $0.85 per mile for driving beyond 30 miles from the nearest AMT base. AMT's bases are Palm Bay, FL and Houston, TX.
 
 **6.4 Fly-in travel.** When a job needs air travel, AMT bills airfare, hotel, and rental car at cost plus [__]% (enter 0 for at cost).
 
@@ -192,7 +192,7 @@ AMT is not responsible for delays or added cost caused by Customer not meeting t
 
 ## 11. Warranty, Liability, Indemnity, and Insurance
 
-**11.1 Workmanship warranty.** AMT warrants its work for [__] days (default 30) from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6). For VA and other Federal Supply Schedule (FSS) orders, the labor warranty is 90 days from the date of service completion, as stated in AMT's Commercial Warranty Policy submitted with its VA FSS offer.
+**11.1 Workmanship warranty.** AMT warrants its work for 30 days from completion. If AMT's workmanship fails in that period, AMT will re-perform the work at no charge. Customer must report the failure in writing within that period. Re-performance is Customer's only remedy under this warranty. For parts AMT sources for a repair, AMT passes through any warranty from the part's maker or source. Customer-supplied parts carry no AMT warranty (Section 4.6). For VA and other Federal Supply Schedule (FSS) orders, the labor warranty is 90 days from the date of service completion, as stated in AMT's Commercial Warranty Policy submitted with its VA FSS offer.
 
 **11.2 Disclaimer.** Except for Section 11.1 and any uptime guarantee checked in Section 7.2, AMT makes no other warranties, express or implied. That includes any implied warranty of merchantability or fitness for a particular purpose. AMT does not warrant that the Equipment will run without interruption or error.
 
@@ -260,14 +260,23 @@ Customer: [BLANK: name, title, address, email]
 
 # Exhibit A: Equipment Schedule
 
+**A-0. AMT standard PM-only fees (per scanner, price list effective Oct 8, 2026)**
+
+| Modality | Single PM visit | Annual (1/yr) | Semi-annual (2/yr) | Quarterly (4/yr) | Bimonthly (6/yr) |
+|---|---|---|---|---|---|
+| MRI (GE/Siemens 1.5T/3T) | $2,400 | $2,000/yr | $3,500/yr | $5,800/yr | $8,100/yr |
+| CT (GE/Siemens) | $2,800 | $2,500/yr | $4,600/yr | $8,400/yr | n/a |
+
+Enter each system's annual fee in A-1 from this table for the frequency checked.
+
 **A-1. Systems and fees**
 
 | # | Modality | Make | Model | Serial Number | Site / Address | Room | PM Frequency | Annual Fee per Unit |
 |---|---|---|---|---|---|---|---|---|
-| 1 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Quarterly ☐ Semi-annual | $[__] |
-| 2 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Quarterly ☐ Semi-annual | $[__] |
-| 3 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Quarterly ☐ Semi-annual | $[__] |
-| 4 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Quarterly ☐ Semi-annual | $[__] |
+| 1 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Annual ☐ Semi-annual ☐ Quarterly ☐ Bimonthly (MRI) | $[__] |
+| 2 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Annual ☐ Semi-annual ☐ Quarterly ☐ Bimonthly (MRI) | $[__] |
+| 3 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Annual ☐ Semi-annual ☐ Quarterly ☐ Bimonthly (MRI) | $[__] |
+| 4 | ☐ MRI ☐ CT | [BLANK] | [BLANK] | [BLANK] | [BLANK] | [BLANK] | ☐ Annual ☐ Semi-annual ☐ Quarterly ☐ Bimonthly (MRI) | $[__] |
 | | | | | | | | **Total annual fee** | **$[__]** |
 
 **A-2. Per-system coverage options**
