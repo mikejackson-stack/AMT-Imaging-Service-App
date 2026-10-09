@@ -17,7 +17,10 @@
 // effective Oct 8, 2026 (app v37).
 // Bumped from amt-v56 -> amt-v57 so phones pick up the Optima MR450w
 // Cronus / XGD gradient field guide (app v38).
-const CACHE = 'amt-v57';
+// Bumped from amt-v57 -> amt-v58 so phones pick up the Oct 8, 2026 consistency
+// fixes: capability statement + PDF, service areas, warranty tiers, retainer
+// overage, and the filled PM agreement template (app v39).
+const CACHE = 'amt-v58';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
