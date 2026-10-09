@@ -20,7 +20,9 @@
 // Bumped from amt-v57 -> amt-v58 so phones pick up the Oct 8, 2026 consistency
 // fixes: capability statement + PDF, service areas, warranty tiers, retainer
 // overage, and the filled PM agreement template (app v39).
-const CACHE = 'amt-v58';
+// Bumped from amt-v58 -> amt-v59: capability statement multi-vendor line is
+// now 'GE and Siemens MRI and CT' (card + PDF, app v40).
+const CACHE = 'amt-v59';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',

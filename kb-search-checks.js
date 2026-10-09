@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v39/.test(html);
-  const top = /Field Service · v39/.test(html);
-  const appVer = /const APP_VERSION='v39'/.test(src);
-  assert(login && top && appVer, 'version strings are v39 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v40/.test(html);
+  const top = /Field Service · v40/.test(html);
+  const appVer = /const APP_VERSION='v40'/.test(src);
+  assert(login && top && appVer, 'version strings are v40 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -836,7 +836,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v58'/.test(sw), 'sw.js cache name is amt-v58');
+assert(/const CACHE = 'amt-v59'/.test(sw), 'sw.js cache name is amt-v59');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

@@ -57,7 +57,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v58'/.test(sw), 'sw.js cache name is amt-v58');
+  assert(/const CACHE = 'amt-v59'/.test(sw), 'sw.js cache name is amt-v59');
   assert(sw.includes('./AMT-Capability-Statement.pdf'), 'service worker precaches the capability PDF');
   const pages = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
   const serve = fs.readFileSync(path.join(ROOT, 'scripts/serve.py'), 'utf8');
@@ -97,6 +97,7 @@ function staticChecks() {
       'Candelario Juarez, Member (24.5%), Houston, TX',
       'Antonio Jackson, Member (24.5%), Houston, TX',
       'Founder &amp; Managing Member (51%)',
+      'Multi-vendor: GE and Siemens MRI and CT</li>',
       'GE MRI Instructor (Signa HDxt, Optima MR450w, MR750w) and GE MRI Support Specialist',
       'Install/de-install support: technical work only (no rigging, crane or magnet moves).',
       'Engineering lead: Mike Jackson',
@@ -112,6 +113,8 @@ function staticChecks() {
     [
       'Significantly lower rates',
       'Former USMC',
+      'Toshiba',
+      'Hitachi',
       'Tito',
       'Field Operations (FL)',
       'assistant instructor',
