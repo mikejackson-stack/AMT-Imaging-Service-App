@@ -57,7 +57,7 @@ function staticChecks() {
   const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
   const stand = fs.readFileSync(path.join(ROOT, 'AMT-Imaging-App-standalone.html'), 'utf8');
   const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-  assert(/const CACHE = 'amt-v57'/.test(sw), 'sw.js cache name is amt-v57');
+  assert(/const CACHE = 'amt-v58'/.test(sw), 'sw.js cache name is amt-v58');
   assert(sw.includes('./AMT-Capability-Statement.pdf'), 'service worker precaches the capability PDF');
   const pages = fs.readFileSync(path.join(ROOT, '.github/workflows/pages.yml'), 'utf8');
   const serve = fs.readFileSync(path.join(ROOT, 'scripts/serve.py'), 'utf8');
@@ -92,8 +92,13 @@ function staticChecks() {
       '07/29/2026',
       'Florida LLC',
       '25+ years of hands-on field service: founder has worked on MRI and CT systems since 1999',
-      'Florida: Tito Juarez',
-      'Texas &amp; Georgia: Antonio Jackson',
+      'Florida &amp; South Georgia: Mike Jackson (Palm Bay HQ)',
+      'Houston, TX: Antonio Jackson &amp; Candelario Juarez',
+      'Candelario Juarez, Member (24.5%), Houston, TX',
+      'Antonio Jackson, Member (24.5%), Houston, TX',
+      'Founder &amp; Managing Member (51%)',
+      'GE MRI Instructor (Signa HDxt, Optima MR450w, MR750w) and GE MRI Support Specialist',
+      'Install/de-install support: technical work only (no rigging, crane or magnet moves).',
       'Engineering lead: Mike Jackson',
       'Other locations: case by case',
       'AMT was founded in April 2026',
@@ -107,6 +112,14 @@ function staticChecks() {
     [
       'Significantly lower rates',
       'Former USMC',
+      'Tito',
+      'Field Operations (FL)',
+      'assistant instructor',
+      'Field Technician (TX, GA)',
+      'installs and de-installs',
+      'System moves:',
+      'GE certified',
+      'Siemens certified',
       '25+ years field service experience',
       'Willing to travel',
       'competitive pricing'
