@@ -558,7 +558,7 @@ files.forEach(file => {
   const rrxMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-MR-RRX1-TPS-Reset-Failed-VRF-ICN.md'), 'utf8').replace(/\n+$/, '');
   assert(rrxG && rrxG.content === rrxMd, 'RRX/VRF seed content matches Manuals/All_Systems/Field_Guides/GE-MR-RRX1-TPS-Reset-Failed-VRF-ICN.md');
   ['Proven in the field by Mike, Oct 2026', 'real fault was a failed VRF inside the ICN', 'Replacing the ICN cleared every error',
-   'ICN VRF Manual Loopback Diagnostics', 'VRF Hardware Diagnostics', 'enumerated through the cable to the RF Hub', '[Inferred]', 'Not GE-certified']
+   'ICN VRF Manual Loopback Diagnostics', 'VRF Hardware Diagnostics', 'enumerated through the cable to the RF Hub', '[Inferred]', 'not GE-certified']
     .forEach(f => assert(rrxG && rrxG.content.includes(f), 'RRX/VRF guide keeps: ' + f));
   assert(rrxG && !/\$/.test(rrxG.content) && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(rrxG.content)
     && !/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(rrxG.content), 'RRX/VRF guide has no prices, emails, or phones');
