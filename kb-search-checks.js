@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v40/.test(html);
-  const top = /Field Service · v40/.test(html);
-  const appVer = /const APP_VERSION='v40'/.test(src);
-  assert(login && top && appVer, 'version strings are v40 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v41/.test(html);
+  const top = /Field Service · v41/.test(html);
+  const appVer = /const APP_VERSION='v41'/.test(src);
+  assert(login && top && appVer, 'version strings are v41 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -517,6 +517,42 @@ files.forEach(file => {
       'amtGuideHits("' + q + '") hits the Optima MR450w Cronus guide');
   });
 
+  const pduPs = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_mr450w_48v_pdu_ps_condor_delta');
+  assert(!!pduPs, 'DIAG_GUIDES_SEED includes the MR450w 48V PDU power supply guide');
+  assert(pduPs && pduPs.title === 'MR450w 48V PDU power supply replacement, Condor to Delta (GE 5745311 / Delta DPR3000B-48)'
+    && pduPs.system === 'GE MRI' && pduPs.category === 'Power System',
+    'MR450w 48V PDU power supply guide title, system, and category');
+  const pduMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/MR450w-48V-PDU-power-supply-Condor-to-Delta.md'), 'utf8').replace(/\n+$/, '');
+  assert(pduPs && pduPs.content === pduMd, 'MR450w 48V PDU seed content matches Manuals/All_Systems/Field_Guides/MR450w-48V-PDU-power-supply-Condor-to-Delta.md');
+  const pduFacts = [
+    'GE FRU 5745311',
+    'DPR3000B-48',
+    'Condor 48V 1000W',
+    'https://raw.githack.com/mikejackson-stack/AMT-GE-Manuals/main/Optima%20450W%20GEM/root/t_ReplacingThe48VPowerSupply_DV.html',
+    '2268225 EM_PDU_INT_FAIL',
+    'Lock out the PDU',
+    '97 = B1 Common, terminal 11; 98 = C1 Inhibit, terminal 12',
+    '5140621-10',
+    '5343114-10',
+    'Move wire 97 from terminal 21 (NC) to 13 (NO)',
+    'no voltage trim and no calibration',
+    './mr450w-48v-delta-label.jpg',
+    'EnergE'
+  ];
+  pduFacts.forEach(f => assert(pduPs && pduPs.content.includes(f), 'MR450w 48V PDU guide keeps: ' + f));
+  assert(pduPs && !/\$/.test(pduPs.content)
+    && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(pduPs.content)
+    && !/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(pduPs.content)
+    && !/\d+ [A-Za-z ]+ (St|Street|Ave|Avenue|Rd|Road|Blvd|Dr|Drive|Ln|Lane|Ct|Pkwy|Hwy)\b/.test(pduPs.content),
+    'MR450w 48V PDU guide has no prices, emails, phones, or street addresses');
+  assert(fs.existsSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/mr450w-48v-delta-label.jpg')),
+    'MR450w 48V PDU label photo is next to the guide');
+  ['48V power supply', 'Delta', '5745311', 'PDU', 'Condor', 'DPR3000B-48', 'MR450w'].forEach(q => {
+    const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
+    assert(hits.some(g => g.id === 'dg_mr450w_48v_pdu_ps_condor_delta'),
+      'amtGuideHits("' + q + '") hits the MR450w 48V PDU power supply guide');
+  });
+
   const pmTpl = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_amt_pm_service_agreement_template_v2');
   assert(!!pmTpl, 'DIAG_GUIDES_SEED includes the AMT PM Service Agreement Template (v2)');
   assert(pmTpl && pmTpl.title === 'AMT PM Service Agreement Template (v2)' && pmTpl.category === 'Templates' && pmTpl.readOnly === true,
@@ -836,7 +872,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v59'/.test(sw), 'sw.js cache name is amt-v59');
+assert(/const CACHE = 'amt-v60'/.test(sw), 'sw.js cache name is amt-v60');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

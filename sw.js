@@ -22,7 +22,9 @@
 // overage, and the filled PM agreement template (app v39).
 // Bumped from amt-v58 -> amt-v59: capability statement multi-vendor line is
 // now 'GE and Siemens MRI and CT' (card + PDF, app v40).
-const CACHE = 'amt-v59';
+// Bumped from amt-v59 -> amt-v60 so phones pick up the MR450w 48V PDU
+// power supply replacement field guide, Condor to Delta (app v41).
+const CACHE = 'amt-v60';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
