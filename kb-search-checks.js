@@ -872,7 +872,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v60'/.test(sw), 'sw.js cache name is amt-v60');
+assert(/const CACHE = 'amt-v61'/.test(sw), 'sw.js cache name is amt-v61');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
