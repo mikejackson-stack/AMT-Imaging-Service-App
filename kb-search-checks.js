@@ -536,7 +536,7 @@ files.forEach(file => {
     '5343114-10',
     'Move wire 97 from terminal 21 (NC) to 13 (NO)',
     'no voltage trim and no calibration',
-    './mr450w-48v-delta-label.jpg',
+    'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/All_Systems/Field_Guides/mr450w-48v-delta-label.jpg',
     'EnergE'
   ];
   pduFacts.forEach(f => assert(pduPs && pduPs.content.includes(f), 'MR450w 48V PDU guide keeps: ' + f));
@@ -872,7 +872,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v61'/.test(sw), 'sw.js cache name is amt-v61');
+assert(/const CACHE = 'amt-v62'/.test(sw), 'sw.js cache name is amt-v62');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
