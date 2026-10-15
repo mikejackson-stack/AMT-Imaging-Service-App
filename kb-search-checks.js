@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v41/.test(html);
-  const top = /Field Service · v41/.test(html);
-  const appVer = /const APP_VERSION='v41'/.test(src);
-  assert(login && top && appVer, 'version strings are v41 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v42/.test(html);
+  const top = /Field Service · v42/.test(html);
+  const appVer = /const APP_VERSION='v42'/.test(src);
+  assert(login && top && appVer, 'version strings are v42 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -553,6 +553,25 @@ files.forEach(file => {
       'amtGuideHits("' + q + '") hits the MR450w 48V PDU power supply guide');
   });
 
+  const rrxG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_mr_rrx1_tps_reset_failed_vrf_icn');
+  assert(!!rrxG && rrxG.system === 'GE MRI' && rrxG.category === 'Receive Chain', 'DIAG_GUIDES_SEED includes the GE MR TPS reset / RRX-1 / failed VRF in ICN guide');
+  const rrxMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-MR-RRX1-TPS-Reset-Failed-VRF-ICN.md'), 'utf8').replace(/\n+$/, '');
+  assert(rrxG && rrxG.content === rrxMd, 'RRX/VRF seed content matches Manuals/All_Systems/Field_Guides/GE-MR-RRX1-TPS-Reset-Failed-VRF-ICN.md');
+  ['Proven in the field by Mike, Oct 2026', 'real fault was a failed VRF inside the ICN', 'Replacing the ICN cleared every error',
+   'ICN VRF Manual Loopback Diagnostics', 'VRF Hardware Diagnostics', 'enumerated through the cable to the RF Hub', '[Inferred]', 'Not GE-certified']
+    .forEach(f => assert(rrxG && rrxG.content.includes(f), 'RRX/VRF guide keeps: ' + f));
+  assert(rrxG && !/\$/.test(rrxG.content) && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(rrxG.content)
+    && !/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(rrxG.content), 'RRX/VRF guide has no prices, emails, or phones');
+  ['2272059', '2270016', '2267586', '2267519', 'RRX', 'VRF', 'TPS reset'].forEach(q => {
+    assert(rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED).some(g => g.id === 'dg_ge_mr_rrx1_tps_reset_failed_vrf_icn'),
+      'amtGuideHits("' + q + '") hits the RRX/VRF TPS reset guide');
+  });
+  ['kb_seed_err_2272059_ads_icn_vrf_mapping', 'kb_seed_err_2270016_vrf_device_id', 'kb_seed_err_2267586_rfhub_rrx_vrf_fiber',
+   'kb_seed_err_2267519_rfcal_rfhub_errors', 'kb_seed_ge_mr_tps_reset_rrx_vrf'].forEach(id => {
+    assert(src.includes('id:"' + id + '"'), 'KB_SEED includes ' + id);
+  });
+  assert((src.match(/guide:"dg_ge_mr_rrx1_tps_reset_failed_vrf_icn"/g) || []).length === 5, 'all 5 RRX/VRF KB entries cross-link the guide');
+
   const pmTpl = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_amt_pm_service_agreement_template_v2');
   assert(!!pmTpl, 'DIAG_GUIDES_SEED includes the AMT PM Service Agreement Template (v2)');
   assert(pmTpl && pmTpl.title === 'AMT PM Service Agreement Template (v2)' && pmTpl.category === 'Templates' && pmTpl.readOnly === true,
@@ -872,7 +891,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v62'/.test(sw), 'sw.js cache name is amt-v62');
+assert(/const CACHE = 'amt-v63'/.test(sw), 'sw.js cache name is amt-v63');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
