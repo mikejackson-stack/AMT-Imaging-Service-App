@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v42/.test(html);
-  const top = /Field Service · v42/.test(html);
-  const appVer = /const APP_VERSION='v42'/.test(src);
-  assert(login && top && appVer, 'version strings are v42 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v43/.test(html);
+  const top = /Field Service · v43/.test(html);
+  const appVer = /const APP_VERSION='v43'/.test(src);
+  assert(login && top && appVer, 'version strings are v43 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -547,11 +547,53 @@ files.forEach(file => {
     'MR450w 48V PDU guide has no prices, emails, phones, or street addresses');
   assert(fs.existsSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/mr450w-48v-delta-label.jpg')),
     'MR450w 48V PDU label photo is next to the guide');
-  ['48V power supply', 'Delta', '5745311', 'PDU', 'Condor', 'DPR3000B-48', 'MR450w'].forEach(q => {
+  const pduTsbFacts = [
+    'spring-loaded latch mounting pins',
+    'NEVER use `8-32` screws into the Delta power supply casing',
+    'TSB102109-1',
+    '48v ps Teal replacement.pdf',
+    '0590905',
+    '0590902',
+    '97679–115507',
+    '12/14/2007–8/7/2008',
+    '4990913',
+    '0110091',
+    '1181431',
+    'Side-by-Side Revision & Part Cross-Reference',
+    '5140621 Rev 14',
+    'DOC1805616 Rev 3',
+    'DOC1805613 Rev 3',
+    'DOC2175961',
+    '4990782',
+    '4991419',
+    '5140621-11',
+    '4990781',
+    'DOC2766902 Rev 1',
+    '5890114',
+    'absorbed verbatim into Section 4.2.6 (p. 44) and Appendix A (pp. 61–71)'
+  ];
+  pduTsbFacts.forEach(f => assert(pduPs && pduPs.content.includes(f), 'MR450w 48V PDU guide includes TSB102109-1 / DOC1805613 Rev 3 fact: ' + f));
+  assert(pduPs && !pduPs.content.includes('Older PDUs (S/Ns in TSB 102109-1, built 12/2007–8/2008): mount the supplies to the bracket with 8-32 x 1/4 in screws, 16 in-lb, Loctite 242.'),
+    'MR450w 48V PDU guide removes the misleading Step 7 8-32 screw instruction');
+  assert(pduPs && !/^[ \t]+- /m.test(pduPs.content) && !/^[ \t]+\|/m.test(pduPs.content),
+    'MR450w 48V PDU guide has no nested bullet dashes or indented table lines');
+  ['48V power supply', 'Delta', '5745311', 'PDU', 'Condor', 'DPR3000B-48', 'MR450w', 'TSB102109-1', 'DOC1805613', 'DOC1805616', 'DOC2175961', '4991419', '4990913', '5140621-11'].forEach(q => {
     const hits = rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED);
     assert(hits.some(g => g.id === 'dg_mr450w_48v_pdu_ps_condor_delta'),
       'amtGuideHits("' + q + '") hits the MR450w 48V PDU power supply guide');
   });
+  assert(src.includes('id:"kb_idx_48v_ps_teal_replacement"')
+    && src.includes('TEAL TSB 102109-1 (2009 Condor Screw Rework — Superseded by Delta 48V Conversion in DOC1805613 Rev 3)')
+    && src.includes('MR450w 48V PDU Power Supply Replacement — Condor to Delta (GE 5745311 / Delta DPR3000B-48)')
+    && src.includes('guide:"dg_mr450w_48v_pdu_ps_condor_delta"'),
+    'kb_idx_48v_ps_teal_replacement clearly labels 48v ps Teal replacement.pdf as superseded 2009 Condor screw rework and links the Condor-to-Delta guide');
+  assert(src.includes('id:"kb_seed_ge_mr_goc_audio_box_2395043"')
+    && src.includes('2395043 / 2395043-2')
+    && src.includes('has NO LEDs (verified in the field by Mike, Oct 2026)')
+    && src.includes('1052796') && src.includes('1059485') && src.includes('1046686')
+    && src.includes('R28') && src.includes('R13') && src.includes('R67')
+    && src.includes('do NOT adjust R32 or R52'),
+    'KB_SEED includes the GE MR GOC Audio Box (2395043 / 2395043-2) NO LEDs entry and functional checks');
 
   const rrxG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_mr_rrx1_tps_reset_failed_vrf_icn');
   assert(!!rrxG && rrxG.system === 'GE MRI' && rrxG.category === 'Receive Chain', 'DIAG_GUIDES_SEED includes the GE MR TPS reset / RRX-1 / failed VRF in ICN guide');
@@ -891,7 +933,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v63'/.test(sw), 'sw.js cache name is amt-v63');
+assert(/const CACHE = 'amt-v64'/.test(sw), 'sw.js cache name is amt-v64');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
