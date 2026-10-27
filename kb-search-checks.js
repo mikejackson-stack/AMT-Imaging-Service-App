@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v43/.test(html);
-  const top = /Field Service · v43/.test(html);
-  const appVer = /const APP_VERSION='v43'/.test(src);
-  assert(login && top && appVer, 'version strings are v43 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v44/.test(html);
+  const top = /Field Service · v44/.test(html);
+  const appVer = /const APP_VERSION='v44'/.test(src);
+  assert(login && top && appVer, 'version strings are v44 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -595,6 +595,20 @@ files.forEach(file => {
     && src.includes('do NOT adjust R32 or R52'),
     'KB_SEED includes the GE MR GOC Audio Box (2395043 / 2395043-2) NO LEDs entry and functional checks');
 
+  // MXR field KB entries (27 Oct 2026)
+  const MXR_IDS = ['kb_mxr_ge_mr_saveinfo_dvd_media', 'kb_mxr_ge_mr_saveinfo_26x_no_service_key', 'kb_mxr_ge_mr_saveinfo_illegal_characters', 'kb_mxr_ge_mr_svat_error_dqa', 'kb_mxr_ge_mr_dqa_history_file', 'kb_mxr_ge_mr_ae_title_suite_host_id', 'kb_mxr_ge_mr_table_noisy_long_drive_belt', 'kb_mxr_ge_mr_lpca_carriage_release_screw', 'kb_mxr_ge_mr_hd23x_terminal_server_cables', 'kb_mxr_ge_ct_optima590rt_vector_limit_das', 'kb_mxr_siemens_mr_media_dvd_r_only', 'kb_mxr_ge_ct_mdas16_beam_obstruction_detector', 'kb_mxr_ge_ct_vct_60_0332_kv_regulation', 'kb_mxr_ge_ct_gdas_converter_2364354_two_types', 'kb_mxr_ge_ct_xw8000_host_hd_boot', 'kb_mxr_ge_23x_patient_in_use', 'kb_mxr_ge_mr_450w_24x_vre_reset_failure', 'kb_mxr_ge_mr_450w_xps_init_pll', 'kb_mxr_siemens_mr_erdu_quench_button_log'];
+  const kbSeedSrc = extractConst(src, 'KB_SEED');
+  const mxrCount = (kbSeedSrc.match(/id:"kb_mxr_/g) || []).length;
+  assert(mxrCount === 19, 'KB_SEED has exactly 19 kb_mxr_ entries (got ' + mxrCount + ')');
+  MXR_IDS.forEach(id => assert(kbSeedSrc.includes('id:"' + id + '"'), 'KB_SEED includes ' + id));
+  const mxrBlocks = kbSeedSrc.split('{').filter(b => b.includes('id:"kb_mxr_'));
+  assert(mxrBlocks.every(b => /Status: (Confirmed field fix|Unconfirmed: field suggestion)\./.test(b)), 'every kb_mxr_ entry has a Status line');
+  assert(mxrBlocks.every(b => /source:"Source: MXR Slack field discussion, \d{4}-\d{2}-\d{2} ET, https:\/\/mxray\.slack\.com\/archives\//.test(b)), 'every kb_mxr_ entry has a dated MXR permalink source');
+  assert(mxrBlocks.every(b => !/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(b)), 'kb_mxr_ entries contain no phone numbers');
+  assert(mxrBlocks.every(b => !/certified/i.test(b)), 'kb_mxr_ entries make no "certified" claims');
+  assert(mxrBlocks.every(b => !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(b) && !/dropbox/i.test(b)), 'kb_mxr_ entries contain no emails or Dropbox links');
+  assert((src.match(/Status: Confirmed field fix\./g) || []).length >= 5, 'at least 5 confirmed MXR field fixes');
+
   const rrxG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === 'dg_ge_mr_rrx1_tps_reset_failed_vrf_icn');
   assert(!!rrxG && rrxG.system === 'GE MRI' && rrxG.category === 'Receive Chain', 'DIAG_GUIDES_SEED includes the GE MR TPS reset / RRX-1 / failed VRF in ICN guide');
   const rrxMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-MR-RRX1-TPS-Reset-Failed-VRF-ICN.md'), 'utf8').replace(/\n+$/, '');
@@ -933,7 +947,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v64'/.test(sw), 'sw.js cache name is amt-v64');
+assert(/const CACHE = 'amt-v65'/.test(sw), 'sw.js cache name is amt-v65');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
