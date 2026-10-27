@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v44/.test(html);
-  const top = /Field Service · v44/.test(html);
-  const appVer = /const APP_VERSION='v44'/.test(src);
-  assert(login && top && appVer, 'version strings are v44 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v45/.test(html);
+  const top = /Field Service · v45/.test(html);
+  const appVer = /const APP_VERSION='v45'/.test(src);
+  assert(login && top && appVer, 'version strings are v45 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -735,6 +735,36 @@ files.forEach(file => {
     'manuals catalog lists the Versana loose PDF');
   assert(rt.amtManualHits('loose service').some(m => m.path === 'GE/Loose'),
     'GE browse fallback includes the Loose folder');
+
+  // TEAL XGD2 CON2 field case (27 Oct 2026)
+  const LINK = 'https://raw.githack.com/mikejackson-stack/AMT-Imaging-Service-App/main/Manuals/GE/Discovery%20750w/root/data/Signa_EXCITE/media/1051587-1112335.pdf';
+  const tealKbId = 'kb_field_ge_mr_teal_xgd2_con2_dropout';
+  const tealGuideId = 'dg_ge_mr_teal_xgd2_con2_dropout';
+  const kbSrcT = extractConst(src, 'KB_SEED');
+  assert(kbSrcT.includes('id:"' + tealKbId + '"'), 'KB_SEED includes ' + tealKbId);
+  const tealBlock = kbSrcT.split('{').find(b => b.includes('id:"' + tealKbId + '"')) || '';
+  assert(/Status: In progress, fix not yet confirmed \(AMT field case, 27 Oct 2026\)/.test(tealBlock) && tealBlock.includes('not yet confirmed'), 'TEAL CON2 KB status line says not yet confirmed');
+  ['No power to the RF amp', 'No power to the PEN cabinet', 'Power would come on for a few seconds, then drop out', 'Reference used in field: 1051587-1112335.pdf']
+    .forEach(f => assert(tealBlock.includes(f), 'TEAL CON2 KB entry includes: ' + f));
+  const tealG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === tealGuideId);
+  assert(!!tealG, 'DIAG_GUIDES_SEED includes ' + tealGuideId);
+  const tealMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-MR-TEAL-XGD2-PDU-CON2-Dropout.md'), 'utf8').replace(/\n+$/, '');
+  assert(tealG && tealG.content === tealMd, 'TEAL CON2 seed content matches the .md');
+  assert(tealG && !/^[ \t]+- /m.test(tealG.content) && !/^[ \t]+\|/m.test(tealG.content), 'TEAL CON2 guide has no nested bullets or indented tables');
+  assert(tealG && tealG.content.includes('not yet confirmed') && tealG.content.includes('Tolerance: not documented'), 'TEAL CON2 guide keeps status and tolerance gap');
+  [tealBlock, tealG ? tealG.content : ''].forEach(t => {
+    assert(!/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(t) && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(t) && !/certified/i.test(t) && !/https?:\/\//.test(t.split(LINK).join('')),
+      'TEAL CON2 content has no phone, email, "certified" or links');
+  });
+  ['CON2', 'RF amp'].forEach(q => {
+    assert(rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED).some(g => g.id === tealGuideId), 'amtGuideHits("' + q + '") hits the TEAL CON2 guide');
+    assert(tealBlock.includes(q), 'TEAL CON2 KB entry is searchable by "' + q + '" (text/tags)');
+  });
+  assert(tealBlock.includes(LINK) && tealG && tealG.content.includes(LINK), 'TEAL CON2 KB source and guide include the field reference link');
+  assert(tealG && tealG.content.includes('Reference used in field: 1051587-1112335.pdf'), 'TEAL CON2 guide includes the field reference label');
+  ['MR750w', 'MR450w'].forEach(tag => {
+    assert(tealBlock.includes('"' + tag + '"') && tealG && tealG.tags.includes(tag) && tealG.content.includes(tag), 'TEAL CON2 tags include ' + tag);
+  });
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
@@ -947,7 +977,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v65'/.test(sw), 'sw.js cache name is amt-v65');
+assert(/const CACHE = 'amt-v66'/.test(sw), 'sw.js cache name is amt-v66');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
