@@ -28,7 +28,8 @@
 // DPR3000B-48 label photo (serial blurred) on that field guide.
 // Bumped from amt-v61 -> amt-v63 so phones pick up the label photo as a
 // raw.githack link the guide viewer can open.
-const CACHE = 'amt-v64';
+// Bumped from amt-v64 -> amt-v65 so phones pick up the 19 MXR field KB entries (app v44).
+const CACHE = 'amt-v65';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
