@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v45/.test(html);
-  const top = /Field Service · v45/.test(html);
-  const appVer = /const APP_VERSION='v45'/.test(src);
-  assert(login && top && appVer, 'version strings are v45 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v46/.test(html);
+  const top = /Field Service · v46/.test(html);
+  const appVer = /const APP_VERSION='v46'/.test(src);
+  assert(login && top && appVer, 'version strings are v46 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -765,6 +765,28 @@ files.forEach(file => {
   ['MR750w', 'MR450w'].forEach(tag => {
     assert(tealBlock.includes('"' + tag + '"') && tealG && tealG.tags.includes(tag) && tealG.content.includes(tag), 'TEAL CON2 tags include ' + tag);
   });
+
+  // GE MGD APS/AGP/SCP NVRAM (CNFG / ENV restore), Condes July 2017
+  const mgdKbId = 'kb_field_ge_mgd_nvram_cnfg_env';
+  const mgdGuideId = 'dg_ge_mgd_aps_agp_scp_nvram';
+  const kbSrcM = extractConst(src, 'KB_SEED');
+  assert(kbSrcM.includes('id:"' + mgdKbId + '"'), 'KB_SEED includes ' + mgdKbId);
+  const mgdBlock = kbSrcM.split('{').find(b => b.includes('id:"' + mgdKbId + '"')) || '';
+  assert(mgdBlock.includes('MCP820') && mgdBlock.includes('ENV;D'), 'MGD NVRAM KB block includes MCP820 and ENV;D');
+  const mgdG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === mgdGuideId);
+  assert(!!mgdG, 'DIAG_GUIDES_SEED includes ' + mgdGuideId);
+  const mgdMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/GE-MR-MGD-APS-AGP-SCP-NVRAM.md'), 'utf8').replace(/\n+$/, '');
+  assert(mgdG && mgdG.content === mgdMd, 'MGD NVRAM seed content matches the .md');
+  assert(mgdG && !/^[ \t]+- /m.test(mgdG.content) && !/^[ \t]+\|/m.test(mgdG.content), 'MGD NVRAM guide has no nested bullets or indented tables');
+  [mgdBlock, mgdG ? mgdG.content : ''].forEach(t => {
+    assert(!/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(t) && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(t) && !/certified/i.test(t) && !/https?:\/\//.test(t),
+      'MGD NVRAM content has no phone, email, "certified" or links');
+  });
+  ['CNFG', 'mgd_term'].forEach(q => {
+    assert(rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED).some(g => g.id === mgdGuideId), 'amtGuideHits("' + q + '") hits the MGD NVRAM guide');
+  });
+  assert(mgdG && mgdG.content.includes('## Source') && mgdG.content.includes('GE MGD APS SCP Troubleshooting Guide, Lito Condes (GE MRI Advanced Service Engineer), July 2017'),
+    'MGD NVRAM guide includes the Source line');
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
@@ -977,7 +999,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v66'/.test(sw), 'sw.js cache name is amt-v66');
+assert(/const CACHE = 'amt-v67'/.test(sw), 'sw.js cache name is amt-v67');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
