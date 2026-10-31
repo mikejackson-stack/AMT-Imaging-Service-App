@@ -30,7 +30,8 @@
 // raw.githack link the guide viewer can open.
 // Bumped from amt-v64 -> amt-v65 so phones pick up the 19 MXR field KB entries (app v44).
 // Bumped from amt-v65 -> amt-v66 so phones pick up the TEAL XGD2 CON2 field guide and KB entry (app v45).
-const CACHE = 'amt-v66';
+// Bumped from amt-v66 -> amt-v67 so phones pick up the MGD NVRAM field guide and KB entry (app v46).
+const CACHE = 'amt-v67';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
