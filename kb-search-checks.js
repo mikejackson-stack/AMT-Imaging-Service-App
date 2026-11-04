@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v46/.test(html);
-  const top = /Field Service · v46/.test(html);
-  const appVer = /const APP_VERSION='v46'/.test(src);
-  assert(login && top && appVer, 'version strings are v46 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v47/.test(html);
+  const top = /Field Service · v47/.test(html);
+  const appVer = /const APP_VERSION='v47'/.test(src);
+  assert(login && top && appVer, 'version strings are v47 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -787,6 +787,29 @@ files.forEach(file => {
   });
   assert(mgdG && mgdG.content.includes('## Source') && mgdG.content.includes('GE MGD APS SCP Troubleshooting Guide, Lito Condes (GE MRI Advanced Service Engineer), July 2017'),
     'MGD NVRAM guide includes the Source line');
+
+  // MRI coldhead compressor backflush (RP-50 hand pump), Phil Belcher 7 Jan 2009
+  const bfKbId = 'kb_field_mr_coldhead_compressor_backflush_rp50';
+  const bfGuideId = 'dg_mr_coldhead_compressor_backflush_rp50';
+  const kbSrcB = extractConst(src, 'KB_SEED');
+  assert(kbSrcB.includes('id:"' + bfKbId + '"'), 'KB_SEED includes ' + bfKbId);
+  const bfBlock = kbSrcB.split('{').find(b => b.includes('id:"' + bfKbId + '"')) || '';
+  assert(bfBlock.includes('RP-50') && bfBlock.includes('81 15 136'), 'coldhead backflush KB block includes RP-50 and 81 15 136');
+  const bfG = (rt.DIAG_GUIDES_SEED || []).find(g => g.id === bfGuideId);
+  assert(!!bfG, 'DIAG_GUIDES_SEED includes ' + bfGuideId);
+  const bfMd = fs.readFileSync(path.join(__dirname, 'Manuals/All_Systems/Field_Guides/MR-Coldhead-Compressor-Backflush-RP50.md'), 'utf8').replace(/\n+$/, '');
+  assert(bfG && bfG.content === bfMd, 'coldhead backflush seed content matches the .md');
+  assert(bfG && !/^[ \t]+- /m.test(bfG.content) && !/^[ \t]+\|/m.test(bfG.content), 'coldhead backflush guide has no nested bullets or indented tables');
+  [bfBlock, bfG ? bfG.content : ''].forEach(t => {
+    assert(!/\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/.test(t) && !/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/.test(t) && !/certified/i.test(t) && !/https?:\/\//.test(t),
+      'coldhead backflush content has no phone, email, "certified" or links');
+  });
+  ['backflush', 'back flush', 'coldhead compressor', 'RP-50', '81 15 136'].forEach(q => {
+    assert(rt.amtGuideHits(q, rt.DIAG_GUIDES_SEED).some(g => g.id === bfGuideId), 'amtGuideHits("' + q + '") hits the coldhead backflush guide');
+    assert(bfBlock.includes(q), 'coldhead backflush KB entry is searchable by "' + q + '" (text/tags)');
+  });
+  assert(bfG && bfG.content.includes('## Inferred (not in source)') && bfG.content.includes('Phil Belcher, 7 Jan 2009'),
+    'coldhead backflush guide credits Phil Belcher and keeps the Inferred section');
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
@@ -999,7 +1022,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v67'/.test(sw), 'sw.js cache name is amt-v67');
+assert(/const CACHE = 'amt-v68'/.test(sw), 'sw.js cache name is amt-v68');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
