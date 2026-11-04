@@ -787,6 +787,7 @@ files.forEach(file => {
   });
   assert(mgdG && mgdG.content.includes('## Source') && mgdG.content.includes('GE MGD APS SCP Troubleshooting Guide, Lito Condes (GE MRI Advanced Service Engineer), July 2017'),
     'MGD NVRAM guide includes the Source line');
+  assert(mgdG && !/DRAFT/.test(mgdG.content), 'MGD NVRAM guide has no DRAFT banner');
 
   // MRI coldhead compressor backflush (RP-50 hand pump), Phil Belcher 7 Jan 2009
   const bfKbId = 'kb_field_mr_coldhead_compressor_backflush_rp50';
