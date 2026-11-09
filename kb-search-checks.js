@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v48/.test(html);
-  const top = /Field Service · v48/.test(html);
-  const appVer = /const APP_VERSION='v48'/.test(src);
-  assert(login && top && appVer, 'version strings are v48 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v49/.test(html);
+  const top = /Field Service · v49/.test(html);
+  const appVer = /const APP_VERSION='v49'/.test(src);
+  assert(login && top && appVer, 'version strings are v49 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -866,9 +866,14 @@ files.forEach(file => {
       (e.tags || []).some(t => String(t || '').toLowerCase().includes(ql))
     ));
   }
-  ['WO80929', 'MXR-101069'].forEach(q => {
+  ['WO80929', 'MXR-101069', '20ohm', 'known good'].forEach(q => {
     assert(kbTextHits(q).some(e => e.id === woId), "search '" + q + "' finds " + woId);
   });
+  assert(woBlock.includes('Tech clarification (9 Nov 2026, tech\'s words)') && woBlock.includes('The .808 was the known good.') && woBlock.includes('20ohm and higher is bad.'),
+    'WO80929 keeps the tach-pin ohm clarification');
+  assert(!woBlock.includes('The notes do not make clear whether this pin 4 reading'),
+    'WO80929 no longer says the pin 4 fan set is unclear');
+  assert(woBlock.includes('updated:"2026-11-09T23:30:00.000Z"'), 'WO80929 updated stamp is 2026-11-09T23:30:00.000Z');
   const fanNumIds = [
     'kb_field_ge_mr750w_fan_tray_tach_estop',
     'kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz'
@@ -1094,7 +1099,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v69'/.test(sw), 'sw.js cache name is amt-v69');
+assert(/const CACHE = 'amt-v70'/.test(sw), 'sw.js cache name is amt-v70');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

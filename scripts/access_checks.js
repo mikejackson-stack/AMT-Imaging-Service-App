@@ -122,7 +122,7 @@ assert(pages.includes('access-config.js'), 'Pages deploy publishes access-config
 assert(serve.includes('access-config.js'), 'local server publishes access-config.js');
 
 const sw = fs.readFileSync(path.join(ROOT, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v69'/.test(sw), 'sw.js cache name is amt-v69');
+assert(/const CACHE = 'amt-v70'/.test(sw), 'sw.js cache name is amt-v70');
 assert(sw.includes('access-config.js'), 'service worker caches access-config.js');
 
 const appFiles = ['index.html', 'AMT-Imaging-App-standalone.html'].map(name => path.join(ROOT, name));
