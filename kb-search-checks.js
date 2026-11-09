@@ -829,8 +829,6 @@ files.forEach(file => {
     assert(block.includes('historical field case'), id + ' is a historical field case');
     assert(!phoneRe.test(block) && !emailRe.test(block) && !/certified/i.test(block),
       id + ' has no phone, email, or "certified"');
-    assert(!block.includes('260.20656') && !block.includes('1,057.13352') && !block.includes('1057.13352'),
-      id + ' does not add the unlabeled numeric columns');
     assert(!/^\s*guide\s*:/m.test(block), id + ' has no guide key');
   });
   const fanBlock = kbSrcF.split('{').find(b => b.includes('id:"kb_field_ge_mr750w_fan_tray_tach_estop"')) || '';
@@ -857,9 +855,9 @@ files.forEach(file => {
     woId + ' has no phone, email, "certified", or dollar amount');
   assert(!/^\s*guide\s*:/m.test(woBlock), woId + ' has no guide key');
   const kbSeedLive = new Function('return ' + kbSrcF)();
-  ['WO80929', 'MXR-101069'].forEach(q => {
-    const ql = q.toLowerCase();
-    const found = kbSeedLive.filter(e => e && (
+  function kbTextHits(q) {
+    const ql = String(q).toLowerCase();
+    return kbSeedLive.filter(e => e && (
       String(e.title || '').toLowerCase().includes(ql) ||
       String(e.problem || '').toLowerCase().includes(ql) ||
       String(e.solution || '').toLowerCase().includes(ql) ||
@@ -867,8 +865,23 @@ files.forEach(file => {
       String(e.model || '').toLowerCase().includes(ql) ||
       (e.tags || []).some(t => String(t || '').toLowerCase().includes(ql))
     ));
-    assert(found.some(e => e.id === woId), "search '" + q + "' finds " + woId);
+  }
+  ['WO80929', 'MXR-101069'].forEach(q => {
+    assert(kbTextHits(q).some(e => e.id === woId), "search '" + q + "' finds " + woId);
   });
+  const fanNumIds = [
+    'kb_field_ge_mr750w_fan_tray_tach_estop',
+    'kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz'
+  ];
+  const hit260 = kbTextHits('260.20656').map(e => e.id);
+  fanNumIds.forEach(id => assert(hit260.indexOf(id) !== -1, "search '260.20656' finds " + id));
+  assert(kbTextHits('1057.13352').some(e => e.id === 'kb_field_ge_mr750w_aux_box_48v_undervoltage'),
+    "search '1057.13352' finds the Aux Box entry");
+  assert(fanBlock.includes('Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).')
+    && cronusBlock.includes('Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).'),
+    'both fan entries keep the 260.20656 part/case note');
+  assert(auxBlock.includes('Service-log column value: 1,057.13352 (part/case number per Mike; which of the two not stated).'),
+    'Aux Box entry keeps the 1,057.13352 part/case note');
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
