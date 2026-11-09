@@ -741,7 +741,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <!-- LOGIN -->
 <div id="loginScreen">
   <img class="login-logo" id="loginLogo" src="" alt="AMT Imaging Solutions">
-  <div class="login-tagline">Field Service Management · v47</div>
+  <div class="login-tagline">Field Service Management · v48</div>
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC -- Staff Portal</p>
@@ -796,7 +796,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <div id="topBar">
   <div class="topbar-left">
     <img class="topbar-logo" id="topbarLogo" src="" alt="AMT">
-    <div class="topbar-name"><span class="topbar-brand">AMT Imaging Solutions</span><span class="topbar-sub">Field Service · v47</span></div>
+    <div class="topbar-name"><span class="topbar-brand">AMT Imaging Solutions</span><span class="topbar-sub">Field Service · v48</span></div>
   </div>
   <div class="topbar-right">
     <div class="user-avatar" id="userAvatar">?</div>
@@ -1804,7 +1804,7 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 // FULL ERROR CODE DATABASE
 // ════════════════════════════════════════════════════
-const APP_VERSION='v47';
+const APP_VERSION='v48';
 const FULL_ERROR_DB=[
   // GE MRI
   {code:'E305',brand:'GE',desc:'RF Amplifier fault -- check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
@@ -6465,6 +6465,66 @@ const KB_SEED = [
   created:"2026-11-04T00:00:00.000Z",
   updated:"2026-11-04T00:00:00.000Z",
   source:"Phil Belcher, 7 Jan 2009",
+},
+{
+  id:"kb_field_ge_mr750w_fan_tray_tach_estop",
+  title:"GE MR XGD fan module/tray: missing tach from one fan trips e-stop (field history, eDMS MRM-002402)",
+  cat:"GE",
+  model:"GE MR XGD PGR (system-type column not shown in the log photos). Relevant to Discovery MR750w / XGD fan-tray questions.",
+  error:"Fan module missing tach signal from one of its fans; e-stop trips",
+  problem:"Field history (service log), not OEM procedure. Historical field case dated 2011Feb25. Text as transcribed: \"Fan module is missing tach signal from one of its fans which causes e-stop to trip. eDMS# MRM-002402\". Related sister case the same week: kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz (MRM-001961).",
+  solution:"Status: historical field case.\nThis is field history from a service-log spreadsheet, not an OEM procedure.\nWhat the log says: a fan module missing the tach signal from one of its fans caused e-stop to trip. eDMS# MRM-002402. Log date 2011Feb25.\nOEM text that is related, but is not this field case and does not reference MRM-002402:\n- 1061793 XGD Fan Box Assembly Replacement (Direction 5670006 Rev 1, module 3.0, 8/19/08) \u00a72.2 replacement part: XGD Fan Box Assembly 5183573. Replacement only; finalization says to restore power and \"Check and ensure the Fan is operating appropriately.\"\n- FRU book Direction 5670005 Rev 4 printed p.52: 5183573 = XGD FAN BOX ASSY under FAN TRAY REMOVABLE.\n- Error tool 2267834 EM_XGD_FAN_FAIL: \"The Power Cabinet AUX board is reporting a fan tachometer failure on %b.\" Message only; no extended steps.\n- Error tool 2267919 EM_XGD_CRONUS_FAN / 2267852 EM_XGD_GMC_FAN_FAIL tell the tech to replace the Cronus chassis fan tray. That is a different named assembly from the XGD fan box.\nDo not use this entry as a bypass, jumper, or tach-spoof procedure.",
+  parts:"OEM XGD Fan Box Assembly in held docs: 5183573 (1061793 \u00a72.2; 5670005 Rev 4 p.52). Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).",
+  tags:["field-history","historical field case","eDMS","MRM-002402","fan module","fan tray","tach","e-stop","2267834","5183573","1061793","MR750w","XGD","260.20656"],
+  date:"2011-02-25",
+  created:"2026-11-09T17:22:00.000Z",
+  updated:"2026-11-09T22:12:00.000Z",
+  source:"Field history (service log), not OEM procedure. Transcribed from service-log spreadsheet photos sent 9 Nov 2026. Wording verified verbatim against the service-log photos on 9 Nov 2026. eDMS# MRM-002402.",
+},
+{
+  id:"kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz",
+  title:"GE MR XGD Z fan tray bad tach: field case used engineering tool and Cronus GMC/AUX_SECFAULTS GRAD_FANZ_3_FAIL (eDMS MRM-001961)",
+  cat:"GE",
+  model:"GE MR XGD PGR (system-type column not shown in the log photos). Relevant to Discovery MR750w / XGD fan-tray questions.",
+  error:"Z fan tray bad tach from one fan; e-stop trips; GMC/AUX_SECFAULTS: GRAD_FANZ_3_FAIL",
+  problem:"Field history (service log), not OEM procedure. Historical field case dated 2011FEB21. Text as transcribed: \"Fan Tray causes E-stop to trip. Used engineering tool to determine that Z fan tray had bad tach signal from one of it's fans. After TPS boot failure, was able to log into CRONUS chassis and verify problem: GMC/AUX_SECFAULTS: GRAD_FANZ_3_FAIL. eDMS# MRM-001961\".",
+  solution:"Status: historical field case.\nThis is field history from a service-log spreadsheet, not an OEM procedure. The Cronus login / GMC/AUX_SECFAULTS / GRAD_FANZ_3_FAIL readout described here was not found as an OEM procedure in the held Discovery MR750w library, the Error Message Tool, FRU book 5670005 Rev 4, or OneDrive Work Docs searches.\nWhat the log says: a fan tray caused e-stop to trip. An engineering tool pointed to the Z fan tray having a bad tach signal from one of its fans. After a TPS boot failure, a login to the CRONUS chassis showed GMC/AUX_SECFAULTS: GRAD_FANZ_3_FAIL. eDMS# MRM-001961. Log date 2011FEB21.\nOEM text that is related, but does not document that login or those fault names:\n- 1061853 XGD Cronus Chassis Replacements (Direction 5670006 Rev 1, module 3.0, 8/19/08) is hardware replacement only (GMC, XGA-CB, XPS-CB, Cronus PS, Cronus fan assembly, chassis). \u00a75: \"No finalization steps.\" No login, no AUX_SECFAULTS, no GRAD_FANZ, no per-fan ID.\n- 1061793 XGD Fan Box Assembly Replacement, part 5183573.\n- Error tool 2267834 reports a fan tachometer failure on %b (axis placeholder), not a per-fan tray index.\n- Error tool 2267919 / 2267852: replace the Cronus chassis fan tray (different named assembly).\n- 1052773 Gradient Static (module 2.0, 8/19/08) \u00a73 Table 1 lists \"Fan with Tach Output\" among FRUs that can be tested; results go to the GE System Log. It does not describe a Cronus login or GRAD_FANZ_n_FAIL.\n- 1087744 (module 15.0, 5/25/11), after e-stop related testing, says to TPS Reset and \"check the error log for XGA fan faults. Check the operation of the fans in each XGA fan rack. (Auxiliary board failure is possible, but unlikely.)\" Bypass/jumper steps in that topic are not part of this entry and must not be used from it.\nINFERENCE not used as fact: GRAD_FANZ_3_FAIL appears in this field note to identify fan 3 in the Z tray. That mapping is not stated in held OEM text.\nDo not use this entry as a bypass, jumper, or tach-spoof procedure.",
+  parts:"OEM XGD Fan Box Assembly in held docs: 5183573 (1061793 \u00a72.2; 5670005 Rev 4 p.52). Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).",
+  tags:["field-history","historical field case","eDMS","MRM-001961","fan tray","tach","e-stop","CRONUS","Cronus","GMC","AUX_SECFAULTS","GRAD_FANZ_3_FAIL","engineering tool","2267834","5183573","1061853","1061793","MR750w","XGD","260.20656"],
+  date:"2011-02-21",
+  created:"2026-11-09T17:22:00.000Z",
+  updated:"2026-11-09T22:12:00.000Z",
+  source:"Field history (service log), not OEM procedure. Transcribed from service-log spreadsheet photos sent 9 Nov 2026. Wording verified verbatim against the service-log photos on 9 Nov 2026. eDMS# MRM-001961.",
+},
+{
+  id:"kb_field_ge_mr750w_aux_box_48v_undervoltage",
+  title:"GE MR XGD 2267910 48V undervoltage isolated to Aux Box swap (field history, eDMS MRM-002415)",
+  cat:"GE",
+  model:"GE MR XGD PGR, DVapps PGR 43 (system-type column not shown in the log photos). Relevant to Discovery MR750w Aux Box / 2267910 questions.",
+  error:"2267910 48V undervoltage; TPS Reset failed",
+  problem:"Field history (service log), not OEM procedure. Historical field case. Text as transcribed: \"MRM-002415, DVapps PGR 43. TPS Reset failed, error = 2267910, message = \"The Power Cabinet AUX board is reporting a 48V undervoltage.\" Swapped Aux Box, restart system, error message does not appear in log. Re-install original Aux Box, restart system, original error re-occurs. Replaced defective Aux Box.\"",
+  solution:"Status: historical field case.\nThis is field history from a service-log spreadsheet, not an OEM procedure.\nWhat the log says: TPS Reset failed with 2267910 48V undervoltage (DVapps PGR 43). Swapping the Aux Box cleared the error; reinstalling the original brought the error back. The defective Aux Box was replaced. eDMS# MRM-002415.\nThis field case is about 2267910. Held OEM text does not give an Aux Box/Aux Board swap as an isolation step for all-axis fan tach zero, or for 2267913 / 2267912.\nOEM text that is related to 2267910:\n- Error tool 2267910 EM_XGD_AX_ONBOARD_PWR: \"The Power Cabinet AUX board is reporting a %sV %b.\" Message only.\n- 1065549 Gradient Troubleshooting (Direction 5670006 Rev 1, module 9.0, 9/22/10) \u00a74.6 Table 6: \"2267910 - Power Cabinet AUX Board is reporting a 48 V undervoltage/overvoltage. This error indicates that the Auxiliary Module is measuring an out-of-tolerance change of 48 V (48 V, \u00b14%) during the diagnostic. This may indicate a malfunction of the PDU PS1 supply. A measurement failure in the Auxiliary Module (much less likely) could also cause this error.\"\n- 1062057 Auxiliary Board Replacement (Direction 5670006 Rev 1, module 5.0, 5/14/09) is a replacement procedure for Auxiliary Board 5161071. It has no troubleshooting/indications section. Finalization: \"Perform TPS reset and review error log for Auxiliary Board faults.\"\nFRU book 5670005 Rev 4 p.52: 5161071 = XGD AUX PWB ENCL ASM.\nDo not use this entry as a bypass, jumper, or tach-spoof procedure.",
+  parts:"Aux Box (as written in the service log). OEM Auxiliary Board in held docs: 5161071 (1062057 \u00a72.3; 5670005 Rev 4 p.52). Service-log column value: 1,057.13352 (part/case number per Mike; which of the two not stated).",
+  tags:["field-history","historical field case","eDMS","MRM-002415","2267910","48V","undervoltage","Aux Box","Auxiliary Board","5161071","1062057","1065549","DVapps","PGR 43","MR750w","XGD","1,057.13352","1057.13352"],
+  date:"undated",
+  created:"2026-11-09T17:22:00.000Z",
+  updated:"2026-11-09T22:12:00.000Z",
+  source:"Field history (service log), not OEM procedure. Transcribed from service-log spreadsheet photos sent 9 Nov 2026. Wording verified verbatim against the service-log photos on 9 Nov 2026. eDMS# MRM-002415.",
+},
+{
+  id:"kb_field_ge_mr750w_wo80929_aux_fan_tach_cable",
+  title:"GE MR750w XGD fan tach fault: bench isolation, scope and ohm readings, fan-tray cable (field history, WO80929 / MXR-101069)",
+  cat:"GE",
+  model:"GE Discovery MR750w (XGD gradient / Power Cabinet Aux Box fan-tach circuit)",
+  error:"XGD fan tach fault (same issue family as GRAD_FANZ_n_FAIL / 2267834 and e-stop on fan tach loss)",
+  problem:"Field history (tech bench findings, 9 Nov 2026), not OEM procedure. WO80929 / MXR-101069. Recorded as the tech's own observations; values are as measured on one job, not OEM specifications or nominal values.",
+  solution:"Status: open field case (fix in progress, 9 Nov 2026).\nThis is field history from the tech's own bench work, not an OEM procedure.\nTech observations (WO80929 / MXR-101069):\n- Took the suspect parts to a known-good MR system to test. Aux box tested GOOD. GMC board tested GOOD.\n- Oscilloscope on the tach lines of the good system: X/Y/Z tach about 167 Hz at about 7 V. PDU fans: one 137 Hz at 1.67 V, the other 147 Hz at 1.67 V. These are readings from one good system, not OEM nominal values.\n- Reproduced the exact customer symptom on the good system by leaving fan 3 disconnected from the Aux Box (fault reproduction by unplugging, not a bypass).\n- Ohm check, cable connected to known-good fans: tach pins (pin 3) read 0.809 to 0.891 ohm, with one probe on the large positive connector (the coax-style pin on the D-sub) and the other on the small pins. The other pins read open.\n- Pin 4 read \"20ohm or higher\" (tech's words). The notes do not make clear whether this pin 4 reading was taken on the known-good fans or on the problem-site fans.\n- At the problem site, the same pins on the fans read all over the place, all 20 ohm or higher.\n- Action: cable already changed. Plan is to replace all three fan trays when they arrive. Outcome not yet recorded.\nInference (not stated by OEM or confirmed): the out-of-range ohm readings at the problem site point at the fan trays themselves rather than the Aux Box or GMC board, which both tested good on the known-good system.\nRelated OEM text (not about this job):\n- 1087744 E-Stop troubleshooting (Direction 5670006 Rev 1, module 15.0, 5/25/11) \u00a74.2: perform a TPS Reset and check the error log for XGA fan faults; check the operation of the fans in each fan rack; \"Auxiliary board failure is possible, but unlikely\"; if the error does not disappear, check the auxiliary board cable.\n- Error tool 2267834 EM_XGD_FAN_FAIL: \"The Power Cabinet AUX board is reporting a fan tachometer failure on %b.\" Message only.\n- 1061793 \u00a72.2: XGD Fan Box Assembly 5183573.\nNo OEM tach voltage, frequency or resistance spec was found in the held docs. Do not use this entry as a bypass, jumper or tach-spoof procedure.",
+  parts:"Fan-tray cable (replaced). Fan trays x3 (on order). OEM XGD Fan Box Assembly in held docs: 5183573 (1061793 \u00a72.2).",
+  tags:["field-history","WO80929","MXR-101069","fan tray","tach","Aux Box","GMC","oscilloscope","ohm check","D-sub","2267834","1087744","5183573","MR750w","XGD"],
+  date:"2026-11-09",
+  created:"2026-11-09T22:05:00.000Z",
+  updated:"2026-11-09T22:10:00.000Z",
+  source:"Field history (tech bench findings, 9 Nov 2026), not OEM procedure. WO80929 / MXR-101069. OEM references cited separately: 1087744 \u00a74.2, error tool 2267834, 1061793 \u00a72.2.",
 },
 ];
 

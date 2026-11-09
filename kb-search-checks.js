@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v47/.test(html);
-  const top = /Field Service · v47/.test(html);
-  const appVer = /const APP_VERSION='v47'/.test(src);
-  assert(login && top && appVer, 'version strings are v47 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v48/.test(html);
+  const top = /Field Service · v48/.test(html);
+  const appVer = /const APP_VERSION='v48'/.test(src);
+  assert(login && top && appVer, 'version strings are v48 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -811,6 +811,77 @@ files.forEach(file => {
   });
   assert(bfG && bfG.content.includes('## Inferred (not in source)') && bfG.content.includes('Phil Belcher, 7 Jan 2009'),
     'coldhead backflush guide credits Phil Belcher and keeps the Inferred section');
+
+  // MR750w field-history service-log entries. No guide key and no Field_Guides markdown.
+  const mr750wFieldIds = [
+    'kb_field_ge_mr750w_fan_tray_tach_estop',
+    'kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz',
+    'kb_field_ge_mr750w_aux_box_48v_undervoltage'
+  ];
+  const kbSrcF = extractConst(src, 'KB_SEED');
+  const phoneRe = /\(?\d{3}\)?[-. ]\d{3}[-. ]\d{4}/;
+  const emailRe = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+  mr750wFieldIds.forEach(id => {
+    const hits = kbSrcF.split('id:"' + id + '"').length - 1;
+    assert(hits === 1, 'KB_SEED includes ' + id + ' once (got ' + hits + ')');
+    const block = kbSrcF.split('{').find(b => b.includes('id:"' + id + '"')) || '';
+    assert(block.includes('Field history (service log), not OEM procedure'), id + ' says field history, not OEM procedure');
+    assert(block.includes('historical field case'), id + ' is a historical field case');
+    assert(!phoneRe.test(block) && !emailRe.test(block) && !/certified/i.test(block),
+      id + ' has no phone, email, or "certified"');
+    assert(!/^\s*guide\s*:/m.test(block), id + ' has no guide key');
+  });
+  const fanBlock = kbSrcF.split('{').find(b => b.includes('id:"kb_field_ge_mr750w_fan_tray_tach_estop"')) || '';
+  const cronusBlock = kbSrcF.split('{').find(b => b.includes('id:"kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz"')) || '';
+  const auxBlock = kbSrcF.split('{').find(b => b.includes('id:"kb_field_ge_mr750w_aux_box_48v_undervoltage"')) || '';
+  assert(fanBlock.includes('MRM-002402') && fanBlock.includes('e-stop to trip'), 'fan tray entry keeps MRM-002402 and the e-stop wording');
+  assert(cronusBlock.includes("one of it's fans") && cronusBlock.includes('GRAD_FANZ_3_FAIL') && cronusBlock.includes('MRM-001961'),
+    'Cronus entry keeps the transcribed it\'s-fans wording, GRAD_FANZ_3_FAIL, and MRM-001961');
+  assert(auxBlock.includes('MRM-002415') && auxBlock.includes('2267910') && auxBlock.includes('48V undervoltage'),
+    'Aux Box entry keeps MRM-002415, 2267910, and 48V undervoltage');
+
+  // Fourth MR750w field-history entry: tech bench findings, not the service-log status line.
+  const woId = 'kb_field_ge_mr750w_wo80929_aux_fan_tach_cable';
+  const woHits = kbSrcF.split('id:"' + woId + '"').length - 1;
+  assert(woHits === 1, 'KB_SEED includes ' + woId + ' once (got ' + woHits + ')');
+  assert(kbSrcF.indexOf('id:"kb_field_ge_mr750w_aux_box_48v_undervoltage"') < kbSrcF.indexOf('id:"' + woId + '"'),
+    'WO80929 entry follows the three service-log MR750w entries');
+  const woBlock = kbSrcF.split('{').find(b => b.includes('id:"' + woId + '"')) || '';
+  assert(woBlock.includes('Field history (tech bench findings, 9 Nov 2026), not OEM procedure'),
+    woId + ' is field history, not an OEM procedure');
+  assert(woBlock.includes('Status: open field case (fix in progress, 9 Nov 2026).'),
+    woId + ' status is an open field case');
+  assert(!phoneRe.test(woBlock) && !emailRe.test(woBlock) && !/certified/i.test(woBlock) && !/\$/.test(woBlock),
+    woId + ' has no phone, email, "certified", or dollar amount');
+  assert(!/^\s*guide\s*:/m.test(woBlock), woId + ' has no guide key');
+  const kbSeedLive = new Function('return ' + kbSrcF)();
+  function kbTextHits(q) {
+    const ql = String(q).toLowerCase();
+    return kbSeedLive.filter(e => e && (
+      String(e.title || '').toLowerCase().includes(ql) ||
+      String(e.problem || '').toLowerCase().includes(ql) ||
+      String(e.solution || '').toLowerCase().includes(ql) ||
+      String(e.error || '').toLowerCase().includes(ql) ||
+      String(e.model || '').toLowerCase().includes(ql) ||
+      (e.tags || []).some(t => String(t || '').toLowerCase().includes(ql))
+    ));
+  }
+  ['WO80929', 'MXR-101069'].forEach(q => {
+    assert(kbTextHits(q).some(e => e.id === woId), "search '" + q + "' finds " + woId);
+  });
+  const fanNumIds = [
+    'kb_field_ge_mr750w_fan_tray_tach_estop',
+    'kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz'
+  ];
+  const hit260 = kbTextHits('260.20656').map(e => e.id);
+  fanNumIds.forEach(id => assert(hit260.indexOf(id) !== -1, "search '260.20656' finds " + id));
+  assert(kbTextHits('1057.13352').some(e => e.id === 'kb_field_ge_mr750w_aux_box_48v_undervoltage'),
+    "search '1057.13352' finds the Aux Box entry");
+  assert(fanBlock.includes('Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).')
+    && cronusBlock.includes('Service-log column value: 260.20656 (part/case number per Mike; which of the two not stated).'),
+    'both fan entries keep the 260.20656 part/case note');
+  assert(auxBlock.includes('Service-log column value: 1,057.13352 (part/case number per Mike; which of the two not stated).'),
+    'Aux Box entry keeps the 1,057.13352 part/case note');
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
@@ -1023,7 +1094,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v68'/.test(sw), 'sw.js cache name is amt-v68');
+assert(/const CACHE = 'amt-v69'/.test(sw), 'sw.js cache name is amt-v69');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',
