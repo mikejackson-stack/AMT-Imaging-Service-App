@@ -841,6 +841,34 @@ files.forEach(file => {
     'Cronus entry keeps the transcribed it\'s-fans wording, GRAD_FANZ_3_FAIL, and MRM-001961');
   assert(auxBlock.includes('MRM-002415') && auxBlock.includes('2267910') && auxBlock.includes('48V undervoltage'),
     'Aux Box entry keeps MRM-002415, 2267910, and 48V undervoltage');
+
+  // Fourth MR750w field-history entry: tech bench findings, not the service-log status line.
+  const woId = 'kb_field_ge_mr750w_wo80929_aux_fan_tach_cable';
+  const woHits = kbSrcF.split('id:"' + woId + '"').length - 1;
+  assert(woHits === 1, 'KB_SEED includes ' + woId + ' once (got ' + woHits + ')');
+  assert(kbSrcF.indexOf('id:"kb_field_ge_mr750w_aux_box_48v_undervoltage"') < kbSrcF.indexOf('id:"' + woId + '"'),
+    'WO80929 entry follows the three service-log MR750w entries');
+  const woBlock = kbSrcF.split('{').find(b => b.includes('id:"' + woId + '"')) || '';
+  assert(woBlock.includes('Field history (tech bench findings, 9 Nov 2026), not OEM procedure'),
+    woId + ' is field history, not an OEM procedure');
+  assert(woBlock.includes('Status: open field case (fix in progress, 9 Nov 2026).'),
+    woId + ' status is an open field case');
+  assert(!phoneRe.test(woBlock) && !emailRe.test(woBlock) && !/certified/i.test(woBlock) && !/\$/.test(woBlock),
+    woId + ' has no phone, email, "certified", or dollar amount');
+  assert(!/^\s*guide\s*:/m.test(woBlock), woId + ' has no guide key');
+  const kbSeedLive = new Function('return ' + kbSrcF)();
+  ['WO80929', 'MXR-101069'].forEach(q => {
+    const ql = q.toLowerCase();
+    const found = kbSeedLive.filter(e => e && (
+      String(e.title || '').toLowerCase().includes(ql) ||
+      String(e.problem || '').toLowerCase().includes(ql) ||
+      String(e.solution || '').toLowerCase().includes(ql) ||
+      String(e.error || '').toLowerCase().includes(ql) ||
+      String(e.model || '').toLowerCase().includes(ql) ||
+      (e.tags || []).some(t => String(t || '').toLowerCase().includes(ql))
+    ));
+    assert(found.some(e => e.id === woId), "search '" + q + "' finds " + woId);
+  });
 });
 
 const looseEntries = JSON.parse(fs.readFileSync(path.join(__dirname, 'kb/ge-loose-kb.json'), 'utf8'));
