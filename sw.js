@@ -33,7 +33,8 @@
 // Bumped from amt-v66 -> amt-v67 so phones pick up the MGD NVRAM field guide and KB entry (app v46).
 // Bumped from amt-v67 -> amt-v68 so phones pick up the coldhead compressor backflush field guide and KB entry (app v47).
 // Bumped from amt-v68 -> amt-v69 so phones pick up the MR750w field-history KB entries (app v48).
-const CACHE = 'amt-v69';
+// Bumped from amt-v69 -> amt-v70 so phones pick up the WO80929 tach-pin ohm clarification (app v49).
+const CACHE = 'amt-v70';
 const SHELL = ['./','./index.html','./access-config.js','./AMT-Capability-Statement.pdf'];
 const LIBRARY_KB_FILES = [
   '/kb/ge-loose-kb.json',
