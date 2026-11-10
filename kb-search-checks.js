@@ -171,10 +171,10 @@ files.forEach(file => {
   assert(dg.includes('!guides.length && !errHits.length'),
     'Guides empty state requires both zero guides and zero error-table hits');
 
-  const login = /Field Service Management · v49/.test(html);
-  const top = /Field Service · v49/.test(html);
-  const appVer = /const APP_VERSION='v49'/.test(src);
-  assert(login && top && appVer, 'version strings are v49 (login, top bar, APP_VERSION)');
+  const login = /Field Service Management · v50/.test(html);
+  const top = /Field Service · v50/.test(html);
+  const appVer = /const APP_VERSION='v50'/.test(src);
+  assert(login && top && appVer, 'version strings are v50 (login, top bar, APP_VERSION)');
 
   assert(/fbAuth\.currentUser/.test(src) && /PIN unlock cannot call the backup search/.test(src),
     'Ask Grok UI blocks PIN (requires Firebase Auth currentUser)');
@@ -849,8 +849,8 @@ files.forEach(file => {
   const woBlock = kbSrcF.split('{').find(b => b.includes('id:"' + woId + '"')) || '';
   assert(woBlock.includes('Field history (tech bench findings, 9 Nov 2026), not OEM procedure'),
     woId + ' is field history, not an OEM procedure');
-  assert(woBlock.includes('Status: open field case (fix in progress, 9 Nov 2026).'),
-    woId + ' status is an open field case');
+  assert(woBlock.includes('Status: confirmed field fix (tech report, 10 Nov 2026).'),
+    woId + ' status is a confirmed field fix');
   assert(!phoneRe.test(woBlock) && !emailRe.test(woBlock) && !/certified/i.test(woBlock) && !/\$/.test(woBlock),
     woId + ' has no phone, email, "certified", or dollar amount');
   assert(!/^\s*guide\s*:/m.test(woBlock), woId + ' has no guide key');
@@ -866,14 +866,20 @@ files.forEach(file => {
       (e.tags || []).some(t => String(t || '').toLowerCase().includes(ql))
     ));
   }
-  ['WO80929', 'MXR-101069', '20ohm', 'known good'].forEach(q => {
+  ['WO80929', 'MXR-101069', '20ohm', 'known good', 'megaohm', '345'].forEach(q => {
     assert(kbTextHits(q).some(e => e.id === woId), "search '" + q + "' finds " + woId);
   });
-  assert(woBlock.includes('Tech clarification (9 Nov 2026, tech\'s words)') && woBlock.includes('The .808 was the known good.') && woBlock.includes('20ohm and higher is bad.'),
-    'WO80929 keeps the tach-pin ohm clarification');
+  assert(woBlock.includes('Tech clarification (9 Nov 2026, tech\'s words)') && woBlock.includes('The .808 was the known good.') && woBlock.includes('20ohm and higher is bad.') && woBlock.includes('(tech later confirmed the unit is megaohm)'),
+    'WO80929 keeps the tach-pin clarification and the megaohm unit note');
   assert(!woBlock.includes('The notes do not make clear whether this pin 4 reading'),
     'WO80929 no longer says the pin 4 fan set is unclear');
-  assert(woBlock.includes('updated:"2026-11-09T23:30:00.000Z"'), 'WO80929 updated stamp is 2026-11-09T23:30:00.000Z');
+  assert(woBlock.includes('Replacing all 3 fan trays cleared every error in the error log. Measured readings: good fans 0.758 to 0.897 megaohm; bad fans all 20 megaohm or higher, maximum seen 345 megaohm.'),
+    'WO80929 includes the confirmed fan-tray fix readings');
+  assert(!woBlock.includes('Plan is to replace all three fan trays') && !woBlock.includes('Outcome not yet recorded') && !woBlock.includes('on order'),
+    'WO80929 fan-tray plan is no longer pending');
+  const bareOhm = woBlock.replace('20ohm and higher is bad.', '');
+  assert(!/(?<!mega)ohm/i.test(bareOhm), 'WO80929 has no bare ohm unit left');
+  assert(woBlock.includes('updated:"2026-11-10T19:45:00.000Z"'), 'WO80929 updated stamp is 2026-11-10T19:45:00.000Z');
   const fanNumIds = [
     'kb_field_ge_mr750w_fan_tray_tach_estop',
     'kb_field_ge_mr750w_cronus_aux_secfaults_grad_fanz'
@@ -1099,7 +1105,7 @@ assert(ratesHtml.includes('Monthly Labor Retainer') && ratesHtml.includes('font-
   assert(ratesHtml.includes(n), 'index.html shows ' + n));
 
 const sw = fs.readFileSync(path.join(__dirname, 'sw.js'), 'utf8');
-assert(/const CACHE = 'amt-v70'/.test(sw), 'sw.js cache name is amt-v70');
+assert(/const CACHE = 'amt-v71'/.test(sw), 'sw.js cache name is amt-v71');
 const heroIndex = fs.readFileSync(path.join(__dirname, 'Manuals/GE/Signa Hero/index.html'), 'utf8');
 const heroPremier = [
   'index.htm',

@@ -741,7 +741,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <!-- LOGIN -->
 <div id="loginScreen">
   <img class="login-logo" id="loginLogo" src="" alt="AMT Imaging Solutions">
-  <div class="login-tagline">Field Service Management · v49</div>
+  <div class="login-tagline">Field Service Management · v50</div>
   <div class="login-card">
     <h2>Authorized Access Only</h2>
     <p>AMT Imaging Solutions LLC -- Staff Portal</p>
@@ -796,7 +796,7 @@ textarea.form-control{min-height:88px;resize:vertical;padding-top:11px}
 <div id="topBar">
   <div class="topbar-left">
     <img class="topbar-logo" id="topbarLogo" src="" alt="AMT">
-    <div class="topbar-name"><span class="topbar-brand">AMT Imaging Solutions</span><span class="topbar-sub">Field Service · v49</span></div>
+    <div class="topbar-name"><span class="topbar-brand">AMT Imaging Solutions</span><span class="topbar-sub">Field Service · v50</span></div>
   </div>
   <div class="topbar-right">
     <div class="user-avatar" id="userAvatar">?</div>
@@ -1800,7 +1800,7 @@ const LOGO_DATA_URL=LOGO_B64;
 // ════════════════════════════════════════════════════
 // FULL ERROR CODE DATABASE
 // ════════════════════════════════════════════════════
-const APP_VERSION='v49';
+const APP_VERSION='v50';
 const FULL_ERROR_DB=[
   // GE MRI
   {code:'E305',brand:'GE',desc:'RF Amplifier fault -- check RF amp cooling, connections, and power supply',manual:'GE/RF_Amp_Service.htm'},
@@ -6509,17 +6509,17 @@ const KB_SEED = [
 },
 {
   id:"kb_field_ge_mr750w_wo80929_aux_fan_tach_cable",
-  title:"GE MR750w XGD fan tach fault: bench isolation, scope and ohm readings, fan-tray cable (field history, WO80929 / MXR-101069)",
+  title:"GE MR750w XGD fan tach fault: bench isolation, scope and megaohm readings, fan-tray cable (field history, WO80929 / MXR-101069)",
   cat:"GE",
   model:"GE Discovery MR750w (XGD gradient / Power Cabinet Aux Box fan-tach circuit)",
   error:"XGD fan tach fault (same issue family as GRAD_FANZ_n_FAIL / 2267834 and e-stop on fan tach loss)",
   problem:"Field history (tech bench findings, 9 Nov 2026), not OEM procedure. WO80929 / MXR-101069. Recorded as the tech's own observations; values are as measured on one job, not OEM specifications or nominal values.",
-  solution:"Status: open field case (fix in progress, 9 Nov 2026).\nThis is field history from the tech's own bench work, not an OEM procedure.\nTech observations (WO80929 / MXR-101069):\n- Took the suspect parts to a known-good MR system to test. Aux box tested GOOD. GMC board tested GOOD.\n- Oscilloscope on the tach lines of the good system: X/Y/Z tach about 167 Hz at about 7 V. PDU fans: one 137 Hz at 1.67 V, the other 147 Hz at 1.67 V. These are readings from one good system, not OEM nominal values.\n- Reproduced the exact customer symptom on the good system by leaving fan 3 disconnected from the Aux Box (fault reproduction by unplugging, not a bypass).\n- Ohm check, cable connected to known-good fans: tach pins (pin 3) read 0.809 to 0.891 ohm, with one probe on the large positive connector (the coax-style pin on the D-sub) and the other on the small pins. The other pins read open.\n- Pin 4 read \"20ohm or higher\" (tech's words). Tech clarification (9 Nov 2026, tech's words): \"The .808 was the known good.\" and \"20ohm and higher is bad.\" So the ~0.8 ohm tach-pin readings were on the known-good fans, and the 20 ohm or higher readings (including pin 4) were on the bad/problem-site fans. These are one tech's field observations, not OEM specifications.\n- At the problem site, the same pins on the fans read all over the place, all 20 ohm or higher.\n- Action: cable already changed. Plan is to replace all three fan trays when they arrive. Outcome not yet recorded.\nInference (not stated by OEM or confirmed): the out-of-range ohm readings at the problem site point at the fan trays themselves rather than the Aux Box or GMC board, which both tested good on the known-good system.\nRelated OEM text (not about this job):\n- 1087744 E-Stop troubleshooting (Direction 5670006 Rev 1, module 15.0, 5/25/11) \u00a74.2: perform a TPS Reset and check the error log for XGA fan faults; check the operation of the fans in each fan rack; \"Auxiliary board failure is possible, but unlikely\"; if the error does not disappear, check the auxiliary board cable.\n- Error tool 2267834 EM_XGD_FAN_FAIL: \"The Power Cabinet AUX board is reporting a fan tachometer failure on %b.\" Message only.\n- 1061793 \u00a72.2: XGD Fan Box Assembly 5183573.\nNo OEM tach voltage, frequency or resistance spec was found in the held docs. Do not use this entry as a bypass, jumper or tach-spoof procedure.",
-  parts:"Fan-tray cable (replaced). Fan trays x3 (on order). OEM XGD Fan Box Assembly in held docs: 5183573 (1061793 \u00a72.2).",
-  tags:["field-history","WO80929","MXR-101069","fan tray","tach","Aux Box","GMC","oscilloscope","ohm check","D-sub","2267834","1087744","5183573","MR750w","XGD"],
+  solution:"Status: confirmed field fix (tech report, 10 Nov 2026).\nThis is field history from the tech's own bench work, not an OEM procedure.\nTech observations (WO80929 / MXR-101069):\n- Took the suspect parts to a known-good MR system to test. Aux box tested GOOD. GMC board tested GOOD.\n- Oscilloscope on the tach lines of the good system: X/Y/Z tach about 167 Hz at about 7 V. PDU fans: one 137 Hz at 1.67 V, the other 147 Hz at 1.67 V. These are readings from one good system, not OEM nominal values.\n- Reproduced the exact customer symptom on the good system by leaving fan 3 disconnected from the Aux Box (fault reproduction by unplugging, not a bypass).\n- Megaohm check, cable connected to known-good fans: tach pins (pin 3) read 0.809 to 0.891 megaohm, with one probe on the large positive connector (the coax-style pin on the D-sub) and the other on the small pins. The other pins read open.\n- Pin 4 read \"20 megaohm or higher\" (tech's words). Tech clarification (9 Nov 2026, tech's words): \"The .808 was the known good.\" and \"20ohm and higher is bad.\" (tech later confirmed the unit is megaohm). So the ~0.8 megaohm tach-pin readings were on the known-good fans, and the 20 megaohm or higher readings (including pin 4) were on the bad/problem-site fans. These are one tech's field observations, not OEM specifications.\n- At the problem site, the same pins on the fans read all over the place, all 20 megaohm or higher.\n- Action: cable already changed. Replacing all three fan trays cleared every error in the error log (confirmed field fix, 10 Nov 2026).\nCONFIRMED FIELD FIX (tech report, 10 Nov 2026). One tech's field observation, not an OEM specification. Replacing all 3 fan trays cleared every error in the error log. Measured readings: good fans 0.758 to 0.897 megaohm; bad fans all 20 megaohm or higher, maximum seen 345 megaohm.\nInference (not stated by OEM or confirmed): the out-of-range megaohm readings at the problem site point at the fan trays themselves rather than the Aux Box or GMC board, which both tested good on the known-good system.\nRelated OEM text (not about this job):\n- 1087744 E-Stop troubleshooting (Direction 5670006 Rev 1, module 15.0, 5/25/11) \u00a74.2: perform a TPS Reset and check the error log for XGA fan faults; check the operation of the fans in each fan rack; \"Auxiliary board failure is possible, but unlikely\"; if the error does not disappear, check the auxiliary board cable.\n- Error tool 2267834 EM_XGD_FAN_FAIL: \"The Power Cabinet AUX board is reporting a fan tachometer failure on %b.\" Message only.\n- 1061793 \u00a72.2: XGD Fan Box Assembly 5183573.\nNo OEM tach voltage, frequency or resistance spec was found in the held docs. Do not use this entry as a bypass, jumper or tach-spoof procedure.",
+  parts:"Fan-tray cable (replaced). Fan trays x3 (replaced; confirmed field fix, 10 Nov 2026). OEM XGD Fan Box Assembly in held docs: 5183573 (1061793 \u00a72.2).",
+  tags:["field-history","WO80929","MXR-101069","fan tray","tach","Aux Box","GMC","oscilloscope","megaohm check","D-sub","2267834","1087744","5183573","MR750w","XGD"],
   date:"2026-11-09",
   created:"2026-11-09T22:05:00.000Z",
-  updated:"2026-11-09T23:30:00.000Z",
+  updated:"2026-11-10T19:45:00.000Z",
   source:"Field history (tech bench findings, 9 Nov 2026), not OEM procedure. WO80929 / MXR-101069. OEM references cited separately: 1087744 \u00a74.2, error tool 2267834, 1061793 \u00a72.2.",
 },
 ];
